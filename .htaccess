@@ -1,0 +1,177 @@
+<Files .htaccess>
+	order allow,deny
+	deny from all
+</Files>
+
+
+## Своя ошибка 404
+ErrorDocument 404 index.php?id=2
+
+## Индексный файл
+DirectoryIndex index.php
+
+## Запрещаем просмотр (листинг) содержимого папки если в нем нету индексного файла
+## и отключаем контроль символьных линков для уменьшения нагрузки на сервер
+Options -Indexes +FollowSymLinks
+
+AddDefaultCharset windows-1251
+
+
+## Закрываем директории от просмотра
+<FilesMatch "\.(class|functions|inc|modules|templates|templates_c|cache)$">
+    Order allow,deny
+</FilesMatch>
+
+
+<IfModule mod_php5.c>
+	php_value register_globals 0
+	php_value magic_quotes_gpc 1
+	php_value session.auto_start 0
+	php_value safe_mode 0
+
+#	php_value auto_prepend_file /home/www/inc/ids.php
+
+	## Отрубаем подстановку в URL сессию
+	php_flag session.use_trans_sid off
+
+	## Отрубаем вывод ошибок
+	php_value error_reporting 7
+</IfModule>
+
+<IfModule sapi_apache2.c>
+	php_value register_globals 0
+	php_value magic_quotes_gpc 1
+	php_value session.auto_start 0
+	php_value safe_mode 0
+
+	## Отрубаем подстановку в URL сессию
+	php_flag session.use_trans_sid off
+
+	## Отрубаем вывод ошибок
+	php_value error_reporting 7
+</IfModule>
+
+<IfModule mod_php4.c>
+	php_value register_globals 0
+	php_value magic_quotes_gpc 1
+	php_value session.auto_start 0
+	php_value safe_mode 0
+
+	## Отрубаем подстановку в URL сессию
+	php_flag session.use_trans_sid off
+
+	## Отрубаем вывод ошибок
+	php_value error_reporting 7
+</IfModule>
+
+
+## Кэширование на стороне браузера (отдаем нормальные заголовки)
+## Если на сайте не используется защитный код (в форме обратной связи) 
+## то строчку ExpiresByType image/jpeg A1 можно заремить
+<IfModule mod_expires.c>
+	## Включаем
+	ExpiresActive On
+
+	## Кэшировать браузером все файлы в течении двух недель
+	ExpiresDefault "access plus 2 weeks"
+
+	## Не кэшировать файлы, имеющие тип
+	ExpiresByType text/html "now"
+#	ExpiresByType image/jpeg "now"
+</IfModule>
+
+
+<IfModule mod_rewrite.c>
+	## Включаем модреврайт
+	RewriteEngine on
+
+	## Если ставили в корень
+	RewriteBase /
+
+	## Если ставили в папку cms
+#	RewriteBase /cms
+
+
+	RewriteCond %{REQUEST_URI} !^/(class|functions|inc|modules|templates|templates_c|cache)/
+
+
+#	RewriteCond %{REQUEST_URI} !^/robots\.txt$ [NC]
+#	RewriteCond %{HTTP_HOST} !^www\. [NC]
+#	RewriteRule ^(.*)$ http://www.%{HTTP_HOST}/$1 [QSA,L]
+
+
+	RewriteRule ^(shop|forums|download)-([0-9]+).html$ index.php?module=$1&page=$2 [QSA,L]
+	RewriteRule ^(shop|forums|download)-print.html$ index.php?module=$1&print=1 [QSA,L]
+	RewriteRule ^(shop|forums|download).html$ index.php?module=$1 [QSA,L]
+
+
+	## ЧПУ для модуля Downloads
+	RewriteRule ^download-([0-9]+)-([0-9]+).html$ index.php?module=download&action=showfile&file_id=$1&categ=$2
+	RewriteRule ^download-([0-9]+)-([0-9]+)-print.html$ index.php?module=download&action=showfile&file_id=$1&categ=$2&print=1
+	RewriteRule ^download_file-([0-9]+)-([_a-zA-Z0-9]+).html$ index.php?module=download&action=get_file&file_id=$1&pop=1&cp_theme=$2
+	RewriteRule ^nopay_file-([0-9]+)-([_a-zA-Z0-9]+).html$ index.php?module=download&action=get_nopay_file&file_id=$1&pop=1&cp_theme=$2
+	RewriteRule ^notmine_file-([0-9]+)-([_a-zA-Z0-9]+).html$ index.php?module=download&action=get_notmine_file&file_id=$1&pop=1&cp_theme=$2
+	RewriteRule ^nouserpay_file-([0-9,]+)-([0-9]+)-([0-9]+)-([_a-zA-Z0-9]+).html$ index.php?module=download&action=get_nouserpay_file&diff=$1&val=$2&file_id=$3&pop=1&cp_theme=$4
+	RewriteRule ^download_kategorie-([0-9]+)-([0-9]+)-([0-9]+)-([a-zA-Z0-9-]+)-page([0-9]+)-order([_a-zA-Z0-9]+).html$ index.php?module=download&categ=$1&parent=$2&navop=$3&c=$4&page=$5&orderby=$6
+	RewriteRule ^download_kategorie-([0-9]+)-([0-9]+)-([0-9]+)-([a-zA-Z0-9-]+)-page([0-9]+).html$ index.php?module=download&categ=$1&parent=$2&navop=$3&c=$4&page=$5
+	RewriteRule ^download_kategorie-([0-9]+)-([0-9]+)-([0-9]+)-([a-zA-Z0-9-]+).html$ index.php?module=download&categ=$1&parent=$2&navop=$3&c=$4
+	RewriteRule ^pay-([0-9,]+)-([_a-zA-Z0-9]+).html$ index.php?module=download&action=pay&file_id=$1&pop=0&cp_theme=$2
+	RewriteRule ^toreg-([0-9,]+)-([_a-zA-Z0-9]+).html$ index.php?module=download&action=toreg&file_id=$1&pop=1&cp_theme=$2
+	RewriteRule ^denied-([0-9,]+)-([_a-zA-Z0-9]+).html$ index.php?module=download&action=get_denied&file_id=$1&pop=1&cp_theme=$2
+
+
+	## ЧПУ для модуля Магазин
+	RewriteRule ^product-([0-9]+)-([0-9]+)-([0-9]+).html$ index.php?module=shop&action=product_detail&product_id=$1&categ=$2&navop=$3 [QSA,L]
+	RewriteRule ^product-([0-9]+)-([0-9]+)-([0-9]+)-print.html$ index.php?module=shop&action=product_detail&product_id=$1&categ=$2&navop=$3&print=1 [QSA,L]
+	RewriteRule ^category-([0-9]+)-([0-9]+)-([0-9]+).html$ index.php?module=shop&categ=$1&parent=$2&navop=$3 [QSA,L]
+	RewriteRule ^category-([0-9]+)-([0-9]+)-([0-9]+)-print.html$ index.php?module=shop&categ=$1&parent=$2&navop=$3&print=1 [QSA,L]
+	RewriteRule ^basket.html$ index.php?module=shop&action=showbasket [QSA,L]
+	RewriteRule ^basket-print.html$ index.php?module=shop&action=showbasket&print=1 [QSA,L]
+	RewriteRule ^manufacturer-([0-9]+).html$ index.php?module=shop&manufacturer=$1 [QSA,L]
+	RewriteRule ^manufacturer-print.html$ index.php?module=shop&manufacturer=$1&print=1 [QSA,L]
+	RewriteRule ^checkout.html$ index.php?module=shop&action=checkout [QSA,L]
+	RewriteRule ^checkout-print.html$ index.php?module=shop&action=checkout&print=1 [QSA,L]
+	RewriteRule ^my-downloads.html$ index.php?module=shop&action=mydownloads [QSA,L]
+	RewriteRule ^request.html$ index.php?module=shop&action=myorders&sub=request [QSA,L]
+	RewriteRule ^my-orders.html$ index.php?module=shop&action=myorders [QSA,L]
+	RewriteRule ^wishlist-refresh.html$ index.php?module=shop&action=wishlist&refresh=1 [QSA,L]
+	RewriteRule ^wishlist.html$ index.php?module=shop&action=wishlist&pop=1 [QSA,L]
+	RewriteRule ^datainf.html$ index.php?module=shop&action=infopage&page=datainf [QSA,L]
+	RewriteRule ^shippinginf.html$ index.php?module=shop&action=infopage&page=shippinginf [QSA,L]
+	RewriteRule ^shop-about.html$ index.php?module=shop&action=infopage&page=imprint [QSA,L]
+	RewriteRule ^agb.html$ index.php?module=shop&action=infopage&page=agb [QSA,L]
+
+	## ЧПУ для выгрузки товаров на Яндекс
+	RewriteRule ^market.xml$ inc/yandex.php [QSA,L]
+
+
+	## ЧПУ для модуля опросов ##
+	RewriteRule ^poll-([0-9]+).html$ index.php?module=poll&action=result&pid=$1
+	RewriteRule ^pollcomment-([0-9]+)-([_a-zA-Z0-9]+).html$ index.php?module=poll&action=form&pid=$1&cp_theme=$2&pop=1
+	RewriteRule ^poll-archive.html$ index.php?module=poll&action=archive
+
+
+	## ЧПУ для модуля RSS
+	RewriteRule ^rss/rss-([0-9]+).xml$ inc/rss.php?id=$1 [QSA,L]
+
+
+	## ЧПУ на Док и Ид документов
+	RewriteRule ^([_a-zA-Z0-9-]+)~([0-9]+)~page([0-9]+)~([0-9]+).html$ index.php?id=$2&doc=$1&artpage=$3&apage=$4 [QSA,L]
+	RewriteRule ^([_a-zA-Z0-9-]+)~([0-9]+)~page([0-9]+)~([0-9]+)~print.html$ index.php?id=$2&doc=$1&artpage=$3&apage=$4&print=1 [QSA,L]
+	RewriteRule ^([_a-zA-Z0-9-]+)~([0-9]+)~page([0-9]+).html$ index.php?id=$2&doc=$1&artpage=$3 [QSA,L]
+	RewriteRule ^([_a-zA-Z0-9-]+)~([0-9]+)~page([0-9]+)~print.html$ index.php?id=$2&doc=$1&artpage=$3&print=1 [QSA,L]
+	RewriteRule ^([_a-zA-Z0-9-]+)~([0-9]+)~([0-9]+).html$ index.php?id=$2&doc=$1&apage=$3 [QSA,L]
+	RewriteRule ^([_a-zA-Z0-9-]+)~([0-9]+)~([0-9]+)~print.html$ index.php?id=$2&doc=$1&apage=$3&print=1 [QSA,L]
+	RewriteRule ^([_a-zA-Z0-9-]+)~([0-9]+).html$ index.php?id=$2&doc=$1 [QSA,L]
+	RewriteRule ^([_a-zA-Z0-9-]+)~([0-9]+)~print.html$ index.php?id=$2&doc=$1&print=1 [QSA,L]
+	RewriteRule ^index-([0-9]+).html$ index.php?id=$1 [QSA,L]
+	RewriteRule ^index-([0-9]+)~print.html$ index.php?id=$1&print=1 [QSA,L]
+	RewriteRule ^index.html$ index.php [QSA,L]
+	RewriteRule ^index~print.html$ index.php?print=1 [QSA,L]
+
+
+	RewriteCond %{REQUEST_FILENAME} !-f
+	RewriteCond %{REQUEST_FILENAME} !-d
+	RewriteCond %{REQUEST_FILENAME} !-l
+	RewriteRule ^(.*)$ index.php?url=$1 [L]
+</IfModule>
