@@ -1,0 +1,6 @@
+body                     {font-family: Arial, Verdana, Helvetica, sans-serif; font-size:12px}
+td                       {font-family:Arial, Verdana, Helvetica, sans-serif; font-size:12px;}
+small                    {font-size:12px;}
+.header                  {background-color:#fff;}
+a:link, a:visited, a:hover {color: #0000FF;}
+h2,h3,h4                 {display:inline}
