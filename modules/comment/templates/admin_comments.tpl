@@ -32,7 +32,7 @@
 	{foreach from=$docs item=doc}
 		<tr class="{cycle name='dd' values='first,second'}">
 			<td><a title="{$doc.message|escape:html|stripslashes|truncate:'1000'}" target="_blank" href="../index.php?id={$doc.document_id}&doc=impressum&subaction=showonly&comment_id={$doc.CId}#{$doc.CId}">{$doc.message|escape:html|stripslashes|truncate:'100'}</a></td>
-			<td class="time">{$doc.published|date_format:$smarty.config.COMMENT_DATE_FORMAT}</td>
+			<td class="time">{$doc.published|date_format:$TIME_FORMAT|pretty_date:$DEF_LANGUAGE}</td>
 			<td><a target="_blank" href="../index.php?id={$doc.document_id}">{$doc.Titel}</a></td>
 			<td><a title="{#COMMENT_EDIT#}" href="javascript:void(0);" onclick="cp_pop('index.php?do=modules&action=modedit&mod=comment&moduleaction=admin_edit&pop=1&docid={$doc.document_id}&Id={$doc.CId}','700','550','1');"><img src="{$tpl_dir}/images/icon_edit.gif" alt="" border="0" /></a></td>
 			<td><a title="{#COMMENT_DELETE_LINK#}" href="javascript:void(0);" onclick="cp_pop('index.php?parent={$doc.CId}&docid={$doc.document_id}&module=comment&action=delete&pop=1&Id={$doc.CId}','10','10','1');"><img src="{$tpl_dir}/images/icon_del.gif" alt="" border="0" /></a></td>

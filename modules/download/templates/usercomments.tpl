@@ -21,7 +21,7 @@
 						</td>
 
 						<td align="right">
-							{$c->Datum|date_format:$config_vars.DateFormatAll}
+							{$c->Datum|date_format:$TIME_FORMAT|pretty_date:$DEF_LANGUAGE}
 						</td>
 					</tr>
 				{/foreach}

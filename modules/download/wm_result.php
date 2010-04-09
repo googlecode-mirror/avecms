@@ -23,11 +23,11 @@
  	if (!$hash_check) {
  		die("Hack attempt!");
  	}
- 	
+
  	$pay_amount = @$_REQUEST['LMI_PAYMENT_AMOUNT'];
   $pay_fileid = @$_REQUEST['pay_fileid'];
 	$pay_userid = @$_REQUEST['pay_userid'];
-	$pay_date=strftime("%d.%m.%Y");
+	$pay_date=pretty_date(strftime(DATE_FORMAT), DEFAULT_LANGUAGE);
 	$pay_userIP = @$_REQUEST['pay_userIP'];
 
 	if (!strlen($pay_userid)) $pay_userid="0";
@@ -56,17 +56,17 @@
   $query = "SELECT Pay,Pay_Type FROM " . $perfix . "_modul_download_files WHERE Id = ".$pay_fileid."";
 	$result = mysql_query($query) or die("Query failed");
 	if ($row = mysql_fetch_array($result)) {
-	
+
 		if ($row['Pay_Type']==0 && $row['Excl_Pay']==0) {
 			$sum=max($row['Pay']-$pay_amount,0);
 		  $query = "UPDATE " . $perfix . "_modul_download_files SET Pay=".$sum." WHERE Id = '".$pay_fileid."'";
 			$result = mysql_query($query) or die("Query failed");
-		}	
-	
+		}
+
 		$query = "INSERT INTO " . $perfix . "_modul_download_payhistory VALUES ('',{$pay_userid},".$pay_amount.",{$pay_fileid},'{$pay_date}','{$pay_userIP}')";
 		$result = mysql_query($query) or die("Query failed");
 
 	}
-	
+
 	mysql_close($link);
 ?>

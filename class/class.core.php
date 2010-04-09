@@ -70,6 +70,16 @@ class AVE_Core
  *	ВНЕШНИЕ МЕТОДЫ
  */
 
+    /**
+     * Конструктор класса
+     *
+     */
+    function AVE_Core()
+    {
+        global $AVE_Template;
+
+    }
+
 	/**
 	 * Сборка страницы
 	 *
@@ -173,24 +183,24 @@ class AVE_Core
 						WHERE
 							BenutzerGruppe = '" . UGROUP . "'
 						AND
-							doc.Id = '" . $AVE_Globals->mainSettings('page_not_found_id') . "'
+							doc.Id = '" . PAGE_NOT_FOUND_ID . "'
 						LIMIT 1
 					");
 					$this->curentdoc = $sql->FetchRow();
 
 					if (!empty ($this->curentdoc))
 					{
-						$_REQUEST['id'] = $_GET['id'] = $_POST['id'] = $id = $AVE_Globals->mainSettings('page_not_found_id');
+						$_REQUEST['id'] = $_GET['id'] = $_POST['id'] = $id = PAGE_NOT_FOUND_ID;
 					}
 				}
 			}
 
 			// проверяем возможность публикации
-			if (!empty ($this->curentdoc)											    			// документ есть
-				&& $id != $AVE_Globals->mainSettings('page_not_found_id')	        				// документ не сообщение ошибки 404
-				&& ( $this->curentdoc->DokStatus != 1				    							// статус документа
-					|| $this->curentdoc->Geloescht == 1                                             // пометка удаления
-					|| ( $AVE_Globals->mainSettings('use_doctime')							        // время публикации контролируется и ...
+			if (!empty ($this->curentdoc)															// документ есть
+				&& $id != PAGE_NOT_FOUND_ID															// документ не сообщение ошибки 404
+				&& ( $this->curentdoc->DokStatus != 1												// статус документа
+					|| $this->curentdoc->Geloescht == 1												// пометка удаления
+					|| ( $AVE_Globals->mainSettings('use_doctime')									// время публикации контролируется и ...
 						&& ($this->curentdoc->DokEnde != 0 && $this->curentdoc->DokEnde < time())	// время публикации не наступило
 						|| ($this->curentdoc->DokStart != 0 && $this->curentdoc->DokStart > time())	// время публикации истекло
 						)
@@ -359,11 +369,11 @@ class AVE_Core
 
 		$replace = array(
 			'templates/' . THEME_FOLDER . '/',
-			$AVE_Globals->mainSettings('site_name'),
+			htmlspecialchars($AVE_Globals->mainSettings('site_name'), ENT_QUOTES),
 			redirectLink('print'),
 			homeLink(),
-			(isset ($this->curentdoc->MetaKeywords) ? $this->curentdoc->MetaKeywords : ''),
-			(isset ($this->curentdoc->MetaDescription) ? $this->curentdoc->MetaDescription : ''),
+			(isset ($this->curentdoc->MetaKeywords) ? htmlspecialchars($this->curentdoc->MetaKeywords, ENT_QUOTES) : ''),
+			(isset ($this->curentdoc->MetaDescription) ? htmlspecialchars($this->curentdoc->MetaDescription, ENT_QUOTES) : ''),
 			(isset ($this->curentdoc->IndexFollow) ? $this->curentdoc->IndexFollow : '')
 		);
 
@@ -372,12 +382,12 @@ class AVE_Core
 			$search[] = '[cp:maincontent]';
 			$replace[] = MODULE_CONTENT;
 			$search[] = '[cp:title]';
-			$replace[] = defined('MODULE_SITE') ? MODULE_SITE : '';
+			$replace[] = htmlspecialchars(defined('MODULE_SITE') ? MODULE_SITE : '', ENT_QUOTES);
 		}
 		else
 		{
 			$search[] = '[cp:title]';
-			$replace[] = prettyChars($this->curentdoc->Titel);
+			$replace[] = htmlspecialchars(prettyChars($this->curentdoc->Titel), ENT_QUOTES);
 		}
 
 		$search[] = '[cp:maincontent]';
@@ -470,12 +480,12 @@ class AVE_Core
 
 		if ($this->curentdoc = $sql->FetchRow())
 		{
-			$_REQUEST['id'] = $_GET['id'] = $this->curentdoc->Id;
-			$_REQUEST['doc'] = $_GET['doc'] = $this->curentdoc->Url;
+			$_REQUEST['id'] = $_GET['id'] = $_POST['id'] = $this->curentdoc->Id;
+			$_REQUEST['doc'] = $_GET['doc'] = $_POST['doc'] = $this->curentdoc->Url;
 		}
 		else
 		{
-			$_REQUEST['id'] = $_GET['id'] = $_POST['id'] = $AVE_Globals->mainSettings('page_not_found_id');
+			$_REQUEST['id'] = $_GET['id'] = $_POST['id'] = PAGE_NOT_FOUND_ID;
 		}
 	}
 
@@ -641,20 +651,18 @@ class AVE_Core
 	 */
 	function _notFound()
 	{
-		global $AVE_DB, $AVE_Globals;
-
-		$page_not_found_id = $AVE_Globals->mainSettings('page_not_found_id');
+		global $AVE_DB;
 
 		$available = $AVE_DB->Query("
 			SELECT COUNT(*)
 			FROM " . PREFIX . "_documents
-			WHERE Id = '" . $page_not_found_id . "'
+			WHERE Id = '" . PAGE_NOT_FOUND_ID . "'
 			LIMIT 1
 		")->GetCell();
 
 		if ($available)
 		{
-			header('Location:index.php?id=' . $page_not_found_id);
+			header('Location:index.php?id=' . PAGE_NOT_FOUND_ID);
 		}
 		else
 		{

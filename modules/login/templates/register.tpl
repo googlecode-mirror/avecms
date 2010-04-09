@@ -75,7 +75,7 @@
 				{if $smarty.request.action=='register' && $smarty.request.sub == 'register'}
 					{assign var=sL value=$smarty.request.Land}
 				{else}
-					{assign var=sL value=$row->Land|default:$def_country}
+					{assign var=sL value=$row->Land|default:$DEF_COUNTRY}
 				{/if}
 				{foreach from=$available_countries item=land}
 					<option value="{$land->LandCode}"{if $sL==$land->LandCode} selected{/if}>{$land->LandName}</option>

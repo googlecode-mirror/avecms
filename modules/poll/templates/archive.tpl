@@ -19,8 +19,8 @@
 	{foreach from=$items item=item}
 		<tr class="{cycle name='1' values="mod_poll_first,mod_poll_second"}">
 			<td><a href="{$item->plink}">{$item->title}</a></td>
-			<td align="center">{$item->start|date_format:#POLL_DATE_FORMAT2#}</td>
-			<td align="center">{$item->ende|date_format:#POLL_DATE_FORMAT2#}</td>
+			<td align="center">{$item->start|date_format:$DATE_FORMAT|pretty_date:$DEF_LANGUAGE}</td>
+			<td align="center">{$item->ende|date_format:$DATE_FORMAT|pretty_date:$DEF_LANGUAGE}</td>
 			<td align="center">{$item->votes}</td>
 		</tr>
 	{/foreach}

@@ -325,76 +325,30 @@ function getMimeTyp($file)
 	return $ctype;
 }
 
-/**
- * имя пользователя по его идентификатору
- *
- * @param int $id - идентификатор пользователя
- * @return string
- */
-function getUserById($id)
-{
-	global $AVE_DB, $user_by_id;
-
-	$user = $row = '';
-
-	if (!isset($user_by_id[$id]))
-	{
-		$row = $AVE_DB->Query("
-			SELECT
-				Vorname,
-				Nachname
-			FROM " . PREFIX . "_users
-			WHERE Id = '" . (int)$id . "'
-		")
-		->FetchRow();
-
-		if ($row)
-		{
-			$user = substr($row->Vorname, 0, 1) . "." . $row->Nachname;
-			$user_by_id[$id] = $user;
-		}
-		else
-		{
-			$user_by_id[$id] = null;
-		}
-	}
-
-	return $user_by_id[$id];
-}
-
-function getTemplateById($id)
-{
-	global $AVE_DB;
-
-	$tplName = $AVE_DB->Query("
-		SELECT TplName
-		FROM " . PREFIX . "_templates
-		WHERE Id = " . intval($id) . "
-		LIMIT 1
-	")
-	->GetCell();
-
-	return ($tplName) ? $tplName : '';
-}
-
 function getAllTemplates()
 {
 	global $AVE_DB;
 
-	$sql = $AVE_DB->Query("
-		SELECT
-			Id,
-			TplName
-		FROM " . PREFIX . "_templates
-	");
-	$vorlagen_array = array();
+	static $templates = null;
 
-	while ($row = $sql->FetchRow())
+	if ($templates == null)
 	{
-		array_push($vorlagen_array, $row);
+		$templates = array();
+
+		$sql = $AVE_DB->Query("
+			SELECT
+				Id,
+				TplName
+			FROM " . PREFIX . "_templates
+		");
+
+		while ($row = $sql->FetchRow())
+		{
+			array_push($templates, $row);
+		}
 	}
 
-	return $vorlagen_array;
+	return $templates;
 }
 
 function fetchFields($assign = 0)

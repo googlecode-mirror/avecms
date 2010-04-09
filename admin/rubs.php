@@ -17,16 +17,16 @@ if(!defined('ACP'))
 include_once(BASE_DIR . '/class/class.rubs.php');
 $AVE_Rubric = new AVE_Rubric;
 
-$AVE_Rubric->showRubs(1);
+//$AVE_Rubric->showRubs(1);
 $AVE_Template->assign('navi', $AVE_Template->fetch('navi/navi.tpl'));
 
 $AVE_Template->config_load(BASE_DIR . '/admin/lang/' . $_SESSION['admin_lang'] . '/rubs.txt', 'rubs');
-$config_vars = $AVE_Template->get_config_vars();
-$AVE_Template->assign('config_vars', $config_vars);
+//$config_vars = $AVE_Template->get_config_vars();
+//$AVE_Template->assign('config_vars', $config_vars);
 
-$_REQUEST['sub']    = (!isset($_REQUEST['sub']))    ? '' : addslashes($_REQUEST['sub']);
-$_REQUEST['action'] = (!isset($_REQUEST['action'])) ? '' : addslashes($_REQUEST['action']);
-$_REQUEST['submit'] = (!isset($_REQUEST['submit'])) ? '' : addslashes($_REQUEST['submit']);
+$_REQUEST['sub']    = (!isset($_REQUEST['sub']))    ? '' : $_REQUEST['sub'];
+$_REQUEST['action'] = (!isset($_REQUEST['action'])) ? '' : $_REQUEST['action'];
+$_REQUEST['submit'] = (!isset($_REQUEST['submit'])) ? '' : $_REQUEST['submit'];
 
 switch($_REQUEST['action'])
 {
@@ -40,6 +40,7 @@ switch($_REQUEST['action'])
 					break;
 			}
 			$AVE_Rubric->showRubs();
+			$AVE_Template->assign('templates', getAllTemplates());
 		}
 		else
 		{
@@ -63,7 +64,6 @@ switch($_REQUEST['action'])
 	case 'template':
 		if(checkPermission('rub_edit'))
 		{
-			$_REQUEST['sub'] = (!isset($_REQUEST['sub'])) ? '' : addslashes($_REQUEST['sub']);
 			switch($_REQUEST['sub'])
 			{
 				case '':
@@ -112,7 +112,6 @@ switch($_REQUEST['action'])
 	case 'multi':
 		if(checkPermission('rub_multi'))
 		{
-			$_REQUEST['sub'] = (!isset($_REQUEST['sub'])) ? '' : addslashes($_REQUEST['sub']);
 			switch($_REQUEST['sub'])
 			{
 				case 'save':
@@ -130,7 +129,6 @@ switch($_REQUEST['action'])
 	case 'edit':
 		if(checkPermission('rub_edit'))
 		{
-			$_REQUEST['sub'] = (!isset($_REQUEST['sub'])) ? '' : addslashes($_REQUEST['sub']);
 			switch($_REQUEST['sub'])
 			{
 				case '':

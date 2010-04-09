@@ -47,7 +47,7 @@ function check_name() {ldelim}
 			<td width="10" class="itcen">{$tpl->Id}</td>
 			<td><strong>{if checkPermission('vorlagen_edit')}<a title="{#TEMPLATES_EDIT#}" href="index.php?do=templates&amp;action=edit&amp;Id={$tpl->Id}&amp;cp={$sess}">{$tpl->TplName}</a>{else}{$tpl->TplName}{/if}</strong></td>
 			<td>{$tpl->TBenutzer}</td>
-			<td class="time">{$tpl->TDatum|date_format:$config_vars.TEMPLATES_DATE_FORMAT} {#TEMPLATES_IN#} {$tpl->TDatum|date_format:$config_vars.TEMPLATES_DATE_FORMAT2}</td>
+			<td class="time">{$tpl->TDatum|date_format:$TIME_FORMAT|pretty_date:$DEF_LANGUAGE}</td>
 			<td nowrap="nowrap" width="1%" align="center">
 				{if checkPermission('vorlagen_edit')}
 					<a title="{#TEMPLATES_EDIT#}" href="index.php?do=templates&amp;action=edit&amp;Id={$tpl->Id}&amp;cp={$sess}">

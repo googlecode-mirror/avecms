@@ -90,8 +90,19 @@ function openLinkWindow(target,doc) {ldelim}
 			<td>{#SETTINGS_DATE_FORMAT#}</td>
 			<td>
 				<select name="date_format" style="width:250px">
-					{foreach from=$dateFormat item=date}
-						<option value="{$date.format}"{if $row.date_format==$date.format} selected{/if}>{$date.view}</option>
+					{foreach from=$date_formats item=date_format}
+						<option value="{$date_format}"{if $row.date_format==$date_format} selected{/if}>{$smarty.now|date_format:$date_format|pretty_date:$DEF_LANGUAGE}</option>
+					{/foreach}
+				</select>
+			</td>
+		</tr>
+
+		<tr>
+			<td>{#SETTINGS_TIME_FORMAT#}</td>
+			<td>
+				<select name="time_format" style="width:250px">
+					{foreach from=$time_formats item=time_format}
+						<option value="{$time_format}"{if $row.time_format==$time_format} selected{/if}>{$smarty.now|date_format:$time_format|pretty_date:$DEF_LANGUAGE}</option>
 					{/foreach}
 				</select>
 			</td>

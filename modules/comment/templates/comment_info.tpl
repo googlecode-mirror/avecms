@@ -22,7 +22,7 @@
 
 		<tr>
 			<td width="160">{#COMMENT_DATE_CREATE#}</td>
-			<td>{$c.published|date_format:#COMMENT_DATE_TIME_FORMAT#}</td>
+			<td>{$c.published|date_format:$TIME_FORMAT|pretty_date:$DEF_LANGUAGE}</td>
 		</tr>
 
 		<tr>

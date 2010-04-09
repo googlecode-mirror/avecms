@@ -41,7 +41,7 @@
 						<a title="{#UserProfile#}" href="index.php?do=user&action=edit&id={$gallery.gallery_author}&cp={$sess}">{$gallery.username|escape}</a>
 					</td>
 					<td>{$gallery.gallery_folder}</td>
-					<td class="time">{$gallery.gallery_date|date_format:#DateFormat#}</td>
+					<td class="time">{$gallery.gallery_date|date_format:$TIME_FORMAT|pretty_date:$DEF_LANGUAGE}</td>
 					<td width="5%">
 						<div align="center">
 							{if $gallery.image_count > 0}

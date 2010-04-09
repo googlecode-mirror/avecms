@@ -92,7 +92,8 @@ function mod_moredoc()
 					MetaDescription
 				FROM " . PREFIX . "_documents
 				WHERE MetaKeywords LIKE '" . $keywords . "%'
-				AND Id > 2
+				AND Id != 1
+				AND Id != '" . PAGE_NOT_FOUND_ID . "'
 				AND DokStatus != 0
 				AND Id != '" . $docId . "'
 				" . $inRubric . "

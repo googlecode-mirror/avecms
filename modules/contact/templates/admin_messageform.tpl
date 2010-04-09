@@ -13,7 +13,7 @@
 <form name="replay" enctype="multipart/form-data" method="post" action="index.php?do=modules&action=modedit&mod=contact&moduleaction=reply&cp={$sess}&id={$smarty.request.id}&pop=1">
 	<table width="100%" border="0" cellspacing="1" cellpadding="8" class="tableborder">
 		<tr class="tableheader">
-			<td colspan="2">{#CONTACT_AUTHOR#}{$row->in_email} ({$row->in_date|date_format:$config_vars.CONTACT_DATE_FORMAT} {#CONTACT_IN#} {$row->in_date|date_format:$config_vars.CONTACT_DATE_FORMAT2})</td>
+			<td colspan="2">{#CONTACT_AUTHOR#}{$row->in_email} ({$row->in_date|date_format:$TIME_FORMAT|pretty_date:$DEF_LANGUAGE})</td>
 		</tr>
 
 		<tr>
@@ -68,7 +68,7 @@
       {#CONTACT_YOUR_INFO#}{$smarty.session.user_name}
 ---------------------------------------------------
 ---------------------------------------------------
-{#CONTACT_YOUR_DATE#} {$row->in_date|date_format:$config_vars.CONTACT_DATE_FORMAT} {#CONTACT_IN#} {$row->in_date|date_format:$config_vars.CONTACT_DATE_FORMAT2}
+{#CONTACT_YOUR_DATE#} {$row->in_date|date_format:$TIME_FORMAT|pretty_date:$DEF_LANGUAGE}
 
 {$row->replytext}{strip}
 				</textarea>

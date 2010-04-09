@@ -13,9 +13,9 @@
 {if checkPermission('rub_neu')}
 <script type="text/javascript" language="JavaScript">
 function check_name() {ldelim}
-	if (document.getElementById('RubName').value == '') {ldelim}
+	if (document.getElementById('RubrikName').value == '') {ldelim}
 		alert("{#RUBRIK_ENTER_NAME#}");
-		document.getElementById('RubName').focus();
+		document.getElementById('RubrikName').focus();
 		return false;
 	{rdelim}
 	return true;
@@ -26,7 +26,7 @@ function check_name() {ldelim}
 <form method="post" action="index.php?do=rubs&amp;action=new&amp;cp={$sess}" onSubmit="return check_name();">
 	<table width="100%" border="0" cellspacing="1" cellpadding="8" class="tableborder">
 		<tr>
-			<td class="second">{#RUBRIK_NAME2#} <input type="text" id="RubName" name="RubName" value="" style="width:250px;" />&nbsp;<input type="submit" class="button" value="{#RUBRIK_BUTTON_NEW#}" />
+			<td class="second">{#RUBRIK_NAME2#} <input type="text" id="RubrikName" name="RubrikName" value="" style="width:250px;" />&nbsp;<input type="submit" class="button" value="{#RUBRIK_BUTTON_NEW#}" />
 		</tr>
 	</table>
 </form>
@@ -41,8 +41,8 @@ function check_name() {ldelim}
 	<col width="20">
 	<col>
 	<col width="200">
-	<col width="100">
 	<col width="200">
+	<col width="100">
 	<col width="20">
 	<col width="20">
 	<col width="20">
@@ -50,53 +50,50 @@ function check_name() {ldelim}
 	<tr class="tableheader">
 		<td>{#RUBRIK_ID#}</td>
 		<td>{#RUBRIK_NAME#}</td>
-{*
 		<td>{#RUBRIK_URL_PREFIX#}</td>
-*}
 		<td>{#RUBRIK_TEMPLATE_OUT#}</td>
 		<td align="center">{#RUBRIK_COUNT_DOCS#}</td>
-		<td align="center">{#RUBRIK_AUTHOR#}</td>
 		<td align="center" colspan="4">{#RUBRIK_ACTION#}</td>
 	</tr>
 
-	{foreach from=$items item=tpl}
+	{foreach from=$rubrics item=rubric}
 		<tr style="background-color: #eff3eb;" onmouseover="this.style.backgroundColor='#dae0d8';" onmouseout="this.style.backgroundColor='#eff3eb';" id="table_rows">
-			<td class="itcen">{$tpl->Id}</td>
+			<td class="itcen">{$rubric->Id}</td>
 			<td>
 				{if checkPermission('rub_edit')}
-					<input style="width:100%" type="text" name="RubrikName[{$tpl->Id}]" value="{$tpl->RubrikName}" />
+					<input style="width:100%" type="text" name="RubrikName[{$rubric->Id}]" value="{$rubric->RubrikName|escape}" />
 				{else}
-					<strong>{$tpl->RubrikName}</strong>
+					<strong>{$rubric->RubrikName|escape}</strong>
 				{/if}
 			</td>
-{*
+
 			<td>
 				{if checkPermission('rub_edit')}
-					<input style="width:100%" type="text" name="UrlPrefix[{$tpl->Id}]" value="{$tpl->UrlPrefix}" />
+					<input style="width:100%" type="text" name="UrlPrefix[{$rubric->Id}]" value="{$rubric->UrlPrefix|escape}" />
 				{else}
-					<strong>{$tpl->UrlPrefix}</strong>
+					<strong>{$rubric->UrlPrefix|escape}</strong>
 				{/if}
 			</td>
-*}
+
 			<td>
 				{if checkPermission('rub_edit')}
-					<select name="Vorlage[{$tpl->Id}]" style="width:100%">
-						{foreach from=$tpl->AlleVorlagen item=av}
-							<option value="{$av->Id}" {if $av->Id==$tpl->Vorlage}selected {/if}/>{$av->TplName}</option>
+					<select name="Vorlage[{$rubric->Id}]" style="width:100%">
+						{foreach from=$templates item=template}
+							<option value="{$template->Id}" {if $template->Id==$rubric->Vorlage}selected="selected" {/if}/>{$template->TplName|escape}</option>
 						{/foreach}
 					</select>
 				{else}
-					{$tpl->VorlageName}
+					{foreach from=$templates item=template}
+						{if $template->Id==$rubric->Vorlage}{$template->TplName|escape}{/if}
+					{/foreach}
 				{/if}
 			</td>
 
-			<td align="center"><strong>{$tpl->doc_count}</strong></td>
-
-			<td nowrap="nowrap">{$tpl->RBenutzer}</td>
+			<td align="center"><strong>{$rubric->doc_count}</strong></td>
 
 			<td align="center">
 				{if checkPermission('rub_edit')}
-					<a title="{#RUBRIK_EDIT#}" href="index.php?do=rubs&action=edit&Id={$tpl->Id}&cp={$sess}">
+					<a title="{#RUBRIK_EDIT#}" href="index.php?do=rubs&action=edit&Id={$rubric->Id}&cp={$sess}">
 						<img src="{$tpl_dir}/images/icon_edit.gif" alt="" border="0" />
 					</a>
 				{else}
@@ -106,7 +103,7 @@ function check_name() {ldelim}
 
 			<td align="center">
 				{if checkPermission('rub_edit')}
-					<a title="{#RUBRIK_EDIT_TEMPLATE#}" href="index.php?do=rubs&action=template&Id={$tpl->Id}&cp={$sess}">
+					<a title="{#RUBRIK_EDIT_TEMPLATE#}" href="index.php?do=rubs&action=template&Id={$rubric->Id}&cp={$sess}">
 						<img src="{$tpl_dir}/images/icon_template.gif" alt="" border="0" />
 					</a>
 				{else}
@@ -116,7 +113,7 @@ function check_name() {ldelim}
 
 			<td align="center">
 				{if checkPermission('rub_multi')}
-					<a title="{#RUBRIK_MULTIPLY#}" href="javascript:void(0);" onclick="window.open('?do=rubs&action=multi&Id={$tpl->Id}&pop=1&cp={$sess}','pop','top=0,left=0,width=400,height=250')">
+					<a title="{#RUBRIK_MULTIPLY#}" href="javascript:void(0);" onclick="window.open('?do=rubs&action=multi&Id={$rubric->Id}&pop=1&cp={$sess}','pop','top=0,left=0,width=550,height=300')">
 						<img src="{$tpl_dir}/images/icon_copy.gif" alt="" border="0" />
 					</a>
 				{else}
@@ -125,10 +122,10 @@ function check_name() {ldelim}
 			</td>
 
 			<td align="center">
-				{if $tpl->Id != 1}
-					{if $tpl->can_deleted==1}
+				{if $rubric->Id != 1}
+					{if $rubric->doc_count==0}
 						{if checkPermission('rub_loesch')}
-							<a title="{#RUBRIK_DELETE#}" onclick="return (confirm('{#RUBRIK_DELETE_CONFIRM#}'))" href="index.php?do=rubs&amp;action=delete&amp;Id={$tpl->Id}&amp;cp={$sess}"><img src="{$tpl_dir}/images/icon_delete.gif" alt="" border="0" /></a>
+							<a title="{#RUBRIK_DELETE#}" onclick="return (confirm('{#RUBRIK_DELETE_CONFIRM#}'))" href="index.php?do=rubs&amp;action=delete&amp;Id={$rubric->Id}&amp;cp={$sess}"><img src="{$tpl_dir}/images/icon_delete.gif" alt="" border="0" /></a>
 						{else}
 							<img title="{#RUBRIK_NO_PERMISSION#}" src="{$tpl_dir}/images/icon_delete_no.gif" alt="" border="0" />
 						{/if}
@@ -164,10 +161,10 @@ function check_name() {ldelim}
 	<div class="segmentBoxContent">
 		<img class="absmiddle" src="{$tpl_dir}/images/arrow.gif" alt="" border="0" /> <strong>{#RUBRIK_LEGEND#}</strong><br />
 		<br />
-		<img class="absmiddle" src="{$tpl_dir}/images/icon_edit.gif" alt="" border="0" /> - {$config_vars.RUBRIK_EDIT}<br />
-		<img class="absmiddle" src="{$tpl_dir}/images/icon_template.gif" alt="" border="0" /> - {$config_vars.RUBRIK_EDIT_TEMPLATE}<br />
-		<img class="absmiddle" src="{$tpl_dir}/images/icon_copy.gif" alt="" border="0" /> - {$config_vars.RUBRIK_MULTIPLY}<br />
-		<img class="absmiddle" src="{$tpl_dir}/images/icon_del.gif" alt="" border="0" /> - {$config_vars.RUBRIK_DELETE_LEGEND}
+		<img class="absmiddle" src="{$tpl_dir}/images/icon_edit.gif" alt="" border="0" /> - {#RUBRIK_EDIT#}<br />
+		<img class="absmiddle" src="{$tpl_dir}/images/icon_template.gif" alt="" border="0" /> - {#RUBRIK_EDIT_TEMPLATE#}<br />
+		<img class="absmiddle" src="{$tpl_dir}/images/icon_copy.gif" alt="" border="0" /> - {#RUBRIK_MULTIPLY#}<br />
+		<img class="absmiddle" src="{$tpl_dir}/images/icon_del.gif" alt="" border="0" /> - {#RUBRIK_DELETE_LEGEND#}
 	</div>
 </div>
 

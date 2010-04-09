@@ -219,7 +219,7 @@ class Newsarchive
 			FROM " . PREFIX . "_documents
 			WHERE RubrikId IN (" . $row->rubs . ")
 			AND Id != 1
-			AND Id != 2
+			AND Id != '" . PAGE_NOT_FOUND_ID . "'
 			AND Geloescht == 0
 			AND DokStatus == 1
 			AND DokStart > UNIX_TIMESTAMP(DATE_FORMAT((CURDATE() - INTERVAL 11 MONTH),'%Y-%m-01'))

@@ -47,7 +47,8 @@ if ($rss_setting !== false)
 			Titel,
 			DokStart
 		FROM " . PREFIX . "_documents
-		WHERE Id > 2
+		WHERE Id != 1
+		AND Id != '" . PAGE_NOT_FOUND_ID . "'
 		AND RubrikId = '" . $rss_setting->rub_id . "'
 		AND DokStatus = 1
 		AND (DokStart < '" . time() . "' OR DokStart = 0)

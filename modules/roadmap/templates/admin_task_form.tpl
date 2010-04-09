@@ -47,7 +47,7 @@
 </tr>
 <tr>
   <td width="300" class="first">{#ROADMAP_LAST_CHANGE#}:</td>
-  <td class="second">{$item->date_create|date_format:"%d-%m-%Y, â %H:%M"}</td>
+  <td class="second">{$item->date_create|date_format:$TIME_FORMAT|pretty_date:$DEF_LANGUAGE}</td>
 </tr>
 {/if}
 </table>
@@ -56,5 +56,5 @@
   <input name="submit" type="submit" class="button" value="{#ROADMAP_BUTTON_ADD_T#}" />
 {else}
   <input name="submit" type="submit" class="button" value="{#ROADMAP_BUTTON_SAVE#}" />
-{/if}  
+{/if}
 </form>

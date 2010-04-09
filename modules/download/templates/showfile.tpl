@@ -143,7 +143,7 @@ eval("{$wm_script}");
 		  -
 		  {/if}		  </td>
           <td class="dl_nt_first"><strong>{#Time#}</strong>:</td>
-          <td class="dl_nt_first">{$row->Datum|date_format:$config_vars.DateFormatYear|default:'-'}</td>
+          <td class="dl_nt_first">{$row->Datum|date_format:$DATE_FORMAT|pretty_date:$DEF_LANGUAGE|default:'-'}</td>
         </tr>
         <tr>
           <td class="dl_nt_second"><strong>{#Lang#}</strong>:</td>
@@ -156,7 +156,7 @@ eval("{$wm_script}");
 		  -
 		  {/if}		  </td>
           <td class="dl_nt_second"><strong>{#Update#}</strong>: </td>
-          <td class="dl_nt_second">{$row->Geaendert|date_format:$config_vars.DateFormatYear|default:'-'}</td>
+          <td class="dl_nt_second">{$row->Geaendert|date_format:$DATE_FORMAT|pretty_date:$DEF_LANGUAGE|default:'-'}</td>
         </tr>
 
       </table>

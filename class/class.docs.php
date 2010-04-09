@@ -66,27 +66,9 @@ class AVE_Document
 	 */
 	var $_max_comment_length = 5000;
 
-    /**
-     * Идентификатор страницы ошибки 404
-     *
-     * @var int
-     */
-    var $_page_not_found_id = 2;
-
 /**
  *    ВНЕШНИЕ МЕТОДЫ
  */
-
-    /**
-     * Конструктор класса
-     *
-     */
-    function AVE_Document()
-    {
-        global $AVE_Globals;
-
-        $this->_page_not_found_id = $AVE_Globals->mainSettings('page_not_found_id');
-    }
 
 	/**
 	 *	Управление Документами
@@ -209,7 +191,7 @@ class AVE_Document
 		$start = prepage() * $limit - $limit;
 
 		$db_sort   = 'ORDER BY DokEdi DESC';
-		$navi_sort = '&sort=EditsDesc';
+		$navi_sort = '&sort=ErstelltDesc';
 
 		if (!empty($_REQUEST['sort']))
 		{
@@ -336,7 +318,7 @@ class AVE_Document
 
 			$this->_fetchDocPerms($row->RubrikId);
 
-			$row->RubName      = $this->_showRubName($row->RubrikId);
+			$row->RubName      = $this->_showRubName($row->RubrikId)->RubrikName;
 			$row->RBenutzer    = getUserById($row->Redakteur);
 			$row->cantEdit     = 0;
 			$row->canDelete    = 0;
@@ -354,7 +336,7 @@ class AVE_Document
 					$row->canDelete = 1;
 			}
 			// запрещаем редактирование главной страницы и страницу ошибки 404 если требуется одобрение Администратора
-			if ( ($row->Id == 1 || $row->Id == $this->_page_not_found_id)
+			if ( ($row->Id == 1 || $row->Id == PAGE_NOT_FOUND_ID)
                 && isset($_SESSION[$row->RubrikId . '_newnow']) && @$_SESSION[$row->RubrikId . '_newnow'] != 1)
 			{
 				$row->cantEdit = 0;
@@ -374,7 +356,7 @@ class AVE_Document
 				$row->canOpenClose = 1;
 			}
 			// Главную страницу и страницу ошибки 404 удалять нельзя
-			if ($row->Id == 1 || $row->Id == $this->_page_not_found_id)
+			if ($row->Id == 1 || $row->Id == PAGE_NOT_FOUND_ID)
 			{
 				$row->canDelete = 0;
 				$row->canEndDel = 0;
@@ -405,17 +387,17 @@ class AVE_Document
 	/**
 	 * Создать новый Документ
 	 *
-	 * @param int $rubid идентификатор Рубрики
+	 * @param int $rubric_id идентификатор Рубрики
 	 */
-	function newDoc($rubid)
+	function newDoc($rubric_id)
 	{
-		global $AVE_DB, $AVE_Template, $AVE_Globals, $config_vars;
+		global $AVE_DB, $AVE_Template, $AVE_Globals;
 
-		$this->_fetchDocPerms($rubid);
+		$this->_fetchDocPerms($rubric_id);
 
-		if ( (isset($_SESSION[$rubid . '_newnow'])   && $_SESSION[$rubid . '_newnow'] == 1)
-			|| (isset($_SESSION[$rubid . '_new'])   && $_SESSION[$rubid . '_new']    == 1)
-			|| (isset($_SESSION[$rubid . '_alles']) && $_SESSION[$rubid . '_alles']  == 1)
+		if ( (isset($_SESSION[$rubric_id . '_newnow'])  && $_SESSION[$rubric_id . '_newnow'] == 1)
+			|| (isset($_SESSION[$rubric_id . '_new'])   && $_SESSION[$rubric_id . '_new']    == 1)
+			|| (isset($_SESSION[$rubric_id . '_alles']) && $_SESSION[$rubric_id . '_alles']  == 1)
 			|| (defined('UGROUP') && UGROUP == 1) )
 		{
 			switch ($_REQUEST['sub'])
@@ -424,9 +406,9 @@ class AVE_Document
 					$innavi = 1;
 					$ende = $this->_dokEnde();
 					$start = $this->_dokStart();
-					$ds = !empty($_REQUEST['DokStatus']) ? (int)$_REQUEST['DokStatus'] : '';
+					$document_status = !empty($_REQUEST['DokStatus']) ? (int)$_REQUEST['DokStatus'] : '';
 
-					if (empty($ds))
+					if (empty($document_status))
 					{
 						$innavi = 0;
 						@reset($_POST);
@@ -446,33 +428,30 @@ class AVE_Document
 						$system_mail_name = $AVE_Globals->mainSettings('mail_from_name');
 
 						// Письмо админу
-						$body_toadmin = $config_vars['DOC_MAIL_BODY_CHECK'];
+						$body_toadmin = $AVE_Template->get_config_vars('DOC_MAIL_BODY_CHECK');
 						$body_toadmin = str_replace('%N%', "\n", $body_toadmin);
 						$body_toadmin = str_replace('%TITLE%', stripslashes($_POST['Titel']), $body_toadmin);
 						$body_toadmin = str_replace('%USER%', "'" . $_SESSION['user_name'] . "'", $body_toadmin);
-						$AVE_Globals->cp_mail($system_mail, $body_toadmin . $text, $config_vars['DOC_MAIL_SUBJECT_CHECK'], $system_mail, $system_mail_name, 'text', '');
+						$AVE_Globals->cp_mail($system_mail, $body_toadmin . $text, $AVE_Template->get_config_vars('DOC_MAIL_SUBJECT_CHECK'), $system_mail, $system_mail_name, 'text', '');
 
 						// Письмо автору
-						$body_toauthor = str_replace('%N%', "\n", $config_vars['DOC_MAIL_BODY_USER']);
+						$body_toauthor = str_replace('%N%', "\n", $AVE_Template->get_config_vars('DOC_MAIL_BODY_USER'));
 						$body_toauthor = str_replace('%TITLE%', stripslashes($_POST['Titel']), $body_toauthor);
 						$body_toauthor = str_replace('%USER%', "'" . $_SESSION['user_name'] . "'", $body_toauthor);
-						$AVE_Globals->cp_mail($_SESSION['user_email'], $body_toauthor, $config_vars['DOC_MAIL_SUBJECT_USER'], $system_mail, $system_mail_name, 'text', '');
+						$AVE_Globals->cp_mail($_SESSION['user_email'], $body_toauthor, $AVE_Template->get_config_vars('DOC_MAIL_SUBJECT_USER'), $system_mail, $system_mail_name, 'text', '');
 					}
 
-					if ( (isset($_SESSION[$rubid . '_newnow']) && $_SESSION[$rubid . '_newnow'] == 1)
-						|| (isset($_SESSION[$rubid . '_alles']) && $_SESSION[$rubid . '_alles'] == 1)
-						|| (defined('UGROUP') && UGROUP == 1) )
+					if (! ((isset($_SESSION[$rubric_id . '_newnow']) && $_SESSION[$rubric_id . '_newnow'] == 1)
+						|| (isset($_SESSION[$rubric_id . '_alles']) && $_SESSION[$rubric_id . '_alles'] == 1)
+						|| (defined('UGROUP') && UGROUP == 1)) )
 					{
-					}
-					else
-					{
-						$ds = 0;
+						$document_status = 0;
 					}
 
 					$suche = (isset($_POST['Suche']) && $_POST['Suche'] == 1) ? 1 : 0;
 
 					// формирование/проверка алиаса на уникальность
-					$_REQUEST['Url'] = $tempurl = cpParseLinkname(empty($_POST['Url']) ? $_POST['Titel'] : $_POST['Url']);
+					$_REQUEST['Url'] = $tempurl = cpParseLinkname(empty($_POST['Url']) ? trim($_POST['prefix'] . '/' . $_POST['Titel'], '/') : $_POST['Url']);
 					$cnt = 1;
 					while (
 						$AVE_DB->Query("
@@ -480,8 +459,7 @@ class AVE_Document
 							FROM " . PREFIX . "_documents
 							WHERE Url = '" . $_REQUEST['Url'] . "'
 							LIMIT 1
-						")
-						->GetCell() > 0)
+						")->GetCell() > 0)
 					{
 						$_REQUEST['Url'] = $tempurl . '-' . $cnt;
 						$cnt++;
@@ -491,18 +469,18 @@ class AVE_Document
 						INSERT
 						INTO " . PREFIX . "_documents
 						SET
-							RubrikId        = '" . $rubid . "',
-							Titel           = '" . htmlspecialchars($_POST['Titel']) . "',
+							RubrikId        = '" . $rubric_id . "',
+							Titel           = '" . preClear($_POST['Titel']) . "',
 							Url             = '" . $_REQUEST['Url'] . "',
 							DokStart        = '" . $start . "',
 							DokEnde         = '" . $ende . "',
 							DokEdi          = '" . time() . "',
 							Redakteur       = '" . $_SESSION['user_id'] . "',
 							Suche           = '" . $suche . "',
-							MetaKeywords    = '" . htmlspecialchars($_POST['MetaKeywords']) . "',
-							MetaDescription = '" . htmlspecialchars($_POST['MetaDescription']) . "',
-							IndexFollow     = '" . htmlspecialchars($_POST['IndexFollow']) . "',
-							DokStatus       = '" . $ds . "',
+							MetaKeywords    = '" . preClear($_POST['MetaKeywords']) . "',
+							MetaDescription = '" . preClear($_POST['MetaDescription']) . "',
+							IndexFollow     = '" . $_POST['IndexFollow'] . "',
+							DokStatus       = '" . $document_status . "',
 							ElterNavi       = '" . (int)$_POST['ElterNavi'] . "'
 					");
 					$iid = $AVE_DB->InsertId();
@@ -515,8 +493,8 @@ class AVE_Document
 								SELECT Id
 								FROM " . PREFIX . "_rubric_fields
 								WHERE Id = '" . $fld_id . "'
-								AND RubrikId = '" . $rubid . "'
-							"))
+								AND RubrikId = '" . $rubric_id . "'
+							")->GetCell())
 						{
 							continue;
 						}
@@ -526,21 +504,24 @@ class AVE_Document
 							if (isPhpCode($fld_val)) $fld_val = '';
 						}
 
+						$fld_val = preClear($fld_val);
+						$fld_val = $this->_prettyChars($fld_val);
+
 						$AVE_DB->Query("
 							INSERT
 							INTO " . PREFIX . "_document_fields
 							SET
 								RubrikFeld = '" . $fld_id . "',
 								DokumentId = '" . $iid . "',
-								Inhalt     = '" . $this->_prettyChars($fld_val) . "',
+								Inhalt     = '" . $fld_val . "',
 								Suche      = '" . $suche . "'
 						");
 					}
 
-					$AVE_Template->assign('name_empty', $config_vars['DOC_TOP_MENU_ITEM']);
+					$AVE_Template->assign('name_empty', $AVE_Template->get_config_vars('DOC_TOP_MENU_ITEM'));
 					$AVE_Template->assign('Id', $iid);
 					$AVE_Template->assign('innavi', $innavi);
-					$AVE_Template->assign('RubrikId', $rubid);
+					$AVE_Template->assign('RubrikId', $rubric_id);
 					$AVE_Template->assign('content', $AVE_Template->fetch('documents/form_after.tpl'));
 					break;
 
@@ -563,20 +544,11 @@ class AVE_Document
 						$rubrik = $_REQUEST['NaviRubric'];
 					}
 
-					$titel = preg_replace("/[^ :)(a-zA-Zа-яёА-ЯЁ-]/i", '', $_REQUEST['Titel']);
-					$titel = htmlspecialchars($titel);
-
-//					$link = cpParseLinkname($_REQUEST['Url']);
-//					if (CP_REWRITE != 1 || cpParseLinkname($titel) == $link)
-//					{
-//						$link = 'index.php?id=' . $_REQUEST['Id'];
-//					}
-
 					$AVE_DB->Query("
 						INSERT
 						INTO " . PREFIX . "_navigation_items
 						SET
-							Titel  = '" . $titel . "',
+							Titel  = '" . preClear($_REQUEST['Titel']) . "',
 							Elter  = '" . $elter . "',
 							Link   = 'index.php?id=" . (int)$_REQUEST['Id'] . "',
 							Ziel   = '" . (empty($_REQUEST['Ziel']) ? '_self' : $_REQUEST['Ziel']) . "',
@@ -602,51 +574,44 @@ class AVE_Document
 					break;
 
 				case '':
-					$row_doc = '';
-					$this->_fetchDocPerms($rubid);
+					$document = '';
+					$this->_fetchDocPerms($rubric_id);
 
-					if (isset($_SESSION[$rubid . '_newnow']) && $_SESSION[$rubid . '_newnow'] == 1)
+					if (isset($_SESSION[$rubric_id . '_newnow']) && $_SESSION[$rubric_id . '_newnow'] == 1)
 					{
-						$row_doc->dontChangeStatus = 0;
+						$document->dontChangeStatus = 0;
 					}
 					else
 					{
-						$row_doc->dontChangeStatus = 1;
+						$document->dontChangeStatus = 1;
 					}
 
-					$items = array();
+					$fields = array();
 					$sql = $AVE_DB->Query("
 						SELECT *
 						FROM " . PREFIX . "_rubric_fields
-						WHERE RubrikId = '" . $rubid . "'
+						WHERE RubrikId = '" . $rubric_id . "'
 						ORDER BY rubric_position ASC
 					");
 					while ($row = $sql->FetchRow())
 					{
 						$row->Feld = $this->_getField($row->RubTyp, $row->StdWert, $row->Id, $row->StdWert);
-						array_push($items, $row);
+						array_push($fields, $row);
 					}
 
-					$rubName = $AVE_DB->Query("
-						SELECT RubrikName
-						FROM " . PREFIX . "_rubrics
-						WHERE Id = '" . $rubid . "'
-						LIMIT 1
-					")
-					->GetCell();
+					$document->fields = $fields;
+					$document->rubric_name = $this->_showRubName($rubric_id)->RubrikName;
+					$document->rubric_url_prefix = $this->_showRubName($rubric_id)->UrlPrefix;
+					$document->formaction = 'index.php?do=docs&action=new&sub=save&RubrikId=' . $rubric_id . ((isset($_REQUEST['pop']) && $_REQUEST['pop']==1) ? 'pop=1' : '') . '&cp=' . SESSION;
 
-					$AVE_Template->assign('row_doc', $row_doc);
-					$AVE_Template->assign('items', $items);
-					$AVE_Template->assign('formaction', 'index.php?do=docs&action=new&sub=save&RubrikId=' . $rubid . ((isset($_REQUEST['pop']) && $_REQUEST['pop']==1) ? 'pop=1' : '') . '&cp=' . SESSION);
-					$AVE_Template->assign('RubName', $rubName);
-					$AVE_Template->assign('name_empty', '');
+					$AVE_Template->assign('document', $document);
 					$AVE_Template->assign('content', $AVE_Template->fetch('documents/form.tpl'));
 					break;
 			}
 		}
 		else
 		{
-			$AVE_Template->assign('content', $config_vars['DOC_NO_PERMISSION_RUB']);
+			$AVE_Template->assign('content', $AVE_Template->get_config_vars('DOC_NO_PERMISSION_RUB'));
 		}
 	}
 
@@ -657,7 +622,7 @@ class AVE_Document
 	 */
 	function editDoc($id)
 	{
-		global $AVE_DB, $AVE_Template, $AVE_Globals, $config_vars;
+		global $AVE_DB, $AVE_Template, $AVE_Globals;
 
 		switch ($_REQUEST['sub'])
 		{
@@ -685,7 +650,7 @@ class AVE_Document
 					$row->cantEdit = 1;
 				}
 				// запрещаем редактирование главной страницы и страницы ошибки 404 если требуется одобрение Администратора
-				if ( ($id == 1 || $id == $this->_page_not_found_id) && @$_SESSION[$row->RubrikId . '_newnow'] != 1 )
+				if ( ($id == 1 || $id == PAGE_NOT_FOUND_ID) && @$_SESSION[$row->RubrikId . '_newnow'] != 1 )
 				{
 					$row->cantEdit = 0;
 				}
@@ -702,12 +667,12 @@ class AVE_Document
 					$docstatus = ( (isset($_SESSION[$row->RubrikId . '_newnow']) && $_SESSION[$row->RubrikId . '_newnow'] == 1)
 								|| (isset($_SESSION[$row->RubrikId . '_alles']) && $_SESSION[$row->RubrikId . '_alles'] == 1)
 								|| (defined('UGROUP') && UGROUP == 1) ) ? (int)$_REQUEST['DokStatus'] : 0;
-					$docstatus = ($id == 1 || $id == $this->_page_not_found_id) ? 1 : $docstatus;
-					$docend    = ($id == 1 || $id == $this->_page_not_found_id) ? 0 : $this->_dokEnde();
-					$docstart  = ($id == 1 || $id == $this->_page_not_found_id) ? 0 : $this->_dokStart();
+					$docstatus = ($id == 1 || $id == PAGE_NOT_FOUND_ID) ? 1 : $docstatus;
+					$docend    = ($id == 1 || $id == PAGE_NOT_FOUND_ID) ? 0 : $this->_dokEnde();
+					$docstart  = ($id == 1 || $id == PAGE_NOT_FOUND_ID) ? 0 : $this->_dokStart();
 
 					// формирование/проверка алиаса на уникальность
-					$_REQUEST['Url'] = $tempurl = cpParseLinkname(empty($_POST['Url']) ? $_POST['Titel'] : $_POST['Url']);
+					$_REQUEST['Url'] = $tempurl = cpParseLinkname(empty($_POST['Url']) ? trim($_POST['prefix'] . '/' . $_POST['Titel'], '/') : $_POST['Url']);
 					$cnt = 1;
 					while ($AVE_DB->Query("
 						SELECT COUNT(Id)
@@ -724,12 +689,12 @@ class AVE_Document
 					$AVE_DB->Query("
 						UPDATE " . PREFIX . "_documents
 						SET
-							Titel           = '" . htmlspecialchars($_POST['Titel']) . "',
+							Titel           = '" . preClear($_POST['Titel']) . "',
 							Url             = '" . $_REQUEST['Url'] . "',
 							Suche           = '" . $suche . "',
-							MetaKeywords    = '" . htmlspecialchars($_POST['MetaKeywords']) . "',
-							MetaDescription = '" . htmlspecialchars($_POST['MetaDescription']) . "',
-							IndexFollow     = '" . htmlspecialchars($_POST['IndexFollow']) . "',
+							MetaKeywords    = '" . preClear($_POST['MetaKeywords']) . "',
+							MetaDescription = '" . preClear($_POST['MetaDescription']) . "',
+							IndexFollow     = '" . $_POST['IndexFollow'] . "',
 							DokStatus       = '" . $docstatus . "',
 							DokEnde         = '" . $docend . "',
 							DokStart        = '" . $docstart . "',
@@ -768,10 +733,13 @@ class AVE_Document
 								if (isPhpCode($fld_val)) continue;
 							}
 
+							$fld_val = preClear($fld_val);
+							$fld_val = $this->_prettyChars($fld_val);
+
 							$AVE_DB->Query("
 								UPDATE " . PREFIX . "_document_fields
 								SET
-									Inhalt = '" . $this->_prettyChars($fld_val) . "' ,
+									Inhalt = '" . $fld_val . "' ,
 									Suche  = '" . $suche . "'
 								WHERE
 									Id = '" . $fld_id . "'
@@ -797,7 +765,7 @@ class AVE_Document
 
 				echo '<script>window.opener.location.reload();</script>';
 
-				$AVE_Template->assign('name_empty', $config_vars['DOC_TOP_MENU_ITEM']);
+				$AVE_Template->assign('name_empty', $AVE_Template->get_config_vars('DOC_TOP_MENU_ITEM'));
 				$AVE_Template->assign('innavi', 0);
 				$AVE_Template->assign('Id', $id);
 				$AVE_Template->assign('RubrikId', $row->RubrikId);
@@ -805,7 +773,7 @@ class AVE_Document
 				break;
 
 			case '':
-				$row_doc = $AVE_DB->Query("
+				$document = $AVE_DB->Query("
 					SELECT *
 					FROM " . PREFIX . "_documents
 					WHERE Id = '" . $id . "'
@@ -814,13 +782,13 @@ class AVE_Document
 
 				$show = true;
 
-				$this->_fetchDocPerms($row_doc->RubrikId);
+				$this->_fetchDocPerms($document->RubrikId);
 
 				// запрещаем доступ
 				// если автору документа не разрешено изменять свои документы в рубрике
 				// или пользователю не разрешено изменять все документы в рубрике
-				if ( ($row_doc->Redakteur == $_SESSION['user_id'] && @$_SESSION[$row_doc->RubrikId . '_editown'] == 1)
-					|| @$_SESSION[$row_doc->RubrikId . '_editall'] == 1)
+				if ( ($document->Redakteur == $_SESSION['user_id'] && @$_SESSION[$document->RubrikId . '_editown'] == 1)
+					|| @$_SESSION[$document->RubrikId . '_editall'] == 1)
 				{
 				}
 				else
@@ -828,28 +796,28 @@ class AVE_Document
 					$show = false;
 				}
 				// запрещаем доступ к главной странице и странице ошибки 404 если требуется одобрение Администратора
-				if ( ($id == 1 || $id == $this->_page_not_found_id) && @$_SESSION[$row_doc->RubrikId . '_newnow'] != 1 )
+				if ( ($id == 1 || $id == PAGE_NOT_FOUND_ID) && @$_SESSION[$document->RubrikId . '_newnow'] != 1 )
 				{
 					$show = false;
 				}
 				// разрешаем доступ если пользователь принадлежит группе Администраторов или имеет все права на рубрику
 				if ( (defined('UGROUP') && UGROUP == 1)
-					|| (isset($_SESSION[$row_doc->RubrikId . '_alles']) && $_SESSION[$row_doc->RubrikId . '_alles'] == 1) )
+					|| (isset($_SESSION[$document->RubrikId . '_alles']) && $_SESSION[$document->RubrikId . '_alles'] == 1) )
 				{
 					$show = true;
 				}
 
 				if ($show)
 				{
-					$items = array();
+					$fields = array();
 
-					if (isset($_SESSION[$row_doc->RubrikId . '_newnow']) && $_SESSION[$row_doc->RubrikId . '_newnow'] == 1)
+					if (isset($_SESSION[$document->RubrikId . '_newnow']) && $_SESSION[$document->RubrikId . '_newnow'] == 1)
 					{
-						$row_doc->dontChangeStatus = 0;
+						$document->dontChangeStatus = 0;
 					}
 					else
 					{
-						$row_doc->dontChangeStatus = 1;
+						$document->dontChangeStatus = 1;
 					}
 
 					$sql = $AVE_DB->Query("
@@ -866,31 +834,20 @@ class AVE_Document
 					while ($row = $sql->FetchRow())
 					{
 						$row->Feld = $this->_getField($row->RubTyp, $row->Inhalt, $row->df_id, $row->StdWert);
-						array_push($items, $row);
+						array_push($fields, $row);
 					}
 
-					$now_date = date($AVE_Globals->mainSettings('date_format'));
-					$now_date = strtr($now_date,
-						array(
-							'January'=>'января', 'February'=>'февраля', 'March'=>'марта', 'April'=>'апреля',
-							'May'=>'мая', 'June'=>'июня', 'July'=>'июля', 'August'=>'августа',
-							'September'=>'сентября', 'October'=>'октября', 'November'=>'ноября', 'December'=>'декабря',
-							'Sunday'=>'Воскресенье', 'Monday'=>'Понедельник', 'Tuesday'=>'Вторник', 'Wednesday'=>'Среда',
-							'Thursday'=>'Четверг', 'Friday'=>'Пятница', 'Saturday'=>'Суббота',
-						)
-					);
+					$document->fields = $fields;
+					$document->rubric_name = $this->_showRubName($document->RubrikId)->RubrikName;
+					$document->rubric_url_prefix = $this->_showRubName($document->RubrikId)->UrlPrefix;
+					$document->formaction = 'index.php?do=docs&action=edit&sub=save&Id=' . $id . '&cp=' . SESSION;
 
-					$AVE_Template->assign('now_date', $now_date);
-					$AVE_Template->assign('items', $items);
-					$AVE_Template->assign('row_doc', $row_doc);
-					$AVE_Template->assign('formaction', 'index.php?do=docs&action=edit&sub=save&Id=' . $id . '&cp=' . SESSION);
-					$AVE_Template->assign('RubName', $this->_showRubName($row_doc->RubrikId));
-					$AVE_Template->assign('name_empty', '');
+					$AVE_Template->assign('document', $document);
 					$AVE_Template->assign('content', $AVE_Template->fetch('documents/form.tpl'));
 				}
 				else
 				{
-					$AVE_Template->assign('content', $config_vars['DOC_NO_PERMISSION']);
+					$AVE_Template->assign('content', $AVE_Template->get_config_vars('DOC_NO_PERMISSION'));
 				}
 				break;
 		}
@@ -920,7 +877,7 @@ class AVE_Document
 			|| (isset($_SESSION[$row->RubrikId . '_alles']) && $_SESSION[$row->RubrikId . '_alles'] == 1)
 			|| (defined('UGROUP') && UGROUP == 1) )
 		{
-			if ($id != 1 && $id != $this->_page_not_found_id)
+			if ($id != 1 && $id != PAGE_NOT_FOUND_ID)
 			{
 				$AVE_DB->Query("
 					UPDATE " . PREFIX . "_documents
@@ -963,7 +920,7 @@ class AVE_Document
 	{
 		global $AVE_DB;
 
-		if ($id != 1 && $id != $this->_page_not_found_id)
+		if ($id != 1 && $id != PAGE_NOT_FOUND_ID)
 		{
 			$AVE_DB->Query("
 				DELETE
@@ -995,7 +952,7 @@ class AVE_Document
 	 * @param int $id идентификатор Документа
 	 * @param string $openclose статус Документа {open|close}
 	 */
-	function openCloseDoc($id,$openclose)
+	function openCloseDoc($id, $openclose)
 	{
 		global $AVE_DB;
 
@@ -1013,7 +970,7 @@ class AVE_Document
 			|| @$_SESSION[$row->RubrikId . '_alles'] == 1
 			|| UGROUP == 1)
 		{
-			if ($id != 1 && $id != $this->_page_not_found_id)
+			if ($id != 1 && $id != PAGE_NOT_FOUND_ID)
 			{
 				$AVE_DB->Query("
 					UPDATE " . PREFIX . "_documents
@@ -1072,31 +1029,7 @@ class AVE_Document
 			array_push($items, $row);
 			unset($row);
 		}
-		$AVE_Template->assign('rub_items', $items);
-	}
-
-	/**
-	 * Список идентификаторов и наименований Рубрик
-	 *
-	 * @return array список идентификаторов и наименований Рубрик
-	 */
-	function showRubs()
-	{
-		global $AVE_DB;
-
-		$sql = $AVE_DB->Query("
-			SELECT
-				Id,
-				RubrikName
-			FROM " . PREFIX . "_rubrics
-		");
-		$rubs = array();
-		while ($row = $sql->FetchRow())
-		{
-			array_push($rubs, $row);
-		}
-
-		return $rubs;
+		$AVE_Template->assign('rubrics', $items);
 	}
 
 	/**
@@ -1105,7 +1038,7 @@ class AVE_Document
 	 */
 	function changeRubs()
 	{
-		global $AVE_DB, $AVE_Template, $config_vars;
+		global $AVE_DB, $AVE_Template;
 
 		if ((!empty($_POST['NewRubr'])) and (!empty($_GET['Id'])))
 		{
@@ -1152,7 +1085,7 @@ class AVE_Document
 								INTO " . PREFIX . "_rubric_fields
 								SET
 									RubrikId        = '" . (int)$_POST['NewRubr'] . "',
-									Titel           = '" . $row_fd->Titel . "',
+									Titel           = '" . addslashes($row_fd->Titel) . "',
 									RubTyp          = '" . $row_fd->RubTyp . "',
 									rubric_position = '" . $new_pos . "'
 							");
@@ -1273,7 +1206,7 @@ class AVE_Document
 				");
 				while ($row_nr = $sql_old_rub->FetchRow()) {
 					$type = $row_nr->RubTyp;
-					$option_arr = array('0'=>$config_vars['DOC_CHANGE_DROP_FIELD'], '-1'=>$config_vars['DOC_CHANGE_CREATE_FIELD']);
+					$option_arr = array('0'=>$AVE_Template->get_config_vars('DOC_CHANGE_DROP_FIELD'), '-1'=>$AVE_Template->get_config_vars('DOC_CHANGE_CREATE_FIELD'));
 					$selected = -1;
 					foreach ($mass_new_rubr as $row)
 					{
@@ -1304,25 +1237,11 @@ class AVE_Document
 	{
 		$alias = empty($_REQUEST['alias']) ? '' : cpParseLinkname(iconv("UTF-8", "WINDOWS-1251", $_REQUEST['alias']));
 		$title = empty($_REQUEST['title']) ? '' : cpParseLinkname(iconv("UTF-8", "WINDOWS-1251", $_REQUEST['title']));
+		$prefix = empty($_REQUEST['prefix']) ? '' : cpParseLinkname(iconv("UTF-8", "WINDOWS-1251", $_REQUEST['prefix']));
 
-		if ($alias == $title)
-		{
-			return $alias;
-		}
-		elseif (!empty($alias) && !empty($title))
-		{
-			return $alias . '/' . $title;
-		}
-		elseif (empty($alias) && !empty($title))
-		{
-			return $title;
-		}
-		elseif (!empty($alias) && empty($title))
-		{
-			return $alias;
-		}
+		if ($alias != $title && $alias != trim($prefix . '/' . $title, '/')) $alias = trim($alias . '/' . $title, '/');
 
-		return '';
+		return $alias;
 	}
 
 	/**
@@ -1331,47 +1250,48 @@ class AVE_Document
 	 */
 	function checkurl()
 	{
-		global $AVE_DB, $config_vars;
+		global $AVE_DB, $AVE_Template;
 
 		$id = (!empty($_REQUEST['id']) && is_numeric($_REQUEST['id'])) ? $_REQUEST['id'] : 0;
 		$alias = (!empty($_REQUEST['alias'])) ? $_REQUEST['alias'] : '';
 
-		$err_msg = array();
+		$errors = array();
 
 		if (!empty($alias))
 		{
-			if (preg_match('/[^0-9a-z\/-]+/', $alias)) $err_msg[] = $config_vars['DOC_URL_ERROR_SYMBOL'];
+			if (preg_match('/[^0-9a-z\/-]+/', $alias)) $errors[] = $AVE_Template->get_config_vars('DOC_URL_ERROR_SYMBOL');
 
-			if ($alias[0] == '/') $err_msg[] = $config_vars['DOC_URL_ERROR_START'];
+			if ($alias[0] == '/') $errors[] = $AVE_Template->get_config_vars('DOC_URL_ERROR_START');
 
-			if (substr($alias, -1) == '/') $err_msg[] = $config_vars['DOC_URL_ERROR_END'];
+			if (substr($alias, -1) == '/') $errors[] = $AVE_Template->get_config_vars('DOC_URL_ERROR_END');
 
 			$matches = preg_grep('/^(apage-\d+|artpage-\d+|page-\d+|print)$/i', explode('/', $alias));
-			if (!empty($matches)) $err_msg[] = $config_vars['DOC_URL_ERROR_SEGMENT'] . implode(', ', $matches);
+			if (!empty($matches)) $errors[] = $AVE_Template->get_config_vars('DOC_URL_ERROR_SEGMENT') . implode(', ', $matches);
 
-			if (empty($err_msg))
+			if (empty($errors))
 			{
-				$sql = $AVE_DB->Query("
+				$url_exist = $AVE_DB->Query("
 					SELECT COUNT(*)
 					FROM " . PREFIX . "_documents
-					WHERE Url = '" . $_REQUEST['alias'] . "'
+					WHERE Url = '" . $alias . "'
 					AND Id != " . $id . "
-				");
-				if ($sql->GetCell() > 0) $err_msg[] = $config_vars['DOC_URL_ERROR_DUPLICATES'];
+					LIMIT 1
+				")->GetCell();
+				if ($url_exist) $errors[] = $AVE_Template->get_config_vars('DOC_URL_ERROR_DUPLICATES');
 			}
 		}
 		else
 		{
-			$err_msg[] = $config_vars['DOC_URL_ERROR_EMTY'];
+			$errors[] = $AVE_Template->get_config_vars('DOC_URL_ERROR_EMTY');
 		}
 
-		if (empty($err_msg))
+		if (empty($errors))
 		{
-			return '<font class="checkUrlOk">' . $config_vars['DOC_URL_CHECK_OK'] . '</font>';
+			return '<font class="checkUrlOk">' . $AVE_Template->get_config_vars('DOC_URL_CHECK_OK') . '</font>';
 		}
 		else
 		{
-			return '<font class="checkUrlErr">' . implode(', ', $err_msg) . '</font>';
+			return '<font class="checkUrlErr">' . implode(', ', $errors) . '</font>';
 		}
 	}
 
@@ -1386,7 +1306,7 @@ class AVE_Document
 	 */
 	function newComment($reply = '')
 	{
-		global $AVE_DB, $AVE_Template, $AVE_Globals, $config_vars;
+		global $AVE_DB, $AVE_Template, $AVE_Globals;
 
 		$doc_id = (int)$_REQUEST['Id'];
 		if (isset($_REQUEST['sub']) && $_REQUEST['sub'] == 'save')
@@ -1397,8 +1317,8 @@ class AVE_Document
 					INSERT " . PREFIX . "_document_comments
 					SET
 						DokumentId     = '" . $doc_id . "',
-						Titel          = '" . htmlspecialchars($_REQUEST['Titel']) . "',
-						Kommentar      = '" . substr(htmlspecialchars($_REQUEST['Kommentar']), 0, $this->_max_comment_length) . "',
+						Titel          = '" . preClear($_REQUEST['Titel']) . "',
+						Kommentar      = '" . substr(preClear($_REQUEST['Kommentar']), 0, $this->_max_comment_length) . "',
 						Author         = '" . $_SESSION['user_name'] . "',
 						Zeit           = '" . time() . "',
 						KommentarStart = 1,
@@ -1426,8 +1346,8 @@ class AVE_Document
 						INSERT " . PREFIX . "_document_comments
 						SET
 							DokumentId     = '" . $doc_id . "',
-							Titel          = '" . htmlspecialchars($_REQUEST['Titel']) . "',
-							Kommentar      = '" . substr(htmlspecialchars($_REQUEST['Kommentar']), 0, $this->_max_comment_length) . "',
+							Titel          = '" . preClear($_REQUEST['Titel']) . "',
+							Kommentar      = '" . substr(preClear($_REQUEST['Kommentar']), 0, $this->_max_comment_length) . "',
 							Author         = '" . $_SESSION['user_name'] . "',
 							Zeit           = '" . time() . "',
 							KommentarStart = 0,
@@ -1442,12 +1362,12 @@ class AVE_Document
 				$host = explode('?', redirectLink());
 				$host_real .= substr($host[0], 0, -9) . 'index.php?do=docs&doc_id=' . $doc_id;
 
-				$body_toadmin = $config_vars['DOC_MAIL_BODY_NOTICE'];
+				$body_toadmin = $AVE_Template->get_config_vars('DOC_MAIL_BODY_NOTICE');
 				$body_toadmin = str_replace('%N%', "\n", $body_toadmin);
 				$body_toadmin = str_replace('%TITLE%', stripslashes($_POST['Titel']), $body_toadmin);
 				$body_toadmin = str_replace('%USER%', $_SESSION['user_name'], $body_toadmin);
 				$body_toadmin = str_replace('%LINK%', $host_real, $body_toadmin);
-				$AVE_Globals->cp_mail($AntwortEMail, $body_toadmin, $config_vars['DOC_MAIL_SUBJECT_NOTICE'], $system_mail, $system_mail_name, 'text', '');
+				$AVE_Globals->cp_mail($AntwortEMail, $body_toadmin, $AVE_Template->get_config_vars('DOC_MAIL_SUBJECT_NOTICE'), $system_mail, $system_mail_name, 'text', '');
 
 				header('Location:index.php?do=docs&action=comment_reply&Id=' . $doc_id . '&pop=1&cp=' . SESSION);
 			}
@@ -1575,7 +1495,7 @@ class AVE_Document
 	 */
 	function _getField($rub_typ, $inhalt, $id, $drop = '')
 	{
-		global $AVE_Globals, $config_vars;
+		global $AVE_Globals, $AVE_Template;
 
 		$img_pixel = 'templates/' . $_SESSION['admin_theme'] . '/images/blanc.gif';
 		$feld = '';
@@ -1584,7 +1504,7 @@ class AVE_Document
 		{
 			case 'kurztext' :
 				$feld  = '<a name="' . $id . '"></a>';
-				$feld .= '<input id="feld_' . $id . '" type="text" style="width:' . $this->_field_width . '" name="feld[' . $id . ']" value="' . htmlspecialchars($inhalt) . '"> ';
+				$feld .= '<input id="feld_' . $id . '" type="text" style="width:' . $this->_field_width . '" name="feld[' . $id . ']" value="' . htmlspecialchars($inhalt, ENT_QUOTES) . '"> ';
 				break;
 
 			case 'langtext' :
@@ -1599,7 +1519,6 @@ class AVE_Document
 					$oFCKeditor->Height = $this->_textarea_height;
 					$oFCKeditor->Value  = $inhalt;
 					$feld  = $oFCKeditor->Create($id);
-//					$feld .= "<input class=\"button\" onclick=\"insertHTML('" . $id . "', '<h3>[cp:newpage]</h3>');\" value=\"" . $config_vars['DOC_NEW_PAGE'] . "\" type=\"button\">";
 				}
 				break;
 
@@ -1619,45 +1538,37 @@ class AVE_Document
 				}
 				break;
 
-			case 'created' :
-				$inhalt = (isset($_REQUEST['action']) && $_REQUEST['action'] == 'new') ? date($AVE_Globals->mainSettings('date_format')) : $inhalt;
-				$inhalt = strtr($inhalt,
-					array(
-						'January'=>'января', 'February'=>'февраля', 'March'=>'марта', 'April'=>'апреля',
-						'May'=>'мая', 'June'=>'июня', 'July'=>'июля', 'August'=>'августа',
-						'September'=>'сентября', 'October'=>'октября', 'November'=>'ноября', 'December'=>'декабря',
-						'Sunday'=>'Воскресенье', 'Monday'=>'Понедельник', 'Tuesday'=>'Вторник', 'Wednesday'=>'Среда',
-						'Thursday'=>'Четверг', 'Friday'=>'Пятница', 'Saturday'=>'Суббота',
-					)
-				);
-				if (isset($_REQUEST['action']) && $_REQUEST['action'] == 'new')
-				{
-					$feld  = "<a name=\"" . $id . "\"></a>";
-					$feld .= "<input id=\"feld_" . $id . "\" type=\"text\" style=\"width:" . $this->_field_width . "\" name=\"feld[" . $id . "]\" value=\"" . htmlspecialchars($inhalt) . "\">";
-				}
-				else
-				{
-					$feld  = "<a name=\"" . $id . "\"></a>";
-					$feld .= "<input id=\"feld_" . $id . "\" type=\"text\" style=\"width:" . $this->_field_width . "\" name=\"feld[" . $id . "]\" value=\"" . htmlspecialchars($inhalt) . "\">&nbsp;";
-					$feld .= "<input type=\"button\" value=\"Текущая дата\" class=\"button\" onclick=\"insert_now_date('feld_" . $id . "');\" />";
-				}
-				break;
-
-			case 'author':
-				$inhalt = (isset($_REQUEST['action']) && $_REQUEST['action'] == 'new') ? $_SESSION['user_name'] : $inhalt;
-				$feld  = "<a name=\"" . $id . "\"></a>";
-				$feld .= "<input id=\"feld_" . $id . "\" type=\"text\" style=\"width:" . $this->_field_width . "\" name=\"feld[" . $id . "]\" value=\"" . htmlspecialchars($inhalt) . "\"> ";
-				break;
-
+//			case 'created' :
+//				$inhalt = (isset($_REQUEST['action']) && $_REQUEST['action'] == 'new') ? strftime(TIME_FORMAT) : $inhalt;
+//				$inhalt = pretty_date($inhalt, DEFAULT_LANGUAGE);
+//				if (isset($_REQUEST['action']) && $_REQUEST['action'] == 'new')
+//				{
+//					$feld  = "<a name=\"" . $id . "\"></a>";
+//					$feld .= "<input id=\"feld_" . $id . "\" type=\"text\" style=\"width:" . $this->_field_width . "\" name=\"feld[" . $id . "]\" value=\"" . htmlspecialchars($inhalt, ENT_QUOTES) . "\">";
+//				}
+//				else
+//				{
+//					$feld  = "<a name=\"" . $id . "\"></a>";
+//					$feld .= "<input id=\"feld_" . $id . "\" type=\"text\" style=\"width:" . $this->_field_width . "\" name=\"feld[" . $id . "]\" value=\"" . htmlspecialchars($inhalt, ENT_QUOTES) . "\">&nbsp;";
+//					$feld .= "<input type=\"button\" value=\"Текущая дата\" class=\"button\" onclick=\"insert_now_date('feld_" . $id . "');\" />";
+//				}
+//				break;
+//
+//			case 'author':
+//				$inhalt = (isset($_REQUEST['action']) && $_REQUEST['action'] == 'new') ? $_SESSION['user_name'] : $inhalt;
+//				$feld  = "<a name=\"" . $id . "\"></a>";
+//				$feld .= "<input id=\"feld_" . $id . "\" type=\"text\" style=\"width:" . $this->_field_width . "\" name=\"feld[" . $id . "]\" value=\"" . htmlspecialchars($inhalt, ENT_QUOTES) . "\"> ";
+//				break;
+//
 			case 'bild' :
 			case 'bild_links' :
 			case 'bild_rechts' :
 				$massiv = explode('|', $inhalt);
 				$feld  = "<a name=\"" . $id . "\"></a>";
-				$feld .= "<div id=\"feld_" . $id . "\"><img id=\"_img_feld__" . $id . "\" src=\"" . (!empty($inhalt) ? '../index.php?thumb=' . $massiv[0] : $img_pixel) . "\" alt=\"" . (isset($massiv[1]) ? $massiv[1] : '') . "\" border=\"0\" /></div>";
+				$feld .= "<div id=\"feld_" . $id . "\"><img id=\"_img_feld__" . $id . "\" src=\"" . (!empty($inhalt) ? '../index.php?thumb=' . htmlspecialchars($massiv[0], ENT_QUOTES) : $img_pixel) . "\" alt=\"" . (isset($massiv[1]) ? htmlspecialchars($massiv[1], ENT_QUOTES) : '') . "\" border=\"0\" /></div>";
 				$feld .= "<div style=\"display:none\" id=\"span_feld__" . $id . "\">&nbsp;</div>" . (!empty($inhalt) ? "<br />" : '');
-				$feld .= "<input type=\"text\" style=\"width:" . $this->_field_width . "\" name=\"feld[" . $id . "]\" value=\"" . htmlspecialchars($inhalt) . "\" id=\"img_feld__" . $id . "\" />&nbsp;";
-				$feld .= "<input value=\"" . $config_vars['MAIN_OPEN_MEDIAPATH'] . "\" class=\"button\" type=\"button\" onclick=\"cp_imagepop('img_feld__" . $id . "', '', '', '0');\" />";
+				$feld .= "<input type=\"text\" style=\"width:" . $this->_field_width . "\" name=\"feld[" . $id . "]\" value=\"" . htmlspecialchars($inhalt, ENT_QUOTES) . "\" id=\"img_feld__" . $id . "\" />&nbsp;";
+				$feld .= "<input value=\"" . $AVE_Template->get_config_vars('MAIN_OPEN_MEDIAPATH') . "\" class=\"button\" type=\"button\" onclick=\"cp_imagepop('img_feld__" . $id . "', '', '', '0');\" />";
 				break;
 
 			case 'javascript' :
@@ -1666,26 +1577,26 @@ class AVE_Document
 			case 'html' :
 			case 'js' :
 				$feld  = "<a name=\"" . $id . "\"></a>";
-				$feld .= "<textarea id=\"feld_" . $id . "\" style=\"width:" . $this->_textarea_width . "; height:" . $this->_textarea_height . "\"  name=\"feld[" . $id . "]\">" . stripslashes($inhalt) . "</textarea>";
+				$feld .= "<textarea id=\"feld_" . $id . "\" style=\"width:" . $this->_textarea_width . "; height:" . $this->_textarea_height . "\"  name=\"feld[" . $id . "]\">" . $inhalt . "</textarea>";
 				break;
 
 			case 'flash' :
 				$feld  = "<a name=\"" . $id . "\"></a>";
-				$feld .= "<div style=\"display:none\" id=\"feld_" . $id . "\"><img style=\"display:none\" id=\"_img_feld__" . $id . "\" src=\"". (!empty($inhalt) ? $inhalt : $img_pixel) . "\" alt=\"\" border=\"0\" /></div>";
+				$feld .= "<div style=\"display:none\" id=\"feld_" . $id . "\"><img style=\"display:none\" id=\"_img_feld__" . $id . "\" src=\"". (!empty($inhalt) ? htmlspecialchars($inhalt, ENT_QUOTES) : $img_pixel) . "\" alt=\"\" border=\"0\" /></div>";
 				$feld .= "<div style=\"display:none\" id=\"span_feld__" . $id . "\"></div>";
-				$feld .= "<input type=\"text\" style=\"width:" . $this->_field_width . "\" name=\"feld[" . $id . "]\" value=\"" . htmlspecialchars($inhalt) . "\" id=\"img_feld__" . $id . "\" />&nbsp;";
-				$feld .= "<input value=\"" . $config_vars['MAIN_OPEN_MEDIAPATH'] . "\" class=\"button\" type=\"button\" onclick=\"cp_imagepop('img_feld__" . $id . "', '', '', '0');\" />";
-				$feld .= '<input style="margin-left:5px" class="button" type="button" value="?" onmouseover="return overlib(\'' . $config_vars['DOC_FLASH_TYPE_HELP'] . '\',ABOVE,WIDTH,300);" onmouseout="nd();" style="cursor: help;">';
+				$feld .= "<input type=\"text\" style=\"width:" . $this->_field_width . "\" name=\"feld[" . $id . "]\" value=\"" . htmlspecialchars($inhalt, ENT_QUOTES) . "\" id=\"img_feld__" . $id . "\" />&nbsp;";
+				$feld .= "<input value=\"" . $AVE_Template->get_config_vars('MAIN_OPEN_MEDIAPATH') . "\" class=\"button\" type=\"button\" onclick=\"cp_imagepop('img_feld__" . $id . "', '', '', '0');\" />";
+				$feld .= '<input style="margin-left:5px" class="button" type="button" value="?" onmouseover="return overlib(\'' . $AVE_Template->get_config_vars('DOC_FLASH_TYPE_HELP') . '\',ABOVE,WIDTH,300);" onmouseout="nd();" style="cursor: help;">';
 				break;
 
 			case 'download' :
 				$feld  = "<div style=\"\" id=\"feld_" . $id . "\"><a name=\"" . $id . "\"></a>";
 				$feld .= "<div style=\"display:none\" id=\"feld_" . $id . "\">";
-				$feld .= "<img style=\"display:none\" id=\"_img_feld__" . $id . "\" src=\"" . (!empty($inhalt) ? $inhalt : $img_pixel) . "\" alt=\"\" border=\"0\" /></div>";
+				$feld .= "<img style=\"display:none\" id=\"_img_feld__" . $id . "\" src=\"" . (!empty($inhalt) ? htmlspecialchars($inhalt, ENT_QUOTES) : $img_pixel) . "\" alt=\"\" border=\"0\" /></div>";
 				$feld .= "<div style=\"display:none\" id=\"span_feld__" . $id . "\"></div>";
-				$feld .= "<input type=\"text\" style=\"width:" . $this->_field_width . "\" name=\"feld[" . $id . "]\" value=\"" . htmlspecialchars($inhalt) . "\" id=\"img_feld__" . $id . "\" />&nbsp;";
-				$feld .= "<input value=\"" . $config_vars['MAIN_OPEN_MEDIAPATH'] . "\" class=\"button\" type=\"button\" onclick=\"cp_imagepop('img_feld__" . $id . "', '', '', '0');\" />";
-				$feld .= '<input style="margin-left:5px" class="button" type="button" value="?" onmouseover="return overlib(\'' . $config_vars['DOC_FILE_TYPE_HELP'] . '\',ABOVE,WIDTH,300);" onmouseout="nd();" style="cursor: help;">';
+				$feld .= "<input type=\"text\" style=\"width:" . $this->_field_width . "\" name=\"feld[" . $id . "]\" value=\"" . htmlspecialchars($inhalt, ENT_QUOTES) . "\" id=\"img_feld__" . $id . "\" />&nbsp;";
+				$feld .= "<input value=\"" . $AVE_Template->get_config_vars('MAIN_OPEN_MEDIAPATH') . "\" class=\"button\" type=\"button\" onclick=\"cp_imagepop('img_feld__" . $id . "', '', '', '0');\" />";
+				$feld .= '<input style="margin-left:5px" class="button" type="button" value="?" onmouseover="return overlib(\'' . $AVE_Template->get_config_vars('DOC_FILE_TYPE_HELP') . '\',ABOVE,WIDTH,300);" onmouseout="nd();" style="cursor: help;">';
 				$feld .= '</div>';
 				break;
 
@@ -1694,11 +1605,11 @@ class AVE_Document
 			case 'video_wmv' :
 			case 'video_mov' :
 				$feld  = "<div style=\"\" id=\"feld_" . $id . "\"><a name=\"" . $id . "\"></a>";
-				$feld .= "<div style=\"display:none\" id=\"feld_" . $id . "\"><img style=\"display:none\" id=\"_img_feld__" . $id . "\" src=\"". (!empty($inhalt) ? $inhalt : $img_pixel) . "\" alt=\"\" border=\"0\" /></div>";
+				$feld .= "<div style=\"display:none\" id=\"feld_" . $id . "\"><img style=\"display:none\" id=\"_img_feld__" . $id . "\" src=\"". (!empty($inhalt) ? htmlspecialchars($inhalt, ENT_QUOTES) : $img_pixel) . "\" alt=\"\" border=\"0\" /></div>";
 				$feld .= "<div style=\"display:none\" id=\"span_feld__" . $id . "\"></div>";
-				$feld .= "<input type=\"text\" style=\"width:" . $this->_field_width . "\" name=\"feld[" . $id . "]\" value=\"" . htmlspecialchars($inhalt) . "\" id=\"img_feld__" . $id . "\" />&nbsp;";
-				$feld .= "<input value=\"" . $config_vars['MAIN_OPEN_MEDIAPATH'] . "\" class=\"button\" type=\"button\" onclick=\"cp_imagepop('img_feld__" . $id . "', '', '', '0');\" />";
-				$feld .= '<input style="margin-left:5px" class="button" type="button" value="?" onmouseover="return overlib(\''.$config_vars['DOC_VIDEO_TYPE_HELP'].'\',ABOVE,WIDTH,300);" onmouseout="nd();" style="cursor: help;">';
+				$feld .= "<input type=\"text\" style=\"width:" . $this->_field_width . "\" name=\"feld[" . $id . "]\" value=\"" . htmlspecialchars($inhalt, ENT_QUOTES) . "\" id=\"img_feld__" . $id . "\" />&nbsp;";
+				$feld .= "<input value=\"" . $AVE_Template->get_config_vars('MAIN_OPEN_MEDIAPATH') . "\" class=\"button\" type=\"button\" onclick=\"cp_imagepop('img_feld__" . $id . "', '', '', '0');\" />";
+				$feld .= '<input style="margin-left:5px" class="button" type="button" value="?" onmouseover="return overlib(\'' . $AVE_Template->get_config_vars('DOC_VIDEO_TYPE_HELP') . '\',ABOVE,WIDTH,300);" onmouseout="nd();" style="cursor: help;">';
 				$feld .= '</div>';
 				break;
 
@@ -1708,14 +1619,7 @@ class AVE_Document
 				$cnt = sizeof($items);
 				for ($i=0;$i<$cnt;$i++)
 				{
-					if (trim($inhalt) == trim($items[$i]))
-					{
-						$feld .= "<option value=\"" . $items[$i] . "\" selected>" . $items[$i] . "</option>";
-					}
-					else
-					{
-						$feld .= "<option value=\"" . $items[$i] . "\">" . $items[$i] . "</option>";
-					}
+					$feld .= "<option value=\"" . htmlspecialchars($items[$i], ENT_QUOTES) . "\"" . ((trim($inhalt) == trim($items[$i])) ? " selected=\"selected\"" : "") . ">" . htmlspecialchars($items[$i], ENT_QUOTES) . "</option>";
 				}
 				$feld .= "</select>";
 				break;
@@ -1723,8 +1627,8 @@ class AVE_Document
 			case 'link' :
 			case 'link_ex' :
 				$feld  = "<a name=\"" . $id . "\"></a>";
-				$feld .= "<input id=\"feld_" . $id . "\" type=\"text\" style=\"width:" . $this->_field_width . "\" name=\"feld[" . $id . "]\" value=\"" . $inhalt . "\">&nbsp;";
-				$feld .= "<input value=\"" . $config_vars['MAIN_BROWSE_DOCUMENTS'] . "\" class=\"button\" type=\"button\" onclick=\"openLinkWin('feld_" . $id . "', 'feld_" . $id . "');\" />";
+				$feld .= "<input id=\"feld_" . $id . "\" type=\"text\" style=\"width:" . $this->_field_width . "\" name=\"feld[" . $id . "]\" value=\"" . htmlspecialchars($inhalt, ENT_QUOTES) . "\">&nbsp;";
+				$feld .= "<input value=\"" . $AVE_Template->get_config_vars('MAIN_BROWSE_DOCUMENTS') . "\" class=\"button\" type=\"button\" onclick=\"openLinkWin('feld_" . $id . "', 'feld_" . $id . "');\" />";
 				break;
 		}
 
@@ -1833,20 +1737,23 @@ class AVE_Document
 	 */
 	function _showRubName($id)
 	{
-		global $AVE_DB, $str_rubrik_name;
+		global $AVE_DB;
 
-		if (empty($str_rubrik_name[$id]))
+		static $rubrics = array();
+
+		if (!isset($rubrics[$id]))
 		{
-			$sql = $AVE_DB->Query("
-				SELECT RubrikName
+			$rubrics[$id] = $AVE_DB->Query("
+				SELECT
+					RubrikName,
+					UrlPrefix
 				FROM " . PREFIX . "_rubrics
 				WHERE Id = '" . $id . "'
 				LIMIT 1
-			");
-			$str_rubrik_name[$id] = $sql->GetCell();
+			")->fetchRow();
 		}
 
-		return $str_rubrik_name[$id];
+		return $rubrics[$id];
 	}
 }
 

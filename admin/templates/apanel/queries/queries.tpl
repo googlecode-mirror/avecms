@@ -73,7 +73,7 @@ function check_name() {ldelim}
 			<td>{$item->Autor}</td>
 
 			<td class="time">
-				{$item->Erstellt|date_format:#QUERY_DATE_FORMAT2#}
+				{$item->Erstellt|date_format:$TIME_FORMAT|pretty_date:$DEF_LANGUAGE}
 			</td>
 
 			<td width="1%" align="center">

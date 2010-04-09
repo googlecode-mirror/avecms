@@ -27,7 +27,7 @@
 
 		{foreach from=$items item=item}
 			<tr style="background-color:#eff3eb" onmouseover="this.style.backgroundColor='#dae0d8';" onmouseout="this.style.backgroundColor='#eff3eb';" id="table_rows">
-				<td>{$item->visit|date_format:#COUNTER_DATE_FORMAT#}</td>
+				<td>{$item->visit|date_format:$TIME_FORMAT|pretty_date:$DEF_LANGUAGE}</td>
 				<td>
 					{if $item->client_referer != ''}
 						<a target="_blank" href="{$item->client_referer}">{$item->client_referer|default:'-'}</a>
