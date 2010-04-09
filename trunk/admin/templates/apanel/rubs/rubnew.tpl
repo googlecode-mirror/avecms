@@ -4,24 +4,25 @@
 	<div class="h_rubs">&nbsp;</div>
 	<div class="HeaderTitle"><h2>{#RUBRIK_NEW#}</h2></div>
 	<div class="HeaderText">{#RUBRIK_NEW_TIP#}</div>
-	{if $smarty.request.error=='exists'}
-		<div class="HeaderTextError"><strong>{#RUBRIK_EXIST#}</strong></div>
-	{/if}
 </div>
 <div class="upPage">&nbsp;</div><br />
+
+{if $errors}
+	<ul>{foreach from=$errors item=error}<li>{$error}</li>{/foreach}</ul>
+{/if}
 
 <form name="form1" method="post" action="index.php?do=rubs&amp;action=new&amp;sub=save&amp;cp={$sess}">
 	<table width="100%" border="0" cellpadding="8" cellspacing="1" class="tableborder">
 		<tr>
 			<td width="20%" class="first"><strong>{#RUBRIK_NAME2#}</strong></td>
-			<td class="second"><input style="width:180px" type="text" name="RubrikName" value="{$smarty.request.RubName|escape:html}"></td>
+			<td class="second"><input style="width:180px" type="text" name="RubrikName" value="{$smarty.request.RubrikName|escape|stripslashes}"></td>
 		</tr>
-{*
+
 		<tr>
 			<td width="20%" class="first"><strong>{#RUBRIK_URL_PREFIX2#}</strong></td>
-			<td class="second"><input style="width:180px" type="text" name="UrlPrefix" value="/"></td>
+			<td class="second"><input style="width:180px" type="text" name="UrlPrefix" value="{$smarty.request.UrlPrefix|escape|stripslashes}"></td>
 		</tr>
-*}
+
 		<tr>
 			<td width="20%" class="first"><strong>{#RUBRIK_TEMPLATE_OUT2#}</strong></td>
 			<td class="second">

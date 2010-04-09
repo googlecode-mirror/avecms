@@ -24,7 +24,7 @@
 				</td>
 				<td valign="top">
 					{#POLL_COMMENT_AUTHOR#} {$item->lastname} {$item->firstname}<br />
-					{#POLL_COMMENT_DATE#} {$item->ctime|date_format:$config_vars.POLL_DATE_FORMAT2}
+					{#POLL_COMMENT_DATE#} {$item->ctime|date_format:$DATE_FORMAT|pretty_date:$DEF_LANGUAGE}
 				</td>
 			</tr>
 		{/foreach}

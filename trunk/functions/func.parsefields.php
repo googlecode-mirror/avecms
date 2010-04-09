@@ -94,6 +94,7 @@ function parseFields($id, $width='', $height='', $length='')
 	switch ($rub_type)
 	{
 		case 'kurztext' :
+			$inhalt = htmlspecialchars($inhalt, ENT_QUOTES);
 			$inhalt = phpReplace(prettyChars($inhalt));
 			if (!$tpl_field_empty)
 			{

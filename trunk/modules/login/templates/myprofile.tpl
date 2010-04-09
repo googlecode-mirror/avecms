@@ -85,7 +85,7 @@
 		<div class="formright">
 			<select name="Land" id="l_land">
 				{foreach from=$available_countries item=land}
-					<option value="{$land->LandCode}"{if $land->LandCode == $row.land|default:$def_country} selected{/if}>{$land->LandName}</option>
+					<option value="{$land->LandCode}"{if $land->LandCode == $row.land|default:$DEF_COUNTRY} selected{/if}>{$land->LandName}</option>
 				{/foreach}
 			</select>
 		</div>

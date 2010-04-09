@@ -46,7 +46,8 @@ function mod_example()
 				Id,
 				Titel
 			FROM " . PREFIX . "_documents
-			WHERE Id > 2
+			WHERE Id != 1
+			AND Id != '" . PAGE_NOT_FOUND_ID . "'
 			AND RubrikId = 2
 			AND Geloescht != 1
 			AND DokStatus != 0

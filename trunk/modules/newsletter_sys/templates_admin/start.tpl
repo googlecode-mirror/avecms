@@ -38,7 +38,7 @@
       <td width="5" align="center"><input title="{#SNL_MARK_DELETE#}" name="del[{$nl->id}]" type="checkbox" id="del[]" value="checkbox" /></td>
       <td>{$nl->title|stripslashes|escape:html}</td>
       <td width="80" align="center"><input onclick="window.open('index.php?id={$nl->id}&do=modules&action=modedit&mod=newsletter_sys&moduleaction=shownewsletter&cp={$sess}&pop=1&format={$nl->format}','showtext','top=0,left=0,scrollbars=1,width=800,height=750')" type="button" class="button" value="{#SNL_SEND_SHOW#}" /></td>
-      <td align="center" class="time">{$nl->send_date|date_format:"%d.%m.%Y %H:%M"}</td>
+      <td align="center" class="time">{$nl->send_date|date_format:$TIME_FORMAT|pretty_date:$DEF_LANGUAGE}</td>
       <td>{$nl->sender|stripslashes|escape:html}</td>
       <td align="center">{$nl->format|upper}</td>
       <td>{foreach from=$nl->groups item=e name=eg}{$e->Name}{if !$smarty.foreach.eg.last}, {/if}{/foreach}</td>

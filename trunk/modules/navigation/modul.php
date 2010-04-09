@@ -41,43 +41,28 @@ if (defined('ACP') && !(isset($_REQUEST['action']) && $_REQUEST['action'] == 'de
  */
 function mod_navigation($id)
 {
-	global $AVE_DB, $AVE_Core, $navigations;
+	global $AVE_DB, $AVE_Core;
 
-    static $navi = array();
+    static $navigations = array();
 
 	$id  = preg_replace('/(\D+)/', '', $id);
-	if (isset($navi[$id]))
-	{
-		echo $navi[$id];
-		return;
-	}
-
-	if (is_null($navigations))
-	{
-		$navigations = array();
-
-		$sql = $AVE_DB->Query("SELECT * FROM " . PREFIX . "_navigation");
-
-		while ($row = $sql->FetchRow())
-		{
-			$row->Gruppen = explode(',', $row->Gruppen);
-			$navigations[$row->id] = $row;
-		}
-		$sql->Close();
-	}
 
 	if (isset($navigations[$id]))
 	{
-		$row = $navigations[$id];
+		echo $navigations[$id];
+		return;
 	}
-	else
+
+	$nav = getNavigations($id);
+
+	if (!$nav)
 	{
 		echo 'Menu ', $id, ' not found';
 		return;
 	}
 
 	if (!defined('UGROUP')) define('UGROUP', 2);
-	if (!in_array(UGROUP, $row->Gruppen)) return;
+	if (!in_array(UGROUP, $nav->Gruppen)) return;
 
 	if (empty($_REQUEST['module']))
 	{
@@ -117,12 +102,12 @@ function mod_navigation($id)
 	if ($row_navi !== false)
 	{
 		$way = explode(',', $row_navi);
-		if ($row->Expand!=1) $where_elter = "AND Elter IN(0," . $row_navi . ")";
+		if ($nav->Expand!=1) $where_elter = "AND Elter IN(0," . $row_navi . ")";
 	}
 	else
 	{
 		$way = array('');
-		if ($row->Expand!=1) $where_elter = "AND Elter = 0";
+		if ($nav->Expand!=1) $where_elter = "AND Elter = 0";
 	}
 
 	$nav_items = array();
@@ -141,64 +126,59 @@ function mod_navigation($id)
 
 	$ebenen = array(
 		1 =>  array(
-			'aktiv' => str_replace('[cp:mediapath]', 'templates/' . THEME_FOLDER . '/', $row->ebene1a),
-			'inaktiv' => str_replace('[cp:mediapath]', 'templates/' . THEME_FOLDER . '/', $row->ebene1),
+			'aktiv' => str_replace('[cp:mediapath]', 'templates/' . THEME_FOLDER . '/', $nav->ebene1a),
+			'inaktiv' => str_replace('[cp:mediapath]', 'templates/' . THEME_FOLDER . '/', $nav->ebene1),
 		),
 		2 =>  array(
-			'aktiv' => str_replace('[cp:mediapath]', 'templates/' . THEME_FOLDER . '/', $row->ebene2a),
-			'inaktiv' => str_replace('[cp:mediapath]', 'templates/' . THEME_FOLDER . '/', $row->ebene2),
+			'aktiv' => str_replace('[cp:mediapath]', 'templates/' . THEME_FOLDER . '/', $nav->ebene2a),
+			'inaktiv' => str_replace('[cp:mediapath]', 'templates/' . THEME_FOLDER . '/', $nav->ebene2),
 		),
 		3 =>  array(
-			'aktiv' => str_replace('[cp:mediapath]', 'templates/' . THEME_FOLDER . '/', $row->ebene3a),
-			'inaktiv' => str_replace('[cp:mediapath]', 'templates/' . THEME_FOLDER . '/', $row->ebene3),
+			'aktiv' => str_replace('[cp:mediapath]', 'templates/' . THEME_FOLDER . '/', $nav->ebene3a),
+			'inaktiv' => str_replace('[cp:mediapath]', 'templates/' . THEME_FOLDER . '/', $nav->ebene3),
 		)
 	);
 
-	ob_start();
+	$END = str_replace('[cp:mediapath]', 'templates/' . THEME_FOLDER . '/', $nav->vor);
 
-	echo str_replace('[cp:mediapath]', 'templates/' . THEME_FOLDER . '/', $row->vor);
+	printNavi($END, $ebenen, $way, $id, $nav_items, $nav);
 
-	printNavi($ebenen, $way, $id, $nav_items, $row);
-
-	echo str_replace('[cp:mediapath]', 'templates/' . THEME_FOLDER . '/', $row->nach);
-
-	$END = ob_get_contents();
-	ob_end_clean();
+	$END .= str_replace('[cp:mediapath]', 'templates/' . THEME_FOLDER . '/', $nav->nach);
 
 	$END = preg_replace("/(^[\r\n]*|[\r\n]+)[\s\t]*[\r\n]+/", "\n", $END);
 //	$END = str_replace(array("\r\n","\n","\r"),'',$END);
 	$END = str_replace(array("\n","\r"),'',$END);
 
 	$search = array (
-		$row->ebene1_v . $row->ebene1_n,
-		$row->ebene2_v . $row->ebene2_n,
-		$row->ebene3_v . $row->ebene3_n,
-		'</li>' . $row->ebene2_v . '<li',
-		'</li>' . $row->ebene3_v . '<li',
-		'</li>' . $row->ebene1_n . '<li',
-		'</li>' . $row->ebene2_n . '<li',
-		'</li>' . $row->ebene1_n . $row->ebene2_n . '<li',
-		'</li>' . $row->ebene1_n . $row->ebene2_n . $row->ebene3_n,
-		'</li>' . $row->ebene1_n . $row->ebene2_n,
-		'</li>' . $row->ebene2_n . $row->ebene3_n
+		$nav->ebene1_v . $nav->ebene1_n,
+		$nav->ebene2_v . $nav->ebene2_n,
+		$nav->ebene3_v . $nav->ebene3_n,
+		'</li>' . $nav->ebene2_v . '<li',
+		'</li>' . $nav->ebene3_v . '<li',
+		'</li>' . $nav->ebene1_n . '<li',
+		'</li>' . $nav->ebene2_n . '<li',
+		'</li>' . $nav->ebene1_n . $nav->ebene2_n . '<li',
+		'</li>' . $nav->ebene1_n . $nav->ebene2_n . $nav->ebene3_n,
+		'</li>' . $nav->ebene1_n . $nav->ebene2_n,
+		'</li>' . $nav->ebene2_n . $nav->ebene3_n
 	);
 
 	$replace = array (
 		'',
 		'',
 		'',
-		$row->ebene2_v . '<li',
-		$row->ebene3_v . '<li',
-		'</li>' . $row->ebene1_n . '</li><li',
-		'</li>' . $row->ebene2_n . '</li><li',
-		'</li>' . $row->ebene1_n . '</li>' . $row->ebene2_n . '</li><li',
-		'</li>' . $row->ebene1_n . '</li>' . $row->ebene2_n . '</li>' . $row->ebene3_n,
-		'</li>' . $row->ebene1_n . '</li>' . $row->ebene2_n,
-		'</li>' . $row->ebene2_n . '</li>' . $row->ebene3_n
+		$nav->ebene2_v . '<li',
+		$nav->ebene3_v . '<li',
+		'</li>' . $nav->ebene1_n . '</li><li',
+		'</li>' . $nav->ebene2_n . '</li><li',
+		'</li>' . $nav->ebene1_n . '</li>' . $nav->ebene2_n . '</li><li',
+		'</li>' . $nav->ebene1_n . '</li>' . $nav->ebene2_n . '</li>' . $nav->ebene3_n,
+		'</li>' . $nav->ebene1_n . '</li>' . $nav->ebene2_n,
+		'</li>' . $nav->ebene2_n . '</li>' . $nav->ebene3_n
 	);
 	$END = str_replace($search, $replace, $END);
 
-	$navi[$id] = $END;
+	$navigations[$id] = $END;
 
 	echo $END;
 }
@@ -206,6 +186,7 @@ function mod_navigation($id)
 /**
  * Ğåêóğñèâíàÿ ôóíêöèÿ äëÿ ôîğìèğîâàíèÿ ìåíş íàâèãàöèè
  *
+ * @param string $navi
  * @param int $ebenen
  * @param string $way
  * @param int $rub
@@ -213,14 +194,15 @@ function mod_navigation($id)
  * @param string $row_ul
  * @param int $parent
  */
-function printNavi(&$ebenen, &$way, &$rub, &$nav_items, &$row_ul, $parent = 0)
+function printNavi(&$navi, &$ebenen, &$way, &$rub, &$nav_items, &$row_ul, $parent = 0)
 {
 	$ebene = $nav_items[$parent][0]['Ebene'];
+
 	switch ($ebene)
 	{
-		case 1 : echo $row_ul->ebene1_v;  break;
-		case 2 : echo $row_ul->ebene2_v;  break;
-		case 3 : echo $row_ul->ebene3_v;  break;
+		case 1 : $navi .= $row_ul->ebene1_v;  break;
+		case 2 : $navi .= $row_ul->ebene2_v;  break;
+		case 3 : $navi .= $row_ul->ebene3_v;  break;
 	}
 
 	foreach ($nav_items[$parent] as $row)
@@ -240,23 +222,21 @@ function printNavi(&$ebenen, &$way, &$rub, &$nav_items, &$row_ul, $parent = 0)
 			if (startsWith('www.', $row['Link'])) $akt = str_replace('www.', 'http://www.', $akt);
 		}
 
-		$akt = (CP_REWRITE == 1)
-			? cpRewrite(str_replace('[cp:target]', $row['Ziel'], $akt))
-			: str_replace('[cp:target]', $row['Ziel'], $akt);
+		$akt = str_replace('[cp:target]', $row['Ziel'], $akt);
 
-		echo $akt;
+		$navi .= (CP_REWRITE == 1) ? cpRewrite($akt) : $akt;
 
 		if (isset($nav_items[$row['Id']]))
 		{
-			printNavi($ebenen, $way, $rub, $nav_items, $row_ul, $row['Id']);
+			printNavi($navi, $ebenen, $way, $rub, $nav_items, $row_ul, $row['Id']);
 		}
 	}
 
 	switch ($ebene)
 	{
-		case 1 : echo $row_ul->ebene1_n;  break;
-		case 2 : echo $row_ul->ebene2_n;  break;
-		case 3 : echo $row_ul->ebene3_n;  break;
+		case 1 : $navi .= $row_ul->ebene1_n;  break;
+		case 2 : $navi .= $row_ul->ebene2_n;  break;
+		case 3 : $navi .= $row_ul->ebene3_n;  break;
 	}
 }
 

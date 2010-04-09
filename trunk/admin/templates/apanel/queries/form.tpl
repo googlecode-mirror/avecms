@@ -70,8 +70,8 @@ function changeRub(select) {ldelim}
 					{if $smarty.request.action=='new' && $smarty.request.RubrikId==''}
 						<option value="">{#QUERY_PLEASE_SELECT#}</option>
 					{/if}
-					{foreach from=$rub_items item=rub}
-						<option id="RubrikId_{$rub->Id}" value="{$rub->Id}" {if $row->RubrikId==$rub->Id || $smarty.request.RubrikId==$rub->Id}selected{/if}>{$rub->RubrikName}</option>
+					{foreach from=$rubrics item=rubric}
+						<option id="RubrikId_{$rubric->Id}" value="{$rubric->Id}" {if $row->RubrikId==$rubric->Id || $smarty.request.RubrikId==$rubric->Id}selected{/if}>{$rubric->RubrikName}</option>
 					{/foreach}
 				</select>
 			</td>

@@ -28,12 +28,12 @@ $AVE_Document->tplTimeAssign();
 $AVE_Template->assign('navi', $AVE_Template->fetch('navi/navi.tpl'));
 
 $AVE_Template->config_load(BASE_DIR . '/admin/lang/' . $_SESSION['admin_lang'] . '/docs.txt', 'docs');
-$config_vars = $AVE_Template->get_config_vars();
+//$config_vars = $AVE_Template->get_config_vars();
 //$AVE_Template->assign('config_vars', $config_vars);
 
-$_REQUEST['sub']    = (!isset($_REQUEST['sub']))    ? '' : addslashes($_REQUEST['sub']);
-$_REQUEST['action'] = (!isset($_REQUEST['action'])) ? '' : addslashes($_REQUEST['action']);
-$_REQUEST['submit'] = (!isset($_REQUEST['submit'])) ? '' : addslashes($_REQUEST['submit']);
+$_REQUEST['sub']    = (!isset($_REQUEST['sub']))    ? '' : $_REQUEST['sub'];
+$_REQUEST['action'] = (!isset($_REQUEST['action'])) ? '' : $_REQUEST['action'];
+$_REQUEST['submit'] = (!isset($_REQUEST['submit'])) ? '' : $_REQUEST['submit'];
 
 switch($_REQUEST['action'])
 {

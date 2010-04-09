@@ -48,12 +48,12 @@
 
 	<tr class="odd">
 		<td>{#POLL_STARTED#}</td>
-		<td>{$poll->start|date_format:#POLL_DATE_FORMAT1#}</td>
+		<td>{$poll->start|date_format:$TIME_FORMAT|pretty_date:$DEF_LANGUAGE}</td>
 	</tr>
 
 	<tr >
 		<td>{#POLL_ENDED#}</td>
-		<td>{$poll->ende|date_format:#POLL_DATE_FORMAT1#}</td>
+		<td>{$poll->ende|date_format:$TIME_FORMAT|pretty_date:$DEF_LANGUAGE}</td>
 	</tr>
 
 	<tr class="odd">
@@ -81,13 +81,13 @@
 		<tr>
 			<td class="mod_comment_header">
 				<div class="mod_comment_author">
-					<a name="{$c.Id}"></a>{#POLL_ADDED#}  <a href="#">{$item->lastname} {$item->firstname}</a> {$item->ctime|date_format:$config_vars.POLL_DATE_FORMAT3}
+					<a name="{$c.Id}"></a>{#POLL_ADDED#}  <a href="#">{$item->lastname} {$item->firstname}</a> {$item->ctime|date_format:$TIME_FORMAT|pretty_date:$DEF_LANGUAGE}
 				</div>
 			</td>
 		</tr>
 		<tr>
 			<td class="mod_comment_text">
-<strong>{$item->title}</strong><br />{$item->comment}			
+<strong>{$item->title}</strong><br />{$item->comment}
 			</td>
 		</tr>
 	</table>

@@ -127,13 +127,13 @@ function check_name() {ldelim}
 
 				<td>
 					{if $user->Status==1}
-						{$user->ZuletztGesehen|date_format:#USER_DATE_FORMAT#}
+						{$user->ZuletztGesehen|date_format:$TIME_FORMAT|pretty_date:$DEF_LANGUAGE}
 					{else}
 						-
 					{/if}
 				</td>
 
-				<td>{$user->Registriert|date_format:#USER_DATE_FORMAT#}</td>
+				<td>{$user->Registriert|date_format:$TIME_FORMAT|pretty_date:$DEF_LANGUAGE}</td>
 
 				<td nowrap="nowrap" align="center">
 					{if checkPermission('user_edit')}

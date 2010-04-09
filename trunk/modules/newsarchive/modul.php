@@ -132,7 +132,7 @@ function show_by($id, $month, $year, $day=0)
 		AND YEAR(FROM_UNIXTIME(a.DokStart))= '" . $year . "'
 		" . $db_day . "
 		AND a.RubrikId = b.Id
-		AND a.Id != '2'
+		AND a.Id != '". PAGE_NOT_FOUND_ID . "'
   		AND Geloescht != 1
   		AND DokStatus != 0
   		" . $doctime . "

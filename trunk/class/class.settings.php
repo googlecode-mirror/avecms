@@ -60,6 +60,7 @@ class AVE_Settings
 						next_label        = '" . $this->_clearCode($_REQUEST['next_label']) . "',
 						prev_label        = '" . $this->_clearCode($_REQUEST['prev_label']) . "',
 						date_format       = '" . $_REQUEST['date_format'] . "',
+						time_format       = '" . $_REQUEST['time_format'] . "',
 						use_doctime       = '" . intval($_REQUEST['use_doctime']) . "'
 					WHERE
 						Id = 1
@@ -74,21 +75,22 @@ class AVE_Settings
 				global $AVE_Globals;
 				$AVE_Globals = new AVE_Globals;
 
-				$day = $this->_dayFormatReplace(date('l'));
-				$month = $this->_monthFormatReplace(date('F'));
-
-				$dateFormat = array(
-					array('format' => 'd.m.Y',          'view' => date('d.m.Y')),
-					array('format' => 'd.m.Y, H:i',     'view' => date('d.m.Y, H:i')),
-					array('format' => 'd F Y',          'view' => date('d ' . $month . ' Y')),
-					array('format' => 'd F Y, H:i',     'view' => date('d ' . $month . ' Y, H:i')),
-					array('format' => 'l, d.m.Y',       'view' => date($day . ', d.m.Y')),
-					array('format' => 'l, d.m.Y (H:i)', 'view' => date($day . ', d.m.Y (H:i)')),
-					array('format' => 'l, d F Y',       'view' => date($day . ', d ' . $month . ' Y')),
-					array('format' => 'l, d F Y (H:i)', 'view' => date($day . ', d ' . $month . ' Y (H:i)'))
+				$date_formats = array(
+					'%d.%m.%Y',
+					'%d %B %Y',
+					'%A, %d.%m.%Y',
+					'%A, %d %B %Y'
 				);
 
-				$AVE_Template->assign('dateFormat', $dateFormat);
+				$time_formats = array(
+					'%d.%m.%Y, %H:%M',
+					'%d %B %Y, %H:%M',
+					'%A, %d.%m.%Y (%H:%M)',
+					'%A, %d %B %Y (%H:%M)'
+				);
+
+				$AVE_Template->assign('date_formats', $date_formats);
+				$AVE_Template->assign('time_formats', $time_formats);
 				$AVE_Template->assign('row', $AVE_Globals->mainSettings());
 				$AVE_Template->assign('available_countries', $AVE_Globals->fetchCountries());
 				$AVE_Template->assign('content', $AVE_Template->fetch('settings/settings_main.tpl'));
@@ -127,8 +129,7 @@ class AVE_Settings
 					array_push($laender, $row);
 				}
 
-				$num = $AVE_DB->Query("SELECT FOUND_ROWS()")
-					->GetCell();
+				$num = $AVE_DB->Query("SELECT FOUND_ROWS()")->GetCell();
 
 				$sql->Close();
 
@@ -181,43 +182,6 @@ class AVE_Settings
 			array("'<'",   "'>'",   "'<b>'i",   "'</b>'i", "'<i>'i", "'</i>'i", "'<br>'i", "'<br/>'i"),
 			array('&lt;', '&gt;', '<strong>', '</strong>',   '<em>',   '</em>',  '<br />',   '<br />'),
 			$code);
-	}
-
-	function _monthFormatReplace($month)
-	{
-		switch ($month)
-		{
-			case 'January':   $month = 'января';   break;
-			case 'February':  $month = 'февраля';  break;
-			case 'March':     $month = 'марта';    break;
-			case 'April':     $month = 'апреля';   break;
-			case 'May':       $month = 'мая';      break;
-			case 'June':      $month = 'июня';     break;
-			case 'July':      $month = 'июля';     break;
-			case 'August':    $month = 'августа';  break;
-			case 'September': $month = 'сентября'; break;
-			case 'October':   $month = 'октября';  break;
-			case 'November':  $month = 'ноября';   break;
-			case 'December':  $month = 'декабря';  break;
-		}
-
-		return $month;
-	}
-
-	function _dayFormatReplace($day)
-	{
-		switch ($day)
-		{
-			case 'Sunday':    $day = 'Воскресенье'; break;
-			case 'Monday':    $day = 'Понедельник'; break;
-			case 'Tuesday':   $day = 'Вторник';     break;
-			case 'Wednesday': $day = 'Среда';       break;
-			case 'Thursday':  $day = 'Четверг';     break;
-			case 'Friday':    $day = 'Пятница';     break;
-			case 'Saturday':  $day = 'Суббота';     break;
-		}
-
-		return $day;
 	}
 }
 

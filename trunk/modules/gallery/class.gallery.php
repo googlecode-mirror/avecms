@@ -118,7 +118,7 @@ class Gallery
 		while($row = $sql->FetchAssocArray())
 		{
 			$row['image_type'] = $this->_fileType($row['image_file_ext']);
-			$row['image_author'] = $this->_getUserById($row['image_author']);
+			$row['image_author'] = getUserById($row['image_author']);
 			$row['image_filename'] = rawurlencode($row['image_filename']);
 
 			if (file_exists(BASE_DIR . '/modules/gallery/uploads/' . (!empty($row_gs->gallery_folder) ? $row_gs->gallery_folder . '/' : '') . 'th__' . $row['image_filename']))
@@ -331,7 +331,7 @@ class Gallery
 		while ($row = $sql->FetchAssocArray())
 		{
 			$row['image_type'] = $this->_fileType($row['image_file_ext']);
-			$row['image_author'] = $this->_getUserById($row['image_author']);
+			$row['image_author'] = getUserById($row['image_author']);
 			$row['image_size'] = @filesize(BASE_DIR . '/modules/gallery/uploads/'
 				. (!empty($row_gs->gallery_folder) ? $row_gs->gallery_folder . '/' : '')
 				. $row['image_filename']);
@@ -527,8 +527,7 @@ class Gallery
 			}
 		}
 
-		$sql = $AVE_DB->Query("SELECT id FROM " . PREFIX . "_modul_gallery");
-		$num = $sql->NumRows();
+		$num = $AVE_DB->Query("SELECT COUNT(*) FROM " . PREFIX . "_modul_gallery")->GetCell();
 
 		$limit = $this->_categ_limit;
 		$seiten = ceil($num / $limit);
@@ -536,19 +535,21 @@ class Gallery
 		$galleries = array();
 
 		$sql = $AVE_DB->Query("
-			SELECT *
-			FROM " . PREFIX . "_modul_gallery
-			ORDER BY gallery_date DESC
+			SELECT
+				gal.*,
+				COUNT(img.id) AS image_count
+			FROM
+				cp_modul_gallery AS gal
+			LEFT JOIN
+				cp_modul_gallery_images AS img
+					ON img.gallery_id = gal.id
+			GROUP BY gal.id
+			ORDER BY gal.gallery_date DESC
 			LIMIT " . $start . "," . $limit . "
 		");
 		while($row = $sql->FetchAssocArray())
 		{
-			$row['image_count'] = $AVE_DB->Query("
-				SELECT COUNT(*)
-				FROM " . PREFIX . "_modul_gallery_images
-				WHERE gallery_id = '" . $row['id'] . "'
-			")->GetCell();
-			$row['username'] = $this->_getUserById($row['gallery_author']);
+			$row['username'] = getUserById($row['gallery_author']);
 			array_push($galleries, $row);
 		}
 
@@ -805,38 +806,6 @@ class Gallery
 		}
 
 		return $type;
-	}
-
-	/**
-	 * имя пользователя по его идентификатору
-	 *
-	 * @param int $id - идентификатор пользователя
-	 * @return string
-	 */
-	function _getUserById($id)
-	{
-		global $AVE_DB, $user_by_id;
-
-		$user = $row = '';
-
-		if (!isset($user_by_id[$id]))
-		{
-			$sql = $AVE_DB->Query("
-				SELECT
-					Vorname,
-					Nachname
-				FROM " . PREFIX . "_users
-				WHERE id = '" . (int)$id . "'
-			");
-			$row = $sql->FetchRow();
-			if (!empty($row))
-			{
-				$user = substr($row->Vorname, 0, 1) . '.' . $row->Nachname;
-			}
-			$user_by_id[$id] = $user;
-		}
-
-		return $user_by_id[$id];
 	}
 
 	/**

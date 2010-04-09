@@ -184,7 +184,10 @@ if (empty($_POST) && !isset($_REQUEST['module']) && UGROUP == -2)
 require(BASE_DIR . '/class/class.globals.php');
 $AVE_Globals = new AVE_Globals;
 
-define('DEFAULT_COUNTRY', strtolower(chop($AVE_Globals->mainSettings('default_country'))));
+define('DEFAULT_COUNTRY', strtolower(trim($AVE_Globals->mainSettings('default_country'))));
+define('DATE_FORMAT', $AVE_Globals->mainSettings('date_format'));
+define('TIME_FORMAT', $AVE_Globals->mainSettings('time_format'));
+define('PAGE_NOT_FOUND_ID', intval($AVE_Globals->mainSettings('page_not_found_id')));
 
 switch (DEFAULT_COUNTRY)
 {

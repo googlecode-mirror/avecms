@@ -6,7 +6,7 @@
 	<tr>
 		<td class="mod_comment_header">
 			<div class="mod_comment_author">
-				<a name="{$comment_id}"></a>{#COMMENT_USER_ADD#} <a title="{#COMMENT_INFO#}" href="javascript:void(0);" onclick="popup('index.php?module=comment&action=postinfo&pop=1&Id={$comment_id}&theme={$theme}','comment','500','300','1');">{$author_name}</a> • {$smarty.now|date_format:#COMMENT_DATE_TIME_FORMAT#}{if $smarty.const.UGROUP==1} • IP:{$author_ip}{/if}
+				<a name="{$comment_id}"></a>{#COMMENT_USER_ADD#} <a title="{#COMMENT_INFO#}" href="javascript:void(0);" onclick="popup('index.php?module=comment&action=postinfo&pop=1&Id={$comment_id}&theme={$theme}','comment','500','300','1');">{$author_name}</a> • {$smarty.now|date_format:$TIME_FORMAT|pretty_date:$DEF_LANGUAGE}{if $smarty.const.UGROUP==1} • IP:{$author_ip}{/if}
 			</div>
 
 			{if $smarty.const.UGROUP==1}

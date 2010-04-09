@@ -15,7 +15,7 @@
 	<table width="100%" border="0" cellpadding="8" cellspacing="1">
 		{foreach from=$answers item=a}
 			<tr>
-				<td class="tableheader">{#DOC_NOTICE_AUTHOR#}{$a.Author} ({$a.Zeit|date_format:#DOC_DATE_FORMAT#})</td>
+				<td class="tableheader">{#DOC_NOTICE_AUTHOR#}{$a.Author} ({$a.Zeit|date_format:$TIME_FORMAT|pretty_date:$DEF_LANGUAGE})</td>
 			</tr>
 
 			<tr>

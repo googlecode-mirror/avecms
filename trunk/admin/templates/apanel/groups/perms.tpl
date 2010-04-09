@@ -45,7 +45,7 @@
 				<select name="perms[]" style="width:300px" size="10" multiple="multiple" id="xxx">
 					{foreach from=$modules item=module}
 						{if $module->ModulPfad != 'mod_navigation'}
-							<option value="{$module->ModulPfad}"{if in_array($module->ModulPfad, $g_group_permissions) || in_array('alles', $g_group_permissions)} selected="selected"{/if}{if $smarty.request.Id==1 || $smarty.request.Id==2 || in_array('alles', $g_group_permissions)} disabled="disabled"{/if}>{$module->ModulName|strip_tags}</option>
+							<option value="{$module->ModulPfad}"{if in_array($module->ModulPfad, $g_group_permissions) || in_array('alles', $g_group_permissions)} selected="selected"{/if}{if $smarty.request.Id == 1 || $smarty.request.Id == $PAGE_NOT_FOUND_ID || in_array('alles', $g_group_permissions)} disabled="disabled"{/if}>{$module->ModulName|strip_tags}</option>
 						{/if}
 					{/foreach}
 				</select>
@@ -63,7 +63,7 @@
 		{foreach from=$g_all_permissions item=perm}
 			<tr class="{cycle name='fs' values='first,second'}">
 				<td>
-					<input type="checkbox" name="perms[]" value="{$perm}"{if in_array($perm, $g_group_permissions) || in_array('alles', $g_group_permissions)} checked="checked"{/if}{if $smarty.request.Id==1 || $smarty.request.Id==2 || in_array('alles', $g_group_permissions)} disabled="disabled"{/if} />
+					<input type="checkbox" name="perms[]" value="{$perm}"{if in_array($perm, $g_group_permissions) || in_array('alles', $g_group_permissions)} checked="checked"{/if}{if $smarty.request.Id == 1 || $smarty.request.Id == $PAGE_NOT_FOUND_ID || in_array('alles', $g_group_permissions)} disabled="disabled"{/if} />
 				</td>
 				<td>{$config_vars.$perm}</td>
 			</tr>

@@ -24,9 +24,9 @@ function ChangeRazd() {ldelim}
 			<td colspan="2" class="second">
 				<select style="width:372px" name="NewRubr" size="1" onchange="ChangeRazd();">
 					<option value=""></option>
-					{foreach from=$rub_items item=rfn}
-						{if $rfn->Show==1}
-							<option value="{$rfn->Id}" {if ($smarty.request.NewRubr=='' && $smarty.request.RubrikId==$rfn->Id) || ($smarty.request.NewRubr!='' && $smarty.request.NewRubr==$rfn->Id)}selected{/if}>{$rfn->RubrikName|escape:html}</option>
+					{foreach from=$rubrics item=rubric}
+						{if $rubric->Show==1}
+							<option value="{$rubric->Id}" {if ($smarty.request.NewRubr=='' && $smarty.request.RubrikId==$rubric->Id) || ($smarty.request.NewRubr!='' && $smarty.request.NewRubr==$rubric->Id)}selected{/if}>{$rubric->RubrikName|escape}</option>
 						{/if}
 					{/foreach}
 				</select>

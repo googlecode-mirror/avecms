@@ -87,9 +87,9 @@ class poll
 			array_push($items, $row_items);
 		}
 
-		$AVE_Template->assign('formaction', '/index.php?module=poll&amp;action=vote&amp;pid=' . $id);
-		$AVE_Template->assign('formaction_result', $this->_PL_Rewrite('/index.php?module=poll&amp;action=result&amp;pid=' . $id));
-		$AVE_Template->assign('formaction_archive', $this->_PL_Rewrite('/index.php?module=poll&amp;action=archive'));
+		$AVE_Template->assign('formaction', 'index.php?module=poll&amp;action=vote&amp;pid=' . $id);
+		$AVE_Template->assign('formaction_result', $this->_PL_Rewrite('index.php?module=poll&amp;action=result&amp;pid=' . $id));
+		$AVE_Template->assign('formaction_archive', $this->_PL_Rewrite('index.php?module=poll&amp;action=archive'));
 
 		$AVE_Template->assign('poll', $row);
 		$AVE_Template->assign('items', $items);
@@ -125,7 +125,7 @@ class poll
 		$group_id = ($row->group_id == '') ? $row->group_id : explode(',', $row->group_id);
 		$ip = empty($_SERVER['REMOTE_ADDR']) ? '' : $_SERVER['REMOTE_ADDR'];
 
-		$back = $this->_PL_Rewrite('/index.php?module=poll&amp;action=result&amp;pid=' . $pid);
+		$back = $this->_PL_Rewrite('index.php?module=poll&amp;action=result&amp;pid=' . $pid);
 
 		if (@in_array($ip, $ip_a) ||
 			@in_array($_SESSION['user_id'], $uid) ||
@@ -263,10 +263,10 @@ class poll
 		$row->can_vote = (empty($vote) && !empty($rights)) ? '1' : '0';
 		$row->groups = implode(', ', $groups);
 
-		$AVE_Template->assign('formaction', '/index.php?module=poll&amp;action=vote&amp;pid=' . $pid);
-		$AVE_Template->assign('formaction_result', $this->_PL_Rewrite('/index.php?module=poll&amp;action=result&amp;pid=' . $pid));
-		$AVE_Template->assign('formaction_archive', $this->_PL_Rewrite('/index.php?module=poll&amp;action=archive'));
-		$AVE_Template->assign('formaction_comment', $this->_PL_Rewrite('/index.php?module=poll&amp;action=form&amp;pid=' . $pid . '&amp;theme_folder=' . THEME_FOLDER . '&amp;pop=1'));
+		$AVE_Template->assign('formaction', 'index.php?module=poll&amp;action=vote&amp;pid=' . $pid);
+		$AVE_Template->assign('formaction_result', $this->_PL_Rewrite('index.php?module=poll&amp;action=result&amp;pid=' . $pid));
+		$AVE_Template->assign('formaction_archive', $this->_PL_Rewrite('index.php?module=poll&amp;action=archive'));
+		$AVE_Template->assign('formaction_comment', $this->_PL_Rewrite('index.php?module=poll&amp;action=form&amp;pid=' . $pid . '&amp;theme_folder=' . THEME_FOLDER . '&amp;pop=1'));
 
 		$AVE_Template->assign('poll', $row);
 		$AVE_Template->assign('items', $items);
@@ -326,7 +326,7 @@ class poll
 		);
 		while ($row = $sql->FetchRow())
 		{
-			$row->plink = $this->_PL_Rewrite('/index.php?module=poll&amp;action=result&amp;pid=' . $row->id);
+			$row->plink = $this->_PL_Rewrite('index.php?module=poll&amp;action=result&amp;pid=' . $row->id);
 			array_push($items, $row);
 		}
 

@@ -55,7 +55,7 @@
 					<input name="image_position[{$image.id}]" type="text" style="width:50px" id="image_position[{$image.id}]" value="{$image.image_position}">{#Position#}<br />
 					<br />
 					{#Uploader#}: {$image.image_author|escape}<br />
-					{#UploadOn#}: {$image.image_date|date_format:#DateFormat#}<br />
+					{#UploadOn#}: {$image.image_date|date_format:$TIME_FORMAT|pretty_date:$DEF_LANGUAGE}<br />
 					{#Filesize#}: {$image.image_size} kb
 				</td>
 			</tr>

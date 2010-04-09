@@ -159,7 +159,7 @@ function query_condition($id)
  */
 function cpParseRequest($id)
 {
-	global $AVE_Core, $AVE_DB, $AVE_Globals, $AVE_Core;
+	global $AVE_Core, $AVE_DB, $AVE_Globals;
 
 	$return = '';
 
@@ -204,7 +204,7 @@ function cpParseRequest($id)
 					SELECT COUNT(*)
 					FROM " . PREFIX . "_documents AS a
 					WHERE a.Id != '1'
-					AND a.Id != '" . $AVE_Globals->mainSettings('page_not_found_id') . "'
+					AND a.Id != '" . PAGE_NOT_FOUND_ID . "'
 					AND a.Id != '" . $AVE_Core->curentdoc->Id . "'
 					AND a.RubrikId = '" . $row_ab->RubrikId . "'
 					AND a.Geloescht != '1'
@@ -220,7 +220,7 @@ function cpParseRequest($id)
 					SELECT COUNT(*)
 					FROM " . PREFIX . "_documents AS a
 					WHERE Id != '1'
-					AND Id != '" . $AVE_Globals->mainSettings('page_not_found_id') . "'
+					AND Id != '" . PAGE_NOT_FOUND_ID . "'
 					AND Id != '" . $AVE_Core->curentdoc->Id . "'
 					AND RubrikId = '" . $row_ab->RubrikId . "'
 					AND Geloescht != 1
@@ -252,7 +252,7 @@ function cpParseRequest($id)
 				FROM " . PREFIX . "_documents AS a
 				LEFT JOIN " . PREFIX . "_modul_comment_info AS b ON document_id = a.Id
 				WHERE a.Id != '1'
-				AND a.Id != '" . $AVE_Globals->mainSettings('page_not_found_id') . "'
+				AND a.Id != '" . PAGE_NOT_FOUND_ID . "'
 				AND a.Id != '" . $AVE_Core->curentdoc->Id . "'
 				AND RubrikId = '" . $row_ab->RubrikId . "'
 				AND Geloescht != '1'
@@ -275,7 +275,7 @@ function cpParseRequest($id)
 					DokStart
 				FROM " . PREFIX . "_documents AS a
 				WHERE Id != '1'
-				AND Id != '" . $AVE_Globals->mainSettings('page_not_found_id') . "'
+				AND Id != '" . PAGE_NOT_FOUND_ID . "'
 				AND Id != '" . $AVE_Core->curentdoc->Id . "'
 				AND RubrikId = '" . $row_ab->RubrikId . "'
 				AND Geloescht != 1

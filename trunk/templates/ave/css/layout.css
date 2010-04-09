@@ -24,7 +24,7 @@ h5 a:visited                    {font-size:14px;font-weight:700;margin-bottom:3p
 h6                              {display:block;font-size:14px;font-weight:700;color:#789E3A;border-bottom:1px solid #CCC;padding-bottom:3px; text-transform:uppercase;}
 /* branding
 ----------------------------------------------- */
-h1#branding  a { background: url(../images/logo.png) no-repeat; text-indent: -1000px; display: block; height: 120px; width: 273px; }
+h1#branding  a { background: url(../images/logo.png) no-repeat; text-indent: -5000px; display: block; height: 120px; width: 273px; }
 div#fon_header	{ height: 120px; position: absolute; top: 0px; right: 0px; width: 667px; }
 div#fon_header	p { margin: 30px 0px 0px 360px; line-height: 18px; }
 div#fon_header	p strong			{ color:#6D9720; font-size:16px }
