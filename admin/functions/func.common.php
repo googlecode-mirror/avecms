@@ -129,7 +129,7 @@ function MySqlSize()
 	$mysql_size = '';
 	while ($row = $sql->FetchAssocArray())
 	{
-		if (ereg('^' . preg_quote(PREFIX), $row['Name']))
+		if (preg_match('/^' . preg_quote(PREFIX) . '_/', $row['Name']))
 		{
 			$mysql_size += $row['Data_length'];
 			$mysql_size += $row['Index_length'];
