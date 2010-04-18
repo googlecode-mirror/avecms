@@ -27,10 +27,7 @@ class AVE_Module
 	 */
 	function showModules()
 	{
-		global $AVE_DB, $AVE_Template, $config_vars;
-
-		$dir     = BASE_DIR . '/modules';
-		$d       = dir($dir);
+		global $AVE_DB, $AVE_Template;
 
 		$modules = array();
 
@@ -48,14 +45,17 @@ class AVE_Module
 			$install_modules[$row->ModulName] = $row;
 		}
 
+		$author_title = $AVE_Template->get_config_vars('MODULES_AUTHOR');
+		$dir = BASE_DIR . '/modules';
+		$d = dir($dir);
 		while (false !== ($entry = $d->read()))
 		{
 			if ($entry!='.' && $entry!='..' && $entry!='.svn' && $entry!='_svn')
 			{
-				$entry = $dir.'/'.$entry;
+				$entry = $dir . '/' . $entry;
 				if (is_dir($entry))
 				{
-					if (!include($entry . '/modul.php')) echo $config_vars['MODULES_ERROR'] . $entry . '<br />';
+					if (!include($entry . '/modul.php')) echo $AVE_Template->get_config_vars('MODULES_ERROR') . $entry . '<br />';
 
 					$row = !empty($install_modules[$modul['ModulName']]) ? $install_modules[$modul['ModulName']] : false;
 
@@ -96,7 +96,7 @@ class AVE_Module
 					$mod->descr     = $modul['Beschreibung'];
 					$mod->all_tmpl  = $all_templates;
 					$mod->ol_info   = $mod->descr
-									. '<br><br><b>' . $config_vars['MODULES_AUTHOR'] . '</b><br>'
+									. '<br><br><b>' . $author_title . '</b><br>'
 									. $mod->autor . '<br><em>' . $mod->copyright . '</em>';
 
 					$modules[$mod->name] = $mod;
@@ -139,7 +139,7 @@ class AVE_Module
 	 */
 	function installModule()
 	{
-		global $AVE_DB;
+		global $AVE_DB, $AVE_Template;
 
 		include(BASE_DIR . '/modules/' . MODULE_PATH . '/modul.php');
 		@include_once(BASE_DIR . '/modules/' . MODULE_PATH . '/sql.php');
@@ -188,7 +188,7 @@ class AVE_Module
 	 */
 	function updateModule()
 	{
-		global $AVE_DB;
+		global $AVE_DB, $AVE_Template;
 
 		include(BASE_DIR . '/modules/' . MODULE_PATH . '/modul.php');
 		@include_once(BASE_DIR . '/modules/' . MODULE_PATH . '/sql.php');
@@ -210,7 +210,7 @@ class AVE_Module
 	 */
 	function deleteModule()
 	{
-		global $AVE_DB;
+		global $AVE_DB, $AVE_Template;
 
 		include(BASE_DIR . '/modules/' . MODULE_PATH . '/modul.php');
 		@include_once(BASE_DIR . '/modules/' . MODULE_PATH . '/sql.php');
