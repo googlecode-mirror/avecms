@@ -220,8 +220,8 @@ class Newsarchive
 			WHERE RubrikId IN (" . $row->rubs . ")
 			AND Id != 1
 			AND Id != '" . PAGE_NOT_FOUND_ID . "'
-			AND Geloescht == 0
-			AND DokStatus == 1
+			AND Geloescht = 0
+			AND DokStatus = 1
 			AND DokStart > UNIX_TIMESTAMP(DATE_FORMAT((CURDATE() - INTERVAL 11 MONTH),'%Y-%m-01'))
 			" . $doctime . "
 			GROUP BY `month`
