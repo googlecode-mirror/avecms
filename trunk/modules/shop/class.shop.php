@@ -2681,8 +2681,11 @@ $AVE_Template->caching = 0;
 					Kennwort,
 					salt,
 					`Status`
-				FROM " . PREFIX . "_users AS usr
-				JOIN " . PREFIX . "_user_groups USING (Benutzergruppe)
+				FROM
+					" . PREFIX . "_users AS usr
+				JOIN
+					" . PREFIX . "_user_groups AS grp
+						ON grp.Benutzergruppe = usr.Benutzergruppe
 				WHERE Email = '" . $_POST['shop_user_login'] . "'
 				OR `UserName` = '" . $_POST['shop_user_login'] . "'
 				LIMIT 1

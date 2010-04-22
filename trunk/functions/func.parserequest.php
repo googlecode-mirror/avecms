@@ -68,7 +68,7 @@ function query_condition($id)
 			$start_bracket = ' AND ';
 			$lastb_bracket = '';
 			$alias = 't' . $start;
-			$from .= ($start != 0) ? ' JOIN ' . PREFIX . '_document_fields AS ' . $alias . ' USING(DokumentId)' : '';
+			$from .= ($start != 0) ? ' JOIN ' . PREFIX . '_document_fields AS ' . $alias . ' ON ' . $alias . '.DokumentId = t0.DokumentId' : '';
 		}
 		else
 		{
@@ -126,7 +126,7 @@ function query_condition($id)
 		{
 			$where = ' WHERE 1';
 			$alias = 't' . $start;
-			$from .= ($start != 0) ? ' JOIN ' . PREFIX . '_document_fields AS ' . $alias . ' USING(DokumentId)' : '';
+			$from .= ($start != 0) ? ' JOIN ' . PREFIX . '_document_fields AS ' . $alias . ' ON ' . $alias . '.DokumentId = t0.DokumentId' : '';
 			$eq_string .= ' AND ' . $alias . ".RubrikFeld = '" . $feld . "' AND " . $alias . ".Inhalt = '" . $wert . "'";
 			++$start;
 		}
@@ -134,7 +134,7 @@ function query_condition($id)
 
 	if ($where != '')
 	{
-		$ueb = 'AND a.Id = ANY(SELECT DokumentId FROM ' . $from . $where . $eq_string . ')';
+		$ueb = 'AND a.Id = ANY(SELECT t0.DokumentId FROM ' . $from . $where . $eq_string . ')';
 	}
 
 	if (empty($_SESSION[$doc_query]['fld']))
