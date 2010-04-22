@@ -539,9 +539,9 @@ class Gallery
 				gal.*,
 				COUNT(img.id) AS image_count
 			FROM
-				cp_modul_gallery AS gal
+				" . PREFIX . "_modul_gallery AS gal
 			LEFT JOIN
-				cp_modul_gallery_images AS img
+				" . PREFIX . "_modul_gallery_images AS img
 					ON img.gallery_id = gal.id
 			GROUP BY gal.id
 			ORDER BY gal.gallery_date DESC
