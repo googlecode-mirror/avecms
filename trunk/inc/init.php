@@ -52,7 +52,7 @@ ini_set('session.use_trans_sid',    0);
 ini_set('url_rewriter.tags',        '');
 
 define('APP_NAME', 'AVE.cms');
-define('APP_VERSION', '2.09c');
+define('APP_VERSION', '2.09e');
 define('APP_INFO', APP_NAME . ' ' . APP_VERSION . ' &copy; 2008-' . gmdate('Y') . ' <a target="_blank" href="http://www.overdoze.ru/">Overdoze.Ru</a>');
 
 define('URL_SUFF', $config['url_suff']);
