@@ -130,8 +130,11 @@ class Login
 					Rechte,
 					Kennwort,
 					salt
-				FROM " . PREFIX . "_users AS usr
-				JOIN " . PREFIX . "_user_groups USING (Benutzergruppe)
+				FROM
+					" . PREFIX . "_users AS usr
+				JOIN
+					" . PREFIX . "_user_groups AS grp
+						ON grp.Benutzergruppe = usr.Benutzergruppe
 				WHERE `Status` = 1
 				AND (Email = '" . $_POST['user_login'] . "' OR `UserName` = '" . $_POST['user_login'] . "')
 				LIMIT 1

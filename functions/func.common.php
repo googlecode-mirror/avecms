@@ -160,8 +160,11 @@ function checkLogin()
 				Land,
 				Rechte,
 				Kennwort
-			FROM " . PREFIX . "_users AS usr
-			JOIN " . PREFIX . "_user_groups USING (Benutzergruppe)
+			FROM
+				" . PREFIX . "_users AS usr
+			JOIN
+				" . PREFIX . "_user_groups AS grp
+					ON grp.Benutzergruppe = usr.Benutzergruppe
 			WHERE `Status` = 1
 			AND usr.Id = '" . $userid . "'
 			LIMIT 1

@@ -49,8 +49,11 @@ if (isset($_REQUEST['action']) && $_REQUEST['action'] == 'login')
                 Kennwort,
                 salt,
                 `Status`
-            FROM " . PREFIX . "_users AS usr
-            JOIN " . PREFIX . "_user_groups USING (Benutzergruppe)
+			FROM
+				" . PREFIX . "_users AS usr
+			JOIN
+				" . PREFIX . "_user_groups AS grp
+					ON grp.Benutzergruppe = usr.Benutzergruppe
             WHERE Email = '" . $_POST['user_login'] . "'
             OR `UserName` = '" . $_POST['user_login'] . "'
             LIMIT 1
