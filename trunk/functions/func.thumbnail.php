@@ -38,7 +38,7 @@ $width = (isset($_REQUEST['width']) && is_numeric($_REQUEST['width']) &&
 if (! empty($_REQUEST['thumb'])) $filename = ltrim(preg_replace('/[^\x20-\xFF]/', '', $_REQUEST['thumb']), '/');
 
 // ‘ормируем полный путь к оригиналу изображени€
-$file = BASE_DIR . '/' . $filename;
+$file = BASE_DIR . '/' . ltrim($filename, '/');
 
 // ѕровер€ем наличие изображени€
 if (! empty($filename) && file_exists($file))
@@ -73,11 +73,13 @@ elseif (! $file = realpath(BASE_DIR . '/uploads/images/noimage.gif'))
 	exit;
 }
 
+define('IMAGE_TOOLBOX_DEFAULT_JPEG_QUALITY', 75);
+
 require(BASE_DIR . '/class/class.thumbnail.php');
 
 $img = new Image_Toolbox($file);
 
-$img->newOutputSize($width, $height);
+$img->newOutputSize($width, $height, 1, true);
 
 //$img->addText('AVE.cms 2.09', BASE_DIR . '/inc/fonts/ft16.ttf', 16, '#709536', 'right -10', 'bottom -10');
 
