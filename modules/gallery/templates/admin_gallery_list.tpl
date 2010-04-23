@@ -9,7 +9,7 @@
 	<div class="HeaderText">&nbsp;</div>
 </div>
 <div class="infobox">
-	<a href="{$smarty.server.REQUEST_URI}#newg">&raquo;&nbsp;{#LinknewGal#}</a>
+	<a href="#newg">&raquo;&nbsp;{#LinknewGal#}</a>
 </div><br />
 
 <form action="" method="post">

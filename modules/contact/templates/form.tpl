@@ -37,7 +37,7 @@ function checkForm(obj, elems) {
 	{#CONTACT_REQUIRED_INFO#}<br />
 	<form method="post" enctype="multipart/form-data" onSubmit='return checkForm(this)'>
 		{if $wrong_securecode}
-			<body onload="location.href='{$smarty.server.REQUEST_URI}#ws'">
+			<body onload="location.href='#ws'">
 			<a name="ws"></a>
 			<h3>{#CONTACT_WRONG_CODE#}</h3>
 		{/if}
@@ -108,7 +108,7 @@ function checkForm(obj, elems) {
 
 		{if $im}
             <div class="mod_contact_left"><label>{#CONTACT_FORM_CODE#}</label></div>
-			<div class="mod_contact_right"><img src="inc/captcha.php" alt="" width="120" height="60" border="0" /></div>
+			<div class="mod_contact_right"><img src="{$BASE_PATH}inc/captcha.php" alt="" width="120" height="60" border="0" /></div>
 
 			<div class="mod_contact_left"><label for="securecode">{#CONTACT_FORM_CODE_ENTER#}</label></div>
 			<div class="mod_contact_right"><input name="securecode" type="text" id="securecode" style="width:120px" maxlength="10" check_message="{#CONTACT_CHECK_CODE#}" /></div>

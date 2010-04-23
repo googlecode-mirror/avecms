@@ -359,6 +359,7 @@ class AVE_Core
 		// парсим остальные тэги основного шаблона
 		$search = array(
 			'[cp:mediapath]',
+			'[cp:path]',
 			'[cp:pagename]',
 			'[cp:document]',
 			'[cp:home]',
@@ -368,7 +369,8 @@ class AVE_Core
 		);
 
 		$replace = array(
-			'templates/' . THEME_FOLDER . '/',
+			BASE_PATH . 'templates/' . THEME_FOLDER . '/',
+			BASE_PATH,
 			htmlspecialchars($AVE_Globals->mainSettings('site_name'), ENT_QUOTES),
 			redirectLink('print'),
 			homeLink(),
@@ -516,7 +518,7 @@ class AVE_Core
 
 		if (!is_dir(BASE_DIR . '/modules/' . $_REQUEST['module']))
 		{
-			echo '<meta http-equiv="Refresh" content="2;URL=index.php" />';
+			echo '<meta http-equiv="Refresh" content="2;URL=' . BASE_PATH . '" />';
 			$fetched = $this->_module_not_found;
 		}
 		else
@@ -662,7 +664,7 @@ class AVE_Core
 
 		if ($available)
 		{
-			header('Location:index.php?id=' . PAGE_NOT_FOUND_ID);
+			header('Location:' . BASE_PATH . 'index.php?id=' . PAGE_NOT_FOUND_ID);
 		}
 		else
 		{

@@ -10,7 +10,7 @@
 	<a href="javascript:void(0);" onclick="popup('index.php?docid={$smarty.request.id}&module=comment&action=form&pop=1&theme={$theme}&page={$page}','comment','500','600','1')">{#COMMENT_SITE_ADD#}</a>&nbsp;|&nbsp;
 {/if}
 
-<a href="{$smarty.server.REQUEST_URI}#end">{#COMMENT_LAST_COMMENT#}</a>
+<a href="#end">{#COMMENT_LAST_COMMENT#}</a>
 
 {if $smarty.const.UGROUP == 1}
 	&nbsp;|&nbsp;

@@ -60,8 +60,9 @@
 					<a href="javascript:void(0);" onclick="editAreaLoader.insertTags('{$js_textfeld}', '<pre>', '</pre>');">PRE</a>&nbsp;|&nbsp;
 					<a href="javascript:void(0);" onclick="editAreaLoader.insertTags('{$js_textfeld}', '<br />', '');">BR</a>&nbsp;|&nbsp;
 					<a href="javascript:void(0);" onclick="editAreaLoader.insertTags('{$js_textfeld}', '\t', '');">TAB</a>&nbsp;|&nbsp;
-					<a href="javascript:void(0);" onclick="editAreaLoader.insertTags('{$js_textfeld}', '[cp:title]', '');">[cp:title]</a>&nbsp;|&nbsp;
-					<a href="javascript:void(0);" onclick="editAreaLoader.insertTags('{$js_textfeld}', '[cp:mediapath]', '');">[cp:mediapath]</a>&nbsp;|&nbsp;
+					<a title="{#RUBRIK_TITLE_INFO#}" href="javascript:void(0);" onclick="editAreaLoader.insertTags('{$js_textfeld}', '[cp:title]', '');">[cp:title]</a>&nbsp;|&nbsp;
+					<a title="{#RUBRIK_PATH_INFO#}" href="javascript:void(0);" onclick="editAreaLoader.insertTags('{$js_textfeld}', '[cp:path]', '');">[cp:path]</a>&nbsp;|&nbsp;
+					<a title="{#RUBRIK_MEDIAPATH_INFO#}" href="javascript:void(0);" onclick="editAreaLoader.insertTags('{$js_textfeld}', '[cp:mediapath]', '');">[cp:mediapath]</a>&nbsp;|&nbsp;
 					<a title="{#RUBRIK_VIEWS_INFO#}" href="javascript:void(0);" onclick="editAreaLoader.insertTags('{$js_textfeld}', '[views]', '');">[views]</a>&nbsp;|&nbsp;
 					<a title="{#RUBRIK_HIDE_INFO#}" href="javascript:void(0);" onclick="editAreaLoader.insertTags('{$js_textfeld}', '[hide:', ']\n\n[/hide]');">[hide:X,X][/hide]</a>&nbsp;|
 				</div>

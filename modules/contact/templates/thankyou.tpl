@@ -1,6 +1,6 @@
 {strip}
 
-<body onload="location.href='{$smarty.server.REQUEST_URI}#form'">
+<body onload="location.href='#form'">
 <a name="form"></a>
 {#CONTACT_THANKYOU#}
 <p>&nbsp;</p>

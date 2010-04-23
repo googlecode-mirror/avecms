@@ -1,21 +1,22 @@
 <?php
 
-define('ANTISPAM', 1);
+$response = '';
+$query_string = (isset($_REQUEST['ajq']))
+	? preg_replace('/[^ A-Za-zÀ-ßà-ÿ¨¸0-9]/i', '', $_REQUEST['ajq'])
+	: '';
 
-define('BASE_DIR', str_replace("\\", "/", substr(dirname(__FILE__), 0, -17)));
-
-//include_once (BASE_DIR . '/functions/func.pref.php');
-
-$sc = (isset($_REQUEST['content']) ) ?  eregi_replace('[^ A-Za-zÀ-ßà-ÿ¨¸0-9]', '', $_REQUEST['content']) : '';
-
-if (!empty($sc))
+if (strlen($query_string) > 2)
 {
-//	include_once (BASE_DIR . '/inc/db.config.php');
-//	include_once (BASE_DIR . '/inc/config.php');
-	include_once (BASE_DIR . '/inc/init.php');
+//	define('ANTISPAM', 1);
+	define('BASE_DIR', str_replace("\\", "/", substr(dirname(__FILE__),0,-17)));
 
-	$kid = (!empty($_REQUEST['kid']) && is_numeric($_REQUEST['kid']) && $_REQUEST['kid'] != '9999') ? "AND b.Id = '" . $_REQUEST['kid'] . "'" : '';
-	$div = '';
+	require(BASE_DIR . '/inc/init.php');
+
+	$where_category_id = '';
+	if (!empty($_REQUEST['cid']) && (int)$_REQUEST['cid'] > 0)
+	{
+		$where_category_id = "AND b.Id = '" . (int)$_REQUEST['cid'] . "'";
+	}
 
 	$sql = $GLOBALS['AVE_DB']->Query("
 		SELECT
@@ -36,36 +37,34 @@ if (!empty($sc))
 				b.Gruppen = '" . UGROUP . "'
 			)
 		AND
-			(Name LIKE '%" . $sc . "%' OR Beschreibung LIKE '%" . $sc . "%')
-		" . $kid . "
+			(
+				Name LIKE '%" . $query_string . "%' OR
+				Beschreibung LIKE '%" . $query_string . "%'
+			)
+		" . $where_category_id . "
 	");
 	$num = $sql->NumRows();
 
-	if ($num>0)
+	if ($num > 0)
 	{
-		include_once (BASE_DIR . '/modules/download/funcs/func.rewrite.php');
-
-		echo 'showDiv||';
-		$div .= '<div id="cp_ajs" class="mod_download_ajaxsearchdiv">';
+		$response .= '<div id="cp_ajs" class="mod_download_ajaxsearchdiv">';
 		while ($row = $sql->FetchRow())
 		{
-			$row->Link = 'index.php?module=download&amp;action=showfile&amp;file_id=' . $row->Id . '&amp;categ=' . $row->KatId;
-			$row->Link = (CP_REWRITE==1) ? DownloadRewrite($row->Link) : $row->Link;
-			$div .= '<a class="mod_download_ajsearch" href="' . $row->Link . '">&nbsp;' . stripslashes($row->Name) . '</a>';
+			$response .= '<a class="mod_download_ajsearch" href="index.php'
+				. '?module=download&amp;action=showfile&amp;file_id=' . $row->Id
+				. '&amp;categ=' . $row->KatId . '">' . stripslashes($row->Name)
+				. '</a>';
 		}
-		$div .= '</div>';
-		echo $div;
-	}
-	else
-	{
-		echo 'showDiv||';
-		echo '';
+		$response .= '</div>';
+
+		if (CP_REWRITE==1)
+		{
+			require(BASE_DIR . '/modules/download/funcs/func.rewrite.php');
+			$response = DownloadRewrite($response);
+		}
 	}
 }
-else
-{
-	echo 'showDiv||';
-	echo '';
-}
+
+echo 'showDiv||', $response;
 
 ?>

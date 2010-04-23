@@ -73,6 +73,7 @@ class AVE_Template extends Smarty
          */
 		$this->assign('tpl_path', 'templates/' . DEFAULT_THEME_FOLDER);
 		$this->assign('BASE_DIR', BASE_DIR);
+		$this->assign('BASE_PATH', BASE_PATH);
 		$this->assign('DEF_DOC_START_YEAR', mktime(0, 0, 0, date("m"), date("d"), date("Y") - 10));
 		$this->assign('DEF_DOC_END_YEAR', mktime(0, 0, 0, date("m"), date("d"), date("Y") + 20));
 		$this->assign('DEF_COUNTRY', DEFAULT_COUNTRY);

@@ -170,15 +170,22 @@ function changeRub(select) {ldelim}
 					</tr>
 
 					<tr>
-						<td scope="row" class="first"><strong>
-							<a href="javascript:void(0);" onclick="editAreaLoader.insertTags('{$js_textfeld}', '[pages]', '');">[pages]</a></strong>
+						<td scope="row" class="first">
+							<strong><a href="javascript:void(0);" onclick="editAreaLoader.insertTags('{$js_textfeld}', '[pages]', '');">[pages]</a></strong>
 						</td>
 						<td class="first">{#QUERY_MAIN_NAVI#}</td>
 					</tr>
 
 					<tr>
-						<td scope="row" class="first"><strong>
-							<a href="javascript:void(0);" onclick="editAreaLoader.insertTags('{$js_textfeld}', '[cp:mediapath]', '');">[cp:mediapath]</a></strong>
+						<td scope="row" class="first">
+							<strong><a href="javascript:void(0);" onclick="editAreaLoader.insertTags('{$js_textfeld}', '[cp:path]', '');">[cp:path]</a></strong>
+						</td>
+						<td class="first">{#QUERY_PATH#}</td>
+					</tr>
+
+					<tr>
+						<td scope="row" class="first">
+							<strong><a href="javascript:void(0);" onclick="editAreaLoader.insertTags('{$js_textfeld}', '[cp:mediapath]', '');">[cp:mediapath]</a></strong>
 						</td>
 						<td class="first">{#QUERY_MEDIAPATH#}</td>
 					</tr>
@@ -265,6 +272,13 @@ function changeRub(select) {ldelim}
 							<strong><a href="javascript:void(0);" onclick="editAreaLoader.insertTags('{$js_textfeld}', '[comments]', '');">[comments]</a></strong>
 						</td>
 						<td class="first">{#QUERY_COMMENTS_INFO#}</td>
+					</tr>
+
+					<tr>
+						<td scope="row" class="first">
+							<strong><a href="javascript:void(0);" onclick="editAreaLoader.insertTags('{$js_textfeld}', '[cp:path]', '');">[cp:path]</a></strong>
+						</td>
+						<td class="first">{#QUERY_PATH#}</td>
 					</tr>
 
 					<tr>

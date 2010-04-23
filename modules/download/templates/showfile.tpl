@@ -40,20 +40,20 @@ eval("{$wm_script}");
 		{if $Empfehlen==1}
         <tr>
           <td width="40"><img class="absmiddle" src="{$dl_images}recommend.gif" alt="" border="0" /></td>
-          <td><a href="{$smarty.server.REQUEST_URI}#recommend">{#Recommend#}</a></td>
+          <td><a href="#recommend">{#Recommend#}</a></td>
         </tr>
 		{/if}
 		{if $ZeigeWertung==1}
         <tr>
           <td><img class="absmiddle" src="{$dl_images}vote.gif" alt="" border="0" /></td>
-          <td><a href="{$smarty.server.REQUEST_URI}#voting">{#VoteDownload#}</a> </td>
+          <td><a href="#voting">{#VoteDownload#}</a> </td>
         </tr>
 		{/if}
 		{if $Kommentare==1}
         <tr>
           <td><img class="absmiddle" src="{$dl_images}recommend.gif" alt="" border="0" /></td>
           <td>
-		  <a href="{$smarty.server.REQUEST_URI}#comments">{#Comments#}</a>&nbsp;/&nbsp;<a href="{$smarty.server.REQUEST_URI}#comment_new">{#CommentNew#}</a>
+		  <a href="#comments">{#Comments#}</a>&nbsp;/&nbsp;<a href="#comment_new">{#CommentNew#}</a>
 
 		  </td>
         </tr>

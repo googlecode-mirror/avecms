@@ -36,19 +36,19 @@
           <div class="mod_shop_newprod_box">
             <table width="100%"  cellpadding="0" cellspacing="0">
               <tr>
-                <td style="text-align:center;"><div class="mod_shop_newprod_box_container"> <a title="" href="#"><img src="/templates/ave/images/hp151111.jpg" alt="Canon Powershot G11" width="55" height="55"/></a> </div>
+                <td style="text-align:center;"><div class="mod_shop_newprod_box_container"> <a title="" href="#"><img src="templates/ave/images/hp151111.jpg" alt="Canon Powershot G11" width="55" height="55"/></a> </div>
                   <a title="" href="#">Canon Powershot G11</a> <br />
                 <span class="mod_shop_price_small">21.500 руб.</span></td>
-                <td style="text-align:center;"><div class="mod_shop_newprod_box_container"> <a title="" href="#"><img src="/templates/ave/images/hp151111.jpg" alt="Canon Powershot G11" width="55" height="55"/></a> </div>
+                <td style="text-align:center;"><div class="mod_shop_newprod_box_container"> <a title="" href="#"><img src="templates/ave/images/hp151111.jpg" alt="Canon Powershot G11" width="55" height="55"/></a> </div>
                   <a title="" href="#">Toshiba Satellite A300-148</a> <br />
                   <span class="mod_shop_price_small">45.400 руб.</span></td>
-                <td style="text-align:center;"><div class="mod_shop_newprod_box_container"> <a title="" href="#"><img src="/templates/ave/images/hp151111.jpg" alt="Canon Powershot G11" width="55" height="55"/></a> </div>
+                <td style="text-align:center;"><div class="mod_shop_newprod_box_container"> <a title="" href="#"><img src="templates/ave/images/hp151111.jpg" alt="Canon Powershot G11" width="55" height="55"/></a> </div>
                   <a title="" href="#">HP Compaq 530 FH524AA</a> <br />
                   <span class="mod_shop_price_small">37.500 руб.</span></td>
-                <td style="text-align:center;"><div class="mod_shop_newprod_box_container"> <a title="" href="#"><img src="/templates/ave/images/hp151111.jpg" alt="Canon Powershot G11" width="55" height="55"/></a> </div>
+                <td style="text-align:center;"><div class="mod_shop_newprod_box_container"> <a title="" href="#"><img src="templates/ave/images/hp151111.jpg" alt="Canon Powershot G11" width="55" height="55"/></a> </div>
                   <a title="" href="#">Acer Extensa 5220-200508Mi</a> <br />
                   <span class="mod_shop_price_small">1.550 руб.</span></td>
-                <td style="text-align:center;"><div class="mod_shop_newprod_box_container"> <a title="" href="#"><img src="/templates/ave/images/hp151111.jpg" alt="Canon Powershot G11" width="55" height="55"/></a> </div>
+                <td style="text-align:center;"><div class="mod_shop_newprod_box_container"> <a title="" href="#"><img src="templates/ave/images/hp151111.jpg" alt="Canon Powershot G11" width="55" height="55"/></a> </div>
                   <a title="" href="#">Canon Powershot G11</a> <br />
                   <span class="mod_shop_price_small">599 руб.</span></td>
               </tr>
@@ -60,10 +60,10 @@
           <div class="mod_shop_newprod_box">
             <table width="100%"  cellpadding="0" cellspacing="0">
               <tr>
-                <td style="text-align:center;"><div class="mod_shop_newprod_box_container"> <a title="" href="#"><img src="/templates/ave/images/hp151111.jpg" alt="Canon Powershot G11" width="55" height="55"/></a> </div>
+                <td style="text-align:center;"><div class="mod_shop_newprod_box_container"> <a title="" href="#"><img src="templates/ave/images/hp151111.jpg" alt="Canon Powershot G11" width="55" height="55"/></a> </div>
                   <a title="" href="#">Canon Powershot G11</a> <br />
                   <strong>599,00 руб.</strong></td>
-                <td style="text-align:center;"><div class="mod_shop_newprod_box_container"> <a title="" href="#"><img src="/templates/ave/images/hp151111.jpg" alt="Canon Powershot G11" width="55" height="55"/></a> </div>
+                <td style="text-align:center;"><div class="mod_shop_newprod_box_container"> <a title="" href="#"><img src="templates/ave/images/hp151111.jpg" alt="Canon Powershot G11" width="55" height="55"/></a> </div>
                   <a title="" href="#">Canon Powershot G11</a> <br />
                   <strong>599,00 руб.</strong></td>
               </tr>
@@ -75,7 +75,7 @@
           <div class="mod_shop_newprod_box">
             <table width="100%"  cellpadding="0" cellspacing="0">
               <tr>
-                <td style="text-align:center;"><div class="mod_shop_newprod_box_container"> <a title="" href="#"><img src="/templates/ave/images/hp151111.jpg" alt="Canon Powershot G11" width="55" height="55"/></a> </div>
+                <td style="text-align:center;"><div class="mod_shop_newprod_box_container"> <a title="" href="#"><img src="templates/ave/images/hp151111.jpg" alt="Canon Powershot G11" width="55" height="55"/></a> </div>
                   <a title="" href="#">Canon Powershot G11</a> <br />
                   <strong>599,00 руб.</strong></td>
               </tr>
@@ -101,13 +101,13 @@
       <h2> <a href="#" id="toggle-login-forms">Авторизация</a> </h2>
       <div class="block" id="login-forms">{$UserPanel}</div>
     </div>
-    
+
   <!-- Блок поиска по магазину -->
     <div class="box">
       <h2><a href="#" id="toggle-shop-search">Поиск товаров</a></h2>
       <div class="block" id="shop-search">{$Search}</div>
     </div>
-    
+
   <!-- Блок корзины -->
     <div class="box">
       <h2><a href="#" id="toggle-shopbasket">Корзина</a></h2>

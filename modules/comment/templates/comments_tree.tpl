@@ -6,7 +6,7 @@
 <br />
 <h6>{#COMMENT_SITE_TITLE#}{if $closed==1 && $smarty.const.UGROUP!=1} <small>{#COMMENT_SITE_CLOSED#}</small>{/if}</h6>
 
-<a href="{$smarty.server.REQUEST_URI|escape}#end">{#COMMENT_LAST_COMMENT#}</a>
+<a href="#end">{#COMMENT_LAST_COMMENT#}</a>
 
 {if $smarty.const.UGROUP==1}
 	&nbsp;|&nbsp;
@@ -64,7 +64,7 @@
 	{if $im}
 		{#COMMENT_CHARS_LEFT#} - <span class="charsLeft" id="charsLeft_new"></span>
         <div style="margin:10px 0;"><label>{#COMMENT_FORM_CODE#}</label></div>
-		<div style="margin:10px 0;" id="captcha"><img src="inc/captcha.php" alt="" width="120" height="60" border="0" /></div>
+		<div style="margin:10px 0;" id="captcha"><img src="{$BASE_PATH}inc/captcha.php" alt="" width="120" height="60" border="0" /></div>
 
 		<div style="margin:10px 0;"><label for="securecode">{#COMMENT_FORM_CODE_ENTER#}</label></div>
 		<div style="margin:10px 0;"><input name="securecode" type="text" id="securecode" style="width:120px" maxlength="10" /></div>
@@ -206,7 +206,7 @@ function saveChanges(obj,cancel,cid){ldelim}
 
 function getCaptha(){ldelim}
 	now = new Date();
-	$('#captcha img').attr('src','inc/captcha.php?cd='+now);
+	$('#captcha img').attr('src','{$BASE_PATH}inc/captcha.php?cd='+now);
 {rdelim};
 
 function displayNewComment(data){ldelim}
