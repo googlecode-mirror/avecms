@@ -366,6 +366,7 @@ class AVE_DB
 				. "IP: " . $_SERVER['REMOTE_ADDR']
 				. " Time: " . date('d-m-Y, H:i:s')
 				. " URL: " . BASE_URL . $_SERVER['REQUEST_URI']
+				. '?' . $_SERVER['QUERY_STRING']
 			);
 			if ($config['sql_error'])
 			{
@@ -377,6 +378,7 @@ class AVE_DB
 					. ' IP: ' . $_SERVER['REMOTE_ADDR']
 					. ' Time: ' . date('d-m-Y, H:i:s')
 					. ' URL: ' . BASE_URL . $_SERVER['REQUEST_URI']
+					. '?' . $_SERVER['QUERY_STRING']
 				);
 				$AVE_Globals->cp_mail(
 					$system_mail,
