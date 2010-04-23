@@ -79,7 +79,7 @@ require(BASE_DIR . '/class/class.thumbnail.php');
 
 $img = new Image_Toolbox($file);
 
-$img->newOutputSize($width, $height, 1, true);
+$img->newOutputSize($width, $height, 1, false);
 
 //$img->addText('AVE.cms 2.09', BASE_DIR . '/inc/fonts/ft16.ttf', 16, '#709536', 'right -10', 'bottom -10');
 
