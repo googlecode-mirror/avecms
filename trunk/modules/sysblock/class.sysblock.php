@@ -139,7 +139,7 @@ class sysblock
 				LIMIT 1
 			");
 			$return = prettyChars($sql->GetCell());
-			$return = str_replace('[cp:mediapath]', 'templates/' . THEME_FOLDER . '/', $return);
+			$return = str_replace('[cp:mediapath]', BASE_PATH . 'templates/' . THEME_FOLDER . '/', $return);
 //			$return = parseModuleTag($return);
 //			$return = stripslashes(hide($return));
 			$return = hide($return);

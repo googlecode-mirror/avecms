@@ -104,7 +104,8 @@ $(document).ready(function(){ldelim}
 						<a href="javascript:void(0);" onclick="editAreaLoader.insertTags('tpl_field[{$rf->Id}]', '<pre>', '</pre>');">PRE</a>&nbsp;|&nbsp;
 						<a href="javascript:void(0);" onclick="editAreaLoader.insertTags('tpl_field[{$rf->Id}]', '<br />', '');">BR</a>&nbsp;|&nbsp;
 						<a href="javascript:void(0);" onclick="editAreaLoader.insertTags('tpl_field[{$rf->Id}]', '<br />', '');">BR</a>&nbsp;|&nbsp;
-						<a href="javascript:void(0);" onclick="editAreaLoader.insertTags('tpl_field[{$rf->Id}]', '[field_param:', ']');">[field_param:XXX]</a>&nbsp;|
+						<a href="javascript:void(0);" onclick="editAreaLoader.insertTags('tpl_field[{$rf->Id}]', '[field_param:', ']');">[field_param:XXX]</a>&nbsp;|&nbsp;
+						<a href="javascript:void(0);" onclick="editAreaLoader.insertTags('tpl_field[{$rf->Id}]', '[cp:path]', '');">[cp:path]</a>&nbsp;|
 					</div>
 				</div>
 				<div style="width:50%; float:left">
@@ -119,7 +120,8 @@ $(document).ready(function(){ldelim}
 						<a href="javascript:void(0);" onclick="editAreaLoader.insertTags('tpl_req[{$rf->Id}]', '<h2>', '</h2>');">H2</a>&nbsp;|&nbsp;
 						<a href="javascript:void(0);" onclick="editAreaLoader.insertTags('tpl_req[{$rf->Id}]', '<h3>', '</h3>');">H3</a>&nbsp;|&nbsp;
 						<a href="javascript:void(0);" onclick="editAreaLoader.insertTags('tpl_req[{$rf->Id}]', '<pre>', '</pre>');">PRE</a>&nbsp;|&nbsp;
-						<a href="javascript:void(0);" onclick="editAreaLoader.insertTags('tpl_req[{$rf->Id}]', '[field_param:', ']');">[field_param:XXX]</a>&nbsp;|
+						<a href="javascript:void(0);" onclick="editAreaLoader.insertTags('tpl_req[{$rf->Id}]', '[field_param:', ']');">[field_param:XXX]</a>&nbsp;|&nbsp;
+						<a href="javascript:void(0);" onclick="editAreaLoader.insertTags('tpl_req[{$rf->Id}]', '[cp:path]', '');">[cp:path]</a>&nbsp;|
 					</div>
 				</div>
 				</td>

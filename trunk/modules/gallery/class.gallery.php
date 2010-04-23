@@ -123,12 +123,12 @@ class Gallery
 
 			if (file_exists(BASE_DIR . '/modules/gallery/uploads/' . (!empty($row_gs->gallery_folder) ? $row_gs->gallery_folder . '/' : '') . 'th__' . $row['image_filename']))
 			{
-				$row['thumbnail'] = 'modules/gallery/uploads/'
+				$row['thumbnail'] = BASE_PATH . 'modules/gallery/uploads/'
 					. (!empty($row_gs->gallery_folder) ? $row_gs->gallery_folder . '/' : '') . 'th__' . $row['image_filename'];
 			}
 			else
 			{
-				$row['thumbnail'] = 'modules/gallery/thumb.php?file=' . $row['image_filename'] . '&amp;type=' . $row['image_type']
+				$row['thumbnail'] = BASE_PATH . 'modules/gallery/thumb.php?file=' . $row['image_filename'] . '&amp;type=' . $row['image_type']
 					. '&amp;xwidth=' . $row_gs->thumb_width . (!empty($row_gs->gallery_folder) ? '&amp;folder=' . $row_gs->gallery_folder : '');
 			}
 
@@ -236,7 +236,7 @@ class Gallery
 				$AVE_Template->assign('w', ($file_info[0] < 350 ? 350 : ($file_info[0] > 950 ? 950 : $file_info[0]+10) ));
 				$AVE_Template->assign('h', ($file_info[1] < 350 ? 350 : ($file_info[1] > 700 ? 700 : $file_info[1]+50) ));
 				$AVE_Template->assign('scrollbars', ($file_info[0] > 950 || $file_info[1] > 700 ? 1 : '') );
-				$AVE_Template->assign('image_filename', 'modules/gallery/uploads/' . (!empty($row->gallery_folder) ? $row->gallery_folder . '/' : '') . rawurlencode($row->image_filename));
+				$AVE_Template->assign('image_filename', BASE_PATH . 'modules/gallery/uploads/' . (!empty($row->gallery_folder) ? $row->gallery_folder . '/' : '') . rawurlencode($row->image_filename));
 				$AVE_Template->assign('image_title', $row->image_title);
 				break;
 
@@ -244,7 +244,7 @@ class Gallery
 				$AVE_Template->assign('w', 350);
 				$AVE_Template->assign('notresizable', 1);
 				$AVE_Template->assign('h', 400);
-				$AVE_Template->assign('image_filename', 'modules/gallery/uploads/' . (!empty($row->gallery_folder) ? $row->gallery_folder . '/' : '') . rawurlencode($row->image_filename));
+				$AVE_Template->assign('image_filename', BASE_PATH . 'modules/gallery/uploads/' . (!empty($row->gallery_folder) ? $row->gallery_folder . '/' : '') . rawurlencode($row->image_filename));
 				$AVE_Template->assign('mediatype', $this->_videoType($row->image_file_ext));
 				break;
 		}

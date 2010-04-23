@@ -126,24 +126,24 @@ function mod_navigation($id)
 
 	$ebenen = array(
 		1 =>  array(
-			'aktiv' => str_replace('[cp:mediapath]', 'templates/' . THEME_FOLDER . '/', $nav->ebene1a),
-			'inaktiv' => str_replace('[cp:mediapath]', 'templates/' . THEME_FOLDER . '/', $nav->ebene1),
+			'aktiv' => str_replace('[cp:mediapath]', BASE_PATH . 'templates/' . THEME_FOLDER . '/', $nav->ebene1a),
+			'inaktiv' => str_replace('[cp:mediapath]', BASE_PATH . 'templates/' . THEME_FOLDER . '/', $nav->ebene1),
 		),
 		2 =>  array(
-			'aktiv' => str_replace('[cp:mediapath]', 'templates/' . THEME_FOLDER . '/', $nav->ebene2a),
-			'inaktiv' => str_replace('[cp:mediapath]', 'templates/' . THEME_FOLDER . '/', $nav->ebene2),
+			'aktiv' => str_replace('[cp:mediapath]', BASE_PATH . 'templates/' . THEME_FOLDER . '/', $nav->ebene2a),
+			'inaktiv' => str_replace('[cp:mediapath]', BASE_PATH . 'templates/' . THEME_FOLDER . '/', $nav->ebene2),
 		),
 		3 =>  array(
-			'aktiv' => str_replace('[cp:mediapath]', 'templates/' . THEME_FOLDER . '/', $nav->ebene3a),
-			'inaktiv' => str_replace('[cp:mediapath]', 'templates/' . THEME_FOLDER . '/', $nav->ebene3),
+			'aktiv' => str_replace('[cp:mediapath]', BASE_PATH . 'templates/' . THEME_FOLDER . '/', $nav->ebene3a),
+			'inaktiv' => str_replace('[cp:mediapath]', BASE_PATH . 'templates/' . THEME_FOLDER . '/', $nav->ebene3),
 		)
 	);
 
-	$END = str_replace('[cp:mediapath]', 'templates/' . THEME_FOLDER . '/', $nav->vor);
+	$END = str_replace('[cp:mediapath]', BASE_PATH . 'templates/' . THEME_FOLDER . '/', $nav->vor);
 
 	printNavi($END, $ebenen, $way, $id, $nav_items, $nav);
 
-	$END .= str_replace('[cp:mediapath]', 'templates/' . THEME_FOLDER . '/', $nav->nach);
+	$END .= str_replace('[cp:mediapath]', BASE_PATH . 'templates/' . THEME_FOLDER . '/', $nav->nach);
 
 	$END = preg_replace("/(^[\r\n]*|[\r\n]+)[\s\t]*[\r\n]+/", "\n", $END);
 //	$END = str_replace(array("\r\n","\n","\r"),'',$END);

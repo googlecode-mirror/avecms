@@ -206,7 +206,7 @@ $AVE_Template->caching = 0;
 		if ($row)
 		{
 			$row->Detaillink = $this->_shopRewrite($this->_product_detail . $row->Id . '&amp;categ=' . $row->KatId . '&amp;navop=' . getParentShopcateg($row->KatId));
-			$img = (file_exists(BASE_DIR . '/' . $row->AngebotBild)) ? '<!-- START OFFER --><a title="' . $row->ArtName . '" href="' . $row->Detaillink . '"><img src="' . $row->AngebotBild . '" alt="' . $row->ArtName . '" border=""></a><br /><br /><!-- END OFFER -->' : '';
+			$img = (file_exists(BASE_DIR . '/' . $row->AngebotBild)) ? '<!-- START OFFER --><a title="' . $row->ArtName . '" href="' . $row->Detaillink . '"><img src="' . BASE_PATH . $row->AngebotBild . '" alt="' . $row->ArtName . '" border=""></a><br /><br /><!-- END OFFER -->' : '';
 		}
 		else
 		{

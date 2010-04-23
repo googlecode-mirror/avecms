@@ -87,7 +87,7 @@
 		{if $im}
 			<div class="formleft">{#LOGIN_SECURITY_CODE#}</div>
 			<div class="formright">
-			<img src="inc/captcha.php" alt="" width="120" height="60" border="0" />
+			<img src="{$BASE_PATH}inc/captcha.php" alt="" width="120" height="60" border="0" />
 			</div>
 			<div class="clear"></div>
 

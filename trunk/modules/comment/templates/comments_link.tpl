@@ -10,7 +10,7 @@
 	<a href="javascript:void(0);" onclick="popup('index.php?docid={$smarty.request.id}&module=comment&action=form&pop=1&theme={$theme}&page={$page}','comment','500','600','1')">{#COMMENT_SITE_ADD#}</a>&nbsp;|&nbsp;
 {/if}
 
-<a href="{$smarty.server.REQUEST_URI|escape}#end">{#COMMENT_LAST_COMMENT#}</a>
+<a href="#end">{#COMMENT_LAST_COMMENT#}</a>
 
 {if $smarty.const.UGROUP==1}
 	&nbsp;|&nbsp;
@@ -141,7 +141,7 @@
 
 		{if $im}
             <div style="margin:10px 0;"><label>{#COMMENT_FORM_CODE#}</label></div>
-			<div style="margin:10px 0;" id="captcha"><img src="inc/captcha.php" alt="" width="120" height="60" border="0" /></div>
+			<div style="margin:10px 0;" id="captcha"><img src="{$BASE_PATH}inc/captcha.php" alt="" width="120" height="60" border="0" /></div>
 
 			<div style="margin:10px 0;"><label for="securecode">{#COMMENT_FORM_CODE_ENTER#}</label></div>
 			<div style="margin:10px 0;"><input name="securecode" type="text" id="securecode" style="width:120px" maxlength="10" /></div>
@@ -260,7 +260,7 @@ function saveChanges(obj, cancel, cid) {ldelim}
 
 function rewriteCaptha() {ldelim}
 	now = new Date();
-	$('#captcha img').attr('src', 'inc/captcha.php?cd='+now);
+	$('#captcha img').attr('src', '{$BASE_PATH}inc/captcha.php?cd='+now);
 {rdelim};
 
 function displayNewComment(data) {ldelim}

@@ -248,7 +248,7 @@ function cpParseRequest($id)
 					a.Url,
 					Geklickt,
 					DokStart,
-					COUNT(b.Id) AS nums
+					COUNT(b.document_id) AS nums
 				FROM " . PREFIX . "_documents AS a
 				LEFT JOIN " . PREFIX . "_modul_comment_info AS b ON document_id = a.Id
 				WHERE a.Id != '1'
@@ -322,7 +322,7 @@ function cpParseRequest($id)
 
 		$return = str_replace('[content]', $return, $geruest);
 		$return = str_replace('[pages]', $page_nav, $return);
-		$return = str_replace('[cp:mediapath]', 'templates/' . THEME_FOLDER . '/', $return);
+		$return = str_replace('[cp:mediapath]', BASE_PATH . 'templates/' . THEME_FOLDER . '/', $return);
 		$AVE_Core->parseModuleTag($return);
 //		$return = stripslashes(hide($return));
 	}
@@ -492,7 +492,7 @@ function getDbField($rid, $doc, $maxlength = 0)
 	if (!empty($inhalt))
 	{
 		$inhalt = strip_tags($inhalt, '<br /><strong><em><p><i>');
-		$inhalt = str_replace('[cp:mediapath]', 'templates/' . THEME_FOLDER . '/', $inhalt);
+		$inhalt = str_replace('[cp:mediapath]', BASE_PATH . 'templates/' . THEME_FOLDER . '/', $inhalt);
 	}
 
 	if (is_numeric($maxlength) && $maxlength != 0)

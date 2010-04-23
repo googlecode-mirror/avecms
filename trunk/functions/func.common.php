@@ -99,16 +99,12 @@ function init_path()
 
 	if (!strstr($_SERVER['PHP_SELF'], $_SERVER['SCRIPT_NAME']) && (@php_sapi_name() == 'cgi'))
 	{
-		$script_name = $_SERVER['PHP_SELF'];
+		define('BASE_PATH', rtrim(str_replace("\\", "/", dirname($_SERVER['PHP_SELF'])), '/') . '/');
 	}
 	else
 	{
-		$script_name = $_SERVER['SCRIPT_NAME'];
+		define('BASE_PATH', rtrim(str_replace("\\", "/", dirname($_SERVER['SCRIPT_NAME'])), '/') . '/');
 	}
-	$script_name = explode("/inc", str_replace("\\", "/", dirname($script_name)));
-	if (sizeof($script_name) > 1) array_pop($script_name);
-	$script_name = implode("inc", $script_name);
-	define('BASE_PATH', rtrim($script_name, '/') . '/');
 }
 
 /**
@@ -577,15 +573,15 @@ function cpParseLinkname($st)
  */
 function cpRewrite($s)
 {
-	$s = preg_replace("/index.php(?:\?)id=(?:[0-9]+)&(?:amp;)*doc=(index|[a-z0-9\/-]+)&(?:amp;)*(artpage|apage|page)=([{s}0-9]+)&(?:amp;)*(artpage|apage|page)=([{s}0-9]+)&(?:amp;)*(artpage|apage|page)=([{s}0-9]+)/", "\\1/\\2-\\3/\\4-\\5/\\6-\\7".URL_SUFF, $s);
-	$s = preg_replace("/index.php(?:\?)id=(?:[0-9]+)&(?:amp;)*doc=(index|[a-z0-9\/-]+)&(?:amp;)*(artpage|apage|page)=([{s}0-9]+)&(?:amp;)*(artpage|apage|page)=([{s}0-9]+)/", "\\1/\\2-\\3/\\4-\\5".URL_SUFF, $s);
-	$s = preg_replace("/index.php(?:\?)id=(?:[0-9]+)&(?:amp;)*doc=(index|[a-z0-9\/-]+)&(?:amp;)*(artpage|apage|page)=([{s}0-9]+)/", "\\1/\\2-\\3".URL_SUFF, $s);
-	$s = preg_replace("/index.php(?:\?)id=(?:[0-9]+)&(?:amp;)*doc=(index|[a-z0-9\/-]+)/", "\\1".URL_SUFF, $s);
-	$s = preg_replace("/".preg_quote(URL_SUFF, '/')."&(?:amp;)*print=1/", "/print".URL_SUFF, $s);
+	$s = preg_replace("/index.php(?:\?)id=(?:[0-9]+)&(?:amp;)*doc=(index|[a-z0-9\/-]+)&(?:amp;)*(artpage|apage|page)=([{s}0-9]+)&(?:amp;)*(artpage|apage|page)=([{s}0-9]+)&(?:amp;)*(artpage|apage|page)=([{s}0-9]+)/", BASE_PATH."\\1/\\2-\\3/\\4-\\5/\\6-\\7".URL_SUFF, $s);
+	$s = preg_replace("/index.php(?:\?)id=(?:[0-9]+)&(?:amp;)*doc=(index|[a-z0-9\/-]+)&(?:amp;)*(artpage|apage|page)=([{s}0-9]+)&(?:amp;)*(artpage|apage|page)=([{s}0-9]+)/", BASE_PATH."\\1/\\2-\\3/\\4-\\5".URL_SUFF, $s);
+	$s = preg_replace("/index.php(?:\?)id=(?:[0-9]+)&(?:amp;)*doc=(index|[a-z0-9\/-]+)&(?:amp;)*(artpage|apage|page)=([{s}0-9]+)/", BASE_PATH."\\1/\\2-\\3".URL_SUFF, $s);
+	$s = preg_replace("/index.php(?:\?)id=(?:[0-9]+)&(?:amp;)*doc=(index|[a-z0-9\/-]+)/", BASE_PATH."\\1".URL_SUFF, $s);
+	$s = preg_replace("/".preg_quote(URL_SUFF, '/')."&(?:amp;)*print=1/", BASE_PATH."/print".URL_SUFF, $s);
 
-	$s = preg_replace('/index.php(?:\?)module=(shop|forums|download)&(?:amp;)*page=([{s}]|\d+)/', '\\1-\\2.html', $s);
-	$s = preg_replace('/index.php(?:\?)module=(shop|forums|download)&(?:amp;)*print=1/', "\\1-print.html", $s);
-	$s = preg_replace('/index.php(?:\?)module=(shop|forums|download)(?!&)/', "\\1.html", $s);
+	$s = preg_replace('/index.php(?:\?)module=(shop|forums|download)&(?:amp;)*page=([{s}]|\d+)/', BASE_PATH.'\\1-\\2.html', $s);
+	$s = preg_replace('/index.php(?:\?)module=(shop|forums|download)&(?:amp;)*print=1/', BASE_PATH."\\1-print.html", $s);
+	$s = preg_replace('/index.php(?:\?)module=(shop|forums|download)(?!&)/', BASE_PATH."\\1.html", $s);
 
 	return $s;
 }
@@ -779,8 +775,8 @@ function get_document_fields($document_id)
 
 		while ($row = $sql->FetchAssocArray())
 		{
-			$row['tpl_req_empty'] = (trim($row['tpl_req']) == '') ? true : false;
-			$row['tpl_field_empty'] = (trim($row['tpl_field']) == '') ? true : false;
+			$row['tpl_req_empty'] = (trim($row['tpl_req']) == '');
+			$row['tpl_field_empty'] = (trim($row['tpl_field']) == '');
 
 			if ($row['Inhalt'] === '')
 			{

@@ -137,6 +137,13 @@
 
 					<tr>
 						<td class="first">
+							<a title="{#TEMPLATES_TAG_INSERT#}" href="javascript:void(0);" onclick="editAreaLoader.insertTags('{$js_textfeld}', '[cp:path]','');">[cp:path]</a>
+						</td>
+						<td class="first">{#TEMPLATES_PATH#}</td>
+					</tr>
+
+					<tr>
+						<td class="first">
 							<a title="{#TEMPLATES_TAG_INSERT#}" href="javascript:void(0);" onclick="editAreaLoader.insertTags('{$js_textfeld}', '[cp:mediapath]','');">[cp:mediapath]</a>
 						</td>
 						<td class="first">{#TEMPLATES_MEDIAPATH#}</td>
