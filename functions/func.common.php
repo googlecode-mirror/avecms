@@ -285,10 +285,10 @@ function checkSeePerm($id)
 
 	$navigations = getNavigations($id);
 
-	if (empty($navigations[$id]->Gruppen)) return false;
+	if (empty($navigations->Gruppen)) return false;
 
 	if (!defined('UGROUP')) define('UGROUP', 2);
-	if (!in_array(UGROUP, $navigations[$id]->Gruppen)) return false;
+	if (!in_array(UGROUP, $navigations->Gruppen)) return false;
 
 	return true;
 }
