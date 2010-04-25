@@ -34,7 +34,7 @@
 			</td>
 			<td>
 				{if $row->Logo!=''}<img src="{$row->Logo}" /><br />{/if}
-				<input name="Logo" type="text" id="Logo" value="{$row->Logo}" size="50" />
+				<input name="Logo" type="text" id="Logo" value="{$row->Logo|default:'http://'}" size="50" />
 			</td>
 		</tr>
 

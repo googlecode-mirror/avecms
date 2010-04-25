@@ -20,32 +20,32 @@
 		</tr>
 
 		<tr>
-			<td><strong>{#SShopWelcomeText#}</strong></td>
+			<td>{#SShopWelcomeText#}</td>
 			<td>{$row->ShopWillkommen}</td>
 		</tr>
 
 		<tr>
-			<td><strong>{#ShopFooter#}</strong></td>
+			<td>{#ShopFooter#}</td>
 			<td>{$row->ShopFuss}</td>
 		</tr>
 
 		<tr>
-			<td><strong>{#DataShippingInf#}</strong></td>
+			<td>{#DataShippingInf#}</td>
 			<td>{$row->VersandInfo}</td>
 		</tr>
 
 		<tr>
-			<td><strong>{#DataInf#}</strong></td>
+			<td>{#DataInf#}</td>
 			<td>{$row->DatenschutzInf}</td>
 		</tr>
 
 		<tr>
-			<td><strong>{#Imprint#}</strong></td>
+			<td>{#Imprint#}</td>
 			<td>{$row->Impressum}</td>
 		</tr>
 
 		<tr>
-			<td><strong>{#SAgb#}</strong></td>
+			<td>{#SAgb#}</td>
 			<td>{$row->Agb}</td>
 		</tr>
 	</table><br />

@@ -16,7 +16,7 @@
 </div><br />
 
 {include file="$source/shop_topnav.tpl"}
-(*
+{*
 <script language="javascript" src="../modules/shop/js/admin_funcs.js"></script>
 *}
 <h4>{#ProductOrdersSShowMoney#}</h4>

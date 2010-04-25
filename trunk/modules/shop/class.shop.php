@@ -762,7 +762,7 @@ $AVE_Template->caching = 0;
 			if (isset($_REQUEST['sub']) && $_REQUEST['sub'] == 'request')
 			{
 //				if (!is_a($AVE_Globals, 'AVE_Globals')) $AVE_Globals = new AVE_Globals;
-				$AVE_Globals->cp_mail($_SESSION['user_email'], stripslashes($_POST['text']), $_POST['subject'], $_SESSION['user_email'], $_SESSION['user_name'], 'text', '');
+				$AVE_Globals->cp_mail($this->_getShopSetting('EmpEmail'), stripslashes($_POST['text']), stripslashes($_POST['subject']), $_SESSION['user_email'], $_SESSION['user_name'], 'text', '');
 				$AVE_Template->assign('orderRequestOk', 1);
 			}
 
