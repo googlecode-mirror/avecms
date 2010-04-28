@@ -12,10 +12,7 @@ ob_start();
 
 define('BASE_DIR', str_replace("\\", "/", substr(dirname(__FILE__), 0, -6)));
 
-//include_once(BASE_DIR . '/functions/func.pref.php');
-//include_once(BASE_DIR . '/inc/db.config.php');
-//include_once(BASE_DIR . '/inc/config.php');
-include_once(BASE_DIR . '/inc/init.php');
+require(BASE_DIR . '/inc/init.php');
 
 if (!isset($_SESSION['user_id']))
 {
@@ -425,14 +422,12 @@ if ($_REQUEST['action']=='list' || $_REQUEST['done']==1)
 }
 else
 {
-	$self = substr($_SERVER['PHP_SELF'], 0, -18);
-
 	$sub_target = @explode('__', $_REQUEST['target']);
 	if (is_array($sub_target)) $sub = @$sub_target[1];
 
 	$AVE_Template->assign('target_img', $sub_target[0]);
 	$AVE_Template->assign('pop_id', $sub);
-	$AVE_Template->assign('cppath', !empty($self) ? $self . '/' : '');
+	$AVE_Template->assign('cppath', substr($_SERVER['PHP_SELF'], 0, -18));
 	$AVE_Template->display('browser_2frames.tpl');
 }
 
