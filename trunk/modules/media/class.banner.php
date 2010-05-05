@@ -402,8 +402,8 @@ class ModulBanner {
 					$sql = $AVE_DB->Query("
 						INSERT
 						INTO `" . PREFIX . "_modul_banner_categories`
-						SET `KatName` = '" . $_REQUEST['KatName']
-					);
+						SET `KatName` = '" . $_REQUEST['KatName'] . "'
+					");
 
 					reportLog($_SESSION['user_name'] . ' - добавил новую категорию (' . $_REQUEST['KatName'] . ')', 2, 2);
 				}
