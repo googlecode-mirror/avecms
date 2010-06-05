@@ -1,18 +1,8 @@
 <?php
-$modul_sql_update[] = "UPDATE CPPREFIX_module SET Version = '".$modul['ModulVersion']."' WHERE ModulName='".$modul['ModulName']."';" ;
-$modul_sql_update[] = "ALTER TABLE CPPREFIX_modul_download_files ADD Pay_Type SMALLINT(2) UNSIGNED NOT NULL DEFAULT '0';";
-$modul_sql_update[] = "ALTER TABLE CPPREFIX_modul_download_files ADD Only_Pay TINYINT(1) UNSIGNED NOT NULL DEFAULT '1';";
-$modul_sql_update[] = "ALTER TABLE CPPREFIX_modul_download_files ADD Excl_Pay TINYINT(1) UNSIGNED NOT NULL DEFAULT '0';";
-$modul_sql_update[] = "ALTER TABLE CPPREFIX_modul_download_files ADD Excl_Chk TINYINT(1) UNSIGNED NOT NULL DEFAULT '0';";
-$modul_sql_update[] = "CREATE TABLE CPPREFIX_modul_download_payhistory (
-  Id int(10) unsigned NOT NULL auto_increment,
-  User_Id int(10) unsigned NOT NULL default '0',
-  PayAmount double(14,2) unsigned NOT NULL default '0',
-  File_Id int(10) unsigned NOT NULL default '0',
-  PayDate varchar(10) default '',
-  User_IP varchar(15) default '',
-  PRIMARY KEY  (Id)
-) TYPE=MyISAM DEFAULT CHARSET=cp1251;";
+
+$modul_sql_install = array();
+$modul_sql_deinstall = array();
+$modul_sql_update = array();
 
 $modul_sql_deinstall[] = "DROP TABLE IF EXISTS CPPREFIX_modul_download_comments;";
 $modul_sql_deinstall[] = "DROP TABLE IF EXISTS CPPREFIX_modul_download_files;";
@@ -170,4 +160,7 @@ $modul_sql_install[] = "CREATE TABLE CPPREFIX_modul_download_payhistory (
   User_IP varchar(15) default '',
   PRIMARY KEY  (Id)
 ) TYPE=MyISAM DEFAULT CHARSET=cp1251;";
+
+$modul_sql_update[] = "UPDATE CPPREFIX_module SET CpEngineTag = '" . $modul['CpEngineTag'] . "', CpPHPTag = '" . $modul['CpPHPTag'] . "', Version = '" . $modul['ModulVersion'] . "' WHERE ModulPfad = '" . $modul['ModulPfad'] . "' LIMIT 1;";
+
 ?>

@@ -1,7 +1,3 @@
-
-<!-- comments_show.tpl -->
-{strip}
-
 {if $display_comments==1}<br />
 
 <h6>{#COMMENT_SITE_TITLE#}{if $closed==1} {#COMMENT_SITE_CLOSED#}{/if}</h6>
@@ -124,6 +120,3 @@
 {if $smarty.foreach.co.last}<a name="end"></a>{/if}
 
 {/if}
-
-{/strip}
-<!-- /comments_show.tpl -->

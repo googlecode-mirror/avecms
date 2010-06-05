@@ -54,7 +54,7 @@ if (!defined('IMAGE_TOOLBOX_BLEND_DIFFERENCE')) {
 if (!defined('IMAGE_TOOLBOX_BLEND_NEGATION')) {
 	define('IMAGE_TOOLBOX_BLEND_NEGATION', 5);
 }
-if (!defined('IMAGE_TOOLBOX_BLEND_EXCLUTION')) {
+if (!defined('IMAGE_TOOLBOX_BLEND_EXCLUSION')) {
 	define('IMAGE_TOOLBOX_BLEND_EXCLUSION', 6);
 }
 if (!defined('IMAGE_TOOLBOX_BLEND_OVERLAY')) {
@@ -1116,7 +1116,7 @@ class Image_Toolbox {
 				$c['blue'] = 255 - abs(255 - $colorrgb1['blue'] - $colorrgb2['blue']);
 				break;
 
-			case IMAGE_TOOLBOX_BLEND_EXCLUTION:
+			case IMAGE_TOOLBOX_BLEND_EXCLUSION:
 				$c['red'] = $colorrgb1['red'] + $colorrgb2['red'] - (($colorrgb1['red'] * $colorrgb2['red']) >> 7);
 				$c['green'] = $colorrgb1['green'] + $colorrgb2['green'] - (($colorrgb1['green'] * $colorrgb2['green']) >> 7);
 				$c['blue'] = $colorrgb1['blue'] + $colorrgb2['blue'] - (($colorrgb1['blue'] * $colorrgb2['blue']) >> 7);
@@ -1249,10 +1249,12 @@ class Image_Toolbox {
 			231 => "&#254;",
 			152 => "&#255;"
 		);
-		for ($i=0; $i < strlen($isoline); $i++){
+		$uniline = '';
+		$len = strlen($isoline);
+		for ($i=0; $i < $len; $i++){
 			$thischar = substr($isoline, $i, 1);
-			$new = $iso2uni[ord($thischar)];
-			$uniline .= ($new != "") ? $new : $thischar;
+			$key = ord($thischar);
+			$uniline .= isset($iso2uni[$key]) ? $iso2uni[$key] : $thischar;
 		}
 		return $uniline;
 	}

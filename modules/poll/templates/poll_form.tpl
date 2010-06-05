@@ -7,7 +7,6 @@
 <script src="templates/{$theme_folder}/js/common.js" type="text/javascript"></script>
 </head>
 
-<!-- poll_form.tpl -->
 <body id="body_popup">
 
 <script type="text/javascript" language="JavaScript">
@@ -33,7 +32,6 @@ function check() {ldelim}
 {rdelim}
 </script>
 
-{strip}
 <h5>{#POLL_ADD_COMMENT#}</h5>
 
 <div id="module_content">
@@ -77,8 +75,6 @@ function check() {ldelim}
 		</form>
 	{/if}
 </div>
-{/strip}
 
 </body>
-<!-- /poll_form.tpl -->
 </html>

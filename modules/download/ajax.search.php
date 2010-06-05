@@ -57,7 +57,7 @@ if (strlen($query_string) > 2)
 		}
 		$response .= '</div>';
 
-		if (CP_REWRITE==1)
+		if (REWRITE_MODE)
 		{
 			require(BASE_DIR . '/modules/download/funcs/func.rewrite.php');
 			$response = DownloadRewrite($response);

@@ -1,6 +1,6 @@
 <?php
 
-if(!defined('BASE_DIR')) exit;
+if (!defined('BASE_DIR')) exit;
 
 if (defined('ACP'))
 {
@@ -20,50 +20,54 @@ if (defined('ACP'))
     $modul['CpPHPTag'] = null;
 }
 
-if(defined('ACP') && ((isset($_REQUEST['module']) && $_REQUEST['module'] == 'newsletter_sys') || (isset($_REQUEST['mod']) && $_REQUEST['mod'] == 'newsletter_sys'))) {
+if (defined('ACP') && isset($_REQUEST['module']) && $_REQUEST['module'] == 'newsletter_sys')
+{
 	require_once(BASE_DIR . '/modules/newsletter_sys/class.newsletter_admin.php');
-	require_once(BASE_DIR . '/functions/func.modulglobals.php');
-	require_once(BASE_DIR . '/class/class.user.php');
-
-	if(defined('THEME_FOLDER')) $GLOBALS['AVE_Template']->assign('theme_folder', THEME_FOLDER);
-	$_REQUEST['action'] = (!isset($_REQUEST['action']) || $_REQUEST['action'] == '') ? 'overview' : $_REQUEST['action'];
-
-	$tpl_dir        = BASE_DIR . '/modules/newsletter_sys/templates_admin/';
-	$tpl_dir_source = BASE_DIR . '/modules/newsletter_sys/templates_admin';
-	$lang_file      = BASE_DIR . '/modules/newsletter_sys/lang/' . $_SESSION['admin_lang'] . '.txt';
-
 	$newsletter = new systemNewsletter;
 
+	if (defined('THEME_FOLDER')) $GLOBALS['AVE_Template']->assign('theme_folder', THEME_FOLDER);
+	$_REQUEST['action'] = empty($_REQUEST['action']) ? 'overview' : $_REQUEST['action'];
+
+	$tpl_dir        = BASE_DIR . '/modules/newsletter_sys/templates_admin/';
+	$lang_file      = BASE_DIR . '/modules/newsletter_sys/lang/' . $_SESSION['admin_language'] . '.txt';
+
+
 	$GLOBALS['AVE_Template']->config_load($lang_file, 'admin');
-	$config_vars = $GLOBALS['AVE_Template']->get_config_vars();
-	$GLOBALS['AVE_Template']->assign('config_vars', $config_vars);
-	$GLOBALS['AVE_Template']->assign('source', $tpl_dir_source);
+	$GLOBALS['AVE_Template']->assign('source', rtrim($tpl_dir, '/'));
 
-	if(defined('ACP') && !(isset($_REQUEST['action']) && $_REQUEST['action'] == 'delete')) {
-		switch($_REQUEST['moduleaction']) {
-			case '':
-			case '1':
-				$newsletter->sentList($tpl_dir);
-				break;
+	if (!(isset($_REQUEST['action']) && $_REQUEST['action'] == 'delete'))
+	{
+		if (!empty($_REQUEST['moduleaction']))
+		{
+			switch($_REQUEST['moduleaction'])
+			{
+				case '':
+				case '1':
+					$newsletter->sentList($tpl_dir);
+					break;
 
-			case 'new':
-				$newsletter->sendNew($tpl_dir);
-				break;
+				case 'new':
+					include_once(BASE_DIR . '/class/class.user.php');
+					$AVE_User = new AVE_User;
+					$newsletter->sendNew($tpl_dir);
+					break;
 
-			case 'shownewsletter':
-				$id = (int)$_REQUEST['id'];
-				$format = ($_REQUEST['format'] == 'html') ? 'html' : 'text';
-				$newsletter->showNewsletter($tpl_dir,$id, $format);
-				break;
+				case 'shownewsletter':
+					$id = (int)$_REQUEST['id'];
+					$format = ($_REQUEST['format'] == 'html') ? 'html' : 'text';
+					$newsletter->showNewsletter($tpl_dir, $id, $format);
+					break;
 
-			case 'delete':
-				$newsletter->deleteNewsletter();
-				break;
+				case 'delete':
+					$newsletter->deleteNewsletter();
+					break;
 
-			case 'getfile':
-				$newsletter->getFile($_REQUEST['file']);
-				break;
+				case 'getfile':
+					$newsletter->getFile($_REQUEST['file']);
+					break;
+			}
 		}
 	}
 }
+
 ?>

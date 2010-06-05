@@ -25,13 +25,12 @@
  * @param string $modulepath имя папки модуля
  * @param string $lang_section секция языкового файла
  */
-function modulGlobals($modulepath, $lang_section = false)
+function set_modul_globals($modulepath, $lang_section = false)
 {
 	global $mod, $AVE_Template;
 
 	$tpl_dir   = BASE_DIR . '/modules/' . $modulepath . '/templates/';
-	$lang_file = BASE_DIR . '/modules/' . $modulepath
-		. '/lang/' . DEFAULT_LANGUAGE . '.txt';
+	$lang_file = BASE_DIR . '/modules/' . $modulepath . '/lang/' . $_SESSION['user_language'] . '.txt';
 
 	if (!file_exists($lang_file))
 	{
@@ -40,9 +39,7 @@ function modulGlobals($modulepath, $lang_section = false)
 
 	if (!file_exists($lang_file))
 	{
-		echo 'Ошибка! Отсутствует языковой файл. ',
-			'Пожалуйста, проверьте язык, установленный по умолчанию, ',
-			'в файле inc/config.php';
+		display_notice('Ошибка! Отсутствует языковой файл. Пожалуйста, проверьте язык, установленный по умолчанию, в файле '.ABS_PATH.'inc/config.php');
 		exit;
 	}
 

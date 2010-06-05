@@ -1,5 +1,3 @@
-{strip}
-<!-- shop_navi.tpl -->
 <div class="menu_v">
 	<ul>
 		<li>
@@ -27,5 +25,3 @@
 		{/foreach}
 	</ul>
 </div>
-<!-- shop_navi.tpl -->
-{/strip}

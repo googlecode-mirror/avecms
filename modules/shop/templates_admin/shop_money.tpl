@@ -7,7 +7,6 @@
 .orders_failed {background-color:#FF0000;color:#fff;text-align:right;font-weight:bold}
 </style>
 {/literal}
-{strip}
 
 <div class="pageHeaderTitle" style="padding-top: 7px;">
 	<div class="h_module">&nbsp;</div>
@@ -113,5 +112,3 @@
 		</table>
 	</form>
 </div>
-
-{/strip}

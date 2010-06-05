@@ -23,14 +23,15 @@ if (!isset($_SESSION['user_id']))
 define('ACP', 1);
 define('SESSION', session_id());
 define('UPDIR', BASE_DIR . '/uploads');
-define('ADMIN_THEME_FOLDER', empty($_SESSION['admin_theme']) ? DEFAULT_ADMIN_THEME_FOLDER : $_SESSION['admin_theme']);
-define('ADMIN_LANGUAGE', empty($_SESSION['admin_lang']) ? DEFAULT_COUNTRY : $_SESSION['admin_lang']);
 
-$tpl_dir = 'templates/' . ADMIN_THEME_FOLDER;
+$tpl_dir = 'templates/' . (empty($_SESSION['admin_theme']) ? DEFAULT_ADMIN_THEME_FOLDER : $_SESSION['admin_theme']);
+
 $AVE_Template = new AVE_Template($tpl_dir . '/browser');
-$AVE_Template->config_load(BASE_DIR . '/admin/lang/' . ADMIN_LANGUAGE . '/main.txt');
+
 $AVE_Template->assign('tpl_dir', $tpl_dir);
 $AVE_Template->assign('sess', SESSION);
+
+$AVE_Template->config_load(BASE_DIR . '/admin/lang/' . (empty($_SESSION['admin_language']) ? $_SESSION['user_language'] : $_SESSION['admin_language']) . '/main.txt');
 
 $mediapath = '';
 $max_size  = 128; // максимальный размер миниатюры
@@ -163,7 +164,7 @@ if ($_REQUEST['action']=='upload2')
 {
 	for ($i=0;$i<count($_FILES['upfile']['tmp_name']);$i++)
 	{
-		$d_name = strtolower(ltrim(rtrim($_FILES['upfile']['name'][$i])));
+		$d_name = strtolower(trim($_FILES['upfile']['name'][$i]));
 		$d_name = str_replace(' ', '', $d_name);
 		$d_tmp = $_FILES['upfile']['tmp_name'][$i];
 		$endg = strtolower(substr($d_name, strlen($d_name) - 4));
@@ -179,7 +180,7 @@ if ($_REQUEST['action']=='upload2')
 				$d_name = $expl[0] . date('dhi'). '.' . $expl[1];
 			}
 
-			reportLog($_SESSION['user_name'] . ' - загрузил изображение в ('. $_REQUEST['pfad'] . $d_name. ')', 2, 2);
+			reportLog($_SESSION['user_name'] . ' - загрузил изображение в ('. stripslashes($_REQUEST['pfad']) . $d_name. ')', 2, 2);
 
 			@move_uploaded_file($d_tmp, UPDIR . $_REQUEST['pfad'] . $d_name);
 			@chmod(UPDIR . $_REQUEST['pfad'] . $d_name, 0777);
@@ -254,13 +255,13 @@ if ($_REQUEST['action']=='upload2')
 
 if ($_REQUEST['action']=='delfile')
 {
-	if (checkPermission('mediapool_del'))
+	if (check_permission('mediapool_del'))
 	{
 		@copy(UPDIR . $_REQUEST['file'], BASE_DIR . '/uploads/recycled/' . $_REQUEST['df'] );
 		if (@unlink(UPDIR . $_REQUEST['file']))
 		{
 			$error = 0;
-			reportLog($_SESSION['user_name'] . ' - удалил изображение (' . $_REQUEST['file']  . ')', 2, 2);
+			reportLog($_SESSION['user_name'] . ' - удалил изображение (' . stripslashes($_REQUEST['file'])  . ')', 2, 2);
 
 			$img_path = $_REQUEST['file'];
 			$namepos = strrpos($img_path, '/');

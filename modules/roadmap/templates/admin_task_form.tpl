@@ -41,13 +41,13 @@
 <tr>
   <td width="300" class="first">{#ROADMAP_TASK_USER#}</td>
   <td class="second">
-    <input style="width:200px" type="text" readonly="" value="{$item->lastname} {$item->firstname}" />
+    <input style="width:200px" type="text" readonly="" value="{$row->username|escape}" />
 	<input style="width:95px" name="uid" type="text"  value="{$item->uid}" />
   </td>
 </tr>
 <tr>
   <td width="300" class="first">{#ROADMAP_LAST_CHANGE#}:</td>
-  <td class="second">{$item->date_create|date_format:$TIME_FORMAT|pretty_date:$DEF_LANGUAGE}</td>
+  <td class="second">{$item->date_create|date_format:$TIME_FORMAT|pretty_date}</td>
 </tr>
 {/if}
 </table>

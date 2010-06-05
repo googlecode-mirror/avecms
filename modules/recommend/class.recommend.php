@@ -12,7 +12,7 @@ class Recommend {
 	function displayLink() {
 		global $AVE_Template, $mod;
 
-		$AVE_Template->assign('page', base64_encode(redirectLink()));
+		$AVE_Template->assign('page', base64_encode(get_redirect_link()));
 		$AVE_Template->assign('theme_folder', $mod['theme_folder']);
 		$AVE_Template->display($mod['tpl_dir'] . 'recommend_link.tpl');
 	}
@@ -25,16 +25,16 @@ class Recommend {
 	}
 
 	function sendForm($theme_folder) {
-		global $AVE_Template, $mod, $AVE_Globals;
+		global $AVE_Template, $mod;
 
-//		$mail_absender = $AVE_Globals->mainSettings('mail_from');
-//		$mail_name = $AVE_Globals->mainSettings('mail_from_name');
+//		$mail_absender = get_settings('mail_from');
+//		$mail_name = get_settings('mail_from_name');
 		$message = $mod['config_vars']['RECOMMEND_MESSAGE'];
 		$message = str_replace("%N%", "\n", $message);
 		$message = str_replace("%PAGE%", base64_decode($_POST['page']), $message);
 		$message = str_replace("&amp;", "&", $message);
 
-		$AVE_Globals->cp_mail(
+		send_mail(
 			$_POST['receiver_email'],
 			$message,
 			$mod['config_vars']['RECOMMEND_SUBJECT'],

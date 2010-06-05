@@ -1,7 +1,3 @@
-
-<!-- rubs.tpl -->
-{strip}
-
 <div class="pageHeaderTitle" style="padding-top: 7px;">
 	<div class="h_rubs">&nbsp;</div>
 	<div class="HeaderTitle">
@@ -10,7 +6,7 @@
 	<div class="HeaderText">{#RUBRIK_TIP#}</div>
 </div>
 
-{if checkPermission('rub_neu')}
+{if check_permission('rub_neu')}
 <script type="text/javascript" language="JavaScript">
 function check_name() {ldelim}
 	if (document.getElementById('RubrikName').value == '') {ldelim}
@@ -33,7 +29,7 @@ function check_name() {ldelim}
 {/if}
 
 <h4>{#RUBRIK_ALL#}</h4>
-{if checkPermission('rub_edit')}
+{if check_permission('rub_edit')}
 	<form method="post" action="index.php?do=rubs&amp;cp={$sess}&amp;sub=quicksave{if $smarty.request.page!=''}&amp;page={$smarty.request.page}{/if}">
 {/if}
 
@@ -60,7 +56,7 @@ function check_name() {ldelim}
 		<tr style="background-color: #eff3eb;" onmouseover="this.style.backgroundColor='#dae0d8';" onmouseout="this.style.backgroundColor='#eff3eb';" id="table_rows">
 			<td class="itcen">{$rubric->Id}</td>
 			<td>
-				{if checkPermission('rub_edit')}
+				{if check_permission('rub_edit')}
 					<input style="width:100%" type="text" name="RubrikName[{$rubric->Id}]" value="{$rubric->RubrikName|escape}" />
 				{else}
 					<strong>{$rubric->RubrikName|escape}</strong>
@@ -68,7 +64,7 @@ function check_name() {ldelim}
 			</td>
 
 			<td>
-				{if checkPermission('rub_edit')}
+				{if check_permission('rub_edit')}
 					<input style="width:100%" type="text" name="UrlPrefix[{$rubric->Id}]" value="{$rubric->UrlPrefix|escape}" />
 				{else}
 					<strong>{$rubric->UrlPrefix|escape}</strong>
@@ -76,7 +72,7 @@ function check_name() {ldelim}
 			</td>
 
 			<td>
-				{if checkPermission('rub_edit')}
+				{if check_permission('rub_edit')}
 					<select name="Vorlage[{$rubric->Id}]" style="width:100%">
 						{foreach from=$templates item=template}
 							<option value="{$template->Id}" {if $template->Id==$rubric->Vorlage}selected="selected" {/if}/>{$template->TplName|escape}</option>
@@ -92,7 +88,7 @@ function check_name() {ldelim}
 			<td align="center"><strong>{$rubric->doc_count}</strong></td>
 
 			<td align="center">
-				{if checkPermission('rub_edit')}
+				{if check_permission('rub_edit')}
 					<a title="{#RUBRIK_EDIT#}" href="index.php?do=rubs&action=edit&Id={$rubric->Id}&cp={$sess}">
 						<img src="{$tpl_dir}/images/icon_edit.gif" alt="" border="0" />
 					</a>
@@ -102,7 +98,7 @@ function check_name() {ldelim}
 			</td>
 
 			<td align="center">
-				{if checkPermission('rub_edit')}
+				{if check_permission('rub_edit')}
 					<a title="{#RUBRIK_EDIT_TEMPLATE#}" href="index.php?do=rubs&action=template&Id={$rubric->Id}&cp={$sess}">
 						<img src="{$tpl_dir}/images/icon_template.gif" alt="" border="0" />
 					</a>
@@ -112,7 +108,7 @@ function check_name() {ldelim}
 			</td>
 
 			<td align="center">
-				{if checkPermission('rub_multi')}
+				{if check_permission('rub_multi')}
 					<a title="{#RUBRIK_MULTIPLY#}" href="javascript:void(0);" onclick="window.open('?do=rubs&action=multi&Id={$rubric->Id}&pop=1&cp={$sess}','pop','top=0,left=0,width=550,height=300')">
 						<img src="{$tpl_dir}/images/icon_copy.gif" alt="" border="0" />
 					</a>
@@ -124,7 +120,7 @@ function check_name() {ldelim}
 			<td align="center">
 				{if $rubric->Id != 1}
 					{if $rubric->doc_count==0}
-						{if checkPermission('rub_loesch')}
+						{if check_permission('rub_loesch')}
 							<a title="{#RUBRIK_DELETE#}" onclick="return (confirm('{#RUBRIK_DELETE_CONFIRM#}'))" href="index.php?do=rubs&amp;action=delete&amp;Id={$rubric->Id}&amp;cp={$sess}"><img src="{$tpl_dir}/images/icon_delete.gif" alt="" border="0" /></a>
 						{else}
 							<img title="{#RUBRIK_NO_PERMISSION#}" src="{$tpl_dir}/images/icon_delete_no.gif" alt="" border="0" />
@@ -140,7 +136,7 @@ function check_name() {ldelim}
 	{/foreach}
 </table><br />
 
-{if checkPermission('rub_edit')}
+{if check_permission('rub_edit')}
 	<input class="button" type="submit" value="{#RUBRIK_BUTTON_SAVE#}" /><br />
 {/if}
 
@@ -148,7 +144,7 @@ function check_name() {ldelim}
 	<div class="infobox">{$page_nav} </div>
 {/if}
 
-{if checkPermission('rub_edit')}
+{if check_permission('rub_edit')}
 	</form>
 {/if}
 
@@ -167,6 +163,3 @@ function check_name() {ldelim}
 		<img class="absmiddle" src="{$tpl_dir}/images/icon_del.gif" alt="" border="0" /> - {#RUBRIK_DELETE_LEGEND#}
 	</div>
 </div>
-
-{/strip}
-<!-- /rubs.tpl -->

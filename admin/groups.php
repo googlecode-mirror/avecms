@@ -14,29 +14,19 @@ if (!defined('ACP'))
 	exit;
 }
 
-global $AVE_Template, $AVE_User;
+global $AVE_Template;
 
+require(BASE_DIR . '/class/class.user.php');
 $AVE_User = new AVE_User;
-$listAllGroups = $AVE_User->listAllGroups();
-$AVE_Template->assign('navi_groups', $listAllGroups);
-$AVE_Template->assign('navi', $AVE_Template->fetch('navi/navi.tpl'));
 
-$AVE_Template->config_load(BASE_DIR . '/admin/lang/' . $_SESSION['admin_lang'] . '/groups.txt', 'groups');
-
-$config_vars = $AVE_Template->get_config_vars();
-$AVE_Template->assign('config_vars', $config_vars);
-
-$_REQUEST['sub']    = (!isset($_REQUEST['sub']))    ? '' : addslashes($_REQUEST['sub']);
-$_REQUEST['action'] = (!isset($_REQUEST['action'])) ? '' : addslashes($_REQUEST['action']);
-$_REQUEST['submit'] = (!isset($_REQUEST['submit'])) ? '' : addslashes($_REQUEST['submit']);
+$AVE_Template->config_load(BASE_DIR . '/admin/lang/' . $_SESSION['admin_language'] . '/groups.txt', 'groups');
 
 switch ($_REQUEST['action'])
 {
 	case '':
-		if (checkPermission('group'))
+		if (check_permission('group'))
 		{
-			$AVE_Template->assign('ugroups', $listAllGroups);
-			$AVE_Template->assign('content', $AVE_Template->fetch('groups/groups.tpl'));
+			$AVE_User->userGroupListShow();
 		}
 		else
 		{
@@ -45,21 +35,18 @@ switch ($_REQUEST['action'])
 		break;
 
 	case 'grouprights':
-		if (checkPermission('group_edit'))
+		if (check_permission('group_edit'))
 		{
 			switch ($_REQUEST['sub'])
 			{
 				case '':
-					$get_group = (isset($_REQUEST['Id']) && $_REQUEST['Id'] != '') ? (int)$_REQUEST['Id'] : 1;
-					$AVE_User->fetchAllPerms($get_group);
-					if($get_group==UGROUP) $AVE_Template->assign('own_group',1);
-					$AVE_Template->assign('g_name', $AVE_User->fetchGroupNameById($get_group));
-					$AVE_Template->assign('modules', $AVE_User->getModules());
-					$AVE_Template->assign('content', $AVE_Template->fetch('groups/perms.tpl'));
+					require(BASE_DIR . '/class/class.modules.php');
+					$AVE_Module = new AVE_Module;
+					$AVE_User->userGroupPermissionEdit($_REQUEST['Id']);
 					break;
 
 				case 'save':
-					$AVE_User->savePerms($_REQUEST['Id']);
+					$AVE_User->userGroupPermissionSave($_REQUEST['Id']);
 					break;
 			}
 		}
@@ -70,9 +57,9 @@ switch ($_REQUEST['action'])
 		break;
 
 	case 'new':
-		if (checkPermission('group_new'))
+		if (check_permission('group_new'))
 		{
-			$AVE_User->newGroup();
+			$AVE_User->userGroupNew();
 		}
 		else
 		{
@@ -81,9 +68,9 @@ switch ($_REQUEST['action'])
 		break;
 
 	case 'delete':
-		if (checkPermission('group_edit'))
+		if (check_permission('group_edit'))
 		{
-			$AVE_User->delGroup($_REQUEST['Id']);
+			$AVE_User->userGroupDelete($_REQUEST['Id']);
 		}
 		else
 		{

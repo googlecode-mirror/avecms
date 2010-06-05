@@ -248,7 +248,7 @@ if ( count($error_array) || (isset($_REQUEST['preview']) && $_REQUEST['preview']
 			$row2 = $sql2->FetchRow();
 
 			// link
-			$link = BASE_URL . str_replace("/index.php","",$_SERVER['PHP_SELF']) . "/index.php?module=forums&show=showtopic&toid=$topic_id&fid=$forum_id";
+			$link = HOST . str_replace("/index.php","",$_SERVER['PHP_SELF']) . "/index.php?module=forums&show=showtopic&toid=$topic_id&fid=$forum_id";
 			$username = (UGROUP==2) ? $GLOBALS['mod']['config_vars']['Guest'] : $this->getUserName($_SESSION['user_id']);
 			$body = $GLOBALS['mod']['config_vars']['BodyNewThreadEmailMod'];
 			$body = str_replace("%%DATUM%%", date("d.m.Y, H:i:s"), $body);
@@ -258,8 +258,15 @@ if ( count($error_array) || (isset($_REQUEST['preview']) && $_REQUEST['preview']
 			$body = str_replace("%%LINK%%", $link, $body);
 			$body = str_replace("%%MESSAGE%%", $message, $body);
 
-			$AVE_Globals = new AVE_Globals;
-			$AVE_Globals->cp_mail($row2->email, stripslashes($body_s), $GLOBALS['mod']['config_vars']['SubjectNewThreadEmail'] . $exsubject, FORUMEMAIL, FORUMABSENDER, "text", "");
+			send_mail(
+				$row2->email,
+				stripslashes($body_s),
+				$GLOBALS['mod']['config_vars']['SubjectNewThreadEmail'] . $exsubject,
+				FORUMEMAIL,
+				FORUMABSENDER,
+				"text",
+				""
+			);
 		}
 	}
 
@@ -323,7 +330,7 @@ if ( count($error_array) || (isset($_REQUEST['preview']) && $_REQUEST['preview']
 		//=======================================================
 		// link zusammensetzen
 		//=======================================================
-		$link = BASE_URL . str_replace("/index.php","",$_SERVER['PHP_SELF']) . "/index.php?module=forums&show=showtopic&toid=$topic_id&fid=$forum_id";
+		$link = HOST . str_replace("/index.php","",$_SERVER['PHP_SELF']) . "/index.php?module=forums&show=showtopic&toid=$topic_id&fid=$forum_id";
 
 		$username = (UGROUP==2) ? $GLOBALS['mod']['config_vars']['Guest'] : $this->getUserName($_SESSION['user_id']);
 		$body_s = ($opened==2) ? $GLOBALS['mod']['config_vars']['BodyNewThreadEmailMod'] : $GLOBALS['mod']['config_vars']['BodyNewThreadEmail'];
@@ -339,10 +346,17 @@ if ( count($error_array) || (isset($_REQUEST['preview']) && $_REQUEST['preview']
 		//=======================================================
 		// E-Mails an Forum-Empfänger (Admin-Bereich) senden
 		//=======================================================
-		$AVE_Globals = new AVE_Globals;
 		foreach ($mails as $send_mail)
 		{
-			$AVE_Globals->cp_mail($send_mail, stripslashes($body_s), $GLOBALS['mod']['config_vars']['SubjectNewThreadEmail'] . $exsubject, FORUMEMAIL, FORUMABSENDER, "text", "");
+			send_mail(
+				$send_mail,
+				stripslashes($body_s),
+				$GLOBALS['mod']['config_vars']['SubjectNewThreadEmail'] . $exsubject,
+				FORUMEMAIL,
+				FORUMABSENDER,
+				"text",
+				""
+			);
 		}
 	}
 

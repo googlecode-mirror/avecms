@@ -1,14 +1,10 @@
-
-<!-- templates.tpl -->
-{strip}
-
 <div id="pageHeaderTitle" style="padding-top:7px;">
 	<div class="h_tpl">&nbsp;</div>
 	<div class="HeaderTitle"><h2>{#TEMPLATES_SUB_TITLE#}</h2></div>
 	<div class="HeaderText">{#TEMPLATES_TIP1#}</div>
 </div>
 
-{if checkPermission('vorlagen_neu')}
+{if check_permission('vorlagen_neu')}
 <script type="text/javascript" language="JavaScript">
 function check_name() {ldelim}
 	if (document.getElementById('TempName').value == '') {ldelim}
@@ -45,11 +41,11 @@ function check_name() {ldelim}
 	{foreach from=$items item=tpl}
 		<tr style="background-color: #eff3eb;" onmouseover="this.style.backgroundColor='#dae0d8';" onmouseout="this.style.backgroundColor='#eff3eb';" id="table_rows">
 			<td width="10" class="itcen">{$tpl->Id}</td>
-			<td><strong>{if checkPermission('vorlagen_edit')}<a title="{#TEMPLATES_EDIT#}" href="index.php?do=templates&amp;action=edit&amp;Id={$tpl->Id}&amp;cp={$sess}">{$tpl->TplName}</a>{else}{$tpl->TplName}{/if}</strong></td>
+			<td><strong>{if check_permission('vorlagen_edit')}<a title="{#TEMPLATES_EDIT#}" href="index.php?do=templates&amp;action=edit&amp;Id={$tpl->Id}&amp;cp={$sess}">{$tpl->TplName}</a>{else}{$tpl->TplName}{/if}</strong></td>
 			<td>{$tpl->TBenutzer}</td>
-			<td class="time">{$tpl->TDatum|date_format:$TIME_FORMAT|pretty_date:$DEF_LANGUAGE}</td>
+			<td class="time">{$tpl->TDatum|date_format:$TIME_FORMAT|pretty_date}</td>
 			<td nowrap="nowrap" width="1%" align="center">
-				{if checkPermission('vorlagen_edit')}
+				{if check_permission('vorlagen_edit')}
 					<a title="{#TEMPLATES_EDIT#}" href="index.php?do=templates&amp;action=edit&amp;Id={$tpl->Id}&amp;cp={$sess}">
 					<img src="{$tpl_dir}/images/icon_edit.gif" alt="" border="0" /></a>
 				{else}
@@ -57,7 +53,7 @@ function check_name() {ldelim}
 				{/if}
 			</td>
 			<td nowrap="nowrap" width="1%" align="center">
-				{if checkPermission('vorlagen_multi')}
+				{if check_permission('vorlagen_multi')}
 					<a title="{#TEMPLATES_COPY#}" href="javascript:void(0);" onclick="window.open('?do=templates&amp;action=multi&amp;pop=1&amp;Id={$tpl->Id}&amp;cp={$sess}','pop','top=0,left=0,width=400,height=250')">
 					<img src="{$tpl_dir}/images/icon_copy.gif" alt="" border="0" />    </a>
 				{else}
@@ -69,7 +65,7 @@ function check_name() {ldelim}
 					<img src="{$tpl_dir}/images/icon_delete_no.gif" alt="" border="0" />
 				{else}
 					{if $tpl->can_deleted==1}
-						{if checkPermission('vorlagen_loesch')}
+						{if check_permission('vorlagen_loesch')}
 							<a  title="{#TEMPLATES_DELETE#}" onclick="return (confirm('{#TEMPLATES_DELETE_CONF#}'))" href="index.php?do=templates&amp;action=delete&amp;Id={$tpl->Id}&amp;cp={$sess}">
 							<img  src="{$tpl_dir}/images/icon_delete.gif" alt="" border="0" /></a>
 						{else}
@@ -94,11 +90,8 @@ function check_name() {ldelim}
 	<div class="segmentBoxContent">
 		<img class="absmiddle" src="{$tpl_dir}/images/arrow.gif" alt="" border="0" /> <strong>{#TEMPLATES_LEGEND#}</strong><br />
 		<br />
-		<img class="absmiddle" src="{$tpl_dir}/images/icon_edit.gif" alt="" border="0" /> - {$config_vars.TEMPLATES_EDIT}<br />
-		<img class="absmiddle" src="{$tpl_dir}/images/icon_delete.gif" alt="" border="0" /> - {$config_vars.TEMPLATES_DELETE}<br />
-		<img class="absmiddle" src="{$tpl_dir}/images/icon_copy.gif" alt="" border="0" /> - {$config_vars.TEMPLATES_COPY}</div>
+		<img class="absmiddle" src="{$tpl_dir}/images/icon_edit.gif" alt="" border="0" /> - {#TEMPLATES_EDIT#}<br />
+		<img class="absmiddle" src="{$tpl_dir}/images/icon_delete.gif" alt="" border="0" /> - {#TEMPLATES_DELETE#}<br />
+		<img class="absmiddle" src="{$tpl_dir}/images/icon_copy.gif" alt="" border="0" /> - {#TEMPLATES_COPY#}</div>
 	</div>
 </div>
-
-{/strip}
-<!-- /templates.tpl -->

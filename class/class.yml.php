@@ -1,11 +1,18 @@
 <?php
 
 /**
- * Класс генерации YML (Yandex Market Language)
- * описание формата данных YML http://partner.market.yandex.ru/legal/tt/
+ * AVE.cms
  *
  * @package AVE.cms
  * @filesource
+ */
+
+/**
+ * Класс генерации YML
+ * YML (Yandex Market Language) - стандарт, разработанный "Яндексом"
+ * для принятия и публикации информации в базе данных Яндекс.Маркет
+ * YML основан на стандарте XML (Extensible Markup Language)
+ * описание формата данных YML http://partner.market.yandex.ru/legal/tt/
  */
 class AVE_YML
 {
@@ -14,10 +21,39 @@ class AVE_YML
  *	СВОЙСТВА
  */
 
+	/**
+	 * Кодировка
+	 *
+	 * @var string
+	 */
 	var $from_charset = 'windows-1251';
+
+	/**
+	 * Элемент описания магазина
+	 *
+	 * @var string
+	 */
 	var $shop = array('name'=>'', 'company'=>'', 'url'=>'');
+
+	/**
+	 * Элемент валюты
+	 *
+	 * @var string
+	 */
 	var $currencies = array();
+
+	/**
+	 * Элемент категории
+	 *
+	 * @var string
+	 */
 	var $categories = array();
+
+	/**
+	 * Элемент предложения
+	 *
+	 * @var string
+	 */
 	var $offers = array();
 
 	/**
@@ -28,6 +64,122 @@ class AVE_YML
 	function AVE_YML($from_charset = 'windows-1251')
 	{
 		$this->from_charset = trim(strtolower($from_charset));
+	}
+
+/**
+ *	ВНУТРЕННИЕ МЕТОДЫ
+ */
+
+	/**
+	 * Преобразование массива в тег
+	 *
+	 * @param array $tags
+	 * @return string
+	 */
+	function _ymlArray2Tag($tags)
+	{
+		$tag = '';
+		foreach ($tags as $tag_name => $tag_value)
+		{
+			$tag .= '<' . $tag_name . '>' . $tag_value . '</' . $tag_name . '>';
+		}
+		$tag .= "\r\n";
+
+		return $tag;
+	}
+
+	/**
+	 * Преобразование массива в атрибуты
+	 *
+	 * @param array $attributes
+	 * @param string $tag_name
+	 * @param string $tag_value
+	 * @return string
+	 */
+	function _ymlArray2Attribute($attributes, $tag_name, $tag_value = '')
+	{
+		$attribute = '<' . $tag_name . ' ';
+		foreach ($attributes as $attribute_name => $attribute_value)
+		{
+			$attribute .= $attribute_name . '="' . $attribute_value . '" ';
+		}
+		$attribute .= ($tag_value != '') ? '>' . $tag_value . '</' . $tag_name . '>' : '/>';
+		$attribute .= "\r\n";
+
+		return $attribute;
+	}
+
+	/**
+	 * Подготовка текстового поля в соответствии с требованиями Яндекса
+	 * Запрещены любые html-тэги. Стандарт XML не допускает использования в текстовых данных
+	 * непечатаемых символов с ASCII-кодами в диапазоне значений от 0 до 31 (за исключением
+	 * символов с кодами 9, 10, 13 - табуляция, перевод строки, возврат каретки). Также этот
+	 * стандарт требует обязательной замены некоторых символов на эквивалентные им символьные
+	 * примитивы.
+	 * @param string $field
+	 * @return string
+	 */
+	function _ymlFieldPrepare($field)
+	{
+		$field = htmlspecialchars_decode(trim($field));
+		$field = strip_tags($field);
+		$from = array('"', '&', '>', '<', '\'');
+		$to = array('&quot;', '&amp;', '&gt;', '&lt;', '&apos;');
+		$field = str_replace($from, $to, $field);
+		if ($this->from_charset != 'windows-1251')
+		{
+			$field = iconv($this->from_charset, 'windows-1251//IGNORE//TRANSLIT', $field);
+		}
+		$field = preg_replace('#[\x00-\x08\x0B-\x0C\x0E-\x1F]+#is', ' ', $field);
+
+		return trim($field);
+	}
+
+	/**
+	 * формирование элемента catalog
+	 *
+	 * @return string
+	 */
+	function _ymlElementCatalogGet()
+	{
+		$eol = "\r\n";
+
+		$catalog = '<shop>' . $eol;
+
+		// информация о магазине
+		$catalog .= $this->_ymlArray2Tag($this->shop);
+
+		// валюты
+		$catalog .= '<currencies>' . $eol;
+		foreach ($this->currencies as $currency)
+		{
+			$catalog .= $this->_ymlArray2Attribute($currency, 'currency');
+		}
+		$catalog .= '</currencies>' . $eol;
+
+		// категории
+		$catalog .= '<categories>' . $eol;
+		foreach ($this->categories as $category)
+		{
+			$category_name = $category['name'];
+			unset($category['name']);
+			$catalog .= $this->_ymlArray2Attribute($category, 'category', $category_name);
+		}
+		$catalog .= '</categories>' . $eol;
+
+		// товарные позиции
+		$catalog .= '<offers>' . $eol;
+		foreach ($this->offers as $offer)
+		{
+			$data = $offer['data'];
+			unset($offer['data']);
+			$catalog .= $this->_ymlArray2Attribute($offer, 'offer', $this->_ymlArray2Tag($data));
+		}
+		$catalog .= '</offers>' . $eol;
+
+		$catalog .= '</shop>';
+
+		return $catalog;
 	}
 
 /**
@@ -47,11 +199,11 @@ class AVE_YML
 	 * 		Не публикуется, используется для внутренней идентификации.
 	 * @param string $url - URL-адрес главной страницы магазина
 	 */
-	function set_shop($name, $company, $url)
+	function ymlElementShopSet($name, $company, $url)
 	{
-		$this->shop['name'] = substr($this->_prepare_field($name), 0, 20);
-		$this->shop['company'] = $this->_prepare_field($company);
-		$this->shop['url'] = $this->_prepare_field($url);
+		$this->shop['name'] = substr($this->_ymlFieldPrepare($name), 0, 20);
+		$this->shop['company'] = $this->_ymlFieldPrepare($company);
+		$this->shop['url'] = $this->_ymlFieldPrepare($url);
 	}
 
 	/**
@@ -68,7 +220,7 @@ class AVE_YML
 	 *		и означает насколько увеличить курс в процентах от курса выбранного банка
 	 * @return bool
 	 */
-	function add_currency($id, $rate = 'CBRF', $plus = 0)
+	function ymlElementCurrencySet($id, $rate = 'CBRF', $plus = 0)
 	{
 		$rate = strtoupper($rate);
 		$allow_rate = array('CBRF', 'NBU', 'CB');
@@ -78,7 +230,7 @@ class AVE_YML
 			if ($plus > 0)
 			{
 				$this->currencies[] = array(
-					'id'=>$this->_prepare_field(strtoupper($id)),
+					'id'=>$this->_ymlFieldPrepare(strtoupper($id)),
 					'rate'=>$rate,
 					'plus'=>(float)$plus
 				);
@@ -86,7 +238,7 @@ class AVE_YML
 			else
 			{
 				$this->currencies[] = array(
-					'id'=>$this->_prepare_field(strtoupper($id)),
+					'id'=>$this->_ymlFieldPrepare(strtoupper($id)),
 					'rate'=>$rate
 				);
 			}
@@ -95,7 +247,7 @@ class AVE_YML
 		{
 			$rate = str_replace(',', '.', $rate);
 			$this->currencies[] = array(
-				'id'=>$this->_prepare_field(strtoupper($id)),
+				'id'=>$this->_ymlFieldPrepare(strtoupper($id)),
 				'rate'=>(float)$rate
 			);
 		}
@@ -111,7 +263,7 @@ class AVE_YML
 	 * @param int $parent_id - id родительской рубрики, если нет, то -1
 	 * @return bool
 	 */
-	function add_category($name, $id, $parent_id = -1)
+	function ymlElementCategorySet($name, $id, $parent_id = -1)
 	{
 		if ((int)$id < 1 || trim($name) == '') return false;
 		if ((int)$parent_id > 0)
@@ -119,14 +271,14 @@ class AVE_YML
 			$this->categories[] = array(
 				'id'=>(int)$id,
 				'parentId'=>(int)$parent_id,
-				'name'=>$this->_prepare_field($name)
+				'name'=>$this->_ymlFieldPrepare($name)
 			);
 		}
 		else
 		{
 			$this->categories[] = array(
 				'id'=>(int)$id,
-				'name'=>$this->_prepare_field($name)
+				'name'=>$this->_ymlFieldPrepare($name)
 			);
 		}
 
@@ -173,7 +325,7 @@ class AVE_YML
 	 *		(срок может быть больше для товаров, которые всеми участниками рынка поставляются только на заказ)..
 	 *		Те товарные предложения, на которые заказы не принимаются, не должны выгружаться в Яндекс.Маркет.
 	 */
-	function add_offer($id, $data, $available = true)
+	function ymlElementOfferSet($id, $data, $available = true)
 	{
 		$allowed = array(
 			'url',
@@ -193,10 +345,10 @@ class AVE_YML
 			'downloadable'
 		);
 
-		foreach ($data as $k=>$v)
+		foreach ($data as $k => $v)
 		{
 			if (!in_array($k, $allowed)) unset($data[$k]);
-			$data[$k] = strip_tags($this->_prepare_field($v));
+			$data[$k] = strip_tags($this->_ymlFieldPrepare($v));
 		}
 		$tmp = $data;
 		$data = array();
@@ -214,133 +366,21 @@ class AVE_YML
 	}
 
 	/**
-	 * Получить весь ХML код
+	 * Получить весь YML файл
 	 *
 	 * @return string
 	 */
-	function get_xml()
+	function ymlGet()
 	{
-		$xml  = '<?xml version="1.0" encoding="windows-1251"?>' . "\r\n";
-		$xml .= '<!DOCTYPE yml_catalog SYSTEM "shops.dtd">' . "\r\n";
-		$xml .= '<yml_catalog date="' . date('Y-m-d H:i') . '">' . "\r\n";
-		$xml .= $this->_get_xml_shop();
-		$xml .= '</yml_catalog>';
+		$eol = "\r\n";
 
-		return $xml;
-	}
+		$yml  = '<?xml version="1.0" encoding="windows-1251"?>' . $eol;
+		$yml .= '<!DOCTYPE yml_catalog SYSTEM "shops.dtd">' . $eol;
+		$yml .= '<yml_catalog date="' . date('Y-m-d H:i') . '">' . $eol;
+		$yml .= $this->_ymlElementCatalogGet();
+		$yml .= '</yml_catalog>';
 
-/**
- *	ВНУТРЕННИЕ МЕТОДЫ
- */
-
-	/**
-	 * Преобразование массива в тег
-	 *
-	 * @param array $arr
-	 * @return string
-	 */
-	function _convert_array_to_tag($arr)
-	{
-		$s = '';
-		foreach ($arr as $tag=>$val)
-		{
-			$s .= '<' . $tag . '>' . $val . '</' . $tag . '>';
-		}
-		$s .= "\r\n";
-
-		return $s;
-	}
-
-	/**
-	 * Преобразование массива в атрибуты
-	 *
-	 * @param array $arr
-	 * @param string $tagname
-	 * @param string $tagvalue
-	 * @return string
-	 */
-	function _convert_array_to_attr($arr, $tagname, $tagvalue = '')
-	{
-		$s = '<' . $tagname . ' ';
-		foreach ($arr as $attrname=>$attrval)
-		{
-			$s .= $attrname . '="' . $attrval . '" ';
-		}
-		$s .= ($tagvalue != '') ? '>' . $tagvalue . '</' . $tagname . '>' : '/>';
-		$s .= "\r\n";
-
-		return $s;
-	}
-
-	/**
-	 * Подготовка текстового поля в соответствии с требованиями Яндекса
-	 * Запрещены любые html-тэги. Стандарт XML не допускает использования в текстовых данных
-	 * непечатаемых символов с ASCII-кодами в диапазоне значений от 0 до 31 (за исключением
-	 * символов с кодами 9, 10, 13 - табуляция, перевод строки, возврат каретки). Также этот
-	 * стандарт требует обязательной замены некоторых символов на эквивалентные им символьные
-	 * примитивы.
-	 * @param string $s
-	 * @return string
-	 */
-	function _prepare_field($s)
-	{
-		$s = htmlspecialchars_decode(trim($s));
-		$s = strip_tags($s);
-		$from = array('"', '&', '>', '<', '\'');
-		$to = array('&quot;', '&amp;', '&gt;', '&lt;', '&apos;');
-		$s = str_replace($from, $to, $s);
-		if ($this->from_charset != 'windows-1251')
-		{
-			$s = iconv($this->from_charset, 'windows-1251//IGNORE//TRANSLIT', $s);
-		}
-		$s = preg_replace('#[\x00-\x08\x0B-\x0C\x0E-\x1F]+#is', ' ', $s);
-
-		return trim($s);
-	}
-
-	/**
-	 * тело XML документа
-	 *
-	 * @return string
-	 */
-	function _get_xml_shop()
-	{
-		$s = '<shop>' . "\r\n";
-
-		// информация о магазине
-		$s .= $this->_convert_array_to_tag($this->shop);
-
-		// валюты
-		$s .= '<currencies>' . "\r\n";
-		foreach ($this->currencies as $currency)
-		{
-			$s .= $this->_convert_array_to_attr($currency, 'currency');
-		}
-		$s .= '</currencies>' . "\r\n";
-
-		// категории
-		$s .= '<categories>' . "\r\n";
-		foreach ($this->categories as $category)
-		{
-			$category_name = $category['name'];
-			unset($category['name']);
-			$s .= $this->_convert_array_to_attr($category, 'category', $category_name);
-		}
-		$s .= '</categories>' . "\r\n";
-
-		// товарные позиции
-		$s .= '<offers>' . "\r\n";
-		foreach ($this->offers as $offer)
-		{
-			$data = $offer['data'];
-			unset($offer['data']);
-			$s .= $this->_convert_array_to_attr($offer, 'offer', $this->_convert_array_to_tag($data));
-		}
-		$s .= '</offers>' . "\r\n";
-
-		$s .= '</shop>';
-
-		return $s;
+		return $yml;
 	}
 }
 

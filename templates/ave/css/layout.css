@@ -270,13 +270,29 @@ div.block#poll 			{padding:10px 0;}
 /* modul comments
 ----------------------------------------------- */
 .mod_comment_box                {margin:0 0 5px 0}
-.mod_comment_ans_box            {padding:0 0 0 60px;background:url(../images/answer.gif) no-repeat 20px top}
-.mod_comment_header             {font-size:11px; color:#666; padding:3px 0; clear:both; position:relative;}
-.mod_comment_text               {padding:8px; font-size:12px; background: #F3F3F3; border: 1px solid #CCC;}
+.mod_comment_ans_box            {padding:0 0 0 40px;background:url(../images/answer.gif) no-repeat 0px top;}
+/*
+.mod_comment_header             {font-size:11px;color:#666;padding:3px 0;clear:both;position:relative;}
+.mod_comment_text               {padding:8px;font-size:12px;}
 .mod_comment_icons              {float:right}
 .mod_comment_author             {float:left}
+*/
 .mod_comment_highlight          {border:2px solid #eec00a}
 .mod_comment_changed            {color:#999;font-size:10px}
+
+#mod_comment_new				{margin-top:1em;}
+#mod_comment_new p label		{float:left;line-height:2em;margin-right:1%;text-align:right;width:19%;}
+#mod_comment_new p input		{width:25%;}
+#mod_comment_new textarea		{width:78%;}
+#mod_comment_new input.button	{margin-left:20%;}
+
+.mod_comment_header				{color:#666;border-top:1px dotted #999;border-bottom:1px dotted #999;padding:.3em 0;background:#eee;}
+.mod_comment_author				{float:left;line-height:2em;margin-left:1%;}
+.mod_comment_icons				{line-height:2em;text-align:right;margin-right:1%;}
+.mod_comment_text				{margin-bottom:1.8em;}
+.mod_comment_box textarea		{width:98%;}
+.mod_comment_box input.button	{float:left;line-height:2em;margin-right:1%;}
+
 
 /* -----------------------------
  =POPUP блок

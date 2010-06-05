@@ -1,5 +1,3 @@
-{strip}
-<!-- shop_infopage.tpl -->
 <div class="grid_12">
 	<!-- SHOP - TOP NAVI -->
 	{$Inf}
@@ -21,13 +19,13 @@
       <h2> <a href="#" id="toggle-login-forms">Авторизация</a> </h2>
       <div class="block" id="login-forms">{$UserPanel}</div>
     </div>
-    
+
   <!-- Блок поиска по магазину -->
     <div class="box">
       <h2><a href="#" id="toggle-shop-search">Поиск товаров</a></h2>
       <div class="block" id="shop-search">{$Search}</div>
     </div>
-    
+
   <!-- Блок корзины -->
     <div class="box">
       <h2><a href="#" id="toggle-shopbasket">Корзина</a></h2>
@@ -53,5 +51,3 @@
     </div>
 </div>
 {/if}
-<!-- /shop_infopage.tpl -->
-{/strip}

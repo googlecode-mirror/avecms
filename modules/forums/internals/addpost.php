@@ -418,7 +418,7 @@ else
 				$page = $this->getPageNum($count, 15);
 
 				// link
-				$link = BASE_URL . str_replace("/index.php","",$_SERVER['PHP_SELF'])
+				$link = HOST . str_replace("/index.php","",$_SERVER['PHP_SELF'])
 					. "/index.php?module=forums&show=showtopic&toid=$topic_id&pp=15&page=$page#pid_$last_post_id";
 
 				$username = (UNAME == 'UNAME')
@@ -441,8 +441,7 @@ else
 
 				foreach ($mails as $send_mail)
 				{
-					$AVE_Globals = new AVE_Globals;
-					$AVE_Globals->cp_mail(
+					send_mail(
 						$send_mail,
 						stripslashes($body),
 						$subject_msg,
@@ -467,10 +466,9 @@ else
 		$page = $this->getPageNum($count, 15);
 
 		// link
-		$link = BASE_URL . str_replace("/index.php","",$_SERVER['PHP_SELF'])
+		$link = HOST . str_replace("/index.php","",$_SERVER['PHP_SELF'])
 			. "/index.php?module=forums&show=showtopic&toid=$topic_id&pp=15&page=$page#pid_$last_post_id";
 		$users = @explode(";", $r_notification->notification);
-		$AVE_Globals = new AVE_Globals;
 		foreach ($users as $mail_to)
 		{
 			if ($mail_to != "")
@@ -496,7 +494,7 @@ else
 				$n_body = str_replace("%%LINK%%", $link, $n_body);
 				$n_body = str_replace("%%MESSAGE%%", $message, $n_body);
 				$n_body = str_replace("%%N%%", "\n", $n_body);
-				$AVE_Globals->cp_mail(
+				send_mail(
 					$row_u->Email,
 					stripslashes($n_body),
 					$GLOBALS['mod']['config_vars']['SubjectNewPostEmail'],

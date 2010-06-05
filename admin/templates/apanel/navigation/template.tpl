@@ -17,7 +17,7 @@
 	<table width="100%" border="0" cellpadding="8" cellspacing="1" class="tableborder">
 		<tr>
 			<td width="200" class="first"><strong>{#NAVI_TITLE#}</strong></td>
-			<td class="second"><input style="width:400px" name="titel" type="text" id="titel" value="{$nav->titel|escape}"></td>
+			<td class="second"><input style="width:400px" name="titel" type="text" id="titel" value="{$nav->titel|default:$smarty.request.NaviName|escape}"></td>
 		</tr>
 
 		<tr>
@@ -28,25 +28,23 @@
 		<tr>
 			<td width="200" class="first">{#NAVI_GROUPS#}</td>
 			<td class="second">
-				{if $smarty.request.action=='new'}
-					<select  name="Gruppen[]"  multiple="multiple" size="5" style="width:200px">
+				<select  name="Gruppen[]" multiple="multiple" size="5" style="width:200px">
+					{if $smarty.request.action=='new'}
 						{foreach from=$row->AvGroups item=g}
-							<option value="{$g->Benutzergruppe}" selected>{$g->Name|escape}</option>
+							<option value="{$g->Benutzergruppe}" selected="selected">{$g->Name|escape}</option>
 						{/foreach}
-					</select>
-				{else}
-					<select  name="Gruppen[]"  multiple="multiple" size="5" style="width:200px">
+					{else}
 						{foreach from=$nav->AvGroups item=g}
 							{assign var='sel' value=''}
 							{if $g->Benutzergruppe}
-								{if (in_array($g->Benutzergruppe,$nav->Gruppen)) }
-									{assign var='sel' value='selected'}
+								{if (in_array($g->Benutzergruppe, $nav->Gruppen))}
+									{assign var='sel' value=' selected="selected"'}
 								{/if}
 							{/if}
-							<option value="{$g->Benutzergruppe}" {$sel}>{$g->Name|escape}</option>
+							<option value="{$g->Benutzergruppe}"{$sel}>{$g->Name|escape}</option>
 						{/foreach}
-					</select>
-				{/if}
+					{/if}
+				</select>
 			</td>
 		</tr>
 

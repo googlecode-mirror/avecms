@@ -1,5 +1,3 @@
-{strip}
-
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
 <head>
@@ -73,7 +71,7 @@ parent.document.dat.dateiname.value='{$dir}';
 			<div class="mb_icon_file"><img src="{$tpl_dir}/images/mediapool/{$dat->gifend}.gif" alt="" border="0" /></div>
 
 			{if $unable_delete != 1}
-				{if checkPermission('mediapool_del')}
+				{if check_permission('mediapool_del')}
 					<div class="mb_icon_delete">
 						<a title="{#MAIN_MP_FILE_DELETE#}" href="javascript:delfile('{$dat->val}');"><img src="{$tpl_dir}/images/icon_del.gif" alt="" border="0" /></a>
 					</div>
@@ -102,5 +100,3 @@ parent.document.dat.dateiname.value='{$dir}';
 
 </body>
 </html>
-
-{/strip}

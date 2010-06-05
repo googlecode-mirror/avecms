@@ -1,6 +1,3 @@
-<!-- shop_categ.tpl -->
-{strip}
-
 <div class="pageHeaderTitle" style="padding-top:7px;">
 	<div class="h_module">&nbsp;</div>
 	<div class="HeaderTitle"><h2>{#ModName#}</h2></div>
@@ -61,6 +58,3 @@
 		{$page_nav}<br />
 	{/if}
 {/if}
-
-{/strip}
-<!-- /shop_categ.tpl -->

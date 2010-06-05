@@ -1,7 +1,3 @@
-
-<!-- categs.tpl -->
-{strip}
-
 {if $shopitems}
 	{assign var="cols" value=1}
 	{assign var="maxsubs" value=5}
@@ -30,13 +26,13 @@
 							<td valign="top">
 								<h3 class="download_categ" style="line-height:1.5em">
 									<a class="tooltip" title="{$item->KatBeschreibung|default:$item->visible_title|escape:'html'}" href="{$item->dyn_link}">{$item->visible_title|truncate:'30'}</a>
-									({$item->acount})
+									{if $item->fileCount}({$item->fileCount}){/if}
 								</h3>
 								{if $item->subs}
 									<br />
 									{foreach from=$item->subs item=sub name=s}
 										<a class="tooltip" title="{$sub->KatBeschreibung|default:$sub->visible_title|escape:'html'}" href="{$sub->dyn_link}">{$sub->visible_title|truncate:'30'}</a>
-										{* ({$sub->fileCount}) *}{if !$smarty.foreach.s.last}, {/if}
+										{if $sub->fileCount}({$sub->fileCount}){/if}{if !$smarty.foreach.s.last}, {/if}
 									{/foreach}
 								{/if}
 							</td>
@@ -52,6 +48,3 @@
 		</tr>
 	</table>
 {/if}
-
-{/strip}
-<!-- /categs.tpl -->

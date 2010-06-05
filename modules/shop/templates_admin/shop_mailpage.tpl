@@ -1,5 +1,3 @@
-{strip}
-
 <div class="pageHeaderTitle" style="padding-top: 7px;">
 	<div class="h_module">&nbsp;</div>
 	<div class="HeaderTitle"><h2>{#ProductOrdersMailCustomer#}</h2></div>
@@ -13,7 +11,7 @@
 		<tr>
 			<td>{#ProductOrdersMailSubject#}</td>
 			<td>
-				<input name="Subject" type="text" style="width:97%" value="{#ProductOrdersSubjectOrder#} {$row.Datum|date_format:$config_vars.DateFormat}" size="35" />
+				<input name="Subject" type="text" style="width:97%" value="{#ProductOrdersSubjectOrder#} {$row.Datum|date_format:#DateFormat#}" size="35" />
 			</td>
 		</tr>
 
@@ -50,5 +48,3 @@
 		</tr>
 	</table>
 </form>
-
-{/strip}

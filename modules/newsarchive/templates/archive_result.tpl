@@ -38,7 +38,7 @@
     {foreach from=$documents item=items}
       <tr>
         <td><a href="{$items->Url}">{$items->Titel}</a></td>
-        <td>{$items->DokStart|date_format:$DATE_FORMAT|pretty_date:$DEF_LANGUAGE}</td>
+        <td>{$items->DokStart|date_format:$DATE_FORMAT|pretty_date}</td>
         <td>{$items->RubrikName}</td>
       </tr>
     {/foreach}

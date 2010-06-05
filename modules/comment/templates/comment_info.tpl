@@ -1,5 +1,3 @@
-{strip}
-
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 
@@ -8,7 +6,7 @@
 <title>{#COMMENT_INFO#}</title>
 <link href="templates/{$smarty.request.theme}/css/style.css" rel="stylesheet" type="text/css" media="screen" />
 </head>
-<!-- comment_info.tpl -->
+
 <body id="body_popup">
 
 <div id="module_header"><h2>{#COMMENT_INFO#}</h2></div>
@@ -22,7 +20,7 @@
 
 		<tr>
 			<td width="160">{#COMMENT_DATE_CREATE#}</td>
-			<td>{$c.published|date_format:$TIME_FORMAT|pretty_date:$DEF_LANGUAGE}</td>
+			<td>{$c.published|date_format:$TIME_FORMAT|pretty_date}</td>
 		</tr>
 
 		<tr>
@@ -53,7 +51,4 @@
 </div>
 
 </body>
-<!-- /comment_info.tpl -->
 </html>
-
-{/strip}

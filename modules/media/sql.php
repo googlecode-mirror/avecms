@@ -12,14 +12,9 @@
  * mySQL-запросы для установки, обновления и удаления модуля
  */
 
-$modul_sql_deinstall = array();
 $modul_sql_install = array();
+$modul_sql_deinstall = array();
 $modul_sql_update = array();
-
-$modul_sql_update[] = "ALTER TABLE `CPPREFIX_modul_banners` ADD COLUMN `Width` int(10) unsigned NOT NULL default '0';";
-$modul_sql_update[] = "ALTER TABLE `CPPREFIX_modul_banners` ADD COLUMN `Height` int(10) unsigned NOT NULL default '0';";
-$modul_sql_update[] = "UPDATE `CPPREFIX_module` SET `Version` = '" . $modul['ModulVersion'] . "' WHERE `ModulName` = '" . $modul['ModulName'] . "';" ;
-$modul_sql_update[] = "UPDATE `CPPREFIX_module` SET `ModulPfad` = '" . BANNER_DIR . "' WHERE `ModulName` = '" . $modul['ModulName'] . "';" ;
 
 $modul_sql_deinstall[] = "DROP TABLE IF EXISTS `CPPREFIX_modul_banner_categories`;";
 $modul_sql_deinstall[] = "DROP TABLE IF EXISTS `CPPREFIX_modul_banners`;";
@@ -30,7 +25,6 @@ $modul_sql_install[] = "CREATE TABLE `CPPREFIX_modul_banner_categories` (
 	PRIMARY KEY  (`Id`)
 ) TYPE=MyISAM DEFAULT CHARSET=cp1251;";
 
-$modul_sql_install[] = "DROP TABLE IF EXISTS `CPPREFIX_modul_banners`;";
 $modul_sql_install[] = "CREATE TABLE `CPPREFIX_modul_banners` (
 	`Id` int(10) unsigned NOT NULL auto_increment,
 	`KatId` mediumint(5) unsigned NOT NULL default '1',
@@ -57,4 +51,7 @@ $modul_sql_install[] = "INSERT INTO `CPPREFIX_modul_banner_categories` VALUES ('
 
 $modul_sql_install[] = "INSERT INTO `CPPREFIX_modul_banners` VALUES ('', '1', 'banner.jpg', 'http://www.overdoze.ru', '1', 'Overdoze-Banner', '0', '0', 'Скрипты CMS, бесплатные шаблоны, форум и поддержка разработчиков', '0', '0', '0', '0', '1', '_self', '0', '0');";
 $modul_sql_install[] = "INSERT INTO `CPPREFIX_modul_banners` VALUES ('', '1', 'banner2.gif', 'http://www.google.de', '1', 'Google-Banner', '0', '0', 'Посетите сайт Google', '0', '0', '0', '0', '1', '_blank', '0', '0');";
+
+$modul_sql_update[] = "UPDATE CPPREFIX_module SET CpEngineTag = '" . $modul['CpEngineTag'] . "', CpPHPTag = '" . $modul['CpPHPTag'] . "', Version = '" . $modul['ModulVersion'] . "' WHERE ModulPfad = '" . BANNER_DIR . "' LIMIT 1;";
+
 ?>

@@ -38,8 +38,6 @@ function check_form() {ldelim}
 {rdelim}
 </script>
 
-{strip}
-
 <div class="pageHeaderTitle" style="padding-top: 7px;">
 	<div class="h_module">&nbsp;</div>
 	<div class="HeaderTitle"><h2>{#ProductOrdersSEdit#}</h2></div>
@@ -141,5 +139,3 @@ function check_form() {ldelim}
 		</tr>
 	</table>
 </form>
-
-{/strip}

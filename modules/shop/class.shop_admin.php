@@ -728,14 +728,21 @@ class Shop
 
 	function mailPage($tpl_dir,$orderid)
 	{
-		global $AVE_DB, $AVE_Template, $AVE_Globals, $config_vars;
+		global $AVE_DB, $AVE_Template, $config_vars;
 
 		if (isset($_REQUEST['sub']) && $_REQUEST['sub'] == 'save')
 		{
-			$AVE_Globals = new AVE_Globals;
-			$SystemMail = $AVE_Globals->mainSettings("mail_from");
-			$SystemMailName = $AVE_Globals->mainSettings("mail_from_name");
-			$AVE_Globals->cp_mail($_REQUEST['mto'], stripslashes($_POST['Message']), $_POST['Subject'], $SystemMail, $SystemMailName, "text", $this->uploadFile());
+			$SystemMail = get_settings("mail_from");
+			$SystemMailName = get_settings("mail_from_name");
+			send_mail(
+				$_REQUEST['mto'],
+				stripslashes($_POST['Message']),
+				$_POST['Subject'],
+				$SystemMail,
+				$SystemMailName,
+				"text",
+				$this->uploadFile()
+			);
 			echo '<script>window.close();</script>';
 		}
 		else
@@ -952,7 +959,7 @@ class Shop
 		}
 
 		@$seiten = @ceil($num / $limit);
-		$start = prepage() * $limit - $limit;
+		$start = get_current_page() * $limit - $limit;
 
 		$sql = $AVE_DB->Query("
 			SELECT *
@@ -1002,8 +1009,10 @@ class Shop
 
 		if ($num > $limit)
 		{
-			$page_nav = pagenav($seiten, 'page',
-				" <a class=\"pnav\" href=\"index.php?do=modules&action=modedit&mod=shop&moduleaction=showorders&cp=" . SESSION . "&page={s}" . $Order_nav . $limit_nav . $VersandId_nav . $ZahlungsId_nav . $Query_nav . $Status_nav . $ZeitStart_nav . $ZeitEnde_nav . "\">{t}</a> ");
+			$page_nav = " <a class=\"pnav\" href=\"index.php?do=modules&action=modedit&mod=shop&moduleaction=showorders&cp=" . SESSION
+				. "&page={s}" . $Order_nav . $limit_nav . $VersandId_nav . $ZahlungsId_nav
+				. $Query_nav . $Status_nav . $ZeitStart_nav . $ZeitEnde_nav . "\">{t}</a> ";
+			$page_nav = get_pagination($seiten, 'page', $page_nav);
 			$AVE_Template->assign('page_nav', $page_nav);
 		}
 
@@ -1018,7 +1027,7 @@ class Shop
 	// Einzelne Bestellung
 	function showOrder($tpl_dir,$id)
 	{
-		global $AVE_DB, $AVE_Template, $AVE_Globals;
+		global $AVE_DB, $AVE_Template;
 
 		if (isset($_REQUEST['sub']) && $_REQUEST['sub'] == 'save')
 		{
@@ -1063,13 +1072,20 @@ class Shop
 			// Mail an Käufer senden
 			if (isset($_REQUEST['SendMail']) && $_REQUEST['SendMail'] == 1)
 			{
-				$AVE_Globals = new AVE_Globals;
-				$SystemMail = $AVE_Globals->mainSettings("mail_from");
-				$SystemMailName = $AVE_Globals->mainSettings("mail_from_name");
+				$SystemMail = get_settings("mail_from");
+				$SystemMailName = get_settings("mail_from_name");
 
 				$_POST['Message'] = str_replace("%%ORDER_NUMBER%%", $row->Id, $_POST['Message']);
 
-				$AVE_Globals->cp_mail($row->Bestell_Email, stripslashes($_POST['Message'] . $_POST['Text']), $_POST['Subject'], $SystemMail, $SystemMailName, "text", $this->uploadFile());
+				send_mail(
+					$row->Bestell_Email,
+					stripslashes($_POST['Message'] . $_POST['Text']),
+					$_POST['Subject'],
+					$SystemMail,
+					$SystemMailName,
+					"text",
+					$this->uploadFile()
+				);
 			}
 
 			echo '<script>window.opener.location.reload();window.close();</script>';
@@ -1128,7 +1144,7 @@ class Shop
 			if (!empty($_FILES['Bild']['tmp_name']))
 			{
 				$name = str_replace(array(' ', '+','-'),'_',strtolower($_FILES['Bild']['name']));
-				$name = ereg_replace("_+", "_", $name);
+				$name = preg_replace("/__+/", "_", $name);
 //				$temp = $_FILES['Bild']['tmp_name'];
 //				$endung = strtolower(substr($name, -3));
 				$fupload_name = $name;
@@ -1195,7 +1211,7 @@ class Shop
 			if (!empty($_FILES['Bild']['tmp_name']))
 			{
 				$name = str_replace(array(' ', '+','-'),'_',strtolower($_FILES['Bild']['name']));
-				$name = ereg_replace("_+", "_", $name);
+				$name = preg_replace("/__+/", "_", $name);
 //				$temp = $_FILES['Bild']['tmp_name'];
 //				$endung = strtolower(substr($name, -3));
 				$fupload_name = $name;
@@ -1372,10 +1388,11 @@ class Shop
 				}
 			}
 			// Speichern
+			$regex_birthday = '#(0[1-9]|[12][0-9]|3[01])([[:punct:]| ])(0[1-9]|1[012])\2(19|20)\d\d#';
 			foreach ($_POST['Code'] as $id => $Code)
 			{
-				if (@ereg("([0-9]{2})([.])([0-9]{2})([.])([0-9]{4})", $_POST['GueltigVon'][$id]) &&
-					@ereg("([0-9]{2})([.])([0-9]{2})([.])([0-9]{4})", $_POST['GueltigBis'][$id]))
+				if (@preg_match($regex_birthday, $_POST['GueltigVon'][$id]) &&
+					@preg_match($regex_birthday, $_POST['GueltigBis'][$id]))
 				{
 					$gueltig_von = explode('.', $_POST['GueltigVon'][$id]);
 					$gueltig_bis = explode('.', $_POST['GueltigBis'][$id]);
@@ -1415,7 +1432,7 @@ class Shop
 
 		$limit = $this->_coupon_limit;
 		@$seiten = @ceil($num / $limit);
-		$start = prepage() * $limit - $limit;
+		$start = get_current_page() * $limit - $limit;
 
 		$sql = $AVE_DB->Query("
 			SELECT *
@@ -1442,8 +1459,8 @@ class Shop
 
 		if ($num > $limit)
 		{
-			$page_nav = pagenav($seiten, 'page',
-				" <a class=\"pnav\" href=\"index.php?do=modules&action=modedit&mod=shop&moduleaction=couponcodes&cp=" . SESSION . "&page={s}\">{t}</a> ");
+			$page_nav = " <a class=\"pnav\" href=\"index.php?do=modules&action=modedit&mod=shop&moduleaction=couponcodes&cp=" . SESSION . "&page={s}\">{t}</a> ";
+			$page_nav = get_pagination($seiten, 'page', $page_nav);
 			$AVE_Template->assign('page_nav', $page_nav);
 		}
 
@@ -1626,7 +1643,7 @@ class Shop
 
 		$limit = $limit;
 		@$seiten = @ceil($num / $limit);
-		$start = prepage() * $limit - $limit;
+		$start = get_current_page() * $limit - $limit;
 
 		$sql = $AVE_DB->Query("
 			SELECT
@@ -1674,8 +1691,10 @@ class Shop
 
 		if ($num > $limit)
 		{
-			$page_nav = pagenav($seiten, 'page',
-				" <a class=\"pnav\" href=\"index.php?do=modules&action=modedit&mod=shop&moduleaction=products&cp=" . SESSION . $navi_sort . $angebot_n . $best_n . $lager_n . $active_n . $recordset_n . $product_categ_n . $price_query_n . $product_query_n . $dbextra_n . $manufacturer_n . "&amp;page={s}\">{t}</a> ");
+			$page_nav = " <a class=\"pnav\" href=\"index.php?do=modules&action=modedit&mod=shop&moduleaction=products&cp=" . SESSION
+				. $navi_sort . $angebot_n . $best_n . $lager_n . $active_n . $recordset_n . $product_categ_n
+				. $price_query_n . $product_query_n . $dbextra_n . $manufacturer_n . "&amp;page={s}\">{t}</a> ";
+			$page_nav = get_pagination($seiten, 'page', $page_nav);
 			$AVE_Template->assign('page_nav', $page_nav);
 		}
 
@@ -2980,7 +2999,7 @@ class Shop
 			{
 				$upload_dir = BASE_DIR . '/modules/shop/uploads/';
 				$name = str_replace(array(' ', '+','-'),'_',strtolower($_FILES['Bild']['name']));
-				$name = ereg_replace("_+", "_", $name);
+				$name = preg_replace("/__+/", "_", $name);
 //				$temp = $_FILES['Bild']['tmp_name'];
 				$endung = strtolower(substr($name, -3));
 				$fupload_name = $name;
@@ -3020,7 +3039,7 @@ class Shop
 				{
 //					$size = $_FILES['file']['size'][$i];
 					$name = str_replace(array(' ', '+','-'),'_',strtolower($_FILES['file']['name'][$i]));
-					$name = ereg_replace("_+", "_", $name);
+					$name = preg_replace("/__+/", "_", $name);
 //					$temp = $_FILES['file']['tmp_name'][$i];
 					$fupload_name = $name;
 
@@ -3108,9 +3127,11 @@ class Shop
 
 			$errors = '';
 
-			if (empty($_POST['ArtName']) || ereg("[^ A-Za-z0-9_À-ßà-ÿ¨¸-]", $_POST['ArtName']))
+			$regex = '/[^\x20-\xFF]/';
+			$regex_no_space = '/[^\x21-\xFF]/';
+			if (empty($_POST['ArtName']) || preg_match($regex, $_POST['ArtName']))
 				$errors[] = $GLOBALS['config_vars']['ProductNewPCheck'] . $GLOBALS['config_vars']['ProductName'];
-			if (empty($_POST['ArtNr']) || ereg("[^A-Za-z0-9_À-ßà-ÿ¨¸-]", $_POST['ArtNr']))
+			if (empty($_POST['ArtNr']) || preg_match($regex_no_space, $_POST['ArtNr']))
 				$errors[] = $GLOBALS['config_vars']['ProductNewPCheck'] . $GLOBALS['config_vars']['ProductNrS'];
 			if ((!empty($_POST['ArtNr']) && $_POST['ArtNr'] != $_POST['ArtNrOld'] && !$this->_checkArtNumber($_POST['ArtNr'])))
 				$errors[] = $GLOBALS['config_vars']['ProductNewArtnumberUnique'];
@@ -3227,9 +3248,11 @@ class Shop
 			$MultiBilder = '';
 			$errors = '';
 
-			if (empty($_POST['ArtName']) || ereg("[^ A-Za-z0-9_À-ßà-ÿ¨¸-]", $_POST['ArtName']))
+			$regex = '/[^\x20-\xFF]/';
+			$regex_no_space = '/[^\x21-\xFF]/';
+			if (empty($_POST['ArtName']) || preg_match($regex, $_POST['ArtName']))
 				$errors[] = $GLOBALS['config_vars']['ProductNewPCheck'] . $GLOBALS['config_vars']['ProductName'];
-			if (empty($_POST['ArtNr']) || ereg("[^A-Za-z0-9_À-ßà-ÿ¨¸-]", $_POST['ArtNr']))
+			if (empty($_POST['ArtNr']) || preg_match($regex_no_space, $_POST['ArtNr']))
 				$errors[] = $GLOBALS['config_vars']['ProductNewPCheck'] . $GLOBALS['config_vars']['ProductNrS'];
 			if (!empty($_POST['ArtNr']) && !$this->_checkArtNumber($_POST['ArtNr']))
 				$errors[] = $GLOBALS['config_vars']['ProductNewArtnumberUnique'];
@@ -3257,7 +3280,7 @@ class Shop
 				{
 					$upload_dir = BASE_DIR . '/modules/shop/uploads/';
 					$name = str_replace(array(' ', '+', '-'), '_', strtolower($_FILES['Bild']['name']));
-					$name = ereg_replace("_+", "_", $name);
+					$name = preg_replace("/__+/", "_", $name);
 //					$temp = $_FILES['Bild']['tmp_name'];
 //					$endung = strtolower(substr($name, -3));
 					$fupload_name = $name;
@@ -3289,7 +3312,7 @@ class Shop
 					{
 //						$size = $_FILES['file']['size'][$i];
 						$name = str_replace(array(' ', '+','-'),'_',strtolower($_FILES['file']['name'][$i]));
-						$name = ereg_replace("_+", "_", $name);
+						$name = preg_replace("/__+/", "_", $name);
 //						$temp = $_FILES['file']['tmp_name'][$i];
 						$fupload_name = $name;
 
@@ -3458,7 +3481,7 @@ class Shop
 			$myisp = @$isp[1].'.'.@$isp[0];
 		}
 
-		if (preg_match("/[0-9]{1,3}[.][0-9]{1,3}/", $myisp)) return 'ISP lookup failed.';
+		if (preg_match("/^(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/", $myisp)) return 'ISP lookup failed.';
 
 		return $myisp;
 	}

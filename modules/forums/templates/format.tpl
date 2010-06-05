@@ -8,59 +8,58 @@
 	var error_no_title      =  "{$lang.error_no_title}";
 	var error_no_email      =  "{$lang.error_no_email}";
 	var prompt_start        =  "{$lang.prompt_start}";
-	
+
 	var khelp_bold          =  "{$lang.khelp_bold}";
-	var khelp_italic        =  "{$lang.khelp_italic}";    
-	var khelp_underline     =  "{$lang.khelp_underline}";  
-	var khelp_font          =  "{$lang.khelp_font}";   
-	var khelp_size          =  "{$lang.khelp_size}";   
-	var khelp_color         =  "{$lang.khelp_color}";  
-	var khelp_close         =  "{$lang.khelp_close}";   
-	var khelp_url           =  "{$lang.khelp_url}";       
-	var khelp_image         =  "{$lang.khelp_image}";   
-	var khelp_email         =  "{$lang.khelp_email}";   
-	var khelp_quote         =  "{$lang.khelp_quote}";   
-	var khelp_list          =  "{$lang.khelp_list}";   
-	var khelp_code          =  "{$lang.khelp_code}";  
-	var khelp_php_code      =  "{$lang.khelp_php_code}";  
+	var khelp_italic        =  "{$lang.khelp_italic}";
+	var khelp_underline     =  "{$lang.khelp_underline}";
+	var khelp_font          =  "{$lang.khelp_font}";
+	var khelp_size          =  "{$lang.khelp_size}";
+	var khelp_color         =  "{$lang.khelp_color}";
+	var khelp_close         =  "{$lang.khelp_close}";
+	var khelp_url           =  "{$lang.khelp_url}";
+	var khelp_image         =  "{$lang.khelp_image}";
+	var khelp_email         =  "{$lang.khelp_email}";
+	var khelp_quote         =  "{$lang.khelp_quote}";
+	var khelp_list          =  "{$lang.khelp_list}";
+	var khelp_code          =  "{$lang.khelp_code}";
+	var khelp_php_code      =  "{$lang.khelp_php_code}";
 	var khelp_click_close   =  "{$lang.khelp_click_close}";
-	var list_prompt         =  "{$lang.list_prompt}";  
-	var list_prompt2        =  "{$lang.list_prompt2}";   
+	var list_prompt         =  "{$lang.list_prompt}";
+	var list_prompt2        =  "{$lang.list_prompt2}";
 -->
 </script>
-{strip}
 <table width="100%"  border="0" cellspacing="1" cellpadding="0">
   <tr>
     <td>
       <select style="height:18px" onmouseover="MWJ_getPosition();" onchange="changefont(this.options[this.selectedIndex].value, 'FONT')" name="ffont">
         <option value="0" selected="selected"> {#Ffont#} </option>
-        
+
         {foreach from=$listfonts item=fonts}
-        
+
         <option style="font-family: {$fonts.font};font-size:12px" value="{$fonts.font}"> {$fonts.fontname} </option>
-        
+
         {/foreach}
-      
+
       </select>
       <select style="height:18px" onchange="changefont(this.options[this.selectedIndex].value, 'SIZE')"  name="fsize">
         <option value="0" selected="selected"> {#Fsize#} </option>
-        
+
         {foreach from=$sizedropdown item=size}
-        
+
         <option style="font-size:1{$size.size}px" value="{$size.size}"> {$size.size} </option>
-        
+
         {/foreach}
-      
+
       </select>
       <select style="height:18px"  onchange="changefont(this.options[this.selectedIndex].value, 'COLOR')" name="fcolor">
         <option value="0" selected="selected"> {#Fcolor#} </option>
-        
+
         {foreach from=$colordropdown item=color}
-        
+
         <option style="color: {$color.color}; font-weight:bold" value="{$color.color}"> {$color.fontcolor} </option>
-        
+
         {/foreach}
-      
+
       </select>
       <input class="button" onclick='closeall();' type="button" value="{#CloseTags#}"/>
       <input name="kmode" type="hidden" id="kmode">
@@ -80,4 +79,3 @@
     </td>
   </tr>
 </table>
-{/strip}

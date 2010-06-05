@@ -1,5 +1,3 @@
-{strip}
-<!-- shop_tree_extended.tpl -->
 {assign var="cols" value=3}
 {assign var="maxsubs" value=5}
     <div class="box">
@@ -42,7 +40,7 @@
 					{*... {$sub->data} *}
 				{/if}
 			{/foreach}
-</ul>            
+</ul>
 			{assign var=showalllink value=0}
 </td>
             </tr>
@@ -58,5 +56,3 @@
         </div>
       </div>
     </div>
-<!-- /shop_tree_extended.tpl -->
-{/strip}

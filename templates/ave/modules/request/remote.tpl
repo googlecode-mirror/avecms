@@ -1,4 +1,3 @@
-{strip}
 <form method="post" class="ctrlrequest" action="{$formaction}">
 
   <table>
@@ -7,7 +6,7 @@
 {foreach from=$ctrlrequest item=items key=selname}
       <td>
 
-        <label>{$items.titel} </label> 
+        <label>{$items.titel} </label>
 
         <select name="fld[{$selname}]">
 
@@ -25,4 +24,3 @@
   </table>
 
 </form>
-{/strip}

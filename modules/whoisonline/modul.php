@@ -8,7 +8,7 @@ if (defined('ACP'))
     $modul['ModulPfad'] = 'whoisonline';
     $modul['ModulVersion'] = '1.0';
     $modul['Beschreibung'] = 'ƒанный модуль предназначен дл€ отображени€ присутствующих на сайте пользователей с гео-информацией.';
-    $modul['Autor'] = 'Yesvik';
+    $modul['Autor'] = '&copy;';
     $modul['MCopyright'] = '&copy; 2007-2010 Overdoze.Ru';
     $modul['Status'] = 1;
     $modul['IstFunktion'] = 1;
@@ -23,11 +23,11 @@ if (defined('ACP'))
 function mod_online()
 {
 	echo '
-	<link rel="stylesheet" type="text/css" href="' . BASE_PATH . 'modules/whoisonline/css/styles.css" />
+	<link rel="stylesheet" type="text/css" href="' . ABS_PATH . 'modules/whoisonline/css/styles.css" />
 	<!-- <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.1/jquery.min.js"></script> -->
-	<script type="text/javascript" src="' . BASE_PATH . 'modules/whoisonline/js/widget.js"></script>
+	<script type="text/javascript" src="' . ABS_PATH . 'modules/whoisonline/js/widget.js"></script>
 	<div class="onlineWidget">
-		<div class="panel"><img class="preloader" src="' . BASE_PATH . 'modules/whoisonline/images/preloader.gif" alt="Loading.." width="22" height="22" /></div>
+		<div class="panel"><img class="preloader" src="' . ABS_PATH . 'modules/whoisonline/images/preloader.gif" alt="Loading.." width="22" height="22" /></div>
 		<div class="count"></div>
 	    <div class="label">онлайн</div>
 	    <div class="arrow"></div>
@@ -51,13 +51,13 @@ if (!defined('ACP') && isset($_REQUEST['module']) && $_REQUEST['module'] == 'who
 		/* This function will check whether the visitor is a search engine robot */
 
 		$botlist = array("Teoma", "alexa", "froogle", "Gigabot", "inktomi",
-		"looksmart", "URL_Spider_SQL", "Firefly", "NationalDirectory",
-		"Ask Jeeves", "TECNOSEEK", "InfoSeek", "WebFindBot", "girafabot",
-		"crawler", "www.galaxy.com", "Googlebot", "Scooter", "Slurp",
-		"msnbot", "appie", "FAST", "WebBug", "Spade", "ZyBorg", "rabaz",
-		"Baiduspider", "Feedfetcher-Google", "TechnoratiSnoop", "Rankivabot",
-		"Mediapartners-Google", "Sogou web spider", "WebAlta Crawler",
-		"TweetmemeBot", "Butterfly", "Twitturls", "Me.dium", "Twiceler");
+			"looksmart", "URL_Spider_SQL", "Firefly", "NationalDirectory",
+			"Ask Jeeves", "TECNOSEEK", "InfoSeek", "WebFindBot", "girafabot",
+			"crawler", "www.galaxy.com", "Googlebot", "Scooter", "Slurp",
+			"msnbot", "appie", "FAST", "WebBug", "Spade", "ZyBorg", "rabaz",
+			"Baiduspider", "Feedfetcher-Google", "TechnoratiSnoop", "Rankivabot",
+			"Mediapartners-Google", "Sogou web spider", "WebAlta Crawler",
+			"TweetmemeBot", "Butterfly", "Twitturls", "Me.dium", "Twiceler");
 
 		foreach ($botlist as $bot)
 		{
@@ -177,7 +177,7 @@ if (!defined('ACP') && isset($_REQUEST['module']) && $_REQUEST['module'] == 'who
 			{
 				echo '
 				<div class="geoRow">
-					<div class="flag"><img src="' . BASE_PATH . 'modules/whoisonline/images/countryflags/' . strtolower($row->countryCode) . '.gif" width="16" height="11" /></div>
+					<div class="flag"><img src="' . ABS_PATH . 'modules/whoisonline/images/countryflags/' . strtolower($row->countryCode) . '.gif" width="16" height="11" /></div>
 					<div class="country" title="' . htmlspecialchars($row->country) . '">' . $row->country . '</div>
 					<div class="people">' . $row->total . '</div>
 				</div>

@@ -114,7 +114,7 @@ class userpage {
 			$Text = substr(htmlspecialchars($_POST['Text']), 0, $this->_commentwords);
 			$Text_length = strlen($Text);
 			$Text .= ($Text_length > $this->_commentwords) ? '...' : '';
-			$Text = prettyChars($Text);
+			$Text = pretty_chars($Text);
 
 			$error = array();
 			if (empty($_POST['Titel'])) $error[] = $GLOBALS['AVE_Template']->get_config_vars('NoTitle');
@@ -266,8 +266,15 @@ class userpage {
 				$Prefab = str_replace('%%ID%%', $_SESSION['user_id'], $Prefab);
 				$Prefab = str_replace('%%N%%', "\n",$Prefab);
 				$Prefab = str_replace('','',$Prefab);
-				$AVE_Globals = new AVE_Globals;
-				$AVE_Globals->cp_mail($row->Email, $Prefab, stripslashes($_POST['Titel']), FORUMEMAIL, FORUMABSENDER, "text", "");
+				send_mail(
+					$row->Email,
+					$Prefab,
+					stripslashes($_POST['Titel']),
+					FORUMEMAIL,
+					FORUMABSENDER,
+					"text",
+					""
+				);
     		$GLOBALS['AVE_Template']->assign("content", $GLOBALS['AVE_Template']->get_config_vars('MessageAfterEmail'));
     		$tpl_out = $GLOBALS['AVE_Template']->display($tpl_dir . 'after_send.tpl');
     		exit;
@@ -465,9 +472,9 @@ class userpage {
 			$ok = true;
 			$errors = "";
 			$allowed = array('*','[',']','-','=');
-			$muster     = "[^ ._A-Za-zА-Яа-яЁё0-9-]";
-			$muster_geb = "([0-9]{2}).([0-9]{2}).([0-9]{4})";
-			$muster_email = "^[-._A-Za-z0-9-]+(\.[_A-Za-z0-9-]+)*@([a-zA-Z0-9-]+\.)+([a-zA-Z]{2,4})$";
+			$muster = '/[^\x20-\xFF]/';
+			$muster_geb = '#(0[1-9]|[12][0-9]|3[01])([[:punct:]| ])(0[1-9]|1[012])\2(19|20)\d\d#';
+			$muster_email = '/^[\w.-]+@[a-z0-9.-]+\.(?:[a-z]{2}|com|org|net|edu|gov|mil|biz|info|mobi|name|aero|asia|jobs|museum)$/i';
 
 			//=======================================================
 			// Benutzername prьfen
@@ -478,7 +485,7 @@ class userpage {
 					$r['BenutzerName'] = trim(htmlspecialchars($_POST['BenutzerName']));
 			}
 
-			if(( @isset($_POST['BenutzerName']) && @empty($_POST['BenutzerName'])) || ereg($muster, str_replace($allowed,'',@$_POST['BenutzerName']) ))
+			if(( @isset($_POST['BenutzerName']) && @empty($_POST['BenutzerName'])) || preg_match($muster, str_replace($allowed,'',@$_POST['BenutzerName']) ))
 			{
 				$errors[] = $GLOBALS['AVE_Template']->get_config_vars('PE_Username');
 			}
@@ -491,7 +498,7 @@ class userpage {
 				$errors[] = $GLOBALS['AVE_Template']->get_config_vars('PE_EmailInUse');
 			}
 
-			if(empty($_POST['Email']) || !ereg($muster_email, $_POST['Email']))
+			if(empty($_POST['Email']) || !preg_match($muster_email, $_POST['Email']))
 			{
 				$errors[] = $GLOBALS['AVE_Template']->get_config_vars('PE_Email');
 			}
@@ -499,7 +506,7 @@ class userpage {
 			//=======================================================
 			// WENN GEBURTSTAG IM FALSCHEN FORMAT
 			//=======================================================
-			if(!empty($_POST['GeburtsTag']) && !ereg($muster_geb, $_POST['GeburtsTag']))
+			if(!empty($_POST['GeburtsTag']) && !preg_match($muster_geb, $_POST['GeburtsTag']))
 			{
 				$errors[] = $GLOBALS['AVE_Template']->get_config_vars('PE_WrongBd');
 			}
@@ -741,7 +748,7 @@ class userpage {
 		$GLOBALS['AVE_Template']->assign("groups_form", explode(",", $row_e->group_id));
 		$GLOBALS['AVE_Template']->assign("row", $row_e);
 		$GLOBALS['AVE_Template']->assign("items", $items);
-		$GLOBALS['AVE_Template']->assign("tpl_path", $tpl_dir);
+		$GLOBALS['AVE_Template']->assign("tpl_dir", $tpl_dir);
 		$GLOBALS['AVE_Template']->assign("sess", SESSION);
 
 
@@ -787,7 +794,7 @@ class userpage {
 					value = '" . $_POST['wert'][$id] . "',
 					active = '" . $_POST['aktiv'][$id] . "'
 					WHERE id = '$id'");
-				reportLog($_SESSION['user_name'] . " - изменил поля в модуле Профиль пользователя (" . $_POST['Titel'] . ")",'2','2');
+				reportLog($_SESSION['user_name'] . " - изменил поля в модуле Профиль пользователя (" . stripslashes($_POST['Titel']) . ")",'2','2');
 			}
 		}
 		header("Location:index.php?do=modules&action=modedit&mod=userpage&moduleaction=1&cp=" . SESSION);
@@ -832,7 +839,7 @@ class userpage {
 				break;
 			}
 		}
-		reportLog($_SESSION['user_name'] . " - добавил поле в модуле Профиль пользователя (".$_REQUEST['Titel'].")",'2','2');
+		reportLog($_SESSION['user_name'] . " - добавил поле в модуле Профиль пользователя (" . stripslashes($_REQUEST['Titel']) . ")",'2','2');
 		header("Location:index.php?do=modules&action=modedit&mod=userpage&moduleaction=1&cp=" . SESSION);
 	}
 

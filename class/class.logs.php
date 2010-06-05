@@ -25,6 +25,11 @@ class AVE_Logs
 	var $_limit = 15;
 
 /**
+ *	ВНУТРЕННИЕ МЕТОДЫ
+ */
+
+
+/**
  *	ВНЕШНИЕ МЕТОДЫ
  */
 
@@ -32,7 +37,7 @@ class AVE_Logs
 	 * Отображение записей Журнала событий
 	 *
 	 */
-	function showLogs()
+	function logList()
 	{
 		global $AVE_DB, $AVE_Template;
 
@@ -55,7 +60,7 @@ class AVE_Logs
 	 * Удаление записей Журнала событий
 	 *
 	 */
-	function deleteLogs()
+	function logDelete()
 	{
 		global $AVE_DB;
 

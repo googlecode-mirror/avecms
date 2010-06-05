@@ -9,7 +9,6 @@ function check_name() {ldelim}
 	return true;
 {rdelim}
 </script>
-{strip}
 
 <div class="pageHeaderTitle" style="padding-top: 7px;">
 	<div class="h_module"></div>
@@ -192,5 +191,3 @@ function check_name() {ldelim}
 	</form>
 
 {/if}
-
-{/strip}

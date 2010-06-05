@@ -1,6 +1,3 @@
-<!-- shop_items.tpl -->
-{strip}
-
 {if !$ShopArticles}
 	<br />
 	<div class="alert">{#ErrorNoProductsHere#}</div><br />
@@ -32,13 +29,13 @@
 
 				<!-- UNITS -->
 				{if $i->Einheit_Preis}
-					<p>{$i->Einheit|replace:'.00':''} {$i->Einheit_Art} {#UnitIncluded#} {$i->Einheit_Art_S}: {numFormat val=$i->Einheit_Preis} {$Currency}</p>
+					<p>{$i->Einheit|replace:'.00':''} {$i->Einheit_Art} {#UnitIncluded#} {$i->Einheit_Art_S}: {num_format val=$i->Einheit_Preis} {$Currency}</p>
 				{/if}
 
 				{if $i->ZeigeNetto==1 && $i->Preis_USt>0}
-					<p>{#IncludeMwSt#} {numFormat val=$i->Preis_Netto_Out} {$Currency} <!-- {#Netto#} -->+ {#InVatOnce#} {numFormat val=$i->Preis_USt} {$Currency}
+					<p>{#IncludeMwSt#} {num_format val=$i->Preis_Netto_Out} {$Currency} <!-- {#Netto#} -->+ {#InVatOnce#} {num_format val=$i->Preis_USt} {$Currency}
 						{if $i->PreisDiff>0}
-							<strong>{#PriceYouSave#}</strong> {numFormat val=$i->PreisDiff} {$Currency} ({math equation="p / (x / 100)" x=$i->PreisListe y=$i->Preis p=$i->PreisDiff format="%.0f"} %)
+							<strong>{#PriceYouSave#}</strong> {num_format val=$i->PreisDiff} {$Currency} ({math equation="p / (x / 100)" x=$i->PreisListe y=$i->Preis p=$i->PreisDiff format="%.0f"} %)
 						{/if}
 					</p>
 				{/if}
@@ -48,7 +45,7 @@
 						{#Manufacturer#} <a href="{$i->Hersteller_Link}">{$i->Hersteller_Name}</a>&nbsp;•&nbsp;
 					{/if}
 					{#ArtNr#} <em>{$i->ArtNr}</em>&nbsp;•&nbsp;
-					{#Release#} <em>{$i->Erschienen|date_format:$config_vars.DateFormatRelease}</em>
+					{#Release#} <em>{$i->Erschienen|date_format:#DateFormatRelease#}</em>
 				</small>
 			</div>
 
@@ -56,14 +53,14 @@
 				<div class="mod_shop_price_box">
 					{if $i->PreisDiff > 0}
 						<!-- Стоимсоть подсвечена -->
-						<div class="mod_shop_price_new">{numFormat val=$i->Preis} {$Currency}<img src="/templates/ave/modules/shop/shop_scell.gif" width="27" height="27" alt="Старая цена {$i->PreisListe} {$Currency}" /></div>
+						<div class="mod_shop_price_new">{num_format val=$i->Preis} {$Currency}<img src="/templates/ave/modules/shop/shop_scell.gif" width="27" height="27" alt="Старая цена {$i->PreisListe} {$Currency}" /></div>
 					{else}
 						<!-- Стоимсоть  -->
-						<div class="mod_shop_price_big">{numFormat val=$i->Preis} {$Currency}</div>
+						<div class="mod_shop_price_big">{num_format val=$i->Preis} {$Currency}</div>
 					{/if}
 
 					<!-- Стоимость в альтернативной валюте -->
-					{if $i->PreisW2 && $ZeigeWaehrung2=='1'}<div class="mod_shop_ust">{numFormat val=$i->PreisW2} {$Currency2}</div>{/if}
+					{if $i->PreisW2 && $ZeigeWaehrung2=='1'}<div class="mod_shop_ust">{num_format val=$i->PreisW2} {$Currency2}</div>{/if}
 
 					{if $i->Prozwertung > 0}
 						<img   class="shop_stars" src="{$shop_images}{$i->Prozwertung}.gif" alt="{#CommentsVotesCut#}" />
@@ -96,6 +93,3 @@
 	<!-- навигация -->
 	{if $page_nav}{$page_nav}{/if}
 {/if}
-
-{/strip}
-<!-- /shop_items.tpl -->

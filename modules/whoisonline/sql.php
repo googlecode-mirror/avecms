@@ -1,10 +1,8 @@
 <?php
 
-$modul_sql_update = array();
-$modul_sql_deinstall = array();
 $modul_sql_install = array();
-
-$modul_sql_update[] = "UPDATE CPPREFIX_module SET Version = '".$modul['ModulVersion']."' WHERE ModulName='".$modul['ModulName']."';";
+$modul_sql_deinstall = array();
+$modul_sql_update = array();
 
 $modul_sql_deinstall[] = "DROP TABLE CPPREFIX_modul_who_is_online";
 
@@ -19,5 +17,7 @@ $modul_sql_install[] = "CREATE TABLE CPPREFIX_modul_who_is_online (
   UNIQUE KEY `ip` (`ip`),
   KEY `countrycode` (`countrycode`)
 ) TYPE=MyISAM DEFAULT CHARSET=cp1251;";
+
+$modul_sql_update[] = "UPDATE CPPREFIX_module SET CpEngineTag = '" . $modul['CpEngineTag'] . "', CpPHPTag = '" . $modul['CpPHPTag'] . "', Version = '" . $modul['ModulVersion'] . "' WHERE ModulPfad = '" . $modul['ModulPfad'] . "' LIMIT 1;";
 
 ?>

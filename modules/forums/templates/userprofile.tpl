@@ -31,7 +31,7 @@
   {/if}
   <tr>
     <td width="200" class="forum_post_first">{#PR_reged#}</td>
-    <td class="forum_post_second">{$user->Registriert|date_format:$TIME_FORMAT|pretty_date:$DEF_LANGUAGE}&nbsp;</td>
+    <td class="forum_post_second">{$user->Registriert|date_format:$TIME_FORMAT|pretty_date}&nbsp;</td>
   </tr>
   {if $user->avatar}
   <tr>

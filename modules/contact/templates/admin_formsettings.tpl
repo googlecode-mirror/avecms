@@ -1,5 +1,3 @@
-{strip}
-
 <table width="100%" border="0" cellpadding="8" cellspacing="1" class="tableborder">
 	<tr>
 		<td colspan="3" class="tableheader">{if $smarty.request.moduleaction=='new'}{#CONTACT_CREATE_FORM2#}{else}{#CONTACT_FORM_FIELDS#}{/if}</td>
@@ -77,5 +75,3 @@
 		<td class="second"><textarea style="width:500px; height:100px" name="form_message_noaccess" id="form_message_noaccess">{$row->form_message_noaccess|escape:html|stripslashes}</textarea></td>
 	</tr>
 </table>
-
-{/strip}

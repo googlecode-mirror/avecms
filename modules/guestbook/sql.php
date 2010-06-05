@@ -12,6 +12,10 @@
  * mySQL-запросы для установки, обновления и удаления модуля
  */
 
+$modul_sql_install = array();
+$modul_sql_deinstall = array();
+$modul_sql_update = array();
+
 $modul_sql_deinstall[] = "DROP TABLE IF EXISTS CPPREFIX_modul_guestbook_smileys;";
 $modul_sql_deinstall[] = "DROP TABLE IF EXISTS CPPREFIX_modul_guestbook;";
 $modul_sql_deinstall[] = "DROP TABLE IF EXISTS CPPREFIX_modul_guestbook_settings;";
@@ -75,5 +79,7 @@ $modul_sql_install[] = "INSERT INTO CPPREFIX_modul_guestbook_smileys VALUES (20,
 $modul_sql_install[] = "INSERT INTO CPPREFIX_modul_guestbook_smileys VALUES (21, 20, 1, ':box:', '20.gif');";
 
 $modul_sql_install[] = "INSERT INTO CPPREFIX_modul_guestbook_settings VALUES ('1', '1', '5', '1', '500', '0', '1', '0', '5', '50', 'test@test.ru');";
+
+$modul_sql_update[] = "UPDATE CPPREFIX_module SET CpEngineTag = '" . $modul['CpEngineTag'] . "', CpPHPTag = '" . $modul['CpPHPTag'] . "', Version = '" . $modul['ModulVersion'] . "' WHERE ModulPfad = '" . $modul['ModulPfad'] . "' LIMIT 1;";
 
 ?>

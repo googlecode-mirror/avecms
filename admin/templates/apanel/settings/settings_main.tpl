@@ -1,4 +1,3 @@
-
 <script language="javascript">
 function presel() {ldelim}
 	document.getElementById('mail_port').disabled = false;
@@ -35,8 +34,6 @@ function openLinkWindow(target,doc) {ldelim}
 	window.open('index.php?idonly=1&doc='+doc+'&target='+target+'&do=docs&action=showsimple&cp={$sess}&pop=1','pop','left=0,top=0,width='+width+',height='+height+',scrollbars='+scrollbar+',resizable=1');
 {rdelim}
 </script>
-
-{strip}
 
 <div id="pageHeaderTitle" style="padding-top: 7px;">
 	<div class="h_settings">&nbsp;</div>
@@ -91,7 +88,7 @@ function openLinkWindow(target,doc) {ldelim}
 			<td>
 				<select name="date_format" style="width:250px">
 					{foreach from=$date_formats item=date_format}
-						<option value="{$date_format}"{if $row.date_format==$date_format} selected{/if}>{$smarty.now|date_format:$date_format|pretty_date:$DEF_LANGUAGE}</option>
+						<option value="{$date_format}"{if $row.date_format==$date_format} selected{/if}>{$smarty.now|date_format:$date_format|pretty_date}</option>
 					{/foreach}
 				</select>
 			</td>
@@ -102,7 +99,7 @@ function openLinkWindow(target,doc) {ldelim}
 			<td>
 				<select name="time_format" style="width:250px">
 					{foreach from=$time_formats item=time_format}
-						<option value="{$time_format}"{if $row.time_format==$time_format} selected{/if}>{$smarty.now|date_format:$time_format|pretty_date:$DEF_LANGUAGE}</option>
+						<option value="{$time_format}"{if $row.time_format==$time_format} selected{/if}>{$smarty.now|date_format:$time_format|pretty_date}</option>
 					{/foreach}
 				</select>
 			</td>
@@ -134,7 +131,7 @@ function openLinkWindow(target,doc) {ldelim}
 
 		<tr>
 			<td>{#SETTINGS_MAIL_PORT#}</td>
-			<td><input name="mail_port" type="text" id="mail_port" value="{$row.mail_port}" size="2" maxlength="2" style="width:50px" /></td>
+			<td><input name="mail_port" type="text" id="mail_port" value="{$row.mail_port}" size="2" maxlength="5" style="width:50px" /></td>
 		</tr>
 
 		<tr>
@@ -238,5 +235,3 @@ function openLinkWindow(target,doc) {ldelim}
 	<input type="submit" class="button" value="{#SETTINGS_BUTTON_SAVE#}" />
 
 </form>
-
-{/strip}

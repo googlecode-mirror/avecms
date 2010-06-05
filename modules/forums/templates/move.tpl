@@ -1,5 +1,3 @@
-{strip}
-
 <p class="forum_navi"> {$navigation} &raquo; <a href="{$backlink}">{$item->title|stripslashes}</a></p>
 <table width="100%"  border="0" cellpadding="5" cellspacing="1" class="forum_tableborder">
   <tr>
@@ -41,5 +39,3 @@
 	</td>
   </tr>
 </table>
-
-{/strip}

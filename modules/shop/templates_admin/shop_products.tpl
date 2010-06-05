@@ -1,5 +1,3 @@
-{strip}
-
 <div class="pageHeaderTitle" style="padding-top: 7px;">
 	<div class="h_module">&nbsp;</div>
 	<div class="HeaderTitle"><h2>{#ModName#}</h2></div>
@@ -18,7 +16,7 @@
 				</td>
 
 				<td width="100" class="second">
-					<input class="mod_shop_inputfields" style="width:150px" name="product_query" id="pq" type="text" value="{$smarty.post.product_query|stripslashes|escape:html}" />
+					<input class="mod_shop_inputfields" style="width:150px" name="product_query" id="pq" type="text" value="{$smarty.post.product_query|stripslashes|escape}" />
 				</td>
 
 				<td width="130" class="first">
@@ -26,8 +24,8 @@
 				</td>
 
 				<td class="second">
-					<input class="mod_shop_inputfields" style="width:70px" type="text" name="price_start" id="pfpt" value="{$smarty.post.price_start|stripslashes|escape:html|default:'0.00'}" />
-					<input class="mod_shop_inputfields" style="width:70px" type="text" name="price_end" value="{$smarty.post.price_end|stripslashes|escape:html|default:'100000.00'}" />
+					<input class="mod_shop_inputfields" style="width:70px" type="text" name="price_start" id="pfpt" value="{$smarty.post.price_start|stripslashes|escape|default:'0.00'}" />
+					<input class="mod_shop_inputfields" style="width:70px" type="text" name="price_end" value="{$smarty.post.price_end|stripslashes|escape|default:'100000.00'}" />
 				</td>
 			</tr>
 
@@ -155,7 +153,7 @@
 
 				<td>
 					{if $i->Aktiv==1}
-						<a title="{#ProductEdit#}" href="javascript:void(0);" onclick="cp_pop('index.php?do=modules&action=modedit&mod=shop&moduleaction=edit_product&cp={$sess}&pop=1&Id={$i->Id}','980','740','1','edit_product');">{$i->ArtName|truncate:45|stripslashes}</a>
+						<a title="{#ProductEdit#}" href="javascript:void(0);" onclick="cp_pop('index.php?do=modules&action=modedit&mod=shop&moduleaction=edit_product&cp={$sess}&pop=1&Id={$i->Id}','980','740','1','edit_product');">{$i->ArtName|truncate:45|stripslashes|escape}</a>
 					{else}
 						<span style="text-decoration:line-through">{$i->ArtName|truncate:45|stripslashes}</span>
 					{/if}
@@ -234,5 +232,3 @@
 	<br />
 	{$page_nav}<br />
 {/if}
-
-{/strip}

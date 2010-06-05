@@ -68,7 +68,7 @@ class Shop
 	 * @param string $param íàçâàíèå ïàðàìåòðà
 	 * @return mixed çíà÷åíèå çàïðîøåííîãî ïàðàìåòðà
 	 */
-	function _getShopSetting($param)
+	function _getShopSetting($param, $default_value = '')
 	{
 		if (!isset($this->_setings))
 		{
@@ -78,11 +78,10 @@ class Shop
 				SELECT *
 				FROM " . PREFIX . "_modul_shop
 				LIMIT 1
-			")
-			->FetchRow();
+			")->FetchRow();
 		}
 
-		return $this->_setings->$param;
+		return (isset($this->_setings->$param) ? $this->_setings->$param : $default_value);
 	}
 
 	/**
@@ -101,78 +100,66 @@ class Shop
 					KatBeschreibung
 				FROM " . PREFIX . "_modul_shop_kategorie
 				WHERE Id = '" . (int)$_REQUEST['categ'] . "'
-			")
-			->FetchRow();
-			$AVE_Template->assign('KatBeschreibung', (isset($row->KatBeschreibung) ? $row->KatBeschreibung : ''));
-			$AVE_Template->assign('KatName', (isset($row->KatName) ? $row->KatName : ''));
+			")->FetchRow();
+
+			$assign['KatBeschreibung'] = isset($row->KatBeschreibung) ? $row->KatBeschreibung : '';
+			$assign['KatName'] = isset($row->KatName) ? $row->KatName : '';
 		}
 		else
 		{
-			$AVE_Template->assign('KatName', '');
-			$AVE_Template->assign('KatBeschreibung', '');
+			$assign['KatName'] = '';
+			$assign['KatBeschreibung'] = '';
 		}
 
-		if (!isset($this->_setings))
-		{
-			$this->_setings = $AVE_DB->Query("
-				SELECT *
-				FROM " . PREFIX . "_modul_shop
-				LIMIT 1
-			")
-			->FetchRow();
-		}
+		$categ = (isset($_REQUEST['categ']) && is_numeric($_REQUEST['categ'])) ? $_REQUEST['categ'] : '';
 
-		$categ = (!empty($_REQUEST['categ'])) ? (int)$_REQUEST['categ'] : '';
-
-		define('WidthTsThumb',         (!empty($this->_setings->Topsellerbilder) ? $this->_setings->Topsellerbilder : ''));
-		define('GastBestellung',       (!empty($this->_setings->GastBestellung)  ? $this->_setings->GastBestellung  : ''));
-		define('Kommentare',           (!empty($this->_setings->Kommentare)      ? $this->_setings->Kommentare      : ''));
-		define('WidthThumbs',          (!empty($this->_setings->Vorschaubilder)  ? $this->_setings->Vorschaubilder  : ''));
-		define('WidthThumbsTopseller', (!empty($this->_setings->Topsellerbilder) ? $this->_setings->Topsellerbilder : ''));
-		define('Waehrung2',            (!empty($this->_setings->Waehrung2)       ? $this->_setings->Waehrung2       : ''));
-		define('WaehrungSymbol2',      (!empty($this->_setings->WaehrungSymbol2) ? $this->_setings->WaehrungSymbol2 : ''));
-		define('Waehrung2Multi',       (!empty($this->_setings->Waehrung2Multi)  ? $this->_setings->Waehrung2Multi  : ''));
+		define('WidthTsThumb',         $this->_getShopSetting('Topsellerbilder', ''));
+		define('GastBestellung',       $this->_getShopSetting('GastBestellung', ''));
+		define('Kommentare',           $this->_getShopSetting('Kommentare', ''));
+		define('WidthThumbs',          $this->_getShopSetting('Vorschaubilder', ''));
+		define('WidthThumbsTopseller', $this->_getShopSetting('Topsellerbilder', ''));
+		define('Waehrung2',            $this->_getShopSetting('Waehrung2', ''));
+		define('WaehrungSymbol2',      $this->_getShopSetting('WaehrungSymbol2', ''));
+		define('Waehrung2Multi',       $this->_getShopSetting('Waehrung2Multi', ''));
 
 		$this->_globalProductInfo();
 
-		if (empty($AVE_Template->_tpl_vars['theme_folder']))
-		{
-			$AVE_Template->assign('theme_folder', (defined('THEME_FOLDER') && THEME_FOLDER != '') ? THEME_FOLDER : DEFAULT_THEME_FOLDER);
-		}
-
-		$AVE_Template->assign('ZeigeWaehrung2',   (!empty($this->_setings->ZeigeWaehrung2)    ? $this->_setings->ZeigeWaehrung2  : ''));
-		$AVE_Template->assign('Currency2',        (!empty($this->_setings->WaehrungSymbol2)   ? $this->_setings->WaehrungSymbol2 : ''));
-		$AVE_Template->assign('Kommentare',       (!empty($this->_setings->Kommentare)        ? $this->_setings->Kommentare      : ''));
-		$AVE_Template->assign('KommentareGast',   (!empty($this->_setings->KommentareGast)    ? $this->_setings->KommentareGast  : ''));
-		$AVE_Template->assign('GastBestellung',   (!empty($this->_setings->GastBestellung)    ? $this->_setings->GastBestellung  : ''));
-		$AVE_Template->assign('WidthThumb',       (!empty($this->_setings->Vorschaubilder)    ? $this->_setings->Vorschaubilder  : ''));
-		$AVE_Template->assign('WidthTsThumb',     (!empty($this->_setings->Topsellerbilder)   ? $this->_setings->Topsellerbilder : ''));
-		$AVE_Template->assign('TemplateArtikel',  (!empty($this->_setings->TemplateArtikel)   ? $this->_setings->TemplateArtikel : ''));
-		$AVE_Template->assign('TopsellerActive',  (!empty($this->_setings->Topseller)         ? $this->_setings->Topseller       : ''));
-		$AVE_Template->assign('WishListActive',   (!empty($this->_setings->Merkliste)         ? $this->_setings->Merkliste       : ''));
-		$AVE_Template->assign('CanOrderHere',     (!empty($this->_setings->BestUebersicht)    ? $this->_setings->BestUebersicht  : ''));
-		$AVE_Template->assign('Currency',         (!empty($this->_setings->WaehrungSymbol)    ? $this->_setings->WaehrungSymbol  : ''));
-		$AVE_Template->assign('KategorienStart',  (!empty($this->_setings->KategorienStart)   ? $this->_setings->KategorienStart : ''));
-		$AVE_Template->assign('KategorienSons',   (!empty($this->_setings->KategorienSons)    ? $this->_setings->KategorienSons  : ''));
-		$AVE_Template->assign('ShopWillkommen',   (!empty($this->_setings->ShopWillkommen)    ? $this->_setings->ShopWillkommen  : ''));
-		$AVE_Template->assign('FooterText',       (!empty($this->_setings->ShopFuss)          ? $this->_shopRewrite($this->_setings->ShopFuss) : ''));
-		$AVE_Template->assign('ShopAgb',          (!empty($this->_setings->Agb)               ? strip_tags($this->_setings->Agb,'<b><strong><br><p><br /><em><i>') : ''));
-		$AVE_Template->assign('RandomOfferKateg', ((isset($this->_setings->ZufallsAngebotKat) && $this->_setings->ZufallsAngebotKat == 1) ? $this->_randomOffer($categ) : ''));
-		$AVE_Template->assign('RandomOffer',      ((isset($this->_setings->ZufallsAngebot)    && $this->_setings->ZufallsAngebot == 1)    ? $this->_randomOffer() : ''));
-		$AVE_Template->assign('MyIp',             (!empty($_SERVER['REMOTE_ADDR']) ? $_SERVER['REMOTE_ADDR'] : ''));
-		$AVE_Template->assign('WishListLink',     $this->_shopRewrite('index.php?module=shop&amp;action=wishlist&amp;pop=1'));
-		$AVE_Template->assign('TopSeller',        $this->_topSeller());
-		$AVE_Template->assign('UserPanel',        $this->_shopLogin());
-		$AVE_Template->assign('ShopNavi',         $this->fetchShopNavi());
-		$AVE_Template->assign('Basket',           $AVE_Template->fetch($GLOBALS['mod']['tpl_dir'] . 'shop_basket_small.tpl'));
-		$AVE_Template->assign('Search',           $AVE_Template->fetch($GLOBALS['mod']['tpl_dir'] . 'shop_smallsearch.tpl'));
-		$AVE_Template->assign('Topseller',        $AVE_Template->fetch($GLOBALS['mod']['tpl_dir'] . 'shop_topseller.tpl'));
-//		$AVE_Template->assign('TopNav',           $AVE_Template->fetch($GLOBALS['mod']['tpl_dir'] . 'shop_topnav.tpl'));
+		$assign['theme_folder']      = defined('THEME_FOLDER') ? THEME_FOLDER : DEFAULT_THEME_FOLDER;
+		$assign['ZeigeWaehrung2']    = $this->_getShopSetting('ZeigeWaehrung2');
+		$assign['Currency2']         = $this->_getShopSetting('WaehrungSymbol2');
+		$assign['Kommentare']        = $this->_getShopSetting('Kommentare');
+		$assign['KommentareGast']    = $this->_getShopSetting('KommentareGast');
+		$assign['GastBestellung']    = $this->_getShopSetting('GastBestellung');
+		$assign['WidthThumb']        = $this->_getShopSetting('Vorschaubilder');
+		$assign['WidthTsThumb']      = $this->_getShopSetting('Topsellerbilder');
+		$assign['TemplateArtikel']   = $this->_getShopSetting('TemplateArtikel');
+		$assign['TopsellerActive']   = $this->_getShopSetting('Topseller');
+		$assign['WishListActive']    = $this->_getShopSetting('Merkliste');
+		$assign['CanOrderHere']      = $this->_getShopSetting('BestUebersicht');
+		$assign['Currency']          = $this->_getShopSetting('WaehrungSymbol');
+		$assign['KategorienStart']   = $this->_getShopSetting('KategorienStart');
+		$assign['KategorienSons']    = $this->_getShopSetting('KategorienSons');
+		$assign['ShopWillkommen']    = $this->_getShopSetting('ShopWillkommen');
+		$assign['FooterText']        = !empty($this->_setings->ShopFuss) ? $this->_shopRewrite($this->_setings->ShopFuss) : '';
+		$assign['ShopAgb']           = !empty($this->_setings->Agb) ? strip_tags($this->_setings->Agb,'<b><strong><br><p><br /><em><i>') : '';
+		$assign['RandomOfferKateg']  = $this->_getShopSetting('ZufallsAngebotKat', 0) == 1 ? $this->_randomOffer($categ) : '';
+		$assign['RandomOffer']       = $this->_getShopSetting('ZufallsAngebot', 0) == 1 ? $this->_randomOffer() : '';
+		$assign['MyIp']              = isset($_SERVER['REMOTE_ADDR']) ? $_SERVER['REMOTE_ADDR'] : '';
+		$assign['WishListLink']      = $this->_shopRewrite('index.php?module=shop&amp;action=wishlist&amp;pop=1');
+		$assign['TopSeller']         = $this->_topSeller();
+		$assign['UserPanel']         = $this->_shopLogin();
+		$assign['ShopNavi']          = $this->fetchShopNavi();
+		$assign['Basket']            = $AVE_Template->fetch($GLOBALS['mod']['tpl_dir'] . 'shop_basket_small.tpl');
+		$assign['Search']            = $AVE_Template->fetch($GLOBALS['mod']['tpl_dir'] . 'shop_smallsearch.tpl');
+		$assign['Topseller']         = $AVE_Template->fetch($GLOBALS['mod']['tpl_dir'] . 'shop_topseller.tpl');
+//		$assign['TopNav']            = $AVE_Template->fetch($GLOBALS['mod']['tpl_dir'] . 'shop_topnav.tpl');
 
 $AVE_Template->caching = 1;
-		$AVE_Template->assign('InfoBox',          $this->_shopRewrite($AVE_Template->fetch($GLOBALS['mod']['tpl_dir'] . 'shop_infobox.tpl')));
-		$AVE_Template->assign('MyOrders',         $this->_shopRewrite($AVE_Template->fetch($GLOBALS['mod']['tpl_dir'] . 'shop_myorders.tpl')));
+		$assign['InfoBox']           = $this->_shopRewrite($AVE_Template->fetch($GLOBALS['mod']['tpl_dir'] . 'shop_infobox.tpl'));
+		$assign['MyOrders']          = $this->_shopRewrite($AVE_Template->fetch($GLOBALS['mod']['tpl_dir'] . 'shop_myorders.tpl'));
 $AVE_Template->caching = 0;
+
+		$AVE_Template->assign($assign);
 	}
 
 	/**
@@ -206,7 +193,7 @@ $AVE_Template->caching = 0;
 		if ($row)
 		{
 			$row->Detaillink = $this->_shopRewrite($this->_product_detail . $row->Id . '&amp;categ=' . $row->KatId . '&amp;navop=' . getParentShopcateg($row->KatId));
-			$img = (file_exists(BASE_DIR . '/' . $row->AngebotBild)) ? '<!-- START OFFER --><a title="' . $row->ArtName . '" href="' . $row->Detaillink . '"><img src="' . BASE_PATH . $row->AngebotBild . '" alt="' . $row->ArtName . '" border=""></a><br /><br /><!-- END OFFER -->' : '';
+			$img = (file_exists(BASE_DIR . '/' . $row->AngebotBild)) ? '<!-- START OFFER --><a title="' . $row->ArtName . '" href="' . $row->Detaillink . '"><img src="' . ABS_PATH . $row->AngebotBild . '" alt="' . $row->ArtName . '" border=""></a><br /><br /><!-- END OFFER -->' : '';
 		}
 		else
 		{
@@ -381,7 +368,7 @@ $AVE_Template->caching = 0;
 	function _shopLogin()
 	{
 		$tpl_dir = BASE_DIR . '/modules/login/templates/';
-		$lang_file = BASE_DIR . '/modules/login/lang/' . DEFAULT_LANGUAGE . '.txt';
+		$lang_file = BASE_DIR . '/modules/login/lang/' . $_SESSION['user_language'] . '.txt';
 
 		if (!isset($_SESSION['user_id']))
 		{
@@ -473,10 +460,7 @@ $AVE_Template->caching = 0;
 	 */
 	function _shopRewrite($string)
 	{
-		if (defined('CP_REWRITE') && CP_REWRITE == 1)
-		{
-			$string = shopRewrite($string);
-		}
+		if (REWRITE_MODE) $string = shopRewrite($string);
 
 		return $string;
 	}
@@ -596,7 +580,7 @@ $AVE_Template->caching = 0;
 								" . PREFIX . "_modul_shop_downloads as a,
 								" . PREFIX . "_modul_shop_artikel_downloads as b
 							WHERE
-								a.ArtikelId = '" . (isset($_REQUEST['FileId']) ? addslashes($_REQUEST['FileId']) : '') . "'
+								a.ArtikelId = '" . (isset($_REQUEST['FileId']) ? $_REQUEST['FileId'] : '') . "'
 							AND
 								a.Benutzer = '" . $_SESSION['user_id'] . "'
 							AND
@@ -604,7 +588,7 @@ $AVE_Template->caching = 0;
 							AND
 								a.Gesperrt != 1
 							AND
-								b.Id = '" . (isset($_GET['getId']) ? addslashes($_GET['getId']) : '') . "'
+								b.Id = '" . (isset($_GET['getId']) ? $_GET['getId'] : '') . "'
 						");
 
 						$row = $sql->FetchRow();
@@ -755,14 +739,21 @@ $AVE_Template->caching = 0;
 	 */
 	function myOrders()
 	{
-		global $AVE_DB, $AVE_Template, $AVE_Globals;
+		global $AVE_DB, $AVE_Template;
 
 		if (!empty($_SESSION['user_id']))
 		{
 			if (isset($_REQUEST['sub']) && $_REQUEST['sub'] == 'request')
 			{
-//				if (!is_a($AVE_Globals, 'AVE_Globals')) $AVE_Globals = new AVE_Globals;
-				$AVE_Globals->cp_mail($this->_getShopSetting('EmpEmail'), stripslashes($_POST['text']), stripslashes($_POST['subject']), $_SESSION['user_email'], $_SESSION['user_name'], 'text', '');
+				send_mail(
+					$this->_getShopSetting('EmpEmail'),
+					stripslashes($_POST['text']),
+					stripslashes($_POST['subject']),
+					$_SESSION['user_email'],
+					$_SESSION['user_name'],
+					'text',
+					''
+				);
 				$AVE_Template->assign('orderRequestOk', 1);
 			}
 
@@ -1046,7 +1037,7 @@ $AVE_Template->caching = 0;
 	//=======================================================
 	function _lastArticles()
 	{
-		global $AVE_DB, $AVE_Globals, $AVE_Template;
+		global $AVE_DB, $AVE_Template;
 
 		$limit = $this->_getShopSetting('ArtikelMax');
 
@@ -1133,7 +1124,7 @@ $AVE_Template->caching = 0;
 			}
 		}
 
-		$start = prepage() * $limit - $limit;
+		$start = get_current_page() * $limit - $limit;
 
 		$sql = $AVE_DB->Query("
 			SELECT SQL_CALC_FOUND_ROWS
@@ -1184,10 +1175,10 @@ $AVE_Template->caching = 0;
 		$AVE_Template->assign('PageNumbers', $seiten);
 		if ($seiten > 1)
 		{
-			$template_label = " <a class=\"pnav\" href=\"index.php?module=shop"
-				. $recordset_n . $product_categ_n . $price_query_n . $product_query_n . $dbextra_n
-				. $manufacturer_n . $nav_sort . $nav_parent . $nop . "&amp;page={s}\">{t}</a> ";
-			$page_nav = pagenav($seiten, 'page', $template_label, $AVE_Globals->mainSettings('navi_box'));
+			$page_nav = " <a class=\"pnav\" href=\"index.php?module=shop" . $recordset_n . $product_categ_n
+				. $price_query_n . $product_query_n . $dbextra_n . $manufacturer_n
+				. $nav_sort . $nav_parent . $nop . "&amp;page={s}\">{t}</a> ";
+			$page_nav = get_pagination($seiten, 'page', $page_nav, get_settings('navi_box'));
 			$AVE_Template->assign('page_nav', $this->_shopRewrite($page_nav));
 		}
 		return $shopitems;
@@ -1814,8 +1805,6 @@ $AVE_Template->caching = 0;
 
 			if ($num < 1)
 			{
-				global $AVE_Globals;
-
 				$AVE_DB->Query("
 					INSERT INTO " . PREFIX . "_modul_shop_artikel_kommentare
 					SET
@@ -1828,9 +1817,8 @@ $AVE_Template->caching = 0;
 						Publik    = 0
 				");
 
-//				if (!is_a($AVE_Globals, 'AVE_Globals')) $AVE_Globals = new AVE_Globals;
-				$SystemMail = $AVE_Globals->mainSettings('mail_from');
-				$SystemMailName = $AVE_Globals->mainSettings('mail_from_name');
+				$SystemMail = get_settings('mail_from');
+				$SystemMailName = get_settings('mail_from_name');
 
 				$URLAdmin = explode('?', $_SERVER['HTTP_REFERER']);
 				$URLAdmin = str_replace('index.php', '', $URLAdmin[0]) . 'admin/index.php?do=modules&action=modedit&mod=shop&moduleaction=edit_comments&pop=1&Id=' . $_REQUEST['product_id'];
@@ -1840,7 +1828,15 @@ $AVE_Template->caching = 0;
 				$Text = str_replace('%URL%', $_SERVER['HTTP_REFERER'], $Text);
 				$Text = str_replace('%URLADMIN%', $URLAdmin, $Text);
 
-				$AVE_Globals->cp_mail($SystemMail, $Text . stripslashes($_REQUEST['AKommentar']), $GLOBALS['mod']['config_vars']['CommentASubject'], $SystemMail, $SystemMailName, 'text', '');
+				send_mail(
+					$SystemMail,
+					$Text . stripslashes($_REQUEST['AKommentar']),
+					$GLOBALS['mod']['config_vars']['CommentASubject'],
+					$SystemMail,
+					$SystemMailName,
+					'text',
+					''
+				);
 			}
 
 			header('Location:index.php?module=shop&action=product_detail&product_id='.$_REQUEST['product_id'].'&categ='.$_REQUEST['categ'].'&navop='.$_REQUEST['navop']);
@@ -1943,7 +1939,7 @@ $AVE_Template->caching = 0;
 		$tpl_out = $this->_shopRewrite($tpl_out);
 
 		define('MODULE_CONTENT', $tpl_out);
-		define('MODULE_SITE', $GLOBALS['mod']['config_vars']['PageName'] . $GLOBALS['mod']['config_vars']['PageSep'] . stripslashes(@$row->ArtName));
+		define('MODULE_SITE', $GLOBALS['mod']['config_vars']['PageName'] . $GLOBALS['mod']['config_vars']['PageSep'] . @$row->ArtName);
 	}
 
 	//=======================================================
@@ -2107,7 +2103,7 @@ $AVE_Template->caching = 0;
 	//=======================================================
 	function _globalProductInfo($row = '')
 	{
-		global $AVE_DB, $AVE_Template;
+		global $AVE_Template;
 
 		if (is_object($row))
 		{
@@ -2708,24 +2704,23 @@ $AVE_Template->caching = 0;
 						$permissions = explode('|', $row->Rechte);
 						foreach($permissions as $permission) $_SESSION[$permission] = 1;
 
-						$_SESSION['user_id'] = $row->Id;
-						$_SESSION['user_group'] = $row->Benutzergruppe;
-						$_SESSION['user_name'] = htmlspecialchars(empty($row->UserName) ? $row->Vorname . ' ' . $row->Nachname : $row->UserName);
-						$_SESSION['user_pass'] = $password;
-						$_SESSION['user_email'] = $row->Email;
-						$_SESSION['user_country'] = strtoupper($row->Land);
+						$_SESSION['user_id']       = $row->Id;
+						$_SESSION['user_group']    = $row->Benutzergruppe;
+						$_SESSION['user_name']     = get_username($row->UserName, $row->Vorname, $row->Nachname);
+						$_SESSION['user_pass']     = $password;
+						$_SESSION['user_email']    = addslashes($row->Email);
+						$_SESSION['user_country']  = strtoupper($row->Land);
+						$_SESSION['user_language'] = strtolower($row->Land);
+						$_SESSION['user_ip']       = addslashes($_SERVER['REMOTE_ADDR']);
 
-						if (checkPermission('adminpanel'))
-						{
-							$_SESSION['admin_theme'] = DEFAULT_ADMIN_THEME_FOLDER;
-							$_SESSION['admin_lang'] = DEFAULT_LANGUAGE;
-						}
+//						$_SESSION['admin_theme'] = DEFAULT_ADMIN_THEME_FOLDER;
+//						$_SESSION['admin_language'] = DEFAULT_LANGUAGE;
 
 						if (isset($_POST['SaveLogin']) && $_POST['SaveLogin'] == 1)
 						{
-							$expire = time() + $config['cookie_lifetime'];
-							@setcookie('auth[id]', $row->Id, $expire);
-							@setcookie('auth[hash]', $password, $expire);
+							$expire = time() + COOKIE_LIFETIME;
+							@setcookie('auth_id', $row->Id, $expire);
+							@setcookie('auth_hash', $password, $expire);
 						}
 
 						header('Location:index.php?module=shop&action=checkout');
@@ -2930,7 +2925,7 @@ $AVE_Template->caching = 0;
 	//=======================================================
 	function checkOut()
 	{
-		global $AVE_DB, $AVE_Template, $AVE_Globals;
+		global $AVE_DB, $AVE_Template;
 
 		if (!isset($_SESSION['Product']) || count($_SESSION['Product']) < 1)
 		{
@@ -2951,14 +2946,15 @@ $AVE_Template->caching = 0;
 			if (empty($_POST['billing_streetnumber'])) array_push($errors, $GLOBALS['mod']['config_vars']['Errors_NoStreetNr']);
 			if (empty($_POST['billing_zip']) || (!preg_match('/^[0-9]{5}$/', $_POST['billing_zip']) && $_POST['Land'] == 'DE') ) array_push($errors, $GLOBALS['mod']['config_vars']['Errors_NoZip']);
 			if (empty($_POST['billing_town'])) array_push($errors, $GLOBALS['mod']['config_vars']['Errors_NoTown']);
-			if (empty($_POST['OrderEmail']) || !@ereg('^[ -._A-Za-z0-9-]+([.][_A-Za-z0-9-]+)*@([a-zA-Z0-9-]+[.])+([a-zA-Z]{2,4})$', chop($_POST['OrderEmail']))) array_push($errors, $GLOBALS['mod']['config_vars']['Errors_NoEmail']);
+			$regex_email = '/^[\w.-]+@[a-z0-9.-]+\.(?:[a-z]{2}|com|org|net|edu|gov|mil|biz|info|mobi|name|aero|asia|jobs|museum)$/i';
+			if (empty($_POST['OrderEmail']) || !@preg_match($regex_email, chop($_POST['OrderEmail']))) array_push($errors, $GLOBALS['mod']['config_vars']['Errors_NoEmail']);
 //			if (empty($_POST['OrderPhone'])) array_push($errors, $GLOBALS['mod']['config_vars']['Errors_NoOrderPhone']);
 
 			// Formularwerte in Session schreiben
 			if (isset($_POST['OrderEmail'])) $_SESSION['OrderEmail'] = chop($_POST['OrderEmail']);
 			if (isset($_POST['OrderPhone'])) $_SESSION['OrderPhone'] = $_POST['OrderPhone'];
-			if (isset($_POST['billing_company'])) $_SESSION['billing_company'] = stripslashes($_POST['billing_company']);
-			if (isset($_POST['billing_company_reciever'])) $_SESSION['billing_company_reciever'] = stripslashes($_POST['billing_company_reciever']);
+			if (isset($_POST['billing_company'])) $_SESSION['billing_company'] = $_POST['billing_company'];
+			if (isset($_POST['billing_company_reciever'])) $_SESSION['billing_company_reciever'] = $_POST['billing_company_reciever'];
 			if (isset($_POST['billing_firstname'])) $_SESSION['billing_firstname'] = $_POST['billing_firstname'];
 			if (isset($_POST['billing_lastname'])) $_SESSION['billing_lastname'] = $_POST['billing_lastname'];
 			if (isset($_POST['billing_street'])) $_SESSION['billing_street'] = $_POST['billing_street'];
@@ -2968,8 +2964,8 @@ $AVE_Template->caching = 0;
 			if (isset($_POST['Land'])) $_SESSION['billing_country'] = $_POST['Land'];
 
 			// Formularwerte (Rechnungsadresse)
-			if (isset($_POST['shipping_company'])) $_SESSION['shipping_company'] = stripslashes($_POST['shipping_company']);
-			if (isset($_POST['shipping_company_reciever'])) $_SESSION['shipping_company_reciever'] = stripslashes($_POST['shipping_company_reciever']);
+			if (isset($_POST['shipping_company'])) $_SESSION['shipping_company'] = $_POST['shipping_company'];
+			if (isset($_POST['shipping_company_reciever'])) $_SESSION['shipping_company_reciever'] = $_POST['shipping_company_reciever'];
 			if (isset($_POST['shipping_firstname'])) $_SESSION['shipping_firstname'] = $_POST['shipping_firstname'];
 			if (isset($_POST['shipping_lastname'])) $_SESSION['shipping_lastname'] = $_POST['shipping_lastname'];
 			if (isset($_POST['shipping_street'])) $_SESSION['shipping_street'] = $_POST['shipping_street'];
@@ -3131,8 +3127,6 @@ $AVE_Template->caching = 0;
 				$_SESSION['KostenZahlungSymbol'] = $KostenZahlungOp;
 			}
 
-//			if (!is_a($AVE_Globals, 'AVE_Globals')) $AVE_Globals = new AVE_Globals;
-
 			if (!empty($_SESSION['user_id']))
 			{
 				$row = $AVE_DB->Query("
@@ -3146,7 +3140,7 @@ $AVE_Template->caching = 0;
 
 			$AVE_Template->assign('shippingCountries', explode(',', $this->_getShopSetting('VersandLaender')));
 			$AVE_Template->assign('Endsumme', $_SESSION['BasketSumm']);
-			$AVE_Template->assign('available_countries', $AVE_Globals->fetchCountries());
+			$AVE_Template->assign('available_countries', get_country_list(1));
 			$AVE_Template->assign('PaymentMethods', $this->_showPaymentMethods());
 
 			if (!empty($_REQUEST['errors']))
@@ -3253,15 +3247,15 @@ $AVE_Template->caching = 0;
 							Artikel_Vars      = '" . $ProductsOrderVars . "',
 							RechnungText      = '" . $RechnungText . "',
 							RechnungHtml      = '" . $RechnungHtml . "',
-							NachrichtBenutzer = '" . nl2br(stripslashes($_POST['Msg'])) . "',
+							NachrichtBenutzer = '" . nl2br($_POST['Msg']) . "',
 							Ip                = '" . $_SERVER['REMOTE_ADDR'] . "',
 							ZahlungsId        = '" . $_SESSION['PaymentId'] . "',
 							VersandId         = '" . $_SESSION['ShipperId'] . "',
 							KamVon            = '" . $KamVon . "',
 							Gutscheincode     = '" . (isset($_SESSION['CouponCodeId']) ? $_SESSION['CouponCodeId'] : '') . "',
 							Bestell_Email     = '" . $_SESSION['OrderEmail'] . "',
-							Liefer_Firma      = '" . (isset($_SESSION['billing_company']) ? addslashes($_SESSION['billing_company']) : '') . "',
-							Liefer_Abteilung  = '" . (isset($_SESSION['billing_company_reciever']) ? addslashes($_SESSION['billing_company_reciever']) : '') . "',
+							Liefer_Firma      = '" . (isset($_SESSION['billing_company']) ? $_SESSION['billing_company'] : '') . "',
+							Liefer_Abteilung  = '" . (isset($_SESSION['billing_company_reciever']) ? $_SESSION['billing_company_reciever'] : '') . "',
 							Liefer_Vorname    = '" . $_SESSION['billing_firstname'] . "',
 							Liefer_Nachname   = '" . $_SESSION['billing_lastname'] . "',
 							Liefer_Strasse    = '" . $_SESSION['billing_street'] . "',
@@ -3269,8 +3263,8 @@ $AVE_Template->caching = 0;
 							Liefer_PLZ        = '" . $_SESSION['billing_zip'] . "',
 							Liefer_Ort        = '" . $_SESSION['billing_town'] . "',
 							Liefer_Land       = '" . (!empty($_POST['Land']) ? $_POST['Land'] : '') . "',
-							Rech_Firma        = '" . (!empty($_SESSION['shipping_company']) ? addslashes($_SESSION['shipping_company']) : (!empty($_SESSION['billing_company']) ? addslashes($_SESSION['billing_company']) : '') ) . "',
-							Rech_Abteilung    = '" . (!empty($_SESSION['shipping_company_reciever']) ? addslashes($_SESSION['shipping_company_reciever']) : (!empty($_SESSION['billing_company_reciever']) ? addslashes($_SESSION['billing_company_reciever']) : '')) . "',
+							Rech_Firma        = '" . (!empty($_SESSION['shipping_company']) ? $_SESSION['shipping_company'] : (!empty($_SESSION['billing_company']) ? $_SESSION['billing_company'] : '') ) . "',
+							Rech_Abteilung    = '" . (!empty($_SESSION['shipping_company_reciever']) ? $_SESSION['shipping_company_reciever'] : (!empty($_SESSION['billing_company_reciever']) ? $_SESSION['billing_company_reciever'] : '')) . "',
 							Rech_Vorname      = '" . (!empty($_SESSION['shipping_firstname']) ? $_SESSION['shipping_firstname'] : $_SESSION['billing_firstname']) . "',
 							Rech_Nachname     = '" . (!empty($_SESSION['shipping_lastname']) ? $_SESSION['shipping_lastname'] : $_SESSION['billing_lastname']) . "',
 							Rech_Strasse      = '" . (!empty($_SESSION['shipping_street']) ? $_SESSION['shipping_street'] : $_SESSION['billing_street']) . "',
@@ -3341,19 +3335,54 @@ $AVE_Template->caching = 0;
 					$mail_text = $this->_textReplace($mail_text);
 
 					// E-Mail mit Bestellbestätigung an Käufer senden
-//					if (!is_a($AVE_Globals, 'AVE_Globals')) $AVE_Globals = new AVE_Globals;
 
 					// Soll E-Mail als Text oder HTML versendet werden?
 					if ($this->_getShopSetting('EmailFormat') == 'html')
 					{
-						$AVE_Globals->cp_mail($this->_getShopSetting('EmpEmail'), $mail_html, $this->_getShopSetting('BetreffBest'), $this->_getShopSetting('AbsEmail'), $this->_getShopSetting('AbsName'), 'html', '', 1);
-						$AVE_Globals->cp_mail($_SESSION['OrderEmail'], $mail_html, $this->_getShopSetting('BetreffBest'), $this->_getShopSetting('AbsEmail'), $this->_getShopSetting('AbsName'), 'html', '', 1);
+						send_mail(
+							$this->_getShopSetting('EmpEmail'),
+							$mail_html,
+							$this->_getShopSetting('BetreffBest'),
+							$this->_getShopSetting('AbsEmail'),
+							$this->_getShopSetting('AbsName'),
+							'html',
+							'',
+							1
+						);
+						send_mail(
+							$_SESSION['OrderEmail'],
+							$mail_html,
+							$this->_getShopSetting('BetreffBest'),
+							$this->_getShopSetting('AbsEmail'),
+							$this->_getShopSetting('AbsName'),
+							'html',
+							'',
+							1
+						);
 						$AVE_Template->assign('innerhtml', htmlspecialchars($mail_html));
 					}
 					else
 					{
-						$AVE_Globals->cp_mail($this->_getShopSetting('EmpEmail'), $mail_text, $this->_getShopSetting('BetreffBest'), $this->_getShopSetting('AbsEmail'), $this->_getShopSetting('AbsName'), 'text', '', '');
-						$AVE_Globals->cp_mail($_SESSION['OrderEmail'], $mail_text, $this->_getShopSetting('BetreffBest'), $this->_getShopSetting('AbsEmail'), $this->_getShopSetting('AbsName'), 'text', '', '');
+						send_mail(
+							$this->_getShopSetting('EmpEmail'),
+							$mail_text,
+							$this->_getShopSetting('BetreffBest'),
+							$this->_getShopSetting('AbsEmail'),
+							$this->_getShopSetting('AbsName'),
+							'text',
+							'',
+							''
+						);
+						send_mail(
+							$_SESSION['OrderEmail'],
+							$mail_text,
+							$this->_getShopSetting('BetreffBest'),
+							$this->_getShopSetting('AbsEmail'),
+							$this->_getShopSetting('AbsName'),
+							'text',
+							'',
+							''
+						);
 						$AVE_Template->assign('innerhtml',htmlspecialchars($mail_html));
 					}
 					// E-Mail mit Bestellbestätigung an Admin senden

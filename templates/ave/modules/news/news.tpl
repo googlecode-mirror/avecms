@@ -1,4 +1,3 @@
-{strip}
 {foreach from=$news item=n}
 {$n.date}
     <h2>{$n.Titel}</h2>
@@ -14,4 +13,3 @@
 {/foreach}
 <br />
 {$page_nav}
-{/strip}

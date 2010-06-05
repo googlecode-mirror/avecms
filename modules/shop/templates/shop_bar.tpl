@@ -1,5 +1,3 @@
-{strip}
-<!-- shop_bar.tpl -->
 <table width="100%" border="0" cellpadding="0" cellspacing="1" class="mod_shop_barborder">
 	<tr>
 		<td class="{if $step=='1'}mod_shop_bar_active{else}mod_shop_bar_inactive{/if}">1</td>
@@ -10,5 +8,3 @@
 		<td align="center" width="20%" class="{if $step=='3'}mod_shop_steps_active{else}mod_shop_steps_inactive{/if}">{#ShopBarStep3#}</td>
 	</tr>
 </table>
-<!-- /shop_bar.tpl -->
-{/strip}

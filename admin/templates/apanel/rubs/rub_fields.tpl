@@ -1,7 +1,3 @@
-
-<!-- rub_fields.tpl -->
-{strip}
-
 <script language="Javascript" type="text/javascript" src="editarea/edit_area_full.js"></script>
 
 <script language="Javascript" type="text/javascript">
@@ -31,7 +27,7 @@ $(document).ready(function(){ldelim}
 		<td class="second">
 			<div id="otherLinks">
 				<a href="javascript:void(0);" onclick="$('#kform').toggle();">
-					<div class="taskTitle">Поля рубрики</div>
+					<div class="taskTitle">{#RUBRIK_FIELDS_TITLE#}</div>
 				</a>
 			</div>
 		</td>
@@ -91,37 +87,37 @@ $(document).ready(function(){ldelim}
 				editAreaLoader.init({ldelim}id: "tpl_req[{$rf->Id}]",allow_toggle: false,display: "later"{rdelim});
 				</script>
 				<div style="width:50%; float:left">
-					<div class="tableheader" style="padding:6px">Шаблон вывода поля в документе</div>
-					<textarea wrap="off" style="width:100%; height:70px" name="tpl_field[{$rf->Id}]" id="tpl_field[{$rf->Id}]">{$rf->tpl_field|default:''|escape:html}</textarea>
-					<div class="infobox">|&nbsp;
-						<a href="javascript:void(0);" onclick="editAreaLoader.insertTags('tpl_field[{$rf->Id}]', '<div>', '</div>');">DIV</a>&nbsp;|&nbsp;
-						<a href="javascript:void(0);" onclick="editAreaLoader.insertTags('tpl_field[{$rf->Id}]', '<p>', '</p>');">P</a>&nbsp;|&nbsp;
-						<a href="javascript:void(0);" onclick="editAreaLoader.insertTags('tpl_field[{$rf->Id}]', '<strong>', '</strong>');">B</a>&nbsp;|&nbsp;
-						<a href="javascript:void(0);" onclick="editAreaLoader.insertTags('tpl_field[{$rf->Id}]', '<em>', '</em>');">I</a>&nbsp;|&nbsp;
-						<a href="javascript:void(0);" onclick="editAreaLoader.insertTags('tpl_field[{$rf->Id}]', '<h1>', '</h1>');">H1</a>&nbsp;|&nbsp;
-						<a href="javascript:void(0);" onclick="editAreaLoader.insertTags('tpl_field[{$rf->Id}]', '<h2>', '</h2>');">H2</a>&nbsp;|&nbsp;
-						<a href="javascript:void(0);" onclick="editAreaLoader.insertTags('tpl_field[{$rf->Id}]', '<h3>', '</h3>');">H3</a>&nbsp;|&nbsp;
-						<a href="javascript:void(0);" onclick="editAreaLoader.insertTags('tpl_field[{$rf->Id}]', '<pre>', '</pre>');">PRE</a>&nbsp;|&nbsp;
-						<a href="javascript:void(0);" onclick="editAreaLoader.insertTags('tpl_field[{$rf->Id}]', '<br />', '');">BR</a>&nbsp;|&nbsp;
-						<a href="javascript:void(0);" onclick="editAreaLoader.insertTags('tpl_field[{$rf->Id}]', '<br />', '');">BR</a>&nbsp;|&nbsp;
-						<a href="javascript:void(0);" onclick="editAreaLoader.insertTags('tpl_field[{$rf->Id}]', '[field_param:', ']');">[field_param:XXX]</a>&nbsp;|&nbsp;
-						<a href="javascript:void(0);" onclick="editAreaLoader.insertTags('tpl_field[{$rf->Id}]', '[cp:path]', '');">[cp:path]</a>&nbsp;|
+					<div class="tableheader" style="padding:6px">{#RUBRIK_FIELDS_TPL#}</div>
+					<textarea wrap="off" style="width:100%; height:70px" name="tpl_field[{$rf->Id}]" id="tpl_field[{$rf->Id}]">{$rf->tpl_field|escape}</textarea>
+					<div class="infobox">|
+						<a href="javascript:void(0);" onclick="editAreaLoader.insertTags('tpl_field[{$rf->Id}]', '<div>', '</div>');">DIV</a>|
+						<a href="javascript:void(0);" onclick="editAreaLoader.insertTags('tpl_field[{$rf->Id}]', '<p>', '</p>');">P</a>|
+						<a href="javascript:void(0);" onclick="editAreaLoader.insertTags('tpl_field[{$rf->Id}]', '<strong>', '</strong>');">B</a>|
+						<a href="javascript:void(0);" onclick="editAreaLoader.insertTags('tpl_field[{$rf->Id}]', '<em>', '</em>');">I</a>|
+						<a href="javascript:void(0);" onclick="editAreaLoader.insertTags('tpl_field[{$rf->Id}]', '<h1>', '</h1>');">H1</a>|
+						<a href="javascript:void(0);" onclick="editAreaLoader.insertTags('tpl_field[{$rf->Id}]', '<h2>', '</h2>');">H2</a>|
+						<a href="javascript:void(0);" onclick="editAreaLoader.insertTags('tpl_field[{$rf->Id}]', '<h3>', '</h3>');">H3</a>|
+						<a href="javascript:void(0);" onclick="editAreaLoader.insertTags('tpl_field[{$rf->Id}]', '<pre>', '</pre>');">PRE</a>|
+						<a href="javascript:void(0);" onclick="editAreaLoader.insertTags('tpl_field[{$rf->Id}]', '<br />', '');">BR</a>|
+						<a href="javascript:void(0);" onclick="editAreaLoader.insertTags('tpl_field[{$rf->Id}]', '[field_param:', ']');">[field_param:XXX]</a>|
+						<a href="javascript:void(0);" onclick="editAreaLoader.insertTags('tpl_field[{$rf->Id}]', '[cp:path]', '');">[cp:path]</a>|
 					</div>
 				</div>
 				<div style="width:50%; float:left">
-					<div class="tableheader" style="padding:6px">Шаблон вывода поля в запросе</div>
-					<textarea wrap="off" style="width:100%; height:70px" name="tpl_req[{$rf->Id}]" id="tpl_req[{$rf->Id}]">{$rf->tpl_req|default:''|escape:html}</textarea>
-					<div class="infobox">|&nbsp;
-						<a href="javascript:void(0);" onclick="editAreaLoader.insertTags('tpl_req[{$rf->Id}]', '<div>', '</div>');">DIV</a>&nbsp;|&nbsp;
-						<a href="javascript:void(0);" onclick="editAreaLoader.insertTags('tpl_req[{$rf->Id}]', '<p>', '</p>');">P</a>&nbsp;|&nbsp;
-						<a href="javascript:void(0);" onclick="editAreaLoader.insertTags('tpl_req[{$rf->Id}]', '<strong>', '</strong>');">B</a>&nbsp;|&nbsp;
-						<a href="javascript:void(0);" onclick="editAreaLoader.insertTags('tpl_req[{$rf->Id}]', '<em>', '</em>');">I</a>&nbsp;|&nbsp;
-						<a href="javascript:void(0);" onclick="editAreaLoader.insertTags('tpl_req[{$rf->Id}]', '<h1>', '</h1>');">H1</a>&nbsp;|&nbsp;
-						<a href="javascript:void(0);" onclick="editAreaLoader.insertTags('tpl_req[{$rf->Id}]', '<h2>', '</h2>');">H2</a>&nbsp;|&nbsp;
-						<a href="javascript:void(0);" onclick="editAreaLoader.insertTags('tpl_req[{$rf->Id}]', '<h3>', '</h3>');">H3</a>&nbsp;|&nbsp;
-						<a href="javascript:void(0);" onclick="editAreaLoader.insertTags('tpl_req[{$rf->Id}]', '<pre>', '</pre>');">PRE</a>&nbsp;|&nbsp;
-						<a href="javascript:void(0);" onclick="editAreaLoader.insertTags('tpl_req[{$rf->Id}]', '[field_param:', ']');">[field_param:XXX]</a>&nbsp;|&nbsp;
-						<a href="javascript:void(0);" onclick="editAreaLoader.insertTags('tpl_req[{$rf->Id}]', '[cp:path]', '');">[cp:path]</a>&nbsp;|
+					<div class="tableheader" style="padding:6px">{#RUBRIK_REQUEST_TPL#}</div>
+					<textarea wrap="off" style="width:100%; height:70px" name="tpl_req[{$rf->Id}]" id="tpl_req[{$rf->Id}]">{$rf->tpl_req|escape}</textarea>
+					<div class="infobox">|
+						<a href="javascript:void(0);" onclick="editAreaLoader.insertTags('tpl_req[{$rf->Id}]', '<div>', '</div>');">DIV</a>|
+						<a href="javascript:void(0);" onclick="editAreaLoader.insertTags('tpl_req[{$rf->Id}]', '<p>', '</p>');">P</a>|
+						<a href="javascript:void(0);" onclick="editAreaLoader.insertTags('tpl_req[{$rf->Id}]', '<strong>', '</strong>');">B</a>|
+						<a href="javascript:void(0);" onclick="editAreaLoader.insertTags('tpl_req[{$rf->Id}]', '<em>', '</em>');">I</a>|
+						<a href="javascript:void(0);" onclick="editAreaLoader.insertTags('tpl_req[{$rf->Id}]', '<h1>', '</h1>');">H1</a>|
+						<a href="javascript:void(0);" onclick="editAreaLoader.insertTags('tpl_req[{$rf->Id}]', '<h2>', '</h2>');">H2</a>|
+						<a href="javascript:void(0);" onclick="editAreaLoader.insertTags('tpl_req[{$rf->Id}]', '<h3>', '</h3>');">H3</a>|
+						<a href="javascript:void(0);" onclick="editAreaLoader.insertTags('tpl_req[{$rf->Id}]', '<pre>', '</pre>');">PRE</a>|
+						<a href="javascript:void(0);" onclick="editAreaLoader.insertTags('tpl_req[{$rf->Id}]', '<br />', '');">BR</a>|
+						<a href="javascript:void(0);" onclick="editAreaLoader.insertTags('tpl_req[{$rf->Id}]', '[field_param:', ']');">[field_param:XXX]</a>|
+						<a href="javascript:void(0);" onclick="editAreaLoader.insertTags('tpl_req[{$rf->Id}]', '[cp:path]', '');">[cp:path]</a>|
 					</div>
 				</div>
 				</td>
@@ -189,7 +185,7 @@ $(document).ready(function(){ldelim}
 	<br />
 </form>
 
-{if checkPermission('rub_perms')}
+{if check_permission('rub_perms')}
 <table cellspacing="1" cellpadding="8" border="0" width="100%">
 	<tr>
 		<td class="second">
@@ -291,6 +287,3 @@ $(document).ready(function(){ldelim}
 
 </form>
 {/if}
-
-{/strip}
-<!-- /rub_fields.tpl -->

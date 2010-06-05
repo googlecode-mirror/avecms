@@ -1,7 +1,3 @@
-
-<!-- replyform.tpl -->
-{strip}
-
 <div id="pageHeaderTitle" style="padding-top:7px">
 	<div class="h_docs">&nbsp;</div>
 	<div class="HeaderTitle">
@@ -36,6 +32,3 @@
 		</tr>
 	</table>
 </form>
-
-{/strip}
-<!-- /replyform.tpl -->

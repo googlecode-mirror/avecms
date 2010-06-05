@@ -32,13 +32,13 @@ if(!defined('BANNER_DIR')) define('BANNER_DIR', 'media');
 /**
  * Обработка тэга модуля
  *
- * @param int $id - идентификатор категории баннеров
+ * @param int $banner_id - идентификатор категории баннеров
  */
-function mod_banner($id)
+function mod_banner($banner_id)
 {
 	require_once(BASE_DIR . '/modules/' . BANNER_DIR . '/class.banner.php');
 	$banner = new ModulBanner;
-	$banner->displayBanner(stripslashes($id));
+	$banner->displayBanner(stripslashes($banner_id));
 }
 
 if (isset($_REQUEST['module']) && $_REQUEST['module'] == BANNER_DIR)
@@ -51,15 +51,14 @@ if (isset($_REQUEST['module']) && $_REQUEST['module'] == BANNER_DIR)
 	}
 }
 
-if (defined('ACP') && !(isset($_REQUEST['action']) && $_REQUEST['action'] == 'delete'))
+if (defined('ACP') && !empty($_REQUEST['moduleaction']))
 {
 	global $AVE_Template;
 
-	require_once(BASE_DIR . '/modules/' . BANNER_DIR . '/sql.php');
 	require_once(BASE_DIR . '/modules/' . BANNER_DIR . '/class.banner.php');
 
 	$tpl_dir   = BASE_DIR . '/modules/' . BANNER_DIR . '/templates/';
-	$lang_file = BASE_DIR . '/modules/' . BANNER_DIR . '/lang/' . DEFAULT_LANGUAGE . '.txt';
+	$lang_file = BASE_DIR . '/modules/' . BANNER_DIR . '/lang/' . $_SESSION['user_language'] . '.txt';
 
 	$banner = new ModulBanner;
 
@@ -67,35 +66,32 @@ if (defined('ACP') && !(isset($_REQUEST['action']) && $_REQUEST['action'] == 'de
 	$config_vars = $AVE_Template->get_config_vars();
 	$AVE_Template->assign('config_vars', $config_vars);
 
-	if (!empty($_REQUEST['moduleaction']))
+	switch($_REQUEST['moduleaction'])
 	{
-		switch($_REQUEST['moduleaction'])
-		{
-			case '1':
-				$banner->showBanner($tpl_dir);
-				break;
+		case '1':
+			$banner->showBanner($tpl_dir);
+			break;
 
-			case 'quicksave':
-				$banner->quickSave($_REQUEST['id']);
-				break;
+		case 'quicksave':
+			$banner->quickSave($_REQUEST['id']);
+			break;
 
-			case 'kategs':
-				$banner->bannerKategs($tpl_dir);
-				break;
+		case 'kategs':
+			$banner->bannerKategs($tpl_dir);
+			break;
 
-			case 'editbanner':
-				$banner->editBanner($tpl_dir, $_REQUEST['id']);
-				break;
+		case 'editbanner':
+			$banner->editBanner($tpl_dir, $_REQUEST['id']);
+			break;
 
-			case 'new':
-			case 'newbanner':
-				$banner->newBanner($tpl_dir);
-				break;
+		case 'new':
+		case 'newbanner':
+			$banner->newBanner($tpl_dir);
+			break;
 
-			case 'delbanner':
-				$banner->deleteBanner($_REQUEST['id']);
-				break;
-		}
+		case 'delbanner':
+			$banner->deleteBanner($_REQUEST['id']);
+			break;
 	}
 }
 

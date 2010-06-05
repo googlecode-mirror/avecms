@@ -107,7 +107,7 @@ if((!$this->fperm("canpn")) || (UGROUP==2))
 		$pnin = $sql->NumRows();
 
 		$seiten = ceil($pnin / $limit);
-		$a = prepage() * $limit - $limit;
+		$a = get_current_page() * $limit - $limit;
 
 		$sql = $GLOBALS['AVE_DB']->Query("SELECT * FROM ".PREFIX."_modul_forum_pn WHERE $tofrom='".UID."' AND typ='".$goto."'  ORDER BY $porder $sort limit  $a,$limit");
 
@@ -357,10 +357,10 @@ if((!$this->fperm("canpn")) || (UGROUP==2))
 		// Navigation erzeugen
 		//=======================================================
 		if($pnin > $limit){
-			$nav = pagenav($seiten, 'page',
-				" <a class=\"page_navigation\" href=\"index.php?module=forums&amp;show=pn&amp;goto=".$goto
-				."&sort=".$sort."&porder=".$porder."&pp=".$limit."&page={s}&switchto="
-				. ((empty($switchto)) ? 'katalog' : $switchto) . "\">{t}</a> ");
+			$nav = " <a class=\"page_navigation\" href=\"index.php?module=forums&amp;show=pn&amp;goto=" . $goto
+				. "&sort=" . $sort . "&porder=" . $porder . "&pp=" . $limit . "&page={s}&switchto="
+				. ((empty($switchto)) ? 'katalog' : $switchto) . "\">{t}</a> ";
+			$nav = get_pagination($seiten, 'page', $nav);
 			$GLOBALS['AVE_Template']->assign("nav", $nav) ;
 		}
 
@@ -426,8 +426,8 @@ if((!$this->fperm("canpn")) || (UGROUP==2))
 
 	if(!@isset($_REQUEST['action']) && @$_REQUEST['action']=="")
 	{
-		$desclink = "index.php?p=pn&goto=".$goto."&sort=DESC&pp=".@$_REQUEST['pp']."&page=".prepage();
-		$asclink = "index.php?p=pn&goto=".$goto."&sort=ASC&pp=".@$_REQUEST['pp']."&page=".prepage();
+		$desclink = "index.php?p=pn&goto=".$goto."&sort=DESC&pp=".@$_REQUEST['pp']."&page=".get_current_page();
+		$asclink = "index.php?p=pn&goto=".$goto."&sort=ASC&pp=".@$_REQUEST['pp']."&page=".get_current_page();
 
 		$GLOBALS['AVE_Template']->assign('send_recieve_text', $send_recieve_text);
 		$GLOBALS['AVE_Template']->assign('from_t', $text_fromto);
@@ -738,11 +738,18 @@ if((!$this->fperm("canpn")) || (UGROUP==2))
 				$body = $GLOBALS['mod']['config_vars']['PN_Body'];
 				$body = str_replace("__USER__", $row->BenutzerName, $body);
 				$body = str_replace("__AUTOR__", $_SESSION['forum_user_name'], $body);
-				$body = str_replace("__LINK__", BASE_URL . str_replace("/index.php","",$_SERVER['PHP_SELF']) . "/index.php?module=forums&show=pn&goto=inbox", $body);
+				$body = str_replace("__LINK__", HOST . str_replace("/index.php","",$_SERVER['PHP_SELF']) . "/index.php?module=forums&show=pn&goto=inbox", $body);
 				$body = str_replace("%%N%%","\n", $body);
 
-				$AVE_Globals = new AVE_Globals;
-				$AVE_Globals->cp_mail($row->Email, stripslashes($body), $GLOBALS['mod']['config_vars']['PN_Subject'], FORUMEMAIL, FORUMABSENDER, "text", "");
+				send_mail(
+					$row->Email,
+					stripslashes($body),
+					$GLOBALS['mod']['config_vars']['PN_Subject'],
+					FORUMEMAIL,
+					FORUMABSENDER,
+					"text",
+					""
+				);
 
 				// Vielen Dank, Ihre Nachricht wurde erfolgreich versendet.
 				$this->msg($GLOBALS['mod']['config_vars']['PN_ThankYou'], 'index.php?module=forums&show=pn&goto=outbox');

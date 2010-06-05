@@ -1,15 +1,6 @@
-
-<!-- actions.tpl -->
-{strip}
-
 <script language="javascript">
-function warn_db() {ldelim}
-	if(confirm('{#DB_ACTION_WARNING#}')) return true;
-	return false;
-{rdelim}
-
-function warn_db_rest() {ldelim}
-	if(confirm('{#DB_ACTION_RESET#}')) return true;
+function warn_db(msg) {ldelim}
+	if(confirm(msg)) return true;
 	return false;
 {rdelim}
 </script>
@@ -23,7 +14,7 @@ function warn_db_rest() {ldelim}
 </div>
 <div class="upPage">&nbsp;</div><br />
 
-<form onSubmit="return warn_db();" action="index.php?do=dbsettings&cp={$sess}&action=dboption" method="post" name="dbop" id="dbop" style="display:inline;">
+<form onSubmit="return warn_db('{#DB_ACTION_WARNING#}');" action="index.php?do=dbsettings&cp={$sess}" method="post" name="dbop" id="dbop" style="display:inline;">
 	<table width="100%" border="0" cellpadding="8" cellspacing="1" class="tableborder">
 		<tr>
 			<td colspan="2" class="tableheader">{#DB_OPTION_LIST#}</td>
@@ -33,7 +24,7 @@ function warn_db_rest() {ldelim}
 			<td width="250" class="second">
 				<center>
 					<select style="width:240px" size="22" name="ta[]" multiple="multiple">
-						{$tabellen}
+						{$tables}
 					</select><br />
 					<br />
 					<input type="submit" id="rest" class="button" value="{#DB_BUTTON_ACTION#}" />
@@ -46,7 +37,7 @@ function warn_db_rest() {ldelim}
 						<td width="5%"><img src="{$tpl_dir}/images/util/db_optimize.jpg" alt="" hspace="3" /></td>
 						<td width="5%" nowrap="nowrap">
 							<div align="left">
-								<input style="border:0px" type="radio" name="whattodo" checked="checked" value="optimize" />
+								<input style="border:0px" type="radio" name="action" checked="checked" value="optimize" />
 							</div>
 						</td>
 						<td>
@@ -59,7 +50,7 @@ function warn_db_rest() {ldelim}
 						<td width="5%"><img src="{$tpl_dir}/images/util/db_repair.jpg" alt="" hspace="3" /></td>
 						<td width="5%" nowrap="nowrap">
 							<div align="left">
-								<input style="border:0px" type="radio" name="whattodo" value="repair" />
+								<input style="border:0px" type="radio" name="action" value="repair" />
 							</div>
 						</td>
 						<td>
@@ -72,7 +63,7 @@ function warn_db_rest() {ldelim}
 						<td width="5%"><img src="{$tpl_dir}/images/util/db_save.jpg" alt="" hspace="3" /></td>
 						<td width="5%" nowrap="nowrap">
 							<div align="left">
-								<input style="border:0px" type="radio" name="whattodo" value="dump" />
+								<input style="border:0px" type="radio" name="action" value="dump" />
 							</div>
 						</td>
 						<td>
@@ -86,13 +77,13 @@ function warn_db_rest() {ldelim}
 
 		<tr class="first">
 			<td colspan="2">
-				{#MAIN_STAT_MYSQL#} <b>{$mysql_size}</b>
+				{#MAIN_STAT_MYSQL#} <b>{$db_size}</b>
 			</td>
 		</tr>
 	</table>
 </form><br />
 
-<form onSubmit="return warn_db_rest();" action="index.php?do=dbsettings&cp={$sess}" method="post" enctype="multipart/form-data">
+<form onSubmit="return warn_db('{#DB_ACTION_RESET#}');" action="index.php?do=dbsettings&cp={$sess}" method="post" enctype="multipart/form-data">
 	<table width="100%"  border="0" cellpadding="8" cellspacing="1" class="tableborder">
 		<tr>
 			<td class="tableheader">{#DB_RESTORE_TITLE#}</td>
@@ -106,7 +97,7 @@ function warn_db_rest() {ldelim}
 							{if $msg} {$msg} <br />{/if}
 							<input name="file" type="file" size="40" />&nbsp;
 							<input type="submit" id="rest" class="button" value="{#DB_BUTTON_RESTORE#}" />
-							<input type="hidden" name="restore" value="1" />
+							<input type="hidden" name="action" value="restore" />
 						</td>
 					</tr>
 				</table>
@@ -114,6 +105,3 @@ function warn_db_rest() {ldelim}
 		</tr>
 	</table>
 </form>
-
-{/strip}
-<!-- /actions.tpl -->

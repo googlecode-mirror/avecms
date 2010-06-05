@@ -22,6 +22,64 @@ class Counter
 	var $_limit = 25;
 
 /**
+ *	ВНУТРЕННИЕ МЕТОДЫ
+ */
+
+	/**
+	 * Выборка сводной статистики из базы
+	 *
+	 * @param int $id - идентификатор счетчика
+	 * @return array
+	 * 	all   - общее количество визитов
+	 * 	today - количество визитов за текущий день
+	 * 	yestd - количество визитов за вчерашний день
+	 * 	prevm - количество визитов за предыдущий месяц
+	 * 	prevy - количество визитов за предыдущий год
+	 */
+	function _counterStatisticGet($id)
+	{
+		global $AVE_DB;
+
+		$sql = $AVE_DB->Query("
+			SELECT COUNT(*) AS visits
+			FROM " . PREFIX . "_modul_counter_info
+			WHERE counter_id = '" . $id . "'
+			UNION ALL
+			SELECT COUNT(*) AS visits
+			FROM " . PREFIX . "_modul_counter_info
+			WHERE counter_id = '" . $id . "'
+			AND expire = " . mktime(23,59,59) . "
+			UNION ALL
+			SELECT COUNT(*) AS visits
+			FROM " . PREFIX . "_modul_counter_info
+			WHERE counter_id = '" . $id . "'
+			AND expire = " . (mktime(0,0,0)-1) . "
+			UNION ALL
+			SELECT COUNT(*) AS visits
+			FROM " . PREFIX . "_modul_counter_info
+			WHERE counter_id = '" . $id . "'
+			AND (expire
+				BETWEEN " . mktime(0,0,0,date('m'),1) . "
+				AND " . (mktime(0,0,0,date('m')+1,1)-1) . ")
+			UNION ALL
+			SELECT COUNT(*) AS visits
+			FROM " . PREFIX . "_modul_counter_info
+			WHERE counter_id = '" . $id . "'
+			AND (expire
+				BETWEEN " . mktime(0,0,0,1,1) . "
+				AND " . (mktime(0,0,0,1,1,date('Y')+1)-1) . ")
+		");
+
+		$row['all']       = $sql->fetchRow()->visits;
+		$row['today']     = $sql->fetchRow()->visits;
+		$row['yesterday'] = $sql->fetchRow()->visits;
+		$row['prevmonth'] = $sql->fetchRow()->visits;
+		$row['prevyear']  = $sql->fetchRow()->visits;
+
+		return $row;
+	}
+
+/**
  *	ВНЕШНИЕ МЕТОДЫ
  */
 
@@ -30,7 +88,7 @@ class Counter
 	 *
 	 * @param int $id - идентификатор счетчика
 	 */
-	function InsertNew($id)
+	function counterClientNew($id)
 	{
 		global $AVE_DB;
 
@@ -43,23 +101,26 @@ class Counter
 			$ip = $_SERVER['HTTP_CLIENT_IP'];
 		}
 
-		$num = $AVE_DB->Query("
-			SELECT COUNT(*)
+		$exist = $AVE_DB->Query("
+			SELECT 1
 			FROM " . PREFIX . "_modul_counter_info
 			WHERE client_ip = '" . addslashes($ip) . "'
 			AND counter_id = '" . $id. "'
 			AND expire > '" . time() . "'
-		")
-		->GetCell();
+			LIMIT 1
+		")->NumRows();
 
 		$expire  = mktime(23, 59, 59);
 		setcookie('counter_' . $id, '1', $expire);
 
-		if ($num < 1)
+		if (! $exist)
 		{
-
-			$referer = urldecode(trim(isset($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : ''));
-			$referer = iconv("UTF-8", "WINDOWS-1251", $referer);
+			$referer = '';
+			if (isset($_SERVER['HTTP_REFERER']))
+			{
+				$referer = urldecode(trim($_SERVER['HTTP_REFERER']));
+				$referer = iconv("UTF-8", "WINDOWS-1251", $referer);
+			}
 
 			include_once(BASE_DIR . '/modules/counter/phpSniff.core.php');
 			include_once(BASE_DIR . '/modules/counter/phpSniff.class.php');
@@ -68,7 +129,7 @@ class Counter
 				'default_language'=>'',
 				'allow_masquerading'=>''
 			);
-			$client =& new phpSniff('', $settings);
+			$client = new phpSniff('', $settings);
 
 			$AVE_DB->Query("
 				INSERT
@@ -89,7 +150,7 @@ class Counter
 	 * Создание нового счетчика
 	 *
 	 */
-	function newCounter()
+	function counterNew()
 	{
 		global $AVE_DB;
 
@@ -109,7 +170,7 @@ class Counter
 	 * Запись параметров счетчика
 	 *
 	 */
-	function quickSave()
+	function counterSettingsSave()
 	{
 		foreach($_POST['counter_name'] as $id => $counter_name)
 		{
@@ -145,7 +206,7 @@ class Counter
 	 * @param string $tpl_dir - путь к папке с шаблонами модуля
 	 * @param string $lang_file - путь к языковому файлу модуля
 	 */
-	function showCounter($tpl_dir, $lang_file)
+	function counterList($tpl_dir, $lang_file)
 	{
 		global $AVE_DB, $AVE_Template;
 
@@ -158,7 +219,7 @@ class Counter
 		$items = array();
 		while ($row = $sql->FetchRow())
 		{
-			$stat = $this->_getStatistic($row->id);
+			$stat = $this->_counterStatisticGet($row->id);
 
 			$row->all       = $stat['all'];
 			$row->today     = $stat['today'];
@@ -182,7 +243,7 @@ class Counter
 	 * @param string $tpl_dir - путь к папке с шаблонами модуля
 	 * @param string $lang_file - путь к языковому файлу модуля
 	 */
-	function showReferer($tpl_dir, $lang_file)
+	function counterRefererList($tpl_dir, $lang_file)
 	{
 		global $AVE_DB, $AVE_Template;
 
@@ -245,7 +306,7 @@ class Counter
 			}
 		}
 
-		$start = prepage() * $this->_limit - $this->_limit;
+		$start = get_current_page() * $this->_limit - $this->_limit;
 
 		$sql = $AVE_DB->Query("
 			SELECT SQL_CALC_FOUND_ROWS *
@@ -266,9 +327,9 @@ class Counter
 		if($num > $this->_limit)
 		{
 			$seiten = ceil($num / $this->_limit);
-			$page_nav = pagenav($seiten, 'page',
-				" <a class=\"pnav\" href=\"index.php?do=modules&action=modedit&mod=counter&moduleaction=view_referer&id=" . intval($_REQUEST['id'])
-					. '&cp=' . SESSION . '&pop=1&page={s}' . $sort_navi . "\">{t}</a> ");
+			$page_nav = " <a class=\"pnav\" href=\"index.php?do=modules&action=modedit&mod=counter&moduleaction=view_referer&cp=" . SESSION
+				. '&id=' . intval($_REQUEST['id']) . '&pop=1&page={s}' . $sort_navi . "\">{t}</a> ";
+			$page_nav = get_pagination($seiten, 'page', $page_nav);
 			$AVE_Template->assign('page_nav', $page_nav);
 		}
 
@@ -286,77 +347,21 @@ class Counter
 	 * @param string $lang_file - путь к языковому файлу модуля
 	 * @param int $id - идентификатор счетчика
 	 */
-	function showStat($tpl_dir, $lang_file, $id)
+	function counterStatisticShow($tpl_dir, $lang_file, $id)
 	{
 		global $AVE_Template;
 
-		if (!(empty($_SERVER['REMOTE_ADDR']) && empty($_SERVER['HTTP_CLIENT_IP'])) &&
-			!(isset($_COOKIE['counter_' . $id]) && $_COOKIE['counter_' . $id] == '1'))
+		if (! (empty($_SERVER['REMOTE_ADDR']) && empty($_SERVER['HTTP_CLIENT_IP'])) &&
+			! (isset($_COOKIE['counter_' . $id]) && $_COOKIE['counter_' . $id] == '1'))
 		{
-			$this->InsertNew($id);
+			$this->counterClientNew($id);
 		}
 
 		$AVE_Template->config_load($lang_file, 'user');
-		$AVE_Template->assign($this->_getStatistic($id));
+
+		$AVE_Template->assign($this->_counterStatisticGet($id));
+
 		$AVE_Template->display($tpl_dir . 'show_stat-' . $id . '.tpl');
-	}
-
-/**
- *	ВНУТРЕННИЕ МЕТОДЫ
- */
-
-	/**
-	 * Выборка сводной статистики из базы
-	 *
-	 * @param int $id - идентификатор счетчика
-	 * @return array
-	 * 	all   - общее количество визитов
-	 * 	today - количество визитов за текущий день
-	 * 	yestd - количество визитов за вчерашний день
-	 * 	prevm - количество визитов за предыдущий месяц
-	 * 	prevy - количество визитов за предыдущий год
-	 */
-	function _getStatistic($id)
-	{
-		global $AVE_DB;
-
-		$sql = $AVE_DB->Query("
-			SELECT COUNT(*) AS visits
-			FROM " . PREFIX . "_modul_counter_info
-			WHERE counter_id = '" . $id . "'
-			UNION ALL
-			SELECT COUNT(*) AS visits
-			FROM " . PREFIX . "_modul_counter_info
-			WHERE counter_id = '" . $id . "'
-			AND expire = " . mktime(23,59,59) . "
-			UNION ALL
-			SELECT COUNT(*) AS visits
-			FROM " . PREFIX . "_modul_counter_info
-			WHERE counter_id = '" . $id . "'
-			AND expire = " . (mktime(0,0,0)-1) . "
-			UNION ALL
-			SELECT COUNT(*) AS visits
-			FROM " . PREFIX . "_modul_counter_info
-			WHERE counter_id = '" . $id . "'
-			AND (expire
-				BETWEEN " . mktime(0,0,0,date('m'),1) . "
-				AND " . (mktime(0,0,0,date('m')+1,1)-1) . ")
-			UNION ALL
-			SELECT COUNT(*) AS visits
-			FROM " . PREFIX . "_modul_counter_info
-			WHERE counter_id = '" . $id . "'
-			AND (expire
-				BETWEEN " . mktime(0,0,0,1,1) . "
-				AND " . (mktime(0,0,0,1,1,date('Y')+1)-1) . ")
-		");
-
-		$row['all']       = $sql->fetchRow()->visits;
-		$row['today']     = $sql->fetchRow()->visits;
-		$row['yesterday'] = $sql->fetchRow()->visits;
-		$row['prevmonth'] = $sql->fetchRow()->visits;
-		$row['prevyear']  = $sql->fetchRow()->visits;
-
-		return $row;
 	}
 }
 

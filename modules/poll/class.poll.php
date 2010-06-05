@@ -44,8 +44,8 @@ class poll
 				active = '1' AND
 				poll.title != '' AND
 				poll.id = '" . $id . "' AND
-				start < '" . time() . "'
-			GROUP BY pollid
+				`start` < '" . time() . "'
+			GROUP BY poll.id
 		");
 		$row = $sql->FetchRow();
 
@@ -75,11 +75,9 @@ class poll
 		$sql = $AVE_DB->Query("
 			SELECT
 				*,
-			--	IFNULL(ROUND(hits*100/SUM(hits)),0) AS sum
 				" . ($row->sumhits > 0 ? 'ROUND(hits*100/' . $row->sumhits . ')' : 0) . " AS sum
 			FROM " . PREFIX . "_modul_poll_items
 			WHERE pollid = '" . $id . "'
-			--	GROUP BY pollid
 			ORDER BY posi ASC
 		");
 		while ($row_items = $sql->FetchRow())
@@ -187,8 +185,8 @@ class poll
 				active = '1' AND
 				poll.title != '' AND
 				poll.id = '" . $pid . "' AND
-				start < '" . time() . "'
-			GROUP BY pollid
+				`start` < '" . time() . "'
+			GROUP BY poll.id
 		");
 		$row = $sql->FetchRow();
 
@@ -309,7 +307,7 @@ class poll
 			SELECT
 				poll.id,
 				poll.title,
-				poll.start,
+				poll.`start`,
 				poll.ende,
 				SUM(itm.hits) AS votes
 			FROM
@@ -320,8 +318,8 @@ class poll
 			WHERE
 				active = '1' AND
 				poll.title != '' AND
-				start < '" . time() . "'
-			GROUP BY pollid
+				`start` < '" . time() . "'
+			GROUP BY poll.id
 			ORDER BY " . $order . $by
 		);
 		while ($row = $sql->FetchRow())
@@ -403,7 +401,7 @@ class poll
 		$text = substr(htmlspecialchars($_POST['comment_text']), 0, $this->_commentwords);
 		$text_length = strlen($text);
 		$text .= ($text_length > $this->_commentwords) ? '...' : '';
-		$text = prettyChars($text);
+		$text = pretty_chars($text);
 
 		$errors = array();
 		if (empty($_POST['comment_title'])) $error[] = $AVE_Template->get_config_vars('POLL_ENTER_TITLE');
@@ -473,7 +471,7 @@ class poll
 
 		$limit = $this->_adminlimit;
 		$pages = ceil($num / $limit);
-		$start = prepage() * $limit - $limit;
+		$start = get_current_page() * $limit - $limit;
 
 		$items = array();
 		$sql = $AVE_DB->Query("
@@ -511,8 +509,8 @@ class poll
 
 		if ($num > $limit)
 		{
-			$page_nav = pagenav($pages, 'page',
-				" <a class=\"pnav\" href=\"index.php?do=modules&action=modedit&mod=poll&moduleaction=1&cp=" . SESSION . "&page={s}\">{t}</a> ");
+			$page_nav = " <a class=\"pnav\" href=\"index.php?do=modules&action=modedit&mod=poll&moduleaction=1&cp=" . SESSION . "&page={s}\">{t}</a> ";
+			$page_nav = get_pagination($pages, 'page', $page_nav);
 			$AVE_Template->assign('page_nav', $page_nav);
 		}
 		$AVE_Template->assign('items', $items);
@@ -561,7 +559,7 @@ class poll
 		$AVE_Template->assign('groups_form', explode(',', $row->group_id));
 		$AVE_Template->assign('row', $row);
 		$AVE_Template->assign('items', $items);
-		$AVE_Template->assign('tpl_path', $tpl_dir);
+		$AVE_Template->assign('tpl_dir', $tpl_dir);
 		$AVE_Template->assign('year', date('Y'));
 
 		$AVE_Template->assign('s_year', date('Y', $row->start));
@@ -594,7 +592,7 @@ class poll
 				title       = '" . $_REQUEST['poll_name'] . "',
 				active      = '" . $_REQUEST['active'] . "',
 				can_comment = '" . $_REQUEST['can_comment'] . "',
-				start       = '" . $start_date . "',
+				`start`     = '" . $start_date . "',
 				ende        = '" . $end_date . "',
 				group_id    = '" . @implode(',', $_REQUEST['groups']) . "'
 			WHERE
@@ -651,7 +649,7 @@ class poll
 				)
 			");
 		}
-		reportLog($_SESSION['user_name'] . ' - добавил новый вопрос для опроса (' . $_REQUEST['question_title'] . ')', 2, 2);
+		reportLog($_SESSION['user_name'] . ' - добавил новый вопрос для опроса (' . ($_REQUEST['question_title']) . ')', 2, 2);
 		header('Location:index.php?do=modules&action=modedit&mod=poll&moduleaction=edit&id=' . $id . '&pop=1&cp=' . SESSION);
 	}
 
@@ -683,7 +681,7 @@ class poll
 				$AVE_Template->assign('day', date('d'));
 				$AVE_Template->assign('hour', date('H'));
 				$AVE_Template->assign('min', date('i'));
-				$AVE_Template->assign('tpl_path', $tpl_dir);
+				$AVE_Template->assign('tpl_dir', $tpl_dir);
 				$AVE_Template->assign('formaction', 'index.php?do=modules&action=modedit&mod=poll&moduleaction=new&sub=save&cp=' . SESSION . '&pop=1');
 				$AVE_Template->assign('content', $AVE_Template->fetch($tpl_dir . 'admin_fields.tpl'));
 				break;
@@ -708,7 +706,7 @@ class poll
 					)
 				");
 				$iid = $AVE_DB->InsertId();
-				reportLog($_SESSION['user_name'] . ' - добавил новый опрос (' . $_REQUEST['poll_name'] . ')', 2, 2);
+				reportLog($_SESSION['user_name'] . ' - добавил новый опрос (' . stripslashes($_REQUEST['poll_name']) . ')', 2, 2);
 
 				header('Location:index.php?do=modules&action=modedit&mod=poll&moduleaction=edit&id=' . $iid . '&pop=1&cp=' . SESSION);
 				exit;
@@ -783,7 +781,7 @@ class poll
 					array_push($items, $row);
 				}
 				$AVE_Template->assign('items', $items);
-				$AVE_Template->assign('tpl_path', $tpl_dir);
+				$AVE_Template->assign('tpl_dir', $tpl_dir);
 				$AVE_Template->assign('content', $AVE_Template->fetch($tpl_dir . 'admin_comments.tpl'));
 				break;
 
@@ -825,10 +823,7 @@ class poll
 
 	function _PL_Rewrite($string)
 	{
-		if (defined('CP_REWRITE') && CP_REWRITE == 1)
-		{
-			$string = PollRewrite($string);
-		}
+		if (REWRITE_MODE) $string = PollRewrite($string);
 
 		return $string;
 	}

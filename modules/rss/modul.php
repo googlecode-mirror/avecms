@@ -14,7 +14,7 @@ if (defined('ACP'))
 {
     $modul['ModulName'] = 'RSS потоки';
     $modul['ModulPfad'] = 'rss';
-    $modul['ModulVersion'] = '1.0beta2';
+    $modul['ModulVersion'] = '1.1';
     $modul['Beschreibung'] = 'Данный модуль предзназначен для организации RSS потоков на вашем сайте.';
     $modul['Autor'] = 'Arcanum';
     $modul['MCopyright'] = '&copy; 2007-2008 Overdoze Team';
@@ -30,15 +30,15 @@ if (defined('ACP'))
 /**
  * Обработка тэга модуля RSS
  *
- * @param int $id идентификатор RSS-ленты
+ * @param int $rss_id идентификатор RSS-ленты
  */
-function mod_rss($id)
+function mod_rss($rss_id)
 {
-	$id = stripslashes($id);
-	if (is_numeric($id))
+	$rss_id  = preg_replace('/\D/', '', $rss_id);
+
+	if (is_numeric($rss_id))
 	{
-		echo '<a href="rss/rss-', $id,
-			'.xml" target="blank"><img src="modules/rss/templates/feed.gif" border="0" title="RSS лента новостей" /></a>';
+		echo '<a href="', ABS_PATH, 'rss/rss-', $rss_id, '.xml" target="blank"><img src="modules/rss/templates/feed.gif" border="0" title="RSS лента новостей" /></a>';
 	}
 }
 
@@ -48,43 +48,37 @@ if (isset($_REQUEST['module']) && $_REQUEST['module'] == 'rss'
 	header('Location:rss/index.php?id=' . $_GET['id']);
 }
 
-if (defined('ACP')
-	&& (empty($_REQUEST['action'])
-		|| (isset($_REQUEST['action']) && $_REQUEST['action'] != 'delete')))
+if (defined('ACP') && !empty($_REQUEST['moduleaction']))
 {
 	global $AVE_Template;
 
-//	require_once(BASE_DIR . '/modules/rss/sql.php');
 	require_once(BASE_DIR . '/modules/rss/class.rss.php');
 
-	if (!empty($_REQUEST['moduleaction']))
+	switch ($_REQUEST['moduleaction'])
 	{
-		switch ($_REQUEST['moduleaction'])
-		{
-			case '1':
-				$tpl_dir   = BASE_DIR . '/modules/rss/templates/';
-				$lang_file = BASE_DIR . '/modules/rss/lang/' . DEFAULT_LANGUAGE . '.txt';
-				Rss::rssList($tpl_dir, $lang_file);
-				break;
+		case '1':
+			$tpl_dir   = BASE_DIR . '/modules/rss/templates/';
+			$lang_file = BASE_DIR . '/modules/rss/lang/' . $_SESSION['user_language'] . '.txt';
+			Rss::rssList($tpl_dir, $lang_file);
+			break;
 
-			case 'add':
-				Rss::rssAdd();
-				break;
+		case 'add':
+			Rss::rssNew();
+			break;
 
-			case 'del':
-				Rss::rssDelete();
-				break;
+		case 'del':
+			Rss::rssDelete();
+			break;
 
-			case 'edit':
-				$tpl_dir   = BASE_DIR . '/modules/rss/templates/';
-				$lang_file = BASE_DIR . '/modules/rss/lang/' . DEFAULT_LANGUAGE . '.txt';
-				Rss::rssEdit($tpl_dir, $lang_file);
-				break;
+		case 'edit':
+			$tpl_dir   = BASE_DIR . '/modules/rss/templates/';
+			$lang_file = BASE_DIR . '/modules/rss/lang/' . $_SESSION['user_language'] . '.txt';
+			Rss::rssEdit($tpl_dir, $lang_file);
+			break;
 
-			case 'saveedit':
-				Rss::rssSave();
-				break;
-		}
+		case 'saveedit':
+			Rss::rssSave();
+			break;
 	}
 }
 

@@ -1,9 +1,4 @@
-
-<!-- admin_gallery_edit.tpl -->
-{strip}
-
 <script language="Javascript" type="text/javascript" src="editarea/edit_area_full.js"></script>
-<script language="Javascript" type="text/javascript" src="editarea/queries.js"></script>
 
 <div class="pageHeaderTitle" style="padding-top:7px">
 	<div class="h_module">&nbsp;</div>
@@ -238,6 +233,3 @@
 		alert("{#FolderExists#}");
 	</script>
 {/if}
-
-{/strip}
-<!-- /admin_gallery_edit.tpl -->

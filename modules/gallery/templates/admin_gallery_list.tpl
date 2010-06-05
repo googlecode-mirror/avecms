@@ -1,6 +1,3 @@
-<!-- admin_gallery_list.tpl -->
-{strip}
-
 <div class="pageHeaderTitle" style="padding-top:7px">
 	<div class="h_module">&nbsp;</div>
 	<div class="HeaderTitle">
@@ -40,8 +37,8 @@
 					<td>
 						<a title="{#UserProfile#}" href="index.php?do=user&action=edit&id={$gallery.gallery_author}&cp={$sess}">{$gallery.username|escape}</a>
 					</td>
-					<td>{$gallery.gallery_folder}</td>
-					<td class="time">{$gallery.gallery_date|date_format:$TIME_FORMAT|pretty_date:$DEF_LANGUAGE}</td>
+					<td>{$gallery.gallery_folder|escape}</td>
+					<td class="time">{$gallery.gallery_date|date_format:$TIME_FORMAT|pretty_date}</td>
 					<td width="5%">
 						<div align="center">
 							{if $gallery.image_count > 0}
@@ -119,6 +116,3 @@
 		alert("{#EmptyGalleryTitle#}");
 	</script>
 {/if}
-
-{/strip}
-<!-- /admin_gallery_list.tpl -->

@@ -36,12 +36,13 @@ class Guest_Module
 				if ($num > $limit)
 				{
 					$seiten = ceil($num / $limit);
-					$AVE_Template->assign('pnav', pagenav($seiten, 'page',
-						" <a class=\"page_navigation\" href=\"index.php?do=modules&action=modedit&mod=guestbook&moduleaction=1&cp=" . $sess
-							. "&pp=" . $limit . "&sort=" . $_REQUEST['sort'] . "&page={s}\">{t}</a> "));
+					$page_nav = " <a class=\"page_navigation\" href=\"index.php?do=modules&action=modedit&mod=guestbook&moduleaction=1&cp=" . SESSION
+						. "&pp=" . $limit . "&sort=" . $_REQUEST['sort'] . "&page={s}\">{t}</a> ";
+					$page_nav = get_pagination($seiten, 'page', $page_nav);
+					$AVE_Template->assign('pnav', $page_nav);
 				}
 
-				$start = prepage() * $limit - $limit;
+				$start = get_current_page() * $limit - $limit;
 
 				//Получаем сообщения которые будут выведены в зависимости от страницы
 				$sql = $AVE_DB->Query("

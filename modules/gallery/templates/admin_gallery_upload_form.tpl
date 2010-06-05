@@ -1,7 +1,3 @@
-
-<!-- admin_gallery_upload_form.tpl -->
-{strip}
-
 <div class="pageHeaderTitle" style="padding-top:7px">
 	<div class="h_module">&nbsp;</div>
 	<div class="HeaderTitle">
@@ -9,7 +5,7 @@
 	</div>
 	<div class="HeaderText">
 		{#UploadInfo#}
-		<strong>{foreach from=$allowed item=a}{$a} {/foreach}</strong>
+		<strong>{foreach from=$allowed item=a}{$a|escape} {/foreach}</strong>
 	</div>
 </div>
 <div class="infobox">
@@ -17,7 +13,7 @@
 </div><br />
 
 {if $not_writeable == 1}
-	<div class="infobox">{#ErrorFolderStart#}{$upload_dir}{#ErrorFolderEnd#}</div>
+	<div class="infobox">{#ErrorFolderStart#}{$upload_dir|escape}{#ErrorFolderEnd#}</div>
 {else}
 	<form method="post" action="{$formaction}" enctype="multipart/form-data">
 		<table width="100%" border="0" cellpadding="8" cellspacing="1" class="tableborder">
@@ -76,6 +72,3 @@
 		</table><br />
 	</form>
 {/if}
-
-{/strip}
-<!-- /admin_gallery_upload_form.tpl -->

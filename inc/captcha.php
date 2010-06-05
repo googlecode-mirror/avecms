@@ -6,7 +6,7 @@ define('BASE_DIR', $base_dir[0]);
 require(BASE_DIR . '/inc/config.php');
 require(BASE_DIR . '/inc/db.config.php');
 
-if ($config['session_save_handler'])
+if (SESSION_SAVE_HANDLER)
 {
     require(BASE_DIR . '/functions/func.session.php');
 }

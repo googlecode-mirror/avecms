@@ -1,7 +1,3 @@
-
-<!-- result.tpl -->
-{strip}
-
 <h2 id="page-heading">{$poll->title}</h2>
 <div class="tablebox">
 <table width="100%" border="0" cellpadding="5" cellspacing="1" bgcolor="#CCCCCC">
@@ -48,12 +44,12 @@
 
 	<tr class="odd">
 		<td>{#POLL_STARTED#}</td>
-		<td>{$poll->start|date_format:$TIME_FORMAT|pretty_date:$DEF_LANGUAGE}</td>
+		<td>{$poll->start|date_format:$TIME_FORMAT|pretty_date}</td>
 	</tr>
 
 	<tr >
 		<td>{#POLL_ENDED#}</td>
-		<td>{$poll->ende|date_format:$TIME_FORMAT|pretty_date:$DEF_LANGUAGE}</td>
+		<td>{$poll->ende|date_format:$TIME_FORMAT|pretty_date}</td>
 	</tr>
 
 	<tr class="odd">
@@ -81,7 +77,7 @@
 		<tr>
 			<td class="mod_comment_header">
 				<div class="mod_comment_author">
-					<a name="{$c.Id}"></a>{#POLL_ADDED#}  <a href="#">{$item->lastname} {$item->firstname}</a> {$item->ctime|date_format:$TIME_FORMAT|pretty_date:$DEF_LANGUAGE}
+					<a name="{$c.Id}"></a>{#POLL_ADDED#}  <a href="#">{$item->lastname} {$item->firstname}</a> {$item->ctime|date_format:$TIME_FORMAT|pretty_date}
 				</div>
 			</td>
 		</tr>
@@ -93,5 +89,3 @@
 	</table>
 {/foreach}
 {/if}
-{/strip}
-<!-- /result.tpl -->

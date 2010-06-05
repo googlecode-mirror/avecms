@@ -50,7 +50,6 @@ function redirTo(path,fid,theme)
 </script>
 {/literal}
 {/if}
-{strip}
 <table width="100%" border="0" cellpadding="15" cellspacing="1">
   <tr>
     <td class="forum_info_meta" height="270" valign="top" align="center">
@@ -134,7 +133,6 @@ function redirTo(path,fid,theme)
 	</td>
   </tr>
 </table>
-{/strip}
 <p align="center">
 
 </p>

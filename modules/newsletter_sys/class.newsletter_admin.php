@@ -11,7 +11,7 @@ class systemNewsletter
 
 		if (!empty($_REQUEST['q']))
 		{
-			$query = ereg_replace('([^ +_A-Za-zР-пр-џ0-9-])', '', $_REQUEST['q']);
+			$query = preg_replace('/([^ +_A-Za-zР-пр-џ0-9-])/', '', $_REQUEST['q']);
 			$db_extra = " WHERE title LIKE '%{$query}%' OR message LIKE '%{$query}%' ";
 			$nav_string = "&q={$query}";
 		}
@@ -26,7 +26,7 @@ class systemNewsletter
 
 		$limit = 20;
 		@$pages = @ceil($num / $limit);
-		$start = prepage() * $limit - $limit;
+		$start = get_current_page() * $limit - $limit;
 
 		$items = array();
 		$sql = $AVE_DB->Query("
@@ -54,10 +54,10 @@ class systemNewsletter
 			array_push($items, $row);
 		}
 
-		if ($num >= $limit)
+		if ($num > $limit)
 		{
-			$page_nav = pagenav($pages, 'page',
-				" <a class=\"pnav\" href=\"index.php?do=modules&action=modedit&mod=newsletter_sys&moduleaction=1" . $nav_string . "&page={s}&cp=" . SESSION . "\">{t}</a> ");
+			$page_nav = " <a class=\"pnav\" href=\"index.php?do=modules&action=modedit&module=newsletter_sys&moduleaction=1" . $nav_string . "&page={s}&cp=" . SESSION . "\">{t}</a> ";
+			$page_nav = get_pagination($pages, 'page', $page_nav);
 			$AVE_Template->assign('page_nav', $page_nav);
 		}
 
@@ -77,7 +77,7 @@ class systemNewsletter
 				WHERE id = '". $id ."'
 			");
 		}
-		header("Location:index.php?do=modules&action=modedit&mod=newsletter_sys&moduleaction=1&cp=" . SESSION);
+		header("Location:index.php?do=modules&action=modedit&module=newsletter_sys&moduleaction=1&cp=" . SESSION);
 		exit;
 	}
 
@@ -94,7 +94,7 @@ class systemNewsletter
 
 		if ($format=='html')
 		{
-			$AVE_Template->assign('Editor', $this->fck(stripslashes($row->message),'550','text','cpengine'));
+			$AVE_Template->assign('Editor', $this->fck($row->message,'550','text','cpengine'));
 		}
 		$AVE_Template->assign('row', $row);
 		$AVE_Template->assign('content', $AVE_Template->fetch($tpl_dir . 'showtext.tpl'));
@@ -102,23 +102,20 @@ class systemNewsletter
 
 	function sendNew($tpl_dir)
 	{
-		global $AVE_DB, $AVE_Template, $AVE_Globals, $AVE_User, $config_vars;
-
-		$AVE_User = new AVE_User;
-		$AVE_Globals = new AVE_Globals;
+		global $AVE_DB, $AVE_Template, $AVE_User;
 
 		$tpl_out = "new.tpl";
 		$attach = "";
 
-		$email_sender = $AVE_Globals->mainSettings("mail_from");
-		$from_name = $AVE_Globals->mainSettings("mail_from_name");
+		$email_sender = get_settings("mail_from");
+		$from_name = get_settings("mail_from_name");
 
 		$AVE_Template->assign('from', $from_name);
 		$AVE_Template->assign('frommail', $email_sender);
 		$AVE_Template->assign('Editor', $this->fck(
-			'<span style="font-family: Verdana;">' . $config_vars['SNL_NEW_TEMPLATE'] . '<br /><br />' . str_replace("\n",
+			'<span style="font-family: Verdana;">' . $AVE_Template->get_config_vars('SNL_NEW_TEMPLATE') . '<br /><br />' . str_replace("\n",
 			"<br />",
-			$AVE_Globals->mainSettings("mail_signature")) . '</span>',
+			get_settings("mail_signature")) . '</span>',
 			'300',
 			'text',
 			'cpengine')
@@ -134,61 +131,60 @@ class systemNewsletter
 
 					if (isset($_REQUEST['g']))
 					{
-						$g = $_REQUEST['g'];
-						$steps = $_SESSION['steps'];
-						$gruppen_r = explode(',', $_REQUEST['g']);
-						$gruppen = implode(' OR Benutzergruppe = ', $gruppen_r);
-						$nl_text = $_SESSION['nl_text'];
-						$nl_titel = $_SESSION['nl_titel'];
-						$attach = @implode(';', $_SESSION['attach']);
-						$nl_from = $_SESSION['nl_from'];
-						$nl_from_mail = $_SESSION['nl_from_mail'];
-						$del_attach = $_SESSION['del_attach'];
+						$g                = $_REQUEST['g'];
+						$steps            = $_SESSION['steps'];
+						$gruppen_r        = explode(',', $_REQUEST['g']);
+						$gruppen          = implode(' OR Benutzergruppe = ', $gruppen_r);
+						$nl_text          = $_SESSION['nl_text'];
+						$nl_titel         = $_SESSION['nl_titel'];
+						$attach           = @implode(';', $_SESSION['attach']);
+						$nl_from          = $_SESSION['nl_from'];
+						$nl_from_mail     = $_SESSION['nl_from_mail'];
+						$del_attach       = $_SESSION['del_attach'];
 						$_REQUEST['type'] = $_SESSION['nl_format'];
-						$gruppen_db = $_SESSION['gruppen_db'];
+						$gruppen_db       = $_SESSION['gruppen_db'];
 					}
 					else
 					{
-						$uri = substr(getenv('PHP_SELF'), 0, -15);
-						$url = BASE_URL . $uri;
-						$attach = $this->uploadFile();
-						$g = implode(',', $_REQUEST['usergroups']);
-						$gruppen = implode(' OR Benutzergruppe = ', $_REQUEST['usergroups']);
-						$gruppen_db = implode(';', $_REQUEST['usergroups']);
-						$steps = $_REQUEST['steps'];
-						$del_attach = $_REQUEST['delattach'];
-						$_SESSION['nl_text'] = ($_REQUEST['type'] == 'text') ? $_REQUEST['text_norm'] : str_replace('src="' . $uri, 'src="' . $url, stripslashes($_REQUEST['text']));
-						$_SESSION['nl_format'] = ($_REQUEST['type'] == 'text') ? 'text' : 'html';
-						$_SESSION['nl_titel'] = $_REQUEST['title'];
-						$_SESSION['attach'] = $attach;
-						$_SESSION['nl_from'] = $_REQUEST['from'];
-						$_SESSION['nl_from_mail'] = $_REQUEST['frommail'];
-						$_SESSION['steps'] = $steps;
-						$_SESSION['del_attach'] = $del_attach;
-						$_SESSION['gruppen_db'] = $gruppen_db;
-						$nl_text = $_SESSION['nl_text'];
-						$nl_titel = $_SESSION['nl_titel'];
-						$nl_from = $_SESSION['nl_from'];
-						$nl_from_mail = $_SESSION['nl_from_mail'];
+						$uri          = substr(getenv('PHP_SELF'), 0, -15);
+						$url          = HOST . $uri;
+						$attach       = $this->uploadFile();
+						$g            = implode(',', $_REQUEST['usergroups']);
+						$gruppen      = implode(' OR Benutzergruppe = ', $_REQUEST['usergroups']);
+						$gruppen_db   = implode(';', $_REQUEST['usergroups']);
+						$steps        = $_REQUEST['steps'];
+						$del_attach   = $_REQUEST['delattach'];
+						$nl_text      = ($_REQUEST['type'] == 'text') ? $_REQUEST['text_norm'] : str_replace('src="' . $uri, 'src="' . $url, $_REQUEST['text']);
+						$nl_titel     = $_REQUEST['title'];
+						$nl_from      = $_REQUEST['from'];
+						$nl_from_mail = $_REQUEST['frommail'];
+
+						$_SESSION['nl_text']      = $nl_text;
+						$_SESSION['nl_format']    = ($_REQUEST['type'] == 'text') ? 'text' : 'html';
+						$_SESSION['nl_titel']     = $nl_titel;
+						$_SESSION['attach']       = $attach;
+						$_SESSION['nl_from']      = $nl_from;
+						$_SESSION['nl_from_mail'] = $nl_from_mail;
+						$_SESSION['steps']        = $steps;
+						$_SESSION['del_attach']   = $del_attach;
+						$_SESSION['gruppen_db']   = $gruppen_db;
 					}
 
 					if (!isset($_REQUEST['countall']))
 					{
-						$sql = $AVE_DB->Query("
+						$c_all = $AVE_DB->Query("
 							SELECT Benutzergruppe
 							FROM " . PREFIX . "_users
 							WHERE Benutzergruppe = '" . $gruppen . "'
-						");
-						$c_all = $sql->NumRows();
+						")->NumRows();
 					}
 
-					$sql = $AVE_DB->Query("
+					$c = $AVE_DB->Query("
 						SELECT Benutzergruppe
 						FROM " . PREFIX . "_users
 						WHERE Benutzergruppe = '" . $gruppen . "'
 						LIMIT " . $count . "," . $steps
-					);
-					$c = $sql->NumRows();
+					)->NumRows();
 
 
 					if ($c >= 1)
@@ -207,9 +203,9 @@ class systemNewsletter
 							$nl_text = $_SESSION['nl_text'];
 							$html_mode = ($_REQUEST['type'] == 'html' || $_REQUEST['html'] == 1) ? '1' : '';
 							$nl_text = str_replace('%%USER%%', $row->Nachname . ' ' . $row->Vorname, $nl_text);
-							$AVE_Globals->cp_mail(
+							send_mail(
 								$row->Email,
-								stripslashes($nl_text),
+								$nl_text,
 								$nl_titel,
 								$nl_from_mail,
 								$nl_from,
@@ -227,7 +223,7 @@ class systemNewsletter
 
 						$AVE_Template->assign('prozent', $prozent);
 						$AVE_Template->assign('dotcount', str_repeat('.',$count));
-						echo '<meta http-equiv="Refresh" content="0;URL=index.php?do=modules&action=modedit&mod=newsletter_sys&moduleaction=new&cp=', SESSION, '&sub=send&pop=1&count=', $count, '&g=', $g, '&countall=', $ca, (($_REQUEST['type'] == 'html') ? '' : '&type=html' ), '" />';
+						echo '<meta http-equiv="Refresh" content="0;URL=index.php?do=modules&action=modedit&module=newsletter_sys&moduleaction=new&cp=', SESSION, '&sub=send&pop=1&count=', $count, '&g=', $g, '&countall=', $ca, (($_REQUEST['type'] == 'html') ? '' : '&type=html' ), '" />';
 						$tpl_out = "progress.tpl";
 					}
 					else
@@ -240,8 +236,8 @@ class systemNewsletter
 								sender    = '" . $nl_from . "',
 								send_date = '" . time() . "',
 								format    = '" . (($_REQUEST['type'] == 'html' || $_REQUEST['html'] == 1) ? 'html' : 'text') . "',
-								title     = '" . stripslashes($nl_titel) . "',
-								message   = '" . stripslashes($nl_text) . "',
+								title     = '" . $nl_titel . "',
+								message   = '" . $nl_text . "',
 								groups    = '" . $gruppen_db. "',
 								attach    = '" . $attach . "'
 						");
@@ -260,7 +256,7 @@ class systemNewsletter
 					break;
 			}
 		}
-		$AVE_Template->assign('usergroups', $AVE_User->listAllGroups(2));
+		$AVE_Template->assign('usergroups', $AVE_User->userGroupListGet(2));
 		$AVE_Template->assign('content', $AVE_Template->fetch($tpl_dir . $tpl_out));
 	}
 
@@ -324,8 +320,8 @@ class systemNewsletter
 	{
 		if (!file_exists(BASE_DIR . '/attachments/' . $file))
 		{
-			$page = (isset($_REQUEST['page'])) ? '&page=' . $_REQUEST['page'] : '';
-			header("Location:index.php?do=modules&action=modedit&mod=newsletter_sys&moduleaction=1" . $page . "&file_not_found=1&cp=" . SESSION);
+			$page = !empty($_REQUEST['page']) ? '&page=' . $_REQUEST['page'] : '';
+			header("Location:index.php?do=modules&action=modedit&module=newsletter_sys&moduleaction=1" . $page . "&file_not_found=1&cp=" . SESSION);
 			exit;
 		}
 		@ob_start();

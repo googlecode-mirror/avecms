@@ -1,212 +1,229 @@
 <?php
-class Roadmap {
+
+class Roadmap
+{
 
 	var $_limit = 15;
 
-	function list_projects($tpl_dir) {
+	/**
+	 * Административная часть (проекты)
+	 */
+
+	function roadmapProjectList($tpl_dir)
+	{
+		global $AVE_DB, $AVE_Template;
+
 		$limit = $this->_limit;
-		$sql = $GLOBALS['AVE_DB']->Query("SELECT id
-			FROM " . PREFIX . "_modul_roadmap
-		");
-		$num = $sql->NumRows();
+		$num = $AVE_DB->Query("SELECT COUNT(*) FROM " . PREFIX . "_modul_roadmap")->GetCell();
 
 		$pages = ceil($num / $limit);
-		$start = prepage() * $limit - $limit;
+		$start = get_current_page() * $limit - $limit;
 
 		$items = array();
-		$sql = $GLOBALS['AVE_DB']->Query("SELECT *
+		$sql = $AVE_DB->Query("
+			SELECT *
 			FROM " . PREFIX . "_modul_roadmap
 			ORDER BY position
 			LIMIT " . $start . "," . $limit
 		);
-		while($row = $sql->FetchRow()) {
-			$sql_2 = $GLOBALS['AVE_DB']->Query("SELECT id
+		while ($row = $sql->FetchRow())
+		{
+			$row->open_tasks = $AVE_DB->Query("
+				SELECT COUNT(*)
 				FROM " . PREFIX . "_modul_roadmap_tasks
 				WHERE pid = '" . $row->id . "'
 				AND task_status = 0
-			");
-			$row->open_tasks = $sql_2->NumRows();
+			")->GetCell();
 
-			$sql_2 = $GLOBALS['AVE_DB']->Query("SELECT id
+			$row->closed_tasks = $AVE_DB->Query("
+				SELECT COUNT(*)
 				FROM " . PREFIX . "_modul_roadmap_tasks
 				WHERE pid = '" . $row->id . "'
 				AND task_status = 1
-			");
-			$row->closed_tasks = $sql_2->NumRows();
+			")->GetCell();
 
 			array_push($items, $row);
 		}
 
-		if($num > $limit)
+		if ($num > $limit)
 		{
-			$page_nav = pagenav($pages, 'page',
-				" <a class=\"pnav\" href=\"index.php?do=modules&action=modedit&mod=roadmap&moduleaction=1&cp=" . SESSION . "&page={s}\">{t}</a> ");
-			$GLOBALS['AVE_Template']->assign('page_nav', $page_nav);
+			$page_nav = " <a class=\"pnav\" href=\"index.php?do=modules&action=modedit&mod=roadmap&moduleaction=1&cp=" . SESSION . "&page={s}\">{t}</a> ";
+			$page_nav = get_pagination($pages, 'page', $page_nav);
+			$AVE_Template->assign('page_nav', $page_nav);
 		}
 
-		$GLOBALS['AVE_Template']->assign('items', $items);
-		$GLOBALS['AVE_Template']->assign('content', $GLOBALS['AVE_Template']->fetch($tpl_dir . 'admin_projects.tpl'));
+		$AVE_Template->assign('items', $items);
+		$AVE_Template->assign('content', $AVE_Template->fetch($tpl_dir . 'admin_projects.tpl'));
 	}
 
-	function edit_project($tpl_dir,$id) {
-		switch($_REQUEST['sub']) {
+	function roadmapProjectNew($tpl_dir)
+	{
+		global $AVE_DB, $AVE_Template;
+
+		switch ($_REQUEST['sub'])
+		{
 			case '':
-				$GLOBALS['AVE_Template']->assign('formaction', 'index.php?do=modules&action=modedit&mod=roadmap&moduleaction=edit_project&id=$id&sub=save&cp=' . SESSION . '&pop=1');
+				$AVE_Template->assign('formaction', 'index.php?do=modules&action=modedit&mod=roadmap&moduleaction=new_project&sub=save&cp=' . SESSION . '&pop=1');
+				$AVE_Template->assign('content', $AVE_Template->fetch($tpl_dir . 'admin_project_form.tpl'));
+				break;
 
-				$sql = $GLOBALS['AVE_DB']->Query("SELECT *
-					FROM " . PREFIX . "_modul_roadmap
-					WHERE id = '" . $id . "'
+			case 'save':
+				$AVE_DB->Query("
+					INSERT
+					INTO " . PREFIX . "_modul_roadmap
+					SET
+						id             = '',
+						project_name   = '" . $_REQUEST['project_name'] . "',
+						project_desc   = '" . $_REQUEST['project_desc'] . "',
+						project_status = '" . $_REQUEST['project_status'] . "',
+						position       = '" . $_REQUEST['position'] . "'
 				");
-				$row = $sql->FetchRow();
+				$project_id = $AVE_DB->InsertId();
 
-				$GLOBALS['AVE_Template']->assign('item', $row);
-				$GLOBALS['AVE_Template']->assign('content', $GLOBALS['AVE_Template']->fetch($tpl_dir . 'admin_project_form.tpl'));
+				reportLog($_SESSION['user_name'] . ' - добавил новый проект ' . $project_id, 2, 2);
+
+				echo '<script>window.opener.location.reload(); self.close();</script>';
+				break;
+		}
+	}
+
+	function roadmapProjectEdit($tpl_dir, $project_id)
+	{
+		global $AVE_DB, $AVE_Template;
+
+		$project_id = (int)$project_id;
+		$subaction = isset($_REQUEST['sub']) ? $_REQUEST['sub'] : '';
+
+		switch ($subaction)
+		{
+			case '':
+				$AVE_Template->assign('formaction', 'index.php?do=modules&action=modedit&mod=roadmap&moduleaction=edit_project&id={$project_id}&sub=save&cp=' . SESSION . '&pop=1');
+
+				$row = $AVE_DB->Query("
+					SELECT *
+					FROM " . PREFIX . "_modul_roadmap
+					WHERE id = '" . $project_id . "'
+				")->FetchRow();
+
+				$AVE_Template->assign('item', $row);
+				$AVE_Template->assign('content', $AVE_Template->fetch($tpl_dir . 'admin_project_form.tpl'));
 
 				break;
 
 			case 'save':
-				$GLOBALS['AVE_DB']->Query("
+				$AVE_DB->Query("
 					UPDATE " . PREFIX . "_modul_roadmap
 					SET
-						project_desc = '" . $_REQUEST['project_desc']. "',
-						project_name = '" . $_REQUEST['project_name'] . "',
-						position = '" . $_REQUEST['position'] . "',
+						project_desc   = '" . $_REQUEST['project_desc']. "',
+						project_name   = '" . $_REQUEST['project_name'] . "',
+						position       = '" . $_REQUEST['position'] . "',
 						project_status = '" . $_REQUEST['project_status'] . "'
 					WHERE
-						id = '" . $id . "'
+						id = '" . $project_id . "'
 				");
 
-				reportLog($_SESSION['user_name'] . ' - отредактировал проект', 2, 2);
+				reportLog($_SESSION['user_name'] . ' - отредактировал проект ' . $project_id, 2, 2);
 
 				echo '<script>window.opener.location.reload(); self.close();</script>';
 				break;
 		}
 	}
 
-	function new_project($tpl_dir) {
+	function roadmapProjectDelete($project_id)
+	{
+		global $AVE_DB;
 
-		switch($_REQUEST['sub']) {
-			case '':
-				$GLOBALS['AVE_Template']->assign('formaction', 'index.php?do=modules&action=modedit&mod=roadmap&moduleaction=new_project&sub=save&cp=' . SESSION . '&pop=1');
-				$GLOBALS['AVE_Template']->assign('content', $GLOBALS['AVE_Template']->fetch($tpl_dir . 'admin_project_form.tpl'));
-				break;
+		$AVE_DB->Query("DELETE FROM " . PREFIX . "_modul_roadmap WHERE id = '" . $project_id . "'");
 
-			case 'save':
-				$GLOBALS['AVE_DB']->Query("
-					INSERT INTO " . PREFIX . "_modul_roadmap
-					(
-						id,
-						project_name,
-						project_desc,
-						project_status,
-						position
-					) VALUES (
-						'',
-						'" . $_REQUEST['project_name'] . "',
-						'" . $_REQUEST['project_desc'] . "',
-						'" . $_REQUEST['project_status'] . "',
-						'" . $_REQUEST['position'] . "'
-					)
-				");
-
-				reportLog($_SESSION['user_name'] . ' - добавил новый проект', 2, 2);
-
-				echo '<script>window.opener.location.reload(); self.close();</script>';
-				break;
-		}
-	}
-
-	function del_project($id) {
-		$GLOBALS['AVE_DB']->Query("DELETE FROM " . PREFIX . "_modul_roadmap WHERE id = '" . $id . "'");
-
-		reportLog($_SESSION['user_name'] . ' - удалил проект', 2, 2);
+		reportLog($_SESSION['user_name'] . ' - удалил проект ' . $project_id, 2, 2);
 
 		header('Location:index.php?do=modules&action=modedit&mod=roadmap&moduleaction=1&cp=' . SESSION);
 		exit;
 	}
 
-	function show_tasks($tpl_dir, $id, $closed) {
+	/**
+	 * Административная часть (задачи)
+	 */
+
+	function roadmapTaskList($tpl_dir, $project_id, $status)
+	{
+		global $AVE_DB, $AVE_Template;
+
+		$project_id = (int)$project_id;
+		$status = (int)$status;
+
 		$limit = $this->_limit;
-		$sql = $GLOBALS['AVE_DB']->Query("SELECT id
+		$num = $AVE_DB->Query("
+			SELECT COUNT(*)
 			FROM " . PREFIX . "_modul_roadmap_tasks
-			WHERE pid = '" . $id . "'
-			AND task_status = '" . $closed . "'
-		");
-		$num = $sql->NumRows();
+			WHERE pid = '" . $project_id . "'
+			AND task_status = '" . $status . "'
+		")->GetCell();
 
 		$pages = ceil($num / $limit);
-		$start = prepage() * $limit - $limit;
+		$start = get_current_page() * $limit - $limit;
 
 		$items = array();
-		$sql = $GLOBALS['AVE_DB']->Query("SELECT *
+		$sql = $AVE_DB->Query("
+			SELECT *
 			FROM " . PREFIX . "_modul_roadmap_tasks
-			WHERE pid = '" . $id . "'
-			AND task_status = '" . $closed . "'
+			WHERE pid = '" . $project_id . "'
+			AND task_status = '" . $status . "'
 			ORDER BY priority
 			LIMIT " . $start . "," . $limit
 		);
+		while ($row = $sql->FetchRow())
+		{
+			$row->username = get_username_by_id($row->uid);
 
-		while($row = $sql->FetchRow()) {
-			$sql_2 = $GLOBALS['AVE_DB']->Query("SELECT
-					Vorname,
-					Nachname
-				FROM " . PREFIX . "_users
-				WHERE Id = '" . $row->uid . "'
-			");
-			$row_2 = $sql_2->FetchRow();
-
-			$row->lastname  = $row_2->Nachname;
-			$row->firstname = $row_2->Vorname;
-
-			switch($row->priority) {
-				case'1': $row->priority = $GLOBALS['AVE_Template']->get_config_vars('ROADMAP_TASK_HIGHEST'); break;
-				case'2': $row->priority = $GLOBALS['AVE_Template']->get_config_vars('ROADMAP_TASK_HIGH'); break;
-				case'3': $row->priority = $GLOBALS['AVE_Template']->get_config_vars('ROADMAP_TASK_NORMAL'); break;
-				case'4': $row->priority = $GLOBALS['AVE_Template']->get_config_vars('ROADMAP_TASK_LOW'); break;
-				case'5': $row->priority = $GLOBALS['AVE_Template']->get_config_vars('ROADMAP_TASK_LOWEST'); break;
+			switch ($row->priority)
+			{
+				case'1': $row->priority = $AVE_Template->get_config_vars('ROADMAP_TASK_HIGHEST'); break;
+				case'2': $row->priority = $AVE_Template->get_config_vars('ROADMAP_TASK_HIGH'); break;
+				case'3': $row->priority = $AVE_Template->get_config_vars('ROADMAP_TASK_NORMAL'); break;
+				case'4': $row->priority = $AVE_Template->get_config_vars('ROADMAP_TASK_LOW'); break;
+				case'5': $row->priority = $AVE_Template->get_config_vars('ROADMAP_TASK_LOWEST'); break;
 			}
 
 			array_push($items, $row);
 		}
 
-		if($num > $limit)
+		if ($num > $limit)
 		{
-			$page_nav = pagenav($pages, 'page',
-				" <a class=\"pnav\" href=\"index.php?do=modules&action=modedit&mod=roadmap&moduleaction=show_tasks&closed=$closed&id=$id&cp=" . SESSION . "&page={s}\">{t}</a> ");
-			$GLOBALS['AVE_Template']->assign('page_nav', $page_nav);
+			$page_nav = " <a class=\"pnav\" href=\"index.php?do=modules&action=modedit&mod=roadmap&moduleaction=show_tasks&closed={$status}&id={$project_id}&cp=" . SESSION . "&page={s}\">{t}</a> ";
+			$page_nav = get_pagination($pages, 'page', $page_nav);
+			$AVE_Template->assign('page_nav', $page_nav);
 		}
 
-		$GLOBALS['AVE_Template']->assign('items', $items);
-		$GLOBALS['AVE_Template']->assign('content', $GLOBALS['AVE_Template']->fetch($tpl_dir . 'admin_tasks.tpl'));
+		$AVE_Template->assign('items', $items);
+		$AVE_Template->assign('content', $AVE_Template->fetch($tpl_dir . 'admin_tasks.tpl'));
 	}
 
-	function new_task($tpl_dir, $id) {
-		switch($_REQUEST['sub']) {
+	function roadmapTaskNew($tpl_dir, $project_id)
+	{
+		global $AVE_DB, $AVE_Template;
+
+		$project_id = (int)$project_id;
+
+		switch ($_REQUEST['sub'])
+		{
 			case '':
-				$GLOBALS['AVE_Template']->assign('formaction', 'index.php?do=modules&action=modedit&mod=roadmap&moduleaction=new_task&id=$id&sub=save&cp=' . SESSION . '&pop=1');
-				$GLOBALS['AVE_Template']->assign('content', $GLOBALS['AVE_Template']->fetch($tpl_dir . 'admin_task_form.tpl'));
+				$AVE_Template->assign('formaction', 'index.php?do=modules&action=modedit&mod=roadmap&moduleaction=new_task&id={$project_id}&sub=save&cp=' . SESSION . '&pop=1');
+				$AVE_Template->assign('content', $AVE_Template->fetch($tpl_dir . 'admin_task_form.tpl'));
 				break;
 
 			case 'save':
-				$GLOBALS['AVE_DB']->Query("
-					INSERT INTO " . PREFIX . "_modul_roadmap_tasks
-					(
-						id,
-						pid,
-						task_desc,
-						date_create,
-						task_status,
-						uid,
-						priority
-					) VALUES (
-						'',
-						'" . $_REQUEST['id'] . "',
-						'" . $_REQUEST['task_desc'] . "',
-						'" . time() . "',
-						'" .$_REQUEST['task_status']. "',
-						'" . $_SESSION['user_id'] . "',
-						'" . $_REQUEST['priority'] . "'
-					)
+				$AVE_DB->Query("
+					INSERT
+					INTO " . PREFIX . "_modul_roadmap_tasks
+					SET
+						id          = '',
+						pid         = '" . $project_id . "',
+						task_desc   = '" . $_REQUEST['task_desc'] . "',
+						date_create = '" . time() . "',
+						task_status = '" . $_REQUEST['task_status'] . "',
+						uid         = '" . $_SESSION['user_id'] . "',
+						priority    = '" . $_REQUEST['priority'] . "'
 				");
 
 				reportLog($_SESSION['user_name'] . ' - добавил новую задачу', '2', '2');
@@ -216,98 +233,113 @@ class Roadmap {
 		}
 	}
 
-	function edit_task($tpl_dir, $id) {
-		switch($_REQUEST['sub']) {
+	function roadmapTaskEdit($tpl_dir, $task_id)
+	{
+		global $AVE_DB, $AVE_Template;
+
+		$task_id = (int)$task_id;
+
+		switch ($_REQUEST['sub'])
+		{
 			case '':
-				$GLOBALS['AVE_Template']->assign('formaction', 'index.php?do=modules&action=modedit&mod=roadmap&moduleaction=edit_task&id=$id&sub=save&cp=' . SESSION . '&pop=1');
+				$AVE_Template->assign('formaction', 'index.php?do=modules&action=modedit&mod=roadmap&moduleaction=edit_task&id={$task_id}&sub=save&cp=' . SESSION . '&pop=1');
 
-				$sql = $GLOBALS['AVE_DB']->Query("SELECT *
+				$row = $AVE_DB->Query("
+					SELECT *
 					FROM " . PREFIX . "_modul_roadmap_tasks
-					WHERE id = '" . $id . "'
-				");
-				$row = $sql->FetchRow();
+					WHERE id = '" . $task_id . "'
+				")->FetchRow();
 
-				$sql = $GLOBALS['AVE_DB']->Query("SELECT
-						Vorname,
-						Nachname
-					FROM " . PREFIX . "_users
-					WHERE Id = '" . $row->uid . "'
-				");
-				$row_2 = $sql->FetchRow();
+				$row->username = get_username_by_id($row->uid);
 
-				$row->lastname = $row_2->Nachname;
-				$row->firstname = $row_2->Vorname;
+				$AVE_Template->assign('item', $row);
 
-				$GLOBALS['AVE_Template']->assign('item', $row);
-				$GLOBALS['AVE_Template']->assign('content', $GLOBALS['AVE_Template']->fetch($tpl_dir . 'admin_task_form.tpl'));
-
+				$AVE_Template->assign('content', $AVE_Template->fetch($tpl_dir . 'admin_task_form.tpl'));
 				break;
 
 			case 'save':
-
-				$GLOBALS['AVE_DB']->Query("
+				$AVE_DB->Query("
 					UPDATE " . PREFIX . "_modul_roadmap_tasks
 					SET
-						task_desc = '" . $_REQUEST['task_desc']. "',
+						task_desc   = '" . $_REQUEST['task_desc']. "',
 						task_status = '" . $_REQUEST['task_status'] . "',
-						uid = '" . $_REQUEST['uid'] . "',
+						uid         = '" . $_REQUEST['uid'] . "',
 						date_create = '" . time() . "',
-						priority = '" . $_REQUEST['priority'] . "'
+						priority    = '" . $_REQUEST['priority'] . "'
 					WHERE
-						Id = '" . $id . "'
+						Id = '" . $task_id . "'
 				");
 
-				reportLog($_SESSION['user_name'] . ' - отредактировал задачу', 2, 2);
+				reportLog($_SESSION['user_name'] . ' - отредактировал задачу ' . $task_id, 2, 2);
 
 				echo '<script>window.opener.location.reload(); self.close();</script>';
 				break;
 		}
 	}
 
-	function del_task($id, $pid, $closed) {
-		$GLOBALS['AVE_DB']->Query("DELETE FROM " . PREFIX . "_modul_roadmap_tasks WHERE id = '" . $id . "'");
+	function roadmapTaskDelete($task_id, $project_id, $status)
+	{
+		global $AVE_DB;
 
-		reportLog($_SESSION['user_name'] . ' - удалил задачу', 2, 2);
+		$task_id = (int)$task_id;
+		$project_id = (int)$project_id;
+		$status = (int)$status;
 
-		header('Location:index.php?do=modules&action=modedit&mod=roadmap&moduleaction=show_tasks&id=$pid&closed=$closed&cp=' . SESSION);
+		$AVE_DB->Query("DELETE FROM " . PREFIX . "_modul_roadmap_tasks WHERE id = '" . $task_id . "'");
+
+		reportLog($_SESSION['user_name'] . ' - удалил задачу ' . $task_id, 2, 2);
+
+		header('Location:index.php?do=modules&action=modedit&mod=roadmap&moduleaction=show_tasks&id={$project_id}&closed={$status}&cp=' . SESSION);
 		exit;
 	}
 
-	function show_p($tpl_dir) {
+	/**
+	 * Публичная часть
+	 */
+
+	function roadmapProjectShow($tpl_dir)
+	{
+		global $AVE_DB, $AVE_Template;
+
 		$items = array();
-		$sql = $GLOBALS['AVE_DB']->Query("SELECT *
+		$sql = $AVE_DB->Query("
+			SELECT *
 			FROM " . PREFIX . "_modul_roadmap
 			ORDER BY position
 		");
-		while($row = $sql->FetchRow()) {
-			$sql_2 = $GLOBALS['AVE_DB']->Query("SELECT *
+		while ($row = $sql->FetchRow())
+		{
+			$row_date = $AVE_DB->Query("
+				SELECT *
 				FROM " . PREFIX . "_modul_roadmap_tasks
 				WHERE pid = '" . $row->id . "'
 				ORDER BY date_create DESC
-				LIMIT 0,1
-			");
-			$row_date = $sql_2->FetchRow();
+				LIMIT 1
+			")->FetchRow();
 
 			$row->date = $row_date->date_create;
 
-			$sql_2 = $GLOBALS['AVE_DB']->Query("SELECT id
+			$all_count = $AVE_DB->Query("
+				SELECT COUNT(*)
 				FROM " . PREFIX . "_modul_roadmap_tasks
 				WHERE pid = '" . $row->id . "'
-			");
-			$all_count = $sql_2->NumRows();
+			")->GetCell();
 
-			$sql_2 = $GLOBALS['AVE_DB']->Query("SELECT id
+			$row->num_closed = $AVE_DB->Query("
+				SELECT COUNT(*)
 				FROM " . PREFIX . "_modul_roadmap_tasks
 				WHERE pid = '" . $row->id . "'
 				AND task_status = 1
-			");
-			$row->num_closed = $sql_2->NumRows();
+			")->GetCell();
 
 			$row->num_open = $all_count - $row->num_closed;
 
-			if($row->num_closed != 0) {
+			if ($row->num_closed != 0)
+			{
 				$row->closed = round($row->num_closed * 100 / $all_count);
-			} else {
+			}
+			else
+			{
 				$row->closed = 0;
 			}
 
@@ -315,55 +347,53 @@ class Roadmap {
 			array_push($items,$row);
 		}
 
-		$GLOBALS['AVE_Template']->assign('items', $items);
-		$tpl_out = $GLOBALS['AVE_Template']->fetch($tpl_dir.'projects.tpl');
-		define('MODULE_CONTENT', $tpl_out);
+		$AVE_Template->assign('items', $items);
+
+		define('MODULE_CONTENT', $AVE_Template->fetch($tpl_dir.'projects.tpl'));
 	}
 
-	function show_t($id, $closed, $tpl_dir) {
-		$id     = addslashes($id);
-		$closed = addslashes($closed);
+	function roadmapTaskShow($tpl_dir, $project_id, $status)
+	{
+		global $AVE_DB, $AVE_Template;
+
+		$project_id = (int)$project_id;
+		$status = (int)$status;
 
 		$items = array();
-		$sql = $GLOBALS['AVE_DB']->Query("SELECT *
+		$sql = $AVE_DB->Query("
+			SELECT *
 			FROM " . PREFIX . "_modul_roadmap_tasks
-			WHERE pid = '" . $id . "'
-			AND task_status = '" . $closed . "'
+			WHERE pid = '" . $project_id . "'
+			AND task_status = '" . $status . "'
 			ORDER BY priority
 		");
-		while($row = $sql->FetchRow()) {
-			$sql_2 = $GLOBALS['AVE_DB']->Query("SELECT
-					Vorname,
-					Nachname
-				FROM " . PREFIX . "_users
-				WHERE Id = '" . $row->uid . "'
-			");~
-			$row_2 = $sql_2->FetchRow();
+		while ($row = $sql->FetchRow())
+		{
+			$row->username = get_username_by_id($row->uid);
 
-			$row->lastname  = $row_2->Nachname;
-			$row->firstname = $row_2->Vorname;
-
-			switch($row->priority) {
-				case'1': $row->priority = $GLOBALS['AVE_Template']->get_config_vars('ROADMAP_TASK_HIGHEST'); $row->prio = 1; break;
-				case'2': $row->priority = $GLOBALS['AVE_Template']->get_config_vars('ROADMAP_TASK_HIGH'); $row->prio = 2; break;
-				case'3': $row->priority = $GLOBALS['AVE_Template']->get_config_vars('ROADMAP_TASK_NORMAL'); $row->prio = 3; break;
-				case'4': $row->priority = $GLOBALS['AVE_Template']->get_config_vars('ROADMAP_TASK_LOW'); $row->prio = 4; break;
-				case'5': $row->priority = $GLOBALS['AVE_Template']->get_config_vars('ROADMAP_TASK_LOWEST'); $row->prio = 5; break;
+			switch ($row->priority)
+			{
+				case'1': $row->priority = $AVE_Template->get_config_vars('ROADMAP_TASK_HIGHEST'); $row->prio = 1; break;
+				case'2': $row->priority = $AVE_Template->get_config_vars('ROADMAP_TASK_HIGH'); $row->prio = 2; break;
+				case'3': $row->priority = $AVE_Template->get_config_vars('ROADMAP_TASK_NORMAL'); $row->prio = 3; break;
+				case'4': $row->priority = $AVE_Template->get_config_vars('ROADMAP_TASK_LOW'); $row->prio = 4; break;
+				case'5': $row->priority = $AVE_Template->get_config_vars('ROADMAP_TASK_LOWEST'); $row->prio = 5; break;
 			}
 
-			array_push($items,$row);
+			array_push($items, $row);
 		}
 
-		$sql = $GLOBALS['AVE_DB']->Query("SELECT *
+		$row_r = $AVE_DB->Query("
+			SELECT *
 			FROM " . PREFIX . "_modul_roadmap
-			WHERE id = '" . $id . "'
-		");
-		$row_r = $sql->FetchRow();
+			WHERE id = '" . $project_id . "'
+		")->FetchRow();
 
-		$GLOBALS['AVE_Template']->assign('row', $row_r);
-		$GLOBALS['AVE_Template']->assign('items', $items);
-		$tpl_out = $GLOBALS['AVE_Template']->fetch($tpl_dir.'tasks.tpl');
-		define('MODULE_CONTENT', $tpl_out);
+		$AVE_Template->assign('row', $row_r);
+		$AVE_Template->assign('items', $items);
+
+		define('MODULE_CONTENT', $AVE_Template->fetch($tpl_dir.'tasks.tpl'));
 	}
 }
+
 ?>

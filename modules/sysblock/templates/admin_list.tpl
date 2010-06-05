@@ -1,7 +1,3 @@
-
-<!-- admin_list.tpl -->
-{strip}
-
 <div class="pageHeaderTitle" style="padding-top:7px">
 	<div class="h_module"></div>
 	<div class="HeaderTitle"><h2>{#SYSBLOCK_EDIT#}</h2></div>
@@ -12,7 +8,9 @@
 	» <a href="index.php?do=modules&action=modedit&mod=sysblock&moduleaction=edit&cp={$sess}">{#SYSBLOCK_ADD#}</a>
 </div><br />
 
-{if $SysBlock}
+{if ! $sysblocks}
+	<h4 style="color:#800">{#SYSBLOCK_NO_ITEMS#}</h4>
+{else}
 	<table width="100%" border="0" cellpadding="8" cellspacing="1" class="tableborder">
 		<col width="20">
 		<col>
@@ -26,34 +24,28 @@
 			<td colspan="2">{#SYSBLOCK_ACTIONS#}</td>
 		</tr>
 
-		{foreach from=$SysBlock item=item}
+		{foreach from=$sysblocks item=sysblock}
 			<tr style="background-color:#eff3eb" onmouseover="this.style.backgroundColor='#dae0d8';" onmouseout="this.style.backgroundColor='#eff3eb';" id="table_rows">
-				<td class="itcen">{$item->id}</td>
+				<td class="itcen">{$sysblock->id}</td>
 				<td>
-					<a title="{#SYSBLOCK_EDIT_HINT#}" href="index.php?do=modules&action=modedit&mod=sysblock&moduleaction=edit&cp={$sess}&id={$item->id}">
-						{$item->sysblock_name|escape}
+					<a title="{#SYSBLOCK_EDIT_HINT#}" href="index.php?do=modules&action=modedit&mod=sysblock&moduleaction=edit&cp={$sess}&id={$sysblock->id}">
+						{$sysblock->sysblock_name|escape}
 					</a>
 				</td>
 				<td>
-					<input name="textfield" type="text" value="[mod_sysblock:{$item->id}]"  />
+					<input name="textfield" type="text" value="[mod_sysblock:{$sysblock->id}]"  />
 				</td>
 				<td align="center">
-					<a title="{#SYSBLOCK_EDIT_HINT#}" href="index.php?do=modules&action=modedit&mod=sysblock&moduleaction=edit&cp={$sess}&id={$item->id}">
+					<a title="{#SYSBLOCK_EDIT_HINT#}" href="index.php?do=modules&action=modedit&mod=sysblock&moduleaction=edit&cp={$sess}&id={$sysblock->id}">
 						<img src="{$tpl_dir}/images/icon_edit.gif" alt="" border="0" />
 					</a>
 				</td>
 				<td align="center">
-					<a title="{#SYSBLOCK_DELETE_HINT#}" onclick="return confirm('{#SYSBLOCK_DEL_HINT#}');" href="index.php?do=modules&action=modedit&mod=sysblock&moduleaction=del&cp={$sess}&id={$item->id}">
+					<a title="{#SYSBLOCK_DELETE_HINT#}" onclick="return confirm('{#SYSBLOCK_DEL_HINT#}');" href="index.php?do=modules&action=modedit&mod=sysblock&moduleaction=del&cp={$sess}&id={$sysblock->id}">
 						<img src="{$tpl_dir}/images/icon_del.gif" alt="" border="0" />
 					</a>
 				</td>
 			</tr>
-
 		{/foreach}
 	</table>
-{else}
-	<h4 style="color:#800000">{#SYSBLOCK_NO_ITEMS#}</h4>
 {/if}
-
-{/strip}
-<!-- /admin_list.tpl -->

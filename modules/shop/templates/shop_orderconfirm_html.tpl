@@ -1,5 +1,3 @@
-{strip}
-
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=windows-1251" />
@@ -129,8 +127,8 @@ html, body, td, div, th {
 							</td>
 							<td valign="top" class="articlesrow">{$bi->ArtNr}</td>
 							<td align="center" valign="top" class="articlesrow">{$bi->Anzahl}</td>
-							<td align="right" valign="top" class="articlesrow" nowrap="nowrap">{numFormat val=$bi->EPreis} {$Currency}</td>
-							<td align="right" valign="top" class="articlesrow" nowrap="nowrap">{numFormat val=$bi->EPreisSumme} {$Currency}</td>
+							<td align="right" valign="top" class="articlesrow" nowrap="nowrap">{num_format val=$bi->EPreis} {$Currency}</td>
+							<td align="right" valign="top" class="articlesrow" nowrap="nowrap">{num_format val=$bi->EPreisSumme} {$Currency}</td>
 						</tr>
 					{/foreach}
 				</table><br />
@@ -174,7 +172,7 @@ html, body, td, div, th {
 
 					<tr>
 						<td width="200"><strong>{#OrdersSumm#}</strong></td>
-						<td class="mod_shop_summlist"><strong>{numFormat val=$smarty.session.Zwisumm} {$Currency}</strong></td>
+						<td class="mod_shop_summlist"><strong>{num_format val=$smarty.session.Zwisumm} {$Currency}</strong></td>
 					</tr>
 
 					{if $smarty.session.CouponCode > 0}
@@ -187,13 +185,13 @@ html, body, td, div, th {
 					{if $smarty.session.Rabatt>0}
 						<tr>
 							<td width="200">{#CustomerDiscount#}</td>
-							<td class="mod_shop_summlist">-{$smarty.session.RabattWert}{* ({numFormat val=$smarty.session.Rabatt}) {$Currency}*}</td>
+							<td class="mod_shop_summlist">-{$smarty.session.RabattWert}{* ({num_format val=$smarty.session.Rabatt}) {$Currency}*}</td>
 						</tr>
 					{/if}
 
 					<tr>
 						<td width="200">{#Packing#}</td>
-						<td> {numFormat val=$smarty.session.ShippingSumm} {$Currency}</td>
+						<td> {num_format val=$smarty.session.ShippingSumm} {$Currency}</td>
 					</tr>
 
 					{if $smarty.session.KostenZahlungOut>0}
@@ -205,14 +203,14 @@ html, body, td, div, th {
 
 					<tr>
 						<td width="200" class="overall"><strong>{#SummOverall#}</strong></td>
-						<td class="overall"><strong>{numFormat val=$PaymentOverall} {$Currency}</strong>{if $smarty.session.BasketSummW2}<br /><span class="mod_shop_ust">{numFormat val=$PaymentOverall2} {$Currency2}</span>{/if}</td>
+						<td class="overall"><strong>{num_format val=$PaymentOverall} {$Currency}</strong>{if $smarty.session.BasketSummW2}<br /><span class="mod_shop_ust">{num_format val=$PaymentOverall2} {$Currency2}</span>{/if}</td>
 					</tr>
 {*
 					{foreach from=$VatZones item=vz}
 						{if $smarty.session.VatInc!='' && in_array($vz->Wert,$smarty.session.VatInc)}
 							<tr>
 								<td width="200"> {#IncVat#} {$vz->Wert}%: </td>
-								<td class="mod_shop_incvat">{assign var=VatSessionName value=$vz->Wert} {numFormat val=$smarty.session.$VatSessionName} {$Currency}</td>
+								<td class="mod_shop_incvat">{assign var=VatSessionName value=$vz->Wert} {num_format val=$smarty.session.$VatSessionName} {$Currency}</td>
 							</tr>
 						{/if}
 					{/foreach}
@@ -231,7 +229,7 @@ html, body, td, div, th {
 							{if $smarty.session.VatInc!='' && in_array($vz->Wert,$smarty.session.VatInc)}
 								<tr>
 									<td width="200">{#IncVat#} {$vz->Wert}%: </td>
-									<td class="mod_shop_incvat">{assign var=VatSessionName value=$vz->Wert} {numFormat val=$smarty.session.$VatSessionName} {$Currency}</td>
+									<td class="mod_shop_incvat">{assign var=VatSessionName value=$vz->Wert} {num_format val=$smarty.session.$VatSessionName} {$Currency}</td>
 								</tr>
 							{/if}
 						{/foreach}
@@ -257,5 +255,3 @@ html, body, td, div, th {
 
 </body>
 </html>
-
-{/strip}

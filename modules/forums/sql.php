@@ -1,13 +1,8 @@
 <?php
-/*::::::::::::::::::::::::::::::::::::::::
- System name: cpengine
- Short Desc: Full Russian Security Power Pack
- Version: 2.0 (Service Pack 2)
- Authors:  Arcanum (php@211.ru) &  Censored!
- Date: March 18, 2008
-::::::::::::::::::::::::::::::::::::::::*/
 
-$modul_sql_update[] = "UPDATE CPPREFIX_module SET Version = '".$modul['ModulVersion']."' WHERE ModulName='".$modul['ModulName']."';" ;
+$modul_sql_install = array();
+$modul_sql_deinstall = array();
+$modul_sql_update = array();
 
 $modul_sql_deinstall[] = "DROP TABLE IF EXISTS CPPREFIX_modul_forum_userprofile;";
 $modul_sql_deinstall[] = "DROP TABLE IF EXISTS CPPREFIX_modul_forum_useronline;";
@@ -398,4 +393,7 @@ $modul_sql_install[] = "INSERT INTO CPPREFIX_modul_forum_permissions VALUES (2, 
 $modul_sql_install[] = "INSERT INTO CPPREFIX_modul_forum_permissions VALUES (2, 3, '1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,0,0,0,0,0,0,0');";
 $modul_sql_install[] = "INSERT INTO CPPREFIX_modul_forum_permissions VALUES (2, 4, '1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,1,1,1,1,1');";
 $modul_sql_install[] = "INSERT INTO CPPREFIX_modul_forum_permissions VALUES (2, 5, '1,1,1,1,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0');";
+
+$modul_sql_update[] = "UPDATE CPPREFIX_module SET CpEngineTag = '" . $modul['CpEngineTag'] . "', CpPHPTag = '" . $modul['CpPHPTag'] . "', Version = '" . $modul['ModulVersion'] . "' WHERE ModulPfad = '" . $modul['ModulPfad'] . "' LIMIT 1;";
+
 ?>

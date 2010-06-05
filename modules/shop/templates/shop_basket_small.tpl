@@ -1,4 +1,3 @@
-{strip}
 		{if !$BasketItems}
 		{#BasketEmpty#}
 		{else}
@@ -25,12 +24,12 @@
 				*}
 </td>
 <td width="13" align="right" valign="top" bgcolor="#FFFFFF">
-<form method="post" action="{$bi->DelLink}"><input title="{$config_vars.OL_DeleteItem}" class="absmiddle" type="image" src="{$shop_images}delete.gif" /></form>				</td>
+<form method="post" action="{$bi->DelLink}"><input title="{#OL_DeleteItem#}" class="absmiddle" type="image" src="{$shop_images}delete.gif" /></form>				</td>
 </tr></table>
 <hr style=" margin: 3px 0;"/>
 {/foreach}
 {/if}
-<div   style="margin-top: 5px; margin-bottom: 5px; "><strong>{#TempOverall#} {numFormat val=$smarty.session.BasketOverall} {$Currency}</strong></div>
+<div   style="margin-top: 5px; margin-bottom: 5px; "><strong>{#TempOverall#} {num_format val=$smarty.session.BasketOverall} {$Currency}</strong></div>
 
 <ul>
 {if $BasketItems}
@@ -38,7 +37,6 @@
 <li><a href="{$ShowPaymentLink}">{#GotoCheckout#}</a></li>
 {/if}
 {if $WishListActive==1}
-<li><a href="{$WishListLink}" target="_blank">{#Wishlist#}</a> – <a class="tooltip" title="{$config_vars.WishlistInf}"  href="#">{#WhatsThat#}</a></li>
+<li><a href="{$WishListLink}" target="_blank">{#Wishlist#}</a> – <a class="tooltip" title="{#WishlistInf#}"  href="#">{#WhatsThat#}</a></li>
 {/if}
 </ul>
-{/strip}

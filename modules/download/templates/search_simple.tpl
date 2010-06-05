@@ -1,5 +1,3 @@
-
-{strip}
 <script type="text/javascript" language="javascript">
 var req;
 var timeout;
@@ -43,7 +41,7 @@ function sendRequest()
 	if (req) {ldelim}
 		var ajq = document.getElementById('ajQuery').value;
 		var cid = document.getElementById('ajSearchCateg').value;
-		req.open('GET', '{$BASE_PATH}modules/download/ajax.search.php?ajq=' + ajq + '&cid=' + cid, true);
+		req.open('GET', '{$ABS_PATH}modules/download/ajax.search.php?ajq=' + ajq + '&cid=' + cid, true);
 		req.onreadystatechange = processReqChange;
 		req.send(null);
 		/*timeout = setTimeout(function(){ldelim} req.abort(); handleError("Time over") {rdelim}, 10000);*/
@@ -75,5 +73,3 @@ function sendRequest()
 		</tr>
 	</table>
 </form>
-
-{/strip}

@@ -1,5 +1,3 @@
-{strip}
-<!-- shop_navi_sub.tpl -->
 {foreach from=$items item=item}
 	<li>
 {* Условие если активными должны быть все элементы в пути к активной категории
@@ -17,5 +15,3 @@
 		{/if}
 	</li>
 {/foreach}
-<!-- shop_navi_sub.tpl -->
-{/strip}

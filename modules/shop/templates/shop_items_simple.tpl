@@ -1,6 +1,3 @@
-<!-- shop_items_simple.tpl -->
-{strip}
-
 {if !$ShopArticles}
 	{#ErrorNoProductsHere#}
 {else}
@@ -41,16 +38,16 @@
 										{if $i->PreisDiff > 0}
 											<span class="mod_shop_ust">
 												{#PriceListS#} <strong style="text-decoration:line-through">{$i->PreisListe} {$Currency}</strong><br />
-												<strong>{#PriceYouSave#}</strong> {numFormat val=$i->PreisDiff} {$Currency}
+												<strong>{#PriceYouSave#}</strong> {num_format val=$i->PreisDiff} {$Currency}
 											</span>
 										{/if}<br />
 
 										<!-- PRICE -->
-										<h2>{numFormat val=$i->Preis} {$Currency}</h2>
+										<h2>{num_format val=$i->Preis} {$Currency}</h2>
 										<!-- PRICE 2. CURRENCY -->
 										{if $i->PreisW2 && $ZeigeWaehrung2=='1'}
 											<br />
-											<span class="mod_shop_ust">({numFormat val=$i->PreisW2} {$Currency2})</span>
+											<span class="mod_shop_ust">({num_format val=$i->PreisW2} {$Currency2})</span>
 										{/if}
 									</div>
 								</td>
@@ -67,6 +64,3 @@
 	{* постраничная навигация *}
 	{if $page_nav}{$page_nav}{/if}
 {/if}
-
-{/strip}
-<!-- /shop_items_simple.tpl -->

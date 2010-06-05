@@ -10,7 +10,7 @@
 /**
  * Подключаем файл шаблонизатора Smarty
  */
-require('Smarty/Smarty.class.php');
+require(BASE_DIR . '/lib/Smarty/Smarty.class.php');
 
 /**
  * Расширение класса шаблонизатора Smarty
@@ -18,12 +18,20 @@ require('Smarty/Smarty.class.php');
  */
 class AVE_Template extends Smarty
 {
+/**
+ *	СВОЙСТВА
+ */
+
+	/**
+	 * Конструктор
+	 *
+	 * @param string $template_dir путь к директории шаблонов по умолчанию
+	 * @return AVE_Template
+	 */
 	function AVE_Template($template_dir)
 	{
-		global $config;
-
         /**
-         * Это название директории шаблонов по умолчанию.
+         * Путь к директории шаблонов по умолчанию.
          * Если вы не передадите тип ресурса во время подключения файлов, они будут искаться здесь.
          */
 		$this->template_dir = $template_dir;
@@ -44,22 +52,22 @@ class AVE_Template extends Smarty
          * В случае, если шаблон еще не был скомпилирован, его компиляция производится
          * с игнорированием значения этого параметра.
          */
-		$this->compile_check = $config['compile_check'];
+		$this->compile_check = SMARTY_COMPILE_CHECK;
 
         /**
          * Активирует debugging console - порожденное при помощи javascript окно браузера,
          * содержащее информацию о подключенных шаблонах и загруженных переменных для текущей страницы.
          */
-		$this->debugging = $config['debugging'];
+		$this->debugging = SMARTY_DEBUGGING;
 
         /**
          * Регистрация плагинов-функций Smarty.
          * Передается наименование функции шаблона и имя функции, реализующей ее.
          */
-        $this->register_function('checkPermission', 'checkPermission');
-        $this->register_function('redirectLink', 'redirectLink');
-        $this->register_function('numFormat', 'numFormat');
-        $this->register_function('homeLink', 'homeLink');
+        $this->register_function('check_permission', 'check_permission');
+        $this->register_function('get_redirect_link', 'get_redirect_link');
+        $this->register_function('get_home_link', 'get_home_link');
+        $this->register_function('num_format', 'num_format');
 
         /**
          * Регистрация плагинов-модификаторов Smarty.
@@ -67,20 +75,76 @@ class AVE_Template extends Smarty
          */
         $this->register_modifier('pretty_date', 'pretty_date');
 
+// плагин позволяющий поставить метки шаблонов
+// для быстрого поиска шаблона отвечающего за вывод
+// перед использованием очистить templates_c
+// $this->register_postfilter('add_template_comment');
+
         /**
          * Присваиваем общие значения для шаблонов.
-         * Можно явно передавать пары имя/значение, или ассоциативные массивы, содержащие пары имя/значение.
+         * Можно явно передавать пары имя/значение,
+         * или ассоциативные массивы, содержащие пары имя/значение.
          */
-		$this->assign('tpl_path', 'templates/' . DEFAULT_THEME_FOLDER);
-		$this->assign('BASE_DIR', BASE_DIR);
-		$this->assign('BASE_PATH', BASE_PATH);
-		$this->assign('DEF_DOC_START_YEAR', mktime(0, 0, 0, date("m"), date("d"), date("Y") - 10));
-		$this->assign('DEF_DOC_END_YEAR', mktime(0, 0, 0, date("m"), date("d"), date("Y") + 20));
-		$this->assign('DEF_COUNTRY', DEFAULT_COUNTRY);
-		$this->assign('DEF_LANGUAGE', DEFAULT_LANGUAGE);
-		$this->assign('DATE_FORMAT', DATE_FORMAT);
-		$this->assign('TIME_FORMAT', TIME_FORMAT);
-		$this->assign('PAGE_NOT_FOUND_ID', PAGE_NOT_FOUND_ID);
+		$assign['BASE_DIR']          = BASE_DIR;
+		$assign['ABS_PATH']          = ABS_PATH;
+		$assign['DATE_FORMAT']       = DATE_FORMAT;
+		$assign['TIME_FORMAT']       = TIME_FORMAT;
+		$assign['PAGE_NOT_FOUND_ID'] = PAGE_NOT_FOUND_ID;
+
+		$this->assign($assign);
+	}
+
+/**
+ *	ВНУТРЕННИЕ МЕТОДЫ
+ */
+
+
+/**
+ *	ВНЕШНИЕ МЕТОДЫ
+ */
+
+	/**
+	 * Метод очистки кэша
+	 *
+	 */
+	function templateCacheClear()
+	{
+		$this->clear_all_cache();
+
+		$filename = $this->cache_dir . '/.htaccess';
+		if (!file_exists($filename))
+		{
+			$fp = @fopen($filename, 'w');
+			if ($fp)
+			{
+				fputs($fp, 'Deny from all');
+				fclose($fp);
+			}
+		}
+
+		reportLog($_SESSION['user_name'] . ' - очистил кэш', 2, 2);
+	}
+
+	/**
+	 * Метод удаления скомпилированных шаблонов
+	 *
+	 */
+	function templateCompiledTemplateClear()
+	{
+		$this->clear_compiled_tpl();
+
+		$filename = $this->compile_dir . '/.htaccess';
+		if (!file_exists($filename))
+		{
+			$fp = @fopen($filename, 'w');
+			if ($fp)
+			{
+				fputs($fp, 'Deny from all');
+				fclose($fp);
+			}
+		}
+
+		reportLog($_SESSION['user_name'] . ' - удалил скомпилированные шаблоны', 2, 2);
 	}
 }
 

@@ -1,5 +1,3 @@
-{strip}
-
 <br />
 
 {include file="$inc_path/userpanel_forums.tpl"}
@@ -365,5 +363,3 @@
 <input  type="submit" class="button" value="{#PR_send#}">
 
 </form>
-
-{/strip}

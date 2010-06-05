@@ -1,4 +1,3 @@
-<!-- shop_checkout.tpl -->
 <div class="grid_12 tablebox">
 	<h2 id="page-heading"> {#ShopPaySite#}</h2>
 <div class="grid_4 alpha">
@@ -80,12 +79,12 @@
 					</form>
 				</td>
 			</tr>
-</tfoot>            
+</tfoot>
 		</table>
 	{/if}
 </div>
 <div class="clear"></div>
-<hr/>	
+<hr/>
 <!-- FOOTER -->
 	{$FooterText}
 </div>
@@ -102,13 +101,13 @@
       <h2> <a href="#" id="toggle-login-forms">Авторизация</a> </h2>
       <div class="block" id="login-forms">{$UserPanel}</div>
     </div>
-    
+
   <!-- Блок поиска по магазину -->
     <div class="box">
       <h2><a href="#" id="toggle-shop-search">Поиск товаров</a></h2>
       <div class="block" id="shop-search">{$Search}</div>
     </div>
-    
+
   <!-- Блок корзины -->
     <div class="box">
       <h2><a href="#" id="toggle-shopbasket">Корзина</a></h2>
@@ -128,4 +127,3 @@
     </div>
 </div>
 {/if}
-<!-- /shop_checkout.tpl -->

@@ -12,7 +12,7 @@ if(!defined("SHOWTOPIC")) exit;
 $_REQUEST['page'] = (isset($_REQUEST['page']) && is_numeric($_REQUEST['page']) && $_REQUEST['page'] > 0) ? $_REQUEST['page'] : 1;
 
 
-$printlink = redirectLink('print')."&amp;print=1";
+$printlink = get_redirect_link('print')."&amp;print=1";
 $post_count_extra = "";
 $post_query_extra = "";
 
@@ -129,14 +129,13 @@ if ( isset($_GET['toid']) && $_GET['toid'] != "" )
 		{
 			if(is_mod(addslashes($_REQUEST['fid'])))
 			{
-				$AVE_Globals = new AVE_Globals;
 				if(isset($_REQUEST['ispost']) && $_REQUEST['ispost'] == 1)
 				{
 					$sql_p = "UPDATE " . PREFIX . "_modul_forum_post SET opened = '1' WHERE id='$_REQUEST[post_id]'";
 					$res_p = $GLOBALS['AVE_DB']->Query($sql_p);
 
 					// mail an autor eines beitrages
-					$link = BASE_URL . str_replace("/index.php","",$_SERVER['PHP_SELF']) . "/index.php?module=forums&show=showtopic&toid=$_REQUEST[toid]&pp=15";
+					$link = HOST . str_replace("/index.php","",$_SERVER['PHP_SELF']) . "/index.php?module=forums&show=showtopic&toid=$_REQUEST[toid]&pp=15";
 					$sql = $GLOBALS['AVE_DB']->Query("SELECT uid FROM ".PREFIX."_modul_forum_post WHERE id = '$_REQUEST[post_id]'");
 					$row = $sql->FetchRow();
 
@@ -147,7 +146,15 @@ if ( isset($_GET['toid']) && $_GET['toid'] != "" )
 					$body = str_replace("%%LINK%%", $link, $body);
 					$body = str_replace("%%N%%","\n", $body);
 
-					$AVE_Globals->cp_mail($row_2->Email, stripslashes($body), $GLOBALS['mod']['config_vars']['SubjectToUserAfterMod'], FORUMEMAIL, FORUMABSENDER, "text", "");
+					send_mail(
+						$row_2->Email,
+						stripslashes($body),
+						$GLOBALS['mod']['config_vars']['SubjectToUserAfterMod'],
+						FORUMEMAIL,
+						FORUMABSENDER,
+						"text",
+						""
+					);
 				} else {
 
 					$sql_t = "UPDATE " . PREFIX . "_modul_forum_topic SET opened = '1' WHERE id='$_REQUEST[toid]'";
@@ -155,7 +162,7 @@ if ( isset($_GET['toid']) && $_GET['toid'] != "" )
 					$res_t = $GLOBALS['AVE_DB']->Query($sql_t);
 					$res_p = $GLOBALS['AVE_DB']->Query($sql_p);
 					// mail an autor eines thema
-					$link = BASE_URL . str_replace("/index.php","",$_SERVER['PHP_SELF']) . "/index.php?module=forums&show=showtopic&toid=$_REQUEST[toid]&fid=$_REQUEST[fid]";
+					$link = HOST . str_replace("/index.php","",$_SERVER['PHP_SELF']) . "/index.php?module=forums&show=showtopic&toid=$_REQUEST[toid]&fid=$_REQUEST[fid]";
 					$sql = $GLOBALS['AVE_DB']->Query("SELECT uid FROM ".PREFIX."_modul_forum_topic WHERE id = '$_REQUEST[toid]'");
 					$row = $sql->FetchRow();
 
@@ -166,7 +173,15 @@ if ( isset($_GET['toid']) && $_GET['toid'] != "" )
 					$body = str_replace("%%LINK%%", $link, $body);
 					$body = str_replace("%%N%%","\n", $body);
 
-					$AVE_Globals->cp_mail($row_2->Email, stripslashes($body), $GLOBALS['mod']['config_vars']['SubjectToUserAfterMod'], FORUMEMAIL, FORUMABSENDER, "text", "");
+					send_mail(
+						$row_2->Email,
+						stripslashes($body),
+						$GLOBALS['mod']['config_vars']['SubjectToUserAfterMod'],
+						FORUMEMAIL,
+						FORUMABSENDER,
+						"text",
+						""
+					);
 				}
 			}
 		}
@@ -200,7 +215,7 @@ if ( isset($_GET['toid']) && $_GET['toid'] != "" )
 
 		if(!isset($page)) $page = 1;
 		$seiten = $this->getPageNum($num, $limit);
-		$a = prepage() * $limit - $limit;
+		$a = get_current_page() * $limit - $limit;
 		$a = (isset($_REQUEST['print']) && $_REQUEST['print']==1) ? 0 : $a;
 
 		if(!is_mod(@$_GET['fid']))
@@ -256,24 +271,31 @@ if ( isset($_GET['toid']) && $_GET['toid'] != "" )
 					us.Vorname,
 					us.Benutzergruppe,
 					us.Nachname,
-					ug.Name
+					ug.Name,
+					COUNT(p.uid) AS user_posts
 				FROM
-					" . PREFIX . "_modul_forum_userprofile AS u,
-					" . PREFIX . "_users AS us,
+					" . PREFIX . "_modul_forum_userprofile AS u
+				JOIN
+					" . PREFIX . "_users AS us
+						ON us.Id = u.BenutzerId
+				JOIN
 					" . PREFIX . "_user_groups AS ug
+						ON ug.Benutzergruppe = us.Benutzergruppe
+				JOIN
+				    " . PREFIX . "_modul_forum_post AS p
+				    	ON p.uid = u.BenutzerId
 				WHERE
 					u.BenutzerId = " . intval($post->uid) . " AND
-					us.Id = u.BenutzerId AND
-					ug.Benutzergruppe = us.Benutzergruppe AND
 					us.Status = 1
+				GROUP BY p.uid
 			";
 
 			$r_user = $GLOBALS['AVE_DB']->Query($q_user);
 			$poster = $r_user->FetchRow();
-			$query = "SELECT COUNT(id) AS count FROM " . PREFIX . "_modul_forum_post WHERE uid = '" . @$poster->BenutzerId . "'";
-			$result = $GLOBALS['AVE_DB']->Query($query);
-			$postings = $result->FetchRow();
-			$poster->user_posts = $postings->count;
+//			$query = "SELECT COUNT(id) AS count FROM " . PREFIX . "_modul_forum_post WHERE uid = '" . @$poster->BenutzerId . "'";
+//			$result = $GLOBALS['AVE_DB']->Query($query);
+//			$postings = $result->FetchRow();
+//			$poster->user_posts = $postings->count;
 
 			$query = "SELECT title, count FROM " . PREFIX . "_modul_forum_rank WHERE count < '" . $poster->user_posts . "' ORDER BY count DESC LIMIT 1";
 			$result = $GLOBALS['AVE_DB']->Query($query);
@@ -401,10 +423,10 @@ if ( isset($_GET['toid']) && $_GET['toid'] != "" )
 
 		if ($limit < $num)
 		{
-			$GLOBALS['AVE_Template']->assign('pages',
-				pagenav($seiten, 'page',
-				" <a class=\"page_navigation\" href=\"index.php?module=forums&amp;show=showtopic&amp;toid=" . $_GET["toid"] . "&amp;high=" . @$_GET['high'] . "&amp;pp=$limit&amp;page={s}&amp;fid=$ForumId\">{t}</a> ")
-				);
+			$page_nav = " <a class=\"page_navigation\" href=\"index.php?module=forums&amp;show=showtopic&amp;toid=" . $_GET["toid"]
+				. "&amp;high=" . @$_GET['high'] . "&amp;pp=$limit&amp;page={s}&amp;fid=$ForumId\">{t}</a> ";
+			$page_nav = get_pagination($seiten, 'page', $page_nav);
+			$GLOBALS['AVE_Template']->assign('pages', $page_nav);
 		}
 
 		if (UID == 1) array_fill(0, sizeof($permissions), 1);

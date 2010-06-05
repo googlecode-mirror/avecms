@@ -1,5 +1,3 @@
-{strip}
-
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
 <head>
@@ -16,7 +14,8 @@
 <table width="100%" height="100%" cellspacing="0" cellpadding="0" border="0">
 	<tr>
 		<td width="100%" height="100%" align="center">
-			<form method="post" action="admin.php?action=login">
+			<form method="post" action="admin.php">
+				<input type="hidden" name="action" value="login">
 				<input type="hidden" name="lang" value="ru" id="f_lang">
 				<input type="hidden" name="theme" value="apanel" id="f_theme">
 				<table cellspacing="0" cellpadding="0" border="0">
@@ -25,7 +24,7 @@
 						<td width="250" align="left">
 							<img src="{$tpl_dir}/images/login_right.jpg" alt="" border="0" />
 							<div class="login_box_hf"><strong>{#MAIN_YOUR_LOGIN#}</strong></div>
-							<input style="width:250px" name="user_login" type="text" value="" class="field" /><br />
+							<input style="width:250px" name="user_login" type="text" value="{$smarty.request.user_login|escape}" class="field" /><br />
 							<br />
 							<div class="login_box_hf"><strong>{#MAIN_YOUR_PASSWORD#}</strong></div>
 							<input style="width:250px" name="user_pass" type="password" class="field" /><br />
@@ -44,5 +43,3 @@
 </table>
 </body>
 </html>
-
-{/strip}

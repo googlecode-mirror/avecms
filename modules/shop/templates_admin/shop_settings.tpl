@@ -1,5 +1,3 @@
-{strip}
-
 <div class="pageHeaderTitle" style="padding-top: 7px;">
 	<div class="h_module">&nbsp;</div>
 	<div class="HeaderTitle"><h2>{#ModName#}</h2></div>
@@ -296,5 +294,3 @@
 
 	<input accesskey="s" type="submit" value="{#ButtonSave#}" class="button" />
 </form>
-
-{/strip}

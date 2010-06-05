@@ -1,5 +1,3 @@
-{strip}
-
 {include file="$inc_path/userpanel_forums.tpl"}
 {include file="$inc_path/header_sthreads.tpl"}
 
@@ -148,5 +146,3 @@ function beitrag(theform) {ldelim}
     {/foreach}
   </table>
 {/if}
-
-{/strip}

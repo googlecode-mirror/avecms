@@ -53,49 +53,43 @@ if( (isset($_REQUEST['module']) && $_REQUEST['module'] == 'forums') || (isset($_
 	define ('FORUM_PERMISSIONS_CAN_MOVE_TOPIC', 20);
 	define ('FORUM_PERMISSIONS_CAN_DELETE_TOPIC', 21);
 
+	if (empty($_REQUEST['show'])) $_REQUEST['show'] = 'showforums';
+
 	//=======================================================
-	// Klasse einbinden
+	// Паблик
 	//=======================================================
-	if(defined('ACP') && $_REQUEST['action'] != 'delete')
-	{
-		require_once(BASE_DIR . '/modules/forums/class.forums_admin.php');
-	}
-	else
+	if (!defined('ACP') && isset($_REQUEST['module']) && $_REQUEST['module'] == 'forums')
 	{
 		require_once(BASE_DIR . '/modules/forums/class.forums.php');
-
 		$forums = new Forum;
+
 		$forums->AutoUpdatePerms();
 
-		$sql = $AVE_DB->Query("SELECT *
-			FROM " . PREFIX . "_modul_forum_settings
-			LIMIT 1
-		");
-		$row_set = $sql->FetchRow();
+		$row_set = $forums->forumSettings();
 
-		$sql = $AVE_DB->Query("SELECT *
+		$row_gs = $AVE_DB->Query("
+			SELECT *
 			FROM " . PREFIX . "_modul_forum_grouppermissions
 			WHERE Benutzergruppe = '" . UGROUP . "'
 			LIMIT 1
-		");
-		$row_gs = $sql->FetchRow();
+		")->FetchRow();
 
 		define ('BOARD_NEWPOSTMAXAGE', '-4 weeks');
 		define ('MAX_AVATAR_WIDTH', $row_gs->MAX_AVATAR_WIDTH);
 		define ('MAX_AVATAR_HEIGHT', $row_gs->MAX_AVATAR_WIDTH);
 		define ('MAX_AVATAR_BYTES', $row_gs->MAX_AVATAR_BYTES);
-		define ('SYSTEMAVATARS', $row_set->SystemAvatars);
+		define ('SYSTEMAVATARS', $row_set['SystemAvatars']);
 		define ('UPLOADAVATAR', $row_gs->UPLOADAVATAR);
 		define ('MAXPN', $row_gs->MAXPN);
 		define ('MAXPNLENTH', $row_gs->MAXPNLENTH);
 		define ('MISCIDSINC', 1);
-		define ('FORUMEMAIL', $row_set->AbsenderMail);
-		define ('FORUMABSENDER', $row_set->AbsenderName);
-		define ('BBCODESITE', $row_set->BBCode);
-		define ('IMGCODE', $row_set->BBCode);
-		define ('SMILIES', $row_set->Smilies);
-		define ('USEPOSTICONS', $row_set->Posticons);
-		define ('COMMENTSBBCODE', $row_set->BBCode);
+		define ('FORUMEMAIL', $row_set['AbsenderMail']);
+		define ('FORUMABSENDER', $row_set['AbsenderName']);
+		define ('BBCODESITE', $row_set['BBCode']);
+		define ('IMGCODE', $row_set['BBCode']);
+		define ('SMILIES', $row_set['Smilies']);
+		define ('USEPOSTICONS', $row_set['Posticons']);
+		define ('COMMENTSBBCODE', $row_set['BBCode']);
 		define ('MAXLENGTH_POST', $row_gs->MAXLENGTH_POST);
 		define ('MAXATTACHMENTS', $row_gs->MAXATTACHMENTS);
 		define ('forum_images', 'templates/'. THEME_FOLDER.'/modules/forums/');
@@ -108,17 +102,11 @@ if( (isset($_REQUEST['module']) && $_REQUEST['module'] == 'forums') || (isset($_
 		define ('EXPIRE_MONTH',  time() + 60*60*24*30);
 		define ('EXPIRE_YEAR',   time() + 60*60*24*30*365);
 		define ('MAX_EDIT_PERIOD', $row_gs->MAX_EDIT_PERIOD); // Zeit in Stunden, in der der ein Beitrag editiert werden kann 720 = 1 Monat
-	}
 
-	$_REQUEST['show'] = (!isset($_REQUEST['show']) || $_REQUEST['show'] == '') ? 'showforums' : $_REQUEST['show'];
-
-	if(!defined('ACP') && isset($_REQUEST['module']) && $_REQUEST['module'] == 'forums' && isset($_REQUEST['show']))
-	{
 		require_once(BASE_DIR . '/functions/func.modulglobals.php');
-		if(defined('THEME_FOLDER')) $AVE_Template->assign('theme_folder', THEME_FOLDER);
+		set_modul_globals('forums');
 
-		modulGlobals('forums');
-		$forums = new Forum;
+		if(defined('THEME_FOLDER')) $AVE_Template->assign('theme_folder', THEME_FOLDER);
 
 		define ('USERNAME', (isset($_SESSION['user_id']) && is_numeric($_SESSION['user_id'])) ? $forums->fetchusername($_SESSION['user_id']) : UNAME);
 		$_SESSION['forum_user_name'] = (isset($_SESSION['user_id'])) ? $forums->fetchusername($_SESSION['user_id']) : $GLOBALS['mod']['config_vars']['Guest'];
@@ -132,8 +120,8 @@ if( (isset($_REQUEST['module']) && $_REQUEST['module'] == 'forums') || (isset($_
 
 		$AVE_Template->assign('forum_images', 'templates/' . THEME_FOLDER . '/modules/forums/');
 		$AVE_Template->assign('sys_avatars', SYSTEMAVATARS);
-		$AVE_Template->assign('header', $row_set->pageheader);
-		$AVE_Template->assign('pageheader', $row_set->pageheader);
+		$AVE_Template->assign('header', $row_set['pageheader']);
+		$AVE_Template->assign('pageheader', $row_set['pageheader']);
 		$AVE_Template->assign('inc_path', BASE_DIR . '/modules/forums/templates');
 		$AVE_Template->assign('ugroup', UGROUP);
 		$AVE_Template->assign('PNunreaded', $forums->pnUnreaded());
@@ -235,7 +223,10 @@ if( (isset($_REQUEST['module']) && $_REQUEST['module'] == 'forums') || (isset($_
 				break;
 
 			case 'last24':
-				if(!$forums->fperm('last24')) $forums->msg($GLOBALS['mod']['config_vars']['ErrornoPerm']);
+				if (!$forums->fperm('last24'))
+				{
+					$forums->msg($GLOBALS['mod']['config_vars']['ErrornoPerm']);
+				}
 				$forums->last24();
 				break;
 
@@ -248,7 +239,10 @@ if( (isset($_REQUEST['module']) && $_REQUEST['module'] == 'forums') || (isset($_
 				break;
 
 			case 'userprofile':
-				if(!$forums->fperm('userprofile')) $forums->msg($GLOBALS['mod']['config_vars']['ErrornoPerm']);
+				if (!$forums->fperm('userprofile'))
+				{
+					$forums->msg($GLOBALS['mod']['config_vars']['ErrornoPerm']);
+				}
 				$forums->showUserProfile();
 				break;
 
@@ -265,12 +259,18 @@ if( (isset($_REQUEST['module']) && $_REQUEST['module'] == 'forums') || (isset($_
 				break;
 
 			case 'search_mask':
-				if(!$forums->fperm('cansearch')) $forums->msg($GLOBALS['mod']['config_vars']['ErrornoPerm']);
+				if (!$forums->fperm('cansearch'))
+				{
+					$forums->msg($GLOBALS['mod']['config_vars']['ErrornoPerm']);
+				}
 				$forums->searchMask();
 				break;
 
 			case 'search':
-				if(!$forums->fperm('cansearch')) $forums->msg($GLOBALS['mod']['config_vars']['ErrornoPerm']);
+				if (!$forums->fperm('cansearch'))
+				{
+					$forums->msg($GLOBALS['mod']['config_vars']['ErrornoPerm']);
+				}
 				$forums->doSearch();
 				break;
 
@@ -293,112 +293,111 @@ if( (isset($_REQUEST['module']) && $_REQUEST['module'] == 'forums') || (isset($_
 
 
 	//=======================================================
-	// Admin - Aktionen
+	// Админка
 	//=======================================================
-	if(defined('ACP') && !(isset($_REQUEST['action']) && $_REQUEST['action'] == 'delete'))
+	if(defined('ACP')
+		&& !empty($_REQUEST['moduleaction'])
+		&& !(isset($_REQUEST['action']) && $_REQUEST['action'] == 'delete'))
 	{
-		require_once(BASE_DIR . '/modules/forums/sql.php');
+		require_once(BASE_DIR . '/modules/forums/class.forums_admin.php');
+		$forums = new Forum;
+//		require_once(BASE_DIR . '/modules/forums/sql.php');
 
 		$tpl_dir = BASE_DIR . '/modules/forums/templates_admin/';
 		$tpl_dir_source = BASE_DIR . '/modules/forums/templates_admin';
-		$lang_file = BASE_DIR . '/modules/forums/lang/' . $_SESSION['admin_lang'] . '.txt';
-
-		$forums = new Forum;
+		$lang_file = BASE_DIR . '/modules/forums/lang/' . $_SESSION['admin_language'] . '.txt';
 
 		$AVE_Template->config_load($lang_file, 'admin');
-		$config_vars = $AVE_Template->get_config_vars();
-		$AVE_Template->assign('config_vars', $config_vars);
+//		$config_vars = $AVE_Template->get_config_vars();
+//		$AVE_Template->assign('config_vars', $config_vars);
 		$AVE_Template->assign('source', $tpl_dir_source);
 
-		if(isset($_REQUEST['moduleaction']) && $_REQUEST['moduleaction'] != '')
+		$forums->AutoUpdatePerms();
+
+		switch ($_REQUEST['moduleaction'])
 		{
-			$forums->AutoUpdatePerms();
+			// Kommentare
+			case '1':
+				$forums->forumAdmin($tpl_dir);
+				break;
 
-			switch($_REQUEST['moduleaction'])
-			{
-				// Kommentare
-				case '1':
-					$forums->forumAdmin($tpl_dir);
-					break;
+			case 'edit_category':
+				$forums->editCategory($tpl_dir, $_GET['id']);
+				break;
 
-				case 'edit_category':
-					$forums->editCategory($tpl_dir, $_GET['id']);
-					break;
+			case 'edit_forum':
+				$forums->editForum($tpl_dir, $_GET['id']);
+				break;
 
-				case 'edit_forum':
-					$forums->editForum($tpl_dir, $_GET['id']);
-					break;
+			case 'mods':
+				$forums->addMods($tpl_dir, $_REQUEST['id']);
+				break;
 
-				case 'mods':
-					$forums->addMods($tpl_dir, $_REQUEST['id']);
-					break;
+			case 'delete_forum':
+				$forums->deleteForum($_GET['id']);
+				header('Location:index.php?do=modules&action=modedit&mod=forums&moduleaction=1&cp=' . SESSION);
+				break;
 
-				case 'delete_forum':
-					$forums->deleteForum($_GET['id']);
-					header('Location:index.php?do=modules&action=modedit&mod=forums&moduleaction=1&cp=' . SESSION);
-					break;
+			case 'delete_topics':
+				$forums->delTopics($tpl_dir);
+				break;
 
-				case 'delete_topics':
-					$forums->delTopics($tpl_dir);
-					break;
+			case 'closeforum':
+				$forums->forumOpenClose($tpl_dir, $_GET['id'],'close');
+				break;
 
-				case 'closeforum':
-					$forums->forumOpenClose($tpl_dir, $_GET['id'],'close');
-					break;
+			case 'openforum':
+				$forums->forumOpenClose($tpl_dir, $_GET['id'],'open');
+				break;
 
-				case 'openforum':
-					$forums->forumOpenClose($tpl_dir, $_GET['id'],'open');
-					break;
+			case 'permissions':
+				$forums->editPermissions($tpl_dir);
+				break;
 
-				case 'permissions':
-					$forums->editPermissions($tpl_dir);
-					break;
+			case 'delcategory':
+				$forums->deleteCat($tpl_dir, $_GET['id']);
+				break;
 
-				case 'delcategory':
-					$forums->deleteCat($tpl_dir, $_GET['id']);
-					break;
+			case 'addforum':
+				$forums->addForum($tpl_dir, $_GET['id']);
+				break;
 
-				case 'addforum':
-					$forums->addForum($tpl_dir, $_GET['id']);
-					break;
+			case 'addcategory':
+				$forums->addCategory($tpl_dir);
+				break;
 
-				case 'addcategory':
-					$forums->addCategory($tpl_dir);
-					break;
+			case 'attachment_manager':
+				$forums->attachmentManager($tpl_dir);
+				break;
 
-				case 'attachment_manager':
-					$forums->attachmentManager($tpl_dir);
-					break;
+			case 'show_attachments':
+				$forums->showAttachments($tpl_dir);
+				break;
 
-				case 'show_attachments':
-					$forums->showAttachments($tpl_dir);
-					break;
+			case 'user_ranks':
+				$forums->userRanks($tpl_dir);
+				break;
 
-				case 'user_ranks':
-					$forums->userRanks($tpl_dir);
-					break;
+			case 'list_smilies':
+				$forums->listSmilies($tpl_dir);
+				break;
 
-				case 'list_smilies':
-					$forums->listSmilies($tpl_dir);
-					break;
+			case 'list_icons':
+				$forums->listIcons($tpl_dir);
+				break;
 
-				case 'list_icons':
-					$forums->listIcons($tpl_dir);
-					break;
+			case 'group_perms':
+				$forums->groupPerms($tpl_dir);
+				break;
 
-				case 'group_perms':
-					$forums->groupPerms($tpl_dir);
-					break;
+			case 'import':
+				$forums->import($tpl_dir);
+				break;
 
-				case 'import':
-					$forums->import($tpl_dir);
-					break;
-
-					// Einstellungen
-				case 'settings':
-					$forums->settings($tpl_dir);
-					break;
-			}
+				// Einstellungen
+			case 'settings':
+				$forums->settings($tpl_dir);
+				break;
 		}
 	}
 }

@@ -1,5 +1,3 @@
-{strip}
-
 <div class="pageHeaderTitle" style="padding-top: 7px;">
 	<div class="h_module"></div>
 	<div class="HeaderTitle"><h2>{#CONTACT_SHOW_ANSWER2#}</h2></div>
@@ -13,7 +11,7 @@
 <form name="replay" enctype="multipart/form-data" method="post" action="index.php?do=modules&action=modedit&mod=contact&moduleaction=reply&cp={$sess}&id={$smarty.request.id}&pop=1">
 	<table width="100%" border="0" cellspacing="1" cellpadding="8" class="tableborder">
 		<tr class="tableheader">
-			<td colspan="2">{#CONTACT_AUTHOR#}{$row->in_email} ({$row->in_date|date_format:$TIME_FORMAT|pretty_date:$DEF_LANGUAGE})</td>
+			<td colspan="2">{#CONTACT_AUTHOR#}{$row->in_email} ({$row->in_date|date_format:$TIME_FORMAT|pretty_date})</td>
 		</tr>
 
 		<tr>
@@ -62,15 +60,15 @@
 		<tr>
 			<td width="150" class="first">{#CONTACT_REPLY_MESSAGE#}</td>
 			<td class="second">
-				<textarea name="message" id="message" style="width:98%;height:200px">{/strip}
+				<textarea name="message" id="message" style="width:98%;height:200px">
       {#CONTACT_MESSAGE_HEADER#}
       {#CONTACT_MESSAGE_YOUR_TEXT#}
       {#CONTACT_YOUR_INFO#}{$smarty.session.user_name}
 ---------------------------------------------------
 ---------------------------------------------------
-{#CONTACT_YOUR_DATE#} {$row->in_date|date_format:$TIME_FORMAT|pretty_date:$DEF_LANGUAGE}
+{#CONTACT_YOUR_DATE#} {$row->in_date|date_format:$TIME_FORMAT|pretty_date}
 
-{$row->replytext}{strip}
+{$row->replytext}
 				</textarea>
 			</td>
 		</tr>
@@ -86,5 +84,3 @@
 	<input type="submit" value="{#CONTACT_BUTTON_SEND#}" class="button" />&nbsp;
 	<input type="button" class="button" value="{#CONTACT_BUTTON_CLOSE#}" onclick="self.close();" />
 </form>
-
-{/strip}

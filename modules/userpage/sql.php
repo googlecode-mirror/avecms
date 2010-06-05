@@ -1,11 +1,8 @@
 <?php
-/*::::::::::::::::::::::::::::::::::::::::
- System name: cpengine
- Short Desc: Full Russian Security Power Pack
- Version: 2.0 (Service Pack 2)
- Authors:  Arcanum (php@211.ru) &  Censored!
- Date: March 18, 2008
-::::::::::::::::::::::::::::::::::::::::*/
+
+$modul_sql_install = array();
+$modul_sql_deinstall = array();
+$modul_sql_update = array();
 
 $modul_sql_deinstall[] = "DROP TABLE IF EXISTS CPPREFIX_modul_userpage;";
 $modul_sql_deinstall[] = "DROP TABLE IF EXISTS CPPREFIX_modul_userpage_items;";
@@ -13,9 +10,6 @@ $modul_sql_deinstall[] = "DROP TABLE IF EXISTS CPPREFIX_modul_userpage_values;";
 $modul_sql_deinstall[] = "DROP TABLE IF EXISTS CPPREFIX_modul_userpage_guestbook;";
 $modul_sql_deinstall[] = "DROP TABLE IF EXISTS CPPREFIX_modul_userpage_template;";
 
-$modul_sql_update[] = "UPDATE CPPREFIX_module SET Version = '".$modul['ModulVersion']."' WHERE ModulName='".$modul['ModulName']."';" ;
-
-$modul_sql_install[] = "DROP TABLE IF EXISTS CPPREFIX_modul_userpage;";
 $modul_sql_install[] = "CREATE TABLE CPPREFIX_modul_userpage (
   id int(1) unsigned NOT NULL auto_increment,
   group_id tinytext,
@@ -23,7 +17,6 @@ $modul_sql_install[] = "CREATE TABLE CPPREFIX_modul_userpage (
   PRIMARY KEY  (Id)
 ) TYPE=MyISAM DEFAULT CHARSET=cp1251;";
 
-$modul_sql_install[] = "DROP TABLE IF EXISTS CPPREFIX_modul_userpage_items;";
 $modul_sql_install[] = "CREATE TABLE CPPREFIX_modul_userpage_items (
   Id int(10) unsigned NOT NULL auto_increment,
   title varchar(250) NOT NULL default '',
@@ -33,14 +26,12 @@ $modul_sql_install[] = "CREATE TABLE CPPREFIX_modul_userpage_items (
   PRIMARY KEY  (Id)
 ) TYPE=MyISAM DEFAULT CHARSET=cp1251;";
 
-$modul_sql_install[] = "DROP TABLE IF EXISTS CPPREFIX_modul_userpage_values";
 $modul_sql_install[] = "CREATE TABLE CPPREFIX_modul_userpage_values (
   id int(10) unsigned NOT NULL auto_increment,
   uid varchar(15) NOT NULL default '',
   PRIMARY KEY  (Id)
 ) TYPE=MyISAM DEFAULT CHARSET=cp1251;";
 
-$modul_sql_install[] = "DROP TABLE IF EXISTS CPPREFIX_modul_userpage_guestbook;";
 $modul_sql_install[] = "CREATE TABLE CPPREFIX_modul_userpage_guestbook (
   id int(10) unsigned NOT NULL auto_increment,
   uid varchar(12) NOT NULL default '',
@@ -51,7 +42,6 @@ $modul_sql_install[] = "CREATE TABLE CPPREFIX_modul_userpage_guestbook (
   PRIMARY KEY  (Id)
 ) TYPE=MyISAM DEFAULT CHARSET=cp1251;";
 
-$modul_sql_install[] = "DROP TABLE IF EXISTS CPPREFIX_modul_userpage_template";
 $modul_sql_install[] = "CREATE TABLE CPPREFIX_modul_userpage_template (
   id int(1) unsigned NOT NULL auto_increment,
   tpl text NOT NULL default '',
@@ -122,4 +112,7 @@ $modul_sql_install[] = "INSERT INTO  CPPREFIX_modul_userpage_template VALUES ('1
 
 </div><br />
 ');";
+
+$modul_sql_update[] = "UPDATE CPPREFIX_module SET CpEngineTag = '" . $modul['CpEngineTag'] . "', CpPHPTag = '" . $modul['CpPHPTag'] . "', Version = '" . $modul['ModulVersion'] . "' WHERE ModulPfad = '" . $modul['ModulPfad'] . "' LIMIT 1;";
+
 ?>

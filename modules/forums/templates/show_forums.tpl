@@ -1,7 +1,3 @@
-
-
-{strip}
-
 {include file="$inc_path/userpanel_forums.tpl"}
 {include file="$inc_path/header_sthreads.tpl"}
 
@@ -27,4 +23,4 @@
   </tr>
 </table>
 
-{* keine kategorien vorhanden *} {else} <strong>{$lang.f_emptyforum}</strong> {/if} {/strip}
+{* keine kategorien vorhanden *} {else} <strong>{$lang.f_emptyforum}</strong> {/if}

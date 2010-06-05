@@ -1,5 +1,3 @@
-{strip}
-
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
 <head>
@@ -16,5 +14,3 @@
 	<h2>Извините, но Вы не имеете доступа к данному разделу!</h2>
 </body>
 </html>
-
-{/strip}

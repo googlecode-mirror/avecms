@@ -1,6 +1,3 @@
-
-<!-- usercomments.tpl -->
-
 {if $Kommentare==1}
 
 	<a name="comments"></a>
@@ -21,7 +18,7 @@
 						</td>
 
 						<td align="right">
-							{$c->Datum|date_format:$TIME_FORMAT|pretty_date:$DEF_LANGUAGE}
+							{$c->Datum|date_format:$TIME_FORMAT|pretty_date}
 						</td>
 					</tr>
 				{/foreach}
@@ -92,5 +89,3 @@
 		<script>location.href='#code_wrong';</script>
 	{/if}
 {/if}
-
-<!-- / usercomments.tpl -->

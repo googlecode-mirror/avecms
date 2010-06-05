@@ -1,5 +1,3 @@
-{strip}
-
 <table width="100%" border="0" cellpadding="8" cellspacing="1" class="tableborder">
 	<tr class="tableheader">
 		<td colspan="2">{#POLL_SETTINGS_TITLE#}</td>
@@ -122,5 +120,3 @@
 	{/if}
 
 </table>
-
-{/strip}

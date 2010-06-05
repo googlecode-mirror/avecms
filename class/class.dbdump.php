@@ -10,58 +10,65 @@
 /**
  * Класс для создания и восстановления дампа БД
  */
-class AVE_SQL_Dump
+class AVE_DB_Service
 {
 
-	function getDump($file)
-	{
-		header('Content-Type: text/plain');
-		header('Expires: ' . gmdate('D, d M Y H:i:s') . ' GMT');
-		header('Content-Disposition: attachment; filename=' . $_SERVER['SERVER_NAME'] . '_' . 'DB_BackUP' .  '_' . date('d.m.y') . '.sql');
-		header('Content-Length: ' . strlen($file));
-		header('Cache-Control: must-revalidate, post-check=0, pre-check=0');
-		header('Pragma: public');
+/**
+ *	СВОЙСТВА
+ */
 
-		echo $file;
+	/**
+	 * Разделитель SQL-запросов
+	 *
+	 * @var string
+	 */
+	var $_delimiter = '#####systemdump#####';
 
-		reportLog($_SESSION['user_name'] . ' - выполнил резервное копирование базы данных.', 2, 2);
+	/**
+	 * Дамп базы данных
+	 *
+	 * @var string
+	 */
+	var $_database_dump = '';
 
-		exit;
-	}
+/**
+ *	ВНУТРЕННИЕ МЕТОДЫ
+ */
 
-	function createTable($table)
+	/**
+	 * Метод формирования файла дампа базы данных
+	 *
+	 * @return boolean
+	 */
+	function _databaseDumpCreate()
 	{
 		global $AVE_DB;
 
-		$row = $AVE_DB->Query("SHOW CREATE TABLE " . $table)->FetchArray();
+		if (! (!empty($_REQUEST['ta']) && is_array($_REQUEST['ta']))) return false;
 
-		return "DROP TABLE IF EXISTS `" . $table . "`;#####systemdump#####\n" . $row[1] . ";#####systemdump#####\n\n";
-	}
-
-	function writeDump()
-	{
-		global $AVE_DB;
-
-		$arr = $_REQUEST['ta'];
 		$search  = array("\x00", "\x0a", "\x0d", "\x1a");
 		$replace = array('\0', '\n', '\r', '\Z');
-		$dump = '';
 
-		while(list($key, $table) = each($arr))
+		$this->_database_dump = '';
+
+		foreach ($_REQUEST['ta'] as $table)
 		{
-			if(ereg('^' . preg_quote(PREFIX), $table))
+			if (preg_match('/^' . preg_quote(PREFIX) . '_/', $table))
 			{
-				$dump .= $this->createTable($table);
-				$sql = $AVE_DB->Query('SELECT * FROM `' . $table . '`');
+				$row = $AVE_DB->Query("SHOW CREATE TABLE " . $table)->FetchArray();
+				$this->_database_dump .= "DROP TABLE IF EXISTS `" . $table . "`;" . $this->_delimiter . "\n";
+				$this->_database_dump .= $row[1] . ";" . $this->_delimiter . "\n\n";
+
 				$nums = 0;
-				while($row = $sql->FetchArray())
+				$sql = $AVE_DB->Query('SELECT * FROM `' . $table . '`');
+				while ($row = $sql->FetchArray())
 				{
 					if ($nums==0)
 					{
 						$nums = $sql->NumFields();
 
 						$temp_array = array();
-						for($i=0; $i<$nums; $i++)
+						for ($i=0; $i<$nums; $i++)
 						{
 							$temp_array[] = $sql->FieldName($i);
 						}
@@ -69,13 +76,13 @@ class AVE_SQL_Dump
 					}
 
 					$temp_array = array();
-					for($i=0; $i<$nums; $i++)
+					for ($i=0; $i<$nums; $i++)
 					{
-						if(!isset($row[$i]))
+						if (!isset($row[$i]))
 						{
 							$temp_array[] = 'NULL';
 						}
-						elseif($row[$i] != '')
+						elseif ($row[$i] != '')
 						{
 							$temp_array[] = "'" . str_replace($search, $replace, addslashes($row[$i])) . "'";
 						}
@@ -84,41 +91,75 @@ class AVE_SQL_Dump
 							$temp_array[] = "''";
 						}
 					}
-					$dump .= 'INSERT INTO `' . $table . '` ' . $table_list . ' VALUES (' . implode(', ', $temp_array) . ");#####systemdump#####\n";
+					$this->_database_dump .= 'INSERT INTO `' . $table . '` ' . $table_list . ' VALUES (' . implode(', ', $temp_array) . ");" . $this->_delimiter . "\n";
 				}
-				$dump .= "\n";
+				$this->_database_dump .= "\n";
 
-//				$sql->Close();
+				$sql->Close();
 			}
 		}
 
-		return $dump;
+		return !empty($this->_database_dump);
 	}
 
-	function dbRestore($tempdir)
+/**
+ *	ВНЕШНИЕ МЕТОДЫ
+ */
+
+	/**
+	 * Отправка файла дампа базы данных
+	 *
+	 */
+	function databaseDumpExport()
 	{
-		global $AVE_DB, $AVE_Template, $config_vars;
+		if (!$this->_databaseDumpCreate()) exit;
+
+		header('Content-Type: text/plain');
+		header('Expires: ' . gmdate('D, d M Y H:i:s') . ' GMT');
+		header('Content-Disposition: attachment; filename=' . $_SERVER['SERVER_NAME'] . '_' . 'DB_BackUP' .  '_' . date('d.m.y') . '.sql');
+		header('Content-Length: ' . strlen($this->_database_dump));
+		header('Cache-Control: must-revalidate, post-check=0, pre-check=0');
+		header('Pragma: public');
+
+		echo $this->_database_dump;
+
+		$this->_database_dump = '';
+
+		reportLog($_SESSION['user_name'] . ' - выполнил резервное копирование базы данных.', 2, 2);
+
+		exit;
+	}
+
+	/**
+	 * Воззтановление базы данных из дампа
+	 *
+	 * @param string $tempdir путь к папке в которую загружается файл дампа
+	 */
+	function databaseDumpImport($tempdir)
+	{
+		global $AVE_DB, $AVE_Template;
 
 		$insert = false;
-		if($_FILES['file']['size'] != 0)
+
+		if ($_FILES['file']['size'] != 0)
 		{
 			$fupload_name = $_FILES['file']['name'];
 			$end = substr($fupload_name, -3);
-			if($end == 'sql')
+			if ($end == 'sql')
 			{
-				if(!@move_uploaded_file($_FILES['file']['tmp_name'], $tempdir . $fupload_name)) die('Ошибка при загрузке файла!');
+				if (!@move_uploaded_file($_FILES['file']['tmp_name'], $tempdir . $fupload_name)) die('Ошибка при загрузке файла!');
 				@chmod($fupload_name, 0777);
 				$insert = true;
 			}
 			else
 			{
-				$AVE_Template->assign('msg', '<span style="color:red">'.$config_vars['MAIN_SQL_FILE_ERROR'].'</span>');
+				$AVE_Template->assign('msg', '<span style="color:red">' . $AVE_Template->get_config_vars('MAIN_SQL_FILE_ERROR') . '</span>');
 			}
 		}
 
-		if($insert)
+		if ($insert)
 		{
-			if($fupload_name != '' && file_exists($tempdir . $fupload_name))
+			if ($fupload_name != '' && file_exists($tempdir . $fupload_name))
 			{
 				$handle = @fopen($tempdir . $fupload_name, 'r');
 				$db_q = @fread($handle, filesize($tempdir . $fupload_name));
@@ -127,15 +168,15 @@ class AVE_SQL_Dump
 				$m_ok = 0;
 				$m_fail = 0;
 
-				$ar = @explode('#####systemdump#####', $db_q);
+				$querys = @explode($this->_delimiter, $db_q);
 
-				while(@list($key,$val) = @each($ar))
+				foreach ($querys as $val)
 				{
-					if(chop($val) != '')
+					if (chop($val) != '')
 					{
 						$q = str_replace("\n",'',$val);
 						$q = $q . ';';
-						if($AVE_DB->Query($q))
+						if ($AVE_DB->Query($q))
 						{
 							$m_ok++;
 						}
@@ -147,8 +188,11 @@ class AVE_SQL_Dump
 				}
 
 				@unlink($tempdir . $fupload_name);
-				$msg = $config_vars['MAIN_RESTORE_OK'];
-				$msg .= '<br /><br />' . $config_vars['MAIN_TABLE_SUCC'] . '<span style="color:green">' . $m_ok . '</span><br/> ' . $config_vars['MAIN_TABLE_ERROR'] . ' <span style="color:red">' . $m_fail . '</span><br />';
+				$msg = $AVE_Template->get_config_vars('MAIN_RESTORE_OK') . '<br /><br />'
+					. $AVE_Template->get_config_vars('MAIN_TABLE_SUCC')
+					. '<span style="color:green">' . $m_ok . '</span><br/> '
+					. $AVE_Template->get_config_vars('MAIN_TABLE_ERROR')
+					. ' <span style="color:red">' . $m_fail . '</span><br />';
 				$AVE_Template->assign('msg', $msg);
 			}
 			else
@@ -156,44 +200,61 @@ class AVE_SQL_Dump
 				$AVE_Template->assign('msg', '<span style="color:red">Ошибка! Импорт базы данных не выполнен, т.к. отсутсвует файл дампа или он поврежден.</span>');
 			}
 		}
+
 		reportLog($_SESSION['user_name'] . ' - выполнил востановление базы данных из резервной копии', 2, 2);
 	}
 
-	function optimizeRep()
+	/**
+	 * Оптимизация таблиц базы данных
+	 *
+	 */
+	function databaseTableOptimize()
 	{
 		global $AVE_DB;
 
-		if($_REQUEST['whattodo'] == 'optimize')
+		if (!empty($_POST['ta']) && is_array($_POST['ta']))
 		{
-			$AVE_DB->Query('OPTIMIZE TABLE ' . implode(',', $_REQUEST['ta']));
+			$AVE_DB->Query("OPTIMIZE TABLE `" . implode("`, `", $_POST['ta']) . "`");
+
 			reportLog($_SESSION['user_name'] . ' - выполнил оптимизацию базы данных', 2, 2);
 		}
-		else
-		{
-			$AVE_DB->Query('REPAIR TABLE ' . implode(',', $_REQUEST['ta']));
-			reportLog($_SESSION['user_name'] . ' - выполнил востановление таблиц базы данных', 2, 2);
-		}
-
-		return $this->showTables();
 	}
 
-	function showTables()
+	/**
+	 * Восстановление повреждённых таблиц базы данных
+	 *
+	 */
+	function databaseTableRepair()
 	{
 		global $AVE_DB;
 
-		$tabellen = '';
-		$sql = $AVE_DB->Query('SHOW TABLES');
-		while($row = $sql->FetchArray())
+		if (!empty($_POST['ta']) && is_array($_POST['ta']))
 		{
-			$titel = $row[0];
-			if(ereg('^' . preg_quote(PREFIX), $titel))
-			{
-				$tabellen .= '<option value="' . $titel . '" selected>' . substr($titel, 1+strlen(PREFIX)) . '</option>';
-			}
+			$AVE_DB->Query("REPAIR TABLE `" . implode("`, `", $_POST['ta']) . "`");
+
+			reportLog($_SESSION['user_name'] . ' - выполнил востановление таблиц базы данных', 2, 2);
+		}
+	}
+
+	/**
+	 * Формирование списка таблиц
+	 *
+	 * @return string
+	 */
+	function databaseTableGet()
+	{
+		global $AVE_DB;
+
+		$tables = '';
+
+		$sql = $AVE_DB->Query("SHOW TABLES LIKE '" . PREFIX . "_%'");
+		while ($row = $sql->FetchArray())
+		{
+			$tables .= '<option value="' . $row[0] . '" selected="selected">' . substr($row[0], 1+strlen(PREFIX)) . '</option>';
 		}
 		$sql->Close();
 
-		return $tabellen;
+		return $tables;
 	}
 }
 

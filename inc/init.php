@@ -9,38 +9,116 @@
 
 if (!defined('BASE_DIR')) exit;
 
-set_include_path(get_include_path() . PATH_SEPARATOR . BASE_DIR . '/lib');
-
-require(BASE_DIR . '/inc/config.php');
-require(BASE_DIR . '/inc/db.config.php');
-require(BASE_DIR . '/functions/func.common.php');
-
-if (isset($_SERVER['REQUEST_METHOD']) && strtolower($_SERVER['REQUEST_METHOD'])=='post')
+if (isset($_SERVER['REQUEST_METHOD']) && strtolower($_SERVER['REQUEST_METHOD']) === 'post')
 {
-    if (!isset($_SERVER['HTTP_REFERER']) || !stc($_SERVER['HTTP_REFERER'], $_SERVER['HTTP_HOST']))
-    {
-        die('<div style="background-color:#fff;padding:5px;border:2px solid #f00"><b>Illegal Operation:</b> Posting allowed only from main server.</div>');
-    }
+	$ref_url = false;
+	if (isset($_SERVER['HTTP_REFERER']))
+	{
+		$ref_url = parse_url($_SERVER['HTTP_REFERER']);
+		$ref_url = (trim($ref_url['host']) == $_SERVER['SERVER_NAME']);
+	}
+	if (!$ref_url) die('<div style="background-color:#fff;padding:5px;border:2px solid #f00"><b>Illegal Operation:</b> Posting allowed only from main server.</div>');
 }
 
+/**
+ * ”даление глобальных массивов
+ *
+ */
+function unsetGlobals()
+{
+	if (!ini_get('register_globals')) return;
+
+	$allowed = array('_ENV'=>1, '_GET'=>1, '_POST'=>1, '_COOKIE'=>1, '_FILES'=>1, '_SERVER'=>1, '_REQUEST'=>1, 'GLOBALS'=>1);
+
+	foreach ($GLOBALS as $key => $value)
+	{
+		if (!isset($allowed[$key])) unset($GLOBALS[$key]);
+	}
+}
 unsetGlobals();
 
 if (isset($HTTP_POST_VARS))
 {
-	$_POST     = $HTTP_POST_VARS;
-	$_GET      = $HTTP_GET_VARS;
-	$_REQUEST  = array_merge($_POST, $_GET);
-	$_COOKIE   = $HTTP_COOKIE_VARS;
-	if (isset($HTTP_SESSION_VARS)) $_SESSION = $HTTP_SESSION_VARS;
+	$_GET     = $HTTP_GET_VARS;
+	$_POST    = $HTTP_POST_VARS;
+	$_REQUEST = array_merge($_POST, $_GET);
+	$_COOKIE  = $HTTP_COOKIE_VARS;
+}
+
+/**
+ * —лешевание (дл€ глобальных массивов)
+ * рекурсивно обрабатывает вложенные массивы
+ *
+ * @param array $array обрабатываемый массив
+ * @return array обработанный массив
+ */
+function add_slashes($array)
+{
+	reset($array);
+	while (list($key, $val) = each($array))
+	{
+		if (is_string($val))	$array[$key] = addslashes($val);
+		elseif (is_array($val))	$array[$key] = add_slashes($val);
+	}
+
+	return $array;
 }
 
 if (!get_magic_quotes_gpc())
 {
-	$_REQUEST  = addArray($_REQUEST);
-	$_POST     = addArray($_POST);
-	$_GET      = addArray($_GET);
-	$_COOKIE   = addArray($_COOKIE);
+	$_GET     = add_slashes($_GET);
+	$_POST    = add_slashes($_POST);
+	$_REQUEST = array_merge($_POST, $_GET);
+	$_COOKIE  = add_slashes($_COOKIE);
 }
+
+function is_ssl()
+{
+	if (isset($_SERVER['HTTPS']))
+	{
+		if ('on' == strtolower($_SERVER['HTTPS'])) return true;
+		if ('1' == $_SERVER['HTTPS']) return true;
+	}
+	elseif (isset($_SERVER['SERVER_PORT']) && ('443' == $_SERVER['SERVER_PORT']))
+	{
+		return true;
+	}
+
+	return false;
+}
+
+function set_host()
+{
+	if (isset($_SERVER['HTTP_HOST']))
+	{
+		// ¬се символы $_SERVER['HTTP_HOST'] приводим к строчным и провер€ем
+		// на наличие запрещЄнных символов в соответствии с RFC 952 и RFC 2181.
+		$_SERVER['HTTP_HOST'] = strtolower($_SERVER['HTTP_HOST']);
+		if (!preg_match('/^\[?(?:[a-z0-9-:\]_]+\.?)+$/', $_SERVER['HTTP_HOST']))
+		{
+			// $_SERVER['HTTP_HOST'] не соответствует спецификаци€м.
+			// ¬озможно попытка взлома, даЄм отлуп статусом 400.
+			header('HTTP/1.1 400 Bad Request');
+			exit;
+		}
+	}
+	else
+	{
+		$_SERVER['HTTP_HOST'] = '';
+	}
+
+	$ssl = is_ssl();
+	$shema = ($ssl) ? 'https://' : 'http://';
+	$host = str_replace(':' . $_SERVER['SERVER_PORT'], '', $_SERVER['HTTP_HOST']);
+	$port = ($_SERVER['SERVER_PORT'] == '80' || $_SERVER['SERVER_PORT'] == '443' || $ssl) ? '' : ':' . $_SERVER['SERVER_PORT'];
+	define('HOST', $shema . $host . $port);
+
+	$script_name = (!strstr($_SERVER['PHP_SELF'], $_SERVER['SCRIPT_NAME']) && (@php_sapi_name() == 'cgi')) ? $_SERVER['PHP_SELF'] : $_SERVER['SCRIPT_NAME'];
+	define('ABS_PATH', rtrim(str_replace("\\", "/", dirname($script_name)), '/') . '/');
+}
+set_host();
+
+set_include_path(get_include_path() . PATH_SEPARATOR . BASE_DIR . '/lib');
 
 ini_set('arg_separator.output',     '&amp;');
 ini_set('session.cache_limiter',    'none');
@@ -51,66 +129,54 @@ ini_set('session.use_only_cookies', 1);
 ini_set('session.use_trans_sid',    0);
 ini_set('url_rewriter.tags',        '');
 
-define('APP_NAME', 'AVE.cms');
-define('APP_VERSION', '2.09e');
-define('APP_INFO', APP_NAME . ' ' . APP_VERSION . ' &copy; 2008-' . gmdate('Y') . ' <a target="_blank" href="http://www.overdoze.ru/">Overdoze.Ru</a>');
-
-define('URL_SUFF', $config['url_suff']);
-define('CP_REWRITE', $config['mod_rewrite']);
-define('CACHE_DOC_TPL', $config['cache_doc_tpl']);
-define('DEFAULT_LANGUAGE', $config['default_language']);
-define('DEFAULT_THEME_FOLDER', $config['default_theme_folder']);
-define('DEFAULT_ADMIN_THEME_FOLDER', $config['default_admin_theme_folder']);
-
-define('DB_HOST', $config['dbhost']);
-define('DB_USER', $config['dbuser']);
-define('DB_PASS', $config['dbpass']);
-define('DB_NAME', $config['dbname']);
-define('PREFIX', $config['dbpref']);
-
-init_path();
-
-if ($config['session_save_handler'])
+require(BASE_DIR . '/inc/config.php');
+require(BASE_DIR . '/functions/func.common.php');
+require(BASE_DIR . '/functions/func.login.php');
+require(BASE_DIR . '/functions/func.pagination.php');
+if (!defined('ACP'))
 {
-    require(BASE_DIR . '/functions/func.session.php');
+	require(BASE_DIR . '/functions/func.parsefields.php');
+	require(BASE_DIR . '/functions/func.parserequest.php');
+}
+
+function set_cookie_domain($cookie_domain = '')
+{
+	if ($cookie_domain == '' && defined('COOKIE_DOMAIN') && COOKIE_DOMAIN != '')
+	{
+		$cookie_domain = COOKIE_DOMAIN;
+	}
+	elseif ($cookie_domain == '' && !empty($_SERVER['HTTP_HOST']))
+	{
+		$cookie_domain = htmlspecialchars($_SERVER['HTTP_HOST'], ENT_QUOTES);
+	}
+
+	// ”дал€ем ведущие www. и номер порта в имени домена дл€ использовани€ в cookie.
+	$cookie_domain = ltrim($cookie_domain, '.');
+	if (strpos($cookie_domain, 'www.') === 0)
+	{
+		$cookie_domain = substr($cookie_domain, 4);
+	}
+	$cookie_domain = explode(':', $cookie_domain);
+	$cookie_domain = '.'. $cookie_domain[0];
+
+	// ¬ соответствии с RFC 2109, им€ домена дл€ cookie должно быть второго или более уровн€.
+	// ƒл€ хостов 'localhost' или указанных IP-адресом им€ домена дл€ cookie не устанавливаетс€.
+	if (count(explode('.', $cookie_domain)) > 2 && !is_numeric(str_replace('.', '', $cookie_domain)))
+	{
+		ini_set('session.cookie_domain', $cookie_domain);
+	}
+
+	ini_set('session.cookie_path', ABS_PATH);
+}
+set_cookie_domain();
+
+if (SESSION_SAVE_HANDLER)
+{
+	require(BASE_DIR . '/functions/func.session.php');
 }
 else
 {
 	ini_set('session.save_handler', 'files');
-}
-
-if (! empty($config['cookie_domain']))
-{
-    // ≈сли пользователь указал им€ домена дл€ cookie используем его дл€ имени сессии.
-//    $session_name = $config['cookie_domain'];
-    $cookie_domain = $config['cookie_domain'];
-}
-else
-{
-    // »наче используем BASE_URL дл€ имени сессии, без протокола
-    // что-бы использовать одинаковый идентификатор сессии дл€ протоколов http и https.
-    list( , $session_name) = explode('://', BASE_URL, 2);
-    // Ёкранируем им€ хоста так как пользователь может его модифицировать дл€ взлома.
-    if (!empty($_SERVER['HTTP_HOST']))
-    {
-        $cookie_domain = htmlspecialchars($_SERVER['HTTP_HOST'], ENT_QUOTES);
-    }
-}
-
-// ”дал€ем ведущие www. и номер порта в имени домена дл€ использовани€ в cookie.
-$cookie_domain = ltrim($cookie_domain, '.');
-if (strpos($cookie_domain, 'www.') === 0)
-{
-    $cookie_domain = substr($cookie_domain, 4);
-}
-$cookie_domain = explode(':', $cookie_domain);
-$cookie_domain = '.'. $cookie_domain[0];
-
-// ¬ соответствии с RFC 2109, им€ домена дл€ cookie должно быть второго или более уровн€.
-// ƒл€ хостов 'localhost' или указанных IP-адресом им€ домена дл€ cookie не устанавливаетс€.
-if (count(explode('.', $cookie_domain)) > 2 && !is_numeric(str_replace('.', '', $cookie_domain)))
-{
-    ini_set('session.cookie_domain', $cookie_domain);
 }
 
 //session_name('SESS'. md5($session_name));
@@ -119,90 +185,90 @@ session_start();
 
 if (isset($HTTP_SESSION_VARS)) $_SESSION = $HTTP_SESSION_VARS;
 
-//include(BASE_DIR . '/inc/ids.php');
-
-require(BASE_DIR . '/class/class.database.php');
-$AVE_DB = new AVE_DB(DB_HOST, DB_USER, DB_PASS, DB_NAME);
-
 if (isset($_REQUEST['action']) && $_REQUEST['action'] == 'logout')
 {
-    // уничтожаем куки
-    @setcookie('auth[id]', '');
-    @setcookie('auth[hash]', '');
+	user_logout();
 
-    // уничтожаем сессию
-    @session_destroy();
-    session_unset();
-    $_SESSION = array();
-
-    if (!isset($_SERVER['HTTP_REFERER']) || !stc($_SERVER['HTTP_REFERER'], $_SERVER['HTTP_HOST']))
-    {
-        header('Location:' . BASE_URL . BASE_PATH);
-    }
-    else
-    {
-        header('Location:' . $_SERVER['HTTP_REFERER']);
-    }
-    exit;
+	header('Location:' . get_referer_link());
+	exit;
 }
 
-if (!checkLogin())
+// дл€ параноиков
+//require(BASE_DIR . '/inc/ids.php');
+
+require(BASE_DIR . '/class/class.database.php');
+
+if (!defined('ACPL') && !auth_sessions())
 {
-    // чистим данные авторизации в сессии
-    unset($_SESSION['user_id'], $_SESSION['user_pass']);
+	if (!auth_cookie())
+	{
+		// чистим данные авторизации в сессии
+		unset($_SESSION['user_id'], $_SESSION['user_pass']);
 
-	// считаем пользовател€ √остем
-	$_SESSION['user_group'] = 2;
-	define('UNAME', '√ость');
-	define('UGROUP', 2);
-	define('UID', 0);
+		// считаем пользовател€ √остем
+		$_SESSION['user_group'] = 2;
+		$_SESSION['user_name'] = get_username();
+		define('UID', 0);
+		define('UGROUP', 2);
+		define('UNAME', $_SESSION['user_name']);
+	}
 }
 
-if (empty($_POST) && !isset($_REQUEST['module']) && UGROUP == -2)
+// «аглушка пока нет поддержки много€зычности
+$_SESSION['user_language'] = DEFAULT_LANGUAGE;
+
+// Ёксперимент с кэшированием
+if (!defined('ACP') && empty($_POST) && !isset($_REQUEST['module']) && UGROUP == -2)
 {
 	require(BASE_DIR . '/lib/Cache/Lite/Output.php');
 
 	$options = array(
 		'writeControl' => false,
 		'readControl'  => false,
-		'lifeTime'     => $config['cache_lifetime'],
+		'lifeTime'     => CACHE_LIFETIME,
 		'cacheDir'     => BASE_DIR . '/cache/'
 	);
 
 	$cache = new Cache_Lite_Output($options);
 
-	if ($cache->start($_SERVER['REQUEST_URI']))
+	if ($cache->start($_SERVER['REQUEST_URI']) && defined('PROFILING') && PROFILING)
 	{
-		// ¬ыводим статистику и завершаем работу
-		echo "\n<br>¬рем€ генерации: ", number_format(microtimeDiff($start_time, microtime()), 3, ',', ' '), ' сек.';
-		echo "\n<br> оличество запросов: ", $AVE_DB->StatDB('count'), ' шт. за ', number_format($AVE_DB->StatDB('time'), 3, ',', '.'), ' сек.';
-		echo "\n<br>ѕиковое значение ", number_format((function_exists('memory_get_peak_usage') ? memory_get_peak_usage() : 0)/1024, 0, ',', ' '), 'Kb';
-		exit;
+		echo get_statistic(1,1,1,0);exit;
 	}
 }
 
-require(BASE_DIR . '/class/class.globals.php');
-$AVE_Globals = new AVE_Globals;
-
-define('DEFAULT_COUNTRY', strtolower(trim($AVE_Globals->mainSettings('default_country'))));
-define('DATE_FORMAT', $AVE_Globals->mainSettings('date_format'));
-define('TIME_FORMAT', $AVE_Globals->mainSettings('time_format'));
-define('PAGE_NOT_FOUND_ID', intval($AVE_Globals->mainSettings('page_not_found_id')));
-
-switch (DEFAULT_COUNTRY)
+define('DATE_FORMAT', get_settings('date_format'));
+define('TIME_FORMAT', get_settings('time_format'));
+define('PAGE_NOT_FOUND_ID', intval(get_settings('page_not_found_id')));
+if (isset($_REQUEST['onlycontent']) && 1 == $_REQUEST['onlycontent'])
 {
-	case 'de':
-		@setlocale (LC_ALL, 'de_DE@euro', 'de_DE', 'de', 'ge');
-		break;
-
-	case 'ru':
-		@setlocale(LC_ALL, 'ru_RU.CP1251', 'rus_RUS.CP1251', 'Russian_Russia.1251', 'russian');
-		break;
-
-	default:
-		@setlocale (LC_ALL, DEFAULT_COUNTRY . '_' . strtoupper(DEFAULT_COUNTRY), DEFAULT_COUNTRY, '');
-		break;
+	define('ONLYCONTENT', 1);
 }
+
+function set_locale()
+{
+	$acp_language = empty($_SESSION['admin_language'])
+						? $_SESSION['user_language']
+						: $_SESSION['admin_language'];
+
+	$locale = strtolower(defined('ACP') ? $acp_language : $_SESSION['user_language']);
+
+	switch ($locale)
+	{
+		case 'de':
+			@setlocale (LC_ALL, 'de_DE@euro', 'de_DE', 'de', 'ge');
+			break;
+
+		case 'ru':
+			@setlocale(LC_ALL, 'ru_RU.CP1251', 'rus_RUS.CP1251', 'Russian_Russia.1251', 'russian');
+			break;
+
+		default:
+			@setlocale (LC_ALL, $locale . '_' . strtoupper($locale), $locale, '');
+			break;
+	}
+}
+set_locale();
 
 require(BASE_DIR . '/class/class.template.php');
 

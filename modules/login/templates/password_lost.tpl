@@ -1,4 +1,3 @@
-<!-- password_lost.tpl -->
 <script type="text/javascript" language="JavaScript">
 function check_email() {ldelim}
 	if (document.getElementById('l_mailreminder').value == '') {ldelim}
@@ -9,8 +8,7 @@ function check_email() {ldelim}
 	return true;
 {rdelim}
 </script>
-{strip}
-
+{*
 <h2 id="page-heading">{#LOGIN_REMIND#}</h2>
 
 <div id="module_content">
@@ -31,6 +29,29 @@ function check_email() {ldelim}
 		</form>
 	{/if}
 </div>
+*}
+<div class="box">
+	<h2>
+		<a href="#" id="toggle-forms">{#LOGIN_REMIND#}</a>
 
-{/strip}
-<!-- /password_lost.tpl -->
+	</h2>
+	<div class="block" id="forms">
+		{if $smarty.request.sub=='send'}
+			<fieldset>
+				<p>{#LOGIN_REMINDER_INFO3#}</p>
+			</fieldset>
+		{else}
+			<form method="post" action="{$ABS_PATH}index.php?module=login&action=passwordreminder&sub=send" onsubmit="return check_email();">
+				<fieldset class="login">
+					<legend>{#LOGIN_REMINDER_INFO4#}</legend>
+					<p>{#LOGIN_REMINDER_INFO2#}</p>
+					<p>
+						<label>{#LOGIN_YOUR_MAIL#}</label>
+						<input name="f_mailreminder" id="l_mailreminder" value="" type="text">
+					</p>
+					<input class="confirm button" value="{#LOGIN_BUTTON_NEWPASS#}" type="submit">
+				</fieldset>
+			</form>
+		{/if}
+	</div>
+</div>

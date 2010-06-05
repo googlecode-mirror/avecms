@@ -6,7 +6,7 @@
   <table width = "100%" border="0" cellpadding="0" cellspacing="0">
     <tr>
       <td><strong>{$item->project_name}</strong></td>
-      <td align="right">{if !$item->date}{else}{#ROADMAP_LAST_CHANGE#}: {$item->date|date_format:$TIME_FORMAT|pretty_date:$DEF_LANGUAGE}{/if}</td>
+      <td align="right">{if !$item->date}{else}{#ROADMAP_LAST_CHANGE#}: {$item->date|date_format:$TIME_FORMAT|pretty_date}{/if}</td>
     </tr>
 </table>
 </div>

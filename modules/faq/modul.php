@@ -20,62 +20,58 @@ if (defined('ACP'))
 }
 
 // show faq
-function mod_faq($id)
+function mod_faq($faq_id)
 {
 	require_once(BASE_DIR . '/modules/faq/class.faq.php');
 
 	$tpl_dir   = BASE_DIR . '/modules/faq/templates/';
-	$lang_file = BASE_DIR . '/modules/faq/lang/' . DEFAULT_LANGUAGE . '.txt';
-	faq::ShowFaq($tpl_dir, stripslashes($id));
+	$lang_file = BASE_DIR . '/modules/faq/lang/' . $_SESSION['user_language'] . '.txt';
+	faq::ShowFaq($tpl_dir, stripslashes($faq_id));
 }
 
 // admin edit
-if(defined('ACP') && !(isset($_REQUEST['action']) && $_REQUEST['action'] == 'delete'))
+if (defined('ACP') && !empty($_REQUEST['moduleaction']))
 {
-	require_once(BASE_DIR . '/modules/faq/sql.php');
 	require_once(BASE_DIR . '/modules/faq/class.faq.php');
 
 	$tpl_dir   = BASE_DIR . '/modules/faq/templates/';
-	$lang_file = BASE_DIR . '/modules/faq/lang/' . DEFAULT_LANGUAGE . '.txt';
+	$lang_file = BASE_DIR . '/modules/faq/lang/' . $_SESSION['user_language'] . '.txt';
 
 	$GLOBALS['AVE_Template']->config_load($lang_file);
 	$config_vars = $GLOBALS['AVE_Template']->get_config_vars();
 	$GLOBALS['AVE_Template']->assign('config_vars', $config_vars);
 
-	if(isset($_REQUEST['moduleaction']) && $_REQUEST['moduleaction'] != '')
+	switch($_REQUEST['moduleaction'])
 	{
-		switch($_REQUEST['moduleaction'])
-		{
-			case '1':
-				faq::faqList($tpl_dir);
-				break;
+		case '1':
+			faq::faqList($tpl_dir);
+			break;
 
-			case 'add':
-				faq::Addfaq();
-				break;
+		case 'add':
+			faq::Addfaq();
+			break;
 
-			case 'del':
-				faq::Delfaq();
-				break;
+		case 'del':
+			faq::Delfaq();
+			break;
 
-			case 'savelist':
-				faq::SaveList();
-				break;
+		case 'savelist':
+			faq::SaveList();
+			break;
 
-			case 'edit':
-				faq::Editfaq($tpl_dir);
-				break;
+		case 'edit':
+			faq::Editfaq($tpl_dir);
+			break;
 
-			case 'saveedit':
-				faq::Savequest();
-				break;
-			case 'edit_quest':
-				faq::edit_quest($tpl_dir);
-				break;
-			case 'del_quest':
-				faq::del_quest();
-				break;
-		}
+		case 'saveedit':
+			faq::Savequest();
+			break;
+		case 'edit_quest':
+			faq::edit_quest($tpl_dir);
+			break;
+		case 'del_quest':
+			faq::del_quest();
+			break;
 	}
 }
 

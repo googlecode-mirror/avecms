@@ -168,7 +168,7 @@ var ie  = document.all  ? 1 : 0;
 			</small>
 			</td>
             <td class="{cycle name='pnl5' values='forum_post_first,forum_post_second'}" width="10%" valign="top" nowrap="nowrap">
-              {$data.pntime|date_format:$config_vars.DateFormatLastPost}
+              {$data.pntime|date_format:$smarty.config.DateFormatLastPost}
 		    </td>
           </tr>
           {$data.tbody_end}
@@ -364,7 +364,7 @@ function zaehle() {ldelim}
           <td width="150" height="120" class="forum_post_first"><strong>{#PN_sender#}</strong><br />
             <a class="light"  href="{$tofromname_link}">{$tofromname} </a><br />
               <strong>{#PN_Date#}</strong><br />
-          <span class="row_second"> <span class="time"> {$pntime|date_format:$config_vars.DateFormatLastPost} </span></span></td>
+          <span class="row_second"> <span class="time"> {$pntime|date_format:$smarty.config.DateFormatLastPost} </span></span></td>
           <td class="forum_post_second">{$message}</td>
         </tr>
 

@@ -1,6 +1,5 @@
 <div class="grid_12">
 <!-- SHOP - ITEMS -->
-{strip}
 
 {if !$row}
 	<p>{#ErrorNoProduct#}</p>
@@ -27,25 +26,25 @@
 		<td class="tdleft">
 		{* {#PriceListS#}&nbsp;*}
 		</td>
-		<td><strong style="text-decoration:line-through">{numFormat val=$row->PreisListe} {$Currency}</strong></td>
+		<td><strong style="text-decoration:line-through">{num_format val=$row->PreisListe} {$Currency}</strong></td>
 	</tr>
 	<tr>
 		<td  class="tdleft"><strong>{#PriceYouSave#}</strong></td>
-		<td>{numFormat val=$row->PreisDiff} {$Currency} ({math equation="p / (x / 100)" x=$row->PreisListe y=$row->Preis p=$row->PreisDiff format="%.0f"} %)</td>
+		<td>{num_format val=$row->PreisDiff} {$Currency} ({math equation="p / (x / 100)" x=$row->PreisListe y=$row->Preis p=$row->PreisDiff format="%.0f"} %)</td>
 	</tr>
 {/if}
 
 <!-- основная цена -->
 <tr>
 	<td class="tdleft">{#OurPrice#}</td>
-	<td><div class="mod_shop_price_big"> {numFormat val=$row->Preis} {$Currency}</div> </td>
+	<td><div class="mod_shop_price_big"> {num_format val=$row->Preis} {$Currency}</div> </td>
 </tr>
 
 <!-- цена в другой валюте -->
 {if $row->PreisW2 && $ZeigeWaehrung2=='1'}
 	<tr>
 		<td  class="tdleft">{#OurPrice#} в {$Currency2}</td>
-		<td>{numFormat val=$row->PreisW2} {$Currency2}</td>
+		<td>{num_format val=$row->PreisW2} {$Currency2}</td>
 	</tr>
 {/if}
 
@@ -53,7 +52,7 @@
 {if $row->Einheit_Preis}
 	<tr>
 		<td  class="tdleft">{$row->Einheit|replace:'.00':''} {$row->Einheit_Art} {#UnitIncluded#} {$row->Einheit_Art_S}:</td>
-		<td>{numFormat val=$row->Einheit_Preis} {$Currency}</td>
+		<td>{num_format val=$row->Einheit_Preis} {$Currency}</td>
 	</tr>
 {/if}
 
@@ -61,7 +60,7 @@
 {if $row->ZeigeNetto==1  && $row->Preis_USt>0 && $row->NettoAnzeigen==1}
 	<tr>
 		<td  class="tdleft">{#IncludeMwSt#}</td>
-		<td>{numFormat val=$row->Preis_USt} {$Currency} {#InVatOnce#} / {numFormat val=$row->Preis_Netto_Out} {$Currency} netto</td>
+		<td>{num_format val=$row->Preis_USt} {$Currency} {#InVatOnce#} / {num_format val=$row->Preis_Netto_Out} {$Currency} netto</td>
 	</tr>
 {/if}
 
@@ -78,7 +77,7 @@
 					{foreach from=$StPrices name=staffel item=sp}
 						<tr>
 							<td>{$sp->StkVon} - {if !$smarty.foreach.staffel.last}{$sp->StkBis}{else}?{/if}</td>
-							<td>{numFormat val=$sp->Preis} {$Currency}</td>
+							<td>{num_format val=$sp->Preis} {$Currency}</td>
 						</tr>
 					{/foreach}
 				</table></div>
@@ -114,7 +113,7 @@
                 <select class="mod_shop_inputfields" name="product_vars[]">
                 <option value="0"></option>
                 {foreach from=$vars->VarItems item=vi}
-                <option value="{$vi->Id}">{$vi->Name} ({$vi->Operant}{numFormat val=$vi->Wert} {$Currency})</option>
+                <option value="{$vi->Id}">{$vi->Name} ({$vi->Operant}{num_format val=$vi->Wert} {$Currency})</option>
                 {/foreach}
                 </select>
                 <input title="{$vars->Beschreibung|default:'-'}" type="button" class="button" value="?" style="margin-left:2px" />
@@ -201,14 +200,14 @@
 <!-- Дата начала продажи -->
 <tr>
 <td  class="tdleft">{#Release#}</td>
-<td>{$row->Erschienen|date_format:$config_vars.DateFormatRelease}</td>
+<td>{$row->Erschienen|date_format:#DateFormatRelease#}</td>
 </tr>
 
 <!-- Рейтинги -->
 <tr>
 <td  class="tdleft">{#CommentsVotesCut#}</td>
 <td>
-{if $rez->Proz<1}{#CommentsNull#}{else}<img class="absmiddle" src="{$shop_images}{$rez->Proz}.gif" alt="" />&nbsp;&nbsp;—&nbsp;&nbsp;{/if}{#CommentsCount#}&nbsp; 
+{if $rez->Proz<1}{#CommentsNull#}{else}<img class="absmiddle" src="{$shop_images}{$rez->Proz}.gif" alt="" />&nbsp;&nbsp;—&nbsp;&nbsp;{/if}{#CommentsCount#}&nbsp;
 <a href="#rezNew">{$rez->Anz}</a>
 </td>
 </tr>
@@ -243,7 +242,7 @@
       {if $row->Frei_Titel_4!=''}<div class="tab-handle">{$row->Frei_Titel_4}</div>{/if}
     </div>
     <div class="tab-body">
-    
+
       <div class="tab-body-element">
         <h3>{#Description#}</h3>
         <div class="mod_shop_newprod_box">
@@ -347,7 +346,7 @@
 {foreach from=$Comments item=c}
 <table width="100%" border="0" cellspacing="0" cellpadding="0" class="mod_comment_box">
 <tr>
-<td class="mod_comment_header">{$c->Datum|date_format:$config_vars.DateFormatRelease} оставил рецензию {$c->Titel|stripslashes} </td>
+<td class="mod_comment_header">{$c->Datum|date_format:#DateFormatRelease#} оставил рецензию {$c->Titel|stripslashes} </td>
 </tr>
 <tr>
 <td class="mod_comment_text">
@@ -358,7 +357,6 @@
 {/foreach}
 {/if}
 {/if}
-{/strip}
 
 <script language="javascript">
 function confirm_comment()
@@ -398,13 +396,13 @@ function confirm_comment()
       <h2> <a href="#" id="toggle-login-forms">Авторизация</a> </h2>
       <div class="block" id="login-forms">{$UserPanel}</div>
     </div>
-    
+
   <!-- Блок поиска по магазину -->
     <div class="box">
       <h2><a href="#" id="toggle-shop-search">Поиск товаров</a></h2>
       <div class="block" id="shop-search">{$Search}</div>
     </div>
-    
+
   <!-- Блок корзины -->
     <div class="box">
       <h2><a href="#" id="toggle-shopbasket">Корзина</a></h2>

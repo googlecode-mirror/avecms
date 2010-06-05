@@ -1,5 +1,3 @@
-{strip}
-
 <div class="pageHeaderTitle" style="padding-top: 7px;">
 	<div class="h_module">&nbsp;</div>
 	<div class="HeaderTitle"><h2>{#ModName#}</h2></div>
@@ -27,5 +25,3 @@
 
 	<input type="submit" class="button" value="{#ButtonSave#}">
 </form>
-
-{/strip}

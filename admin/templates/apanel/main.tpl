@@ -1,4 +1,3 @@
-{strip}
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
 <head>
@@ -65,11 +64,7 @@
 
 					<tr>
 						<td valign="top" id="content" height="100%">
-{/strip}
-
 							{$content}
-
-{strip}
 						</td>
 					</tr>
 				</table>
@@ -88,5 +83,3 @@
 	</table>
 </body>
 </html>
-
-{/strip}

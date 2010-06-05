@@ -1,12 +1,10 @@
-{strip}
-
 <div id="pageHeaderTitle" style="padding-top: 7px;">
 	<div class="h_navi">&nbsp;</div>
 	<div class="HeaderTitle"><h2>{#NAVI_SUB_TITLE#}</h2></div>
 	<div class="HeaderText">{#NAVI_TIP_TEMPLATE#}</div>
 </div>
 
-{if checkPermission('navigation_new')}
+{if check_permission('navigation_new')}
 <script type="text/javascript" language="JavaScript">
 function check_name() {ldelim}
 	if (document.getElementById('NaviName').value == '') {ldelim}
@@ -46,7 +44,7 @@ function check_name() {ldelim}
 			<td width="10" class="itcen">{$item->id}</td>
 			<td>
 				<strong>
-					{if checkPermission('navigation_edit')}
+					{if check_permission('navigation_edit')}
 						<a title="{#NAVI_EDIT_ITEMS#}" href="index.php?do=navigation&amp;action=entries&amp;cp={$sess}&amp;id={$item->id}">{$item->titel|escape:html|stripslashes}</a>
 					{else}
 						{$item->titel|escape:html|stripslashes}
@@ -55,21 +53,21 @@ function check_name() {ldelim}
 			</td>
 			<td><input type="text" value="[mod_navigation:{$item->id}]" size="15" readonly></td>
 			<td width="1%" align="center">
-				{if checkPermission('navigation_edit')}
+				{if check_permission('navigation_edit')}
 					<a title="{#NAVI_EDIT_TEMPLATE#}" href="index.php?do=navigation&amp;action=templates&amp;cp={$sess}&amp;id={$item->id}"><img src="{$tpl_dir}/images/icon_template.gif" alt="" border="0"  /></a>
 				{else}
 					<img src="{$tpl_dir}/images/icon_template_no.gif" alt="" border="0"  />
 				{/if}
 			</td>
 			<td width="1%" align="center">
-				{if checkPermission('navigation_edit')}
+				{if check_permission('navigation_edit')}
 					<a title="{#NAVI_EDIT_ITEMS#}" href="index.php?do=navigation&amp;action=entries&amp;cp={$sess}&amp;id={$item->id}"><img src="{$tpl_dir}/images/icon_navigation.gif" alt="" border="0" /></a>
 				{else}
 					<img src="{$tpl_dir}/images/icon_navigation_no.gif" alt="" border="0" />
 				{/if}
 			</td>
 			<td width="1%" align="center">
-				{if checkPermission('navigation_new')}
+				{if check_permission('navigation_new')}
 					<a title="{#NAVI_COPY_TEMPLATE#}" href="index.php?do=navigation&amp;action=copy&amp;cp={$sess}&amp;id={$item->id}"><img src="{$tpl_dir}/images/icon_copy.gif" alt="" border="0" /></a>
 				{else}
 					<img src="{$tpl_dir}/images/icon_copy_no.gif" alt="" border="0" />
@@ -79,7 +77,7 @@ function check_name() {ldelim}
 				{if $item->id==1}
 					<img src="{$tpl_dir}/images/icon_delete_no.gif" alt="" border="0" />
 				{else}
-					{if checkPermission('navigation_edit')}
+					{if check_permission('navigation_edit')}
 						<a title="{#NAVI_DELETE#}" onclick="return confirm('{#NAVI_DELETE_CONFIRM#}');" href="index.php?do=navigation&amp;action=delete&amp;cp={$sess}&amp;id={$item->id}"><img src="{$tpl_dir}/images/icon_delete.gif" alt="" border="0" /></a>
 					{else}
 						<img src="{$tpl_dir}/images/icon_delete_no.gif" alt="" border="0" />
@@ -104,5 +102,3 @@ function check_name() {ldelim}
 		<img class="absmiddle" src="{$tpl_dir}/images/icon_delete.gif" alt="" border="0" /> - {#NAVI_DELETE#}
 	</div>
 </div>
-
-{/strip}

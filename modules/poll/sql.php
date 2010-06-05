@@ -1,20 +1,13 @@
 <?php
-/*::::::::::::::::::::::::::::::::::::::::
- System name: cpengine
- Short Desc: Full Russian Security Power Pack
- Version: 2.0 (Service Pack 2)
- Authors:  Arcanum (php@211.ru) &  Censored!
- Date: March 18, 2008
-::::::::::::::::::::::::::::::::::::::::*/
 
-$modul_sql_deinstall = array();
 $modul_sql_install = array();
+$modul_sql_deinstall = array();
+$modul_sql_update = array();
 
 $modul_sql_deinstall[] = "DROP TABLE IF EXISTS CPPREFIX_modul_poll;";
 $modul_sql_deinstall[] = "DROP TABLE IF EXISTS CPPREFIX_modul_poll_comments;";
 $modul_sql_deinstall[] = "DROP TABLE IF EXISTS CPPREFIX_modul_poll_items;";
 
-$modul_sql_install[] = "DROP TABLE IF EXISTS CPPREFIX_modul_poll;";
 $modul_sql_install[] = "CREATE TABLE CPPREFIX_modul_poll (
   id int(10) unsigned NOT NULL auto_increment,
   title varchar(250) NOT NULL default '',
@@ -28,7 +21,6 @@ $modul_sql_install[] = "CREATE TABLE CPPREFIX_modul_poll (
   PRIMARY KEY  (id)
 ) TYPE=MyISAM DEFAULT CHARSET=cp1251;";
 
-$modul_sql_install[] = "DROP TABLE IF EXISTS CPPREFIX_modul_poll_comments;";
 $modul_sql_install[] = "CREATE TABLE CPPREFIX_modul_poll_comments (
   id int(8) unsigned NOT NULL auto_increment,
   pollid int(8) NOT NULL,
@@ -40,7 +32,6 @@ $modul_sql_install[] = "CREATE TABLE CPPREFIX_modul_poll_comments (
   PRIMARY KEY  (id)
 ) TYPE=MyISAM DEFAULT CHARSET=cp1251;";
 
-$modul_sql_install[] = "DROP TABLE IF EXISTS CPPREFIX_modul_poll_items;";
 $modul_sql_install[] = "CREATE TABLE CPPREFIX_modul_poll_items (
   id int(10) unsigned NOT NULL auto_increment,
   pollid int(8) NOT NULL,
@@ -50,4 +41,7 @@ $modul_sql_install[] = "CREATE TABLE CPPREFIX_modul_poll_items (
   posi int(2) NOT NULL,
   PRIMARY KEY  (id)
 ) TYPE=MyISAM DEFAULT CHARSET=cp1251;";
+
+$modul_sql_update[] = "UPDATE CPPREFIX_module SET CpEngineTag = '" . $modul['CpEngineTag'] . "', CpPHPTag = '" . $modul['CpPHPTag'] . "', Version = '" . $modul['ModulVersion'] . "' WHERE ModulPfad = '" . $modul['ModulPfad'] . "' LIMIT 1;";
+
 ?>

@@ -1,4 +1,3 @@
-{strip}
 <div style="border-bottom:1px dotted #CCCCCC; color:#CCCCCC">
 
 	{$titel}
@@ -10,4 +9,3 @@
 {$wert}
 
 <br /><br /><br />
-{/strip}

@@ -1,6 +1,25 @@
-<!-- register_final.tpl -->
-{strip}
-
+<div class="box">
+	<h2>
+		<a href="#" id="toggle-forms">{#LOGIN_TEXT_REGISTER#}</a>
+	</h2>
+	<div class="block" id="forms">
+		<fieldset class="login">
+			{if $final == "ok"}
+				<p>{#LOGIN_MESSAGE_OK#}</p>
+			{else}
+				<p>{#LOGIN_MESSAGE_TEXT#}</p>
+				<form method="post" action="index.php?module=login&action=register&sub=registerfinal">
+					<p>
+						<label>{#LOGIN_CODE_FROM_MAIL#}</label>
+						<input type="text" name="emc" />
+					</p>
+					<input class="confirm button" value="{#LOGIN_BUTTON_FINAL#}" type="submit">
+				</form>
+			{/if}
+		</fieldset>
+	</div>
+</div>
+{*
 <h2 id="page-heading">{#LOGIN_TEXT_REGISTER#}</h2>
 
 <div id="module_content">
@@ -17,6 +36,4 @@
 		</form>
 	{/if}
 </div>
-
-{/strip}
-<!-- /register_final.tpl -->
+*}
