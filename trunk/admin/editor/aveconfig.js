@@ -30,8 +30,8 @@ FCKConfig.ToolbarSets["Simple"] = [
   'FontFormat','FontName','FontSize','AnchorMore','PageBreak','typograf','SyntaxHighLight2','googlemaps','OnlineVideo']
 ] ;
 
-FCKConfig.EnterMode = 'br' ;       // p | div | br
-FCKConfig.ShiftEnterMode = 'br' ;  // p | div | br
+//FCKConfig.EnterMode = 'br' ;       // p | div | br
+//FCKConfig.ShiftEnterMode = 'br' ;  // p | div | br
 
 FCKConfig.FontFormats = 'div;p;h1;h2;h3;h4;h5;h6;pre;address' ;
 

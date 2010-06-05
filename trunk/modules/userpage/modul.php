@@ -30,7 +30,7 @@ if (isset($_REQUEST['module']) && $_REQUEST['module'] == 'userpage' && isset($_R
 	$userpage = new userpage;
 
 	$tpl_dir = BASE_DIR . '/modules/userpage/templates/';
-	$lang_file = BASE_DIR . '/modules/userpage/lang/' . DEFAULT_LANGUAGE . '.txt';
+	$lang_file = BASE_DIR . '/modules/userpage/lang/' . $_SESSION['user_language'] . '.txt';
 
 	$sql_set = $AVE_DB->Query("SELECT * FROM " . PREFIX . "_modul_forum_settings");
 	$row_set = $sql_set->FetchRow();
@@ -91,16 +91,15 @@ if (isset($_REQUEST['module']) && $_REQUEST['module'] == 'userpage' && isset($_R
 //=======================================================
 // Admin - Aktionen
 //=======================================================
-if (defined('ACP') && !(isset($_REQUEST['action']) && $_REQUEST['action'] == 'delete'))
+if (defined('ACP') && !empty($_REQUEST['moduleaction']))
 {
 	global $AVE_Template;
 
-	require_once(BASE_DIR . '/modules/userpage/sql.php');
 	require_once(BASE_DIR . '/modules/userpage/class.userpage.php');
 	require_once(BASE_DIR . '/modules/userpage/func/func.replace.php');
 
 	$tpl_dir = BASE_DIR . '/modules/userpage/templates/';
-	$lang_file = BASE_DIR . '/modules/userpage/lang/' . DEFAULT_LANGUAGE . '.txt';
+	$lang_file = BASE_DIR . '/modules/userpage/lang/' . $_SESSION['user_language'] . '.txt';
 
 	$userpage = new userpage;
 
@@ -108,35 +107,32 @@ if (defined('ACP') && !(isset($_REQUEST['action']) && $_REQUEST['action'] == 'de
 	$config_vars = $AVE_Template->get_config_vars();
 	$AVE_Template->assign('config_vars', $config_vars);
 
-	if (isset($_REQUEST['moduleaction']) && $_REQUEST['moduleaction'] != '')
+	switch ($_REQUEST['moduleaction'])
 	{
-		switch ($_REQUEST['moduleaction'])
-		{
-			// Einstellungen
-			case '1':
-				$userpage->showSetting($tpl_dir);
-				break;
+		// Einstellungen
+		case '1':
+			$userpage->showSetting($tpl_dir);
+			break;
 
-				// Neues Feld
-			case 'save_new':
-				$userpage->saveFieldsNew($tpl_dir);
-				break;
+			// Neues Feld
+		case 'save_new':
+			$userpage->saveFieldsNew($tpl_dir);
+			break;
 
-				// Speichern
-			case 'save':
-				$userpage->saveSetting($tpl_dir);
-				break;
+			// Speichern
+		case 'save':
+			$userpage->saveSetting($tpl_dir);
+			break;
 
-				// Template
-			case 'tpl':
-				$userpage->showTemplate($tpl_dir);
-				break;
+			// Template
+		case 'tpl':
+			$userpage->showTemplate($tpl_dir);
+			break;
 
-				// Autoupdate
-			case 'update':
-				$userpage->update($tpl_dir);
-				break;
-		}
+			// Autoupdate
+		case 'update':
+			$userpage->update($tpl_dir);
+			break;
 	}
 }
 

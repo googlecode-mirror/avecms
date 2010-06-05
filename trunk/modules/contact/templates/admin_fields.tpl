@@ -8,7 +8,6 @@ function check_name() {ldelim}
 	return true;
 {rdelim}
 </script>
-{strip}
 
 <div class="pageHeaderTitle" style="padding-top: 7px;">
 	<div class="h_module"></div>
@@ -17,7 +16,7 @@ function check_name() {ldelim}
 </div><br />
 
 <form method="post" action="{$formaction}">
-	{include file="$tpl_path/admin_formsettings.tpl"}<br />
+	{include file="$tpl_dir/admin_formsettings.tpl"}<br />
 
 	{if $smarty.request.id != ''}
 		<table width="100%" border="0" cellpadding="8" cellspacing="1" class="tableborder">
@@ -134,5 +133,3 @@ function check_name() {ldelim}
 		<input type="submit" class="button" value="{#CONTACT_BUTTON_ADD#}" />
 	</form>
 {/if}
-
-{/strip}

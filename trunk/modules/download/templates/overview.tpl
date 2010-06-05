@@ -1,5 +1,5 @@
 <div id="mod_download">
-  <h1><em>{$NavTop|default:$config_vars.PageName}</em></h1>
+  <h1><em>{$NavTop|default:#PageName#}</em></h1>
 <p>&nbsp;</p>
 <table width="100%" border="0" cellspacing="0" cellpadding="0">
   <tr>

@@ -8,7 +8,6 @@ function check_name() {ldelim}
 	return true;
 {rdelim}
 </script>
-{strip}
 
 <div class="pageHeaderTitle" style="padding-top: 7px;">
 	<div class="h_module"></div>
@@ -32,10 +31,10 @@ function check_name() {ldelim}
 		{foreach from=$channel item=items}
 			<tr style="background-color: #eff3eb;" onmouseover="this.style.backgroundColor='#dae0d8';" onmouseout="this.style.backgroundColor='#eff3eb';" id="table_rows">
 				<td class="itcen">{$items->id}</td>
-				<td><a title="{#RSS_EDIT_HINT#}" href="index.php?do=modules&action=modedit&mod=rss&moduleaction=edit&cp={$sess}&id={$items->id}">{$items->rss_name}</a></td>
-				<td>{$items->on_page}</td>
-				<td>{$items->lenght} {#RSS_SYMBOLS#}</td>
-				<td>{if $items->site_url == ''}{#RSS_SITE_NAME_NO#}{else}http://{$items->site_url}/{/if}</td>
+				<td><a title="{#RSS_EDIT_HINT#}" href="index.php?do=modules&action=modedit&mod=rss&moduleaction=edit&cp={$sess}&id={$items->id}">{$items->rss_site_name|escape}</a></td>
+				<td>{$items->rss_item_on_page}</td>
+				<td>{$items->rss_description_lenght} {#RSS_SYMBOLS#}</td>
+				<td>{if $items->rss_site_url == ''}{#RSS_SITE_NAME_NO#}{else}{$items->rss_site_url}{/if}</td>
 				<td><input name="textfield" type="text" value="{$items->tag}" readonly /></td>
 				<td align="center">
 					<a title="{#RSS_EDIT_HINT#}" href="index.php?do=modules&action=modedit&mod=rss&moduleaction=edit&cp={$sess}&id={$items->id}">
@@ -66,5 +65,3 @@ function check_name() {ldelim}
 		</tr>
 	</table>
 </form>
-
-{/strip}

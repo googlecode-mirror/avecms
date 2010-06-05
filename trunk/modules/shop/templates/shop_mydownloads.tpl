@@ -1,5 +1,3 @@
-{strip}
-<!-- shop_mydownloads.tpl -->
 <div id="content">
 	<h2 id="page-heading">{#DownloadsOverviewShowLink#}</h2>
 	{#DownloadsOverviewInf#}<br />
@@ -37,7 +35,7 @@
 										{/if}
 									</td>
 
-									<td class="mod_shop_basket_row">{$dl->DownloadBis|date_format:$config_vars.DateFormatEsdTill}</td>
+									<td class="mod_shop_basket_row">{$dl->DownloadBis|date_format:#DateFormatEsdTill#}</td>
 									<td class="mod_shop_basket_row">{$df->size} kb</td>
 									<td align="right" class="mod_shop_basket_row">
 										<a href="index.php?module=shop&action=mydownloads&sub=getfile&Id={$df->Id}&FileId={$dl->ArtikelId}&getId={$df->Id}"><img src="{$shop_images}download.gif" alt="" border="0" /></a>
@@ -54,7 +52,7 @@
 							{foreach from=$dl->DataFilesUpdates item=df}
 								<tr>
 									<td width="200" valign="top" class="mod_shop_basket_row"> <strong> <a {if $df->Beschreibung}title="{$df->Beschreibung|escape}"{/if} href="index.php?module=shop&action=mydownloads&sub=getfile&Id={$df->Id}&FileId={$dl->ArtikelId}&getId={$df->Id}">{$df->Titel}</a></strong></td>
-									<td class="mod_shop_basket_row">{$dl->DownloadBis|date_format:$config_vars.DateFormatEsdTill}</td>
+									<td class="mod_shop_basket_row">{$dl->DownloadBis|date_format:#DateFormatEsdTill#}</td>
 									<td class="mod_shop_basket_row">{$df->size} kb</td>
 									<td align="right" class="mod_shop_basket_row"> <a href="index.php?module=shop&action=mydownloads&sub=getfile&Id={$df->Id}&FileId={$dl->ArtikelId}&getId={$df->Id}"><img src="{$shop_images}download.gif" alt="" border="0" /></a> </td>
 								</tr>
@@ -69,7 +67,7 @@
 							{foreach from=$dl->DataFilesBugfixes item=df}
 								<tr>
 									<td width="200" valign="top" class="mod_shop_basket_row"> <strong> <a {if $df->Beschreibung}title="{$df->Beschreibung|escape}"{/if} href="index.php?module=shop&action=mydownloads&sub=getfile&Id={$df->Id}&FileId={$dl->ArtikelId}&getId={$df->Id}">{$df->Titel}</a></strong></td>
-									<td class="mod_shop_basket_row">{$dl->DownloadBis|date_format:$config_vars.DateFormatEsdTill}</td>
+									<td class="mod_shop_basket_row">{$dl->DownloadBis|date_format:#DateFormatEsdTill#}</td>
 									<td class="mod_shop_basket_row">{$df->size} kb</td>
 									<td align="right" class="mod_shop_basket_row"> <a href="index.php?module=shop&action=mydownloads&sub=getfile&Id={$df->Id}&FileId={$dl->ArtikelId}&getId={$df->Id}"><img src="{$shop_images}download.gif" alt="" border="0" /></a> </td>
 								</tr>
@@ -110,5 +108,3 @@
 	</div>
 {/if}
 <div style="clear:both"></div>
-<!-- /shop_mydownloads.tpl -->
-{/strip}

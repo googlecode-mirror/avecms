@@ -8,7 +8,7 @@
   <tr>
     <td colspan="5" class="forum_info_meta">{#IngnoreNewText#}</td>
   </tr>
-  
+
   <tr>
     <td class="forum_header">{#IgnoreName#}</td>
     <td align="center">{#IgnoreId#}</td>
@@ -21,7 +21,7 @@
     <td>
 	<a href="index.php?module=forums&amp;show=userprofile&amp;user_id={$i.IgnoreId}"><strong>{$i.Name}</strong></a>	</td>
     <td align="center">{$i.IgnoreId}</td>
-    <td align="center">{$i.Datum|date_format:$config_vars.DateFormatMemberSince}</td>
+    <td align="center">{$i.Datum|date_format:$smarty.config.DateFormatMemberSince}</td>
     <td>{$i.Grund|escape:html|stripslashes}</td>
     <td align="center"><strong><a href="index.php?module=forums&amp;show=ignorelist&amp;remove={$i.IgnoreId}">{#IgnoreLink#}</a></strong></td>
   </tr>
@@ -51,7 +51,7 @@
     <tr>
       <td width="150" class="forum_post_first">&nbsp;</td>
       <td class="forum_post_second">
-	  
+
 	  <input type="submit" class="button" value="{#IgnoreButton#}" />
         <input type="hidden" name="module" value="forums" />
         <input type="hidden" name="show" value="ignorelist" />

@@ -1,5 +1,3 @@
-{strip}
-
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 
@@ -9,7 +7,7 @@
 <link href="templates/{$theme}/css/style.css" rel="stylesheet" type="text/css" media="screen" />
 <script src="templates/{$theme}/js/common.js" type="text/javascript"></script>
 </head>
-<!-- comment_form.tpl -->
+
 <body id="body_popup">
 
 <div id="module_header"><h2>{#COMMENT_NEW_TITLE#}</h2></div>
@@ -83,7 +81,4 @@
 </div>
 
 </body>
-<!-- /comment_form.tpl -->
 </html>
-
-{/strip}

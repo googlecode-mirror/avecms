@@ -1,5 +1,3 @@
-{strip}
-
 <div class="pageHeaderTitle" style="padding-top: 7px;">
 	<div class="h_module">&nbsp;</div>
 	<div class="HeaderTitle"><h2>{#ProductEsds#}</h2></div>
@@ -229,5 +227,3 @@
 <p align="center">
 	<input type="button" onclick="window.close();" class="button" value="{#WindowClose#}">
 </p>
-
-{/strip}

@@ -1,5 +1,3 @@
-{strip}
-
 <div class="pageHeaderTitle" style="padding-top:7px;">
 	<div class="h_module"></div>
 	<div class="HeaderTitle"><h2>{#BANNER_MODULE_NAME#}</h2></div>
@@ -64,5 +62,3 @@
 </table><br />
 
 {if $page_nav}<div class="infobox">{$page_nav}</div>{/if}
-
-{/strip}

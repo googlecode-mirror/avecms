@@ -1,6 +1,3 @@
-<!-- admin_config.tpl -->
-{strip}
-
 <div class="pageHeaderTitle" style="padding-top: 7px;">
 	<div class="h_module">&nbsp;</div>
 	<div class="HeaderTitle">
@@ -69,14 +66,14 @@
 		<tr>
 			<td width="200" class="first" valign="top">{#LOGIN_BLACK_DOMAINS#}</td>
 			<td class="second">
-				{strip}<textarea style="width:400px; height:100px" name="DomainsVerboten" id="DomainsVerboten">{$DomainsVerboten}</textarea>{/strip}
+				<textarea style="width:400px; height:100px" name="DomainsVerboten" id="DomainsVerboten">{$DomainsVerboten}</textarea>
 			</td>
 		</tr>
 
 		<tr>
 			<td width="200" class="first" valign="top">{#LOGIN_BLACK_EMAILS#}</td>
 			<td class="second" >
-				{strip}<textarea style="width:400px; height:100px" name="EmailsVerboten" id="EmailsVerboten">{$EmailsVerboten}</textarea>{/strip}
+				<textarea style="width:400px; height:100px" name="EmailsVerboten" id="EmailsVerboten">{$EmailsVerboten}</textarea>
 			</td>
 		</tr>
 
@@ -85,6 +82,3 @@
 		</tr>
 	</table><br />
 </form>
-
-{/strip}
-<!-- /admin_config.tpl -->

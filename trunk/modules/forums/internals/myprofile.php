@@ -73,9 +73,9 @@ if(isset($_POST['doupdate']) && $_POST['doupdate'] == 1)
 	$ok = true;
 	$errors = "";
 	$allowed = array('*','[',']','-','=');
-	$muster     = "[^ ._A-Za-zÀ-ßà-ÿ¨¸0-9-]";
-	$muster_geb = "([0-9]{2}).([0-9]{2}).([0-9]{4})";
-	$muster_email = "^[-._A-Za-z0-9-]+(\.[_A-Za-z0-9-]+)*@([a-zA-Z0-9-]+\.)+([a-zA-Z]{2,4})$";
+	$muster = '/[^\x20-\xFF]/';
+	$muster_geb = '#(0[1-9]|[12][0-9]|3[01])([[:punct:]| ])(0[1-9]|1[012])\2(19|20)\d\d#';
+	$muster_email = '/^[\w.-]+@[a-z0-9.-]+\.(?:[a-z]{2}|com|org|net|edu|gov|mil|biz|info|mobi|name|aero|asia|jobs|museum)$/i';
 
 	//=======================================================
 	// Benutzername prüfen
@@ -86,7 +86,7 @@ if(isset($_POST['doupdate']) && $_POST['doupdate'] == 1)
 		$r['BenutzerName'] = trim(htmlspecialchars($_POST['BenutzerName']));
 	}
 
-	if(( @isset($_POST['BenutzerName']) && @empty($_POST['BenutzerName'])) || ereg($muster, str_replace($allowed,'',@$_POST['BenutzerName']) ))
+	if(( @isset($_POST['BenutzerName']) && @empty($_POST['BenutzerName'])) || preg_match($muster, str_replace($allowed,'',@$_POST['BenutzerName']) ))
 	{
 		$errors[] = $GLOBALS['mod']['config_vars']['PE_Username'];
 	}
@@ -99,7 +99,7 @@ if(isset($_POST['doupdate']) && $_POST['doupdate'] == 1)
 		$errors[] = $GLOBALS['mod']['config_vars']['PE_EmailInUse'];
 	}
 
-	if(empty($_POST['Email']) || !ereg($muster_email, $_POST['Email']))
+	if(empty($_POST['Email']) || !preg_match($muster_email, $_POST['Email']))
 	{
 		$errors[] = $GLOBALS['mod']['config_vars']['PE_Email'];
 	}
@@ -107,7 +107,7 @@ if(isset($_POST['doupdate']) && $_POST['doupdate'] == 1)
 	//=======================================================
 	// WENN GEBURTSTAG IM FALSCHEN FORMAT
 	//=======================================================
-	if(!empty($_POST['GeburtsTag']) && !ereg($muster_geb, $_POST['GeburtsTag']))
+	if(!empty($_POST['GeburtsTag']) && !preg_match($muster_geb, $_POST['GeburtsTag']))
 	{
 		$errors[] = $GLOBALS['mod']['config_vars']['PE_WrongBd'];
 	}

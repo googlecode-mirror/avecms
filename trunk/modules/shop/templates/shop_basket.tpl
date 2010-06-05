@@ -1,5 +1,3 @@
-{strip}
-<!-- shop_basket.tpl -->
 <div class="grid_12 tablebox">
 {if !$BasketItems}
 	<h2 id="page-heading">{#BasketEmpty#}</h2>
@@ -21,9 +19,9 @@
 			<tr class="total">
 				<th align="right" valign="middle" colspan="4">{#TempOverall#}</th>
 				<td align="left" valign="middle" colspan="2" class="mod_shop_basket_row_right">
-					<h3> {numFormat val=$smarty.session.BasketOverall} {$Currency}</h3>
+					<h3> {num_format val=$smarty.session.BasketOverall} {$Currency}</h3>
 					{if $smarty.session.BasketSummW2}
-						<span class="mod_shop_ust">{numFormat val=$smarty.session.BasketSummW2} {$Currency2}</span>
+						<span class="mod_shop_ust">{num_format val=$smarty.session.BasketSummW2} {$Currency2}</span>
 						<table width="100%" border="0" cellspacing="0" cellpadding="2">
 							{foreach from=$VatZones item=vz}
 								{if $smarty.session.VatInc!='' && in_array($vz->Wert,$smarty.session.VatInc)}
@@ -31,7 +29,7 @@
 										<td><div align="right">{#IncludesVatInf#} {$vz->Wert}%:</div></td>
 										<td width="120">
 											{assign var=VatSessionName value=$vz->Wert}
-											<div align="right">{numFormat val=$smarty.session.$VatSessionName} {$Currency}</div>
+											<div align="right">{num_format val=$smarty.session.$VatSessionName} {$Currency}</div>
 										</td>
 									</tr>
 								{/if}
@@ -71,25 +69,25 @@
 							{foreach from=$bi->Vars item=vars}
 								<span class="mod_shop_basket_price">
 									<em>{$vars->VarName|stripslashes}</em><br />
-									{$vars->Name|stripslashes} {$vars->Operant} {numFormat val=$vars->WertE} {$Currency}
+									{$vars->Name|stripslashes} {$vars->Operant} {num_format val=$vars->WertE} {$Currency}
 								</span><br />
 							{/foreach}
 						{/if}
 						<!-- PRODUCT VARIATIONS END -->
 					</td>
 					<td align="center" valign="middle" nowrap="nowrap">
-						{numFormat val=$bi->EPreis} {$Currency}
+						{num_format val=$bi->EPreis} {$Currency}
 						{if $bi->PreisW2 && $ZeigeWaehrung2=='1'}
 							<br />
-							<span class="mod_shop_ust">{numFormat val=$bi->PreisW2} {$Currency2}</span>
+							<span class="mod_shop_ust">{num_format val=$bi->PreisW2} {$Currency2}</span>
 						{/if}
 					</td>
 
 					<td align="center" valign="middle" class="mod_shop_basket_row_price" nowrap="nowrap">
-						{numFormat val=$bi->EPreisSumme} {$Currency}
+						{num_format val=$bi->EPreisSumme} {$Currency}
 						{if $bi->PreisW2Summ && $ZeigeWaehrung2=='1'}
 							<br />
-							<span class="mod_shop_ust">{numFormat val=$bi->PreisW2Summ} {$Currency2}</span>
+							<span class="mod_shop_ust">{num_format val=$bi->PreisW2Summ} {$Currency2}</span>
 						{/if}
 					</td>
 
@@ -98,7 +96,7 @@
 					</td>
 				</tr>
 			{/foreach}
-</tbody>            
+</tbody>
 		</table>
 
 		<div align="right">
@@ -123,13 +121,13 @@
       <h2> <a href="#" id="toggle-login-forms">Авторизация</a> </h2>
       <div class="block" id="login-forms">{$UserPanel}</div>
     </div>
-    
+
   <!-- Блок поиска по магазину -->
     <div class="box">
       <h2><a href="#" id="toggle-shop-search">Поиск товаров</a></h2>
       <div class="block" id="shop-search">{$Search}</div>
     </div>
-    
+
   <!-- Блок корзины -->
     <div class="box">
       <h2><a href="#" id="toggle-shopbasket">Корзина</a></h2>
@@ -149,5 +147,3 @@
     </div>
 </div>
 {/if}
-<!-- /shop_basket.tpl -->
-{/strip}

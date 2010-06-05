@@ -22,17 +22,16 @@ switch($type)
 	case 'gif' :
 	case 'jpg' :
 	case 'png' :
-		$source_file = (empty($_REQUEST['file'])) ? '' : $_REQUEST['file'];
-		$source_file = str_replace(array('..', '\'', ':', 'http', 'ftp', '/'), '', $source_file);
-		$source_file = rawurldecode($source_file);
+		$source_file = isset($_REQUEST['file']) ? rawurldecode($_REQUEST['file']) : '';
+		$source_file = str_replace(array('..', '\'', ':', 'http', 'ftp', '/', ' '), '', $source_file);
 
-		$source_dir = (empty($_REQUEST['folder'])) ? '' : $_REQUEST['folder'];
-		$source_dir = str_replace(array('..', '\'', ':', 'http', 'ftp', '/'), '', $source_dir);
-		$source_dir = dirname(__FILE__) . '/uploads/' . (!empty($source_dir) ? $source_dir . '/' : '');
+		$source_dir = isset($_REQUEST['folder']) ? rawurldecode($_REQUEST['folder']) : '';
+		$source_dir = str_replace(array('..', '\'', ':', 'http', 'ftp', '/', ' '), '', $source_dir);
+		$source_dir = dirname(__FILE__) . rtrim('/uploads/' . $source_dir, '/');
 
-		if ($file = realpath($source_dir . $source_file))
+		if ($file = realpath($source_dir . '/' . $source_file))
 		{
-			$thumb_file = $source_dir . 'th__' . $source_file;
+			$thumb_file = $source_dir . '/th__' . $source_file;
 			// Если не указано обязательное формирование миниатюр (&compile=1)
 			// и есть миниатюра сформированная ранее - выводим её
 			if (file_exists($thumb_file) && empty($_REQUEST['compile']))

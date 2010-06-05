@@ -1,5 +1,4 @@
 <script language="javascript" src="modules/forums/js/common.js"></script>
-{strip}
 {if $smarty.request.print!=1}
 <table width="100%"  border="0" cellpadding="4" cellspacing="1" class="forum_tableborder">
   <tr>
@@ -65,4 +64,3 @@
 </table>
 <br />
 {/if}
-{/strip}

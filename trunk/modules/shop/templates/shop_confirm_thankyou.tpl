@@ -1,5 +1,3 @@
-{strip}
-<!-- shop_confirm_thankyou.tpl -->
 <script language="javascript">
 function OrderPrint(id){ldelim}
 	var html=document.getElementById(id).innerHTML;
@@ -40,5 +38,3 @@ function OrderPrint(id){ldelim}
 	</div>
 {/if}
 <div style="clear:both"></div>
-<!-- /shop_confirm_thankyou.tpl -->
-{/strip}

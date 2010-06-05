@@ -23,8 +23,6 @@ class Rss
 		global $AVE_DB, $AVE_Template;
 
 		$AVE_Template->config_load($lang_file);
-		$config_vars = $AVE_Template->get_config_vars();
-		$AVE_Template->assign('config_vars', $config_vars);
 
 		$channels = array();
 		$sql = $AVE_DB->Query("SELECT * FROM " . PREFIX . "_modul_rss");
@@ -42,42 +40,54 @@ class Rss
 	 * Создание RSS - ленты
 	 *
 	 */
-	function rssAdd()
+	function rssNew()
 	{
 		global $AVE_DB;
 
-		$rss_name = htmlspecialchars($_POST['new_rss']);
+		$home = addslashes(substr(get_home_link(), 0, -6));
+
 		$AVE_DB->Query("
-			INSERT " . PREFIX . "_modul_rss
-			VALUES ('', '" . $rss_name . "', '', '', 0, 0, 0, 10, 200)
+			INSERT
+			INTO " . PREFIX . "_modul_rss
+			SET
+				id                     = '',
+				rss_site_name          = '" . $_POST['new_rss'] . "',
+				rss_site_description   = '',
+				rss_site_url           = '" . $home . "',
+				rss_rubric_id          = 1,
+				rss_title_id           = 0,
+				rss_description_id     = 0,
+				rss_item_on_page       = 10,
+				rss_description_lenght = 200
 		");
-		header('Location:index.php?do=modules&action=modedit&mod=rss&moduleaction=1&cp=' . SESSION);
+
+		$iid = $AVE_DB->InsertId();
+
+		header('Location:index.php?do=modules&action=modedit&mod=rss&moduleaction=edit&cp=' . SESSION . '&id=' . $iid);
+		exit;
 	}
 
 	/**
 	 * Редактирование RSS - ленты
 	 *
-	 * @param string $tpl_dir путь к папке с шаблонами
+	 * @param string $tpl_dir	путь к папке с шаблонами
+	 * @param string $lang_file	путь к языковому файлу
 	 */
 	function rssEdit($tpl_dir, $lang_file)
 	{
 		global $AVE_DB, $AVE_Template;
 
 		$AVE_Template->config_load($lang_file);
-		$config_vars = $AVE_Template->get_config_vars();
-		$AVE_Template->assign('config_vars', $config_vars);
 
-		$id = (int)($_GET['id']);
-		$sql = $AVE_DB->Query("
+		$result = $AVE_DB->Query("
 			SELECT *
 			FROM " . PREFIX . "_modul_rss
-			WHERE id = '" . $id . "'
-		");
-		$result = $sql->FetchRow();
+			WHERE id = '" . (int)($_REQUEST['id']) . "'
+		")->FetchRow();
 
 		if (isset($_REQUEST['RubrikId']) && is_numeric($_REQUEST['RubrikId']))
 		{
-			$result->rub_id = (int)$_REQUEST['RubrikId'];
+			$result->rss_rubric_id = $_REQUEST['RubrikId'];
 		}
 
 		$rubriks = array();
@@ -89,7 +99,7 @@ class Rss
 		");
 		while ($res = $get_rubs->FetchRow())
 		{
-			array_push($rubriks,$res);
+			array_push($rubriks, $res);
 		}
 
 		$fields = array();
@@ -98,7 +108,7 @@ class Rss
 				RubrikId,
 				Titel
 			FROM " . PREFIX . "_rubric_fields
-			WHERE RubrikId = '" . $result->rub_id . "'
+			WHERE RubrikId = '" . $result->rss_rubric_id . "'
 		");
 		while ($res = $get_fields->FetchRow())
 		{
@@ -119,31 +129,23 @@ class Rss
 	{
 		global $AVE_DB;
 
-		$rss_name  = htmlspecialchars(addslashes($_POST['rss_name']));
-		$id        = (int)$_POST['id'];
-		$rub_id    = (int)$_POST['rub_id'];
-		$rss_des   = htmlspecialchars($_POST['site_descr']);
-		$site_url  = $_POST['site_url'];
-		$title     = (int)$_POST['field_title'];
-		$descr     = (int)$_POST['field_descr'];
-		$limit     = (int)$_POST['rss_on_page'];
-		$lenght    = (int)$_POST['rss_lenght'];
-
 		$AVE_DB->Query("
 			UPDATE " . PREFIX . "_modul_rss
 			SET
-				rss_name  = '" . $rss_name . "',
-				rss_descr = '" . $rss_des . "',
-				site_url  = '" . $site_url . "',
-				rub_id    = '" . $rub_id . "',
-				title_id  = '" . $title . "',
-				descr_id  = '" . $descr . "',
-				on_page   = '" . $limit . "',
-				lenght    = '" . $lenght . "'
+				rss_site_name          = '" . $_POST['rss_site_name'] . "',
+				rss_site_description   = '" . $_POST['site_descr'] . "',
+				rss_site_url           = '" . $_POST['rss_site_url'] . "',
+				rss_rubric_id          = '" . (int)$_POST['rss_rubric_id'] . "',
+				rss_title_id           = '" . (int)$_POST['field_title'] . "',
+				rss_description_id     = '" . (int)$_POST['field_descr'] . "',
+				rss_item_on_page       = '" . (int)$_POST['rss_item_on_page'] . "',
+				rss_description_lenght = '" . (int)$_POST['rss_description_lenght'] . "'
 			WHERE
-				id = '" . $id . "'
+				id = '" . (int)$_POST['id'] . "'
 		");
-		header('Location:index.php?do=modules&action=modedit&mod=rss&moduleaction=1&cp=' . SESSION);
+
+		header('Location:index.php?do=modules&action=modedit&mod=rss&moduleaction=edit&cp=' . SESSION . '&id=' . (int)$_POST['id']);
+		exit;
 	}
 
 	/**
@@ -154,13 +156,14 @@ class Rss
 	{
 		global $AVE_DB;
 
-		$id = addslashes($_GET['id']);
 		$AVE_DB->Query("
 			DELETE
 			FROM " . PREFIX . "_modul_rss
-			WHERE id = '" . $id . "'
+			WHERE id = '" . (int)$_REQUEST['id'] . "'
 		");
+
 		header('Location:index.php?do=modules&action=modedit&mod=rss&moduleaction=1&cp=' . SESSION);
+		exit;
 	}
 }
 

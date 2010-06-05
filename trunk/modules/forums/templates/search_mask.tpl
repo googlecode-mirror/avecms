@@ -1,4 +1,3 @@
-{strip}
 {include file="$inc_path/userpanel_forums.tpl"}
 {include file="$inc_path/header_sthreads.tpl"}
 <p class="forum_navi"> {$navigation} </p>
@@ -119,5 +118,3 @@
     <input type="submit" class="button" value="{#StartSearch#}" />
   </p>
 </form>
-
-{/strip}

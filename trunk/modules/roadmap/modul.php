@@ -1,6 +1,6 @@
 <?php
 
-if(!defined('BASE_DIR')) exit;
+if (!defined('BASE_DIR')) exit;
 
 if (defined('ACP'))
 {
@@ -20,91 +20,81 @@ if (defined('ACP'))
     $modul['CpPHPTag'] = null;
 }
 
-if(isset($_REQUEST['module']) && $_REQUEST['module'] != '' && $_REQUEST['module'] == 'roadmap') {
+if (isset($_REQUEST['module']) && $_REQUEST['module'] != '' && $_REQUEST['module'] == 'roadmap')
+{
 	require_once(BASE_DIR . '/modules/roadmap/class.roadmap.php');
 
 	$roadmap = new Roadmap;
 
 	$tpl_dir   = BASE_DIR . '/modules/roadmap/templates/';
-	$lang_file = BASE_DIR . '/modules/roadmap/lang/' . DEFAULT_LANGUAGE . '.txt';
+	$lang_file = BASE_DIR . '/modules/roadmap/lang/' . $_SESSION['user_language'] . '.txt';
 
-	$GLOBALS['AVE_Template']->config_load($lang_file);
-	$config_vars = $GLOBALS['AVE_Template']->get_config_vars();
-	$GLOBALS['AVE_Template']->assign('config_vars', $config_vars);
+	$AVE_Template->config_load($lang_file);
+//	$config_vars = $AVE_Template->get_config_vars();
+//	$AVE_Template->assign('config_vars', $config_vars);
 
-	switch($_REQUEST['action']) {
+	switch ($_REQUEST['action'])
+	{
 		case 'show_p':
 		default:
-			$roadmap->show_p($tpl_dir);
+			$roadmap->roadmapProjectShow($tpl_dir);
 			break;
 
 		case 'show_t':
-			$pid    = addslashes($_REQUEST['pid']);
-			$closed = addslashes($_REQUEST['closed']);
-			$roadmap->show_t($pid,$closed,$tpl_dir);
+			$roadmap->roadmapTaskShow($tpl_dir, $_REQUEST['pid'], $_REQUEST['closed']);
 			break;
-
 	}
-	define('MODULE_SITE', 'Карта проектов');
 
+	define('MODULE_SITE', 'Карта проектов');
 }
 
-if(defined('ACP') && !(isset($_REQUEST['action']) && $_REQUEST['action'] == 'delete')) {
-	require_once(BASE_DIR . '/modules/roadmap/sql.php');
+if (defined('ACP') && !empty($_REQUEST['moduleaction']))
+{
 	require_once(BASE_DIR . '/modules/roadmap/class.roadmap.php');
 
-	$tpl_dir = BASE_DIR . '/modules/roadmap/templates/';
-	$lang_file = BASE_DIR . '/modules/roadmap/lang/' . DEFAULT_LANGUAGE . '.txt';
+	$tpl_dir   = BASE_DIR . '/modules/roadmap/templates/';
+	$lang_file = BASE_DIR . '/modules/roadmap/lang/' . $_SESSION['user_language'] . '.txt';
 
 	$roadmap = new Roadmap;
 
-	$GLOBALS['AVE_Template']->config_load($lang_file);
-	$config_vars = $GLOBALS['AVE_Template']->get_config_vars();
-	$GLOBALS['AVE_Template']->assign('config_vars', $config_vars);
+	$AVE_Template->config_load($lang_file);
+//	$config_vars = $AVE_Template->get_config_vars();
+//	$AVE_Template->assign('config_vars', $config_vars);
 
-	if(isset($_REQUEST['moduleaction']) && $_REQUEST['moduleaction'] != '')	{
-		switch($_REQUEST['moduleaction']) {
-			case '1':
-				$roadmap->list_projects($tpl_dir);
-				break;
+	switch($_REQUEST['moduleaction'])
+	{
+		case '1':
+			$roadmap->roadmapProjectList($tpl_dir);
+			break;
 
-			case 'edit_project':
-				$id = addslashes($_REQUEST['id']);
-				$roadmap->edit_project($tpl_dir,$id);
-				break;
+		case 'edit_project':
+			$roadmap->roadmapProjectEdit($tpl_dir, $_REQUEST['id']);
+			break;
 
-			case 'new_project':
-				$roadmap->new_project($tpl_dir);
-				break;
+		case 'new_project':
+			$roadmap->roadmapProjectNew($tpl_dir);
+			break;
 
-			case 'del_project':
-				$id = addslashes($_REQUEST['id']);
-				$roadmap->del_project($id);
-				break;
+		case 'del_project':
+			$roadmap->roadmapProjectDelete($_REQUEST['id']);
+			break;
 
-			case 'show_tasks':
-				$id     = addslashes($_REQUEST['id']);
-				$closed = addslashes($_REQUEST['closed']);
-				$roadmap->show_tasks($tpl_dir,$id,$closed);
-				break;
+		case 'show_tasks':
+			$roadmap->roadmapTaskList($tpl_dir, $_REQUEST['id'], $_REQUEST['closed']);
+			break;
 
-			case 'new_task':
-				$id = (int)$_REQUEST['id'];
-				$roadmap->new_task($tpl_dir,$id);
-				break;
+		case 'new_task':
+			$roadmap->roadmapTaskNew($tpl_dir, $_REQUEST['id']);
+			break;
 
-			case 'edit_task':
-				$id = (int)$_REQUEST['id'];
-				$roadmap->edit_task($tpl_dir,$id);
-				break;
+		case 'edit_task':
+			$roadmap->roadmapTaskEdit($tpl_dir, $_REQUEST['id']);
+			break;
 
-			case 'del_task':
-				$id     = (int)$_REQUEST['id'];
-				$pid    = (int)$_REQUEST['pid'];
-				$closed = (int)$_REQUEST['closed'];
-				$roadmap->del_task($id,$pid,$closed);
-				break;
-		}
+		case 'del_task':
+			$roadmap->roadmapTaskDelete($_REQUEST['id'], $_REQUEST['pid'], $_REQUEST['closed']);
+			break;
 	}
 }
+
 ?>

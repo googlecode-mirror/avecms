@@ -1,5 +1,3 @@
-{strip}
-
 <div id="pageHeaderTitle" style="padding-top: 7px;">
 	<div class="h_settings">&nbsp;</div>
 	<div class="HeaderTitle"><h2>{#SETTINGS_COUNTRIES#}</h2></div>
@@ -57,5 +55,3 @@
 	<div class="infobox">{$page_nav}</div><br />
 {/if}
 <br />
-
-{/strip}

@@ -15,7 +15,7 @@ if (defined('ACP'))
     $modul = array();
     $modul['ModulName'] = 'Статистика';
     $modul['ModulPfad'] = 'counter';
-    $modul['ModulVersion'] = '1.2';
+    $modul['ModulVersion'] = '1.3';
     $modul['Beschreibung'] = 'Данный модуль предназначен для сбора статистики посещений страниц вашего сайта, а также дополнительных данных о посетителях. Для того, чтобы начать сбор статистики, разместите системный тег <strong>[mod_counter:XXX]</strong> на нужной вам странице или шаблоне сайта. ХХХ - это порядковый номер счетчика в системе. Для отображения статистики в публичной части, разместите системный тэг <strong>[mod_counter:show]</strong> в нужном месте Вашего шаблона.';
     $modul['Autor'] = 'Arcanum';
     $modul['MCopyright'] = '&copy; 2007 Overdoze Team';
@@ -32,65 +32,61 @@ if (defined('ACP'))
  * Функция сбора и отображения статистики
  *
  * @access public
- * @param string $id цифровой идентификатор счетчика
+ * @param string $counter_id цифровой идентификатор счетчика
  * и опционально строка show для отображения статистики
  */
-function mod_counter($id, $action = '')
+function mod_counter($counter_id, $action = '')
 {
-    $id = intval(preg_replace('/(\D+)/', '', $id));
+    $counter_id = preg_replace('/\D/', '', $counter_id);
 
-	if ($id > 0 && $action == '-show')
+	if ($counter_id > 0 && $action == '-show')
 	{
 		require_once(BASE_DIR . '/modules/counter/class.browser.php');
 		$counter = new Counter;
 
 		$tpl_dir   = BASE_DIR . '/modules/counter/templates/';
-		$lang_file = BASE_DIR . '/modules/counter/lang/' . DEFAULT_LANGUAGE . '.txt';
+		$lang_file = BASE_DIR . '/modules/counter/lang/' . $_SESSION['user_language'] . '.txt';
 
-		$counter->showStat($tpl_dir, $lang_file, $id);
+		$counter->counterStatisticShow($tpl_dir, $lang_file, $counter_id);
 	}
-	elseif ($id > 0 &&
+	elseif ($counter_id > 0 &&
 		!(empty($_SERVER['REMOTE_ADDR']) && empty($_SERVER['HTTP_CLIENT_IP'])) &&
-		!(isset($_COOKIE['counter_' . $id]) && $_COOKIE['counter_' . $id] == '1'))
+		!(isset($_COOKIE['counter_' . $counter_id]) && $_COOKIE['counter_' . $counter_id] == '1'))
 	{
 		require_once(BASE_DIR . '/modules/counter/class.browser.php');
 		$counter = new Counter;
 
-		$counter->InsertNew($id);
+		$counter->counterClientNew($counter_id);
 	}
 }
 
-if (defined('ACP') && !(isset($_REQUEST['action']) && $_REQUEST['action'] == 'delete'))
+if (defined('ACP') && !empty($_REQUEST['moduleaction']))
 {
 	global $AVE_Template;
 
-	require_once(BASE_DIR . '/modules/counter/sql.php');
 	require_once(BASE_DIR . '/modules/counter/class.browser.php');
 	$counter = new Counter;
 
-	if (!empty($_REQUEST['moduleaction']))
+	$tpl_dir   = BASE_DIR . '/modules/counter/templates/';
+	$lang_file = BASE_DIR . '/modules/counter/lang/' . $_SESSION['admin_language'] . '.txt';
+
+	switch ($_REQUEST['moduleaction'])
 	{
-		$tpl_dir   = BASE_DIR . '/modules/counter/templates/';
-		$lang_file = BASE_DIR . '/modules/counter/lang/' . $_SESSION['admin_lang'] . '.txt';
+		case '1':
+			$counter->counterList($tpl_dir, $lang_file);
+			break;
 
-		switch ($_REQUEST['moduleaction'])
-		{
-			case '1':
-				$counter->showCounter($tpl_dir, $lang_file);
-				break;
+		case 'view_referer':
+			$counter->counterRefererList($tpl_dir, $lang_file);
+			break;
 
-			case 'view_referer':
-				$counter->showReferer($tpl_dir, $lang_file);
-				break;
+		case 'quicksave':
+			$counter->counterSettingsSave();
+			break;
 
-			case 'quicksave':
-				$counter->quickSave();
-				break;
-
-			case 'new_counter':
-				$counter->newCounter();
-				break;
-		}
+		case 'new_counter':
+			$counter->counterNew();
+			break;
 	}
 }
 

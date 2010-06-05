@@ -1,7 +1,3 @@
-
-<!-- start.tpl -->
-{strip}
-
 <script type="text/javascript" language="javascript">
 $(document).ready(function(){ldelim}
 	$('#cc').click(function(){ldelim}
@@ -37,7 +33,7 @@ $(document).ready(function(){ldelim}
 				<col width="50%">
 				<tr>
 					<td>
-						{if checkPermission('docs')}
+						{if check_permission('docs')}
 							<div id="docsTasks">
 								<a href="index.php?do=docs&amp;cp={$sess}">
 									<div class="taskTitle">{#MAIN_LINK_DOCUMENT#}</div>
@@ -53,7 +49,7 @@ $(document).ready(function(){ldelim}
 					</td>
 
 					<td>
-						{if checkPermission('rubriken') || checkPermission('rubs')}
+						{if check_permission('rubriken') || check_permission('rubs')}
 							<div id="rubsTasks">
 								<a href="index.php?do=rubs&amp;cp={$sess}">
 									<div class="taskTitle">{#MAIN_LINK_RUBRICS#}</div>
@@ -71,23 +67,23 @@ $(document).ready(function(){ldelim}
 
 				<tr>
 					<td>
-						{if checkPermission('abfragen')}
+						{if check_permission('abfragen')}
 							<div id="queryTasks">
-								<a href="index.php?do=queries&amp;cp={$sess}">
+								<a href="index.php?do=request&amp;cp={$sess}">
 									<div class="taskTitle">{#MAIN_LINK_QUERYES#}</div>
-									<div class="taskDescription">{#MAIN_LINK_QUERY_TIP#}</div>
+									<div class="taskDescription">{#MAIN_LINK_REQUEST_TIP#}</div>
 								</a>
 							</div>
 						{else}
 							<div id="queryTasks_no">
 								<div class="taskTitle">{#MAIN_LINK_QUERYES#}</div>
-								<div class="taskDescription">{#MAIN_LINK_QUERY_TIP#}</div>
+								<div class="taskDescription">{#MAIN_LINK_REQUEST_TIP#}</div>
 							</div>
 						{/if}
 					</td>
 
 					<td>
-						{if checkPermission('navigation')}
+						{if check_permission('navigation')}
 							<div id="naviTasks">
 								<a href="index.php?do=navigation&amp;cp={$sess}">
 									<div class="taskTitle">{#MAIN_LINK_NAVIGATION#}</div>
@@ -105,7 +101,7 @@ $(document).ready(function(){ldelim}
 
 				<tr>
 					<td>
-						{if checkPermission('vorlagen') || checkPermission('vorlagen_multi') || checkPermission('vorlagen_loesch') || checkPermission('vorlagen_edit') || checkPermission('vorlagen_neu')}
+						{if check_permission('vorlagen') || check_permission('vorlagen_multi') || check_permission('vorlagen_loesch') || check_permission('vorlagen_edit') || check_permission('vorlagen_neu')}
 							<div id="templTasks">
 								<a href="index.php?do=templates&amp;cp={$sess}">
 									<div class="taskTitle">{#MAIN_LINK_TEMPLATES#}</div>
@@ -121,7 +117,7 @@ $(document).ready(function(){ldelim}
 					</td>
 
 					<td>
-						{if checkPermission('modules')}
+						{if check_permission('modules')}
 							<div id="moduleTasks">
 								<a href="index.php?do=modules&amp;cp={$sess}">
 									<div class="taskTitle">{#MAIN_LINK_MODULES#}</div>
@@ -139,7 +135,7 @@ $(document).ready(function(){ldelim}
 
 				<tr>
 					<td>
-						{if checkPermission('user')}
+						{if check_permission('user')}
 							<div id="userTasks">
 								<a href="index.php?do=user&amp;cp={$sess}">
 									<div class="taskTitle">{#MAIN_LINK_USERS#}</div>
@@ -155,7 +151,7 @@ $(document).ready(function(){ldelim}
 					</td>
 
 					<td>
-						{if checkPermission('group')}
+						{if check_permission('group')}
 							<div id="groupTasks">
 								<a href="index.php?do=groups&amp;cp={$sess}">
 									<div class="taskTitle">{#MAIN_LINK_GROUPS#}</div>
@@ -173,7 +169,7 @@ $(document).ready(function(){ldelim}
 
 				<tr>
 					<td>
-						{if checkPermission('gen_settings')}
+						{if check_permission('gen_settings')}
 							<div id="settTasks">
 								<a href="index.php?do=settings&amp;cp={$sess}">
 									<div class="taskTitle">{#MAIN_LINK_SETTINGS#}</div>
@@ -189,7 +185,7 @@ $(document).ready(function(){ldelim}
 					</td>
 
 					<td>
-						{if checkPermission('dbactions')}
+						{if check_permission('dbactions')}
 							<div id="dbTasks">
 								<a href="index.php?do=dbsettings&amp;cp={$sess}">
 									<div class="taskTitle">{#MAIN_LINK_DATABASE#}</div>
@@ -217,7 +213,7 @@ $(document).ready(function(){ldelim}
 							<div class="numeric">{$cnts.rubrics}</div><br />
 							<br />
 							<div class="text">{#MAIN_STAT_QUERIES#}</div>
-							<div class="numeric">{$cnts.queries}</div><br />
+							<div class="numeric">{$cnts.request}</div><br />
 							<br />
 							<div class="text">{#MAIN_STAT_TEMPLATES#}</div>
 							<div class="numeric">{$cnts.templates}</div><br />
@@ -273,7 +269,7 @@ $(document).ready(function(){ldelim}
 				<tr>
 					<td>
 						{* <!-- MODULES --> *}
-						{if $modules && checkPermission('modules')}
+						{if $modules && check_permission('modules')}
 							<div id="activemodule">
 								<div class="title">{#MAIN_QUICK_MODULE#}</div><br />
 								{foreach from=$modules item=modul}
@@ -290,6 +286,3 @@ $(document).ready(function(){ldelim}
 		</td>
 	</tr>
 </table>
-
-{/strip}
-<!-- /start.tpl -->

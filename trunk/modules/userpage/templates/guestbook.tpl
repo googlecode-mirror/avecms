@@ -1,5 +1,3 @@
-{strip}
-
 {if $item->can_comment == 1}
 
  <!-- *********** GÄSTEBUCH *********** -->
@@ -71,4 +69,3 @@
 </div>
 
 {/if}
-{/strip}

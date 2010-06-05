@@ -1,4 +1,3 @@
-{strip}
 <!--<link href="../../../templates/cp/css/forum.css" rel="stylesheet" type="text/css" />-->
 <table width="100%" border="0" cellpadding="5" cellspacing="1" class="forum_tableborder">
   <tr>
@@ -41,9 +40,9 @@
   <tr>
     <td class="forum_info_icon">&nbsp;</td>
     <td class="forum_info_meta">
-	
+
 	<table width="100%" border="0" cellspacing="0" cellpadding="0">
-  
+
   <tr>
     <td>
 	{#UserOnline#}&nbsp;
@@ -57,14 +56,12 @@
 	{/foreach}
 	</span>
 	<br />
-	 {#GuestsOnline#} {$num_guests}	
-	 
+	 {#GuestsOnline#} {$num_guests}
+
 	 </td>
   </tr>
 </table>
-	
+
 	</td>
   </tr>
 </table>
-
-{/strip}

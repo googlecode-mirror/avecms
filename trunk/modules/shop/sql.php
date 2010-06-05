@@ -1,5 +1,9 @@
 <?php
 
+$modul_sql_install = array();
+$modul_sql_deinstall = array();
+$modul_sql_update = array();
+
 // установка (структура)
 $modul_sql_install[] = "CREATE TABLE `CPPREFIX_modul_shop` (
   `Id` smallint(2) unsigned NOT NULL auto_increment,
@@ -386,6 +390,6 @@ $modul_sql_deinstall[] = "DROP TABLE CPPREFIX_modul_shop_versandzeit";
 $modul_sql_deinstall[] = "DROP TABLE CPPREFIX_modul_shop_zahlungsmethoden";
 
 // обновление
-$modul_sql_update[] = "UPDATE CPPREFIX_module SET Version = '" . $modul['ModulVersion'] . "' WHERE ModulName = '" . $modul['ModulName'] . "';" ;
+$modul_sql_update[] = "UPDATE CPPREFIX_module SET CpEngineTag = '" . $modul['CpEngineTag'] . "', CpPHPTag = '" . $modul['CpPHPTag'] . "', Version = '" . $modul['ModulVersion'] . "' WHERE ModulPfad = '" . $modul['ModulPfad'] . "' LIMIT 1;";
 
 ?>

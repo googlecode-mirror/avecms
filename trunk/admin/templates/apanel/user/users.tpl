@@ -1,7 +1,3 @@
-
-<!-- users.tpl -->
-{strip}
-
 <div id="pageHeaderTitle" style="padding-top:7px;">
 	<div class="h_user">&nbsp;</div>
 	<div class="HeaderTitle">
@@ -11,7 +7,7 @@
 </div>
 <div class="upPage">&nbsp;</div><br />
 
-{if checkPermission('user_new')}
+{if check_permission('user_new')}
 <script type="text/javascript" language="JavaScript">
 function check_name() {ldelim}
 	if (document.getElementById('UserName').value == '') {ldelim}
@@ -34,7 +30,7 @@ function check_name() {ldelim}
 </form>
 {/if}
 
-{if checkPermission('user')}
+{if check_permission('user')}
 
 <h4>{#MAIN_SEARCH_USERS#}</h4>
 
@@ -50,14 +46,14 @@ function check_name() {ldelim}
 		<tr>
 			<td><strong>{#MAIN_USER_PARAMS#}</strong></td>
 			<td>
-				<input style="width:100%" name="query" type="text" id="l_query" value="{$smarty.request.query|escape:html}" />
+				<input style="width:100%" name="query" type="text" id="l_query" value="{$smarty.request.query|escape|stripslashes}" />
 			</td>
 			<td><strong>{#MAIN_USER_STATUS#}</strong></td>
 			<td>
 				<select style="width:100%" name="Status">
-					<option value="all" {if $smarty.request.Status=='all'}selected="selected"{/if}>{#MAIN_USER_STATUS_ALL#}</option>
-					<option value="1" {if $smarty.request.Status=='1'}selected="selected"{/if}>{#MAIN_USER_STATUS_ACTIVE#}</option>
-					<option value="0" {if $smarty.request.Status=='0'}selected="selected"{/if}>{#MAIN_USER_STATUS_INACTIVE#}</option>
+					<option value="all"{if $smarty.request.Status=='all'} selected="selected"{/if}>{#MAIN_USER_STATUS_ALL#}</option>
+					<option value="1"{if $smarty.request.Status=='1'} selected="selected"{/if}>{#MAIN_USER_STATUS_ACTIVE#}</option>
+					<option value="0"{if $smarty.request.Status=='0'} selected="selected"{/if}>{#MAIN_USER_STATUS_INACTIVE#}</option>
 				</select>
 			</td>
 			<td><strong>{#MAIN_USER_GROUP#}</strong></td>
@@ -65,7 +61,7 @@ function check_name() {ldelim}
 				<select style="width:100%" name="Benutzergruppe" id="l_ug">
 					<option value="0">{#MAIN_ALL_USER_GROUP#}</option>
 					{foreach from=$ugroups item=g}
-						<option value="{$g->Benutzergruppe}">{$g->Name|escape:html}</option>
+						<option value="{$g->Benutzergruppe}"{if $g->Benutzergruppe==$smarty.request.Benutzergruppe} selected="selected"{/if}>{$g->Name|escape}</option>
 					{/foreach}
 				</select>
 			</td>
@@ -75,9 +71,14 @@ function check_name() {ldelim}
 </form>
 {/if}
 
+{if !$users}
+<br />
+<div class="HeaderTextError">{#USER_LIST_EMPTY#}</div>
+{else}
+
 <h4>{#USER_ALL#}</h4>
 
-{if checkPermission('user_edit')}<form method="post" action="index.php?do=user&amp;cp={$sess}&amp;action=quicksave">{/if}
+{if check_permission('user_edit')}<form method="post" action="index.php?do=user&amp;cp={$sess}&amp;action=quicksave">{/if}
 	<table width="100%" border="0" cellpadding="8" cellspacing="1" class="tableborder">
 		<col width="20" class="itcen">
 		<col width="20">
@@ -102,23 +103,23 @@ function check_name() {ldelim}
 		{foreach from=$users item=user}
 			<tr style="background-color: #eff3eb;" onmouseover="this.style.backgroundColor='#dae0d8';" onmouseout="this.style.backgroundColor='#eff3eb';" id="table_rows">
 				<td>{$user->Id}</td>
-				<td><input title="{#USER_MARK_DELETE#}"  name="del[{$user->Id}]" type="checkbox" id="del[{$user->Id}]" value="1" {if !checkPermission('user_loesch') || $user->Benutzergruppe==1 || $user->Id==$smarty.session.user_id}disabled{/if} /></td>
+				<td><input title="{#USER_MARK_DELETE#}"  name="del[{$user->Id}]" type="checkbox" id="del[{$user->Id}]" value="1" {if !check_permission('user_loesch') || $user->Benutzergruppe==1 || $user->Id==$smarty.session.user_id}disabled="disabled"{/if} /></td>
 				<td>
-					{if checkPermission('user_edit')}
+					{if check_permission('user_edit')}
 						<a title="{#USER_EDIT#}" href="index.php?do=user&amp;action=edit&amp;Id={$user->Id}&amp;cp={$sess}">
 					{/if}
-					<strong>{if $user->UserName!=''}{$user->UserName}{else}{$user->Vorname} {$user->Nachname}{/if}</strong>
-					{if checkPermission('user_edit')}</a>{/if}<br /><small>{$user->Email} (IP:{$user->IpReg})</small>
+					<strong>{$user->UserName|escape}{if $user->Vorname && $user->Nachname} ({$user->Vorname|escape} {$user->Nachname|escape}){/if}</strong>
+					{if check_permission('user_edit')}</a>{/if}<br /><small>{$user->Email|escape} (IP:{$user->IpReg|escape})</small>
 				</td>
 
 				<td>
-					{if $user->Status!=1}
+					{if !$user->Status}
 						{#USER_STATUS_WAIT#}
 					{else}
 						<select name="Benutzergruppe[{$user->Id}]" style="width:100%;">
 							{foreach from=$ugroups item=g}
 								{if $g->Benutzergruppe!=2}
-									<option value="{$g->Benutzergruppe}" {if $user->Id==1 && $g->Benutzergruppe!=1} disabled{else}{if $g->Benutzergruppe==$user->Benutzergruppe}selected{/if}{/if}>{$g->Name|escape:html}</option>
+									<option value="{$g->Benutzergruppe}" {if $user->Id==1 && $g->Benutzergruppe!=1} disabled{else}{if $g->Benutzergruppe==$user->Benutzergruppe}selected{/if}{/if}>{$g->Name|escape}</option>
 								{/if}
 							{/foreach}
 						</select>
@@ -126,17 +127,17 @@ function check_name() {ldelim}
 				</td>
 
 				<td>
-					{if $user->Status==1}
-						{$user->ZuletztGesehen|date_format:$TIME_FORMAT|pretty_date:$DEF_LANGUAGE}
+					{if $user->Status}
+						{$user->ZuletztGesehen|date_format:$TIME_FORMAT|pretty_date}
 					{else}
 						-
 					{/if}
 				</td>
 
-				<td>{$user->Registriert|date_format:$TIME_FORMAT|pretty_date:$DEF_LANGUAGE}</td>
+				<td>{$user->Registriert|date_format:$TIME_FORMAT|pretty_date}</td>
 
 				<td nowrap="nowrap" align="center">
-					{if checkPermission('user_edit')}
+					{if check_permission('user_edit')}
 						<a title="{#USER_EDIT#}" href="index.php?do=user&amp;action=edit&amp;Id={$user->Id}&amp;cp={$sess}">
 						<img src="{$tpl_dir}/images/icon_edit.gif" alt="" border="0" /></a>
 					{else}
@@ -146,7 +147,7 @@ function check_name() {ldelim}
 
 				<td nowrap="nowrap" align="center">
 					{if $user->Id != 1}
-						{if checkPermission('user_loesch') && $user->Id!=$smarty.session.user_id}
+						{if check_permission('user_loesch') && $user->Id!=$smarty.session.user_id}
 							<a title="{#USER_DELETE#}" onclick="return (confirm('{#USER_DELETE_CONFIRM#}'))" href="index.php?do=user&amp;action=delete&amp;Id={$user->Id}&amp;cp={$sess}">
 							<img src="{$tpl_dir}/images/icon_delete.gif" alt="" border="0" /></a>
 						{else}
@@ -158,7 +159,7 @@ function check_name() {ldelim}
 				</td>
 
 				<td>
-					{if $user->IsShop==1 && $user->Orders >= 1}
+					{if $user->IsShop && $user->Orders}
 						<a title="{#USER_ORDERS#}" href="javascript:void(0)" onclick="window.open('index.php?do=modules&action=modedit&mod=shop&moduleaction=showorders&cp={$sess}&search=1&Query={$user->Id}&start_Day=1&start_Month=1&start_Year=2005&pop=1','best','left=0,top=0,width=960,height=700,scrollbars=1,resizable=1');"><img hspace="2" src="{$tpl_dir}/images/icon_shop.gif" alt="" border="0" /></a>
 					{else}
 						<img hspace="2" src="{$tpl_dir}/images/icon_shop_no.gif" alt="" />
@@ -166,8 +167,8 @@ function check_name() {ldelim}
 				</td>
 
 				<td>
-					{if $user->IsShop==1}
-						<a title="{#USER_DOWNLOADS#}" href="javascript:void(0);" onclick="window.open('index.php?do=modules&action=modedit&mod=shop&moduleaction=shop_downloads&cp={$sess}&Id={$i.Id}&pop=1&User={$user->Id}&N={$user->Nachname}','sd','top=0,left=0,height=600,width=970,scrollbars=1');">
+					{if $user->IsShop}
+						<a title="{#USER_DOWNLOADS#}" href="javascript:void(0);" onclick="window.open('index.php?do=modules&action=modedit&mod=shop&moduleaction=shop_downloads&cp={$sess}&Id={$i.Id}&pop=1&User={$user->Id}&N={$user->Nachname|urlencode}','sd','top=0,left=0,height=600,width=970,scrollbars=1');">
 						<img hspace="2" src="{$tpl_dir}/images/icon_esd_download.gif" alt="" border="0" /></a>
 					{else}
 						-
@@ -177,7 +178,7 @@ function check_name() {ldelim}
 		{/foreach}
 	</table><br />
 
-	{if checkPermission('user_edit')}<input type="submit" class="button" value="{#USER_BUTTON_SAVE#}" />{/if}
+	{if check_permission('user_edit')}<input type="submit" class="button" value="{#USER_BUTTON_SAVE#}" />{/if}
 </form><br />
 
 {if $page_nav}
@@ -195,6 +196,4 @@ function check_name() {ldelim}
 		<img class="absmiddle" src="{$tpl_dir}/images/icon_delete.gif" alt="" border="0" /> - {#USER_DELETE#}
 	</div>
 </div>
-
-{/strip}
-<!-- /users.tpl -->
+{/if}

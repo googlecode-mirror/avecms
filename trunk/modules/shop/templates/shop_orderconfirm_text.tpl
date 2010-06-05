@@ -38,8 +38,8 @@
 {/foreach}{/if}
 
 {#BasketAmount#}: {$bi->Anzahl}
-{#BasketSummO#}: {numFormat val=$bi->EPreis} {$Currency}
-{#BasketSumm#}: {numFormat val=$bi->EPreisSumme} {$Currency}
+{#BasketSummO#}: {num_format val=$bi->EPreis} {$Currency}
+{#BasketSumm#}: {num_format val=$bi->EPreisSumme} {$Currency}
 #################################################
 {/foreach}
 
@@ -50,23 +50,23 @@
 {#ShippingMethod#} {$ShipperName|stripslashes}
 {#BillingMethod#} {$PaymentMethod|stripslashes}
 
-{#OrdersSumm#} {numFormat val=$smarty.session.Zwisumm} {$Currency}
+{#OrdersSumm#} {num_format val=$smarty.session.Zwisumm} {$Currency}
 {if $smarty.session.CouponCode > 0}{#Coupon#}-{$smarty.session.CouponCode} %
 {/if}
 {if $smarty.session.Rabatt>0}{#CustomerDiscount#} -{$smarty.session.RabattWert}
-{/if}{#Packing#} {numFormat val=$smarty.session.ShippingSumm} {$Currency}
+{/if}{#Packing#} {num_format val=$smarty.session.ShippingSumm} {$Currency}
 
 {if $smarty.session.KostenZahlungOut>0}
 {#SummBillingMethod#} {$smarty.session.KostenZahlungPM}{$smarty.session.KostenZahlungOut} {$smarty.session.KostenZahlungSymbol}{/if}
-{#SummBillingMethod#} {numFormat val=$smarty.session.KostenZahlung} {$Currency}
-{#SummOverall#} {numFormat val=$PaymentOverall} {$Currency}
+{#SummBillingMethod#} {num_format val=$smarty.session.KostenZahlung} {$Currency}
+{#SummOverall#} {num_format val=$PaymentOverall} {$Currency}
 =================================================
 {if $smarty.session.CouponCode > 0}
 {foreach from=$VatZones item=vz}{if $smarty.session.VatInc!='' && in_array($vz->Wert,$smarty.session.VatInc)}
 {#IncVat#} {$vz->Wert}%{/if}
 {/foreach}{else}{foreach from=$VatZones item=vz}
 {if $smarty.session.VatInc!='' && in_array($vz->Wert,$smarty.session.VatInc)}
-{#IncVat#} {$vz->Wert}%: {assign var=VatSessionName value=$vz->Wert} {numFormat val=$smarty.session.$VatSessionName} {$Currency}
+{#IncVat#} {$vz->Wert}%: {assign var=VatSessionName value=$vz->Wert} {num_format val=$smarty.session.$VatSessionName} {$Currency}
 {/if}
 {/foreach}{/if}
 

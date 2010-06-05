@@ -1,6 +1,86 @@
-<!-- myprofile.tpl -->
-{strip}
+<div class="box">
+	<h2>
+		<a href="#" id="toggle-forms">{#LOGIN_CHANGE_DETAILS#}</a>
+	</h2>
+	<div class="block" id="forms">
+		<p>{#LOGIN_DETAILS_INFO#}</p>
 
+		{if $errors}
+			<div class="infobox">
+				<p>{#LOGIN_ERRORS#}</p>
+				<ul>
+					{foreach from=$errors item=error}
+						<li>{$error}</li>
+					{/foreach}
+				</ul>
+			</div><br />
+		{/if}
+
+		{if $changed==1}
+			<p>{#LOGIN_CHANGED_OK#}</p>
+		{/if}
+
+		<form method="post" action="index.php?module=login&action=profile&sub=update">
+			<fieldset>
+				<p>
+					<label>{#LOGIN_YOUR_FIRSTNAME#}</label>
+					<input name="Vorname" type="text" value="{$smarty.request.Vorname|default:$row.Vorname|escape|stripslashes}" />
+				</p>
+				<p>
+					<label>{#LOGIN_YOUR_LASTNAME#}</label>
+					<input name="Nachname" type="text" value="{$smarty.request.Nachname|default:$row.Nachname|escape|stripslashes}" />
+				</p>
+				<p>
+					<label>{#LOGIN_YOUR_BIRTHDAY#} {#LOGIN_DATE_FORMAT#}</label>
+					<input name="GebTag" type="text" value="{$smarty.request.GebTag|default:$row.GebTag|escape|stripslashes}" />
+				</p>
+				<p>
+					<label>{#LOGIN_YOUR_MAIL#}</label>
+					<input name="Email" type="text" value="{$smarty.request.Email|default:$row.Email|escape|stripslashes}" />
+				</p>
+				<p>
+					<label>{#LOGIN_YOUR_COUNTRY#}</label>
+					<select name="Land">
+						{assign var=uc value=$row->Land|default:$smarty.session.user_language|lower}
+						{foreach from=$available_countries item=land}
+							<option value="{$land->LandCode}"{if $land->LandCode == $smarty.request.Land|default:$row.Land|default:$smarty.session.user_language|lower} selected{/if}>{$land->LandName}</option>
+						{/foreach}
+					</select>
+				</p>
+				<p>
+					<label>{#LOGIN_YOUR_TOWN#}</label>
+					<input name="city" type="text" value="{$smarty.request.city|default:$row.city|escape|stripslashes}" />
+				</p>
+				<p>
+					<label>{#LOGIN_YOUR_ZIP#}</label>
+					<input name="Postleitzahl" type="text" value="{$smarty.request.Postleitzahl|default:$row.Postleitzahl|escape|stripslashes}" />
+				</p>
+				<p>
+					<label>{#LOGIN_YOUR_STREET#}</label>
+					<input name="Strasse" type="text" value="{$smarty.request.Strasse|default:$row.Strasse|escape|stripslashes}" />
+				</p>
+				<p>
+					<label>{#LOGIN_YOUR_HOUSE#}</label>
+					<input name="HausNr" type="text" value="{$smarty.request.HausNr|default:$row.HausNr|escape|stripslashes}" />
+				</p>
+				<p>
+					<label>{#LOGIN_YOUR_PHONE#}</label>
+					<input name="Telefon" type="text" value="{$smarty.request.Telefon|default:$row.Telefon|escape|stripslashes}" />
+				</p>
+				<p>
+					<label>{#LOGIN_YOUR_FAX#}</label>
+					<input name="Telefax" type="text" value="{$smarty.request.Telefax|default:$row.Telefax|escape|stripslashes}" />
+				</p>
+				<p>
+					<label>{#LOGIN_YOUR_COMPANY#}</label>
+					<input name="Firma" type="text" value="{$smarty.request.Firma|default:$row.Firma|escape|stripslashes}" />
+				</p>
+				<input class="confirm button" value="{#LOGIN_BUTTON_CHANGE#}" type="submit">
+			</fieldset>
+		</form>
+	</div>
+</div>
+{*
 <h2 id="page-heading">{#LOGIN_CHANGE_DETAILS#}</h2>
 
 <div id="module_content">
@@ -85,7 +165,7 @@
 		<div class="formright">
 			<select name="Land" id="l_land">
 				{foreach from=$available_countries item=land}
-					<option value="{$land->LandCode}"{if $land->LandCode == $row.land|default:$DEF_COUNTRY} selected{/if}>{$land->LandName}</option>
+					<option value="{$land->LandCode}"{if $land->LandCode == $row.land|default} selected{/if}>{$land->LandName}</option>
 				{/foreach}
 			</select>
 		</div>
@@ -98,6 +178,4 @@
 		<div class="clear"></div>
 	</form>
 </div>
-
-{/strip}
-<!-- /myprofile.tpl -->
+*}

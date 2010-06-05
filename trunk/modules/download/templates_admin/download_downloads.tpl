@@ -1,4 +1,3 @@
-{strip}
 <div class="pageHeaderTitle" style="padding-top: 7px;">
 <div class="h_module"></div>
     <div class="HeaderTitle"><h2>{#ModName#}</h2></div>
@@ -92,7 +91,7 @@
 	    <td width="1%" align="center" nowrap="nowrap">{$i->Pay} {if $i->Pay_val == 0}${else}руб.{/if}</td>
 
       <td width="1%" align="center" nowrap="nowrap">{$i->Downloads}</td>
-      <td width="1%" nowrap="nowrap"><span class="itcen">{$i->Datum|date_format:$TIME_FORMAT|pretty_date:$DEF_LANGUAGE}</span>
+      <td width="1%" nowrap="nowrap"><span class="itcen">{$i->Datum|date_format:$TIME_FORMAT|pretty_date}</span>
 
 	  <br />
 	  <small>
@@ -101,7 +100,7 @@
 	  </td>
 	<td width="1%" nowrap="nowrap">
 	  {if $i->Geaendert}
-	  <span class="itcen">{$i->Geaendert|date_format:$TIME_FORMAT|pretty_date:$DEF_LANGUAGE}</span> <br />
+	  <span class="itcen">{$i->Geaendert|date_format:$TIME_FORMAT|pretty_date}</span> <br />
 	  <small><a href="#" onclick="cp_pop('index.php?do=user&action=edit&Id={$i->Autor_Erstellt}&cp={$sess}&pop=1');">{$i->AuthorG}</a></small>
 	  {else}
 	  &nbsp;
@@ -166,4 +165,3 @@
 <br />
 <br />
 {$page_nav}
-{/strip}

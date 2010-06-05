@@ -1,5 +1,3 @@
-{strip}
-
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 
@@ -9,38 +7,41 @@
 <link href="data/tpl/style.css" rel="stylesheet" type="text/css" />
 </head>
 
-<body>
-<div id="container">
-	<div id="header">&nbsp;</div>
-	<div id="content">
-		<div id="pageLogo"><img src="data/tpl/ave_logo.jpg" width="186" height="76" alt="Logotype" /></div>
-		<div id="pageHeaderTitle">{$version_setup}</div>
-		<div class="clearer">&nbsp;</div>
+<body id="body">
 
-		<div class="Item">
-			<div class="SideTitle">
-				<div class="SideTitleLHS">{$la.install_step} <span class="TitleStep">5</span></div>
-				<div class="SideTitleRHS">{$la.install_finish_header}</div>
-				<div class="clearer">&nbsp;</div>
+<div class="wrapper">
+	<div class="step step_4"></div>
+	<h1 align="right">{$la.stepstatus}</h1>
+	<p>&nbsp;</p>
+	<div class="help">{$la.header_logindata}</div>
+	{if $errors}
+		{foreach from=$errors item="error"}
+		<div class="error">{$error}</div>
+		{/foreach}
+	{/if}
+	<form action="install.php" method="post" enctype="multipart/form-data" name="s" id="s">
+		<div id="inquiry_form">
+			<div class="cf">
+				<label for="username"><span class="star">*</span>{$la.username}</label>
+				<input class="text" name="username" type="text" id="username" value="{$smarty.request.username|escape|stripslashes}" />
+			</div>
+			<div class="cf">
+				<label for="email"><span class="star">*</span>{$la.email}</label>
+				<input class="text" name="email" type="text" id="email" value="{$smarty.request.email|escape|stripslashes}" />
+			</div>
+			<div class="cf">
+				<label for="pass"><span class="star">*</span>{$la.password}</label>
+				<input class="text" name="pass" type="text" id="pass" value="{$smarty.request.pass|escape|stripslashes}" />
 			</div>
 		</div>
-
-		{$la.install_finish_body}
-
-		<table cellspacing="10" cellpadding="0" border="0">
-			<tr>
-				<td>&nbsp;</td>
-			</tr>
-		</table>
-
-		<div id="clearfooter">&nbsp;</div>
-
-	</div>
+		<div class="help">{$la.loginstar}</div>
+		<input name="force" type="hidden" id="force" value="{$smarty.request.force|escape|stripslashes}" />
+		<input name="demo" type="hidden" id="demo" value="{$smarty.request.demo|escape|stripslashes}" />
+		<input name="step" type="hidden" id="step" value="4" />
+		<div align="center" class="go_buttons">
+			<input name="Senden"type="submit" class="button" onclick="document.s.sumit.disabled();" value="{$la.button_setup_final}" />
+		</div>
 </div>
-
-<div id="footer">&nbsp;</div>
 
 </body>
 </html>
-
-{/strip}

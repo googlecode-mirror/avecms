@@ -18,14 +18,19 @@
  * </pre>
  */
 
-global $config;
+function db_connect()
+{
+	@require('./db.config.php');
 
-require('config.php');
-require('db.config.php');
+	if (! isset($config)) die;
 
-if (!mysql_select_db($config['dbname'], @mysql_connect($config['dbhost'], $config['dbuser'], $config['dbpass']))) die;
+	if (! @mysql_select_db($config['dbname'], @mysql_connect($config['dbhost'], $config['dbuser'], $config['dbpass']))) die;
 
-@mysql_query("SET NAMES 'cp1251'");
+	if (! defined('PREFIX')) define('PREFIX', $config['dbpref']);
+
+	@mysql_query("SET NAMES 'cp1251'");
+}
+db_connect();
 
 // общая информация о магазине и валюты
 $sql = mysql_query("
@@ -40,36 +45,71 @@ $sql = mysql_query("
 		downloadable,
 		track_label
 	FROM
-		" . $config['dbpref'] . "_settings,
-		" . $config['dbpref'] . "_modul_shop
+		" . PREFIX . "_settings,
+		" . PREFIX . "_modul_shop
 ");
 list($shop_active, $shop_currency_id, $shop_name, $shop_company, $custom, $delivery, $delivery_local, $downloadable, $track_label) = mysql_fetch_row($sql);
 
 if ($shop_active != 1) exit;
 
-$shop_url = ((isset($_SERVER['HTTPS']) && strtolower($_SERVER['HTTPS']) == 'on') || $_SERVER['SERVER_PORT'] == 443) ? 'https://' : 'http://';
-$shop_url .= $_SERVER['HTTP_HOST'];
-if ($_SERVER['SERVER_PORT'] != 80)
+function is_ssl()
 {
-	$shop_url = str_replace(':' . $_SERVER['SERVER_PORT'], '', $shop_url);
-}
-if ($_SERVER['SERVER_PORT'] != 80 || (isset($_SERVER['HTTPS']) && strtolower($_SERVER['HTTPS']) == 'on') || $_SERVER['SERVER_PORT'] == 443)
-{
-	$shop_url .= ':' . $_SERVER['SERVER_PORT'];
+	if (isset($_SERVER['HTTPS']))
+	{
+		if ('on' == strtolower($_SERVER['HTTPS'])) return true;
+		if ('1' == $_SERVER['HTTPS']) return true;
+	}
+	elseif (isset($_SERVER['SERVER_PORT']) && ('443' == $_SERVER['SERVER_PORT']))
+	{
+		return true;
+	}
+
+	return false;
 }
 
-require('../modules/shop/funcs/func.rewrite.php');
-require('../class/class.yml.php');
+function set_host()
+{
+	if (isset($_SERVER['HTTP_HOST']))
+	{
+		// Все символы $_SERVER['HTTP_HOST'] приводим к строчным и проверяем
+		// на наличие запрещённых символов в соответствии с RFC 952 и RFC 2181.
+		$_SERVER['HTTP_HOST'] = strtolower($_SERVER['HTTP_HOST']);
+		if (!preg_match('/^\[?(?:[a-z0-9-:\]_]+\.?)+$/', $_SERVER['HTTP_HOST']))
+		{
+			// $_SERVER['HTTP_HOST'] не соответствует спецификациям.
+			// Возможно попытка взлома, даём отлуп статусом 400.
+			header('HTTP/1.1 400 Bad Request');
+			exit;
+		}
+	}
+	else
+	{
+		$_SERVER['HTTP_HOST'] = '';
+	}
 
-$AVE_YML = new AVE_YML();
+	$ssl = is_ssl();
+	$shema = ($ssl) ? 'https://' : 'http://';
+	$host = str_replace(':' . $_SERVER['SERVER_PORT'], '', $_SERVER['HTTP_HOST']);
+	$port = ($_SERVER['SERVER_PORT'] == '80' || $_SERVER['SERVER_PORT'] == '443' || $ssl) ? '' : ':' . $_SERVER['SERVER_PORT'];
+	list($abs_path) = explode('/inc', (!strstr($_SERVER['PHP_SELF'], $_SERVER['SCRIPT_NAME']) && (@php_sapi_name() == 'cgi')) ? $_SERVER['PHP_SELF'] : $_SERVER['SCRIPT_NAME']);
+
+	define('HOME_URL', $shema . $host . $port . $abs_path . '/');
+}
+set_host();
+
+@require('../modules/shop/funcs/func.rewrite.php');
+@require('../class/class.yml.php');
+
+$AVE_YML = new AVE_YML('windows-1251');
 
 // информация о магазине
-$AVE_YML->set_shop($shop_name, $shop_company, $shop_url . ($config['mod_rewrite'] ? '/shop.html' : '/index.php?module=shop'));
+$shop_url = HOME_URL . shopRewrite('index.php?module=shop');
+$AVE_YML->ymlElementShopSet($shop_name, $shop_company, $shop_url);
 
 // вылюты
-$AVE_YML->add_currency($shop_currency_id, 1);
-$AVE_YML->add_currency('USD', 'CBRF', 3);
-$AVE_YML->add_currency('UAH', 'NBU', 1);
+$AVE_YML->ymlElementCurrencySet($shop_currency_id, 1);
+$AVE_YML->ymlElementCurrencySet('USD', 'CBRF', 3);
+$AVE_YML->ymlElementCurrencySet('UAH', 'NBU', 1);
 
 // категории
 $sql = mysql_query("
@@ -77,18 +117,18 @@ $sql = mysql_query("
 		Id,
 		Elter,
 		KatName
-	FROM " . $config['dbpref'] . "_modul_shop_kategorie
+	FROM " . PREFIX . "_modul_shop_kategorie
 ");
 
 while (list($cat_id, $cat_parent_id, $cat_name) = mysql_fetch_row($sql))
 {
 	if ($cat_parent_id)
 	{
-		$AVE_YML->add_category($cat_name, $cat_id, $cat_parent_id);
+		$AVE_YML->ymlElementCategorySet($cat_name, $cat_id, $cat_parent_id);
 	}
 	else
 	{
-		$AVE_YML->add_category($cat_name, $cat_id);
+		$AVE_YML->ymlElementCategorySet($cat_name, $cat_id);
 	}
 }
 
@@ -110,12 +150,12 @@ $sql = mysql_query("
 		" . ($downloadable ? "IF(VersandZeitId = " . $downloadable . ", 'true', 'false') AS downloadable," : '') . "
 		Elter
 	FROM
-		" . $config['dbpref'] . "_modul_shop_artikel AS art
+		" . PREFIX . "_modul_shop_artikel AS art
 	LEFT JOIN
-		" . $config['dbpref'] . "_modul_shop_hersteller AS vend
+		" . PREFIX . "_modul_shop_hersteller AS vend
 			ON vend.Id = Hersteller
 	LEFT JOIN
-		" . $config['dbpref'] . "_modul_shop_kategorie AS cat
+		" . PREFIX . "_modul_shop_kategorie AS cat
 			ON cat.Id = KatId
 	WHERE
 		Aktiv = 1
@@ -130,22 +170,13 @@ $sql = mysql_query("
 while ($row = mysql_fetch_assoc($sql))
 {
 	$offer_id = $row['url'];
-	if ($config['mod_rewrite'])
-	{
-		$row['url'] = $shop_url . '/'
-			. shopRewrite("index.php?module=shop&amp;action=product_detail&amp;product_id=" . $offer_id
+	$row['url'] = HOME_URL
+		. shopRewrite("index.php?module=shop&amp;action=product_detail"
+			. "&amp;product_id=" . $offer_id
 			. "&amp;categ=" . $row['categoryId']
-			. "&amp;navop=" . (($row['Elter'] == 0) ? $row['categoryId'] : $row['Elter']))
-			. ($track_label ? "#ym" : "");
-	}
-	else
-	{
-		$row['url'] = $shop_url . '/'
-			. "index.php?module=shop&amp;action=product_detail&amp;product_id=" . $offer_id
-			. "&amp;categ=" . $row['categoryId']
-			. "&amp;navop=" . (($row['Elter'] == 0) ? $row['categoryId'] : $row['Elter'])
-			. ($track_label ? "&amp;tl=ym" : "");
-	}
+			. "&amp;navop=" . (0 == $row['Elter'] ? $row['categoryId'] : $row['Elter']))
+		. ($track_label ? "#ym" : ""
+	);
 
 	if (empty($row['picture']))
 	{
@@ -153,20 +184,20 @@ while ($row = mysql_fetch_assoc($sql))
 	}
 	else
 	{
-		$row['picture'] = $shop_url . '/modules/shop/uploads/' . $row['picture'];
+		$row['picture'] = HOME_URL . 'modules/shop/uploads/' . $row['picture'];
 	}
 
 	$offer_available = $row['available'];
 
 	unset($row['available'], $row['Elter']);
 
-	$AVE_YML->add_offer($offer_id, $row, $offer_available);
+	$AVE_YML->ymlElementOfferSet($offer_id, $row, $offer_available);
 }
 
 mysql_free_result($sql);
 
 header('Content-type: text/xml');
 
-print_r($AVE_YML->get_xml());
+print_r($AVE_YML->ymlGet());
 
 ?>

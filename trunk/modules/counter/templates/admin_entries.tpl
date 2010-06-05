@@ -1,7 +1,3 @@
-
-<!-- admin_entries.tpl -->
-{strip}
-
 <div class="pageHeaderTitle" style="padding-top:7px">
 	<div class="h_module">&nbsp;</div>
 	<div class="HeaderTitle">
@@ -27,7 +23,7 @@
 
 		{foreach from=$items item=item}
 			<tr style="background-color:#eff3eb" onmouseover="this.style.backgroundColor='#dae0d8';" onmouseout="this.style.backgroundColor='#eff3eb';" id="table_rows">
-				<td>{$item->visit|date_format:$TIME_FORMAT|pretty_date:$DEF_LANGUAGE}</td>
+				<td>{$item->visit|date_format:$TIME_FORMAT|pretty_date}</td>
 				<td>
 					{if $item->client_referer != ''}
 						<a target="_blank" href="{$item->client_referer}">{$item->client_referer|default:'-'}</a>
@@ -51,6 +47,3 @@
 		{$page_nav}
 	</div>
 {/if}
-
-{/strip}
-<!-- /admin_entries.tpl -->

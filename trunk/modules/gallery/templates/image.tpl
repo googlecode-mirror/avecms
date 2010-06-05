@@ -21,8 +21,6 @@ window.moveTo(0,0);
 //-->
 </script>
 </head>
-<!-- image.tpl -->
-{strip}
 
 <body style="margin:0;overflow:{if $scrollbars == 1}auto{else}hidden{/if}">
 
@@ -50,6 +48,4 @@ window.moveTo(0,0);
 {/if}
 
 </body>
-{/strip}
-<!-- /image.tpl -->
 </html>

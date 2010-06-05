@@ -1,7 +1,3 @@
-
-<!-- form.tpl -->
-{strip}
-
 <script language="javascript">
 function mark_freemail() {ldelim}
 	if(document.getElementById('free').selected==true)
@@ -24,7 +20,7 @@ function mark_mailpass() {ldelim}
 		<div class="HeaderTitle"><h2>{#USER_NEW_TITLE#}</h2></div>
 		<div class="HeaderText">{#USER_NEW_TIP#}</div>
 	{else}
-		<div class="HeaderTitle"><h2>{#USER_EDIT_TITLE#}<span style="color: #000;">&nbsp;&gt;&nbsp;{$row->Vorname} {$row->Nachname}</span></h2></div>
+		<div class="HeaderTitle"><h2>{#USER_EDIT_TITLE#}<span style="color: #000;">&nbsp;&gt;&nbsp;{$row->Vorname|escape} {$row->Nachname|escape}</span></h2></div>
 		<div class="HeaderText">{#USER_EDIT_TIP#}</div>
 	{/if}
 </div>
@@ -39,7 +35,8 @@ function mark_mailpass() {ldelim}
 	</ul><br />
 {/if}
 
-<form method="post" action="{$formaction}&Email_Old={$row->Email}" enctype="multipart/form-data">
+<form method="post" action="{$formaction}" enctype="multipart/form-data">
+	<input name="Email_Old" type="hidden" value="{$smarty.request.Email|stripslashes|default:$row->Email|escape}" />
 	<table width="100%" border="0" cellspacing="1" cellpadding="8" class="tableborder">
 		<col width="300" valign="top" class="first">
 		<col class="second">
@@ -50,31 +47,31 @@ function mark_mailpass() {ldelim}
 
 		<tr>
 			<td>{#USER_LOGIN#}</td>
-			<td><input name="UserName" type="text" id="UserName" size="40" value="{$row->UserName}{if $smarty.request.UserName!=''}{$smarty.request.UserName|escape:html}{/if}"></td>
+			<td><input name="UserName" type="text" id="UserName" size="40" value="{$smarty.request.UserName|stripslashes|default:$row->UserName|escape}" /></td>
 		</tr>
 
 		<tr>
 			<td>{#USER_FIRSTNAME#}</td>
-			<td><input name="Vorname" type="text" id="Vorname" size="40" value="{$row->Vorname}{if $smarty.request.UserName!=''}{$smarty.request.UserName|escape:html}{/if}"></td>
+			<td><input name="Vorname" type="text" id="Vorname" size="40" value="{$smarty.request.Vorname|stripslashes|default:$row->Vorname|escape}" /></td>
 		</tr>
 
 		<tr>
 			<td>{#USER_LASTNAME#}</td>
-			<td><input name="Nachname" type="text" id="Nachname" size="40" value="{$row->Nachname}"></td>
+			<td><input name="Nachname" type="text" id="Nachname" size="40" value="{$smarty.request.Nachname|stripslashes|default:$row->Nachname|escape}" /></td>
 		</tr>
 
 		<tr>
 			<td>{#USER_EMAIL#}</td>
-			<td><input name="Email" type="text" id="Email" size="40" value="{$row->Email}"></td>
+			<td><input name="Email" type="text" id="Email" size="40" value="{$smarty.request.Email|stripslashes|default:$row->Email|escape}" /></td>
 		</tr>
 
 		<tr>
 			<td>{#USER_PASSWORD#}&nbsp;{if $smarty.request.action=='edit'} ({#USER_PASSWORD_CHANGE#}){/if}</td>
 			<td>
 				{if $smarty.request.action=='edit'}
-					<input onchange="mark_mailpass();" onkeydown="mark_mailpass();" onkeyup="mark_mailpass();" name="Kennwort" type="text" id="Kennwort" size="25" maxlength="20">
+					<input onchange="mark_mailpass();" onkeydown="mark_mailpass();" onkeyup="mark_mailpass();" name="Kennwort" type="text" id="Kennwort" size="25" maxlength="50" />
 				{else}
-					<input name="Kennwort" type="text" id="Kennwort" size="25" maxlength="20">
+					<input name="Kennwort" type="text" id="Kennwort" size="25" maxlength="50" />
 				{/if}
 			</td>
 		</tr>
@@ -82,21 +79,21 @@ function mark_mailpass() {ldelim}
 		{if $is_forum==1 && $smarty.request.action=='edit'}
 			<tr>
 				<td>{#USER_NICK#}</td>
-				<td><input name="BenutzerName_fp" type="text" size="40" value="{$row_fp->BenutzerName|stripslashes}"></td>
+				<td><input name="BenutzerName_fp" type="text" size="40" value="{$row_fp->BenutzerName|escape}" /></td>
 			</tr>
 
 			<tr>
 				<td>{#USER_SIGNATURE#}</td>
-				<td><textarea name="Signatur_fp" style="width:300px; height:100px">{$row_fp->Signatur|stripslashes}</textarea></td>
+				<td><textarea name="Signatur_fp" style="width:300px; height:100px">{$row_fp->Signatur|escape}</textarea></td>
 			</tr>
 
 			<tr>
 				<td>{#USER_AVATAR#}</td>
 				<td>
-					{if $row_fp->Avatar!=''}
-						<img src="../modules/forums/avatars/{$row_fp->Avatar}" alt="" /><br />
+					{if $row_fp->Avatar != ''}
+						<img src="../modules/forums/avatars/{$row_fp->Avatar|escape}" alt="" /><br />
 					{/if}
-					<input type="text" name="Avatar_fp" size="40" value="{$row_fp->Avatar}">
+					<input type="text" name="Avatar_fp" size="40" value="{$row_fp->Avatar|escape}" />
 				</td>
 			</tr>
 		{/if}
@@ -105,33 +102,33 @@ function mark_mailpass() {ldelim}
 			<tr>
 				<td>{#USER_TAX#}</td>
 				<td>
-					<input type="radio" name="UStPflichtig" value="1" {if $row->UStPflichtig=='1'}checked="checked"{/if} /> {#USER_YES#}&nbsp;
-					<input type="radio" name="UStPflichtig" value="0" {if $row->UStPflichtig=='0'}checked="checked"{/if} /> {#USER_NO#}
+					<input type="radio" name="UStPflichtig" value="1" {if $row->UStPflichtig=='1'}checked="checked" {/if}/> {#USER_YES#}&nbsp;
+					<input type="radio" name="UStPflichtig" value="0" {if $row->UStPflichtig=='0'}checked="checked" {/if}/> {#USER_NO#}
 				</td>
 			</tr>
 		{/if}
 
 		<tr>
 			<td>{#USER_COMPANY#}</td>
-			<td><input name="Firma" type="text" size="40" value="{$row->Firma|escape}"></td>
+			<td><input name="Firma" type="text" size="40" value="{$smarty.request.Firma|stripslashes|default:$row->Firma|escape}" /></td>
 		</tr>
 
 		<tr>
 			<td>{#USER_HOUSE_STREET#}</td>
 			<td>
-				<input name="Strasse" type="text" id="Strasse" size="25" value="{$row->Strasse}">&nbsp;
-				<input name="HausNr" type="text" id="HausNr" size="10" maxlength="10" value="{$row->HausNr|escape:html}">
+				<input name="Strasse" type="text" id="Strasse" size="25" value="{$smarty.request.Strasse|stripslashes|default:$row->Strasse|escape}" />&nbsp;
+				<input name="HausNr" type="text" id="HausNr" size="10" maxlength="10" value="{$smarty.request.HausNr|stripslashes|default:$row->HausNr|escape}" />
 			</td>
 		</tr>
 
 		<tr>
 			<td>{#USER_ZIP_CODE#}</td>
-			<td><input name="Postleitzahl" type="text" id="Postleitzahl" size="25" maxlength="20" value="{$row->Postleitzahl}"></td>
+			<td><input name="Postleitzahl" type="text" id="Postleitzahl" size="25" maxlength="20" value="{$smarty.request.Postleitzahl|stripslashes|default:$row->Postleitzahl|escape}" /></td>
 		</tr>
 
 		<tr>
 			<td>{#USER_CITY#}</td>
-			<td><input name="city" type="text" id="city" size="40" value="{$row->city}"></td>
+			<td><input name="city" type="text" id="city" size="40" value="{$smarty.request.city|stripslashes|default:$row->city|escape}" /></td>
 		</tr>
 
 		<tr>
@@ -139,12 +136,12 @@ function mark_mailpass() {ldelim}
 			<td>
 				<select name="Land">
 					{if $smarty.request.action=='new' && $smarty.request.Land != ''}
-						{assign var=sL value=$smarty.request.Land}
+						{assign var=sL value=$smarty.request.Land|stripslashes|escape}
 					{else}
-						{assign var=sL value=$row->Land|default:$DEF_COUNTRY}
+						{assign var=sL value=$row->Land|default|escape}
 					{/if}
 					{foreach from=$available_countries item=land}
-						<option value="{$land->LandCode}" {if $sL==$land->LandCode}selected{/if}>{$land->LandName}</option>
+						<option value="{$land->LandCode}" {if $sL==$land->LandCode}selected{/if}>{$land->LandName|escape}</option>
 					{/foreach}
 				</select>
 			</td>
@@ -152,35 +149,35 @@ function mark_mailpass() {ldelim}
 
 		<tr>
 			<td>{#USER_PHONE#}</td>
-			<td><input name="Telefon" type="text" id="Telefon" size="40" value="{$row->Telefon}"></td>
+			<td><input name="Telefon" type="text" id="Telefon" size="40" value="{$smarty.request.Telefon|stripslashes|default:$row->Telefon|escape}" /></td>
 		</tr>
 
 		<tr>
 			<td>{#USER_FAX#}</td>
-			<td><input name="Telefax" type="text" id="Telefax" size="40" value="{$row->Telefax}"></td>
+			<td><input name="Telefax" type="text" id="Telefax" size="40" value="{$smarty.request.Telefax|stripslashes|default:$row->Telefax|escape}" /></td>
 		</tr>
 
 		<tr>
 			<td>{#USER_BIRTHDAY#}</td>
-			<td><input name="GebTag" type="text" id="GebTag" size="25" maxlength="10" value="{$row->GebTag}">{#USER_BIRTHDAY_FORMAT#}</td>
+			<td><input name="GebTag" type="text" id="GebTag" size="25" maxlength="10" value="{$smarty.request.GebTag|stripslashes|default:$row->GebTag|escape}" />{#USER_BIRTHDAY_FORMAT#}</td>
 		</tr>
-
+{*
 		<tr>
 			<td>{#USER_NOTICE#}</td>
-			<td><textarea name="Bemerkungen" style="width:300px; height:100px" id="Bemerkungen">{$row->Bemerkungen}</textarea></td>
+			<td><textarea name="Bemerkungen" style="width:300px; height:100px" id="Bemerkungen">{$smarty.request.Bemerkungen|stripslashes|default:$row->Bemerkungen|escape}</textarea></td>
 		</tr>
-
+*}
 		<tr>
 			<td>{#USER_MAIN_GROUP#}</td>
 			<td>
 				<select style="width:200px" name="Benutzergruppe">
 					{if $smarty.request.action=='new' && $smarty.request.Benutzergruppe != ''}
-						{assign var=bG value=$smarty.request.Benutzergruppe}
+						{assign var=bG value=$smarty.request.Benutzergruppe|stripslashes|escape}
 					{else}
-						{assign var=bG value=$row->Benutzergruppe|default:4}
+						{assign var=bG value=$smarty.request.Benutzergruppe|stripslashes|default:$row->Benutzergruppe|escape|default:4}
 					{/if}
 					{foreach from=$ugroups item=g}
-						<option value="{$g->Benutzergruppe}" {if $row->Id==1 && $g->Benutzergruppe!=1} disabled{else}{if $bG==$g->Benutzergruppe}{assign var=ItsGroup value=$g->Benutzergruppe}selected{/if}{/if}>{$g->Name|escape:html}</option>
+						<option value="{$g->Benutzergruppe}"{if $row->Id==1 && $g->Benutzergruppe!=1} disabled="disabled"{else}{if $bG==$g->Benutzergruppe}{assign var=ItsGroup value=$g->Benutzergruppe} selected="selected"{/if}{/if}>{$g->Name|escape}</option>
 					{/foreach}
 				</select>
 			</td>
@@ -191,7 +188,7 @@ function mark_mailpass() {ldelim}
 			<td>
 				<select name="BenutzergruppeMisc[]" size="8" multiple="multiple" id="BenutzergruppeMisc"  style="width:200px">
 					{foreach from=$ugroups item=g}
-						<option value="{$g->Benutzergruppe}" {if $row->Id==1 && $g->Benutzergruppe!=1} disabled{else}{if $BenutzergruppeMisc}{if in_array($g->Benutzergruppe,$BenutzergruppeMisc)}selected="selected"{/if}{else}{/if}{/if}>{$g->Name|escape:html}</option>
+						<option value="{$g->Benutzergruppe}"{if $row->Id==1 && $g->Benutzergruppe!=1} disabled="disabled"{elseif $BenutzergruppeMisc && in_array($g->Benutzergruppe,$BenutzergruppeMisc)} selected="selected"{/if}>{$g->Name|escape}</option>
 					{/foreach}
 				</select>
 			</td>
@@ -201,8 +198,8 @@ function mark_mailpass() {ldelim}
 			<td>{#USER_STATUS#}</td>
 			<td>
 				<select style="width:150px" name="Status" id="Statuss" onchange="mark_freemail();">
-					<option id="free" value="1" {if $row->Status==1 || $smarty.request.action=='new'}selected{/if}>{#USER_ACTIVE#}</option>
-					<option id="notfree" value="0" {if $row->Id==1 && $g->Benutzergruppe!=1} disabled{else}{if $row->Status==0 && $smarty.request.action!='new'}selected{/if} {if $ItsGroup=='1' && $smarty.session.user_group=='1'}disabled{/if}{/if}>{#USER_INACTIVE#}</option>
+					<option id="free" value="1"{if $row->Status==1 || $smarty.request.action=='new'} selected="selected"{/if}>{#USER_ACTIVE#}</option>
+					<option id="notfree" value="0"{if $row->Id==1 && $g->Benutzergruppe!=1} disabled="disabled"{else}{if $row->Status==0 && $smarty.request.action!='new'} selected="selected"{/if}{if $ItsGroup=='1' && $smarty.session.user_group=='1'} disabled="disabled"{/if}{/if}>{#USER_INACTIVE#}</option>
 				</select>
 			</td>
 		</tr>
@@ -220,17 +217,14 @@ function mark_mailpass() {ldelim}
 
 			<tr>
 				<td>{#USER_MESSAGE_SUBJECT#}</td>
-				<td><input name="SubjectMessage" type="text" id="SubjectMessage" value="" size="40" /></td>
+				<td><input name="SubjectMessage" type="text" id="SubjectMessage" value="{$smarty.request.SubjectMessage|stripslashes|escape}" size="40" /></td>
 			</tr>
 
 			<tr>
 				<td>{#USER_MESSAGE_TEXT#}</td>
-				<td><textarea style="width:300px; height:100px" name="SimpleMessage" id="SimpleMessage"></textarea></td>
+				<td><textarea style="width:300px; height:100px" name="SimpleMessage" id="SimpleMessage">{$smarty.request.SimpleMessage|stripslashes|escape}</textarea></td>
 			</tr>
 		{/if}
 	</table><br />
 	<input type="submit" class="button" value="{if $smarty.request.action=='new'}{#USER_BUTTON_ADD#}{else}{#USER_BUTTON_SAVE#}{/if}" />
 </form>
-
-{/strip}
-<!-- /form.tpl -->

@@ -33,7 +33,7 @@ $r_poster = $GLOBALS['AVE_DB']->Query($query);
 $num = $r_poster->NumRows();
 
 $seiten = ceil($num / $limit);
-$a = prepage() * $limit - $limit;
+$a = get_current_page() * $limit - $limit;
 
 $r_poster = $GLOBALS['AVE_DB']->Query($query . "LIMIT $a,$limit");
 
@@ -49,10 +49,8 @@ $GLOBALS['AVE_Template']->assign("poster", $poster);
 // Navigation erzeugen
 //=======================================================
 if($num > $limit){
-	$nav = pagenav($seiten, 'page',
-		" <a class=\"page_navigation\" href=\"index.php?module=forums&show=userpop&pop=1&theme_folder="
-		. $_GET['theme_folder'] . "&BenutzerName=" . @$_REQUEST['BenutzerName']
-		. "&Phrase=" . @$_REQUEST['Phrase'] . "&page={s}\">{t}</a> ");
+	$nav = " <a class=\"page_navigation\" href=\"index.php?module=forums&show=userpop&pop=1&theme_folder=" . $_GET['theme_folder'] . "&BenutzerName=" . @$_REQUEST['BenutzerName'] . "&Phrase=" . @$_REQUEST['Phrase'] . "&page={s}\">{t}</a> ";
+	$nav = get_pagination($seiten, 'page', $nav);
 	$GLOBALS['AVE_Template']->assign("nav", $nav) ;
 }
 

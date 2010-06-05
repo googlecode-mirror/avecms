@@ -14,36 +14,11 @@
  * @param string $b конечная метка
  * @return int время между метками
  */
-function microtimeDiff($a, $b)
+function microtime_diff($a, $b)
 {
 	list($a_dec, $a_sec) = explode(' ', $a);
 	list($b_dec, $b_sec) = explode(' ', $b);
 	return $b_sec - $a_sec + $b_dec - $a_dec;
-}
-
-/**
- * Слешевание (для глобальных массивов)
- * рекурсивно обрабатывает вложенные массивы
- *
- * @param array $array обрабатываемый массив
- * @return array обработанный массив
- */
-function addArray($array)
-{
-	reset($array);
-	while (list($key, $val) = each($array))
-	{
-		if (is_string($val))
-		{
-			$array[$key] = addslashes($val);
-		}
-		elseif (is_array($val))
-		{
-			$array[$key] = addArray($val);
-		}
-	}
-
-	return $array;
 }
 
 /**
@@ -55,174 +30,24 @@ function addArray($array)
  * @param unknown_type $offset с какого символа в haystack начинать поиск.
  * @return int числовая позиция
  */
-function stc($haystack, $needle, $offset = 0)
+if (!function_exists("stripos"))
 {
-	return strpos(strtoupper($haystack), strtoupper($needle), $offset);
-}
-
-/**
- * Инициализация констант и session.cookie_domain
- *  BASE_URL
- *  BASE_DIR
- *  BASE_PATH
- *  session.cookie_domain
- *
- */
-function init_path()
-{
-	if (isset($_SERVER['HTTP_HOST']))
+	function stripos($haystack, $needle, $offset = 0)
 	{
-		// HTTP_HOST вводится пользователем, поэтому проверяем на наличие запрещённых символов
-		// в соответствии с RFC 952 и RFC 2181.
-		// Все символы $_SERVER['HTTP_HOST'] приводим к строчным в соответствии с указанными спецификациями.
-		$_SERVER['HTTP_HOST'] = strtolower($_SERVER['HTTP_HOST']);
-		if (!preg_match('/^\[?(?:[a-z0-9-:\]_]+\.?)+$/', $_SERVER['HTTP_HOST']))
-		{
-			// HTTP_HOST не соответствует спецификациям.
-			// Возможно это попытка взлома, поэтому даём отлуп статусом 400.
-			header('HTTP/1.1 400 Bad Request');
-			exit;
-		}
-	}
-	else
-	{
-		// Некоторые клиенты использующие протоколы младше HTTP/1.1 не передают имя хоста в заголовках.
-		// Создаём $_SERVER['HTTP_HOST'] для предотвращения вывода ошибки при E_ALL.
-		$_SERVER['HTTP_HOST'] = '';
-	}
-
-	$host = ((isset($_SERVER['HTTPS']) && strtolower($_SERVER['HTTPS']) == 'on') || $_SERVER['SERVER_PORT'] == 443) ? 'https://' : 'http://';
-	$host .= $_SERVER['HTTP_HOST'];
-	if ($_SERVER['SERVER_PORT'] != 80) $host = str_replace(':' . $_SERVER['SERVER_PORT'], '', $host);
-	$host .= ($_SERVER['SERVER_PORT'] == 80 || $_SERVER['SERVER_PORT'] == 443 || (isset($_SERVER['HTTPS']) && strtolower($_SERVER['HTTPS']) == 'on')) ? '' : ':' . $_SERVER['SERVER_PORT'];
-	define('BASE_URL', $host);
-
-	if (!strstr($_SERVER['PHP_SELF'], $_SERVER['SCRIPT_NAME']) && (@php_sapi_name() == 'cgi'))
-	{
-		define('BASE_PATH', rtrim(str_replace("\\", "/", dirname($_SERVER['PHP_SELF'])), '/') . '/');
-	}
-	else
-	{
-		define('BASE_PATH', rtrim(str_replace("\\", "/", dirname($_SERVER['SCRIPT_NAME'])), '/') . '/');
+		return strpos(strtoupper($haystack), strtoupper($needle), $offset);
 	}
 }
 
 /**
- * Проверка прав пользователя
+ * Форматирование числа
  *
- * @param string $action проверяемое право
- * @return boolean результат проверки
+ * @param array $param значение и параметры
+ * @return string отформатированное значение
  */
-function checkPermission($action)
+function num_format($param)
 {
-	global $_SESSION;
-
-	if ((isset($_SESSION['user_group']) && $_SESSION['user_group'] == 1)
-	|| (isset($_SESSION['alles']) && $_SESSION['alles'] == 1)
-	|| (isset($_SESSION[$action]) && $_SESSION[$action] == 1))
-	{
-		return true;
-	}
-
-	return false;
-}
-
-/**
- * Авторизация по данным сессии или куки
- *
- * @return unknown
- */
-function checkLogin()
-{
-	global $AVE_DB;
-
-	if (isset($_SESSION['user_id']) && isset($_SESSION['user_pass']))
-	{
-		// авторизация по данным сессии
-	}
-	elseif (isset($_COOKIE['auth[id]']) && isset($_COOKIE['auth[hash]']))
-	{
-		// авторизация по данным куки
-		$userid = intval($_COOKIE['auth[id]']);
-
-		$row = $AVE_DB->Query("
-			SELECT
-				usr.Id,
-				usr.Benutzergruppe,
-				UserName,
-				Vorname,
-				Nachname,
-				Email,
-				Land,
-				Rechte,
-				Kennwort
-			FROM
-				" . PREFIX . "_users AS usr
-			JOIN
-				" . PREFIX . "_user_groups AS grp
-					ON grp.Benutzergruppe = usr.Benutzergruppe
-			WHERE `Status` = 1
-			AND usr.Id = '" . $userid . "'
-			LIMIT 1
-		")->FetchRow();
-
-		if (!is_object($row) || $row->Kennwort != $_COOKIE['auth[hash]']) return false;
-
-		$row->Rechte = str_replace(array(' ', "\n", "\r\n"), '', $row->Rechte);
-		$permissions = explode('|', $row->Rechte);
-		foreach($permissions as $permission) $_SESSION[$permission] = 1;
-
-		$_SESSION['user_id'] = $row->Id;
-		$_SESSION['user_group'] = $row->Benutzergruppe;
-		$_SESSION['user_name'] = htmlspecialchars(empty($row->UserName) ? $row->Vorname . ' ' . $row->Nachname : $row->UserName);
-		$_SESSION['user_pass'] = $row->Kennwort;
-		$_SESSION['user_email'] = $row->Email;
-		$_SESSION['user_country'] = strtoupper($row->Land);
-
-		if (checkPermission('adminpanel'))
-		{
-			$_SESSION['admin_theme'] = DEFAULT_ADMIN_THEME_FOLDER;
-			$_SESSION['admin_lang'] = DEFAULT_LANGUAGE;
-		}
-	}
-	else
-	{
-		return false;
-	}
-
-	define('UID', $_SESSION['user_id']);
-	define('UGROUP', $_SESSION['user_group']);
-	define('UNAME', $_SESSION['user_name']);
-
-	return true;
-}
-
-/**
- * Удаление глобальных массивов
- *
- */
-function unsetGlobals()
-{
-	if (ini_get('register_globals'))
-	{
-		$allowed = array(
-			'_ENV' => 1,
-			'_GET' => 1,
-			'_POST' => 1,
-			'_COOKIE' => 1,
-			'_FILES' => 1,
-			'_SERVER' => 1,
-			'_REQUEST' => 1,
-			'GLOBALS' => 1
-		);
-		foreach ($GLOBALS as $key => $value)
-		{
-			if (!isset($allowed[$key]))
-			{
-				unset($GLOBALS[$key]);
-			}
-		}
-	}
+	if (is_array($param)) return number_format($param['val'], 0, ',', '.');
+	return '';
 }
 
 /**
@@ -232,9 +57,35 @@ function unsetGlobals()
  * @param string $in подстрока
  * @return boolean результат проверки
  */
-function startsWith($str, $in)
+function start_with($str, $in)
 {
 	return(substr($in, 0, strlen($str)) == $str);
+}
+
+/**
+ * Проверка прав пользователя
+ *
+ * @param string $action проверяемое право
+ * @return boolean результат проверки
+ */
+function check_permission($action)
+{
+	global $_SESSION;
+
+	if ((isset($_SESSION['user_group']) && $_SESSION['user_group'] == 1) ||
+		(isset($_SESSION['alles'])      && $_SESSION['alles'] == 1) ||
+		(isset($_SESSION[$action])      && $_SESSION[$action] == 1))
+	{
+		return true;
+	}
+
+	return false;
+}
+
+
+function clean_no_print_char($text)
+{
+	return trim(preg_replace('#[\x00-\x08\x0B-\x0C\x0E-\x1F]+#is', ' ', $text));
 }
 
 /**
@@ -243,12 +94,64 @@ function startsWith($str, $in)
  * @param string $text исходный текст
  * @return string очищенный текст
  */
-function phpReplace($text)
+function clean_php($text)
 {
 	return str_replace(array('<?', '?>', '<script'), '', $text);
 }
 
-function getNavigations($navi_id = '')
+/**
+ * Вывод системного сообщения
+ *
+ * @param string $message сообщение
+ */
+function display_notice($message)
+{
+	echo '<div style="background-color:#ff6;padding:5px;border:1px solid #f00;color:#f00;text-align:center;"><b>Системное сообщение: </b>' . $message . '</div>';
+}
+
+/**
+ * Сообщение о запрете распечатки страницы
+ *
+ */
+function print_error()
+{
+	display_notice('Запрашиваемая страница не может быть распечатана.');
+	exit;
+}
+
+/**
+ * Сообщение о проблемах доступа к файлам модуля
+ *
+ */
+function module_error()
+{
+	display_notice('Запрашиваемый модуль не может быть загружен.');
+	exit;
+}
+
+/**
+ * Получение основных настроек
+ *
+ * @param string $field параметр настройки, если не указан - все параметры
+ * @return mixed
+ */
+function get_settings($field = '')
+{
+	global $AVE_DB;
+
+	static $settings = null;
+
+	if ($settings === null)
+	{
+		$settings = $AVE_DB->Query("SELECT * FROM " . PREFIX . "_settings")->FetchAssocArray();
+	}
+
+	if ($field == '') return $settings;
+
+	return isset($settings[$field]) ? $settings[$field] : null;
+}
+
+function get_navigations($navi_id = '')
 {
 	global $AVE_DB;
 
@@ -265,7 +168,6 @@ function getNavigations($navi_id = '')
 			$row->Gruppen = explode(',', $row->Gruppen);
 			$navigations[$row->id] = $row;
 		}
-		$sql->Close();
 	}
 
 	if ($navi_id == '') return $navigations;
@@ -279,16 +181,14 @@ function getNavigations($navi_id = '')
  * @param int $id идентификатор меню навигации
  * @return boolean
  */
-function checkSeePerm($id)
+function check_navi_permission($id)
 {
-	global $AVE_DB;
+	$navigation = get_navigations($id);
 
-	$navigations = getNavigations($id);
-
-	if (empty($navigations->Gruppen)) return false;
+	if (empty($navigation->Gruppen)) return false;
 
 	if (!defined('UGROUP')) define('UGROUP', 2);
-	if (!in_array(UGROUP, $navigations->Gruppen)) return false;
+	if (!in_array(UGROUP, $navigation->Gruppen)) return false;
 
 	return true;
 }
@@ -300,70 +200,30 @@ function checkSeePerm($id)
  * @param string $data обрабатываемый текст
  * @return string обработанный текст
  */
-function hide($data)
+function parse_hide($data)
 {
-	global $AVE_Globals;
-
-	if (1 != preg_match("/\[hide:\d+(,\d+)*].*?\[\/hide]/s", $data)) return $data;
-
 	static $hidden_text = null;
-	if ($hidden_text === null) $hidden_text = trim($AVE_Globals->mainSettings('hidden_text'));
 
-	$data = preg_replace("/\[hide:(\d+,)*" . UGROUP . "(,\d+)*].*?\[\/hide]/s", $hidden_text, $data);
-	$data = preg_replace("/\[hide:\d+(,\d+)*](.*?)\[\/hide]/s", "\\2", $data);
+	if (1 != preg_match('/\[hide:\d+(,\d+)*].*?\[\/hide]/s', $data)) return $data;
+
+	if ($hidden_text === null) $hidden_text = trim(get_settings('hidden_text'));
+
+	$data = preg_replace('/\[hide:(\d+,)*' . UGROUP . '(,\d+)*].*?\[\/hide]/s', $hidden_text, $data);
+	$data = preg_replace('/\[hide:\d+(,\d+)*](.*?)\[\/hide]/s', '\\2', $data);
 
 	return $data;
 }
 
 /**
- * Сообщение о запрете распечатки страницы
+ * Получить идентификатор текущего документа
  *
+ * @return int идентификатор текущего документа
  */
-function printError()
+function get_current_document_id()
 {
-	echo 'Запрашиваемая страница не может быть распечатана.';
-	exit;
-}
-
-/**
- * Сообщение о проблемах доступа к файлам модуля
- *
- */
-function moduleError()
-{
-	echo 'Запрашиваемый модуль не может быть загружен.';
-	exit;
-}
-
-/**
- * Идентификатор текущей страницы
- *
- * @return int идентификатор текущей страницы
- */
-function currentDocId()
-{
-	if (! (isset($_REQUEST['id']) && is_numeric($_REQUEST['id'])))
-	{
-		$_REQUEST['id'] = 1;
-	}
+	$_REQUEST['id'] = (isset($_REQUEST['id']) && is_numeric($_REQUEST['id'])) ? $_REQUEST['id'] : 1;
 
 	return $_REQUEST['id'];
-}
-
-/**
- * Форматирование числа
- *
- * @param array $param значение и параметры
- * @return string отформатированное значение
- */
-function numFormat($param)
-{
-	if (is_array($param))
-	{
-		$out = number_format($param['val'], 0, ',', '.');
-	}
-
-	return $out;
 }
 
 /**
@@ -371,41 +231,26 @@ function numFormat($param)
  *
  * @return string URL
  */
-function redirectLink($exclude = '')
+function get_redirect_link($exclude = '')
 {
-	if (!strstr($_SERVER['PHP_SELF'], $_SERVER['SCRIPT_NAME']) && (@php_sapi_name() == 'cgi'))
-	{
-		$uri = $_SERVER['PHP_SELF'];
-	}
-	else
-	{
-		$uri = $_SERVER['SCRIPT_NAME'];
-	}
+	$link = 'index.php';
 
 	if (!empty($_GET))
 	{
-		if ($exclude != '' && !is_array($exclude))
-		{
-			$exclude = explode(',', $exclude);
-		}
+		if ($exclude != '' && !is_array($exclude)) $exclude = explode(',', $exclude);
+
 		$exclude[] = 'url';
 
 		$params = array();
-		foreach($_GET as $paname => $value)
+		foreach($_GET as $key => $value)
 		{
-			if (!in_array($paname, $exclude))
-			{
-				$params[] = @urlencode($paname) . '=' . @urlencode($value);
-			}
+			if (!in_array($key, $exclude)) $params[] = @urlencode($key) . '=' . @urlencode($value);
 		}
 
-		if (sizeof($params) > 0)
-		{
-			$uri .= '?' . implode('&amp;', $params);
-		}
+		if (sizeof($params)) $link .= '?' . implode('&amp;', $params);
 	}
 
-	return ($uri);
+	return $link;
 }
 
 /**
@@ -413,10 +258,9 @@ function redirectLink($exclude = '')
  *
  * @return string ссылка
  */
-function homeLink()
+function get_home_link()
 {
-	return BASE_URL . BASE_PATH;
-//	return (CP_REWRITE == 1) ? 'index.html' : 'index.php';
+	return HOST . ABS_PATH;
 }
 
 /**
@@ -424,39 +268,51 @@ function homeLink()
  *
  * @return string ссылка
  */
-function printLink()
+function get_print_link()
 {
-	global $AVE_Core;
+	$link = get_redirect_link('print');
+	$link .= (strpos($link, '?')===false ? '?print=1' : '&amp;print=1');
 
-	$print_link = redirectLink('print');
-	$print_link .= (strpos($print_link, '?')===false ? '?print=1' : '&amp;print=1');
-
-	return $print_link;
+	return $link;
 }
 
-/**
- * Вывод системного сообщения
- *
- * @param string $message сообщение
- */
-function displayNotice($message)
+function get_referer_link()
 {
-	echo '<div style="background-color:#fff;padding:5px;border:1px solid #000;"><b>Системное сообщение: </b>' . $message . '</div>';
+	$link = false;
+	if (isset($_SERVER['HTTP_REFERER']))
+	{
+		$link = parse_url($_SERVER['HTTP_REFERER']);
+		$link = (trim($link['host']) == $_SERVER['SERVER_NAME']);
+	}
+
+	return ($link ? $_SERVER['HTTP_REFERER'] : get_home_link());
 }
 
-/**
- * Замена некоторых символов на их сущности
- * замена и исправление HTML-тэгов
- *
- * @param unknown_type $s
- * @return unknown
- */
-function prettyChars($s)
+function truncate_text($string, $length = 80, $etc = '...', $break_words = false, $middle = false)
 {
-	return preg_replace(
-		array("'©'"   , "'®'"  , "'<b>'i"  , "'</b>'i"  , "'<i>'i", "'</i>'i", "'<br>'i", "'<br/>'i"),
-		array('&copy;', '&reg;', '<strong>', '</strong>', '<em>'  , '</em>'  , '<br />' , '<br />'),
-		$s);
+	if ($length == 0) return '';
+
+	if (strlen($string) > $length)
+	{
+		$length -= min($length, strlen($etc));
+		if (!$break_words && !$middle)
+		{
+			$string = preg_replace('/\s+?(\S+)?$/', '', substr($string, 0, $length+1));
+		}
+
+		if (!$middle)
+		{
+			return substr($string, 0, $length) . $etc;
+		}
+		else
+		{
+			return substr($string, 0, $length/2) . $etc . substr($string, -$length/2);
+		}
+	}
+	else
+	{
+		return $string;
+	}
 }
 
 /**
@@ -464,7 +320,7 @@ function prettyChars($s)
  *
  * @see http://www.lazycat.org/software/html_entity_decode_full.phps
  */
-function convertEntity($matches, $destroy = true)
+function convert_entity($matches, $destroy = true)
 {
 	$table = array(
 		'Aacute'   => '&#193;',  'aacute'   => '&#225;',  'Acirc'    => '&#194;',  'acirc'    => '&#226;',  'acute'    => '&#180;',
@@ -519,50 +375,92 @@ function convertEntity($matches, $destroy = true)
 		'yen'      => '&#165;',  'Yuml'     => '&#376;',  'yuml'     => '&#255;',  'Zeta'     => '&#918;',  'zeta'     => '&#950;',
 		'zwj'      => '&#8205;', 'zwnj'     => '&#8204;'
 	);
-	if (isset($table[$matches[1]]))
-	{
-		return $table[$matches[1]];
-	}
-	else
-	{
-		return $destroy ? '' : $matches[0];
-	}
+
+	if (isset($table[$matches[1]])) return $table[$matches[1]];
+	else							return $destroy ? '' : $matches[0];
 }
 
 /**
- * Транслитерация и удаление запрещённых символов для ЧПУ
+ * Замена некоторых символов на их сущности
+ * замена и исправление HTML-тэгов
+ *
+ * @param unknown_type $s
+ * @return unknown
+ */
+function pretty_chars($s)
+{
+	return preg_replace(array("'©'"   , "'®'"  , "'<b>'i"  , "'</b>'i"  , "'<i>'i", "'</i>'i", "'<br>'i", "'<br/>'i"),
+						array('&copy;', '&reg;', '<strong>', '</strong>', '<em>'  , '</em>'  , '<br />' , '<br />'), $s);
+}
+
+/**
+ * Транслитерация
  *
  * @param string $st строка для транслитерации
- * @return string обработанная строка
+ * @return string
  */
-function cpParseLinkname($st)
+function translit_string($st)
 {
 //	$st = htmlspecialchars_decode($st);
-
-	// Convert all named HTML entities to numeric entities
-	$st = preg_replace_callback('/&([a-zA-Z][a-zA-Z0-9]{1,7});/', 'convertEntity', $st);
-
-	// Convert all numeric entities to their actual character
-	$st = preg_replace('/&#x([0-9a-f]{1,7});/ei', 'chr(hexdec("\\1"))', $st);
-	$st = preg_replace('/&#([0-9]{1,7});/e', 'chr("\\1")', $st);
-
-	$st = strtolower($st);
-	$st = strtr($st, array(
-		'ье'=>'ye', 'ъе'=>'ye', 'ьи'=>'yi', 'ъи'=>'yi',  'ъо'=>'yo',
-		'ьо'=>'yo', 'ё'=>'yo',  'ю'=>'yu',  'я'=>'ya',   'ж'=>'zh', 'х'=>'kh',
-		'ц'=>'ts',  'ч'=>'ch',  'ш'=>'sh',  'щ'=>'shch', 'ъ'=>'',   'ь'=>''
-	));
+//
+//	// Convert all named HTML entities to numeric entities
+//	$st = preg_replace_callback('/&([a-zA-Z][a-zA-Z0-9]{1,7});/', 'convert_entity', $st);
+//
+//	// Convert all numeric entities to their actual character
+//	$st = preg_replace('/&#x([0-9a-f]{1,7});/ei', 'chr(hexdec("\\1"))', $st);
+//	$st = preg_replace('/&#([0-9]{1,7});/e', 'chr("\\1")', $st);
+//
+	$st = strtr ($st, array('ье'=>'ye', 'ъе'=>'ye', 'ьи'=>'yi',  'ъи'=>'yi',
+							'ъо'=>'yo', 'ьо'=>'yo', 'ё'=>'yo',   'ю'=>'yu',
+							'я'=>'ya',  'ж'=>'zh',  'х'=>'kh',   'ц'=>'ts',
+							'ч'=>'ch',  'ш'=>'sh',  'щ'=>'shch', 'ъ'=>'', 'ь'=>'')
+	);
 	$st = strtr($st,'абвгдезийклмнопрстуфыэ',
 					'abvgdeziyklmnoprstufye');
+
+	return trim($st, '-');
+}
+
+/**
+ * Подготовка URL
+ *
+ * @param string $st
+ * @return string
+ */
+function prepare_url($st)
+{
 	$st = strip_tags($st);
+
+	$st = strtolower($st);
+
+	if (defined('TRANSLIT_URL') && TRANSLIT_URL) translit_string(trim($st));
+
 	$st = preg_replace(
-		array('/^[\/-]+|[\/-]+$|[^ a-z0-9\/-]/', '/\s+/', '/[-]{2,}/', '/[-]*[\/]+[-]*/', '/[\/]{2,}/'),
-		array(''							   , '-'	, '-'		 , '/'			    , '/'),
+		array('/^[\/-]+|[\/-]+$|[^a-zа-яё0-9\/-]/', '/--+/', '/-*\/+-*/', '/\/\/+/'),
+		array('-',                                  '-',     '/',         '/'),
 		$st
 	);
-	$st = trim($st, '-');
 
-	return $st;
+	return trim($st, '-');
+}
+
+/**
+ * Подготовка имени файла или директории
+ *
+ * @param string $st
+ * @return string
+ */
+function prepare_fname($st)
+{
+	$st = strip_tags($st);
+
+	$st = strtolower($st);
+
+	translit_string(trim($st));
+
+	$st = preg_replace(array('/[^a-zа-яё0-9-]/', '/--+/'), '-', $st);
+
+	return trim($st, '-');
 }
 
 /**
@@ -571,32 +469,26 @@ function cpParseLinkname($st)
  * @param string $s ссылка или текст с ссылками
  * @return string
  */
-function cpRewrite($s)
+function rewrite_link($s)
 {
-	$s = preg_replace("/index.php(?:\?)id=(?:[0-9]+)&(?:amp;)*doc=(index|[a-z0-9\/-]+)&(?:amp;)*(artpage|apage|page)=([{s}0-9]+)&(?:amp;)*(artpage|apage|page)=([{s}0-9]+)&(?:amp;)*(artpage|apage|page)=([{s}0-9]+)/", BASE_PATH."\\1/\\2-\\3/\\4-\\5/\\6-\\7".URL_SUFF, $s);
-	$s = preg_replace("/index.php(?:\?)id=(?:[0-9]+)&(?:amp;)*doc=(index|[a-z0-9\/-]+)&(?:amp;)*(artpage|apage|page)=([{s}0-9]+)&(?:amp;)*(artpage|apage|page)=([{s}0-9]+)/", BASE_PATH."\\1/\\2-\\3/\\4-\\5".URL_SUFF, $s);
-	$s = preg_replace("/index.php(?:\?)id=(?:[0-9]+)&(?:amp;)*doc=(index|[a-z0-9\/-]+)&(?:amp;)*(artpage|apage|page)=([{s}0-9]+)/", BASE_PATH."\\1/\\2-\\3".URL_SUFF, $s);
-	$s = preg_replace("/index.php(?:\?)id=(?:[0-9]+)&(?:amp;)*doc=(index|[a-z0-9\/-]+)/", BASE_PATH."\\1".URL_SUFF, $s);
-	$s = preg_replace("/".preg_quote(URL_SUFF, '/')."&(?:amp;)*print=1/", BASE_PATH."/print".URL_SUFF, $s);
+	if (!REWRITE_MODE) return $s;
 
-	$s = preg_replace('/index.php(?:\?)module=(shop|forums|download)&(?:amp;)*page=([{s}]|\d+)/', BASE_PATH.'\\1-\\2.html', $s);
-	$s = preg_replace('/index.php(?:\?)module=(shop|forums|download)&(?:amp;)*print=1/', BASE_PATH."\\1-print.html", $s);
-	$s = preg_replace('/index.php(?:\?)module=(shop|forums|download)(?!&)/', BASE_PATH."\\1.html", $s);
+	$doc_regex = '/index.php(?:\?)id=(?:[0-9]+)&(?:amp;)*doc='.(TRANSLIT_URL ? '([a-z0-9\/-]+)' : '([a-zа-яё0-9\/-]+)');
+	$page_regex = '&(?:amp;)*(artpage|apage|page)=([{s}0-9]+)';
+
+	$s = preg_replace($doc_regex.$page_regex.$page_regex.$page_regex.'/', ABS_PATH.'$1/$2-$3/$4-$5/$6-$7'.URL_SUFF, $s);
+	$s = preg_replace($doc_regex.$page_regex.$page_regex.'/',             ABS_PATH.'$1/$2-$3/$4-$5'.URL_SUFF, $s);
+	$s = preg_replace($doc_regex.$page_regex.'/',                         ABS_PATH.'$1/$2-$3'.URL_SUFF, $s);
+	$s = preg_replace($doc_regex.'/',                                     ABS_PATH.'$1'.URL_SUFF, $s);
+	$s = preg_replace('/'.preg_quote(URL_SUFF, '/').'[?|&](?:amp;)*print=1/', '/print'.URL_SUFF, $s);
+
+	$mod_regex = '/index.php(?:\?)module=(shop|forums|download)';
+
+	$s = preg_replace($mod_regex.'&(?:amp;)*page=([{s}]|\d+)/', ABS_PATH.'$1-$2.html', $s);
+	$s = preg_replace($mod_regex.'&(?:amp;)*print=1/',          ABS_PATH.'$1-print.html', $s);
+	$s = preg_replace($mod_regex.'(?!&)/',                      ABS_PATH.'$1.html', $s);
 
 	return $s;
-}
-
-/**
- * Подключение функции обработки внутренних запросов
- * и обработка тэга запроса
- *
- * @param unknown_type $param
- * @return unknown
- */
-function parseRequest($param)
-{
-	require_once(BASE_DIR . '/functions/func.parserequest.php');
-	return cpParseRequest($param);
 }
 
 function reportLog($meldung, $typ = 0, $rub = 0)
@@ -611,140 +503,16 @@ function reportLog($meldung, $typ = 0, $rub = 0)
 			IpCode	= '" . addslashes($_SERVER['REMOTE_ADDR']) . "',
 			Seite	= '" . addslashes($_SERVER['QUERY_STRING']) . "',
 			Meldung	= '" . addslashes($meldung) . "',
-			LogTyp	= '" . $typ . "',
-			Rub		= '" . $rub . "'
+			LogTyp	= '" . (int)$typ . "',
+			Rub		= '" . (int)$rub . "'
 	");
-}
-
-/**
- * Текущая страница
- *
- * @param string $type - тип постраничной навигации,
- *  допустимые значения: page, apage, artpage
- * @return int - номер текущей страницы
- */
-function prepage($type = 'page')
-{
-	if (!in_array($type, array('page', 'apage', 'artpage'))) return 1;
-
-	$page = (!empty($_REQUEST[$type]) && is_numeric($_REQUEST[$type])) ? intval($_REQUEST[$type]) : 1;
-
-	return $page;
-}
-
-/**
- * Постраничная навигация для запросов и модулей
- *
- * @param int $total_pages - количество страниц в документе
- * @param string $type - тип постраничной навигации,
- *  допустимые значения: page, apage, artpage
- * @param string $template_label - шаблон метки навигации
- * @param string $navi_box - контейнер постраничной навигации
- * @return string - HTML-код постраничной навигации
- */
-function pagenav($total_pages, $type, $template_label, $navi_box = '')
-{
-	global $AVE_Globals;
-
-	$nav = '';
-	if (!in_array($type, array('page', 'apage', 'artpage'))) $type = 'page';
-	$curent_page = prepage($type);
-
-	if ($curent_page == 1)
-	{
-		$seiten = array ($curent_page, $curent_page+1, $curent_page+2, $curent_page+3, $curent_page+4);
-	}
-	elseif ($curent_page == 2)
-	{
-		$seiten = array ($curent_page-1, $curent_page, $curent_page+1, $curent_page+2, $curent_page+3);
-	}
-	elseif ($curent_page+1 == $total_pages)
-	{
-		$seiten = array ($curent_page-3, $curent_page-2, $curent_page-1, $curent_page, $curent_page+1);
-	}
-	elseif ($curent_page == $total_pages)
-	{
-		$seiten = array ($curent_page-4, $curent_page-3, $curent_page-2, $curent_page-1, $curent_page);
-	}
-	else
-	{
-		$seiten = array ($curent_page-2, $curent_page-1, $curent_page, $curent_page+1, $curent_page+2);
-	}
-
-	$seiten = array_unique($seiten);
-
-	$total_label = trim($AVE_Globals->mainSettings('total_label'));
-	$start_label = trim($AVE_Globals->mainSettings('start_label'));
-	$end_label = trim($AVE_Globals->mainSettings('end_label'));
-	$separator_label = trim($AVE_Globals->mainSettings('separator_label'));
-	$next_label = trim($AVE_Globals->mainSettings('next_label'));
-	$prev_label = trim($AVE_Globals->mainSettings('prev_label'));
-
-	if ($total_pages > 5 && $curent_page > 3)
-	{
-		$nav .= str_replace('{t}', $start_label, str_replace(array('&amp;'.$type.'={s}','&'.$type.'={s}'), '', $template_label));
-		if ($separator_label != '') $nav .= '<span>' . $separator_label . '</span>';
-	}
-
-	if ($curent_page > 1)
-	{
-		if ($curent_page == 2)
-		{
-			$nav .= str_replace('{t}', $prev_label, str_replace(array('&amp;'.$type.'={s}','&'.$type.'={s}'), '', $template_label));
-		}
-		else
-		{
-			$nav .= str_replace('{t}', $prev_label, str_replace('{s}', ($curent_page - 1), $template_label));
-		}
-	}
-
-	while (list($key,$val) = each($seiten))
-	{
-		if ($val >= 1 && $val <= $total_pages)
-		{
-			if ($curent_page == $val)
-			{
-				$nav .= str_replace(array('{s}', '{t}'), $val, '<span class="curent_page">' . $curent_page . '</span>');
-			}
-			else
-			{
-				if ($val == 1)
-				{
-					$nav .= str_replace('{t}', $val, str_replace(array('&amp;'.$type.'={s}','&'.$type.'={s}'), '', $template_label));
-				}
-				else
-				{
-					$nav .= str_replace(array('{s}', '{t}'), $val, $template_label);
-				}
-			}
-		}
-	}
-
-	if ($curent_page < $total_pages)
-	{
-		$nav .= str_replace('{t}', $next_label, str_replace('{s}', ($curent_page + 1), $template_label));
-	}
-
-	if ($total_pages > 5 && ($curent_page < $total_pages-2))
-	{
-		if ($separator_label != '') $nav .= '<span>' . $separator_label . '</span>';
-		$nav .= str_replace('{t}', $end_label, str_replace('{s}', $total_pages, $template_label));
-	}
-
-	if ($nav != '')
-	{
-		if ($total_label != '') $nav = '<span class="pages">' . sprintf($total_label, $curent_page, $total_pages) . '</span> ' . $nav;
-		if ($navi_box != '') $nav = sprintf($navi_box, $nav);
-	}
-
-	return $nav;
 }
 
 function get_document_fields($document_id)
 {
 	global $AVE_DB;
 
-	static $document_fields;
+	static $document_fields = array();
 
 	if (!is_numeric($document_id)) return false;
 
@@ -780,18 +548,18 @@ function get_document_fields($document_id)
 
 			if ($row['Inhalt'] === '')
 			{
-				$row['tpl_req'] = preg_replace("/\[cp:not_empty](.*?)\[\/cp:not_empty]/si", '', $row['tpl_req']);
-				$row['tpl_req'] = trim(str_replace(array('[cp:if_empty]','[/cp:if_empty]'), '', $row['tpl_req']));
+				$row['tpl_req']   = preg_replace('/\[cp:not_empty](.*?)\[\/cp:not_empty]/si', '', $row['tpl_req']);
+				$row['tpl_req']   = trim(str_replace(array('[cp:if_empty]','[/cp:if_empty]'), '', $row['tpl_req']));
 
-				$row['tpl_field'] = preg_replace("/\[cp:not_empty](.*?)\[\/cp:not_empty]/si", '', $row['tpl_field']);
+				$row['tpl_field'] = preg_replace('/\[cp:not_empty](.*?)\[\/cp:not_empty]/si', '', $row['tpl_field']);
 				$row['tpl_field'] = trim(str_replace(array('[cp:if_empty]','[/cp:if_empty]'), '', $row['tpl_field']));
 			}
 			else
 			{
-				$row['tpl_req'] = preg_replace("/\[cp:if_empty](.*?)\[\/cp:if_empty]/si", '', $row['tpl_req']);
-				$row['tpl_req'] = trim(str_replace(array('[cp:not_empty]','[/cp:not_empty]'), '', $row['tpl_req']));
+				$row['tpl_req']   = preg_replace('/\[cp:if_empty](.*?)\[\/cp:if_empty]/si', '', $row['tpl_req']);
+				$row['tpl_req']   = trim(str_replace(array('[cp:not_empty]','[/cp:not_empty]'), '', $row['tpl_req']));
 
-				$row['tpl_field'] = preg_replace("/\[cp:if_empty](.*?)\[\/cp:if_empty]/si", '', $row['tpl_field']);
+				$row['tpl_field'] = preg_replace('/\[cp:if_empty](.*?)\[\/cp:if_empty]/si', '', $row['tpl_field']);
 				$row['tpl_field'] = trim(str_replace(array('[cp:not_empty]','[/cp:not_empty]'), '', $row['tpl_field']));
 			}
 
@@ -805,12 +573,52 @@ function get_document_fields($document_id)
 }
 
 /**
- * имя пользователя по его идентификатору
+ * Формирование строки имени пользователя
+ * При наличии всех параметров пытается сформировать строку <b>Имя Фамилия</b>
+ * Если задать $short=1 - формирует короткую форму <b>И. Фамилия</b>
+ * Когда отсутствует информация о Имени или Фамилии пытается сформировать
+ * строку на основе имеющихся данных, а если данных нет вообще - выводит
+ * имя анонимного пользователя которое задается в основных настройках системы.
+ *
+ * @todo добавить параметр 'anonymous' в настройки
+ *
+ * @param string $login логин пользователя
+ * @param string $first_name имя пользователя
+ * @param string $last_name фамилия пользователя
+ * @param int $short {0|1} признак формирования короткой формы
+ * @return string
+ */
+function get_username($login = '', $first_name = '', $last_name = '', $short = 1)
+{
+	if ($first_name != '' && $last_name != '')
+	{
+		if ($short == 1) $first_name = substr($first_name, 0, 1) . '.';
+		return ucfirst(strtolower($first_name)) . ' ' . ucfirst(strtolower($last_name));
+	}
+	elseif ($first_name != '' && $last_name == '')
+	{
+		return ucfirst(strtolower($first_name));
+	}
+	elseif ($first_name == '' && $last_name != '')
+	{
+		return ucfirst(strtolower($last_name));
+	}
+	elseif ($login != '')
+	{
+		return ucfirst(strtolower($login));
+	}
+
+//	return get_settings('anonymous');
+	return 'Anonymous';
+}
+
+/**
+ * Возвращает имя пользователя по его идентификатору
  *
  * @param int $id - идентификатор пользователя
  * @return string
  */
-function getUserById($id)
+function get_username_by_id($id)
 {
 	global $AVE_DB;
 
@@ -820,20 +628,14 @@ function getUserById($id)
 	{
 		$row = $AVE_DB->Query("
 			SELECT
+				UserName,
 				Vorname,
 				Nachname
 			FROM " . PREFIX . "_users
 			WHERE Id = '" . (int)$id . "'
 		")->FetchRow();
 
-		if ($row)
-		{
-			$users[$id] = substr($row->Vorname, 0, 1) . "." . $row->Nachname;
-		}
-		else
-		{
-			$users[$id] = null;
-		}
+		$users[$id] = !empty($row) ? get_username($row->UserName, $row->Vorname, $row->Nachname, 1) : get_username();
 	}
 
 	return $users[$id];
@@ -847,8 +649,13 @@ function getUserById($id)
  * @param string $language - язык
  * @return string
  */
-function pretty_date($string, $language = 'ru')
+function pretty_date($string, $language = '')
 {
+	if ($language == '')
+	{
+		$language = ACP ? $_SESSION['admin_language'] : $_SESSION['user_language'];
+	}
+
 	$language = strtolower($language);
 
 	switch ($language)
@@ -879,16 +686,141 @@ function pretty_date($string, $language = 'ru')
 			break;
 	}
 
-	if (isset($pretty)) $string = strtr($string, $pretty);
+	return (isset($pretty) ? strtr($string, $pretty) : $string);
+}
+
+/**
+ * Формирование строки из случайных символов
+ *
+ * @param int $length количество символов в строке
+ * @param string $chars набор символов для формирования строки
+ * @return string сформированная строка
+ */
+function make_random_string($length = 16, $chars = '')
+{
+	if ($chars == '')
+	{
+		$chars  = 'abcdefghijklmnopqrstuvwxyz';
+		$chars .= 'ABCDEFGHIJKLMNOPRQSTUVWXYZ';
+		$chars .= '~!@#$%^&*()-_=+{[;:/?.,]}';
+		$chars .= '0123456789';
+	}
+
+	$clen = strlen($chars) - 1;
+
+	$string = '';
+	while (strlen($string) < $length) $string .= $chars[mt_rand(0, $clen)];
 
 	return $string;
 }
 
-function preClear($string)
+function get_statistic($t=0, $m=0, $q=0, $l=0)
 {
-	$string = preg_replace('#[\x00-\x08\x0B-\x0C\x0E-\x1F]+#is', ' ', $string);
+	global $AVE_DB;
 
-	return trim($string);
+	$s = '';
+
+	if ($t) $s .= "\n<br>Время генерации: " . number_format(microtime_diff(START_MICROTIME, microtime()), 3, ',', ' ') . ' сек.';
+	if ($m && function_exists('memory_get_peak_usage')) $s .= "\n<br>Пиковое значение " . number_format(memory_get_peak_usage()/1024, 0, ',', ' ') . 'Kb';
+//	if ($q) $s .= "\n<br>Количество запросов: " . $AVE_DB->DBStatisticGet('count') . ' шт. за ' . number_format($AVE_DB->DBStatisticGet('time')*1000, 3, ',', '.') . ' мксек.';
+//	if ($l) $s .= style=\"text-align:left;padding-left:30px\"><small><ol>" . $AVE_DB->DBStatisticGet('list') . '</ol></small></div>';
+	if ($q) $s .= "\n<br>Количество запросов: " . $AVE_DB->DBProfilesGet('count') . ' шт. за ' . $AVE_DB->DBProfilesGet('time') . ' сек.';
+	if ($l) $s .= $AVE_DB->DBProfilesGet('list');
+
+	return $s;
+}
+
+function add_template_comment($tpl_source, &$smarty)
+{
+    return "\n\n<!-- BEGIN SMARTY TEMPLATE " . $smarty->_current_file . " -->\n".$tpl_source."\n<!-- END SMARTY TEMPLATE " . $smarty->_current_file . " -->\n\n";
+}
+
+/**
+ * Получения списка стран
+ *
+ * @param int $status статус стран входящих в список
+ * <ul>
+ * <li>1 - активные страны</li>
+ * <li>0 - неактивные страны</li>
+ * </ul>
+ * если не указано возвращает список стран без учета статуса
+ * @return array
+ */
+function get_country_list($status = '')
+{
+	global $AVE_DB;
+
+	$countries = array();
+	$sql = $AVE_DB->Query("
+		SELECT
+			Id,
+			LOWER(LandCode) AS LandCode,
+			LandName,
+			Aktiv,
+			IstEU
+		FROM " . PREFIX . "_countries
+		" . (($status != '') ? "WHERE Aktiv = '" . $status . "'" : '') . "
+		ORDER BY LandName ASC
+	");
+	while ($row = $sql->FetchRow()) array_push($countries, $row);
+
+	return $countries;
+}
+
+/**
+ * Отправка e-Mail
+ *
+ * @param string $to
+ * @param string $text
+ * @param string $subject
+ * @param string $fromemail
+ * @param string $from
+ * @param string $content_type
+ * @param string $attach
+ * @param string $html
+ */
+function send_mail($to, $text, $subject = '', $fromemail = '', $from = '', $content_type = '', $attach = '', $html = '')
+{
+	require_once(BASE_DIR . '/class/class.phpmailer.php');
+	$PHPMailer = new PHPMailer;
+
+	$PHPMailer->ContentType = (get_settings('mail_content_type') == 'text/plain' || $content_type == 'text') ? 'text/plain' : 'text/html';
+	$PHPMailer->ContentType = ($html == 1) ? 'text/html' : $PHPMailer->ContentType;
+	$PHPMailer->From        = ($fromemail != '') ? $fromemail : get_settings('mail_from');
+	$PHPMailer->FromName    = ($from != '') ? $from : get_settings('mail_from_name');
+	$PHPMailer->Host        = get_settings('mail_host');
+	$PHPMailer->Mailer      = get_settings('mail_type');
+	$PHPMailer->AddAddress($to);
+	$PHPMailer->Subject     = $subject;
+	$PHPMailer->Body        = $text . "\n\n" . ($PHPMailer->ContentType == 'text/html' ? '' : get_settings('mail_signature'));
+	$PHPMailer->Sendmail    = get_settings('mail_sendmail_path');
+	$PHPMailer->WordWrap    = get_settings('mail_word_wrap');
+
+	if (!empty($attach))
+	{
+		if (is_array($attach))
+		{
+			foreach ($attach as $attachment)
+			{
+				$PHPMailer->AddAttachment(BASE_DIR . '/attachments/' . $attachment);
+			}
+		}
+		else
+		{
+			$PHPMailer->AddAttachment(BASE_DIR . '/attachments/' . $attach);
+		}
+	}
+
+	$PHPMailer->Send();
+
+//	if (is_array($attach)) {
+//		foreach ($attach as $attachment) {
+//			@unlink(BASE_DIR . '/attachments/' . $attachment);
+//		}
+//	}
+//	else {
+//		@unlink(BASE_DIR . '/attachments/' . $attach);
+//	}
 }
 
 ?>

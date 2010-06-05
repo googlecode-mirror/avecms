@@ -1,5 +1,3 @@
-{strip}
-<!-- shop_topseller.tpl -->
 {if $TopsellerActive==1}
 {foreach from=$TopSeller item=ts name=tsitems}
 			<table width="100%" style=" margin: 0;">
@@ -11,8 +9,8 @@
 					<td align="center">
 						<a href="{$ts->Detaillink}" class="topseller">{$ts->ArtName|truncate:55}</a>
 						<div class="mod_shop_toptopseller_bottom">
-							{numFormat val=$ts->Preis} {$Currency}
-							{if $ts->PreisW2 && $ZeigeWaehrung2=='1'} = <span class="mod_shop_ust">{numFormat val=$ts->PreisW2} {$Currency2}</span>{/if}
+							{num_format val=$ts->Preis} {$Currency}
+							{if $ts->PreisW2 && $ZeigeWaehrung2=='1'} = <span class="mod_shop_ust">{num_format val=$ts->PreisW2} {$Currency2}</span>{/if}
 						</div>
 					</td>
 				</tr>
@@ -20,5 +18,3 @@
 {if !$smarty.foreach.tsitems.last}<hr />{/if}
 		{/foreach}
 {/if}
-<!-- /shop_topseller.tpl -->
-{/strip}

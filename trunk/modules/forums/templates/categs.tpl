@@ -1,4 +1,3 @@
-{strip}
 <table width="100%"  border="0" cellpadding="0" cellspacing="0">
   <tr>
     <td><div class="forum_frame " id="cat_{$categorie.id}">
@@ -81,4 +80,3 @@
       </div></td>
   </tr>
 </table>
-{/strip}

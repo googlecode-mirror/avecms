@@ -1,4 +1,3 @@
-{strip}
 <form action='index.php' method='get'>
   <input type='text' name='pattern' size='30' value='{$smarty.get.pattern|escape:html|stripslashes}' />
   <input class='button' type='submit' value='Найти' />
@@ -8,4 +7,3 @@
   <img class='absmiddle' src='{$forum_images}forum/arrow.gif' alt='' border='' />
   <a href='index.php?module=forums&amp;show=search_mask'>{#SearchExtended#}</a>
 </form>
-{/strip}

@@ -140,21 +140,24 @@ if(!defined("SHOWFORUM")) exit;
 				// Stunden
 				case 'h':
 				// sekunden * 60 * 60 = stunde
-				$divisor = 60 * 60;
-				$where_time_stat = " AND ((UNIX_TIMESTAMP(NOW()) / $divisor) - (UNIX_TIMESTAMP(p.datum) / $divisor)) <= $period";
+//				$divisor = 60 * 60;
+//				$where_time_stat = " AND ((UNIX_TIMESTAMP(NOW()) / $divisor) - (UNIX_TIMESTAMP(p.datum) / $divisor)) <= $period";
+				$where_time_stat = " AND NOW() - INTERVAL $period HOUR <= p.datum";
 				break;
 
 				// Tage
 				case 'd':
 				// sekunden * 60 * 60 * 24 = tag
-				$divisor = 60 * 60 * 24;
-				$where_time_stat = " AND ((UNIX_TIMESTAMP(NOW()) / $divisor) - (UNIX_TIMESTAMP(p.datum) / $divisor)) <= $period";
+//				$divisor = 60 * 60 * 24;
+//				$where_time_stat = " AND ((UNIX_TIMESTAMP(NOW()) / $divisor) - (UNIX_TIMESTAMP(p.datum) / $divisor)) <= $period";
+				$where_time_stat = " AND NOW() - INTERVAL $period DAY <= p.datum";
 				break;
 
 				// Monat
 				case 'm':
-				$divisor = 60 * 60 * 24 * 30;
-				$where_time_stat = " AND ((UNIX_TIMESTAMP(NOW()) / $divisor) - (UNIX_TIMESTAMP(p.datum) / $divisor)) <= $period";
+//				$divisor = 60 * 60 * 24 * 30;
+//				$where_time_stat = " AND ((UNIX_TIMESTAMP(NOW()) / $divisor) - (UNIX_TIMESTAMP(p.datum) / $divisor)) <= $period";
+				$where_time_stat = " AND NOW() - INTERVAL $period MONTH <= p.datum";
 				break;
 
 				case 'all':
@@ -226,7 +229,7 @@ if(!defined("SHOWFORUM")) exit;
 			}
 
 			$seiten = ceil($num / $limit);
-			$a = prepage() * $limit - $limit;
+			$a = get_current_page() * $limit - $limit;
 
 			if(!is_mod($fid)) {
 				$topic_query_extra .= " AND t.opened = 1 ";
@@ -512,13 +515,11 @@ if(!defined("SHOWFORUM")) exit;
 			$GLOBALS['AVE_Template']->assign("sort_by_lastpost_link", "index.php?module=forums&amp;show=showforum&amp;fid=" . $fid . "&amp;sortby=last_post_int&amp;sort=$order");
 
 
-			if ($limit < $num)
+			if (num > $limit)
 			{
-				$GLOBALS['AVE_Template']->assign('pages',
-					pagenav($seiten, 'page',
-					" <a class=\"page_navigation\" href=\"index.php?module=forums&amp;show=showforum&amp;fid=$fid&amp;unit=$unit&amp;period=$period&amp;sortby=$order_by&amp;sort=$order_orig&amp;pp=$limit&amp;page={s}\">{t}</a> "
-					)
-				);
+				$page_nav = " <a class=\"page_navigation\" href=\"index.php?module=forums&amp;show=showforum&amp;fid={$fid}&amp;unit={$unit}&amp;period={$period}&amp;sortby=$order_by&amp;sort=$order_orig&amp;pp={$limit}&amp;page={s}\">{t}</a> ";
+				$page_nav = get_pagination($seiten, 'page', $page_nav);
+				$GLOBALS['AVE_Template']->assign('pages', $page_nav);
 			}
 
 			// foren fuer das dropdown feld

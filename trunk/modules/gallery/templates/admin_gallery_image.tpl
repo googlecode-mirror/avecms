@@ -1,7 +1,3 @@
-
-<!-- admin_gallery_image.tpl -->
-{strip}
-
 <div class="pageHeaderTitle" style="padding-top:7px">
 	<div class="h_module">&nbsp;</div>
 	<div class="HeaderTitle">
@@ -36,13 +32,13 @@
 			<tr style="background-color:#eff3eb" onmouseover="this.style.backgroundColor='#dae0d8';" onmouseout="this.style.backgroundColor='#eff3eb';" id="table_rows">
 				<td valign="top">
 					<input type="hidden" value="{$image.id}" name="gimg[]" />
-					<input type="hidden" value="{$image.image_filename}" name="datei[{$image.id}]" />
+					<input type="hidden" value="{$image.image_filename|escape}" name="datei[{$image.id}]" />
 					<input title="{#MarDel#}" name="del[{$image.id}]" type="checkbox" id="del[{$image.id}]" value="1" />
 				</td>
 
 				<td valign="top">
-					<a href="../modules/gallery/uploads/{if $gallery_folder != ''}{$gallery_folder}/{/if}{$image.image_filename}" target="_blank">
-						<img src="../modules/gallery/thumb.php?file={$image.image_filename}&type={$image.image_type}&xwidth={$thumb_width}{if $gallery_folder != ''}&folder={$gallery_folder}{/if}&compile=1" alt="" border="0" />
+					<a href="../modules/gallery/uploads/{if $gallery_folder != ''}{$gallery_folder}/{/if}{$image.image_filename|escape}" target="_blank">
+						<img src="../modules/gallery/thumb.php?file={$image.image_filename|escape}&type={$image.image_type|escape}&xwidth={$thumb_width}&folder={$gallery_folder|escape|default:''}&compile=1" alt="" border="0" />
 					</a>
 				</td>
 
@@ -52,10 +48,10 @@
 				</td>
 
 				<td valign="top">
-					<input name="image_position[{$image.id}]" type="text" style="width:50px" id="image_position[{$image.id}]" value="{$image.image_position}">{#Position#}<br />
+					<input name="image_position[{$image.id}]" type="text" style="width:50px" id="image_position[{$image.id}]" value="{$image.image_position}"> {#Position#}<br />
 					<br />
 					{#Uploader#}: {$image.image_author|escape}<br />
-					{#UploadOn#}: {$image.image_date|date_format:$TIME_FORMAT|pretty_date:$DEF_LANGUAGE}<br />
+					{#UploadOn#}: {$image.image_date|date_format:$TIME_FORMAT|pretty_date}<br />
 					{#Filesize#}: {$image.image_size} kb
 				</td>
 			</tr>
@@ -72,6 +68,3 @@
 {if $page_nav}
 	<div class="infobox">{$page_nav}</div>
 {/if}
-
-{/strip}
-<!-- /admin_gallery_image.tpl -->

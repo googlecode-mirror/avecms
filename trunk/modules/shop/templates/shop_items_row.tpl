@@ -1,6 +1,3 @@
-<!-- shop_items_row.tpl -->
-{strip}
-
 {if !$ShopArticles}
 	{#ErrorNoProductsHere#}
 {else}
@@ -19,7 +16,7 @@
 					<strong><a href="{$i->Detaillink}">{$i->ArtName|truncate:45|stripslashes|escape:html}</a></strong>
 				</td>
 				<td valign="top" class="mod_shop_basket_row">
-					{numFormat val=$i->Preis} {$Currency}
+					{num_format val=$i->Preis} {$Currency}
 				</td>
 			</tr>
 		{/foreach}
@@ -28,6 +25,3 @@
 	{* постраничная навигация *}
 	{if $page_nav}{$page_nav}{/if}
 {/if}
-
-{/strip}
-<!-- /shop_items_row.tpl -->

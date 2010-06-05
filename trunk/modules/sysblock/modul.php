@@ -14,7 +14,7 @@ if (defined('ACP'))
 {
     $modul['ModulName'] = 'Системные блоки';
     $modul['ModulPfad'] = 'sysblock';
-    $modul['ModulVersion'] = '1.0';
+    $modul['ModulVersion'] = '1.1';
     $modul['Beschreibung'] = 'Данный модуль предназначен для вывода системных блоков с произвольным содержимым в шаблоне или документе.<br /><br />Можно использовать PHP и тэги модулей<br /><br />Для вывода результатов используйте системный тег<br /><strong>[mod_sysblock:XXX]</strong>';
     $modul['Autor'] = 'Mad Den';
     $modul['MCopyright'] = '&copy; 2008 Overdoze Team';
@@ -29,47 +29,56 @@ if (defined('ACP'))
 }
 
 /**
- * Показать текстовый блок
+ * Обработка тэга модуля
  *
- * @param int $id
+ * @param int $sysblock_id идентификатор системного блока
  */
-function mod_sysblock($id)
+function mod_sysblock($sysblock_id)
 {
-	if (! @require_once(BASE_DIR . '/modules/sysblock/class.sysblock.php')) moduleError();
-	sysblock::ShowSysBlock(stripslashes($id));
+	global $AVE_DB;
+
+	if (is_numeric($sysblock_id))
+	{
+		$return = $AVE_DB->Query("
+			SELECT sysblock_text
+			FROM " . PREFIX . "_modul_sysblock
+			WHERE id = '" . $sysblock_id . "'
+			LIMIT 1
+		")->GetCell();
+
+		eval ('?>' . $return . '<?');
+	}
 }
 
-// Администрирование
-if (defined('ACP') && !(isset($_REQUEST['action']) && $_REQUEST['action'] == 'delete'))
+/**
+ * Администрирование
+ */
+if (defined('ACP') && !empty($_REQUEST['moduleaction']))
 {
-	require_once(BASE_DIR . '/modules/sysblock/sql.php');
-	if (! @require_once(BASE_DIR . '/modules/sysblock/class.sysblock.php')) moduleError();
+	if (! @require_once(BASE_DIR . '/modules/sysblock/class.sysblock.php')) module_error();
 
-	$tpl_dir = BASE_DIR . '/modules/sysblock/templates/';
-	$lang_file = BASE_DIR . '/modules/sysblock/lang/' . DEFAULT_LANGUAGE . '.txt';
+	$tpl_dir   = BASE_DIR . '/modules/sysblock/templates/';
+	$lang_file = BASE_DIR . '/modules/sysblock/lang/' . $_SESSION['user_language'] . '.txt';
 
-	$GLOBALS['AVE_Template']->config_load($lang_file);
+	$AVE_Template->config_load($lang_file);
 
-	if (!empty($_REQUEST['moduleaction']))
+	switch ($_REQUEST['moduleaction'])
 	{
-		switch ($_REQUEST['moduleaction'])
-		{
-			case '1':
-				sysblock::ListBlock($tpl_dir);
-				break;
+		case '1':
+			sysblock::sysblockList($tpl_dir);
+			break;
 
-			case 'del':
-				sysblock::DelBlock();
-				break;
+		case 'del':
+			sysblock::sysblockDelete($_REQUEST['id']);
+			break;
 
-			case 'edit':
-				sysblock::EditBlock($tpl_dir);
-				break;
+		case 'edit':
+			sysblock::sysblockEdit($_REQUEST['id'], $tpl_dir);
+			break;
 
-			case 'saveedit':
-				sysblock::SaveBlock();
-				break;
-		}
+		case 'saveedit':
+			sysblock::sysblockSave(isset($_REQUEST['id']) ? $_REQUEST['id'] : null);
+			break;
 	}
 }
 

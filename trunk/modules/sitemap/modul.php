@@ -30,31 +30,31 @@ if (defined('ACP'))
 /**
  * Функция вывода карты сайта
  *
- * @param int $id - идентификатор меню навигации
+ * @param int $navi_ids - идентификатор меню навигации
  * или нескольких меню указанных через запятую
  * для формирования карты сайта.
  * Если идентификатор не указан используются все меню
  */
-function mod_sitemap($id = '')
+function mod_sitemap($navi_ids = '')
 {
-	global $AVE_DB, $navigations;
+	global $AVE_DB;
 
-	if (!empty($id))
+	if (!empty($navi_ids))
 	{
 		$sql = array();
 
-		$id = explode(',', $id);
+		$navi_ids = explode(',', $navi_ids);
 
-		foreach ($id as $val)
+		foreach ($navi_ids as $navi_id)
 		{
-			if (is_numeric($val) && checkSeePerm($val))
+			if (is_numeric($navi_id) && check_navi_permission($navi_id))
 			{
 				array_push($sql,
 					"(
 						SELECT *
 						FROM " . PREFIX . "_navigation_items
 						WHERE Aktiv = '1'
-						AND Rubrik = " . $val . "
+						AND Rubrik = " . $navi_id . "
 						ORDER BY Rang ASC
 					)"
 				);
@@ -67,36 +67,25 @@ function mod_sitemap($id = '')
 	}
 	else
 	{
-		if (is_null($navigations))
-		{
-			$navigations = array();
+		$navigations = get_navigations();
 
-			$sql = $AVE_DB->Query("SELECT * FROM " . PREFIX . "_navigation");
-
-			while ($row = $sql->FetchRow())
-			{
-				$row->Gruppen = explode(',', $row->Gruppen);
-				$navigations[$row->id] = $row;
-			}
-			$sql->Close();
-		}
 		if (empty($navigations)) return;
 
-		$rubrik_in = array();
-		foreach ($navigations as $val)
+		$navi_in = array();
+		foreach ($navigations as $navigation)
 		{
-			if (in_array(UGROUP, $val->Gruppen))
+			if (in_array(UGROUP, $navigation->Gruppen))
 			{
-				array_push($rubrik_in, $val->id);
+				array_push($navi_in, $navigation->id);
 			}
 		}
 
-		if (sizeof($rubrik_in)) {
+		if (sizeof($navi_in)) {
 			$sql = "
 				SELECT *
 				FROM " . PREFIX . "_navigation_items
 				WHERE Aktiv = '1'
-				AND Rubrik IN(" . implode(',', $rubrik_in) . ")
+				AND Rubrik IN(" . implode(',', $navi_in) . ")
 				ORDER BY Rubrik ASC, Rang ASC
 			";
 		}
@@ -135,26 +124,20 @@ function printSitemap(&$nav_items, &$sitemap = '', $parent = 0)
 
 	foreach ($nav_items[$parent] as $row)
 	{
-		if (strpos($row['Link'], 'module=') === false &&
-			startsWith('index.php?', $row['Link']))
+		if (strpos($row['Link'], 'module=') === false && start_with('index.php?', $row['Link']))
 		{
-			$row['Link'] .= '&amp;doc=' . (empty($row['Url'])
-				? cpParseLinkname($row['Titel'])
-				: $row['Url']);
+			$row['Link'] .= '&amp;doc=' . (empty($row['Url']) ? prepare_url($row['Titel']) : $row['Url']);
 		}
 
-		if (startsWith('www.', $row['Link']))
+		if (start_with('www.', $row['Link']))
 		{
 			$row['Link'] = str_replace('www.', 'http://www.', $row['Link']);
 		}
 
-		if (CP_REWRITE == 1)
-		{
-			$row['Link'] = cpRewrite($row['Link']);
-		}
+		$row['Link'] = rewrite_link($row['Link']);
 
 		$sitemap .= '<li><a href="' . $row['Link'] . '" target="' . $row['Ziel'] . '">';
-		$sitemap .= prettyChars($row['Titel']) . '</a>';
+		$sitemap .= pretty_chars($row['Titel']) . '</a>';
 
 		if (isset($nav_items[$row['Id']]))
 		{

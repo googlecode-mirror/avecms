@@ -1,5 +1,3 @@
-
-{strip}
 {include file="$inc_path/userpanel_forums.tpl"}
 {include file="$inc_path/header_sthreads.tpl"}
 
@@ -88,7 +86,7 @@
 	{else}
 		{$topic.statusicon}
      {/if}	</td>
-    <td width="10%" align="center" class="forum_info_icon">&nbsp; {get_post_icon icon=$topic.posticon theme=$theme}&nbsp; </td>
+    <td width="10%" align="center" class="forum_info_icon">&nbsp; {get_post_icon icon=$topic.posticon theme=$theme_folder}&nbsp; </td>
     <td width="50%" class="forum_info_meta">
 
 	<a class="forum_links" href="index.php?module=forums&amp;show=showtopic&amp;toid={$topic.id}&amp;fid={$forum->id}">{$topic.title|truncate:65:'...'}</a>&nbsp;
@@ -122,7 +120,7 @@ Seite: <a class="forum_links_smaller" href="index.php?module=forums&amp;show=sho
 {if $topic.lastposter->datum|date_format:'%d.%m.%Y' == $smarty.now|date_format:'%d.%m.%Y'}
 {#Today#},&nbsp;{$topic.lastposter->datum|date_format:'%H:%M'}
 {else}
-{$topic.lastposter->datum|date_format:$config_vars.DateFormatLastPost}
+{$topic.lastposter->datum|date_format:$smarty.config.DateFormatLastPost}
 {/if}
 <br />
  {$topic.lastposter->link}
@@ -185,11 +183,7 @@ Seite: <a class="forum_links_smaller" href="index.php?module=forums&amp;show=sho
           <td class="forum_header_bolder">{#ModsIn#}</td>
         </tr>
         <tr>
-          <td class="forum_info_meta">{if $get_mods}
-            {$get_mods}
-            {else}
-            {#NoMods#}
-            {/if}</td>
+          <td class="forum_info_meta">{if $get_mods}{$get_mods}{else}{#NoMods#}{/if}</td>
         </tr>
       </table>
       <br />
@@ -234,4 +228,3 @@ Seite: <a class="forum_links_smaller" href="index.php?module=forums&amp;show=sho
   </tr>
 </table>
 </p>
-{/strip}

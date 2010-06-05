@@ -12,7 +12,7 @@ if(!defined('BASE_DIR')) exit;
 
 if (defined('ACP'))
 {
-    $modul['ModulName'] = 'Похожие документы';
+    $modul['ModulName'] = 'Ссылки по теме';
     $modul['ModulPfad'] = 'moredoc';
     $modul['ModulVersion'] = '1.0';
     $modul['Beschreibung'] = 'Данный модуль предназначен для вывода списка похожих документов относительно текущего. Связующим элементом документов является первое слово из поля Ключевые слова. Результат вывода кешируется средствами Smarty.<BR /><BR />Для вывода списка похожих документов используйте системный тег <strong>[mod_moredoc]</strong> (можно использовать как в документах так и шаблоне рубрики).';
@@ -33,24 +33,24 @@ if (defined('ACP'))
  */
 function mod_moredoc()
 {
-	global $AVE_DB, $AVE_Globals, $AVE_Template;
+	global $AVE_DB, $AVE_Template;
 
 	require_once(BASE_DIR . '/functions/func.modulglobals.php');
-	modulGlobals('moredoc');
+	set_modul_globals('moredoc');
 
 	$limit = 5; // Количество связных документов
-	$flagRubric = 1; // Учитывать или нет рубрику документа (0 - нет, 1 - да)
+	$flagrubric = 1; // Учитывать или нет рубрику документа (0 - нет, 1 - да)
 
 	// Время жизни кэша 1 день в секундах
 	$AVE_Template->cache_lifetime = 60*60*24;
 
-	$moreDoc = '';
-	$docId = (int)$_REQUEST['id']; // Получаем ID документа
+	$moredoc = '';
+	$document_id = get_current_document_id(); // Получаем ID документа
 
 	$AVE_Template->caching = true; // Устанавливаем флаг кэшировать
 
 	// Если нету в кэше, то начинаем обрабатывать
-	if (!$AVE_Template->is_cached($AVE_Template->cache_dir . 'moredoc.tpl', $docId))
+	if (!$AVE_Template->is_cached($AVE_Template->cache_dir . 'moredoc.tpl', $document_id))
 	{
 		$tpl_dir = BASE_DIR . '/modules/moredoc/templates/'; // Указываем путь до шаблона
 		$AVE_Template->cache_dir = BASE_DIR . '/cache/moredoc/'; // Папка для создания кэша
@@ -69,21 +69,17 @@ function mod_moredoc()
 				RubrikId,
 				MetaKeywords
 			FROM " . PREFIX . "_documents
-			WHERE Id = '" . $docId . "'
+			WHERE Id = '" . $document_id . "'
 			LIMIT 1
-		")
-		->FetchRow();
+		")->FetchRow();
 
 		$keywords = explode(',',$row->MetaKeywords);
 		$keywords = trim($keywords[0]);
-		$rubric = $row->RubrikId;
 
 		if ($keywords != '')
 		{
-			$inRubric = $flagRubric ? ("AND RubrikId = '" . $rubric . "'") : '';
-			$doctime  = $AVE_Globals->mainSettings('use_doctime')
-				? ("AND (DokEnde = 0 || DokEnde > '" . time() . "') AND (DokStart = 0 || DokStart < '" . time() . "')")
-				: '';
+			$inrubric = $flagrubric ? ("AND RubrikId = '" . $row->RubrikId . "'") : '';
+			$doctime  = get_settings('use_doctime') ? ("AND (DokEnde = 0 || DokEnde > '" . time() . "') AND DokStart < '" . time() . "'") : '';
 			// Ищем документы где встречается такое-же слово
 			$sql = $AVE_DB->Query("
 				SELECT
@@ -94,30 +90,29 @@ function mod_moredoc()
 				WHERE MetaKeywords LIKE '" . $keywords . "%'
 				AND Id != 1
 				AND Id != '" . PAGE_NOT_FOUND_ID . "'
-				AND DokStatus != 0
-				AND Id != '" . $docId . "'
-				" . $inRubric . "
+				AND DokStatus != '0'
+				AND Geloescht != '1'
+				AND Id != '" . $document_id . "'
+				" . $inrubric . "
 				" . $doctime . "
 				ORDER BY Id DESC
 				LIMIT " . $limit
 			);
 
-			$moreDoc = array();
+			$moredoc = array();
 			while ($row = $sql->FetchRow())
 			{
-				$row->Url = (CP_REWRITE==1)
-					? cpRewrite('index.php?id=' . $row->Id . '&amp;doc=' . cpParseLinkname($row->Titel))
-					: 'index.php?id=' . $row->Id . '&amp;doc=' . cpParseLinkname($row->Titel);
-				array_push($moreDoc, $row);
+				$row->Url = rewrite_link('index.php?id=' . $row->Id . '&amp;doc=' . (empty($row->Url) ? prepare_url($row->Titel) : $row->curentdoc->Url));
+				array_push($moredoc, $row);
 			}
 			// Закрываем соединение
 			$sql->Close();
 		}
 		// Назначаем переменную moreDoc для использования в шаблоне
-		$AVE_Template->assign('moredoc', $moreDoc);
+		$AVE_Template->assign('moredoc', $moredoc);
 	}
 	// Выводим шаблон moredoc.tpl
-	$AVE_Template->display($tpl_dir . 'moredoc.tpl', $docId);
+	$AVE_Template->display($tpl_dir . 'moredoc.tpl', $document_id);
 
 	$AVE_Template->caching = false; // Устанавливаем флаг не кэшировать
 }

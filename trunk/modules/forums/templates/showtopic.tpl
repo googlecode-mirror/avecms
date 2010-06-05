@@ -1,6 +1,5 @@
 {include file="$inc_path/userpanel_forums.tpl"}
 {include file="$inc_path/header_sthreads.tpl"}
-{strip}
 {if $smarty.request.print!=1}
 <table width="100%"  border="0" cellspacing="0" cellpadding="0">
 
@@ -70,7 +69,7 @@
 {if $post->datum|date_format:'%d.%m.%Y' == $smarty.now|date_format:'%d.%m.%Y'}
 <strong>{#Today#},&nbsp;{$post->datum|date_format:'%H:%M'}</strong>
 {else}
-<strong>{$post->datum|date_format:$config_vars.DateFormatTimeThread}</strong>
+<strong>{$post->datum|date_format:$smarty.config.DateFormatTimeThread}</strong>
 {/if}
 
 </td>
@@ -116,7 +115,7 @@
 
 Сообщений: {$post->poster->user_posts}
 <br />
-Дата регистрации: {$post->poster->regdate|date_format:$config_vars.DateFormatMemberSince}
+Дата регистрации: {$post->poster->regdate|date_format:$smarty.config.DateFormatMemberSince}
 {/if}
  </small>
 {else}
@@ -305,5 +304,3 @@
 </table>
 
 {/if}
-
-{/strip}

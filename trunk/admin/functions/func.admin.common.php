@@ -20,7 +20,7 @@ function cntStat()
 
 	$cnts['templates'] = $AVE_DB->Query("SELECT COUNT(*) FROM " . PREFIX . "_templates")->GetCell();
 	$cnts['documents'] = $AVE_DB->Query("SELECT COUNT(*) FROM " . PREFIX . "_documents")->GetCell();
-	$cnts['queries']   = $AVE_DB->Query("SELECT COUNT(*) FROM " . PREFIX . "_queries")->GetCell();
+	$cnts['request']   = $AVE_DB->Query("SELECT COUNT(*) FROM " . PREFIX . "_queries")->GetCell();
 	$cnts['rubrics']   = $AVE_DB->Query("SELECT COUNT(*) FROM " . PREFIX . "_rubrics")->GetCell();
 
 	$sql = $AVE_DB->Query("
@@ -125,15 +125,11 @@ function MySqlSize()
 {
 	global $AVE_DB;
 
-	$sql = $AVE_DB->Query("SHOW TABLE STATUS");
-	$mysql_size = '';
+	$mysql_size = 0;
+	$sql = $AVE_DB->Query("SHOW TABLE STATUS WHERE Name LIKE '" . PREFIX . "_%'");
 	while ($row = $sql->FetchAssocArray())
 	{
-		if (preg_match('/^' . preg_quote(PREFIX) . '_/', $row['Name']))
-		{
-			$mysql_size += $row['Data_length'];
-			$mysql_size += $row['Index_length'];
-		}
+		$mysql_size += $row['Data_length'] + $row['Index_length'];
 	}
 
 	return formatsize($mysql_size);
@@ -173,18 +169,18 @@ function cpReadfile($filename, $retbytes=true)
 	return $status;
 }
 
-function userCheck()
-{
-	if (!defined('UID') || !checkPermission('adminpanel'))
-	{
-		header('Location:admin.php');
-		exit;
-	}
-}
+//function userCheck()
+//{
+//	if (!defined('UID') || !check_permission('adminpanel'))
+//	{
+//		header('Location:admin.php');
+//		exit;
+//	}
+//}
 
 function permCheck($perm)
 {
-	if (!checkPermission($perm))
+	if (!check_permission($perm))
 	{
 		define('NOPERM', 1);
 		return false;
@@ -355,7 +351,7 @@ function fetchFields($assign = 0)
 {
 	global $AVE_Template;
 
-	$AVE_Template->config_load(BASE_DIR . '/admin/lang/' . $_SESSION['admin_lang'] . '/fields.txt', 'fields');
+	$AVE_Template->config_load(BASE_DIR . '/admin/lang/' . $_SESSION['admin_language'] . '/fields.txt', 'fields');
 	$felder_vars = $AVE_Template->get_config_vars();
 
 	$felder = array(
@@ -394,7 +390,7 @@ function NaviModule()
 			ModulName,
 			ModulPfad
 		FROM " . PREFIX . "_module
-		WHERE `Status` = 1
+		WHERE `Status` = '1'
 		ORDER BY ModulName ASC
 	");
 	while ($row = $sql->FetchRow())
@@ -404,7 +400,7 @@ function NaviModule()
 		{
 			echo 'Ошибка доступа к файлам модуля ' . $row->ModulPfad . '<br />';
 		}
-		elseif ($modul['AdminEdit'] == 1 && checkPermission('mod_' . $row->ModulPfad))
+		elseif ($modul['AdminEdit'] == 1 && check_permission('mod_' . $row->ModulPfad))
 		{
 			array_push($modules, $row);
 		}

@@ -35,7 +35,7 @@ if (isset ($_REQUEST['module']) && $_REQUEST['module'] == 'guestbook')
 	// Все функции управления в публичной части
 	//=======================================================
 	require_once (BASE_DIR . '/functions/func.modulglobals.php');
-	modulGlobals('guestbook');
+	set_modul_globals('guestbook');
 
 	require_once (BASE_DIR . '/modules/guestbook/class.guest.php');
 	$guest = new Guest_Module_Pub;
@@ -121,12 +121,12 @@ if (isset ($_REQUEST['module']) && $_REQUEST['module'] == 'guestbook')
 			if ($num > $limit)
 			{
 				$seiten = ceil($num / $limit);
-				$AVE_Template->assign('pages', pagenav($seiten, 'page',
-					" <a class=\"page_navigation\" href=\"index.php?module=guestbook&amp;pp=" . $limit
-						. "&amp;sort=" . $_REQUEST['sort'] . "&amp;page={s}\">{t}</a> "));
+				$page_nav = " <a class=\"page_navigation\" href=\"index.php?module=guestbook&amp;pp=" . $limit . "&amp;sort=" . $_REQUEST['sort'] . "&amp;page={s}\">{t}</a> ";
+				$page_nav = get_pagination($seiten, 'page', $page_nav);
+				$AVE_Template->assign('pages', $page_nav);
 			}
 
-			$start = prepage() * $limit - $limit;
+			$start = get_current_page() * $limit - $limit;
 
 			// Получаем список всех сообщений и передаем их в шаблон для вывода
 			$sql = $AVE_DB->Query("
@@ -233,9 +233,17 @@ if (isset ($_REQUEST['module']) && $_REQUEST['module'] == 'guestbook')
 						LIMIT 1
 					")->GetCell();
 
-					$AVE_Globals = new AVE_Globals;
-					$SystemMail = $AVE_Globals->mainSettings('mail_from');
-					$AVE_Globals->cp_mail($mail, $text, $GLOBALS['mod']['config_vars']['guest_new_mail'], $mail, $GLOBALS['mod']['config_vars']['guest_pub_name'], $mail, 'text', '');
+					$SystemMail = get_settings('mail_from');
+					send_mail(
+						$mail,
+						$text,
+						$GLOBALS['mod']['config_vars']['guest_new_mail'],
+						$mail,
+						$GLOBALS['mod']['config_vars']['guest_pub_name'],
+						$mail,
+						'text',
+						''
+					);
 				}
 				//Проверяем включена ли проверка сообщений модератором и выводит то или иное сообщение
 				$text_thankyou = (GB_CHECK == 1) ? $GLOBALS['mod']['config_vars']['guest_check_thanks'] : $GLOBALS['mod']['config_vars']['guest_thanks'];
@@ -253,31 +261,27 @@ if (isset ($_REQUEST['module']) && $_REQUEST['module'] == 'guestbook')
 //=======================================================
 // Управление модулем в Панели управления
 //=======================================================
-if (defined('ACP') && !(isset ($_REQUEST['action']) && $_REQUEST['action'] == 'delete'))
+if (defined('ACP') && !empty($_REQUEST['moduleaction']))
 {
-	require_once (BASE_DIR . '/modules/guestbook/sql.php');
 	require_once (BASE_DIR . '/modules/guestbook/class.guest_admin.php');
 
 	$tpl_dir = BASE_DIR . '/modules/guestbook/templates/';
-	$lang_file = BASE_DIR . '/modules/guestbook/lang/' . DEFAULT_LANGUAGE . '.txt';
+	$lang_file = BASE_DIR . '/modules/guestbook/lang/' . $_SESSION['user_language'] . '.txt';
 
 	$guest = new Guest_Module;
 	$AVE_Template->config_load($lang_file);
 	$config_vars = $AVE_Template->get_config_vars();
 	$AVE_Template->assign('config_vars', $config_vars);
 
-	if (!empty ($_REQUEST['moduleaction']))
+	switch ($_REQUEST['moduleaction'])
 	{
-		switch ($_REQUEST['moduleaction'])
-		{
-			case '1' :
-				$guest->settings($tpl_dir);
-				break;
+		case '1' :
+			$guest->settings($tpl_dir);
+			break;
 
-			case 'medit' :
-				$guest->edit_massage();
-				break;
-		}
+		case 'medit' :
+			$guest->edit_massage();
+			break;
 	}
 }
 

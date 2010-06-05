@@ -33,50 +33,57 @@ class ModulBanner {
 		global $AVE_DB;
 
 		mt_rand();
-		$zufall = rand(1,3);
-		$num = '';
 		$banner_id = '';
 		$output = '';
 
-		$zeitspanne = "AND (((`ZStart` <= '" . date('H') . "' AND `ZEnde` > '" . date('H') . "') OR (`ZStart` = 0 AND `ZEnde` = 0)) OR ((`ZStart` > `ZEnde`) AND ((`ZStart` BETWEEN  `ZStart` AND '" . date('H') . "') OR (`ZEnde` BETWEEN '" . date('H') . "' AND `ZEnde`))))";
+		$cur_hour = date('G');
+		$and_time = "AND ((ZStart = '0' AND ZEnde = '0') OR (ZStart <= '$cur_hour' AND ZEnde > '$cur_hour') OR (ZStart > ZEnde AND (ZStart BETWEEN ZStart AND '$cur_hour' OR ZEnde BETWEEN '$cur_hour' AND ZEnde)))";
+		$and_category = (!empty($id) && is_numeric($id)) ? "AND KatId = '" . $id . "'" : '';
 
-		$and_kat = (!empty($id) && is_numeric($id)) ? " AND `KatId` = '" . $id . "'" : '';
+		$num = $AVE_DB->Query("
+			SELECT Id
+			FROM " . PREFIX . "_modul_banners
+			WHERE Aktiv = '1'
+			AND (MaxKlicks = '0' OR (Klicks < MaxKlicks AND MaxKlicks != '0'))
+			AND (MaxViews  = '0' OR (Views  < MaxViews  AND MaxViews  != '0'))
+			" . $and_time . "
+			" . $and_category . "
+		")->NumRows();
 
-		$sql = $AVE_DB->Query("
-			SELECT `Id`
-			FROM `" . PREFIX . "_modul_banners`
-			WHERE `Aktiv` = 1
-			" . $zeitspanne . "
-			AND (((`MaxKlicks` = 0) OR (`Klicks` < `MaxKlicks` AND `MaxKlicks` != 0)) AND ((`MaxViews` = 0) OR (`Views` < `MaxViews` AND `MaxViews` != 0)))
-			" . $and_kat . "
-		");
-		$num = $sql->NumRows();
-
-		if($num <= 1) {
-			$zufall = 4;
-		}
+		$zufall = ($num) ? rand(1,3) : 3;
 
 		$sql = $AVE_DB->Query("
-			SELECT *
-			FROM `" . PREFIX . "_modul_banners`
-			WHERE `Aktiv` = 1
-			" . $zeitspanne . "
-			AND `Gewicht` <= '" . $zufall . "'
-			AND (((`MaxKlicks` = 0) OR (`Klicks` < `MaxKlicks` AND `MaxKlicks` != 0)) AND ((`MaxViews` = 0) OR (`Views` < `MaxViews` AND `MaxViews` != 0)))
-			" . $and_kat . "
+			SELECT
+				Id,
+				Bannertags,
+				Target,
+				Bannername,
+				BildAlt,
+				Width,
+				Height
+			FROM " . PREFIX . "_modul_banners
+			WHERE Aktiv = '1'
+			AND (MaxKlicks = '0' OR (Klicks < MaxKlicks AND MaxKlicks != '0'))
+			AND (MaxViews  = '0' OR (Views  < MaxViews  AND MaxViews  != '0'))
+			" . $and_time . "
+			" . $and_category . "
+			AND Gewicht <= '" . $zufall . "'
 		");
 		$num = $sql->NumRows();
 
 		$banner_id = ($num == 1) ? 0 : rand(0, $num-1);
 
 		$sql->DataSeek($banner_id);
-		$banner = $sql->FetchArray();
+		$banner = $sql->FetchAssocArray();
 
-		if(!empty($banner['Bannertags'])) {
-			if (stristr($banner['Bannertags'], '.swf') === false) {
+		if(!empty($banner['Bannertags']))
+		{
+			if (stristr($banner['Bannertags'], '.swf') === false)
+			{
 				$output = '<a target="' . $banner['Target'] . '" href="index.php?module=' . BANNER_DIR . '&amp;id=' . $banner['Id'] . '"><img src="modules/' . BANNER_DIR . '/files/' . $banner['Bannertags'] . '" alt="' . $banner['Bannername'] . ': ' . $banner['BildAlt'] . '" border="0" /></a>';
 			}
-			else {
+			else
+			{
 				$output  = '<div style="position:relative;border:0px;width:' . $banner['Width'] . 'px;height:' . $banner['Height'] . 'px;"><a target="' . $banner['Target'] . '" href="index.php?module=' . BANNER_DIR . '&amp;id=' . $banner['Id'] . '" style="position:absolute;z-index:2;width:' . $banner['Width'] . 'px;height:' . $banner['Height'] . 'px;_background:red;_filter:alpha(opacity=0);"></a>';
 				$output .= '	<object classid="clsid:d27cdb6e-ae6d-11cf-96b8-444553540000" codebase="http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=6,0,0,0" width="' . $banner['Width'] . '" height="' . $banner['Height'] . '" id="reklama" align="middle">';
 				$output .= '		<param name="allowScriptAccess" value="sameDomain" />';
@@ -88,11 +95,12 @@ class ModulBanner {
 				$output .= '</div>';
 			}
 
-			if(!empty($banner['Id'])) {
+			if(!empty($banner['Id']))
+			{
 				$AVE_DB->Query("
-					UPDATE `" . PREFIX . "_modul_banners`
-					SET `Views` = `Views` + 1
-					WHERE `Id` = '" . $banner['Id'] . "'
+					UPDATE " . PREFIX . "_modul_banners
+					SET Views = Views + 1
+					WHERE Id = '" . $banner['Id'] . "'
 				");
 			}
 		}
@@ -107,17 +115,17 @@ class ModulBanner {
 			case '':
 			case 'addclick':
 				$sql = $AVE_DB->Query("
-					SELECT `BannerUrl`
-					FROM `" . PREFIX . "_modul_banners`
-					WHERE `Id` = '" . $id . "'
+					SELECT BannerUrl
+					FROM " . PREFIX . "_modul_banners
+					WHERE Id = '" . $id . "'
 					LIMIT 1
 				");
 				$banner_url = $sql->GetCell();
 				if(!empty($banner_url)) {
 					$AVE_DB->Query("
-						UPDATE `" . PREFIX . "_modul_banners`
-						SET `Klicks` = `Klicks` + 1
-						WHERE `Id` = '" . $id . "'
+						UPDATE " . PREFIX . "_modul_banners
+						SET Klicks = Klicks + 1
+						WHERE Id = '" . $id . "'
 					");
 					header('Location:' . $banner_url);
 				}
@@ -131,25 +139,26 @@ class ModulBanner {
 		global $AVE_DB, $AVE_Template;
 
 		$limit = $this->_limit;
-		$sql = $AVE_DB->Query("SELECT `Id` FROM `" . PREFIX . "_modul_banners`");
+		$sql = $AVE_DB->Query("SELECT Id FROM " . PREFIX . "_modul_banners");
 		$num = $sql->NumRows();
 
 		$seiten = ceil($num / $limit);
-		$start = prepage() * $limit - $limit;
+		$start = get_current_page() * $limit - $limit;
 
 		$items = array();
 		$sql = $AVE_DB->Query("
 			SELECT *
-			FROM `" . PREFIX . "_modul_banners`
+			FROM " . PREFIX . "_modul_banners
 			LIMIT " . $start . "," . $limit
 		);
 		while($row = $sql->FetchRow()) {
 			array_push($items, $row);
 		}
 
-		if($num > $limit) {
-			$page_nav = pagenav($seiten, 'page',
-				' <a class="pnav" href="index.php?do=modules&action=modedit&mod=' . BANNER_DIR . '&moduleaction=1&cp=' . SESSION . '&page={s}">{t}</a> ');
+		if($num > $limit)
+		{
+			$page_nav = ' <a class="pnav" href="index.php?do=modules&action=modedit&mod=' . BANNER_DIR . '&moduleaction=1&cp=' . SESSION . '&page={s}">{t}</a> ';
+			$page_nav = get_pagination($seiten, 'page', $page_nav);
 			$AVE_Template->assign('page_nav', $page_nav);
 		}
 
@@ -164,8 +173,8 @@ class ModulBanner {
 
 		$sql = $AVE_DB->Query("
 			SELECT *
-			FROM `" . PREFIX . "_modul_banners`
-			WHERE `Id` = '" . $id . "'
+			FROM " . PREFIX . "_modul_banners
+			WHERE Id = '" . $id . "'
 		");
 		$row = $sql->FetchRow();
 
@@ -187,18 +196,18 @@ class ModulBanner {
 
 		$sql = $AVE_DB->Query("
 			SELECT
-				`Bannertags`,
-				`Bannername`
-			FROM `" . PREFIX . "_modul_banners`
-			WHERE `Id` = '" . $id . "'
+				Bannertags,
+				Bannername
+			FROM " . PREFIX . "_modul_banners
+			WHERE Id = '" . $id . "'
 		");
 		$row = $sql->FetchRow();
 
 		@unlink(BASE_DIR . '/modules/' . BANNER_DIR . '/files/' . $row->Bannertags);
 		$AVE_DB->Query("
 			DELETE
-			FROM `" . PREFIX . "_modul_banners`
-			WHERE `Id` = '" . $id . "'
+			FROM " . PREFIX . "_modul_banners
+			WHERE Id = '" . $id . "'
 		");
 
 		reportLog($_SESSION['user_name'] . ' - удалил баннер (' . $row->Bannername . ')', 2, 2);
@@ -212,16 +221,16 @@ class ModulBanner {
 
 		if(!empty($_POST['del'])) {
 			$sql = $AVE_DB->Query("
-				SELECT `Bannertags`
-				FROM `" . PREFIX . "_modul_banners`
-				WHERE `Id` = '" . $id . "'
+				SELECT Bannertags
+				FROM " . PREFIX . "_modul_banners
+				WHERE Id = '" . $id . "'
 			");
 			$row = $sql->FetchRow();
 
 			$AVE_DB->Query("
-				UPDATE `" . PREFIX . "_modul_banners`
-				SET `Bannertags` = ''
-				WHERE `Id` = '" . $id . "'
+				UPDATE " . PREFIX . "_modul_banners
+				SET Bannertags = ''
+				WHERE Id = '" . $id . "'
 			");
 
 			@unlink(BASE_DIR . '/modules/' . BANNER_DIR . '/files/' . $row->Bannertags);
@@ -234,7 +243,7 @@ class ModulBanner {
 
 			if(!empty($_FILES['New']['type'])) {
 				if(in_array($_FILES['New']['type'], $this->_allowed_files)) {
-					$d_name = ereg_replace('([^ ._a-z0-9-])', '_', $d_name);
+					$d_name = preg_replace('/[^ ._a-z0-9-]/', '_', $d_name);
 					if(file_exists(BASE_DIR . '/modules/' . BANNER_DIR . '/files/' . $d_name)) $d_name = $this->_Zufall() . '__' . $d_name;
 
 					if(@move_uploaded_file($d_tmp, BASE_DIR . '/modules/' . BANNER_DIR . '/files/' . $d_name)) {
@@ -242,9 +251,9 @@ class ModulBanner {
 						echo "<script>alert('" . $config_vars['BANNER_IS_UPLOADED'] . ': ' . $d_name . "');</script>";
 
 						$AVE_DB->Query("
-							UPDATE `" . PREFIX . "_modul_banners`
-							SET `Bannertags` = '" . $d_name . "'
-							WHERE `Id` = '" . $id . "'
+							UPDATE " . PREFIX . "_modul_banners
+							SET Bannertags = '" . $d_name . "'
+							WHERE Id = '" . $id . "'
 						");
 
 						reportLog($_SESSION['user_name'] . ' - заменил изображение баннера на (' . $d_name . ')', 2, 2);
@@ -259,27 +268,27 @@ class ModulBanner {
 			}
 
 			$AVE_DB->Query("
-				UPDATE `" . PREFIX . "_modul_banners`
+				UPDATE " . PREFIX . "_modul_banners
 				SET
-					`Bannername` = '" . $_REQUEST['Bannername'] . "',
-					`BannerUrl`  = '" . $_REQUEST['BannerUrl'] . "',
-					`Gewicht`    = '" . $_REQUEST['Gewicht'] . "',
-					`Views`      = '" . $_REQUEST['Anzeigen'] . "',
-					`Klicks`     = '" . $_REQUEST['Klicks'] . "',
-					`BildAlt`    = '" . $_REQUEST['BildAlt'] . "',
-					`KatId`      = '" . $_REQUEST['KatId'] . "',
-					`MaxKlicks`  = '" . $_REQUEST['MaxKlicks'] . "',
-					`MaxViews`   = '" . $_REQUEST['MaxViews'] . "',
-					`ZStart`     = '" . $_REQUEST['ZStart'] . "',
-					`ZEnde`      = '" . $_REQUEST['ZEnde'] . "',
-					`Aktiv`      = '" . $_REQUEST['Aktiv'] . "',
-					`Target`     = '" . $_REQUEST['Target'] . "',
-					`Width`      = '" . $_REQUEST['Width'] . "',
-					`Height`     = '" . $_REQUEST['Height'] . "'
+					Bannername = '" . $_REQUEST['Bannername'] . "',
+					BannerUrl  = '" . $_REQUEST['BannerUrl'] . "',
+					Gewicht    = '" . $_REQUEST['Gewicht'] . "',
+					Views      = '" . $_REQUEST['Anzeigen'] . "',
+					Klicks     = '" . $_REQUEST['Klicks'] . "',
+					BildAlt    = '" . $_REQUEST['BildAlt'] . "',
+					KatId      = '" . $_REQUEST['KatId'] . "',
+					MaxKlicks  = '" . $_REQUEST['MaxKlicks'] . "',
+					MaxViews   = '" . $_REQUEST['MaxViews'] . "',
+					ZStart     = '" . $_REQUEST['ZStart'] . "',
+					ZEnde      = '" . $_REQUEST['ZEnde'] . "',
+					Aktiv      = '" . $_REQUEST['Aktiv'] . "',
+					Target     = '" . $_REQUEST['Target'] . "',
+					Width      = '" . $_REQUEST['Width'] . "',
+					Height     = '" . $_REQUEST['Height'] . "'
 				WHERE
-					`Id` = '" . $id . "'
+					Id = '" . $id . "'
 			");
-			reportLog($_SESSION['user_name'] . ' - изменил параметры баннера (' . $_REQUEST['Bannername'] . ')', 2, 2);
+			reportLog($_SESSION['user_name'] . ' - изменил параметры баннера (' . stripslashes($_REQUEST['Bannername']) . ')', 2, 2);
 		}
 
 		echo '<script>window.opener.location.reload(); self.close();</script>';
@@ -309,7 +318,7 @@ class ModulBanner {
 
 					if(!empty($_FILES['New']['type'])) {
 						if(in_array($_FILES['New']['type'], $this->_allowed_files)) {
-							$d_name = ereg_replace('([^ ._a-z0-9-])', '_', $d_name);
+							$d_name = preg_replace('/[^ ._a-z0-9-]/', '_', $d_name);
 							if(file_exists(BASE_DIR . '/modules/' . BANNER_DIR . '/files/' . $d_name)) $d_name = $this->_Zufall() . '__' . $d_name;
 
 							if(@move_uploaded_file($d_tmp, BASE_DIR . '/modules/' . BANNER_DIR . '/files/' . $d_name)) {
@@ -327,25 +336,25 @@ class ModulBanner {
 
 					$AVE_DB->Query("
 						INSERT
-						INTO `" . PREFIX . "_modul_banners`
+						INTO " . PREFIX . "_modul_banners
 						SET
-							`KatId`      = '" . $_REQUEST['KatId'] . "',
-							`Bannertags` = '" . $file . "',
-							`BannerUrl`  = '" . $_REQUEST['BannerUrl'] . "',
-							`Gewicht`    = '" . $_REQUEST['Gewicht'] . "',
-							`Bannername` = '" . $_REQUEST['Bannername'] . "',
-							`BildAlt`    = '" . $_REQUEST['BildAlt'] . "',
-							`MaxKlicks`  = '" . $_REQUEST['MaxKlicks'] . "',
-							`MaxViews`   = '" . $_REQUEST['MaxViews'] . "',
-							`ZStart`     = '" . $_REQUEST['ZStart'] . "',
-							`ZEnde`      = '" . $_REQUEST['ZEnde'] . "',
-							`Aktiv`      = '" . $_REQUEST['Aktiv'] . "',
-							`Target`     = '" . $_REQUEST['Target'] . "',
-							`Width`      = '" . $_REQUEST['Width'] . "',
-							`Height`     = '" . $_REQUEST['Height'] . "'
+							KatId      = '" . $_REQUEST['KatId'] . "',
+							Bannertags = '" . $file . "',
+							BannerUrl  = '" . $_REQUEST['BannerUrl'] . "',
+							Gewicht    = '" . $_REQUEST['Gewicht'] . "',
+							Bannername = '" . $_REQUEST['Bannername'] . "',
+							BildAlt    = '" . $_REQUEST['BildAlt'] . "',
+							MaxKlicks  = '" . $_REQUEST['MaxKlicks'] . "',
+							MaxViews   = '" . $_REQUEST['MaxViews'] . "',
+							ZStart     = '" . $_REQUEST['ZStart'] . "',
+							ZEnde      = '" . $_REQUEST['ZEnde'] . "',
+							Aktiv      = '" . $_REQUEST['Aktiv'] . "',
+							Target     = '" . $_REQUEST['Target'] . "',
+							Width      = '" . $_REQUEST['Width'] . "',
+							Height     = '" . $_REQUEST['Height'] . "'
 					");
 
-					reportLog($_SESSION['user_name'] . ' - добавил новый баннер (' . $_REQUEST['Bannername'] . ')', 2, 2);
+					reportLog($_SESSION['user_name'] . ' - добавил новый баннер (' . stripslashes($_REQUEST['Bannername']) . ')', 2, 2);
 				}
 				echo '<script>window.opener.location.reload(); self.close();</script>';
 				break;
@@ -358,7 +367,7 @@ class ModulBanner {
 		switch($_REQUEST['sub']) {
 			case '' :
 				$items = array();
-				$sql = $AVE_DB->Query("SELECT * FROM `" . PREFIX . "_modul_banner_categories`");
+				$sql = $AVE_DB->Query("SELECT * FROM " . PREFIX . "_modul_banner_categories");
 				while($row = $sql->FetchRow()) {
 					array_push($items, $row);
 				}
@@ -372,9 +381,9 @@ class ModulBanner {
 				foreach($_POST['KatName'] as $id => $kateg) {
 					if(!empty($kateg)) {
 						$AVE_DB->Query("
-							UPDATE `" . PREFIX . "_modul_banner_categories`
-							SET `KatName` = '" . $kateg . "'
-							WHERE `Id` = '" . $id . "'
+							UPDATE " . PREFIX . "_modul_banner_categories
+							SET KatName = '" . $kateg . "'
+							WHERE Id = '" . $id . "'
 						");
 					}
 				}
@@ -382,13 +391,13 @@ class ModulBanner {
 				foreach($_POST['del'] as $id => $kateg) {
 					$AVE_DB->Query("
 						DELETE
-						FROM `" . PREFIX . "_modul_banners`
-						WHERE `KatId` = '" . $id . "'
+						FROM " . PREFIX . "_modul_banners
+						WHERE KatId = '" . $id . "'
 					");
 					$AVE_DB->Query("
 						DELETE
-						FROM `" . PREFIX . "_modul_banner_categories`
-						WHERE `Id` = '" . $id . "'
+						FROM " . PREFIX . "_modul_banner_categories
+						WHERE Id = '" . $id . "'
 					");
 
 					reportLog($_SESSION['user_name'] . ' - удалил категорию баннеров (' . $id . ')', 2, 2);
@@ -401,11 +410,11 @@ class ModulBanner {
 				if(!empty($_REQUEST['KatName'])) {
 					$sql = $AVE_DB->Query("
 						INSERT
-						INTO `" . PREFIX . "_modul_banner_categories`
-						SET `KatName` = '" . $_REQUEST['KatName'] . "'
+						INTO " . PREFIX . "_modul_banner_categories
+						SET KatName = '" . $_REQUEST['KatName'] . "'
 					");
 
-					reportLog($_SESSION['user_name'] . ' - добавил новую категорию (' . $_REQUEST['KatName'] . ')', 2, 2);
+					reportLog($_SESSION['user_name'] . ' - добавил новую категорию (' . stripslashes($_REQUEST['KatName']) . ')', 2, 2);
 				}
 
 				header('Location:index.php?do=modules&action=modedit&mod=' . BANNER_DIR . '&moduleaction=kategs&cp=' . SESSION);
@@ -426,7 +435,7 @@ class ModulBanner {
 		global $AVE_DB;
 
 		$kategs = array();
-		$sql = $AVE_DB->Query("SELECT * FROM `" . PREFIX . "_modul_banner_categories`");
+		$sql = $AVE_DB->Query("SELECT * FROM " . PREFIX . "_modul_banner_categories");
 		while($row = $sql->FetchRow()) {
 			array_push($kategs, $row);
 		}

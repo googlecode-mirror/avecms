@@ -7,7 +7,6 @@
 .orders_failed {background-color:#FF0000; width:20px;height:20px; border:1px solid #fff}
 </style>
 {/literal}
-{strip}
 
 <div class="pageHeaderTitle" style="padding-top: 7px;">
 	<div class="h_module">&nbsp;</div>
@@ -33,7 +32,7 @@
 				</td>
 
 				<td width="100" class="second">
-					<input class="mod_shop_inputfields" style="width:170px" name="Query" id="pq" type="text" value="{$smarty.request.Query|stripslashes|escape:html}" />
+					<input class="mod_shop_inputfields" style="width:170px" name="Query" id="pq" type="text" value="{$smarty.request.Query|stripslashes|escape}" />
 				</td>
 
 				<td width="130" class="first">
@@ -41,8 +40,8 @@
 				</td>
 
 				<td class="second">
-					<input class="mod_shop_inputfields" style="width:70px" type="text" name="price_start" value="{$smarty.post.price_start|stripslashes|escape:html|default:'1,00'}" />
-					<input class="mod_shop_inputfields" style="width:70px" type="text" name="price_end" value="{$smarty.post.price_end|stripslashes|escape:html|default:'4000,00'}" />
+					<input class="mod_shop_inputfields" style="width:70px" type="text" name="price_start" value="{$smarty.post.price_start|stripslashes|escape|default:'1,00'}" />
+					<input class="mod_shop_inputfields" style="width:70px" type="text" name="price_end" value="{$smarty.post.price_end|stripslashes|escape|default:'4000,00'}" />
 				</td>
 			</tr>
 
@@ -161,7 +160,7 @@
 				</td>
 				<td width="1%" nowrap="nowrap">{$i.Id}</td>
 				<td width="5%">
-					<a {if $i.ArtikelS}title="{#ProductOrdersSInf#} :: {$i.ArtikelS|escape:html}"{/if} href="#">{$i.TransId}</a>
+					<a {if $i.ArtikelS}title="{#ProductOrdersSInf#} :: {$i.ArtikelS|escape}"{/if} href="#">{$i.TransId}</a>
 					<br />
 					{$i.ArtikelSVars}
 				</td>
@@ -193,7 +192,7 @@
 					</a>
 				</td>
 				<td>
-					<a title="{#DownloadsForUser#}" href="javascript:void(0);" onclick="window.open('index.php?do=modules&action=modedit&mod=shop&moduleaction=shop_downloads&cp={$sess}&Id={$i.Id}&pop=1&User={$i.UserId}&N={$i.N}','sd','top=0,left=0,height=600,width=970,scrollbars=1');">
+					<a title="{#DownloadsForUser#}" href="javascript:void(0);" onclick="window.open('index.php?do=modules&action=modedit&mod=shop&moduleaction=shop_downloads&cp={$sess}&Id={$i.Id}&pop=1&User={$i.UserId}&N={$i.N|urlencode}','sd','top=0,left=0,height=600,width=970,scrollbars=1');">
 						<img hspace="2" src="{$tpl_dir}/images/icon_esd_download.gif" alt="{#ProductVarsEdit#}" border="0" />
 					</a>
 				</td>
@@ -242,5 +241,3 @@
 		</td>
 	</tr>
 </table>
-
-{/strip}

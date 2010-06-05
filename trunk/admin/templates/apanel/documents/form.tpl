@@ -1,7 +1,3 @@
-
-<!-- form.tpl -->
-{strip}
-
 <script type="text/javascript">
 {*
 function insertHTML(ed, code) {ldelim}
@@ -30,8 +26,12 @@ $(document).ready(function(){ldelim}
 			beforeSend: function(){ldelim}
 				$("#checkResult").html('');
 				{rdelim},
-			url: 'index.php?do=docs&action=checkurl&cp={$sess}&id={$document->Id}',
+			url: 'index.php',
 			data: ({ldelim}
+				action: 'checkurl',
+				do: 'docs',
+				cp: '{$sess}',
+				id: '{$document->Id}',
 				alias: $("#Url").val()
 				{rdelim}),
 			timeout:3000,
@@ -46,10 +46,14 @@ $(document).ready(function(){ldelim}
 			beforeSend: function(){ldelim}
 				$("#checkResult").html('');
 				{rdelim},
-			url:'index.php?do=docs&action=translit&prefix={$document->rubric_url_prefix}&cp={$sess}',
+			url:'index.php',
 			data: ({ldelim}
+				action: 'translit',
+				do: 'docs',
+				cp: '{$sess}',
 				alias: $("#Url").val(),
-				title: $("#Titel").val()
+				title: $("#Titel").val(),
+				prefix: '{$document->rubric_url_prefix}',
 				{rdelim}),
 			timeout:3000,
 			success: function(data){ldelim}
@@ -111,7 +115,7 @@ $(document).ready(function(){ldelim}
 				<h4>{#DOC_QUERIES#}</h4>
 				<div style="width:99%;overflow:auto;height:365px">
 					{foreach from=$conditions item=cond}
-						<input type="text" readonly="" style="width:140px" class="query" value="[cprequest:{$cond->Id}]"> <a onClick="cp_pop('index.php?do=queries&action=edit&Id={$cond->Id}&RubrikId={$cond->RubrikId}&pop=1&cp={$sess}','750','600','1','cond')" title="{$cond->Beschreibung|default:'#DOC_QUERY_NOT_INFO#'|escape|stripslashes}" href="javascript:void(0);">{$cond->Titel|escape}</a><br />
+						<input type="text" readonly="" style="width:140px" class="query" value="[cprequest:{$cond->Id}]"> <a onClick="cp_pop('index.php?do=request&action=edit&Id={$cond->Id}&RubrikId={$cond->RubrikId}&pop=1&cp={$sess}','750','600','1','cond')" title="{$cond->Beschreibung|default:'#DOC_REQUEST_NOT_INFO#'|escape|stripslashes}" href="javascript:void(0);">{$cond->Titel|escape}</a><br />
 					{/foreach}
 				</div>
 			</td>
@@ -247,6 +251,3 @@ $(document).ready(function(){ldelim}
 		<input type="submit" class="button" value="{#DOC_BUTTON_ADD_DOCUMENT#}" />
 	{/if}
 </form>
-
-{/strip}
-<!-- /form.tpl -->

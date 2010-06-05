@@ -1,4 +1,3 @@
-<!-- shop_billing.tpl -->
 <div class="grid_12">
 	<div id="shopcontent">
 		<div class="mod_shop_topnav">
@@ -37,46 +36,46 @@
 
 							<tr>
 								<td valign="middle" nowrap="nowrap" class="mod_shop_basket_row">{#SSCompany#}</td>
-								<td class="mod_shop_basket_row_right"><input name="billing_company" type="text" class="mod_shop_inputfields" style="width:130px" value="{if $smarty.session.billing_company}{$smarty.session.billing_company|escape}{else}{$row->Firma|escape}{/if}" maxlength="75" /></td>
+								<td class="mod_shop_basket_row_right"><input name="billing_company" type="text" class="mod_shop_inputfields" style="width:130px" value="{$smarty.session.billing_company|default:$row->Firma|escape}" maxlength="75" /></td>
 							</tr>
 							<tr>
 								<td valign="middle" nowrap="nowrap" class="mod_shop_basket_row">{#SSSect#}</td>
-								<td class="mod_shop_basket_row_right"><input name="billing_company_reciever" type="text" class="mod_shop_inputfields" style="width:130px" value="{if $smarty.session.billing_company_reciever}{$smarty.session.billing_company_reciever|escape}{/if}" maxlength="35" /></td>
+								<td class="mod_shop_basket_row_right"><input name="billing_company_reciever" type="text" class="mod_shop_inputfields" style="width:130px" value="{$smarty.session.billing_company_reciever|escape|default:''}" maxlength="35" /></td>
 							</tr>
 							<tr>
 								<td valign="middle" nowrap="nowrap" class="mod_shop_basket_row">{#SSFirst#}</td>
-								<td class="mod_shop_basket_row_right"><input name="billing_firstname" type="text" class="mod_shop_inputfields" style="width:130px" value="{if $smarty.session.billing_firstname != ''}{$smarty.session.billing_firstname|stripslashes}{else}{$row->Vorname}{/if}" maxlength="35" /></td>
+								<td class="mod_shop_basket_row_right"><input name="billing_firstname" type="text" class="mod_shop_inputfields" style="width:130px" value="{$smarty.session.billing_firstname|default:$row->Vorname|escape}" maxlength="35" /></td>
 							</tr>
 							<tr>
 								<td valign="middle" nowrap="nowrap" class="mod_shop_basket_row">{#SSLAst#}</td>
-								<td class="mod_shop_basket_row_right"><input name="billing_lastname" type="text" class="mod_shop_inputfields" style="width:130px" value="{if $smarty.session.billing_lastname != ''}{$smarty.session.billing_lastname|stripslashes}{else}{$row->Nachname}{/if}" maxlength="35" /></td>
+								<td class="mod_shop_basket_row_right"><input name="billing_lastname" type="text" class="mod_shop_inputfields" style="width:130px" value="{$smarty.session.billing_lastname|default:$row->Nachname|escape}" maxlength="35" /></td>
 							</tr>
 							<tr>
 								<td valign="middle" nowrap="nowrap" class="mod_shop_basket_row">{#SSStreet#}/{#SSHnr#}</td>
 								<td class="mod_shop_basket_row_right">
-									<input name="billing_street" type="text" class="mod_shop_inputfields" style="width:130px" value="{if $smarty.session.billing_street != ''}{$smarty.session.billing_street|stripslashes}{else}{$row->Strasse}{/if}" maxlength="35" />
-									<input name="billing_streetnumber" type="text" class="mod_shop_inputfields" style="width:40px" value="{if $smarty.session.billing_streetnumber != ''}{$smarty.session.billing_streetnumber|stripslashes}{else}{$row->HausNr}{/if}" maxlength="10" />
+									<input name="billing_street" type="text" class="mod_shop_inputfields" style="width:130px" value="{$smarty.session.billing_street|default:$row->Strasse|escape}" maxlength="35" />
+									<input name="billing_streetnumber" type="text" class="mod_shop_inputfields" style="width:40px" value="{$smarty.session.billing_streetnumber|default:$row->HausNr|escape}" maxlength="10" />
 								</td>
 							</tr>
 							<tr>
 								<td valign="middle" nowrap="nowrap" class="mod_shop_basket_row">{#SSZip#}/{#SSTown#}</td>
 								<td class="mod_shop_basket_row_right">
-									<input name="billing_zip" type="text" class="mod_shop_inputfields" style="width:40px" value="{if $smarty.session.billing_zip != ''}{$smarty.session.billing_zip|stripslashes}{else}{$row->Postleitzahl}{/if}" maxlength="15" />
-									<input name="billing_town" type="text" class="mod_shop_inputfields" style="width:130px" value="{if $smarty.session.billing_town != ''}{$smarty.session.billing_town|stripslashes}{else}{$row->city}{/if}" maxlength="25" />
+									<input name="billing_zip" type="text" class="mod_shop_inputfields" style="width:40px" value="{$smarty.session.billing_zip|default:$row->Postleitzahl|escape}" maxlength="15" />
+									<input name="billing_town" type="text" class="mod_shop_inputfields" style="width:130px" value="{$smarty.session.billing_town|default:$row->city|escape}" maxlength="25" />
 								</td>
 							</tr>
 							<tr>
 								<td valign="middle" nowrap="nowrap" class="mod_shop_basket_row">{#SSEmail#}</td>
-								<td class="mod_shop_basket_row_right"><input name="OrderEmail" type="text" class="mod_shop_inputfields" style="width:130px" value="{if $smarty.session.OrderEmail != ''}{$smarty.session.OrderEmail|stripslashes}{else}{$row->Email}{/if}" maxlength="35" /></td>
+								<td class="mod_shop_basket_row_right"><input name="OrderEmail" type="text" class="mod_shop_inputfields" style="width:130px" value="{$smarty.session.OrderEmail|default:$row->Email|escape}" maxlength="35" /></td>
 							</tr>
 							<tr>
 								<td valign="middle" nowrap="nowrap" class="mod_shop_basket_row">{#SSPhone#}</td>
-								<td class="mod_shop_basket_row_right"><input name="OrderPhone" type="text" class="mod_shop_inputfields" style="width:130px" value="{if $smarty.session.OrderPhone != ''}{$smarty.session.OrderPhone|stripslashes}{else}{$row->Telefon}{/if}" maxlength="35" /></td>
+								<td class="mod_shop_basket_row_right"><input name="OrderPhone" type="text" class="mod_shop_inputfields" style="width:130px" value="{$smarty.session.OrderPhone|default:$row->Telefon|escape}" maxlength="35" /></td>
 							</tr>
 							<tr>
 								<td valign="middle" nowrap="nowrap" class="mod_shop_basket_row">{#SSCountry#}</td>
 								<td class="mod_shop_basket_row_right">
-								{assign var=sl value=$smarty.request.Land|default:''|upper}
+								{assign var=sl value=$smarty.request.Land|upper|default:''}
 								<select name="Land" id="l_land" style="width:180px" class="mod_shop_inputfields" onchange="document.process.submit();">
 									<option value="">Выберите страну </option>
 									{foreach from=$available_countries item=land}
@@ -88,7 +87,7 @@
 								</td>
 							</tr>
 						</table>
-                    
+
 </div>
 <div class="grid_6 omega">
 
@@ -101,38 +100,38 @@
       </thead>
 							<tr>
 								<td valign="middle" nowrap="nowrap" class="mod_shop_basket_row">{#SSCompany#}</td>
-								<td class="mod_shop_basket_row_right"><input class="mod_shop_inputfields" name="shipping_company" type="text" style="width:130px" value="{if $smarty.session.shipping_company != ''}{$smarty.session.shipping_company|escape}{else}{$row->company|escape}{/if}" /></td>
+								<td class="mod_shop_basket_row_right"><input class="mod_shop_inputfields" name="shipping_company" type="text" style="width:130px" value="{$smarty.session.shipping_company|escape|default:''}" /></td>
 							</tr>
 							<tr>
 								<td valign="middle" nowrap="nowrap" class="mod_shop_basket_row">{#SSSect#}</td>
-								<td class="mod_shop_basket_row_right"><input class="mod_shop_inputfields" name="shipping_company_reciever" type="text" style="width:130px" value="{if $smarty.session.shipping_company_reciever != ''}{$smarty.session.shipping_company_reciever|escape}{/if}" /></td>
+								<td class="mod_shop_basket_row_right"><input class="mod_shop_inputfields" name="shipping_company_reciever" type="text" style="width:130px" value="{$smarty.session.shipping_company_reciever|escape|default:''}" /></td>
 							</tr>
 							<tr>
 								<td valign="middle" nowrap="nowrap" class="mod_shop_basket_row">{#SSFirst#}</td>
-								<td class="mod_shop_basket_row_right"><input class="mod_shop_inputfields" name="shipping_firstname" type="text" style="width:130px" value="{if $smarty.session.shipping_firstname != ''}{$smarty.session.shipping_firstname|stripslashes}{else}{$row->name}{/if}" /></td>
+								<td class="mod_shop_basket_row_right"><input class="mod_shop_inputfields" name="shipping_firstname" type="text" style="width:130px" value="{$smarty.session.shipping_firstname|escape|default:''}" /></td>
 							</tr>
 							<tr>
 								<td valign="middle" nowrap="nowrap" class="mod_shop_basket_row">{#SSLAst#}</td>
-								<td class="mod_shop_basket_row_right"><input class="mod_shop_inputfields" name="shipping_lastname" type="text" style="width:130px" value="{if $smarty.session.shipping_lastname != ''}{$smarty.session.shipping_lastname|stripslashes}{else}{$row->lastname}{/if}" /></td>
+								<td class="mod_shop_basket_row_right"><input class="mod_shop_inputfields" name="shipping_lastname" type="text" style="width:130px" value="{$smarty.session.shipping_lastname|escape|default:''}" /></td>
 							</tr>
 							<tr>
 								<td valign="middle" nowrap="nowrap" class="mod_shop_basket_row">{#SSStreet#}/{#SSHnr#}</td>
 								<td class="mod_shop_basket_row_right">
-									<input class="mod_shop_inputfields" name="shipping_street" type="text" style="width:130px" value="{if $smarty.session.shipping_street != ''}{$smarty.session.shipping_street|stripslashes}{else}{$row->street}{/if}" />
-									<input class="mod_shop_inputfields" name="shipping_streetnumber" type="text" style="width:40px" value="{if $smarty.session.shipping_streetnumber != ''}{$smarty.session.shipping_streetnumber|stripslashes}{/if}" />
+									<input class="mod_shop_inputfields" name="shipping_street" type="text" style="width:130px" value="{$smarty.session.shipping_street|escape|default:''}" />
+									<input class="mod_shop_inputfields" name="shipping_streetnumber" type="text" style="width:40px" value="{$smarty.session.shipping_streetnumber|escape|default:''}" />
 								</td>
 							</tr>
 							<tr>
 								<td valign="middle" nowrap="nowrap" class="mod_shop_basket_row">{#SSZip#}/{#SSTown#}</td>
 								<td class="mod_shop_basket_row_right">
-									<input class="mod_shop_inputfields" name="shipping_zip" type="text" style="width:40px" value="{if $smarty.session.shipping_zip != ''}{$smarty.session.shipping_zip|stripslashes}{else}{$row->zip}{/if}" />
-									<input class="mod_shop_inputfields" name="shipping_city" type="text" style="width:130px" value="{if $smarty.session.shipping_city != ''}{$smarty.session.shipping_city|stripslashes}{else}{$row->user_from}{/if}" />
+									<input class="mod_shop_inputfields" name="shipping_zip" type="text" style="width:40px" value="{$smarty.session.shipping_zip|escape|default:''}" />
+									<input class="mod_shop_inputfields" name="shipping_city" type="text" style="width:130px" value="{$smarty.session.shipping_city|escape|default:''}" />
 								</td>
 							</tr>
 							<tr>
 								<td valign="middle" nowrap="nowrap" class="mod_shop_basket_row">{#SBCountry#}</td>
 								<td class="mod_shop_basket_row_right">
-									{assign var=Rsl value=$smarty.request.RLand|default:''|upper}
+									{assign var=Rsl value=$smarty.request.RLand|upper|default:''}
 									<select name="RLand" id="ll_land" class="mod_shop_inputfields" style="width:180px">
 										<option value="">Выберите страну </option>
 										{foreach from=$available_countries item=land}
@@ -167,8 +166,8 @@
 						<tr>
 							<td><input class="absmiddle" style="cursor:pointer" onclick="document.process.submit();" type="radio" name="ShipperId[]" value="{$ss->Id}" {if $smarty.session.ShipperId==$ss->Id}checked{/if}></td>
 							<td><strong>{$ss->Name}</strong></td>
-							<td>{if $smarty.request.ShippingSumm=='0' || $ss->cost=='0.00'}{#Free#}{else}{numFormat val=$ss->cost} {$Currency}{if $ss->is_pauschal==1} {#Pauschal#}{/if}{/if}</td>
-							<td><a class="tooltip" title="{$ss->Beschreibung|stripslashes}" href="javascript:void(0);">{#OpenDescWindow#}</a></td>
+							<td>{if $smarty.request.ShippingSumm=='0' || $ss->cost=='0.00'}{#Free#}{else}{num_format val=$ss->cost} {$Currency}{if $ss->is_pauschal==1} {#Pauschal#}{/if}{/if}</td>
+							<td><a class="tooltip" title="{$ss->Beschreibung|escape}" href="javascript:void(0);">{#OpenDescWindow#}</a></td>
 						</tr>
 					{/foreach}
 
@@ -192,7 +191,7 @@
         <tr>
           <th colspan="4" class="table-head">{#InfoSelPayMethod#}</th>
         </tr>
-      
+
 				{if !$PaymentMethods}
 					{assign var=NoVa value=1}
 					<tr>
@@ -216,8 +215,8 @@
 									{if $smarty.session.PaymentId==$ss->Id}{assign var=FormSend value=1}{/if}
 									<input class="absmiddle" style="cursor:pointer" onclick="document.process.submit();" type="radio" name="PaymentId[]" value="{$ss->Id}" {if $smarty.session.PaymentId==$ss->Id}checked{/if}>
 								</td>
-								<td class="mod_shop_basket_row"><strong>{$ss->Name|stripslashes}</strong></td>
-								<td class="mod_shop_basket_row">{if $ss->Kosten=='0.00'}{#Free#}{else}{numFormat val=$ss->Kosten} {if $ss->KostenOperant=='%'}%{else}{$Currency}{/if}{/if}</td>
+								<td class="mod_shop_basket_row"><strong>{$ss->Name|escape}</strong></td>
+								<td class="mod_shop_basket_row">{if $ss->Kosten=='0.00'}{#Free#}{else}{num_format val=$ss->Kosten} {if $ss->KostenOperant=='%'}%{else}{$Currency}{/if}{/if}</td>
 								<td class="mod_shop_basket_row">
 									<a href="javascript:void(0);"onclick="popup('index.php?module=shop&action=PaymentInfo&pop=1&theme_folder={$theme_folder}&payid={$ss->Id}','comment','500','400','1')">{#OpenDescWindow#}</a>
 								</td>
@@ -265,13 +264,13 @@
       <h2> <a href="#" id="toggle-login-forms">Авторизация</a> </h2>
       <div class="block" id="login-forms">{$UserPanel}</div>
     </div>
-    
+
   <!-- Блок поиска по магазину -->
     <div class="box">
       <h2><a href="#" id="toggle-shop-search">Поиск товаров</a></h2>
       <div class="block" id="shop-search">{$Search}</div>
     </div>
-    
+
   <!-- Блок корзины -->
     <div class="box">
       <h2><a href="#" id="toggle-shopbasket">Корзина</a></h2>
@@ -291,4 +290,3 @@
     </div>
 </div>
 {/if}
-<!-- /shop_billing.tpl -->

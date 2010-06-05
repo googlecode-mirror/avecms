@@ -27,7 +27,7 @@
  	$pay_amount = @$_REQUEST['LMI_PAYMENT_AMOUNT'];
   $pay_fileid = @$_REQUEST['pay_fileid'];
 	$pay_userid = @$_REQUEST['pay_userid'];
-	$pay_date=pretty_date(strftime(DATE_FORMAT), DEFAULT_LANGUAGE);
+	$pay_date=pretty_date(strftime(DATE_FORMAT), $_SESSION['user_language']);
 	$pay_userIP = @$_REQUEST['pay_userIP'];
 
 	if (!strlen($pay_userid)) $pay_userid="0";

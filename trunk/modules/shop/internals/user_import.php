@@ -136,7 +136,7 @@ if (!empty($_REQUEST['sub']))
 			// ========================================================
 			// Nach temporärere Datei suchen...
 			// ========================================================
-			$fileid = ereg_replace('([^0-9a-zA-Z]*)', '', $_REQUEST['fileid']);
+			$fileid = preg_replace('/[^0-9a-zA-Z]*/', '', $_REQUEST['fileid']);
 			if (!file_exists($TempDir . '/CSVIMPORT_user_' . $_SESSION['user_id'] . '_'.$fileid.'.txt'))
 			{
 				$AVE_Template->assign('error', $GLOBALS['config_vars']['ImportNotReadable']);

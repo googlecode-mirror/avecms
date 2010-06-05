@@ -1,37 +1,32 @@
-<!-- form.tpl -->
-{strip}
-
 {if $no_access}
 	<p>{$TextKeinZugriff}</p>
 {else}
 
-{literal}
 <script language="javascript" type="text/javascript">
-function checkForm(obj, elems) {
+function checkForm(obj, elems) {ldelim}
 	var element, pattern;
-	for (var i = 0; i < obj.elements.length; i++) {
+	for (var i = 0; i < obj.elements.length; i++) {ldelim}
 		element = obj.elements[i];
 		if (elems != undefined)
-		if (elems.join().indexOf(element.type) < 0) continue;
+			if (elems.join().indexOf(element.type) < 0) continue;
 		if (!element.getAttribute("check_message")) continue;
-		if (pattern = element.getAttribute("check_pattern")) {
+		if (pattern = element.getAttribute("check_pattern")) {ldelim}
 			pattern = new RegExp(pattern, "g");
-			if (!pattern.test(element.value)) {
+			if (!pattern.test(element.value)) {ldelim}
 				alert(element.getAttribute("check_message"));
 				element.focus();
 				return false;
-			}
-		}
-		else if (/^\s*$/.test(element.value)) {
+			{rdelim}
+		{rdelim}
+		else if (/^\s*$/.test(element.value)) {ldelim}
 			alert(element.getAttribute("check_message"));
 			element.focus();
 			return false;
-		}
-	}
+		{rdelim}
+	{rdelim}
 	return true;
-}
+{rdelim}
 </script>
-{/literal}
 
 <div id="module_content">
 	{#CONTACT_REQUIRED_INFO#}<br />
@@ -43,7 +38,7 @@ function checkForm(obj, elems) {
 		{/if}
 
 		<div class="mod_contact_left"><label for="in_email">{#CONTACT_FORM_EMAIL#} <span class="mod_contact_left_star">*</span></label></div>
-		<div class="mod_contact_right"><input type="text" value="{$smarty.request.in_email|default:$smarty.session.user_email|stripslashes|escape:html}" name="in_email" id="in_email" style="width:215px;" {literal}check_pattern="^[\w-]+(\.[\w-]+)*@([\w-]+\.)+[a-zA-Z]{2,7}$"{/literal} check_message="{#CONTACT_CHECK_EMAIL#}" /></div>
+		<div class="mod_contact_right"><input type="text" value="{$smarty.request.in_email|default:$smarty.session.user_email|stripslashes|escape}" name="in_email" id="in_email" style="width:215px;" {literal}check_pattern="^[\w-]+(\.[\w-]+)*@([\w-]+\.)+[a-zA-Z]{2,7}$"{/literal} check_message="{#CONTACT_CHECK_EMAIL#}" /></div>
 
 		{if $receiver}
 			<div class="mod_contact_left">{#CONTACT_FORM_RECIVER#}</div>
@@ -61,7 +56,7 @@ function checkForm(obj, elems) {
             <input type="hidden" value="{$default_subject}" id="in_subject" name="in_subject" />
         {else}
 			<div class="mod_contact_left"><label for="in_subject">{#CONTACT_FORM_SUBJECT#} <span class="mod_contact_left_star">*</span></label></div>
-			<div class="mod_contact_right"><input type="text" value="{$smarty.request.in_subject|stripslashes|escape:html}" name="in_subject" id="in_subject" style="width:95%;" check_message="{#CONTACT_CHECK_TITLE#}" /></div>
+			<div class="mod_contact_right"><input type="text" value="{$smarty.request.in_subject|stripslashes|escape}" name="in_subject" id="in_subject" style="width:95%;" check_message="{#CONTACT_CHECK_TITLE#}" /></div>
 		{/if}
 
 		{foreach from=$fields item=field}
@@ -69,9 +64,9 @@ function checkForm(obj, elems) {
 				<div class="clear"></div>
 			{/if}
 
-			<div class="mod_contact_field" style="float:left; width:{$field->field_size}px;">
+			<div class="mod_contact_field" style="float:left; width:{$field->field_size|default:'300'}px;">
 				<div class="mod_contact_left">
-					<label for="cp_{$field->Id}">{$field->field_title|stripslashes|escape:html}: {if $field->field_required == '1'}<span class="mod_contact_left_star">*</span>{/if}</label>
+					<label for="cp_{$field->Id}">{$field->field_title|escape}: {if $field->field_required == '1'}<span class="mod_contact_left_star">*</span>{/if}</label>
 					{if $field->field_type == 'fileupload' && $maxupload >= 1}
 						<br /><small>{#CONTACT_FORM_MAX_FILE#} {$maxupload} {#CONTACT_FILE_KB#}</small>
 					{/if}
@@ -79,16 +74,16 @@ function checkForm(obj, elems) {
 
 				<div class="mod_contact_right">
 					{if $field->field_type == 'textfield'}
-						<textarea style="width:95%;height:100px;" name="{$field->field_title|replace:' ':'_'}" id="cp_{$field->Id}"{if !empty($field->field_pattern)} check_pattern="{$field->field_pattern}"{/if}{if !empty($field->field_pattern) || $field->field_required == 1} check_message="{$field->field_message|stripslashes|escape:html}"{/if}>{$field->value|stripslashes|escape:html}</textarea>
+						<textarea style="width:95%;height:100px;" name="{$field->field_title|escape|replace:' ':'_'}" id="cp_{$field->Id}"{if !empty($field->field_pattern)} check_pattern="{$field->field_pattern}"{/if}{if !empty($field->field_pattern) || $field->field_required == 1} check_message="{$field->field_message|escape}"{/if}>{$field->value|escape}</textarea>
 					{elseif $field->field_type == 'text'}
-						<input style="width:95%;" type="text" name="{$field->field_title|replace:' ':'_'}" id="cp_{$field->Id}" value="{$field->value|default:$field->field_default|stripslashes|escape:html}"{if !empty($field->field_pattern)} check_pattern="{$field->field_pattern}"{/if}{if !empty($field->field_pattern) || $field->field_required == 1} check_message="{$field->field_message|stripslashes|escape:html}"{/if} />
+						<input style="width:95%;" type="text" name="{$field->field_title|escape|replace:' ':'_'}" id="cp_{$field->Id}" value="{$field->value|default:$field->field_default|escape}"{if !empty($field->field_pattern)} check_pattern="{$field->field_pattern}"{/if}{if !empty($field->field_pattern) || $field->field_required == 1} check_message="{$field->field_message|escape}"{/if} />
 					{elseif $field->field_type == 'checkbox'}
-						<input style="border:0px;background-color:transparent;" type="checkbox" name="{$field->field_title|replace:' ':'_'}" id="cp_{$field->Id}" value="{$field->field_default|default:1}"{if $field->field_required == 1} check_message="{$field->field_message|stripslashes|escape:html}"{/if} />
-						&nbsp;{$field->field_default}
+						<input style="border:0px;background-color:transparent;" type="checkbox" name="{$field->field_title|escape|replace:' ':'_'}" id="cp_{$field->Id}" value="{$field->field_default|escape|default:'1'}"{if $field->field_required == 1} check_message="{$field->field_message|escape}"{/if} />
+						&nbsp;{$field->field_default|escape}
 					{elseif $field->field_type == 'fileupload'}
-						<input name="upfile[]" type="file" size="20"{if $field->field_required == 1} check_message="{$field->field_message|stripslashes|escape:html}"{/if} />
+						<input name="upfile[]" type="file" size="20"{if $field->field_required == 1} check_message="{$field->field_message|escape}"{/if} />
 					{elseif $field->field_type == 'dropdown'}
-						<select style="width:95%;" id="cp_{$field->Id}" name="{$field->field_title|replace:' ':'_'}"{if $field->field_required == 1} check_message="{$field->field_message|stripslashes|escape:html}"{/if}>
+						<select style="width:95%;" id="cp_{$field->Id}" name="{$field->field_title|escape|replace:' ':'_'}"{if $field->field_required == 1} check_message="{$field->field_message|escape}"{/if}>
 							<option></option>
 							{foreach from=$field->field_default item=v}
 								<option value="{$v}"{if $v == $field->value} selected{/if}>{$v}</option>
@@ -108,7 +103,7 @@ function checkForm(obj, elems) {
 
 		{if $im}
             <div class="mod_contact_left"><label>{#CONTACT_FORM_CODE#}</label></div>
-			<div class="mod_contact_right"><img src="{$BASE_PATH}inc/captcha.php" alt="" width="120" height="60" border="0" /></div>
+			<div class="mod_contact_right" id="captcha"><img src="{$ABS_PATH}inc/captcha.php" alt="" width="120" height="60" border="0" /></div>
 
 			<div class="mod_contact_left"><label for="securecode">{#CONTACT_FORM_CODE_ENTER#}</label></div>
 			<div class="mod_contact_right"><input name="securecode" type="text" id="securecode" style="width:120px" maxlength="10" check_message="{#CONTACT_CHECK_CODE#}" /></div>
@@ -129,6 +124,3 @@ function checkForm(obj, elems) {
 	</form>
 </div>
 {/if}
-
-{/strip}
-<!-- /form.tpl -->

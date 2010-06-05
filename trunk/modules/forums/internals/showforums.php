@@ -158,81 +158,87 @@ if(!defined("SHOWFORUMS")) exit;
 							$q_tcount_extra .= " AND opened = 1 ";
 						}
 
-						$r_tcount        = $this->getNumberOfThreadsQuery($forum["id"]);
+//						$r_tcount        = $this->getNumberOfThreadsQuery($forum["id"]);
+
+//						$forumIds = $this->getForumIds($forumId);
+
+						$r_tcount = $GLOBALS['AVE_DB']->Query("
+							SELECT id
+							FROM " . PREFIX . "_modul_forum_topic
+							WHERE (forum_id = '" . implode("' OR forum_id = '", $this->getForumIds($forum["id"])) . "')
+							" . $q_tcount_extra . "
+							" . $show_only_own_topics . "
+						");
+
 						$forum['tcount'] = $r_tcount->NumRows();
 						$forum['tcount'] = $this->num_format($forum['tcount']);
 
-						$ids        = "";
+//						$ids        = "";
 						$Topic_IDs  = array();
 
 						while ($tid = $r_tcount->FetchRow())
 						{
 							$Topic_IDs[] = $tid->id;
-							if ($ids == "") {
-								$ids .= $tid->id;
-							} else {
-								$ids .= " OR topic_id = " . $tid->id;
-							}
+//							if ($ids == "") {
+//								$ids .= $tid->id;
+//							} else {
+//								$ids .= " OR topic_id = " . $tid->id;
+//							}
 						}
 
-						$SQL_IN_TopicIds = ' IN('.implode(',', $Topic_IDs).') ';
+//						$SQL_IN_TopicIds = ' IN('.implode(',', $Topic_IDs).') ';
 						$last_post = "";
 
-						if (!empty($ids))
+//						if (!empty($ids))
+						if (!empty($Topic_IDs))
 						{
-							$q_pcount = "SELECT COUNT(*) AS PostCount
-								FROM ".PREFIX."_modul_forum_post
-								WHERE topic_id $SQL_IN_TopicIds
-							";
-
-							$r_pcount   = $GLOBALS['AVE_DB']->Query($q_pcount);
-							$pcount     = $r_pcount->FetchRow();
-							$pcount     = $this->num_format($pcount->PostCount);
+							$pcount = $GLOBALS['AVE_DB']->Query("
+								SELECT COUNT(*)
+								FROM " . PREFIX . "_modul_forum_post
+								WHERE topic_id IN(" . implode(',', $Topic_IDs) . ")
+							")->GetCell();
+							$pcount = $this->num_format($pcount);
 
 							//=======================================================
 							// letzter beitrag
 							//=======================================================
-							$q_last_post = "SELECT DISTINCT
-									Post.id,
-									Post.uid,
-									Post.topic_id,
-									Post.datum,
-									Topic.title,
-									Usr.Registriert
-
-								FROM ".PREFIX."_modul_forum_forum AS Forum
-
-									INNER JOIN ".PREFIX."_modul_forum_post AS Post
-										ON  Forum.last_post_id = Post.id
-										AND Forum.id = ".$forum['id']."
-
-									INNER JOIN ".PREFIX."_modul_forum_topic AS Topic
-										ON  Post.topic_id = Topic.id
-
-									INNER JOIN ".PREFIX."_modul_forum_userprofile AS Usr
-										ON  Usr.BenutzerId = Post.uid
-
-								LIMIT 0, 1
-							";
-
 							$last_post = $this->getLastForumPost($forum["id"]);
 							if (!$last_post)
 							{
-								$r_last_post = $GLOBALS['AVE_DB']->Query($q_last_post);
-								$last_post = $r_last_post->FetchRow();
+								$last_post = $GLOBALS['AVE_DB']->Query("
+									SELECT
+										DISTINCT p.id,
+										p.uid,
+										p.topic_id,
+										p.datum,
+										t.title,
+										u.Registriert
 
+									FROM
+										" . PREFIX . "_modul_forum_forum AS Forum
+									INNER JOIN
+										" . PREFIX . "_modul_forum_post AS p
+											ON  Forum.last_post_id = p.id
+											AND Forum.id = ".$forum['id']."
+									INNER JOIN
+										" . PREFIX . "_modul_forum_topic AS t
+											ON  p.topic_id = t.id
+									INNER JOIN
+										" . PREFIX . "_modul_forum_userprofile AS u
+											ON  u.BenutzerId = p.uid
+									LIMIT 1
+								")->FetchRow();
 							}
 							// Ende
 							$last_post->LastPoster = $this->fetchusername($last_post->uid);
 
-							$query = "SELECT COUNT(id) AS replies
+							$replies = $GLOBALS['AVE_DB']->Query("
+								SELECT COUNT(*)
 								FROM " . PREFIX . "_modul_forum_post
 								WHERE topic_id = '" . $last_post->topic_id . "'
-							";
-							$result = $GLOBALS['AVE_DB']->Query($query);
-							$topic = $result->FetchRow();
+							")->GetCell();
 
-							$last_post->page = $this->getPageNum($topic->replies, 15);
+							$last_post->page = $this->getPageNum($replies, 15);
 
 							$forum['last_post'] = $last_post;
 						}
@@ -256,9 +262,11 @@ if(!defined("SHOWFORUMS")) exit;
 						//=======================================================
 						// alle unterkategorien
 						//=======================================================
-						$subcat_query = "SELECT id FROM " . PREFIX . "_modul_forum_category WHERE parent_id = '$forum[id]'";
-						$subcategories = $GLOBALS['AVE_DB']->Query($subcat_query);
-
+						$subcategories = $GLOBALS['AVE_DB']->Query("/*1*/
+							SELECT id
+							FROM " . PREFIX . "_modul_forum_category
+							WHERE parent_id = '" . $forum['id'] . "'
+						");
 
 						//=======================================================
 						// array fuer die subforen
@@ -270,54 +278,50 @@ if(!defined("SHOWFORUMS")) exit;
 						//=======================================================
 						while ($subcategory = $subcategories->FetchRow())
 						{
-
 							//=======================================================
 							// alle foren zu der unterkategorie
 							// FIND_IN_SET('" . UGROUP . "', group_id) AS group_found,
 							//=======================================================
-							$subforums_query = "SELECT
+							$subforums_result = $GLOBALS['AVE_DB']->Query("/*2*/
+								SELECT
 									group_id,
 									id,
 									title
 								FROM " . PREFIX . "_modul_forum_forum
 								WHERE category_id = '" . $subcategory->id . "'
-								AND active = 1
+								AND active = '1'
 								ORDER BY position ASC
-							";
-
-
-							$subforums_result = $GLOBALS['AVE_DB']->Query($subforums_query);
-
+							");
 							//=======================================================
 							// alle foren in das subforum array schieben
 							//=======================================================
 							while ($subforum = $subforums_result->FetchAssocArray())
 							{
-									if (@$subforum['group_found'] != "no")
-									{
-										$subforum['link'] = "index.php?module=forums&amp;show=showforum&amp;fid=" . $subforum["id"];
-										array_push($subforums_array, $subforum);
-									}
+								if (@$subforum['group_found'] != "no")
+								{
+									$subforum['link'] = "index.php?module=forums&amp;show=showforum&amp;fid=" . $subforum["id"];
+									array_push($subforums_array, $subforum);
 								}
 							}
-
-							$forum["subforums"] = $subforums_array;
-
-							array_push($forums_array[$category["title"]], $forum);
 						}
+
+						$forum["subforums"] = $subforums_array;
+
+						array_push($forums_array[$category["title"]], $forum);
 					}
 				}
 			}
+		}
 
 
-			$GLOBALS['AVE_Template']->register_function("get_status_icon", "getStatusIcon");
-			$GLOBALS['AVE_Template']->assign("uid", UID);
-			$GLOBALS['AVE_Template']->assign("navigation", $navigation);
-			$GLOBALS['AVE_Template']->assign("f_id", 0);
-			$GLOBALS['AVE_Template']->assign("categories", $category_array);
-			$GLOBALS['AVE_Template']->assign("forums", $forums_array);
-			$tpl_out = $GLOBALS['AVE_Template']->fetch($GLOBALS['mod']['tpl_dir'] . $this->_ShowForumsTpl);
+		$GLOBALS['AVE_Template']->register_function("get_status_icon", "getStatusIcon");
+		$GLOBALS['AVE_Template']->assign("uid", UID);
+		$GLOBALS['AVE_Template']->assign("navigation", $navigation);
+		$GLOBALS['AVE_Template']->assign("f_id", 0);
+		$GLOBALS['AVE_Template']->assign("categories", $category_array);
+		$GLOBALS['AVE_Template']->assign("forums", $forums_array);
+		$tpl_out = $GLOBALS['AVE_Template']->fetch($GLOBALS['mod']['tpl_dir'] . $this->_ShowForumsTpl);
 
-			define("MODULE_CONTENT", $tpl_out);
-			define("MODULE_SITE",  strip_tags($navigation));
+		define("MODULE_CONTENT", $tpl_out);
+		define("MODULE_SITE",  strip_tags($navigation));
 ?>

@@ -1,5 +1,3 @@
-{strip}
-
 <div class="pageHeaderTitle" style="padding-top: 7px;">
 	<div class="h_module"></div>
 	<div class="HeaderTitle"><h2>{#POLL_COMMENTS_TITLE#}</h2></div>
@@ -24,7 +22,7 @@
 				</td>
 				<td valign="top">
 					{#POLL_COMMENT_AUTHOR#} {$item->lastname} {$item->firstname}<br />
-					{#POLL_COMMENT_DATE#} {$item->ctime|date_format:$DATE_FORMAT|pretty_date:$DEF_LANGUAGE}
+					{#POLL_COMMENT_DATE#} {$item->ctime|date_format:$DATE_FORMAT|pretty_date}
 				</td>
 			</tr>
 		{/foreach}
@@ -36,5 +34,3 @@
 <p>{$page_nav}</p>
 
 <p><div align="center"><input class="button" onClick="window.close();" type="button" value="{#POLL_BUTTON_CLOSE#}" /></div></p>
-
-{/strip}

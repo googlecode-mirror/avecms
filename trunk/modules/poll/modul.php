@@ -20,35 +20,30 @@ if (defined('ACP'))
     $modul['CpPHPTag'] = "<?php mod_poll(''$1''); ?>";
 }
 
-function mod_poll($id) {
+function mod_poll($poll_id)
+{
 	require_once(BASE_DIR . '/modules/poll/class.poll.php');
 	require_once(BASE_DIR . '/modules/poll/funcs/func.rewrite.php');
 
 	$tpl_dir   = BASE_DIR . '/modules/poll/templates/';
-	$lang_file = BASE_DIR . '/modules/poll/lang/' . DEFAULT_LANGUAGE . '.txt';
-
-//	$AVE_Template->config_load($lang_file, 'user');
-//	$config_vars = $AVE_Template->get_config_vars();
-//	$AVE_Template->assign('config_vars', $config_vars);
+	$lang_file = BASE_DIR . '/modules/poll/lang/' . $_SESSION['user_language'] . '.txt';
 
 	$poll = new poll;
-	$poll->showPoll($tpl_dir, $lang_file, stripslashes($id));
+	$poll->showPoll($tpl_dir, $lang_file, stripslashes($poll_id));
 }
 
-if(isset($_REQUEST['module']) && $_REQUEST['module'] == 'poll' && isset($_REQUEST['action'])) {
+if (isset($_REQUEST['module']) && $_REQUEST['module'] == 'poll' && isset($_REQUEST['action']))
+{
 	require_once(BASE_DIR . '/modules/poll/class.poll.php');
 	require_once(BASE_DIR . '/modules/poll/funcs/func.rewrite.php');
 
 	$poll = new poll;
 
 	$tpl_dir   = BASE_DIR . '/modules/poll/templates/';
-	$lang_file = BASE_DIR . '/modules/poll/lang/' . DEFAULT_LANGUAGE . '.txt';
+	$lang_file = BASE_DIR . '/modules/poll/lang/' . $_SESSION['user_language'] . '.txt';
 
-//	$AVE_Template->config_load($lang_file, 'user');
-//	$config_vars = $AVE_Template->get_config_vars();
-//	$AVE_Template->assign('config_vars', $config_vars);
-
-	switch($_REQUEST['action']) {
+	switch ($_REQUEST['action'])
+	{
 		case 'result':
 			$poll->showResult($tpl_dir, $lang_file, (int)$_REQUEST['pid']);
 			break;
@@ -62,7 +57,7 @@ if(isset($_REQUEST['module']) && $_REQUEST['module'] == 'poll' && isset($_REQUES
 			break;
 
 		case 'form':
-			$poll->displayForm($tpl_dir, $lang_file, (int)$_REQUEST['pid'], addslashes($_REQUEST['theme_folder']));
+			$poll->displayForm($tpl_dir, $lang_file, (int)$_REQUEST['pid'], $_REQUEST['theme_folder']);
 			break;
 
 		case 'comment':
@@ -71,52 +66,48 @@ if(isset($_REQUEST['module']) && $_REQUEST['module'] == 'poll' && isset($_REQUES
 	}
 }
 
-if(defined('ACP') && !(isset($_REQUEST['action']) && $_REQUEST['action'] == 'delete')) {
+if (defined('ACP') && !empty($_REQUEST['moduleaction']))
+{
 	global $AVE_Template;
 
-	require_once(BASE_DIR . '/modules/poll/sql.php');
 	require_once(BASE_DIR . '/modules/poll/class.poll.php');
 	require_once(BASE_DIR . '/modules/poll/funcs/func.rewrite.php');
 
 	$tpl_dir   = BASE_DIR . '/modules/poll/templates/';
-	$lang_file = BASE_DIR . '/modules/poll/lang/' . DEFAULT_LANGUAGE . '.txt';
+	$lang_file = BASE_DIR . '/modules/poll/lang/' . $_SESSION['user_language'] . '.txt';
 
 	$poll = new poll;
 
-//	$AVE_Template->config_load($lang_file, 'admin');
-//	$config_vars = $AVE_Template->get_config_vars();
-//	$AVE_Template->assign('config_vars', $config_vars);
+	switch ($_REQUEST['moduleaction'])
+	{
+		case '1':
+			$poll->showPolls($tpl_dir, $lang_file);
+			break;
 
-	if(!empty($_REQUEST['moduleaction'])) {
-		switch($_REQUEST['moduleaction']) {
-			case '1':
-				$poll->showPolls($tpl_dir, $lang_file);
-				break;
+		case 'edit':
+			$poll->editPolls($tpl_dir, $lang_file, (int)$_REQUEST['id']);
+			break;
 
-			case 'edit':
-				$poll->editPolls($tpl_dir, $lang_file, (int)$_REQUEST['id']);
-				break;
+		case 'save_new':
+			$poll->saveFieldsNew((int)$_REQUEST['id']);
+			break;
 
-			case 'save_new':
-				$poll->saveFieldsNew((int)$_REQUEST['id']);
-				break;
+		case 'save':
+			$poll->savePolls((int)$_REQUEST['id']);
+			break;
 
-			case 'save':
-				$poll->savePolls((int)$_REQUEST['id']);
-				break;
+		case 'new':
+			$poll->newPolls($tpl_dir, $lang_file);
+			break;
 
-			case 'new':
-				$poll->newPolls($tpl_dir, $lang_file);
-				break;
+		case 'delete':
+			$poll->deletePolls((int)$_REQUEST['id']);
+			break;
 
-			case 'delete':
-				$poll->deletePolls((int)$_REQUEST['id']);
-				break;
-
-			case 'comments':
-				$poll->showComments($tpl_dir, $lang_file, (int)$_REQUEST['id']);
-				break;
-		}
+		case 'comments':
+			$poll->showComments($tpl_dir, $lang_file, (int)$_REQUEST['id']);
+			break;
 	}
 }
+
 ?>

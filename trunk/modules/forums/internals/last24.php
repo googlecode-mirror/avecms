@@ -15,7 +15,7 @@ if(!defined("LAST24")) exit;
 	$sort = (isset($_POST['sort']) && $_POST['sort'] != "") ? addslashes($_POST['sort']) : "DESC";
 
 	$divisor = 60*60;
-	$where_time_stat = "((UNIX_TIMESTAMP(NOW()) / $divisor) - (UNIX_TIMESTAMP(p.datum) / $divisor)) <= 24";
+//	$where_time_stat = "((UNIX_TIMESTAMP(NOW()) / $divisor) - (UNIX_TIMESTAMP(p.datum) / $divisor)) <= 24";
 
 	$q_last_active = "SELECT DISTINCT
 			t.id,
@@ -32,23 +32,47 @@ if(!defined("LAST24")) exit;
 			r.rating,
 			f.group_id,
 			f.title AS f_title
-		FROM
-			" . PREFIX . "_modul_forum_topic AS t,
-			" . PREFIX . "_modul_forum_userprofile AS u,
-			" . PREFIX . "_modul_forum_rating AS r,
-			" . PREFIX . "_modul_forum_post AS p,
-			" . PREFIX . "_modul_forum_forum AS f
-		WHERE
-			$where_time_stat AND
-			u.BenutzerId = t.uid AND
-			r.topic_id = t.id AND
-			p.topic_id = t.id AND
-			f.id = t.forum_id
-			$forum_stat
-		ORDER BY
-			t.last_post
-			$sort
+		FROM " . PREFIX . "_modul_forum_topic AS t
+		JOIN " . PREFIX . "_modul_forum_userprofile AS u ON u.BenutzerId = t.uid
+		JOIN " . PREFIX . "_modul_forum_rating AS r ON r.topic_id = t.id
+		JOIN " . PREFIX . "_modul_forum_post AS p ON p.topic_id = t.id
+		JOIN " . PREFIX . "_modul_forum_forum AS f ON  f.id = t.forum_id
+		WHERE NOW() - INTERVAL 24 HOUR <= p.datum
+		$forum_stat
+		ORDER BY t.last_post $sort
 	";
+//	$q_last_active = "SELECT DISTINCT
+//			t.id,
+//			t.forum_id,
+//			t.title,
+//			t.status,
+//			t.type,
+//			t.datum,
+//			t.views,
+//			t.posticon,
+//			t.uid,
+//			t.replies,
+//			u.BenutzerName,
+//			r.rating,
+//			f.group_id,
+//			f.title AS f_title
+//		FROM
+//			" . PREFIX . "_modul_forum_topic AS t,
+//			" . PREFIX . "_modul_forum_userprofile AS u,
+//			" . PREFIX . "_modul_forum_rating AS r,
+//			" . PREFIX . "_modul_forum_post AS p,
+//			" . PREFIX . "_modul_forum_forum AS f
+//		WHERE
+//			$where_time_stat AND
+//			u.BenutzerId = t.uid AND
+//			r.topic_id = t.id AND
+//			p.topic_id = t.id AND
+//			f.id = t.forum_id
+//			$forum_stat
+//		ORDER BY
+//			t.last_post
+//			$sort
+//	";
 
 	$r_last_active = $GLOBALS['AVE_DB']->Query($q_last_active);
 	$matches = array();

@@ -14,39 +14,38 @@ if (!defined('ACP'))
 	exit;
 }
 
-if (!checkPermission('gen_settings')) define('NOPERM', 1);
+if (!check_permission('gen_settings')) define('NOPERM', 1);
 
-define('DUMPDIR', BASE_DIR . '/attachments/');
+$AVE_Template->config_load(BASE_DIR . '/admin/lang/' . $_SESSION['admin_language'] . '/dbactions.txt', 'db');
 
-include_once(BASE_DIR . '/class/class.dbdump.php');
-$AVE_SQL_Dump = new AVE_SQL_Dump;
+require(BASE_DIR . '/class/class.dbdump.php');
+$AVE_DB_Service = new AVE_DB_Service;
 
-if (@$_REQUEST['action']=='dboption')
+if (!empty($_REQUEST['action']))
 {
-	if (isset($_REQUEST['whattodo']) && $_REQUEST['whattodo']=='dump')
+	switch ($_REQUEST['action'])
 	{
-		$dump = $AVE_SQL_Dump->writeDump();
-		$AVE_SQL_Dump->getDump($dump);
-		exit;
+		case 'optimize':
+			$AVE_DB_Service->databaseTableOptimize();
+			break;
+
+		case 'repair':
+			$AVE_DB_Service->databaseTableRepair();
+			break;
+
+		case 'dump':
+			$AVE_DB_Service->databaseDumpExport();
+			exit;
+
+		case 'restore':
+			$AVE_DB_Service->databaseDumpImport(BASE_DIR . '/attachments/');
+			break;
 	}
-
-	$AVE_SQL_Dump->optimizeRep();
-	$tabellen = $AVE_SQL_Dump->showTables();
-}
-else
-{
-	$tabellen = $AVE_SQL_Dump->showTables();
 }
 
-if (isset($_REQUEST['restore']) && $_REQUEST['restore']==1)
-{
-	$AVE_SQL_Dump->dbRestore(DUMPDIR);
-}
-
-$AVE_Template->assign('tabellen', $tabellen);
-$AVE_Template->config_load(BASE_DIR . '/admin/lang/' . $_SESSION['admin_lang'] . '/dbactions.txt', 'db');
+$AVE_Template->assign('db_size', MySqlSize());
+$AVE_Template->assign('tables', $AVE_DB_Service->databaseTableGet());
 $AVE_Template->assign('navi', $AVE_Template->fetch('navi/navi.tpl'));
-$AVE_Template->assign('mysql_size', MySqlSize());
 $AVE_Template->assign('content', $AVE_Template->fetch('dbactions/actions.tpl'));
 
 ?>

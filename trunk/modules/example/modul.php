@@ -56,9 +56,7 @@ function mod_example()
 
 		while($row = $sql->FetchRow())
 		{
-			$row->Url = (CP_REWRITE==1)
-				? cpRewrite('index.php?id=' . $row->Id . '&amp;doc=' . cpParseLinkname($row->Titel))
-				: 'index.php?id=' . $row->Id . '&amp;doc=' . cpParseLinkname($row->Titel);
+			$row->Url = rewrite_link('index.php?id=' . $row->Id . '&amp;doc=' . prepare_url($row->Titel));
 			array_push($example,$row);
 		}
 		// Закрываем соединение

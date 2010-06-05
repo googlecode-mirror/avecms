@@ -1,7 +1,3 @@
-
-<!-- docs.tpl -->
-{strip}
-
 <div class="pageHeaderTitle" style="padding-top:7px">
 	<div class="h_docs">&nbsp;</div>
 	<div class="HeaderTitle">
@@ -11,7 +7,7 @@
 </div><br />
 <br />
 
-{if checkPermission('docs')}
+{if check_permission('docs')}
 <script type="text/javascript" language="JavaScript">
 function check_name() {ldelim}
 	if (document.getElementById('DocName').value == '') {ldelim}
@@ -153,18 +149,18 @@ function check_name() {ldelim}
 	<col width="20">
 	<col width="20">
 	<tr class="tableheader">
-		<td><a class="header" href="{redirectLink ex='sort'}&amp;sort={if $smarty.request.sort=='Id'}IdDesc{else}Id{/if}">{#DOC_ID#}</a></td>
+		<td><a class="header" href="{get_redirect_link ex='sort'}&amp;sort={if $smarty.request.sort=='Id'}IdDesc{else}Id{/if}">{#DOC_ID#}</a></td>
 		<td nowrap="nowrap">
-			<a class="header" href="{redirectLink ex='sort'}&amp;sort={if $smarty.request.sort=='Titel'}TitelDesc{else}Titel{/if}">{#DOC_TITLE#}</a>
+			<a class="header" href="{get_redirect_link ex='sort'}&amp;sort={if $smarty.request.sort=='Titel'}TitelDesc{else}Titel{/if}">{#DOC_TITLE#}</a>
 			&nbsp;|&nbsp;
-			<a class="header" href="{redirectLink ex='sort'}&amp;sort={if $smarty.request.sort=='Url'}UrlDesc{else}Url{/if}">{#DOC_URL_RUB#}</a>
+			<a class="header" href="{get_redirect_link ex='sort'}&amp;sort={if $smarty.request.sort=='Url'}UrlDesc{else}Url{/if}">{#DOC_URL_RUB#}</a>
 		</td>
-		<td><a class="header" href="{redirectLink ex='sort'}&amp;sort={if $smarty.request.sort=='Rubrik'}RubrikDesc{else}Rubrik{/if}">{#DOC_IN_RUBRIK#}</a></td>
-		<td><a class="header" href="{redirectLink ex='sort'}&amp;sort={if $smarty.request.sort=='Erstellt'}ErstelltDesc{else}Erstellt{/if}">{#DOC_CREATED#}</a></td>
-		<td><a class="header" href="{redirectLink ex='sort'}&amp;sort={if $smarty.request.sort=='Edits'}EditsDesc{else}Edits{/if}">{#DOC_EDIT#}</a></td>
-		<td><a class="header" href="{redirectLink ex='sort'}&amp;sort={if $smarty.request.sort=='KlicksDesc'}Klicks{else}KlicksDesc{/if}">{#DOC_CLICKS#}</a></td>
-		<td><a class="header" href="{redirectLink ex='sort'}&amp;sort={if $smarty.request.sort=='DruckDesc'}Druck{else}DruckDesc{/if}">{#DOC_PRINTED#}</a></td>
-		<td><a class="header" href="{redirectLink ex='sort'}&amp;sort={if $smarty.request.sort=='Autor'}AutorDesc{else}Autor{/if}">{#DOC_AUTHOR#}</a></td>
+		<td><a class="header" href="{get_redirect_link ex='sort'}&amp;sort={if $smarty.request.sort=='Rubrik'}RubrikDesc{else}Rubrik{/if}">{#DOC_IN_RUBRIK#}</a></td>
+		<td><a class="header" href="{get_redirect_link ex='sort'}&amp;sort={if $smarty.request.sort=='Erstellt'}ErstelltDesc{else}Erstellt{/if}">{#DOC_CREATED#}</a></td>
+		<td><a class="header" href="{get_redirect_link ex='sort'}&amp;sort={if $smarty.request.sort=='Edits'}EditsDesc{else}Edits{/if}">{#DOC_EDIT#}</a></td>
+		<td><a class="header" href="{get_redirect_link ex='sort'}&amp;sort={if $smarty.request.sort=='KlicksDesc'}Klicks{else}KlicksDesc{/if}">{#DOC_CLICKS#}</a></td>
+		<td><a class="header" href="{get_redirect_link ex='sort'}&amp;sort={if $smarty.request.sort=='DruckDesc'}Druck{else}DruckDesc{/if}">{#DOC_PRINTED#}</a></td>
+		<td><a class="header" href="{get_redirect_link ex='sort'}&amp;sort={if $smarty.request.sort=='Autor'}AutorDesc{else}Autor{/if}">{#DOC_AUTHOR#}</a></td>
 		<td colspan="5" align="center">{#DOC_ACTIONS#}</td>
 	</tr>
 
@@ -197,9 +193,9 @@ function check_name() {ldelim}
 				{/if}
 			</td>
 
-			<td align="right">{$item->DokStart|date_format:$TIME_FORMAT|pretty_date:$DEF_LANGUAGE}<br /></td>
+			<td align="right">{$item->DokStart|date_format:$TIME_FORMAT|pretty_date}<br /></td>
 
-			<td align="right">{$item->DokEdi|date_format:$TIME_FORMAT|pretty_date:$DEF_LANGUAGE}<br /></td>
+			<td align="right">{$item->DokEdi|date_format:$TIME_FORMAT|pretty_date}<br /></td>
 
 			<td align="center">{$item->Geklickt}</td>
 
@@ -208,7 +204,7 @@ function check_name() {ldelim}
 			<td align="center">{$item->RBenutzer|escape}</td>
 
 			<td align="center" nowrap="nowrap">
-				{if checkPermission("docs_comments")}
+				{if check_permission("docs_comments")}
 					{if $item->Kommentare=='0'}
 						<a title="{#DOC_CREATE_NOTICE_TITLE#}" href="javascript:void(0);" onclick="cp_pop('index.php?do=docs&action=comment&RubrikId={$item->RubrikId}&Id={$item->Id}&pop=1&cp={$sess}','800','700','1','docs');"><img src="{$tpl_dir}/images/icon_comment.gif" alt="" border="0" /></a>
 					{else}
@@ -303,6 +299,3 @@ function check_name() {ldelim}
 		<img class="absmiddle" src="{$tpl_dir}/images/icon_delete.gif" alt="" border="0" /> - {#DOC_LEGEND_FINAL_DELETE#}
 	</div>
 </div>
-
-{/strip}
-<!-- /docs.tpl -->

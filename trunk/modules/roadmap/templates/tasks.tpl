@@ -31,8 +31,8 @@
     <tr>
     <td class="dl_{cycle name="1" values="a,b"}_{$item->prio}" align="center">{$item->id}</td>
     <td class="dl_{cycle name="2" values="a,b"}_{$item->prio}">{$item->task_desc}</td>
-    <td class="dl_{cycle name="3" values="a,b"}_{$item->prio}" align="center">{$item->date_create|date_format:$DATE_FORMAT|pretty_date:$DEF_LANGUAGE}</td>
-    <td class="dl_{cycle name="4" values="a,b"}_{$item->prio}" align="center">{$item->lastname} {$item->firstname}</td>
+    <td class="dl_{cycle name="3" values="a,b"}_{$item->prio}" align="center">{$item->date_create|date_format:$DATE_FORMAT|pretty_date}</td>
+    <td class="dl_{cycle name="4" values="a,b"}_{$item->prio}" align="center">{$row->username|escape}</td>
     <td class="dl_{cycle name="5" values="a,b"}_{$item->prio}" align="center">{$item->priority}</td>
   </tr>
   {/foreach}

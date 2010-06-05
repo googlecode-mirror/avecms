@@ -1,5 +1,3 @@
-
-<!-- entries.tpl -->
 <script language="javascript" type="text/javascript">
 function openLinkWindow(target,doc,alias) {ldelim}
 	if (typeof width=='undefined' || width=='') var width = screen.width * 0.6;
@@ -17,8 +15,6 @@ function openFileWindow(target,id,alias) {ldelim}
 	window.open('browser.php?id='+id+'&typ=bild&mode=fck&target=navi&cp={$sess}','pop','left=0,top=0,width='+width+',height='+height+',scrollbars='+scrollbar+',resizable=1');
 {rdelim}
 </script>
-
-{strip}
 
 <div id="pageHeaderTitle" style="padding-top:7px">
 	<div class="h_navi">&nbsp;</div>
@@ -192,6 +188,3 @@ function openFileWindow(target,id,alias) {ldelim}
 	<input type="hidden" id="Rubrik" name="Rubrik" value="{$smarty.request.id}" /><br />
 	<input type="submit" class="button" value="{#NAVI_BUTTON_SAVE#}" />
 </form>
-
-{/strip}
-<!-- /entries.tpl -->

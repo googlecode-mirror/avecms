@@ -1,4 +1,3 @@
-<!-- shop_checkoutinfo.tpl -->
 <div id="content">
 	<form name="process" method="post" action="index.php">
 		<div id="shopcontent">
@@ -91,8 +90,8 @@
 							<!-- PRODUCT VARIATIONS END -->
 						</td>
 						<td align="center" valign="middle" class="mod_shop_basket_row">{$bi->Anzahl}</td>
-						<td align="center" valign="middle" class="mod_shop_basket_row" nowrap="nowrap">{numFormat val=$bi->EPreis} {$Currency}</td>
-						<td align="center" valign="middle" class="mod_shop_basket_row_price" nowrap="nowrap">{numFormat val=$bi->EPreisSumme} {$Currency}</td>
+						<td align="center" valign="middle" class="mod_shop_basket_row" nowrap="nowrap">{num_format val=$bi->EPreis} {$Currency}</td>
+						<td align="center" valign="middle" class="mod_shop_basket_row_price" nowrap="nowrap">{num_format val=$bi->EPreisSumme} {$Currency}</td>
 					</tr>
 				{/foreach}
 			</table><br />
@@ -132,7 +131,7 @@
 
 							<tr>
 								<td class="mod_shop_basket_row" align="right">{#OrdersSumm#}</td>
-								<td width="130" align="right" class="mod_shop_basket_row_right">{numFormat val=$smarty.session.Zwisumm} {$Currency}</td>
+								<td width="130" align="right" class="mod_shop_basket_row_right">{num_format val=$smarty.session.Zwisumm} {$Currency}</td>
 							</tr>
 
 							{if $smarty.session.CouponCode > 0}
@@ -145,13 +144,13 @@
 							{if $smarty.session.Rabatt>0}
 								<tr>
 									<td class="mod_shop_basket_row" align="right">{#CustomerDiscount#}</td>
-									<td width="130" align="right" class="mod_shop_basket_row_right">-{$smarty.session.RabattWert}{* ({numFormat val=$smarty.session.Rabatt}) {$Currency}*}</td>
+									<td width="130" align="right" class="mod_shop_basket_row_right">-{$smarty.session.RabattWert}{* ({num_format val=$smarty.session.Rabatt}) {$Currency}*}</td>
 								</tr>
 							{/if}
 
 							<tr>
 								<td class="mod_shop_basket_row" width="200" align="right">{#Packing#} </td>
-								<td width="130" align="right" class="mod_shop_basket_row_right">{numFormat val=$smarty.session.ShippingSumm} {$Currency}</td>
+								<td width="130" align="right" class="mod_shop_basket_row_right">{num_format val=$smarty.session.ShippingSumm} {$Currency}</td>
 							</tr>
 
 							{if $smarty.session.KostenZahlungOut>0}
@@ -164,10 +163,10 @@
 							<tr>
 								<td class="mod_shop_basket_row" align="right">{#SummOverall#}</td>
 								<td width="130" align="right" class="mod_shop_basket_row_right">
-									<span class="mod_shop_price_big">{numFormat val=$PaymentOverall} {$Currency}</span>
+									<span class="mod_shop_price_big">{num_format val=$PaymentOverall} {$Currency}</span>
 									{if $smarty.session.BasketSummW2}
 										<br />
-										<span class="mod_shop_ust">{numFormat val=$PaymentOverall2} {$Currency2}</span>
+										<span class="mod_shop_ust">{num_format val=$PaymentOverall2} {$Currency2}</span>
 									{/if}
 								</td>
 							</tr>
@@ -186,7 +185,7 @@
 									{if $smarty.session.VatInc!='' && in_array($vz->Wert,$smarty.session.VatInc)}
 										<tr>
 											<td class="mod_shop_basket_row" align="right"> {#IncVat#} {$vz->Wert}%: </td>
-											<td width="130" class="mod_shop_basket_row_right" align="right"> {assign var=VatSessionName value=$vz->Wert} {numFormat val=$smarty.session.$VatSessionName} {$Currency}</td>
+											<td width="130" class="mod_shop_basket_row_right" align="right"> {assign var=VatSessionName value=$vz->Wert} {num_format val=$smarty.session.$VatSessionName} {$Currency}</td>
 										</tr>
 									{/if}
 								{/foreach}
@@ -264,4 +263,3 @@
 {/if}
 
 <div style="clear:both"></div>
-<!-- /shop_checkoutinfo.tpl -->

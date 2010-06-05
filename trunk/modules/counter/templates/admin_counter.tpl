@@ -1,7 +1,3 @@
-
-<!-- admin_counter.tpl -->
-{strip}
-
 <script type="text/javascript" language="JavaScript">
 function check_name() {ldelim}
 	if (document.getElementById('Name').value == '') {ldelim}
@@ -82,6 +78,3 @@ function check_name() {ldelim}
 		</tr>
 	</table>
 </form>
-
-{/strip}
-<!-- /admin_counter.tpl -->

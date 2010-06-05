@@ -7,34 +7,29 @@
  * @filesource
  */
 
-$start_time = microtime();
-
-ob_start();
+define('START_MICROTIME', microtime());
 
 define('BASE_DIR', str_replace("\\", "/", dirname(__FILE__)));
 
-if (! @filesize(BASE_DIR . '/inc/db.config.php'))
-{
-	header('Location:install.php');
-	exit;
-}
+if (! @filesize(BASE_DIR . '/inc/db.config.php')) { header('Location:install.php'); exit; }
 
-if (! empty($_REQUEST['thumb']))
-{
-	require(BASE_DIR . '/functions/func.thumbnail.php');
-	exit;
-}
+if (! empty($_REQUEST['thumb'])) { require(BASE_DIR . '/functions/func.thumbnail.php'); exit; }
+
+ob_start();
 
 require(BASE_DIR . '/inc/init.php');
 
-if (! isset($_REQUEST['sub'])) $_REQUEST['sub'] = '';
+$AVE_Template = new AVE_Template(BASE_DIR . '/templates/' . DEFAULT_THEME_FOLDER);
 
-$AVE_Template = new AVE_Template('templates/' . DEFAULT_THEME_FOLDER . '/');
+if (! isset($_REQUEST['sub'])) $_REQUEST['sub'] = '';
 
 require(BASE_DIR . '/class/class.core.php');
 $AVE_Core = new AVE_Core;
-if (! empty($_GET['url'])) $AVE_Core->parseUrl();
-$AVE_Core->displaySite(currentDocId());
+
+//if (! empty($_REQUEST['url'])) $AVE_Core->coreUrlParse($_REQUEST['url']);
+if (empty($_REQUEST['module']) && empty($_REQUEST['id'])) $AVE_Core->coreUrlParse($_SERVER['REQUEST_URI']);
+
+$AVE_Core->coreSiteFetch(get_current_document_id());
 
 $content = ob_get_clean();
 ob_start();
@@ -45,13 +40,9 @@ eval ('?>' . $content . '<?');
 
 if (isset($cache) && is_object($cache)) $cache->end();
 
+//ob_end_flush();
+
 // Статистика
-if (UGROUP == 1 && $config['sql_debug'])
-{
-	echo "\n<br>Время генерации: ", number_format(microtimeDiff($start_time, microtime()), 3, ',', ' '), ' сек.';
-	echo "\n<br>Количество запросов: ", $AVE_DB->StatDB('count'), ' шт. за ', number_format($AVE_DB->StatDB('time'), 3, ',', '.'), ' сек.';
-	echo "\n<br>Пиковое значение ", number_format((function_exists('memory_get_peak_usage') ? memory_get_peak_usage() : 0)/1024, 0, ',', ' '), 'Kb';
-	echo "\n<div style=\"text-align:left;padding-left:30px\"><small><ol>", $AVE_DB->StatDB('list'), '</ol></small></div>';
-}
+if (!defined('ONLYCONTENT') && UGROUP == 1 && defined('PROFILING') && PROFILING) echo get_statistic(1, 1, 1, 1);
 
 ?>

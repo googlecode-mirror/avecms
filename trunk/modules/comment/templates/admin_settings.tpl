@@ -1,7 +1,3 @@
-
-<!-- admin_settings.tpl -->
-{strip}
-
 <div id="pageHeaderTitle" style="padding-top: 7px;">
 	<div class="h_module"></div>
 	<div class="HeaderTitle"><h2>{#COMMENT_MODULE_NAME#}</h2></div>
@@ -57,6 +53,3 @@
 
 	<input type="submit" value="{#COMMENT_BUTTON_SAVE#}" class="button" />
 </form>
-
-{/strip}
-<!-- /admin_settings.tpl -->

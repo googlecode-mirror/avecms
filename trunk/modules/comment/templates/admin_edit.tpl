@@ -1,7 +1,3 @@
-
-<!-- admin_edit.tpl -->
-{strip}
-
 <div id="pageHeaderTitle" style="padding-top: 7px;">
 	<div class="h_module"></div>
 	<div class="HeaderTitle"><h2>{#COMMENT_EDIT_TITLE#}</h2></div>
@@ -72,6 +68,3 @@ $(document).ready(function(){ldelim}
     $('textarea').limit('{$max_chars}','#charsLeft');
 {rdelim});
 </script>
-
-{/strip}
-<!-- admin_edit.tpl -->

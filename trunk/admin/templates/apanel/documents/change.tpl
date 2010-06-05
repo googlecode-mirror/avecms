@@ -1,8 +1,4 @@
-
-<!-- change.tpl -->
-{strip}
-
-{if checkPermission('docs')}
+{if check_permission('docs')}
 
 <script type="text/javascript" language="JavaScript">
 function ChangeRazd() {ldelim}
@@ -56,6 +52,3 @@ function ChangeRazd() {ldelim}
 </form>
 
 {/if}
-
-{/strip}
-<!-- /change.tpl -->

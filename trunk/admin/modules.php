@@ -14,18 +14,16 @@ if (!defined('ACP'))
 	exit;
 }
 
-include_once(BASE_DIR . '/class/class.modules.php');
+require(BASE_DIR . '/class/class.modules.php');
 $AVE_Module = new AVE_Module;
 
-$AVE_Template->config_load(BASE_DIR . '/admin/lang/' . $_SESSION['admin_lang'] . '/modules.txt', 'modules');
-include_once(BASE_DIR . '/admin/inc/pre.inc.php');
+$AVE_Template->config_load(BASE_DIR . '/admin/lang/' . $_SESSION['admin_language'] . '/modules.txt', 'modules');
 
 if (!empty($_REQUEST['moduleaction']))
 {
-//	$r_module = 'mod_' . $_REQUEST['mod'];
-	if (!checkPermission('mod_' . $_REQUEST['mod']))
+	if (!check_permission('mod_' . $_REQUEST['mod']))
 	{
-		echo $config_vars['MAIN_NO_PERM_MODULES'];
+		echo $AVE_Template->get_config_vars('MAIN_NO_PERM_MODULES');
 		exit;
 	}
 }
@@ -37,49 +35,49 @@ switch($_REQUEST['action'])
 	case '':
 		if (permCheck('modules'))
 		{
-			$AVE_Module->showModules();
+			$AVE_Module->moduleList();
 		}
 		break;
 
 	case 'quicksave':
 		if (permCheck('modules_admin'))
 		{
-			$AVE_Module->quickSave();
+			$AVE_Module->moduleOptionsSave();
 		}
 		break;
 
 	case 'install':
 		if (permCheck('modules_admin'))
 		{
-			$AVE_Module->installModule();
+			$AVE_Module->moduleInstall();
 		}
 		break;
 
 	case 'reinstall':
 		if (permCheck('modules_admin'))
 		{
-			$AVE_Module->installModule();
+			$AVE_Module->moduleInstall();
 		}
 		break;
 
 	case 'update':
 		if (permCheck('modules_admin'))
 		{
-			$AVE_Module->updateModule();
+			$AVE_Module->moduleUpdate();
 		}
 		break;
 
 	case 'delete':
 		if (permCheck('modules_admin'))
 		{
-			$AVE_Module->deleteModule();
+			$AVE_Module->moduleDelete();
 		}
 		break;
 
 	case 'onoff':
 		if (permCheck('modules_admin'))
 		{
-			$AVE_Module->OnOff();
+			$AVE_Module->moduleStatusChange();
 		}
 		break;
 

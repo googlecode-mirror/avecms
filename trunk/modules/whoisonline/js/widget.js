@@ -7,7 +7,7 @@ $(document).ready(function(){
 	var timeout;
 
 	// Loading the number of users online into the count div:
-	count.load('/index.php?module=whoisonline&action=online');
+	count.load(aveabspath+'index.php?module=whoisonline&action=online');
 
 	$('.onlineWidget').hover(
 		function(){
@@ -33,7 +33,7 @@ $(document).ready(function(){
 			if(!loaded)
 			{
 				// Loading the countries and the flags once the sliding panel is shown:
-				panel.load('/index.php?module=whoisonline&action=geodata');
+				panel.load(aveabspath+'index.php?module=whoisonline&action=geodata');
 				loaded=true;
 			}
 		});

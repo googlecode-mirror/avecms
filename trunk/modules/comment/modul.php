@@ -14,7 +14,7 @@ if (defined('ACP'))
 {
     $modul['ModulName'] = 'Комментарии';
     $modul['ModulPfad'] = 'comment';
-    $modul['ModulVersion'] = '1.1';
+    $modul['ModulVersion'] = '1.2';
     $modul['Beschreibung'] = 'Данный модуль предназначен для организации системы комментариев для документов на сайте. Для того, чтобы использовать данный модуль, разместите системный тег <strong>[mod_comment]</strong> в нужном месте шаблона рубрики.';
     $modul['Autor'] = 'Arcanum';
     $modul['MCopyright'] = '&copy; 2007 Overdoze Team';
@@ -42,91 +42,100 @@ function mod_comment()
 	$comment = new Comment;
 
 	$tpl_dir = BASE_DIR . '/modules/comment/templates/';
-	$lang_file = BASE_DIR . '/modules/comment/lang/' . DEFAULT_LANGUAGE . '.txt';
+	$lang_file = BASE_DIR . '/modules/comment/lang/' . $_SESSION['user_language'] . '.txt';
 	$AVE_Template->config_load($lang_file);
 
-	$comment->displayComments($tpl_dir);
+	$comment->commentListShow($tpl_dir);
 }
 
-if (isset($_REQUEST['module']) && $_REQUEST['module'] == 'comment' && isset($_REQUEST['action']))
+/**
+ * Управление комментариями в публичной части
+ */
+if (!defined('ACP') &&
+	isset($_REQUEST['module']) && $_REQUEST['module'] == 'comment' &&
+	isset($_REQUEST['action']))
 {
 	require_once(BASE_DIR . '/modules/comment/class.comment.php');
-//	require_once(BASE_DIR . '/functions/func.modulglobals.php');
-
-//	modulGlobals('comment');
 	$comment = new Comment;
 
     $tpl_dir = BASE_DIR . '/modules/comment/templates/';
-    $lang_file = BASE_DIR . '/modules/comment/lang/' . DEFAULT_LANGUAGE . '.txt';
+    $lang_file = BASE_DIR . '/modules/comment/lang/' . $_SESSION['user_language'] . '.txt';
     $AVE_Template->config_load($lang_file);
 
 	switch($_REQUEST['action'])
 	{
 		case 'form':
-			$comment->displayForm($tpl_dir);
-			break;
-
-		case 'postinfo':
-			$comment->postInfo($tpl_dir);
+			$comment->commentPostFormShow($tpl_dir);
 			break;
 
 		case 'comment':
-			$comment->newComment($tpl_dir);
+			$comment->commentPostNew($tpl_dir);
 			break;
 
 		case 'edit':
-			$comment->editComment($_REQUEST['Id']);
+			$comment->commentPostEdit((int)$_REQUEST['Id']);
 			break;
 
 		case 'delete':
-			if (UGROUP==1) $comment->deleteComment((int)$_REQUEST['Id']);
+			if (UGROUP==1)
+			{
+				$comment->commentPostDelete((int)$_REQUEST['Id']);
+			}
+			break;
+
+		case 'postinfo':
+			$comment->commentPostInfoShow($tpl_dir);
 			break;
 
 		case 'lock':
 		case 'unlock':
-			if (UGROUP==1) $comment->setStatusComment((int)$_REQUEST['Id'], $_REQUEST['action']);
+			if (UGROUP==1)
+			{
+				$comment->commentReplyStatusSet((int)$_REQUEST['Id'], $_REQUEST['action']);
+			}
 			break;
 
 		case 'open':
 		case 'close':
-			if (UGROUP==1) $comment->setStatusComments((int)$_REQUEST['docid'], $_REQUEST['action']);
+			if (UGROUP==1)
+			{
+				$comment->commentStatusSet((int)$_REQUEST['docid'], $_REQUEST['action']);
+			}
 			break;
 	}
 }
 
-if (defined('ACP') &&
-    isset($_REQUEST['mod']) && $_REQUEST['mod'] == 'comment' &&
-    !(isset($_REQUEST['action']) && $_REQUEST['action'] == 'delete'))
+/**
+ * Управление комментариями в административной части
+ */
+if (defined('ACP') && !empty($_REQUEST['moduleaction']))
 {
-	require_once(BASE_DIR . '/modules/comment/sql.php');
-	require_once(BASE_DIR . '/modules/comment/class.comment.php');
-//	require_once(BASE_DIR . '/functions/func.modulglobals.php');
+	global $AVE_User;
 
+	require_once(BASE_DIR . '/modules/comment/class.comment.php');
 	$comment = new Comment;
 
     $tpl_dir   = BASE_DIR . '/modules/comment/templates/';
-    $lang_file = BASE_DIR . '/modules/comment/lang/' . $_SESSION['admin_lang'] . '.txt';
-
+    $lang_file = BASE_DIR . '/modules/comment/lang/' . $_SESSION['admin_language'] . '.txt';
 	$AVE_Template->config_load($lang_file, 'admin');
-//	$config_vars = $AVE_Template->get_config_vars();
-//	$AVE_Template->assign('config_vars', $config_vars);
 
-	if (!empty($_REQUEST['moduleaction']))
+	switch ($_REQUEST['moduleaction'])
 	{
-		switch ($_REQUEST['moduleaction'])
-		{
-			case '1':
-				$comment->showComments($tpl_dir);
-				break;
+		case '1':
+			$comment->commentAdminListShow($tpl_dir);
+			break;
 
-            case 'admin_edit':
-                $comment->editCommentAdmin($tpl_dir);
-                break;
+        case 'admin_edit':
+            $comment->commentAdminPostEdit($tpl_dir);
+            break;
 
-			case 'settings':
-				$comment->settings($tpl_dir);
-				break;
-		}
+		case 'settings':
+			require_once(BASE_DIR . '/class/class.user.php');
+			$AVE_User = new AVE_User;
+			$AVE_Template->assign('groups', $AVE_User->userGroupListGet());
+
+			$comment->commentAdminSettingsEdit($tpl_dir);
+			break;
 	}
 }
 

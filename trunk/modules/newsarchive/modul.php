@@ -29,25 +29,25 @@ if (defined('ACP'))
 }
 
 // Главная функция, которая отвечает за вывод блока архива на основании ID
-function mod_newsarchive($id)
+function mod_newsarchive($newsarchive_id)
 {
 	global $AVE_Template;
 
 	require_once(BASE_DIR . '/modules/newsarchive/class.newsarchive.php');
 
 	$tpl_dir   = BASE_DIR . '/modules/newsarchive/templates/';
-	$lang_file = BASE_DIR . '/modules/newsarchive/lang/' . DEFAULT_LANGUAGE . '.txt';
+	$lang_file = BASE_DIR . '/modules/newsarchive/lang/' . $_SESSION['user_language'] . '.txt';
 
 	$AVE_Template->config_load($lang_file, 'admin');
 	$config_vars = $AVE_Template->get_config_vars();
 	$AVE_Template->assign('config_vars', $config_vars);
 
-	Newsarchive::showArchive($tpl_dir, stripslashes($id));
+	Newsarchive::showArchive($tpl_dir, stripslashes($newsarchive_id));
 }
 
 // Определяем функцию, которая будет выполнять выборку докуметов из БД
 // на основании Месяца, Года и Дня (день может быть необязательным параметром)
-function show_by($id, $month, $year, $day=0)
+function show_by($newsarchive_id, $month, $year, $day=0)
 {
 	global $AVE_Template;
 
@@ -62,7 +62,7 @@ function show_by($id, $month, $year, $day=0)
 	}
 
 	$tpl_dir   = BASE_DIR . '/modules/newsarchive/templates/';
-	$lang_file = BASE_DIR . '/modules/newsarchive/lang/' . DEFAULT_LANGUAGE . '.txt';
+	$lang_file = BASE_DIR . '/modules/newsarchive/lang/' . $_SESSION['user_language'] . '.txt';
 	$AVE_Template->config_load($lang_file, 'admin');
 	$config_vars = $AVE_Template->get_config_vars();
 	$AVE_Template->assign('config_vars', $config_vars);
@@ -70,7 +70,7 @@ function show_by($id, $month, $year, $day=0)
 	// Выбираем все параметры для запроса с текущим ID
 	$sql = $GLOBALS['AVE_DB']->Query("SELECT *
 		FROM ".PREFIX."_modul_newsarchive
-		WHERE id = '" . $id . "'
+		WHERE id = '" . $newsarchive_id . "'
 	");
 	$result = $sql->FetchRow();
 
@@ -112,7 +112,7 @@ function show_by($id, $month, $year, $day=0)
 		}
 	}
 
-	$doctime = $AVE_Globals->mainSettings('use_doctime')
+	$doctime = get_settings('use_doctime')
 		? ("AND (DokEnde = 0 || DokEnde > '" . time() . "') AND (DokStart = 0 || DokStart < '" . time() . "')")
 		: '';
 
@@ -143,9 +143,7 @@ function show_by($id, $month, $year, $day=0)
 	// Заполняем массив докуметов результатами из БД и передем в шаблон
 	while($doc = $query->FetchRow())
 	{
-		$doc->Url = (CP_REWRITE==1)
-			? cpRewrite('index.php?id=' . $doc->Id . '&amp;doc=' . cpParseLinkname($doc->Titel) )
-			: 'index.php?id=' . $doc->Id . '&amp;doc=' . cpParseLinkname($doc->Titel);
+		$doc->Url = rewrite_link('index.php?id=' . $doc->Id . '&amp;doc=' . prepare_url($doc->Titel));
 		array_push($documents, $doc);
 	}
 
@@ -188,62 +186,59 @@ function show_by($id, $month, $year, $day=0)
 // Включаем проверку входных данных и показываем результаты в зависимости от запроса
 if (isset($_GET['module']) && $_GET['module'] == 'newsarchive' && $_GET['month'] != '' && $_GET['year'] != '')
 {
-	$id    = addslashes($_GET['id']);
-	$month = addslashes($_GET['month']);
-	$year  = addslashes($_GET['year']);
+	$newsarchive_id    = $_GET['id'];
+	$month = $_GET['month'];
+	$year  = $_GET['year'];
 
 	if (isset($_GET['day']) && $_GET['day'] != '')
 	{
 		$day = addslashes($_GET['day']);
-		show_by($id, $month, $year, $day);
+		show_by($newsarchive_id, $month, $year, $day);
 	}
 	else
 	{
-		show_by($id, $month, $year);
+		show_by($newsarchive_id, $month, $year);
 	}
 }
 
 // Кусок кода, отвечающий за управление модулем в админке
-if(defined('ACP') && !(isset($_REQUEST['action']) && $_REQUEST['action'] == 'delete'))
+if (defined('ACP') && !empty($_REQUEST['moduleaction']))
 {
-	require_once(BASE_DIR . '/modules/newsarchive/sql.php');
 	require_once(BASE_DIR . '/modules/newsarchive/class.newsarchive.php');
 
 	$tpl_dir   = BASE_DIR . '/modules/newsarchive/templates/';
-	$lang_file = BASE_DIR . '/modules/newsarchive/lang/' . DEFAULT_LANGUAGE . '.txt';
+	$lang_file = BASE_DIR . '/modules/newsarchive/lang/' . $_SESSION['user_language'] . '.txt';
 
 	$AVE_Template->config_load($lang_file);
 	$config_vars = $AVE_Template->get_config_vars();
 	$AVE_Template->assign('config_vars', $config_vars);
 
-	if(isset($_REQUEST['moduleaction']) && $_REQUEST['moduleaction'] != '')
+	switch($_REQUEST['moduleaction'])
 	{
-		switch($_REQUEST['moduleaction'])
-		{
-			case '1':
-				Newsarchive::archiveList($tpl_dir);
-				break;
+		case '1':
+			Newsarchive::archiveList($tpl_dir);
+			break;
 
-			case 'add':
-				Newsarchive::addArchive();
-				break;
+		case 'add':
+			Newsarchive::addArchive();
+			break;
 
-			case 'del':
-				Newsarchive::delArchive();
-				break;
+		case 'del':
+			Newsarchive::delArchive();
+			break;
 
-			case 'savelist':
-				Newsarchive::saveList();
-				break;
+		case 'savelist':
+			Newsarchive::saveList();
+			break;
 
-			case 'edit':
-				Newsarchive::editArchive($tpl_dir);
-				break;
+		case 'edit':
+			Newsarchive::editArchive($tpl_dir);
+			break;
 
-			case 'saveedit':
-				Newsarchive::saveArchive();
-				break;
-		}
+		case 'saveedit':
+			Newsarchive::saveArchive();
+			break;
 	}
 }
+
 ?>

@@ -193,12 +193,12 @@ class Newsarchive
 	 */
 	function showArchive($tpl_dir, $id)
 	{
-		global $AVE_DB, $AVE_Template, $AVE_Globals;
+		global $AVE_DB, $AVE_Template;
 
 		$months = array('','Январь','Февраль','Март','Апрель','Май','Июнь','Июль','Август','Сентябрь','Октябрь','Ноябрь','Декабрь');
 		$mid = array('','01','02','03','04','05','06','07','08','09','10','11','12');
 		$dd = array();
-		$doctime = $AVE_Globals->mainSettings('use_doctime')
+		$doctime = get_settings('use_doctime')
 			? ("AND (DokEnde = 0 || DokEnde > '" . time() . "') AND (DokStart = 0 || DokStart < '" . time() . "')")
 			: '';
 

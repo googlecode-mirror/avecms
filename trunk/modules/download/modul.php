@@ -22,8 +22,8 @@ if (defined('ACP'))
 
 if( (isset($_REQUEST['module']) && $_REQUEST['module'] == 'download') || (isset($_REQUEST['mod']) && $_REQUEST['mod'] == 'download') )
 {
-	if(defined('SSLMODE') && SSLMODE==1 && $_SERVER['SERVER_PORT']=='80') header('Location:'.redirectLink());
-	if(defined('SSLMODE') && SSLMODE!=1 && $_SERVER['SERVER_PORT']=='443') header('Location:'.redirectLink());
+	if(defined('SSLMODE') && SSLMODE==1 && $_SERVER['SERVER_PORT']=='80') header('Location:'.get_redirect_link());
+	if(defined('SSLMODE') && SSLMODE!=1 && $_SERVER['SERVER_PORT']=='443') header('Location:'.get_redirect_link());
 
 	//=======================================================
 	// Klasse einbinden
@@ -49,7 +49,7 @@ if( (isset($_REQUEST['module']) && $_REQUEST['module'] == 'download') || (isset(
 
 	if(isset($_REQUEST['module']) && $_REQUEST['module'] == 'download' && isset($_REQUEST['action']))
 	{
-		modulGlobals('download');
+		set_modul_globals('download');
 		$download = new Download;
 
 		switch($_REQUEST['action'])
@@ -87,7 +87,7 @@ if( (isset($_REQUEST['module']) && $_REQUEST['module'] == 'download') || (isset(
 				break;
 
 			case 'secure':
-				$sc = eregi_replace('[^A-Za-zÀ-ßà-ÿ¨¸0-9]', '', $_REQUEST['scode']);
+				$sc = preg_replace('/[^A-Za-zÀ-ßà-ÿ¨¸0-9]/', '', $_REQUEST['scode']);
 				$download->ajaxSecure($sc);
 				break;
 
@@ -112,13 +112,13 @@ if( (isset($_REQUEST['module']) && $_REQUEST['module'] == 'download') || (isset(
 	//=======================================================
 	// Admin - Aktionen
 	//=======================================================
-	if(defined('ACP') && !(isset($_REQUEST['action']) && $_REQUEST['action'] == 'delete'))
+	if (defined('ACP') && !empty($_REQUEST['moduleaction']))
 	{
 		require_once(BASE_DIR . '/modules/download/sql.php');
 
 		$tpl_dir = BASE_DIR . '/modules/download/templates_admin/';
 		$tpl_dir_source = BASE_DIR . '/modules/download/templates_admin';
-		$lang_file = BASE_DIR . '/modules/download/lang/' . $_SESSION['admin_lang'] . '.txt';
+		$lang_file = BASE_DIR . '/modules/download/lang/' . $_SESSION['admin_language'] . '.txt';
 
 		$download = new Download;
 
@@ -127,71 +127,68 @@ if( (isset($_REQUEST['module']) && $_REQUEST['module'] == 'download') || (isset(
 		$GLOBALS['AVE_Template']->assign('config_vars', $config_vars);
 		$GLOBALS['AVE_Template']->assign('source', $tpl_dir_source);
 
-		if(isset($_REQUEST['moduleaction']) && $_REQUEST['moduleaction'] != '')
+		switch($_REQUEST['moduleaction'])
 		{
-			switch($_REQUEST['moduleaction'])
-			{
-				// Kommentare
-				case '1':
-					$download->overView($tpl_dir);
-					break;
+			// Kommentare
+			case '1':
+				$download->overView($tpl_dir);
+				break;
 
-				case 'categs':
-					$download->categs($tpl_dir);
-					break;
+			case 'categs':
+				$download->categs($tpl_dir);
+				break;
 
-				case 'new_categ':
-					$download->newCateg($tpl_dir,$_REQUEST['Id']);
-					break;
+			case 'new_categ':
+				$download->newCateg($tpl_dir,$_REQUEST['Id']);
+				break;
 
-				case 'edit_categ':
-					$download->editCateg($tpl_dir,$_REQUEST['Id']);
-					break;
+			case 'edit_categ':
+				$download->editCateg($tpl_dir,$_REQUEST['Id']);
+				break;
 
-				case 'delcateg':
-					$download->delCategAll($_REQUEST['Id']);
-					break;
+			case 'delcateg':
+				$download->delCategAll($_REQUEST['Id']);
+				break;
 
-				case 'overview':
-					$download->overView($tpl_dir);
-					break;
+			case 'overview':
+				$download->overView($tpl_dir);
+				break;
 
-				case 'edit':
-					$download->editDownload($tpl_dir,$_REQUEST['Id']);
-					break;
+			case 'edit':
+				$download->editDownload($tpl_dir,$_REQUEST['Id']);
+				break;
 
-				case 'new':
-					$download->newDownload($tpl_dir);
-					break;
+			case 'new':
+				$download->newDownload($tpl_dir);
+				break;
 
-				case 'licenses':
-					$download->Licenses($tpl_dir);
-					break;
+			case 'licenses':
+				$download->Licenses($tpl_dir);
+				break;
 
-				case 'languages':
-					$download->Languages($tpl_dir);
-					break;
+			case 'languages':
+				$download->Languages($tpl_dir);
+				break;
 
-				case 'gosettings':
-					$download->Settings($tpl_dir);
-					break;
+			case 'gosettings':
+				$download->Settings($tpl_dir);
+				break;
 
-				case 'editcomments':
-					$download->editComments($tpl_dir,$_REQUEST['Id']);
-					break;
+			case 'editcomments':
+				$download->editComments($tpl_dir,$_REQUEST['Id']);
+				break;
 
-				case 'systems':
-					$download->Systems($tpl_dir);
-					break;
+			case 'systems':
+				$download->Systems($tpl_dir);
+				break;
 
-				case 'setmodus':
-					$download->SetModule($_REQUEST['Status'],$_REQUEST['Id']);
-					break;
+			case 'setmodus':
+				$download->SetModule($_REQUEST['Status'],$_REQUEST['Id']);
+				break;
 
-				case 'payhist':
-					$download->ShowPayHist($tpl_dir);
-					break;
-			}
+			case 'payhist':
+				$download->ShowPayHist($tpl_dir);
+				break;
 		}
 	}
 }

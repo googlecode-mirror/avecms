@@ -10,7 +10,7 @@ class Download {
 	//=======================================================
 	// Wandelt Zeichen in XHTML-Konforme Zeichen um
 	//=======================================================
-	function prettyChars($text)
+	function pretty_chars($text)
 	{
 	  return $text;
 /*
@@ -84,7 +84,7 @@ class Download {
 			foreach($_REQUEST['KatName'] as $id => $KatName)
 			{
 				$GLOBALS['AVE_DB']->Query("UPDATE " . PREFIX . "_modul_download_kat SET
-					KatName = '" . $this->prettyChars($_REQUEST['KatName'][$id]) . "',
+					KatName = '" . pretty_chars($_REQUEST['KatName'][$id]) . "',
 					Rang = '" . $_REQUEST['Rang'][$id] . "'
 				WHERE
 					Id = '$id'");
@@ -190,8 +190,8 @@ class Download {
 
 			$q = "UPDATE " . PREFIX . "_modul_download_kat
 			SET
-				KatName = '" . $this->prettyChars($_POST['KatName']) . "',
-				KatBeschreibung = '" . $this->prettyChars(@$_POST['KatBeschreibung']) . "',
+				KatName = '" . pretty_chars($_POST['KatName']) . "',
+				KatBeschreibung = '" . pretty_chars(@$_POST['KatBeschreibung']) . "',
 				Rang = '" . @$_POST['Rang'] . "',
 				Gruppen = '" . implode('|', $_POST['Gruppen']) . "'
 				$DbImage
@@ -260,9 +260,9 @@ class Download {
 			) VALUES (
 				'',
 				'" . $_POST['Elter'] . "',
-				'" . $this->prettyChars($_POST['KatName']) . "',
+				'" . pretty_chars($_POST['KatName']) . "',
 				'" . $_POST['Rang'] . "',
-				'" . $this->prettyChars($_POST['KatBeschreibung']) . "',
+				'" . pretty_chars($_POST['KatBeschreibung']) . "',
 				'" . @implode('|', $_POST['Gruppen']) . "',
 				'" . $DbImage . "'
 			)");
@@ -383,7 +383,7 @@ class Download {
 		// Es wird ein Such-String angegeben
 		if(isset($_REQUEST['dl_query']) && !empty($_REQUEST['dl_query']))
 		{
-			$_REQUEST['dl_query'] = eregi_replace('[^ _A-Za-zÀ-ßà-ÿ¨¸0-9]', '', $_REQUEST['dl_query']);
+			$_REQUEST['dl_query'] = preg_replace('/[^ _A-Za-zÀ-ßà-ÿ¨¸0-9]/', '', $_REQUEST['dl_query']);
 			$search = " AND Name LIKE '" . $_REQUEST['dl_query'] . "%' ";
 			$search_string = "&amp;dl_query=" . urlencode($_REQUEST['dl_query']);
 			$GLOBALS['AVE_Template']->assign('search_string', $search_string);
@@ -421,16 +421,16 @@ class Download {
 		$num = $sql->NumRows();
 
 		@$seiten = @ceil($num / $limit);
-		$start = prepage() * $limit - $limit;
+		$start = get_current_page() * $limit - $limit;
 
 		$items = array();
 		$query = $GLOBALS['AVE_DB']->Query("SELECT * FROM " . PREFIX . "_modul_download_files WHERE Id != '0' {$q} LIMIT $start,$limit");
 
 		if($num > $limit)
 		{
-			$page_nav = pagenav($seiten, 'page',
-				" <a class=\"pnav\" href=\"index.php?do=modules&action=modedit&mod=download&moduleaction=overview&cp=".SESSION
-				."&page={s}&recordset={$limit}{$name_sort}{$categ_sort}{$search_string}{$search_categ_string}{$aktiv_categ_string}\">{t}</a> ");
+			$page_nav = " <a class=\"pnav\" href=\"index.php?do=modules&action=modedit&mod=download&moduleaction=overview&cp=".SESSION
+				. "&page={s}&recordset={$limit}{$name_sort}{$categ_sort}{$search_string}{$search_categ_string}{$aktiv_categ_string}\">{t}</a> ";
+			$page_nav = get_pagination($seiten, 'page', $page_nav);
 			$GLOBALS['AVE_Template']->assign('page_nav', $page_nav);
 		}
 		$GLOBALS['AVE_Template']->assign('recordset', $this->_file_limit);
@@ -489,7 +489,7 @@ class Download {
 
 		$limit = 5;
 		@$seiten = @ceil($num / $limit);
-		$start = prepage() * $limit - $limit;
+		$start = get_current_page() * $limit - $limit;
 
 		$comments = array();
 		$sql = $GLOBALS['AVE_DB']->Query("SELECT * FROM " . PREFIX . "_modul_download_comments WHERE FileId = '{$id}' ORDER BY Id DESC LIMIT $start,$limit");
@@ -500,8 +500,8 @@ class Download {
 
 		if($num > $limit)
 		{
-			$page_nav = pagenav($seiten, 'page',
-				" <a class=\"pnav\" href=\"index.php?do=modules&action=modedit&mod=download&moduleaction=editcomments&pop=1&Id={$id}&cp=".SESSION."&page={s}\">{t}</a> ");
+			$page_nav = " <a class=\"pnav\" href=\"index.php?do=modules&action=modedit&mod=download&moduleaction=editcomments&pop=1&Id={$id}&cp=".SESSION."&page={s}\">{t}</a> ";
+			$page_nav = get_pagination($seiten, 'page', $page_nav);
 			$GLOBALS['AVE_Template']->assign('page_nav', $page_nav);
 		}
 
@@ -743,7 +743,7 @@ class Download {
 		if(isset($_REQUEST['sub']) && $_REQUEST['sub'] == 'save')
 		{
 			foreach($_POST['Del'] as $id => $del) $GLOBALS['AVE_DB']->Query("DELETE FROM " . PREFIX . "_modul_download_os WHERE Id = '{$id}'");
-			foreach($_POST['Name'] as $id => $name) $GLOBALS['AVE_DB']->Query("UPDATE " . PREFIX . "_modul_download_os SET Name = '" . $this->prettyChars($_POST['Name'][$id]). "' WHERE Id = '{$id}'");
+			foreach($_POST['Name'] as $id => $name) $GLOBALS['AVE_DB']->Query("UPDATE " . PREFIX . "_modul_download_os SET Name = '" . pretty_chars($_POST['Name'][$id]). "' WHERE Id = '{$id}'");
 			header("Location:index.php?do=modules&action=modedit&mod=download&moduleaction=systems&cp=" . SESSION . "&pop=1");
 			exit;
 		}
@@ -751,7 +751,7 @@ class Download {
 		// Neu
 		if(isset($_REQUEST['sub']) && $_REQUEST['sub'] == 'new')
 		{
-			foreach($_POST['Name'] as $New) $GLOBALS['AVE_DB']->Query("INSERT INTO " . PREFIX . "_modul_download_os (Id,Name) VALUES ('', '" . $this->prettyChars($New). "')");
+			foreach($_POST['Name'] as $New) $GLOBALS['AVE_DB']->Query("INSERT INTO " . PREFIX . "_modul_download_os (Id,Name) VALUES ('', '" . pretty_chars($New). "')");
 			header("Location:index.php?do=modules&action=modedit&mod=download&moduleaction=systems&cp=" . SESSION . "&pop=1");
 			exit;
 		}
@@ -776,7 +776,7 @@ class Download {
 		if(isset($_REQUEST['sub']) && $_REQUEST['sub'] == 'save')
 		{
 			foreach($_POST['Del'] as $id => $del) $GLOBALS['AVE_DB']->Query("DELETE FROM " . PREFIX . "_modul_download_lizenzen WHERE Id = '{$id}'");
-			foreach($_POST['Name'] as $id => $name) $GLOBALS['AVE_DB']->Query("UPDATE " . PREFIX . "_modul_download_lizenzen SET Name = '" . $this->prettyChars($_POST['Name'][$id]). "' WHERE Id = '{$id}'");
+			foreach($_POST['Name'] as $id => $name) $GLOBALS['AVE_DB']->Query("UPDATE " . PREFIX . "_modul_download_lizenzen SET Name = '" . pretty_chars($_POST['Name'][$id]). "' WHERE Id = '{$id}'");
 			header("Location:index.php?do=modules&action=modedit&mod=download&moduleaction=licenses&cp=" . SESSION . "&pop=1");
 			exit;
 		}
@@ -784,7 +784,7 @@ class Download {
 		// Neu
 		if(isset($_REQUEST['sub']) && $_REQUEST['sub'] == 'new')
 		{
-			foreach($_POST['Name'] as $New) $GLOBALS['AVE_DB']->Query("INSERT INTO " . PREFIX . "_modul_download_lizenzen (Id,Name) VALUES ('', '" . $this->prettyChars($New). "')");
+			foreach($_POST['Name'] as $New) $GLOBALS['AVE_DB']->Query("INSERT INTO " . PREFIX . "_modul_download_lizenzen (Id,Name) VALUES ('', '" . pretty_chars($New). "')");
 			header("Location:index.php?do=modules&action=modedit&mod=download&moduleaction=licenses&cp=" . SESSION . "&pop=1");
 			exit;
 		}
@@ -809,7 +809,7 @@ class Download {
 		if(isset($_REQUEST['sub']) && $_REQUEST['sub'] == 'save')
 		{
 			foreach($_POST['Del'] as $id => $del) $GLOBALS['AVE_DB']->Query("DELETE FROM " . PREFIX . "_modul_download_sprachen WHERE Id = '{$id}'");
-			foreach($_POST['Name'] as $id => $name) $GLOBALS['AVE_DB']->Query("UPDATE " . PREFIX . "_modul_download_sprachen SET Name = '" . $this->prettyChars($_POST['Name'][$id]). "' WHERE Id = '{$id}'");
+			foreach($_POST['Name'] as $id => $name) $GLOBALS['AVE_DB']->Query("UPDATE " . PREFIX . "_modul_download_sprachen SET Name = '" . pretty_chars($_POST['Name'][$id]). "' WHERE Id = '{$id}'");
 			header("Location:index.php?do=modules&action=modedit&mod=download&moduleaction=languages&cp=" . SESSION . "&pop=1");
 			exit;
 		}
@@ -817,7 +817,7 @@ class Download {
 		// Neu
 		if(isset($_REQUEST['sub']) && $_REQUEST['sub'] == 'new')
 		{
-			foreach($_POST['Name'] as $New) $GLOBALS['AVE_DB']->Query("INSERT INTO " . PREFIX . "_modul_download_sprachen(Id,Name) VALUES ('', '" . $this->prettyChars($New). "')");
+			foreach($_POST['Name'] as $New) $GLOBALS['AVE_DB']->Query("INSERT INTO " . PREFIX . "_modul_download_sprachen(Id,Name) VALUES ('', '" . pretty_chars($New). "')");
 			header("Location:index.php?do=modules&action=modedit&mod=download&moduleaction=languages&cp=" . SESSION . "&pop=1");
 			exit;
 		}

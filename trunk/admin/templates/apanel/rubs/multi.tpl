@@ -1,5 +1,3 @@
-{strip}
-
 <div id="pageHeaderTitle" style="padding-top: 7px;">
 	<div class="h_rubs">&nbsp;</div>
 	<div class="HeaderTitle"><h2>{#RUBRIK_MULTIPLY2#}</h2></div>
@@ -32,5 +30,3 @@
 		</tr>
 	</table>
 </form>
-
-{/strip}

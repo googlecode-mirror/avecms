@@ -1,7 +1,3 @@
-
-<!-- form_after.tpl -->
-{strip}
-
 <div class="pageHeaderTitle">
 	<div class="h_docs">&nbsp;</div>
 	<div class="HeaderTitle">
@@ -80,6 +76,3 @@
 		</form>
 	</div>
 {/if}
-
-{/strip}
-<!-- /form_after.tpl -->

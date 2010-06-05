@@ -1,7 +1,3 @@
-
-<!-- show_stat.tpl -->
-{strip}
-
 <div class="mod_searchbox">
 	<strong>{#COUNTER_SHOW_TITLE#}</strong><br />
 	<br />
@@ -13,6 +9,3 @@
 	    <li>{#COUNTER_SHOW_YEAR#}:{$prevyear}</li>
 	</ul>
 </div>
-
-{/strip}
-<!-- /show_stat.tpl -->

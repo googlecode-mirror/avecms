@@ -1,4 +1,3 @@
-{strip}
 <table width="100%" cellpadding="4" cellspacing="1" class="forum_tableborder">
   <tr>
     <td class="forum_post_first" style="width: 20%">{#TopicTitle#}</td>
@@ -16,4 +15,3 @@
   </tr>
 </table>
 <br />
-{/strip}

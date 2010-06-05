@@ -24,7 +24,7 @@
     {foreach from=$matches item=topic}
 	<tr>
 		<td class="forum_info_icon">{$topic.statusicon}</td>
-		<td class="forum_info_icon">{get_post_icon icon=$topic.posticon theme=$theme}&nbsp;</td>
+		<td class="forum_info_icon">{get_post_icon icon=$topic.posticon theme=$theme_folder}&nbsp;</td>
 	  <td class="forum_info_meta">
 
 <a class="forum_links" href="{$topic.link}&amp;high={$smarty.get.pattern}">{$topic.title|stripslashes}</a><br />

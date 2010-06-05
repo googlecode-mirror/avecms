@@ -7,19 +7,22 @@
  * @filesource
  */
 
-$si = $_GET['cp_secureimage'];
-if (! is_numeric($si)) exit;
+function get_securecode()
+{
+	@require('./db.config.php');
 
-include_once('db.config.php');
-if (! mysql_select_db($config['dbname'], @mysql_connect($config['dbhost'], $config['dbuser'], $config['dbpass']))) die;
-if (! $row = mysql_fetch_assoc(mysql_query("SELECT Code FROM " . $config['dbpref'] . "_antispam WHERE Id = '$si'")))
-{
-	exit;
+	if (! isset($config)) die;
+
+	if (! (isset($config) && isset($_GET['cp_secureimage']) && is_numeric($_GET['cp_secureimage']))) die;
+
+	if (! @mysql_select_db($config['dbname'], @mysql_connect($config['dbhost'], $config['dbuser'], $config['dbpass']))) die;
+
+	if (! $row = mysql_fetch_assoc(mysql_query("SELECT Code FROM " . $config['dbpref'] . "_antispam WHERE Id = '" . $_GET['cp_secureimage'] . "'"))) die;
+
+	return $row['Code'];
 }
-else
-{
-	$code = $row['Code'];
-}
+
+$code = get_securecode();
 
 $font = 'fonts/ft16.ttf';
 $raster = 0;

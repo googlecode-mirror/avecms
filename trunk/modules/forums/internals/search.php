@@ -188,7 +188,8 @@ $search_by_date = "(1)";
 $date_comparator = (@$_GET['b4after'] == 0) ? ' <= ' : ' >= ';
 // Tage
 $divisor = 60 * 60 * 24;
-$search_by_date = (@$_GET['date'] == 0) ? "(1)" : "((UNIX_TIMESTAMP(NOW()) / $divisor - (UNIX_TIMESTAMP(t.datum) / $divisor)) $date_comparator " . $_GET['date'] . ")";
+//$search_by_date = (@$_GET['date'] == 0) ? "(1)" : "((UNIX_TIMESTAMP(NOW()) / $divisor - (UNIX_TIMESTAMP(t.datum) / $divisor)) $date_comparator " . $_GET['date'] . ")";
+$search_by_date = (@$_GET['date'] == 0) ? "(1)" : "(NOW() - INTERVAL " . $_GET['date'] . " DAY $date_comparator t.datum)";
 
 
 $query = "SELECT DISTINCT
@@ -280,24 +281,23 @@ if(!isset($page)){
 }
 
 $seiten = ceil($num / $limit);
-$a = prepage() * $limit - $limit;
+$a = get_current_page() * $limit - $limit;
 
 
-if ($limit < $num) {
-	$GLOBALS['AVE_Template']->assign('pages', pagenav($seiten, 'page',
-		" <a class=\"page_navigation\" href=\"index.php?module=forums&amp;show=search" .
-		"&amp;type=" . $_GET['type'] .
-		"&amp;pattern=" . $_GET['pattern'] .
-		((isset($_GET['user_name']) && $_GET['user_name'] != '') ? "&amp;user_name=" . $_GET['user_name'] : '' ).
-		"&amp;search_in_forums=" . ( (!empty($nav_sinf)) ? $nav_sinf . "&amp;unserialize=1" : "" ) .
-		((isset($_GET['user_opt']) && $_GET['user_opt'] != '') ? "&amp;user_opt=" . $_GET['user_opt'] : '' ).
-		"&amp;search_post=" . $_GET['search_post'] .
-		((isset($_GET['date']) && $_GET['date'] != '') ? "&amp;date=" . $_GET['date'] : '' ).
-		((isset($_GET['b4after']) && $_GET['b4after'] != '') ? "&amp;b4after=" . $_GET['b4after'] : '' ).
-		((isset($_GET['search_sort']) && $_GET['search_sort'] != '') ? "&amp;search_sort=" . $_GET['search_sort'] : '' ).
-		((isset($_GET['ascdesc']) && $_GET['ascdesc'] != '') ? "&amp;ascdesc=" . $_GET['ascdesc'] : '' ).
-		"&amp;pp=" . $limit .
-		"&amp;page={s}\">{t}</a> "));
+if ($num > $limit) {
+	$page_nav = " <a class=\"page_navigation\" href=\"index.php?module=forums&amp;show=search" . "&amp;type=" . $_GET['type']
+		. "&amp;pattern=" . $_GET['pattern']
+		. ((isset($_GET['user_name']) && $_GET['user_name'] != '') ? "&amp;user_name=" . $_GET['user_name'] : '' )
+		. "&amp;search_in_forums=" . ( (!empty($nav_sinf)) ? $nav_sinf . "&amp;unserialize=1" : "" )
+		. ((isset($_GET['user_opt']) && $_GET['user_opt'] != '') ? "&amp;user_opt=" . $_GET['user_opt'] : '' )
+		. "&amp;search_post=" . $_GET['search_post']
+		. ((isset($_GET['date']) && $_GET['date'] != '') ? "&amp;date=" . $_GET['date'] : '' )
+		. ((isset($_GET['b4after']) && $_GET['b4after'] != '') ? "&amp;b4after=" . $_GET['b4after'] : '' )
+		. ((isset($_GET['search_sort']) && $_GET['search_sort'] != '') ? "&amp;search_sort=" . $_GET['search_sort'] : '' )
+		. ((isset($_GET['ascdesc']) && $_GET['ascdesc'] != '') ? "&amp;ascdesc=" . $_GET['ascdesc'] : '' )
+		. "&amp;pp=" . $limit . "&amp;page={s}\">{t}</a> ";
+	$page_nav = get_pagination($seiten, 'page', $page_nav);
+	$GLOBALS['AVE_Template']->assign('pages', $page_nav);
 }
 
 $GLOBALS['AVE_Template']->assign("matches", array_slice($matches, $a, $limit));

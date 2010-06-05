@@ -163,7 +163,6 @@ function zaehle() {ldelim}
 -->
 </script>
 
-{strip}
   <input class="button" accesskey="b" style="width:30px" onclick='easytag("B")' type="button" value="B" name="B" />&nbsp;
   <input class="button" accesskey="i" style="width:30px" onclick='easytag("I")' type="button" value="I" name="I" />&nbsp;
   <input class="button" accesskey="u" style="width:30px" onclick='easytag("U")' type="button" value="U" name="U" />&nbsp;
@@ -173,7 +172,6 @@ function zaehle() {ldelim}
   <input class="button" onclick="closeall();" type="button" value="{#guest_b_closetags#}"/>
   <input name="kmode" type="hidden" />
   <input name="kmode" type="hidden" value="normal" />
-{/strip}
 {/if}
 
       <textarea name="text" cols="80" rows="7" class="inputfield" onfocus="getActiveText(this)" onchange="getActiveText(this)" onclick="getActiveText(this)" onkeyup="javascript:zaehle()">{$smarty.request.gbcomment|escape:'html'}</textarea>

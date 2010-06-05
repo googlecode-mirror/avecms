@@ -14,26 +14,21 @@ if (!defined('ACP'))
 	exit;
 }
 
-include_once(BASE_DIR . '/class/class.docs.php');
-include_once(BASE_DIR . '/class/class.queries.php');
-include_once(BASE_DIR . '/class/class.navigation.php');
+require(BASE_DIR . '/class/class.docs.php');
+require(BASE_DIR . '/class/class.rubs.php');
+require(BASE_DIR . '/class/class.navigation.php');
+require(BASE_DIR . '/class/class.request.php');
 
-$AVE_Document = new AVE_Document;
-$AVE_Query = new AVE_Query;
+$AVE_Document   = new AVE_Document;
+$AVE_Rubric     = new AVE_Rubric;
 $AVE_Navigation = new AVE_Navigation;
+$AVE_Request    = new AVE_Request;
 
-$AVE_Document->rediRubs();
-$AVE_Document->tplTimeAssign();
+$AVE_Document->documentTemplateTimeAssign();
 
-$AVE_Template->assign('navi', $AVE_Template->fetch('navi/navi.tpl'));
+$AVE_Rubric->rubricPermissionFetch();
 
-$AVE_Template->config_load(BASE_DIR . '/admin/lang/' . $_SESSION['admin_lang'] . '/docs.txt', 'docs');
-//$config_vars = $AVE_Template->get_config_vars();
-//$AVE_Template->assign('config_vars', $config_vars);
-
-$_REQUEST['sub']    = (!isset($_REQUEST['sub']))    ? '' : $_REQUEST['sub'];
-$_REQUEST['action'] = (!isset($_REQUEST['action'])) ? '' : $_REQUEST['action'];
-$_REQUEST['submit'] = (!isset($_REQUEST['submit'])) ? '' : $_REQUEST['submit'];
+$AVE_Template->config_load(BASE_DIR . '/admin/lang/' . $_SESSION['admin_language'] . '/docs.txt', 'docs');
 
 switch($_REQUEST['action'])
 {
@@ -46,15 +41,17 @@ switch($_REQUEST['action'])
 					$AVE_Document->quickSave();
 					break;
 			}
-			$AVE_Document->showDocs();
+			$AVE_Document->documentListGet();
 		}
+		$AVE_Template->assign('DEF_DOC_START_YEAR', mktime(0, 0, 0, date("m"), date("d"), date("Y") - 10));
+		$AVE_Template->assign('DEF_DOC_END_YEAR', mktime(0, 0, 0, date("m"), date("d"), date("Y") + 20));
 		$AVE_Template->assign('content', $AVE_Template->fetch('documents/docs.tpl'));
 		break;
 
 	case 'showsimple':
 		if (permCheck('docs'))
 		{
-			$AVE_Document->showDocs();
+			$AVE_Document->documentListGet();
 			$AVE_Template->assign('content', $AVE_Template->fetch('documents/docs_simple.tpl'));
 		}
 		break;
@@ -62,50 +59,50 @@ switch($_REQUEST['action'])
 	case 'edit':
 		if (permCheck('docs'))
 		{
-			$AVE_Navigation->showAllEntries();
-			$AVE_Query->showQueries('extern');
-			$AVE_Document->editDoc((int)$_REQUEST['Id']);
+			$AVE_Navigation->navigationAllItemList();
+			$AVE_Request->requestListFetch();
+			$AVE_Document->documentEdit((int)$_REQUEST['Id']);
 		}
 		break;
 
 	case 'new':
 		if (permCheck('docs'))
 		{
-			$AVE_Navigation->showAllEntries();
-			$AVE_Query->showQueries('extern');
-			$AVE_Document->newDoc((int)$_REQUEST['RubrikId']);
+			$AVE_Navigation->navigationAllItemList();
+			$AVE_Request->requestListFetch();
+			$AVE_Document->documentNew((int)$_REQUEST['RubrikId']);
 		}
 		break;
 
 	case 'open':
 		if (permCheck('docs'))
 		{
-			$AVE_Navigation->statusNavi('1', $_REQUEST['Id']);
-			$AVE_Document->openCloseDoc($_REQUEST['Id'], '1');
+			$AVE_Navigation->navigationItemStatusOn((int)$_REQUEST['Id']);
+			$AVE_Document->documentStatusSet((int)$_REQUEST['Id'], '1');
 		}
 		break;
 
 	case 'close':
 		if (permCheck('docs'))
 		{
-			$AVE_Navigation->statusNavi('0', $_REQUEST['Id']);
-			$AVE_Document->openCloseDoc($_REQUEST['Id'], '0');
+			$AVE_Navigation->navigationItemStatusOff((int)$_REQUEST['Id']);
+			$AVE_Document->documentStatusSet((int)$_REQUEST['Id'], '0');
 		}
 		break;
 
 	case 'delete':
 		if (permCheck('docs'))
 		{
-			$AVE_Navigation->statusNavi('0', $_REQUEST['Id']);
-			$AVE_Document->delDoc($_REQUEST['Id']);
+			$AVE_Navigation->navigationItemStatusOff((int)$_REQUEST['Id']);
+			$AVE_Document->documentMarkDelete((int)$_REQUEST['Id']);
 		}
 		break;
 
 	case 'redelete':
 		if (UGROUP == 1)
 		{
-			$AVE_Navigation->statusNavi('1', $_REQUEST['Id']);
-			$AVE_Document->redelDoc($_REQUEST['Id']);
+			$AVE_Navigation->navigationItemStatusOn((int)$_REQUEST['Id']);
+			$AVE_Document->documentUndelete((int)$_REQUEST['Id']);
 		}
 		else
 		{
@@ -116,8 +113,8 @@ switch($_REQUEST['action'])
 	case 'enddelete':
 		if (UGROUP == 1)
 		{
-			$AVE_Navigation->delNavi($_REQUEST['Id']);
-			$AVE_Document->enddelDoc($_REQUEST['Id']);
+			$AVE_Navigation->navigationItemDelete((int)$_REQUEST['Id']);
+			$AVE_Document->documentDelete((int)$_REQUEST['Id']);
 		}
 		else
 		{
@@ -126,9 +123,9 @@ switch($_REQUEST['action'])
 		break;
 
 	case 'comment':
-		if (checkPermission('docs_comments'))
+		if (check_permission('docs_comments'))
 		{
-			$AVE_Document->newComment();
+			$AVE_Document->documentRemarkNew((int)$_REQUEST['Id'], 0);
 		}
 		else
 		{
@@ -137,9 +134,9 @@ switch($_REQUEST['action'])
 		break;
 
 	case 'comment_reply':
-		if (checkPermission('docs_comments'))
+		if (check_permission('docs_comments'))
 		{
-			$AVE_Document->newComment(1);
+			$AVE_Document->documentRemarkNew((int)$_REQUEST['Id'], 1);
 		}
 		else
 		{
@@ -148,9 +145,9 @@ switch($_REQUEST['action'])
 		break;
 
 	case 'openclose_discussion':
-		if (checkPermission('comments_openlose'))
+		if (check_permission('comments_openlose'))
 		{
-			$AVE_Document->openCloseDiscussion();
+			$AVE_Document->documentRemarkStatus((int)$_REQUEST['Id'], (int)$_REQUEST['Aktiv']);
 		}
 		else
 		{
@@ -159,9 +156,9 @@ switch($_REQUEST['action'])
 		break;
 
 	case 'del_comment':
-		if (checkPermission('docs_comments_del'))
+		if (check_permission('docs_comments_del'))
 		{
-			$AVE_Document->delComment($_REQUEST['KommentarStart']);
+			$AVE_Document->documentRemarkDelete((int)$_REQUEST['Id'], (int)$_REQUEST['KommentarStart']);
 		}
 		else
 		{
@@ -172,19 +169,17 @@ switch($_REQUEST['action'])
 	case 'change':
 		if (permCheck('docs'))
 		{
-			$AVE_Document->changeRubs();
+			$AVE_Document->documentRubricChange();
 		}
 		break;
 
 	case 'translit':
-		echo($AVE_Document->translit());
+		echo($AVE_Document->documentAliasCreate());
 		exit;
-		break;
 
 	case 'checkurl':
-		echo($AVE_Document->checkurl());
+		echo($AVE_Document->documentAliasCheck());
 		exit;
-		break;
 }
 
 ?>

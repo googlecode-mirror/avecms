@@ -17,7 +17,7 @@ if(!defined('ACP'))
 cntStat();
 NaviModule();
 
-$AVE_Template->config_load(BASE_DIR . '/admin/lang/' . $_SESSION['admin_lang'] . '/main.txt', 'index');
+//$AVE_Template->config_load(BASE_DIR . '/admin/lang/' . $_SESSION['admin_language'] . '/main.txt', 'index');
 $AVE_Template->assign('php_version', (@PHP_VERSION != '') ? @PHP_VERSION : 'unknow');
 $AVE_Template->assign('mysql_version', $GLOBALS['AVE_DB']->mysql_version());
 $AVE_Template->assign('cache_size', formatsize(dirsize($AVE_Template->compile_dir)+dirsize($AVE_Template->cache_dir)));

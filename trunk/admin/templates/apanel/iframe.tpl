@@ -1,5 +1,3 @@
-{strip}
-
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
 <head>
@@ -21,10 +19,8 @@
 <body>
 <table width="100%" border="0" cellspacing="0" cellpadding="0">
 	<tr>
-		<td valign="top">{/strip}{$content}{strip}</td>
+		<td valign="top">{$content}</td>
 	</tr>
 </table>
 </body>
 </html>
-
-{/strip}

@@ -1,6 +1,5 @@
 <script language="Javascript" type="text/javascript" src="editarea/edit_area_full.js"></script>
 <script language="Javascript" type="text/javascript" src="editarea/rubrics.js"></script>
-{strip}
 
 <div id="pageHeaderTitle" style="padding-top: 7px;">
 	<div class="h_rubs">&nbsp;</div>
@@ -103,5 +102,3 @@
 		</tr>
 	</table>
 </form>
-
-{/strip}

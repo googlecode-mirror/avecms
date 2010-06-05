@@ -5,11 +5,11 @@
 <table width="100%"  border="0" cellspacing="0" cellpadding="0">
   <tr>
   <td>
-   
+
    <a class="forum_links_navi" href="index.php?module=forums">{#PageNameForums#}</a>
    {#ForumSep#}{#PostsFrom#} <a class="forum_links_navi" href="index.php?module=forums&amp;show=userprofile&amp;user_id={$smarty.request.user_id}">{$poster->Poster}</a> ({$post_count})</strong>  </td>
     <td><div align="right">
-	
+
 	{$pages}
 <form method="get">
   <select name="pp">
@@ -47,7 +47,7 @@
     <td width="75%" valign="top" class="forum_post_second">
       {if $post->title != ""}
       <strong>
-        {$post->title}      </strong> 
+        {$post->title}      </strong>
 		<br />
       {/if}
       {$post->message}    </td>
@@ -56,16 +56,16 @@
     <td class="lastthreads_first">
     	<div align="right">
 		{if $post->datum|date_format:'%d.%m.%Y' == $smarty.now|date_format:'%d.%m.%Y'}
-			{#Today#},&nbsp;{$post->datum|date_format:$config_vars.DateFormatTimeThread}
+			{#Today#},&nbsp;{$post->datum|date_format:$smarty.config.DateFormatTimeThread}
 		{else}
-			{$post->datum|date_format:$config_vars.DateFormatTimeThread}
+			{$post->datum|date_format:$smarty.config.DateFormatTimeThread}
 		{/if}
-    
-		
+
+
 		{if $post->flink=='no'}
-		
+
 		{else}
-		&nbsp;|&nbsp;{#PageNameForums#}: 
+		&nbsp;|&nbsp;{#PageNameForums#}:
 			<a href="index.php?module=forums&show=showforum&fid={$post->forum_id}">{$post->forum_title}</a>
 		{/if}
 		</div>
@@ -77,7 +77,7 @@
 <table width="100%"  border="0" cellspacing="0" cellpadding="0">
   <tr>
     <td><div align="right">
-	
+
 	{$pages}
 <form method="get">
   <select name="pp">

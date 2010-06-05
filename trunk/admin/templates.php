@@ -8,20 +8,16 @@
  * @filesource
  */
 
-global $AVE_DB, $AVE_Template;
-
 if (!defined('ACP'))
 {
 	header('Location:index.php');
 	exit;
 }
 
-$AVE_Template->config_load(BASE_DIR . '/admin/lang/' . $_SESSION['admin_lang'] . '/templates.txt');
-$config_vars = $AVE_Template->get_config_vars();
+global $AVE_DB, $AVE_Template;
 
-$AVE_Template->assign('config_vars', $config_vars);
+$AVE_Template->config_load(BASE_DIR . '/admin/lang/' . $_SESSION['admin_language'] . '/templates.txt');
 
-$_REQUEST['action'] = (!isset($_REQUEST['action'])) ? '' : addslashes($_REQUEST['action']);
 $formaction = (isset($_REQUEST['action']) && $_REQUEST['action'] == 'new')
 	? 'index.php?do=templates&action=new&sub=savenew'
 	: 'index.php?do=templates&action=edit&sub=save';
@@ -31,13 +27,13 @@ function fetchPrefabTemplates()
 {
 	global $AVE_Template;
 
-	if (checkPermission('vorlagen_neu'))
+	if (check_permission('vorlagen_neu'))
 	{
 		$verzname = BASE_DIR . '/inc/data/prefabs/templates';
 		$dht = opendir($verzname);
 		$sel_theme = '';
 
-		while(gettype($theme = readdir($dht)) != @boolean)
+		while (gettype($theme = readdir($dht)) != @boolean)
 		{
 			if (is_file( $verzname . '/' . $theme) && $theme != '.' && $theme != '..')
 			{
@@ -61,23 +57,22 @@ function fetchPrefabTemplates()
 switch ($_REQUEST['action'])
 {
 	case'':
-		if (checkPermission('vorlagen'))
+		if (check_permission('vorlagen'))
 		{
 			$items   = array();
 			$num_tpl = $AVE_DB->Query("
 				SELECT COUNT(*)
 				FROM " . PREFIX . "_templates
-			")
-			->GetCell();
+			")->GetCell();
 
 			$page_limit = (isset($_REQUEST['set']) && is_numeric($_REQUEST['set'])) ? (int)$_REQUEST['set'] : 15;
 			$seiten     = ceil($num_tpl / $page_limit);
-			$set_start  = prepage() * $page_limit - $page_limit;
+			$set_start  = get_current_page() * $page_limit - $page_limit;
 
 			if ($num_tpl > $page_limit)
 			{
-				$page_nav = pagenav($seiten, 'page',
-					" <a class=\"pnav\" href=\"index.php?do=templates&page={s}&amp;cp=" . SESSION. "\">{t}</a> ");
+				$page_nav = " <a class=\"pnav\" href=\"index.php?do=templates&page={s}&amp;cp=" . SESSION. "\">{t}</a> ";
+				$page_nav = get_pagination($seiten, 'page', $page_nav);
 				$AVE_Template->assign('page_nav', $page_nav);
 			}
 
@@ -89,19 +84,20 @@ switch ($_REQUEST['action'])
 
 			while ($row = $sql->FetchRow())
 			{
-				$row_rub = $AVE_DB->Query("
-					SELECT Vorlage
-					FROM " . PREFIX . "_rubrics
-					WHERE Vorlage = '" . $row->Id . "'
-				")
-				->FetchRow();
+				$inuse = $AVE_DB->Query("
+					SELECT 1
+					FROM
+						" . PREFIX . "_rubrics AS rubric,
+						" . PREFIX . "_module AS module
+					WHERE
+						rubric.Vorlage = '" . $row->Id . "' OR
+						module.Template = '" . $row->Id . "'
+					LIMIT 1
+				")->NumRows();
 
-				if (@$row_rub->Vorlage != $row->Id)
-				{
-					$row->can_deleted = 1;
-				}
+				if (!$inuse) $row->can_deleted = 1;
 
-				$row->TBenutzer = getUserById($row->TBenutzer);
+				$row->TBenutzer = get_username_by_id($row->TBenutzer);
 				array_push($items, $row);
 				unset($row);
 			}
@@ -117,15 +113,15 @@ switch ($_REQUEST['action'])
 
 
 	case 'new':
-		if (checkPermission('vorlagen_neu'))
+		if (check_permission('vorlagen_neu'))
 		{
-			$_REQUEST['sub'] = (isset($_REQUEST['sub'])) ? addslashes($_REQUEST['sub']) : '';
+			$_REQUEST['sub'] = (isset($_REQUEST['sub'])) ? $_REQUEST['sub'] : '';
 			switch ($_REQUEST['sub'])
 			{
 				case 'savenew':
 					$save = true;
 
-					$row->Template = prettyChars($_REQUEST['Template']);
+					$row->Template = pretty_chars($_REQUEST['Template']);
 					$row->Template = stripslashes($row->Template);
 					$row->TplName  = stripslashes($_REQUEST['TplName']);
 
@@ -135,7 +131,7 @@ switch ($_REQUEST['action'])
 					}
 
 					$check_code = strtolower($_REQUEST['Template']);
-					if (isPhpCode($check_code) && checkPermission('vorlagen_php') )
+					if (isPhpCode($check_code) && check_permission('vorlagen_php') )
 					{
 						$AVE_Template->assign('php_forbidden', 1);
 						$save = false;
@@ -156,13 +152,15 @@ switch ($_REQUEST['action'])
 							SET
 								Id        = '',
 								TplName   = '" . $_REQUEST['TplName'] . "',
-								Template  = '" . prettyChars($_REQUEST['Template']) . "',
+								Template  = '" . pretty_chars($_REQUEST['Template']) . "',
 								TBenutzer = '" . $_SESSION['user_id'] . "',
 								TDatum    = '" . time() . "'
 						");
 
-						reportLog($_SESSION['user_name'] . ' - создал шаблон (' . $_REQUEST['TplName'] . ')', 2, 2);
+						reportLog($_SESSION['user_name'] . ' - создал шаблон (' . stripslashes($_REQUEST['TplName']) . ')', 2, 2);
+
 						header('Location:index.php?do=templates');
+						exit;
 					}
 					break;
 
@@ -181,18 +179,18 @@ switch ($_REQUEST['action'])
 
 
 	case 'delete' :
-		if (checkPermission('vorlagen_loesch'))
+		if (check_permission('vorlagen_loesch'))
 		{
 			$Used = $AVE_DB->Query("
 				SELECT Vorlage
 				FROM " . PREFIX . "_rubrics
 				WHERE Vorlage = '" . (int)$_REQUEST['Id'] . "'
-			")
-			->GetCell();
+			")->GetCell();
 
 			if ($Used >= 1 || $_REQUEST['Id'] == 1)
 			{
 				reportLog($_SESSION['user_name'] . ' - попытка удаления основного шаблона (' . (int)$_REQUEST['Id'] . ')', 2, 2);
+
 				header('Location:index.php?do=templates');
 				exit;
 			}
@@ -211,7 +209,9 @@ switch ($_REQUEST['action'])
 					DELAY_KEY_WRITE = 0
 					AUTO_INCREMENT = 1
 				");
+
 				reportLog($_SESSION['user_name'] . ' - удалил шаблон (' . (int)$_REQUEST['Id'] . ') ', 2, 2);
+
 				header('Location:index.php?do=templates');
 				exit;
 			}
@@ -223,21 +223,20 @@ switch ($_REQUEST['action'])
 		break;
 
 	case 'edit':
-		if (checkPermission('vorlagen_edit'))
+		if (check_permission('vorlagen_edit'))
 		{
-			$_REQUEST['sub'] = (!isset($_REQUEST['sub'])) ? '' : addslashes($_REQUEST['sub']);
+			$_REQUEST['sub'] = (!isset($_REQUEST['sub'])) ? '' : $_REQUEST['sub'];
 			switch ($_REQUEST['sub'])
 			{
 				case '':
 					$row = $AVE_DB->Query("
 						SELECT *
 						FROM " . PREFIX . "_templates
-						WHERE Id = '" . addslashes($_REQUEST['Id']) . "'
-					")
-					->FetchRow();
+						WHERE Id = '" . $_REQUEST['Id'] . "'
+					")->FetchRow();
 
 					$check_code = strtolower($row->Template);
-					if (isPhpCode($check_code) && !checkPermission('vorlagen_php'))
+					if (isPhpCode($check_code) && !check_permission('vorlagen_php'))
 					{
 						$AVE_Template->assign('php_forbidden', 1);
 						$AVE_Template->assign('read_only', 'readonly');
@@ -245,7 +244,7 @@ switch ($_REQUEST['action'])
 
 					$AVE_Template->assign('tags', fetchTplTags(BASE_DIR . '/inc/data/vorlage.php'));
 
-					$row->Template = prettyChars($row->Template);
+					$row->Template = pretty_chars($row->Template);
 					$row->Template = stripslashes($row->Template);
 					$AVE_Template->assign('row', $row);
 					break;
@@ -253,23 +252,22 @@ switch ($_REQUEST['action'])
 				case 'save':
 					$ok = true;
 					$check_code = strtolower($_REQUEST['Template']);
-					if (isPhpCode($check_code) && !checkPermission('vorlagen_php') )
+					if (isPhpCode($check_code) && !check_permission('vorlagen_php') )
 					{
-						reportLog($_SESSION['user_name'] . ' - попытка использования PHP кода в шаблоне (' . $_REQUEST['TplName'] . ')', 2, 2);
+						reportLog($_SESSION['user_name'] . ' - пытался использовать PHP кода в шаблоне (' . stripslashes($_REQUEST['TplName']) . ')', 2, 2);
 						$AVE_Template->assign('php_forbidden', 1);
 						$ok = false;
 					}
 
 					if (!$ok)
 					{
-						reportLog($_SESSION['user_name'] . ' - ошибка при изменении шаблона (' . $_REQUEST['TplName'] . ')', 2, 2);
 						$row->Template = stripslashes($_REQUEST['Template']);
 						$AVE_Template->assign('row', $row);
 						$AVE_Template->assign('tags', fetchTplTags(BASE_DIR . '/inc/data/vorlage.php'));
 					}
 					else
 					{
-						reportLog($_SESSION['user_name'] . ' - изменил шаблон (' . $_REQUEST['TplName'] . ')', 2, 2);
+						reportLog($_SESSION['user_name'] . ' - изменил шаблон (' . stripslashes($_REQUEST['TplName']) . ')', 2, 2);
 						$AVE_DB->Query("
 							UPDATE " . PREFIX . "_templates
 							SET
@@ -291,9 +289,9 @@ switch ($_REQUEST['action'])
 		break;
 
 	case 'multi':
-		if (checkPermission('vorlagen_multi'))
+		if (check_permission('vorlagen_multi'))
 		{
-			$_REQUEST['sub'] = (!isset($_REQUEST['sub'])) ? '' : addslashes($_REQUEST['sub']);
+			$_REQUEST['sub'] = (!isset($_REQUEST['sub'])) ? '' : $_REQUEST['sub'];
 			$errors = array();
 			switch ($_REQUEST['sub'])
 			{
@@ -302,44 +300,44 @@ switch ($_REQUEST['action'])
 					$row = $AVE_DB->Query("
 						SELECT TplName
 						FROM " . PREFIX . "_templates
-						WHERE TplName = '" . addslashes($_REQUEST['TplName']) . "'
-					")
-					->FetchRow();
+						WHERE TplName = '" . $_REQUEST['TplName'] . "'
+					")->FetchRow();
 
 					if (@$row->TplName != '')
 					{
-						array_push($errors, $GLOBALS['config_vars']['TEMPLATES_EXIST']);
+						array_push($errors, $AVE_Template->get_config_vars('TEMPLATES_EXIST'));
 						$AVE_Template->assign('errors', $errors);
 						$ok = false;
 					}
 
 					if ($_REQUEST['TplName'] == '')
 					{
-						array_push($errors, $GLOBALS['config_vars']['TEMPLATES_NO_NAME']);
+						array_push($errors, $AVE_Template->get_config_vars('TEMPLATES_NO_NAME'));
 						$AVE_Template->assign('errors', $errors);
 						$ok = false;
 					}
 
 					if ($ok)
 					{
-						reportLog($_SESSION['user_name'] . ' - создал копию шаблона (' . (int)$_REQUEST['oId'] . ')', 2, 2);
 						$row = $AVE_DB->Query("
 							SELECT Template
 							FROM " . PREFIX . "_templates
 							WHERE Id = '" . (int)$_REQUEST['Id'] . "'
-						")
-						->FetchRow();
+						")->FetchRow();
 
 						$AVE_DB->Query("
 							INSERT
 							INTO " . PREFIX . "_templates
 							SET
 								Id = '',
-								TplName = '" . htmlspecialchars($_REQUEST['TplName']) . "',
+								TplName = '" . $_REQUEST['TplName'] . "',
 								Template = '" . addslashes($row->Template) . "',
 								TBenutzer = '" . $_SESSION['user_id'] . "',
 								TDatum = '" . time() . "'
 						");
+
+						reportLog($_SESSION['user_name'] . ' - создал копию шаблона (' . (int)$_REQUEST['oId'] . ')', 2, 2);
+
 						echo '<script>window.opener.location.reload();window.close();</script>';
 					}
 					break;

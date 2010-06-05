@@ -133,4 +133,4 @@ DOC_URL_ERROR_EMTY       = " нечего проверять "
 DOC_URL_ERROR_DUPLICATES = " псевдоним уже используется "
 DOC_URL_CHECK_OK         = " можно использовать "
 
-DOC_QUERY_NOT_INFO       = "Для данного запроса описания нет."
+DOC_REQUEST_NOT_INFO       = "Для данного запроса описания нет."

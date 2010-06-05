@@ -1,5 +1,3 @@
-{strip}
-
 <h4>{#ProductPrice#}</h4>
 
 <form name="form1" method="post" action="index.php?do=modules&action=modedit&mod=shop&moduleaction=staffel_preise&cp={$sess}&pop=1&Id={$smarty.request.Id}&sub=save">
@@ -58,5 +56,3 @@
 <p align="center">
 	<input type="button" onclick="window.close();" class="button" value="{#WindowClose#}" />
 </p>
-
-{/strip}

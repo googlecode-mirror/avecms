@@ -24,27 +24,30 @@ function mod_recommend() {
 //	require_once(BASE_DIR . '/modules/recommend/class.recommend.php');
 //	require_once(BASE_DIR . '/functions/func.modulglobals.php');
 //
-//	modulGlobals('recommend');
+//	set_modul_globals('recommend');
 //	$recommend = new Recommend;
 //	$recommend->displayLink();
-	echo "<a href=\"javascript:void(0);\" onclick=\"popup('index.php?module=recommend&amp;action=form&amp;pop=1&amp;theme_folder=ave&amp;page=",
-		base64_encode(redirectLink()), "','recommend','500','380','1')\">Рекомендовать сайт</a>";
+	echo "<a href=\"javascript:void(0);\" onclick=\"popup('", ABS_PATH,
+		"index.php?module=recommend&amp;action=form&amp;pop=1&amp;theme_folder=ave&amp;page=",
+		base64_encode(get_redirect_link()), "','recommend','500','380','1')\">Рекомендовать сайт</a>";
 }
 
-if(isset($_REQUEST['module']) && $_REQUEST['module'] == 'recommend' && isset($_REQUEST['action'])) {
+if (isset($_REQUEST['module']) && $_REQUEST['module'] == 'recommend' && isset($_REQUEST['action']))
+{
 	require_once(BASE_DIR . '/modules/recommend/class.recommend.php');
 	require_once(BASE_DIR . '/functions/func.modulglobals.php');
 
-	switch($_REQUEST['action']) {
+	set_modul_globals('recommend');
+
+	$recommend = new Recommend;
+
+	switch ($_REQUEST['action'])
+	{
 		case 'form':
-			modulGlobals('recommend');
-			$recommend = new Recommend;
 			$recommend->displayForm($_REQUEST['theme_folder']);
 			break;
 
 		case 'recommend':
-			modulGlobals('recommend');
-			$recommend = new Recommend;
 			$recommend->sendForm($_REQUEST['theme_folder']);
 			break;
 	}

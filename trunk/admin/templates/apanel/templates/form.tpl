@@ -1,7 +1,3 @@
-
-<!-- form.tpl -->
-{*strip*}
-
 <script language="Javascript" type="text/javascript" src="editarea/edit_area_full.js"></script>
 <script language="Javascript" type="text/javascript" src="editarea/templates.js"></script>
 
@@ -95,7 +91,7 @@
 
 					<tr>
 						<td class="first">
-							<a title="{#TEMPLATES_TAG_INSERT#}" href="javascript:void(0);" onclick="editAreaLoader.insertTags('{$js_textfeld}', '[theme_folder:',']');">[theme_folder:ave]</a>
+							<a title="{#TEMPLATES_TAG_INSERT#}" href="javascript:void(0);" onclick="editAreaLoader.insertTags('{$js_textfeld}', '[cp:theme:',']');">[cp:theme:folder]</a>
 						</td>
 						<td class="first">{#TEMPLATES_THEME_FOLDER#}</td>
 					</tr>
@@ -233,6 +229,3 @@
 		</tr>
 	</form>
 </table>
-
-{*/strip*}
-<!-- /form.tpl -->

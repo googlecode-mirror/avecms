@@ -1,4 +1,3 @@
-{strip}
 <p><strong>{$poll->title}</strong></p>
 <form method="post" action="{$formaction}">
 		<p>
@@ -9,4 +8,3 @@
 		<input type="submit" style="width:80px" class="button" value="{#POLL_BUTTON_VOTE#}" />&nbsp;
 		<input type="button" style="width:80px" class="button" value="{#POLL_PUB_RESULTS#}" onclick="location.href='{$formaction_result}';" />
 	</form>
-{/strip}

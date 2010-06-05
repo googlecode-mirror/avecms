@@ -20,7 +20,7 @@
   <tr style="background-color: #eff3eb;" onmouseover="this.style.backgroundColor='#dae0d8';" onmouseout="this.style.backgroundColor='#eff3eb';" id="table_rows">
    <td align="center">{$item->id}</td>
 	<td><a title="{#ROADMAP_EDIT_TASK#}" href="javascript:void(0);" onclick="cp_pop('index.php?do=modules&action=modedit&mod=roadmap&moduleaction=edit_task&cp={$sess}&id={$item->id}&pop=1','780','480','1','');">{$item->task_desc}</a></td>
-    <td>{$item->firstname} {$item->lastname}</td>
+    <td>{$row->username|escape}</td>
     <td>{$item->priority}</td>
     <td width="1%" align="center">
 	  <a title="{#ROADMAP_EDIT_TASK#}" href="javascript:void(0);" onclick="cp_pop('index.php?do=modules&action=modedit&mod=roadmap&moduleaction=edit_task&cp={$sess}&id={$item->id}&pop=1','780','480','1','');"><img src="{$tpl_dir}/images/icon_edit.gif" alt="" border="0" /></a></td>

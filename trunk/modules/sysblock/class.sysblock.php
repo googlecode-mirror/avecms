@@ -5,6 +5,7 @@
  *
  * @filesource
  */
+
 /**
  * Класс работы с системными блоками
  *
@@ -18,30 +19,31 @@ class sysblock
 	 *
 	 * @param string $tpl_dir - путь к папке с шаблонами модуля
 	 */
-	function ListBlock($tpl_dir)
+	function sysblockList($tpl_dir)
 	{
 		global $AVE_DB, $AVE_Template;
 
-		$sysBlock = array();
+		$sysblocks = array();
 		$sql = $AVE_DB->Query("SELECT * FROM " . PREFIX . "_modul_sysblock");
 		while ($result = $sql->FetchRow())
 		{
-			array_push($sysBlock, $result);
+			array_push($sysblocks, $result);
 		}
 
-		$AVE_Template->assign('SysBlock', $sysBlock);
+		$AVE_Template->assign('sysblocks', $sysblocks);
 		$AVE_Template->assign('content', $AVE_Template->fetch($tpl_dir . 'admin_list.tpl'));
 	}
 
 	/**
 	 * Сохранение системного блока
 	 *
+	 * @param int $sysblock_id идентификатор системного блока
 	 */
-	function SaveBlock()
+	function sysblockSave($sysblock_id = null)
 	{
 		global $AVE_DB;
 
-		if (isset($_REQUEST['id']) && is_numeric($_REQUEST['id']))
+		if (is_numeric($sysblock_id))
 		{
 			$AVE_DB->Query("
 				UPDATE " . PREFIX . "_modul_sysblock
@@ -49,7 +51,7 @@ class sysblock
 					sysblock_name = '" . $_POST['sysblock_name'] . "',
 					sysblock_text = '" . $_POST['sysblock_text'] . "'
 				WHERE
-					id = '" . $_REQUEST['id'] . "'
+					id = '" . $sysblock_id . "'
 			");
 		}
 		else
@@ -70,18 +72,19 @@ class sysblock
 	/**
 	 * Редактирование системного блока
 	 *
+	 * @param int $sysblock_id идентификатор системного блока
 	 * @param string $tpl_dir - путь к папке с шаблонами модуля
 	 */
-	function EditBlock($tpl_dir)
+	function sysblockEdit($sysblock_id, $tpl_dir)
 	{
 		global $AVE_DB, $AVE_Template;
 
-		if (isset($_REQUEST['id']) && is_numeric($_REQUEST['id']))
+		if (is_numeric($sysblock_id))
 		{
 			$sql = $AVE_DB->Query("
 				SELECT *
 				FROM " . PREFIX . "_modul_sysblock
-				WHERE id = '" . $_REQUEST['id'] . "'
+				WHERE id = '" . $sysblock_id . "'
 			");
 
 			$row = $sql->FetchAssocArray();
@@ -104,48 +107,22 @@ class sysblock
 	/**
 	 * Удаление системного блока
 	 *
+	 * @param int $sysblock_id идентификатор системного блока
 	 */
-	function DelBlock()
+	function sysblockDelete($sysblock_id)
 	{
 		global $AVE_DB;
 
-		if (isset($_REQUEST['id']) && is_numeric($_REQUEST['id']))
+		if (is_numeric($sysblock_id))
 		{
 			$AVE_DB->Query("
 				DELETE
 				FROM " . PREFIX . "_modul_sysblock
-				WHERE id = '" . $_REQUEST['id'] . "'
+				WHERE id = '" . $sysblock_id . "'
 			");
 		}
 
 		header('Location:index.php?do=modules&action=modedit&mod=sysblock&moduleaction=1&cp=' . SESSION);
-	}
-
-	/**
-	 * Вывод текстового блока
-	 *
-	 * @param int $id идентификатор системного блока
-	 */
-	function ShowSysBlock($id)
-	{
-		global $AVE_DB, $Shared;
-
-		if (is_numeric($id))
-		{
-			$sql = $AVE_DB->Query("
-				SELECT sysblock_text
-				FROM " . PREFIX . "_modul_sysblock
-				WHERE id = '" . $id . "'
-				LIMIT 1
-			");
-			$return = prettyChars($sql->GetCell());
-			$return = str_replace('[cp:mediapath]', BASE_PATH . 'templates/' . THEME_FOLDER . '/', $return);
-//			$return = parseModuleTag($return);
-//			$return = stripslashes(hide($return));
-			$return = hide($return);
-
-			eval ('?>' . $return . '<?');
-		}
 	}
 }
 

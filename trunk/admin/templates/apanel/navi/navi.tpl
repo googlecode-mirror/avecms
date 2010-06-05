@@ -1,47 +1,43 @@
-{strip}
-
-{if checkPermission('docs')}
+{if check_permission('docs')}
 	{include file='documents/nav.tpl'}
 {/if}
 
-{if checkPermission('rubriken') || checkPermission('rubs')}
+{if check_permission('rubriken') || check_permission('rubs')}
 	{include file='rubs/nav.tpl'}
 {/if}
 
-{if checkPermission('abfragen')}
-	{include file='queries/nav.tpl'}
+{if check_permission('abfragen')}
+	{include file='request/nav.tpl'}
 {/if}
 
-{if checkPermission('navigation')}
+{if check_permission('navigation')}
 	{include file='navigation/nav.tpl'}
 {/if}
 
-{if checkPermission('vorlagen') || checkPermission('vorlagen_multi') || checkPermission('vorlagen_loesch') || checkPermission('vorlagen_edit') || checkPermission('vorlagen_neu')}
+{if check_permission('vorlagen') || check_permission('vorlagen_multi') || check_permission('vorlagen_loesch') || check_permission('vorlagen_edit') || check_permission('vorlagen_neu')}
 	{include file='templates/nav.tpl'}
 {/if}
 
-{if checkPermission('modules')}
+{if check_permission('modules')}
 	{include file='modules/nav.tpl'}
 {/if}
 
-{if checkPermission('user')}
+{if check_permission('user')}
 	{include file='user/nav.tpl'}
 {/if}
 
-{if checkPermission('group')}
+{if check_permission('group')}
 	{include file='groups/nav.tpl'}
 {/if}
 
-{if checkPermission('gen_settings')}
+{if check_permission('gen_settings')}
 	{include file='settings/nav.tpl'}
 {/if}
 
-{if checkPermission('dbactions')}
+{if check_permission('dbactions')}
 	{include file='dbactions/nav.tpl'}
 {/if}
 
-{if checkPermission('logs')}
+{if check_permission('logs')}
 	{include file='logs/nav.tpl'}
 {/if}
-
-{/strip}

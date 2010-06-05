@@ -1,5 +1,3 @@
-{strip}
-
 <table border="0" cellpadding="2" cellspacing="1" width="100%" id="ModuleMenu">
 	<tr>
 		<td width="10%"{if $smarty.request.moduleaction=='1'}class="over"{/if}><a href="index.php?do=modules&action=modedit&mod=shop&moduleaction=1&cp={$sess}">&raquo;&nbsp;{#ShopStart#}</a></td>
@@ -34,5 +32,3 @@
 		<td width="10%">&nbsp;</td>
 	</tr>
 </table>
-
-{/strip}

@@ -17,6 +17,12 @@ class AVE_Module
  *	СВОЙСТВА
  */
 
+
+/**
+ *	ВНУТРЕННИЕ МЕТОДЫ
+ */
+
+
 /**
  *	ВНЕШНИЕ МЕТОДЫ
  */
@@ -25,90 +31,99 @@ class AVE_Module
 	 * Список доступных модулей
 	 *
 	 */
-	function showModules()
+	function moduleList()
 	{
 		global $AVE_DB, $AVE_Template;
 
-		$modules = array();
-
-		$all_templates = array();
-		$sql = $AVE_DB->Query("SELECT * FROM " . PREFIX . "_templates");
-		while ($row = $sql->FetchRow())
-		{
-			array_push($all_templates, $row);
-		}
-
-		$install_modules = array();
-		$sql = $AVE_DB->Query("SELECT * FROM " . PREFIX . "_module");
-		while ($row = $sql->FetchRow())
-		{
-			$install_modules[$row->ModulName] = $row;
-		}
+		$assign = array();
+		$installed_modules = array();
+		$not_installed_modules = array();
+		$errors = array();
+		$skip_dirs = array('.', '..', '.svn', '_svn');
 
 		$author_title = $AVE_Template->get_config_vars('MODULES_AUTHOR');
+
+		$all_templates = array();
+		$sql = $AVE_DB->Query("
+			SELECT
+				Id,
+				TplName
+			FROM " . PREFIX . "_templates
+		");
+		while ($row = $sql->FetchRow())
+		{
+			$all_templates[$row->Id] = htmlspecialchars($row->TplName, ENT_QUOTES);
+		}
+
+		$modules = $this->moduleListGet();
+
 		$dir = BASE_DIR . '/modules';
 		$d = dir($dir);
 		while (false !== ($entry = $d->read()))
 		{
-			if ($entry!='.' && $entry!='..' && $entry!='.svn' && $entry!='_svn')
+			if (!in_array($entry, $skip_dirs))
 			{
 				$entry = $dir . '/' . $entry;
 				if (is_dir($entry))
 				{
-					if (!include($entry . '/modul.php')) echo $AVE_Template->get_config_vars('MODULES_ERROR') . $entry . '<br />';
+					$modul = $mod = '';
 
-					$row = !empty($install_modules[$modul['ModulName']]) ? $install_modules[$modul['ModulName']] : false;
-
-					if ($row)
+					if (@ !include($entry . '/modul.php'))
 					{
-						$mod->status     = $row->Status;
-						$mod->id         = $row->Id;
-						$mod->mod_id     = $row->Id;
-						$mod->version    = $row->Version;
-						$mod->mod_update = ($row->Version < $modul['ModulVersion']) ? 1 : 0;
+						$errors[] = $AVE_Template->get_config_vars('MODULES_ERROR') . $entry;
 					}
 					else
 					{
-						$mod->status     = 0;
-						$mod->id         = $modul['ModulPfad'];
-						$mod->mod_id     = '';
-						$mod->version    = $modul['ModulVersion'];
-						$mod->mod_update = 0;
+						$row = !empty($modules[$modul['ModulName']])
+							? $modules[$modul['ModulName']]
+							: false;
+
+						$mod->permission = check_permission('mod_' . $modul['ModulPfad']);
+						$mod->adminedit  = !empty($modul['AdminEdit']);
+						$mod->path       = $modul['ModulPfad'];
+						$mod->name       = $modul['ModulName'];
+						$mod->tag        = $modul['CpEngineTagTpl'];
+						$mod->info       = $modul['Beschreibung']
+											. '<br><br><b>' . $author_title . '</b>'
+											. '<br>' . $modul['Autor']
+											. '<br><em>' . $modul['MCopyright'] . '</em>';
+
+						if ($row)
+						{
+							$mod->status      = $row->Status;
+							$mod->id          = $row->Id;
+							$mod->version     = $row->Version;
+							$mod->need_update = ($row->Version < $modul['ModulVersion']);
+							$mod->template    = isset($row->Template) ? $row->Template : '';
+
+							$installed_modules[$mod->name] = $mod;
+						}
+						else
+						{
+							$mod->status      = false;
+							$mod->id          = $modul['ModulPfad'];
+							$mod->version     = $modul['ModulVersion'];
+							$mod->template    = isset($modul['ModulTemplate']) ? $modul['ModulTemplate'] : '';
+
+							$not_installed_modules[$mod->name] = $mod;
+						}
 					}
-
-					if (!empty($modul['ModulTemplate']))
-					{
-						$mod->mt       = $modul['ModulTemplate'];
-						$mod->tid      = !empty($row) ? $row->Template : '';
-					}
-					else
-					{
-						$mod->mt = '';
-					}
-
-					$mod->adminedit = (!empty($modul['AdminEdit'])) ? 1 : 0;
-					$mod->copyright = $modul['MCopyright'];
-					$mod->pfad      = $modul['ModulPfad'];
-					$mod->mod_r     = 'mod_' . $modul['ModulPfad'];
-					$mod->name      = $modul['ModulName'];
-					$mod->tag       = $modul['CpEngineTagTpl'];
-					$mod->autor     = $modul['Autor'];
-					$mod->descr     = $modul['Beschreibung'];
-					$mod->all_tmpl  = $all_templates;
-					$mod->ol_info   = $mod->descr
-									. '<br><br><b>' . $author_title . '</b><br>'
-									. $mod->autor . '<br><em>' . $mod->copyright . '</em>';
-
-					$modules[$mod->name] = $mod;
-
-					unset($modul, $mod, $row);
 				}
 			}
 		}
-
 		$d->Close();
-		ksort($modules);
-		$AVE_Template->assign('modules', $modules);
+
+		ksort($installed_modules);
+		$assign['installed_modules'] = $installed_modules;
+
+		ksort($not_installed_modules);
+		$assign['not_installed_modules'] = $not_installed_modules;
+
+		$assign['all_templates'] = $all_templates;
+
+		if (!empty($errors)) $assign['errors'] = $errors;
+
+		$AVE_Template->assign($assign);
 		$AVE_Template->assign('content', $AVE_Template->fetch('modules/modules.tpl'));
 	}
 
@@ -116,7 +131,7 @@ class AVE_Module
 	 * Запись настроек
 	 *
 	 */
-	function quickSave()
+	function moduleOptionsSave()
 	{
 		global $AVE_DB;
 
@@ -137,12 +152,16 @@ class AVE_Module
 	 * Установка модуля
 	 *
 	 */
-	function installModule()
+	function moduleInstall()
 	{
 		global $AVE_DB, $AVE_Template;
 
-		include(BASE_DIR . '/modules/' . MODULE_PATH . '/modul.php');
-		@include_once(BASE_DIR . '/modules/' . MODULE_PATH . '/sql.php');
+		$modul = array();
+		$modul_sql_deinstall = array();
+		$modul_sql_install = array();
+
+		@include(BASE_DIR . '/modules/' . MODULE_PATH . '/modul.php');
+		@include(BASE_DIR . '/modules/' . MODULE_PATH . '/sql.php');
 
 		$AVE_DB->Query("
 			DELETE
@@ -160,20 +179,22 @@ class AVE_Module
 			$AVE_DB->Query(str_replace('CPPREFIX', PREFIX, $sql));
 		}
 
+		$modul['AdminEdit'] = (!empty($modul['AdminEdit'])) ? $modul['AdminEdit'] : 0;
 		$modul['ModulTemplate'] = (!empty($modul['ModulTemplate'])) ? $modul['ModulTemplate'] : 0;
 
 		$AVE_DB->Query("
 			INSERT " . PREFIX . "_module
 			SET
 				ModulName     = '" . $modul['ModulName'] . "',
-				`Status`      = 1,
+				`Status`      = '1',
 				CpEngineTag   = '" . $modul['CpEngineTag'] . "',
 				CpPHPTag      = '" . $modul['CpPHPTag'] . "',
 				ModulFunktion = '" . $modul['ModulFunktion'] . "',
 				IstFunktion   = '" . $modul['IstFunktion'] . "',
 				ModulPfad     = '" . $modul['ModulPfad'] . "',
 				Version       = '" . $modul['ModulVersion'] . "',
-				Template      = '" . $modul['ModulTemplate'] . "'
+				Template      = '" . $modul['ModulTemplate'] . "',
+				AdminEdit     = '" . $modul['AdminEdit'] . "'
 		");
 
 		reportLog($_SESSION['user_name'] . ' - установил модуль (' . $modul['ModulName'] . ')', 2, 2);
@@ -186,19 +207,21 @@ class AVE_Module
 	 * Обновление модуля
 	 *
 	 */
-	function updateModule()
+	function moduleUpdate()
 	{
-		global $AVE_DB, $AVE_Template;
+		global $AVE_DB;
 
-		include(BASE_DIR . '/modules/' . MODULE_PATH . '/modul.php');
-		@include_once(BASE_DIR . '/modules/' . MODULE_PATH . '/sql.php');
+		$modul_sql_update = array();
 
-		foreach ($modul_sql_update as $update)
+		@include(BASE_DIR . '/modules/' . MODULE_PATH . '/modul.php');
+		@include(BASE_DIR . '/modules/' . MODULE_PATH . '/sql.php');
+
+		foreach ($modul_sql_update as $sql)
 		{
-			$update = str_replace('CPPREFIX', PREFIX, $update);
-			$AVE_DB->Query($update);
-			reportLog($_SESSION['user_name'] . ' - обновил модуль (' . MODULE_PATH . ')', 2, 2);
+			$AVE_DB->Query(str_replace('CPPREFIX', PREFIX, $sql));
 		}
+
+		reportLog($_SESSION['user_name'] . ' - обновил модуль (' . MODULE_PATH . ')', 2, 2);
 
 		header('Location:index.php?do=modules&cp=' . SESSION);
 		exit;
@@ -208,17 +231,18 @@ class AVE_Module
 	 * Удаление модуля
 	 *
 	 */
-	function deleteModule()
+	function moduleDelete()
 	{
-		global $AVE_DB, $AVE_Template;
+		global $AVE_DB;
 
-		include(BASE_DIR . '/modules/' . MODULE_PATH . '/modul.php');
-		@include_once(BASE_DIR . '/modules/' . MODULE_PATH . '/sql.php');
+		$modul_sql_deinstall = array();
 
-		foreach ($modul_sql_deinstall as $deinstall)
+		@include(BASE_DIR . '/modules/' . MODULE_PATH . '/modul.php');
+		@include(BASE_DIR . '/modules/' . MODULE_PATH . '/sql.php');
+
+		foreach ($modul_sql_deinstall as $sql)
 		{
-			$deinstall = str_replace('CPPREFIX', PREFIX, $deinstall);
-			$AVE_DB->Query($deinstall);
+			$AVE_DB->Query(str_replace('CPPREFIX', PREFIX, $sql));
 		}
 
 		$AVE_DB->Query("
@@ -237,19 +261,13 @@ class AVE_Module
 	 * Отключение/включение модуля
 	 *
 	 */
-	function OnOff()
+	function moduleStatusChange()
 	{
 		global $AVE_DB;
 
-	    $sql = $AVE_DB->Query("SELECT `Status`
-	    	FROM " . PREFIX . "_module
-			WHERE ModulPfad = '" . MODULE_PATH . "'
-	    ");
-	    $row = $sql->fetchrow();
-
 		$AVE_DB->Query("
 			UPDATE " . PREFIX . "_module
-			SET Status = '" . (($row->Status == 0) ? 1 : 0) . "'
+			SET Status = ! Status
 			WHERE ModulPfad = '" . MODULE_PATH . "'
 		");
 
@@ -257,10 +275,42 @@ class AVE_Module
 		exit;
 	}
 
-/**
- *	ВНУТРЕННИЕ МЕТОДЫ
- */
+	/**
+	 * Метод получения списка модулей
+	 *
+	 * @param int $status статус возвращаемых модулей
+	 * <ul>
+	 * <li>1 - активные модули</li>
+	 * <li>0 - неактивные модули</li>
+	 * </ul>
+	 * если не указано возвращает модули без учета статуса
+	 * @return array
+	 */
+	function moduleListGet($status = null)
+	{
+		global $AVE_DB;
 
+		$where_status = ($status !== null)
+			? "WHERE Status = '" . $status . "'"
+			: '';
+
+		$modules = array();
+		$sql = $AVE_DB->Query("
+			SELECT
+				*,
+				CONCAT('mod_', ModulPfad) AS mod_path
+			FROM
+				" . PREFIX . "_module
+			" . $where_status . "
+		");
+
+		while ($row = $sql->FetchRow())
+		{
+			$modules[$row->ModulName] = $row;
+		}
+
+		return $modules;
+	}
 }
 
 ?>

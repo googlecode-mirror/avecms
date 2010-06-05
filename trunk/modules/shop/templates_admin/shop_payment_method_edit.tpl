@@ -1,5 +1,3 @@
-{strip}
-
 <div class="pageHeaderTitle" style="padding-top: 7px;">
 	<div class="h_module">&nbsp;</div>
 	<div class="HeaderTitle"><h2>{#EditPaymentMethod#}</h2></div>
@@ -157,5 +155,3 @@
 
 	<input class="button" type="submit" value="{#ButtonSave#}" />
 </form>
-
-{/strip}

@@ -29,6 +29,97 @@ class Contact
 	var $_delfile = 1;
 
 /**
+ *	ВНУТРЕННИЕ МЕТОДЫ
+ */
+
+	/**
+	 * Удаление из текста непечатаемых символов
+	 *
+	 * @param string $code обрабатываемый текст
+	 * @return string обработанный текст
+	 */
+	function _replace_wildcode($code)
+	{
+		$code = preg_replace('/[^\x20-\xFF]/', '', $code);
+//		$code = htmlspecialchars($code);
+
+		return $code;
+	}
+
+	/**
+	 * Вывод сообщения об успешной отправке формы
+	 *
+	 * @param string $tpl_dir путь к папке с шаблонами
+	 * @param string $lang_file путь к языковому файлу
+	 */
+	function _thankyou($tpl_dir, $lang_file)
+	{
+		global $AVE_DB, $AVE_Template;
+
+		$AVE_Template->config_load($lang_file);
+
+		$AVE_Template->display($tpl_dir . 'thankyou.tpl');
+	}
+
+	/**
+	 * Формирование уникального имени файла
+	 *
+	 * @param string $file имя файла
+	 * @return string изменённое имя файла
+	 */
+	function _renameFile($file)
+	{
+		$old = $file;
+		mt_rand();
+		$random = rand(1000, 9999);
+		$new = $random . '_' . $old;
+
+		return $new;
+	}
+
+	/**
+	 * Запись прикреплённых файлов в папку /attachments
+	 *
+	 * @param int $maxupload максимальный размер прикреплённых файлов
+	 * @return string путь к файлу в хранилище (/attachments)
+	 */
+	function _uploadFile($maxupload = '0')
+	{
+		global $_FILES;
+
+		$attach = '';
+		define('UPDIR', BASE_DIR . '/attachments/');
+		if (isset($_FILES['upfile']) && is_array($_FILES['upfile']))
+		{
+			for ($i=0; $i<count($_FILES['upfile']['tmp_name']); $i++)
+			{
+				if ($_FILES['upfile']['tmp_name'][$i] != '')
+				{
+					$d_name = strtolower(ltrim(rtrim($_FILES['upfile']['name'][$i])));
+					$d_name = str_replace(' ', '', $d_name);
+					$d_tmp = $_FILES['upfile']['tmp_name'][$i];
+
+					$fz = filesize($_FILES['upfile']['tmp_name'][$i]);
+					$mz = $maxupload*1024;;
+
+					if ($mz >= $fz)
+					{
+						if (file_exists(UPDIR . $d_name))
+						{
+							$d_name = $this->_renameFile($d_name);
+						}
+
+						@move_uploaded_file($d_tmp, UPDIR . $d_name);
+
+						$attach[] = $d_name;
+					}
+				}
+			}
+		}
+		return $attach;
+	}
+
+/**
  *	ВНЕШНИЕ МЕТОДЫ
  */
 
@@ -47,7 +138,7 @@ class Contact
 	{
 		global $AVE_DB, $AVE_Template;
 
-        $id = preg_replace('/(\D+)/', '', $id);
+        $id = preg_replace('/\D/', '', $id);
 
 		$AVE_Template->config_load($lang_file);
 
@@ -124,15 +215,13 @@ class Contact
 			    }
 
 			    $field_title = $_REQUEST[str_replace(' ', '_', $row->field_title)];
-			    $row->value = (empty($field_title)) ? '' : $field_title;
+			    $row->value = isset($field_title) ? $field_title : '';
 			    array_push($fields, $row);
 		    }
 
             $AVE_Template->assign('fields', $fields);
-            $_REQUEST['doc'] = empty($_REQUEST['doc']) ? 'mail' : $_REQUEST['doc'];
-		    $AVE_Template->assign('contact_action', ((CP_REWRITE == 1)
-			    ? cpRewrite('index.php?id=' . $_REQUEST['id'] . '&amp;doc=' . htmlspecialchars($_REQUEST['doc']))
-			    : ('index.php?id=' . $_REQUEST['id'] . '&amp;doc=' . htmlspecialchars($_REQUEST['doc']))));
+		    $action = rewrite_link('index.php?id=' . $AVE_Core->curentdoc->Id . '&amp;doc=' . (empty($AVE_Core->curentdoc->Url) ? prepare_url($AVE_Core->curentdoc->Titel) : $AVE_Core->curentdoc->Url));
+		    $AVE_Template->assign('contact_action', $action);
 		}
 
 		if ($fetch == 1)
@@ -156,7 +245,7 @@ class Contact
 	 */
 	function sendSecure($tpl_dir, $lang_file, $id, $secure = '0', $maxupload = '0')
 	{
-		global $AVE_DB, $AVE_Template, $AVE_Globals;
+		global $AVE_DB, $AVE_Template;
 
         $row = $AVE_DB->Query("
             SELECT *
@@ -226,8 +315,7 @@ class Contact
 		$text = strip_tags($newtext);
 		$in_attachment = (is_array($attach) && count($attach) >= 1) ? implode(';', $attach) : '';
 
-		$AVE_Globals = new AVE_Globals;
-		$AVE_Globals->cp_mail(
+		send_mail(
 			$row->form_receiver,
 			stripslashes(substr($text, 0, $row->form_mail_max_chars)),
 			$_POST['in_subject'],
@@ -239,9 +327,9 @@ class Contact
 
 		if (isset($_REQUEST['sendcopy']) && $_REQUEST['sendcopy'] == 1)
 		{
-			$mail_from = $AVE_Globals->mainSettings('mail_from');
-			$mail_from_name = $AVE_Globals->mainSettings('mail_from_name');
-			$AVE_Globals->cp_mail(
+			$mail_from = get_settings('mail_from');
+			$mail_from_name = get_settings('mail_from_name');
+			send_mail(
 				$_POST['in_email'],
 				$config_vars['CONTACT_TEXT_THANKYOU'] . "\n\n" . stripslashes(substr($text, 0, $row->form_mail_max_chars)),
 				$_POST['in_subject'] . ' ' . $config_vars['CONTACT_SUBJECT_COPY'],
@@ -280,7 +368,7 @@ class Contact
 
 		$limit  = $this->_adminlimit;
 		$seiten = ceil($num / $limit);
-		$start  = prepage() * $limit - $limit;
+		$start  = get_current_page() * $limit - $limit;
 
 		$items = array();
 		$sql = $AVE_DB->Query("
@@ -303,8 +391,8 @@ class Contact
 
 		if ($num > $limit)
 		{
-			$page_nav = pagenav($seiten, 'page',
-				" <a class=\"pnav\" href=\"index.php?do=modules&action=modedit&mod=contact&moduleaction=1&cp=" . SESSION . "&page={s}\">{t}</a> ");
+			$page_nav = " <a class=\"pnav\" href=\"index.php?do=modules&action=modedit&mod=contact&moduleaction=1&cp=" . SESSION . "&page={s}\">{t}</a> ";
+			$page_nav = get_pagination($seiten, 'page', $page_nav);
 			$AVE_Template->assign('page_nav', $page_nav);
 		}
 		$AVE_Template->assign('items', $items);
@@ -355,7 +443,7 @@ class Contact
 		$AVE_Template->assign('groups_form', explode(',', $row_e->form_allow_group));
 		$AVE_Template->assign('row', $row_e);
 		$AVE_Template->assign('items', $items);
-		$AVE_Template->assign('tpl_path', $tpl_dir);
+		$AVE_Template->assign('tpl_dir', $tpl_dir);
 		$AVE_Template->assign('formaction', 'index.php?do=modules&action=modedit&mod=contact&moduleaction=save&cp=' . SESSION . '&id=' . $_REQUEST['id'] . '&pop=1');
 		$AVE_Template->assign('content', $AVE_Template->fetch($tpl_dir . 'admin_fields.tpl'));
 	}
@@ -525,7 +613,7 @@ class Contact
 				}
 
 				$AVE_Template->assign('groups', $Groups);
-				$AVE_Template->assign('tpl_path', $tpl_dir);
+				$AVE_Template->assign('tpl_dir', $tpl_dir);
 				$AVE_Template->assign('formaction', 'index.php?do=modules&action=modedit&mod=contact&moduleaction=new&sub=save&cp=' . SESSION . '&pop=1');
 				$AVE_Template->assign('content', $AVE_Template->fetch($tpl_dir . 'admin_fields.tpl'));
 				break;
@@ -548,7 +636,7 @@ class Contact
 				");
 				$iid = $AVE_DB->InsertId();
 
-				reportLog($_SESSION['user_name'] . ' - добавил новую контактную форму (' . $_REQUEST['form_name'] . ')', 2, 2);
+				reportLog($_SESSION['user_name'] . ' - добавил новую контактную форму (' . stripslashes($_REQUEST['form_name']) . ')', 2, 2);
 
 				header('Location:index.php?do=modules&action=modedit&mod=contact&moduleaction=edit&id=' . $iid . '&pop=1&cp=' . SESSION);
 				exit;
@@ -640,7 +728,7 @@ class Contact
 
 				$limit  = $this->_adminlimit;
 				$seiten = ceil($num / $limit);
-				$start  = prepage() * $limit - $limit;
+				$start  = get_current_page() * $limit - $limit;
 
 				$items = array();
 				$sql = $AVE_DB->Query("
@@ -659,9 +747,9 @@ class Contact
 
 				if ($num > $limit)
 				{
-					$page_nav = pagenav($seiten, 'page',
-						" <a class=\"pnav\" href=\"index.php?do=modules&action=modedit&mod=contact&moduleaction="
-						. $new_old . "&cp=" . SESSION . "&page={s}&id=" . intval($_REQUEST['id']) . "\">{t}</a> ");
+					$page_nav = " <a class=\"pnav\" href=\"index.php?do=modules&action=modedit&mod=contact&moduleaction=" . $new_old . "&cp=" . SESSION
+						. "&page={s}&id=" . intval($_REQUEST['id']) . "\">{t}</a> ";
+					$page_nav = get_pagination($seiten, 'page', $page_nav);
 					$AVE_Template->assign('page_nav', $page_nav);
 				}
 				$AVE_Template->assign('items', $items);
@@ -726,13 +814,12 @@ class Contact
 	 */
 	function replyMessage()
 	{
-		global $AVE_DB, $AVE_Globals;
+		global $AVE_DB;
 
 		$attach = $this->_uploadFile(100000);
 		$out_attachment = (is_array($attach) && count($attach) >= 1) ? implode(';', $attach) : '';
 
-		$AVE_Globals = new AVE_Globals;
-		$AVE_Globals->cp_mail(
+		send_mail(
 			$_REQUEST['to'],
 			stripslashes($_REQUEST['message']),
 			$_REQUEST['subject'],
@@ -801,97 +888,6 @@ class Contact
 		}
 		header('Location:index.php?do=modules&action=modedit&mod=contact&moduleaction=1&cp=' . SESSION);
 		exit;
-	}
-
-/**
- *	ВНУТРЕННИЕ МЕТОДЫ
- */
-
-	/**
-	 * Удаление из текста непечатаемых символов
-	 *
-	 * @param string $code обрабатываемый текст
-	 * @return string обработанный текст
-	 */
-	function _replace_wildcode($code)
-	{
-		$code = preg_replace('/[^\x20-\xFF]/', '', $code);
-		$code = htmlspecialchars($code);
-
-		return $code;
-	}
-
-	/**
-	 * Вывод сообщения об успешной отправке формы
-	 *
-	 * @param string $tpl_dir путь к папке с шаблонами
-	 * @param string $lang_file путь к языковому файлу
-	 */
-	function _thankyou($tpl_dir, $lang_file)
-	{
-		global $AVE_DB, $AVE_Template;
-
-		$AVE_Template->config_load($lang_file);
-
-		$AVE_Template->display($tpl_dir . 'thankyou.tpl');
-	}
-
-	/**
-	 * Формирование уникального имени файла
-	 *
-	 * @param string $file имя файла
-	 * @return string изменённое имя файла
-	 */
-	function _renameFile($file)
-	{
-		$old = $file;
-		mt_rand();
-		$random = rand(1000, 9999);
-		$new = $random . '_' . $old;
-
-		return $new;
-	}
-
-	/**
-	 * Запись прикреплённых файлов в папку /attachments
-	 *
-	 * @param int $maxupload максимальный размер прикреплённых файлов
-	 * @return string путь к файлу в хранилище (/attachments)
-	 */
-	function _uploadFile($maxupload = '0')
-	{
-		global $_FILES;
-
-		$attach = '';
-		define('UPDIR', BASE_DIR . '/attachments/');
-		if (isset($_FILES['upfile']) && is_array($_FILES['upfile']))
-		{
-			for ($i=0; $i<count($_FILES['upfile']['tmp_name']); $i++)
-			{
-				if ($_FILES['upfile']['tmp_name'][$i] != '')
-				{
-					$d_name = strtolower(ltrim(rtrim($_FILES['upfile']['name'][$i])));
-					$d_name = str_replace(' ', '', $d_name);
-					$d_tmp = $_FILES['upfile']['tmp_name'][$i];
-
-					$fz = filesize($_FILES['upfile']['tmp_name'][$i]);
-					$mz = $maxupload*1024;;
-
-					if ($mz >= $fz)
-					{
-						if (file_exists(UPDIR . $d_name))
-						{
-							$d_name = $this->_renameFile($d_name);
-						}
-
-						@move_uploaded_file($d_tmp, UPDIR . $d_name);
-
-						$attach[] = $d_name;
-					}
-				}
-			}
-		}
-		return $attach;
 	}
 }
 

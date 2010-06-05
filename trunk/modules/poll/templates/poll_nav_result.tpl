@@ -1,5 +1,3 @@
-<!-- poll_nav_result.tpl -->
-{strip}
 <p><strong>{$poll->title}</strong></p>
 <p>
 	{foreach from=$items item=item}
@@ -15,5 +13,3 @@
 	<input type="button" class="button" style="width:100px" onclick="location.href='{$formaction_result}';" value="{#POLL_PUB_RESULTS#} ({$poll->sumhits})" />&nbsp;
 	<input type="button" class="button" style="width:50px" onclick="location.href='{$formaction_archive}';" value="{#POLL_VIEW_ARCHIVES#}" />
 </form>
-{/strip}
-<!-- /poll_nav_result.tpl -->

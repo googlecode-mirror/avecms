@@ -1,6 +1,3 @@
-<!-- admin_gallery_upload_form_finish.tpl -->
-{strip}
-
 <div class="pageHeaderTitle" style="padding-top:7px">
 	<div class="h_module">&nbsp;</div>
 	<div class="HeaderTitle">
@@ -15,8 +12,5 @@
 <h4>{#UploadProgT#}</h4>
 
 <div style="width:99%;padding:10px;height:200px;overflow:auto;border:1px solid #ccc">
-	{foreach from=$arr item=t}{$t}{/foreach}
+	{foreach from=$arr item=t}{$t|escape}{/foreach}
 </div>
-
-{/strip}
-<!-- /admin_gallery_upload_form_finish.tpl -->

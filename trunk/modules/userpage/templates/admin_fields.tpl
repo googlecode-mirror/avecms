@@ -9,7 +9,7 @@
 <h4>{#ModulSetting#}</h4>
 <form method="post" action="{$formaction}">
 
-{include file="$tpl_path/admin_settings.tpl"}
+{include file="$tpl_dir/admin_settings.tpl"}
 
 
 <h4>{#ModulListField#}</h4>

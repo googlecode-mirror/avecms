@@ -14,8 +14,8 @@
   <tr>
     <td width="10" class="{cycle name='nd1' values='dl_nt_first,dl_nt_second'}">{$n}. </td>
     <td class="{cycle name='nd2' values='dl_nt_first,dl_nt_second'}"><a href="{$nf->Link}"><strong>{$nf->Name}</strong></a></td>
-    <td class="{cycle name='nd3' values='dl_nt_first,dl_nt_second'}">{$nf->Datum|date_format:$DATE_FORMAT|pretty_date:$DEF_LANGUAGE}</td>
-    <td class="{cycle name='nd4' values='dl_nt_first,dl_nt_second'}">{$nf->Geaendert|date_format:$DATE_FORMAT|pretty_date:$DEF_LANGUAGE}</td>
+    <td class="{cycle name='nd3' values='dl_nt_first,dl_nt_second'}">{$nf->Datum|date_format:$DATE_FORMAT|pretty_date}</td>
+    <td class="{cycle name='nd4' values='dl_nt_first,dl_nt_second'}">{$nf->Geaendert|date_format:$DATE_FORMAT|pretty_date}</td>
     <td class="{cycle name='nd5' values='dl_nt_first,dl_nt_second'}" align="right">{$nf->Downloads}</td>
   </tr>
   {/foreach}

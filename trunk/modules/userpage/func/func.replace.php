@@ -365,7 +365,7 @@ function userpage_guestbook ($limit, $uid)
 		$count = $sql->NumRows();
 
 		$seiten = ceil($num / $limit);
-		$start = prepage() * $limit - $limit;
+		$start = get_current_page() * $limit - $limit;
 
 		if (isset($_REQUEST['page']) && is_numeric($_REQUEST['page'])) $count = $count - $limit * ((int)$_REQUEST['page'] - 1);
 
@@ -404,8 +404,8 @@ function userpage_guestbook ($limit, $uid)
 		}
 
 		if ($num > $limit) {
-			$page_nav = pagenav($seiten, 'page',
-				' <a class="pnav" href="index.php?module=userpage&action=show&uid=' . $uid . '&page={s}">{t}</a> ');
+			$page_nav = ' <a class="pnav" href="index.php?module=userpage&action=show&uid=' . $uid . '&page={s}">{t}</a> ';
+			$page_nav = get_pagination($seiten, 'page', $page_nav);
 			$AVE_Template->assign('page_nav', $page_nav);
 		}
 

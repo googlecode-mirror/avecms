@@ -1,12 +1,10 @@
-{strip}
-
 <div class="pageHeaderTitle" style="padding-top: 7px;">
 	<div class="h_module">&nbsp;</div>
-	<div class="HeaderTitle"><h2>{#DownloadsFor#} <span style="color: #000;">&nbsp;&gt;&nbsp;{$smarty.get.N}</span></h2></div>
+	<div class="HeaderTitle"><h2>{#DownloadsFor#} <span style="color: #000;">&nbsp;&gt;&nbsp;{$smarty.get.N|urldecode|escape|stripslashes}</span></h2></div>
 	<div class="HeaderText">&nbsp;</div>
 </div><br />
-
-<form name="form2" method="post" action="index.php?do=modules&action=modedit&mod=shop&moduleaction=shop_downloads&cp={$sess}&Id={$smarty.get.Id}&User={$smarty.get.User}&sub=save&pop=1">
+{if $Items}
+<form name="form2" method="post" action="index.php?do=modules&action=modedit&mod=shop&moduleaction=shop_downloads&cp={$sess}&Id={$smarty.get.Id}&User={$smarty.get.User|urlencode}&sub=save&pop=1">
 	<table width="100%" border="0" cellspacing="1" cellpadding="8">
 		<tr class="tableheader">
 			<td>{#DownFile#}</td>
@@ -45,9 +43,9 @@
 					</select>
 				</td>
 
-				<td><textarea name="KommentarAdmin[{$file->Id}]">{$file->KommentarAdmin|stripslashes|escape:html}</textarea></td>
+				<td><textarea name="KommentarAdmin[{$file->Id}]">{$file->KommentarAdmin|escape}</textarea></td>
 
-				<td><textarea name="KommentarBenutzer[{$file->Id}]">{$file->KommentarBenutzer|stripslashes|escape:html}</textarea></td>
+				<td><textarea name="KommentarBenutzer[{$file->Id}]">{$file->KommentarBenutzer|escape}</textarea></td>
 
 				<td>
 					<input type="checkbox" name="Del[{$file->Id}]" value="1" />
@@ -63,17 +61,17 @@
 
 				<td>{#DownLockedReason#}</td>
 
-				<td colspan="3" ><input type="text" value="{$file->GesperrtGrund|stripslashes|escape:html}" style="width:250px;" name="GesperrtGrund[{$file->Id}]"></td>
+				<td colspan="3" ><input type="text" value="{$file->GesperrtGrund|escape}" style="width:250px;" name="GesperrtGrund[{$file->Id}]"></td>
 			</tr>
 		{/foreach}
 	</table>
 
 	<input type="submit" class="button" value="{#ShopButtonUpdate#}">
 </form>
-
+{/if}
 <p>&nbsp;</p>
 
-<form name="form1" method="post" action="index.php?do=modules&action=modedit&mod=shop&moduleaction=shop_downloads&cp={$sess}&Id={$smarty.get.Id}&User={$smarty.get.User}&sub=new&pop=1">
+<form name="form1" method="post" action="index.php?do=modules&action=modedit&mod=shop&moduleaction=shop_downloads&cp={$sess}&Id={$smarty.get.Id}&User={$smarty.get.User|urlencode}&sub=new&pop=1">
 	<table width="100%" border="0" cellpadding="8" cellspacing="1" class="tableborder">
 		<tr>
 			<td colspan="2" class="tableheader">{#DownNew#}</td>
@@ -110,5 +108,3 @@
 <p align="center">
 	<input type="button" onclick="window.close();" class="button" value="{#WindowClose#}">
 </p>
-
-{/strip}

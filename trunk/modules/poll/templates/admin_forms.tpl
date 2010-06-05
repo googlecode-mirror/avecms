@@ -1,5 +1,3 @@
-{strip}
-
 <div class="pageHeaderTitle" style="padding-top: 7px;">
 	<div class="h_module"></div>
 	<div class="HeaderTitle"><h2>{#POLL_MODULE_NAME#}</h2></div>
@@ -34,7 +32,7 @@
 
 			<td><input type="text" value="[mod_poll:{$item->id}]" size="15" readonly=""></td>
 
-			<td class="time">c {$item->start|date_format:$TIME_FORMAT|pretty_date:$DEF_LANGUAGE} по {$item->ende|date_format:$TIME_FORMAT|pretty_date:$DEF_LANGUAGE}</td>
+			<td class="time">c {$item->start|date_format:$TIME_FORMAT|pretty_date} по {$item->ende|date_format:$TIME_FORMAT|pretty_date}</td>
 
 			<td>{if $item->sum_hits == ''}0{else}{$item->sum_hits}{/if} / <a href="javascript:void(0);" onclick="cp_pop('index.php?do=modules&action=modedit&mod=poll&moduleaction=comments&cp={$sess}&id={$item->id}&pop=1','850','750','1','modpolledit');">{$item->comments}</a></td>
 
@@ -46,5 +44,3 @@
 </table><br />
 
 {if $page_nav} <div class="infobox">{$page_nav}</div> {/if}
-
-{/strip}

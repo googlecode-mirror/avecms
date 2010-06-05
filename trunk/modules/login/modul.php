@@ -14,7 +14,7 @@ if (defined('ACP'))
 {
     $modul['ModulName'] = 'Авторизация';
     $modul['ModulPfad'] = 'login';
-    $modul['ModulVersion'] = '2.1';
+    $modul['ModulVersion'] = '2.2';
     $modul['Beschreibung'] = 'Данный модуль предназначен для регистрации пользователей на вашем сайте. Для вывода формы авторизации, разместите системный тег <strong>[mod_login]</strong> в нужном месте вашего шаблона. Также вы можете указать шаблон, в котором будет отображена форма для регистрации и авторизации.';
     $modul['Autor'] = 'Arcanum';
     $modul['MCopyright'] = '&copy; 2007 Overdoze Team';
@@ -34,114 +34,131 @@ if (defined('ACP'))
  */
 function mod_login()
 {
-	global $login;
-
-	if (! @require_once(BASE_DIR . '/modules/login/class.login.php')) moduleError();
-	$login = new Login;
+	global $AVE_DB, $AVE_Template;
 
 	$tpl_dir   = BASE_DIR . '/modules/login/templates/';
-	$lang_file = BASE_DIR . '/modules/login/lang/' . DEFAULT_LANGUAGE . '.txt';
+	$lang_file = BASE_DIR . '/modules/login/lang/' . $_SESSION['user_language'] . '.txt';
 
 	if (isset($_SESSION['user_id']) && isset($_SESSION['user_pass']))
 	{
-		$login->displayPanel($tpl_dir, $lang_file);
+		$AVE_Template->config_load($lang_file, 'displaypanel');
+
+		$AVE_Template->display($tpl_dir . 'userpanel.tpl');
 	}
 	else
 	{
-		$login->displayLoginform($tpl_dir, $lang_file);
+		$AVE_Template->config_load($lang_file, 'displayloginform');
+
+		$active = $AVE_DB->Query("
+			SELECT IstAktiv
+			FROM " . PREFIX . "_modul_login
+			WHERE Id = 1
+		")->GetCell();
+
+		$AVE_Template->assign('active', $active);
+
+		$AVE_Template->display($tpl_dir . 'loginform.tpl');
 	}
 }
 
-if (!defined('ACP') && isset($_REQUEST['action']) && isset($_REQUEST['module']) && $_REQUEST['module'] == 'login')
+if (!defined('ACP') &&
+	!empty($_REQUEST['action']) &&
+	isset($_REQUEST['module']) && $_REQUEST['module'] == 'login')
 {
 	global $login;
 
-	if (isset($_REQUEST['print']) && $_REQUEST['print'] == 1) printError();
-
-	if (!@require_once(BASE_DIR . '/modules/login/class.login.php')) moduleError();
-	$login = new Login;
+	if (isset($_REQUEST['print']) && $_REQUEST['print'] == 1) print_error();
 
 	$tpl_dir   = BASE_DIR . '/modules/login/templates/';
-	$lang_file = BASE_DIR . '/modules/login/lang/' . DEFAULT_LANGUAGE . '.txt';
+	$lang_file = BASE_DIR . '/modules/login/lang/' . $_SESSION['user_language'] . '.txt';
+
+	if (! @require(BASE_DIR . '/modules/login/class.login.php')) module_error();
+
+	$login = new Login($tpl_dir, $lang_file);
 
 	switch($_REQUEST['action'])
 	{
 		case 'wys':
 			if (isset($_REQUEST['sub']) && $_REQUEST['sub'] == 'on')
 			{
-				if (checkPermission('docs')) $_SESSION['user_adminmode'] = 1;
+				if (check_permission('docs')) $_SESSION['user_adminmode'] = 1;
 			}
 			else
 			{
 				unset($_SESSION['user_adminmode']);
 			}
-			header('Location:' . $_SERVER['HTTP_REFERER']);
+
+			header('Location:' . get_referer_link());
 			exit;
-			break;
 
 		case 'wys_adm':
 			if (isset($_REQUEST['sub']) && $_REQUEST['sub'] == 'on')
 			{
-				if (checkPermission('docs')) $_SESSION['user_adminmode'] = 1;
+				if (check_permission('docs')) $_SESSION['user_adminmode'] = 1;
 			}
 			else
 			{
 				unset($_SESSION['user_adminmode']);
 			}
-			header('Location:' . $_SERVER['PHP_SELF']);
+
+			header('Location:' . get_home_link());
 			exit;
-			break;
 
 		case 'login':
-			$login->loginProcess($tpl_dir, $lang_file);
+			$login->loginUserLogin();
 			break;
 
 		case 'logout':
-			$login->loginProcess($tpl_dir, $lang_file, 1);
+			$login->loginUserLogout();
 			break;
 
 		case 'register':
-			$login->registerNew($tpl_dir, $lang_file);
+			$login->loginNewUserRegister();
 			break;
 
 		case 'passwordreminder':
-			$login->passwordReminder($tpl_dir, $lang_file);
+			$login->loginUserPasswordReminder();
 			break;
 
 		case 'passwordchange':
-			$login->passwordChange($tpl_dir, $lang_file);
+			$login->loginUserPasswordChange();
 			break;
 
 		case 'delaccount':
-			$login->delAccount($tpl_dir, $lang_file);
+			$login->loginUserAccountDelete();
 			break;
 
 		case 'profile':
-			$login->myProfile($tpl_dir, $lang_file);
+			$login->loginUserProfileEdit();
+			break;
+
+		case 'checkusername':
+			$login->loginUsernameAjaxCheck();
+			break;
+
+		case 'checkemail':
+			$login->loginEmailAjaxCheck();
 			break;
 	}
 }
 
 
-if (defined('ACP') && !(isset($_REQUEST['action']) && $_REQUEST['action'] == 'delete'))
+if (defined('ACP') && !empty($_REQUEST['moduleaction']))
 {
 	global $login, $AVE_Template;
 
-	require_once(BASE_DIR . '/modules/login/sql.php');
-	if (!@require_once(BASE_DIR . '/modules/login/class.login.php')) moduleError();
-	$login = new Login;
-
 	$tpl_dir   = BASE_DIR . '/modules/login/templates/';
-	$lang_file = BASE_DIR . '/modules/login/lang/' . $_SESSION['admin_lang'] . '.txt';
+	$lang_file = BASE_DIR . '/modules/login/lang/' . $_SESSION['admin_language'] . '.txt';
 
-	if (isset($_REQUEST['moduleaction']) && $_REQUEST['moduleaction'] != '')
+	if (! @require(BASE_DIR . '/modules/login/class.login.php')) module_error();
+
+	$login = new Login($tpl_dir, $lang_file);
+
+	switch($_REQUEST['moduleaction'])
 	{
-		switch($_REQUEST['moduleaction'])
-		{
-			case '1':
-				$login->showConfig($tpl_dir, $lang_file);
-				break;
-		}
+		case '1':
+			$login->loginSettingsEdit();
+			break;
 	}
 }
 

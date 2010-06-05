@@ -1,5 +1,3 @@
-{strip}
-<!-- shop_orders.tpl -->
 <script language="javascript">
 function print_container(id,act) {ldelim}
 	var html=document.getElementById(id).innerHTML;
@@ -24,7 +22,7 @@ function request(id) {ldelim}
 
 <div id="content">
 	<h2 id="page-heading">{#MyOrders#}</h2>
-	
+
 
 	{if $orderRequestOk==1}
 		{#OrderOverviewActionRequestOk#}<br />
@@ -64,7 +62,7 @@ function request(id) {ldelim}
 		{foreach from=$my_orders item=mo}
 			<tr>
 				<td class="mod_shop_basket_row">{$mo->Datum|date_format:"%d.%m.%Y %H:%M"}</td>
-				<td class="mod_shop_basket_row" align="right">{numFormat val=$mo->Gesamt} {$Currency}</td>
+				<td class="mod_shop_basket_row" align="right">{num_format val=$mo->Gesamt} {$Currency}</td>
 				<td class="mod_shop_basket_row" align="center"><span class="mod_shop_orders_{$mo->Status}">&nbsp;&nbsp;&nbsp;&nbsp;</span></td>
 				<td class="mod_shop_basket_row">
 					<textarea style="display:none" id="h_{$mo->Id}">{$mo->RechnungHtml|addslashes}</textarea>
@@ -96,5 +94,3 @@ function request(id) {ldelim}
 	</div>
 {/if}
 <div style="clear:both"></div>
-<!-- /shop_orders.tpl -->
-{/strip}

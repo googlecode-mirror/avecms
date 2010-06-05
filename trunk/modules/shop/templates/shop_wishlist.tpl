@@ -1,5 +1,3 @@
-{strip}
-<!-- shop_wishlist.tpl -->
 <link href="templates/{$theme_folder}/css/style.css" rel="stylesheet" type="text/css" />
 {if $WishListActive==1}
 	<div style="padding: 20px">
@@ -22,7 +20,7 @@
 					<tr>
 						{foreach from=$MyWishlist item=bi}
 							<td class="mod_shop_basket_row_price mod_shop_wishlist_td ">
-								Цена: {numFormat val=$bi->EPreis} {$Currency}
+								Цена: {num_format val=$bi->EPreis} {$Currency}
 							</td>
 						{/foreach}
 					</tr>
@@ -37,10 +35,10 @@
 										</td>
 
 										<td>
-											&nbsp;-&nbsp;на сумму: <strong>{numFormat val=$bi->EPreisSumme} </strong>{$Currency}
+											&nbsp;-&nbsp;на сумму: <strong>{num_format val=$bi->EPreisSumme} </strong>{$Currency}
 											{if $bi->PreisW2Summ && $ZeigeWaehrung2=='1'}
 												<br />
-												<span class="mod_shop_ust">{numFormat val=$bi->PreisW2Summ} {$Currency2}</span>
+												<span class="mod_shop_ust">{num_format val=$bi->PreisW2Summ} {$Currency2}</span>
 											{/if}
 										</td>
 									</tr>
@@ -51,7 +49,7 @@
 										</td>
 										<td>
 											<input class="absmiddle" type="image" src="templates/{$theme_folder}/modules/shop/refresh.gif" />&nbsp;
-											<a class="popup" href="index.php?add=1&amp;module=shop&amp;action=addtobasket&amp;product_id={$bi->Id}&amp;amount={$bi->Anzahl}{if $v}&amp;vars={$v}{/if}&amp;vars={foreach from=$bi->Vars name=v item=vars}{$vars->Id}{if !$smarty.foreach.v.last},{/if}{/foreach}"><img class="absmiddle" src="templates/{$theme_folder}/modules/shop/buynow.gif" alt="" border="0" /><span>{$config_vars.AddToBasket}</span></a>
+											<a class="popup" href="index.php?add=1&amp;module=shop&amp;action=addtobasket&amp;product_id={$bi->Id}&amp;amount={$bi->Anzahl}{if $v}&amp;vars={$v}{/if}&amp;vars={foreach from=$bi->Vars name=v item=vars}{$vars->Id}{if !$smarty.foreach.v.last},{/if}{/foreach}"><img class="absmiddle" src="templates/{$theme_folder}/modules/shop/buynow.gif" alt="" border="0" /><span>{#AddToBasket#}</span></a>
 										</td>
 									</tr>
 								</table>
@@ -135,5 +133,3 @@
 		</form>
 	</div>
 {/if}
-<!-- /shop_wishlist.tpl -->
-{/strip}
