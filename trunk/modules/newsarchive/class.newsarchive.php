@@ -30,7 +30,7 @@ class Newsarchive
 		$cnt = count($archives);
 		for ($i=0; $i< $cnt; $i++)
 		{
-			$ids[] = explode(',', $archives[$i]->rubs);
+			$ids[] = explode(',', $archives[$i]->newsarchive_rubrics);
 		}
 
 		$sql = $AVE_DB->Query("
@@ -45,7 +45,7 @@ class Newsarchive
 			{
 				if (in_array($row->Id, $ids[$i]))
 				{
-					@$archives[$i]->RubrikName = strstr(@$archives[$i]->RubrikName . ', ' . @$row->RubrikName, ' ');
+					@$archives[$i]->RubrikName = strstr($archives[$i]->RubrikName . ', ' . $row->RubrikName, ' ');
 				}
 			}
 		}
@@ -62,19 +62,19 @@ class Newsarchive
 	{
 		global $AVE_DB;
 
-		$arc_name = htmlspecialchars($_POST['new_arc']);
 		$AVE_DB->Query("
 			INSERT
 			INTO " . PREFIX . "_modul_newsarchive
-			VALUES (
-				'',
-				'" . $arc_name . "',
-				'',
-				'1',
-				'1'
-			)
+			SET
+				id = '',
+				newsarchive_name = '" . $_POST['newsarchive_name_new'] . "',
+				newsarchive_rubrics = '',
+				newsarchive_show_days = '1',
+				newsarchive_show_empty = ''
 		");
-		header('Location:index.php?do=modules&action=modedit&mod=newsarchive&moduleaction=1&cp=' . SESSION);
+
+		header('Location:index.php?do=modules&action=modedit&mod=newsarchive&moduleaction=edit&cp=' . SESSION . '&id=' . $AVE_DB->InsertId());
+		exit;
 	}
 
 	/**
@@ -85,13 +85,14 @@ class Newsarchive
 	{
 		global $AVE_DB;
 
-		$id = addslashes($_GET['id']);
 		$AVE_DB->Query("
 			DELETE
 			FROM " . PREFIX . "_modul_newsarchive
-			WHERE id = '" . $id . "'
+			WHERE id = '" . intval($_GET['id']) . "'
 		");
+
 		header('Location:index.php?do=modules&action=modedit&mod=newsarchive&moduleaction=1&cp=' . SESSION);
+		exit;
 	}
 
 	/**
@@ -102,15 +103,17 @@ class Newsarchive
 	{
 		global $AVE_DB;
 
-		foreach ($_POST['arc_name'] as $id => $arc_name)
+		foreach ((array)$_POST['newsarchive_name'] as $id => $newsarchive_name)
 		{
 			$AVE_DB->Query("
 				UPDATE " . PREFIX . "_modul_newsarchive
-				SET arc_name = '" . $arc_name . "'
-				WHERE id = '" . $id . "'
+				SET newsarchive_name = '" . $newsarchive_name . "'
+				WHERE id = '" . (int)$id . "'
 			");
 		}
+
 		header('Location:index.php?do=modules&action=modedit&mod=newsarchive&moduleaction=1&cp=' . SESSION);
+		exit;
 	}
 
 	/**
@@ -127,10 +130,9 @@ class Newsarchive
 			SELECT *
 			FROM " . PREFIX . "_modul_newsarchive
 			WHERE id = '" . $id . "'
-		")
-		->FetchRow();
+		")->FetchRow();
 
-		$ids = explode(',', $archives->rubs);
+		$ids = @explode(',', $archives->newsarchive_rubrics);
 
 		$sql = $AVE_DB->Query("
 			SELECT
@@ -138,23 +140,23 @@ class Newsarchive
 				RubrikName
 			FROM " . PREFIX . "_rubrics
 		");
-		$rubs = array();
+		$newsarchive_rubrics = array();
 		while ($row = $sql->FetchRow())
 		{
 			if (in_array($row->Id, $ids))
 			{
 				$row->sel = 1;
-				array_push($rubs, $row);
+				array_push($newsarchive_rubrics, $row);
 			}
 			else
 			{
 				$row->sel = 0;
-				array_push($rubs, $row);
+				array_push($newsarchive_rubrics, $row);
 			}
 		}
 
 		$AVE_Template->assign('archives', $archives);
-		$AVE_Template->assign('rubs', $rubs);
+		$AVE_Template->assign('newsarchive_rubrics', $newsarchive_rubrics);
 		$AVE_Template->assign('content', $AVE_Template->fetch($tpl_dir . 'admin_archive_edit.tpl'));
 	}
 
@@ -166,23 +168,19 @@ class Newsarchive
 	{
 		global $AVE_DB;
 
-		$id = intval($_POST['id']);
-		$arc_name = htmlspecialchars($_POST['arc_name']);
-		$data = implode(',', $_POST['rubs']);
-		$show_days = $_POST['show_days'];
-		$show_empty = $_POST['show_empty'];
-
 		$AVE_DB->Query("
 			UPDATE " . PREFIX . "_modul_newsarchive
 			SET
-				arc_name   = '" . $arc_name . "',
-				rubs       = '" . $data . "',
-				show_days  = '" . $show_days . "',
-				show_empty = '" . $show_empty . "'
+				newsarchive_name = '" . $_POST['newsarchive_name'] . "',
+				newsarchive_rubrics = '" . implode(',', (array)$_POST['newsarchive_rubrics']) . "',
+				newsarchive_show_days = '" . $_POST['newsarchive_show_days'] . "',
+				newsarchive_show_empty = '" . $_POST['newsarchive_show_empty'] . "'
 			WHERE
-				id = '" . $id . "'
+				id = '" . intval($_POST['id']) . "'
 		");
+
 		header('Location:index.php?do=modules&action=modedit&mod=newsarchive&moduleaction=1&cp=' . SESSION);
+		exit;
 	}
 
 	/**
@@ -199,17 +197,16 @@ class Newsarchive
 		$mid = array('','01','02','03','04','05','06','07','08','09','10','11','12');
 		$dd = array();
 		$doctime = get_settings('use_doctime')
-			? ("AND (DokEnde = 0 || DokEnde > '" . time() . "') AND (DokStart = 0 || DokStart < '" . time() . "')")
+			? ("AND (DokEnde = 0 || DokEnde > '" . time() . "') AND DokStart < '" . time() . "'")
 			: '';
 
 		$row = $AVE_DB->Query("
 			SELECT
-				rubs,
-				show_empty
+				newsarchive_rubrics,
+				newsarchive_show_empty
 			FROM " . PREFIX . "_modul_newsarchive
 			WHERE id = '" . $id . "'
-		")
-		->FetchRow();
+		")->FetchRow();
 
 		$query = $AVE_DB->Query("
 			SELECT
@@ -217,11 +214,11 @@ class Newsarchive
 				YEAR(FROM_UNIXTIME(DokStart)) AS `year`,
 				COUNT(*) AS nums
 			FROM " . PREFIX . "_documents
-			WHERE RubrikId IN (" . $row->rubs . ")
-			AND Id != 1
+			WHERE RubrikId IN (" . $row->newsarchive_rubrics . ")
+			AND Id != '1'
 			AND Id != '" . PAGE_NOT_FOUND_ID . "'
-			AND Geloescht = 0
-			AND DokStatus = 1
+			AND Geloescht = '0'
+			AND DokStatus = '1'
 			AND DokStart > UNIX_TIMESTAMP(DATE_FORMAT((CURDATE() - INTERVAL 11 MONTH),'%Y-%m-01'))
 			" . $doctime . "
 			GROUP BY `month`
@@ -236,7 +233,7 @@ class Newsarchive
 		}
 
 		$AVE_Template->assign('archiveid', $id);
-		$AVE_Template->assign('show_empty', $row->show_empty);
+		$AVE_Template->assign('newsarchive_show_empty', $row->newsarchive_show_empty);
 		$AVE_Template->assign('months', $dd);
 		$AVE_Template->display($tpl_dir . 'public_archive-' . $id . '.tpl');
 	}

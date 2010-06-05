@@ -14,7 +14,7 @@ if (defined('ACP'))
 {
     $modul['ModulName'] = 'Архив документов';
     $modul['ModulPfad'] = 'newsarchive';
-    $modul['ModulVersion'] = '1.0';
+    $modul['ModulVersion'] = '1.1';
     $modul['Beschreibung'] = 'Данный модуль предзназначен для организации архива документов по выбранным рубрикам в системе. Параметры модуля позволяют определить возможность пока пустых месяцев и ежедневное меню навигации.';
     $modul['Autor'] = 'Arcanum';
     $modul['MCopyright'] = '&copy; 2007-2008 Overdoze Team';
@@ -28,96 +28,81 @@ if (defined('ACP'))
     $modul['CpPHPTag'] = "<?php mod_newsarchive(''$1''); ?>";
 }
 
-// Главная функция, которая отвечает за вывод блока архива на основании ID
+/**
+ * Обработка тэга модуля
+ *
+ * @param int $newsarchive_id - идентификатор архива
+ */
 function mod_newsarchive($newsarchive_id)
 {
 	global $AVE_Template;
 
-	require_once(BASE_DIR . '/modules/newsarchive/class.newsarchive.php');
+    $newsarchive_id = preg_replace('/\D/', '', $newsarchive_id);
 
-	$tpl_dir   = BASE_DIR . '/modules/newsarchive/templates/';
-	$lang_file = BASE_DIR . '/modules/newsarchive/lang/' . $_SESSION['user_language'] . '.txt';
+	if (is_numeric($newsarchive_id) && $newsarchive_id > 0)
+	{
+		require_once(BASE_DIR . '/modules/newsarchive/class.newsarchive.php');
 
-	$AVE_Template->config_load($lang_file, 'admin');
-	$config_vars = $AVE_Template->get_config_vars();
-	$AVE_Template->assign('config_vars', $config_vars);
+		$tpl_dir   = BASE_DIR . '/modules/newsarchive/templates/';
+		$lang_file = BASE_DIR . '/modules/newsarchive/lang/' . $_SESSION['user_language'] . '.txt';
 
-	Newsarchive::showArchive($tpl_dir, stripslashes($newsarchive_id));
+		$AVE_Template->config_load($lang_file, 'admin');
+
+		Newsarchive::showArchive($tpl_dir, $newsarchive_id);
+	}
 }
 
-// Определяем функцию, которая будет выполнять выборку докуметов из БД
-// на основании Месяца, Года и Дня (день может быть необязательным параметром)
-function show_by($newsarchive_id, $month, $year, $day=0)
+/**
+ * Выборка докуметов из БД на основании Месяца, Года и Дня
+ * День необязательный параметр
+ *
+ * @param int $newsarchive_id	идентификатор архива
+ * @param int $month			месяц
+ * @param int $year				год
+ * @param int $day				день
+ */
+function show_by($newsarchive_id, $month, $year, $day = 0)
 {
-	global $AVE_Template;
+	global $AVE_DB, $AVE_Template;
 
-	// Определяем, пришел ли в запросе номер дня
-	if ($day == 0)
-	{
-		$db_day = '';
-	}
-	else
-	{
-		$db_day = "AND DAYOFMONTH(FROM_UNIXTIME(a.DokStart)) = '" . $day . "'";
-	}
+	if(defined('MODULE_CONTENT')) return;
+
+	$assign = array();
 
 	$tpl_dir   = BASE_DIR . '/modules/newsarchive/templates/';
 	$lang_file = BASE_DIR . '/modules/newsarchive/lang/' . $_SESSION['user_language'] . '.txt';
 	$AVE_Template->config_load($lang_file, 'admin');
-	$config_vars = $AVE_Template->get_config_vars();
-	$AVE_Template->assign('config_vars', $config_vars);
+
+	// Определяем, пришел ли в запросе номер дня
+	$db_day = (is_numeric($day) && $day != 0) ? "AND DAYOFMONTH(FROM_UNIXTIME(a.DokStart)) = '" . $day . "'" : '';
 
 	// Выбираем все параметры для запроса с текущим ID
-	$sql = $GLOBALS['AVE_DB']->Query("SELECT *
+	$newsarchive = $AVE_DB->Query("
+		SELECT *
 		FROM ".PREFIX."_modul_newsarchive
-		WHERE id = '" . $newsarchive_id . "'
-	");
-	$result = $sql->FetchRow();
-
-	$AVE_Template->assign('results', $result);
+		WHERE id = '" . (int)$newsarchive_id . "'
+	")->FetchRow();
 
 	// Формирование условий сортировки выводимых документов
-	$db_sort   = 'ORDER BY a.Titel ASC';
-	if(isset($_REQUEST['sort']) && $_REQUEST['sort'] != '')
+	$db_sort = 'ORDER BY a.Titel ASC';
+	if(isset($_REQUEST['sort']))
 	{
 		switch($_REQUEST['sort'])
 		{
-			case 'Titel' :
-				$db_sort   = 'ORDER BY a.Titel ASC';
-				break;
-
-			case 'TitleDesc' :
-				$db_sort   = 'ORDER BY a.Titel DESC';
-				break;
-
-			case 'Date' :
-				$db_sort   = 'ORDER BY a.DokStart ASC';
-				break;
-
-			case 'DateDesc' :
-				$db_sort   = 'ORDER BY a.DokStart DESC';
-				break;
-
-			case 'Rubric' :
-				$db_sort   = 'ORDER BY b.RubrikName ASC';
-				break;
-
-			case 'RubricDesc' :
-				$db_sort   = 'ORDER BY b.RubrikName DESC';
-				break;
-
-			default :
-				$db_sort   = 'ORDER BY a.Titel ASC';
-				break;
+			case 'Titel':      $db_sort = 'ORDER BY a.Titel ASC';       break;
+			case 'TitleDesc':  $db_sort = 'ORDER BY a.Titel DESC';      break;
+			case 'Date':       $db_sort = 'ORDER BY a.DokStart ASC';    break;
+			case 'DateDesc':   $db_sort = 'ORDER BY a.DokStart DESC';   break;
+			case 'Rubric':     $db_sort = 'ORDER BY b.RubrikName ASC';  break;
+			case 'RubricDesc': $db_sort = 'ORDER BY b.RubrikName DESC'; break;
+			default:           $db_sort = 'ORDER BY a.Titel ASC';       break;
 		}
 	}
 
-	$doctime = get_settings('use_doctime')
-		? ("AND (DokEnde = 0 || DokEnde > '" . time() . "') AND (DokStart = 0 || DokStart < '" . time() . "')")
-		: '';
+	$doctime = get_settings('use_doctime') ? ("AND (DokEnde = 0 || DokEnde > '" . time() . "') AND DokStart < '" . time() . "'") : '';
 
 	// Выбираем из БД документы. которые соответствуют условиям для запроса и модуля
-	$query = $GLOBALS['AVE_DB']->Query("
+	$query = $AVE_DB->Query("
 		SELECT
 		  	a.Id,
 		  	a.RubrikId,
@@ -127,78 +112,47 @@ function show_by($newsarchive_id, $month, $year, $day=0)
 	  	FROM
 	  		" . PREFIX . "_documents as a,
 	  		" . PREFIX . "_rubrics as b
-		WHERE RubrikId IN (" . $result->rubs . ")
-		AND MONTH(FROM_UNIXTIME(a.DokStart)) = '" . $month . "'
-		AND YEAR(FROM_UNIXTIME(a.DokStart))= '" . $year . "'
+		WHERE RubrikId IN (" . $newsarchive->newsarchive_rubrics . ")
+		AND MONTH(FROM_UNIXTIME(a.DokStart)) = '" . (int)$month . "'
+		AND YEAR(FROM_UNIXTIME(a.DokStart))= '" . (int)$year . "'
 		" . $db_day . "
 		AND a.RubrikId = b.Id
 		AND a.Id != '". PAGE_NOT_FOUND_ID . "'
-  		AND Geloescht != 1
-  		AND DokStatus != 0
+  		AND Geloescht != '1'
+  		AND DokStatus != '0'
   		" . $doctime . "
 		" . $db_sort . "
 	");
 
+	// Заполняем массив докуметов результатами из БД
 	$documents = array();
-	// Заполняем массив докуметов результатами из БД и передем в шаблон
 	while($doc = $query->FetchRow())
 	{
 		$doc->Url = rewrite_link('index.php?id=' . $doc->Id . '&amp;doc=' . prepare_url($doc->Titel));
 		array_push($documents, $doc);
 	}
 
-	$AVE_Template->assign('documents',$documents);
-
 	// Формируем меню навигации по дням
-	$day_in_month = date('t', mktime(0, 0, 0, $month, 1, $year));
-	$m_arr = array(null,'Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь', 'Июль', 'Август', 'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь');
-	$month_name = (substr($month,0,1) == 0) ? str_replace('0','',$month) : $month;
-	$month_name = $m_arr[$month_name];
+	$day_in_month = date('t', mktime(0, 0, 0, (int)$month, 1, (int)$year));
+	$m_arr = array(null, 'Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь', 'Июль', 'Август', 'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь');
 
-	$AVE_Template->assign('month_name',$month_name);
-	$AVE_Template->assign('year',$year);
-	$AVE_Template->assign('month',$month);
-	$AVE_Template->assign('day',$day);
+	$assign['newsarchive'] = $newsarchive;
+	$assign['documents']   = $documents;
+	$assign['days']        = range(1, $day_in_month);
+	$assign['month_name']  = $m_arr[(int)$month];
+	$assign['year']        = (int)$year;
+	$assign['month']       = (int)$month;
+	$assign['day']         = (int)$day;
 
-	for($i=1;$i < $day_in_month+1; $i++)
-	{
-		if (strlen($i) == 1)
-		{
-			$k = '0'.$i;
-		}
-		else
-		{
-			$k = $i;
-		}
-		$days[] = $k;
-	}
+	$AVE_Template->assign($assign);
 
-	$AVE_Template->assign('days',$days);
-
-	$tpl_out = $AVE_Template->fetch($tpl_dir.'archive_result.tpl');
-	if(!defined('MODULE_CONTENT'))
-	{
-		define('MODULE_CONTENT', $tpl_out);
-	}
-	return true;
+	define('MODULE_CONTENT', $AVE_Template->fetch($tpl_dir . 'archive_result.tpl'));
 }
 
 // Включаем проверку входных данных и показываем результаты в зависимости от запроса
-if (isset($_GET['module']) && $_GET['module'] == 'newsarchive' && $_GET['month'] != '' && $_GET['year'] != '')
+if (isset($_GET['module']) && $_GET['module'] == 'newsarchive' && !empty($_GET['month']) && !empty($_GET['year']))
 {
-	$newsarchive_id    = $_GET['id'];
-	$month = $_GET['month'];
-	$year  = $_GET['year'];
-
-	if (isset($_GET['day']) && $_GET['day'] != '')
-	{
-		$day = addslashes($_GET['day']);
-		show_by($newsarchive_id, $month, $year, $day);
-	}
-	else
-	{
-		show_by($newsarchive_id, $month, $year);
-	}
+	show_by($_GET['id'], $_GET['month'], $_GET['year'], isset($_GET['day']) ? $_GET['day'] : 0);
 }
 
 // Кусок кода, отвечающий за управление модулем в админке
@@ -208,10 +162,7 @@ if (defined('ACP') && !empty($_REQUEST['moduleaction']))
 
 	$tpl_dir   = BASE_DIR . '/modules/newsarchive/templates/';
 	$lang_file = BASE_DIR . '/modules/newsarchive/lang/' . $_SESSION['user_language'] . '.txt';
-
 	$AVE_Template->config_load($lang_file);
-	$config_vars = $AVE_Template->get_config_vars();
-	$AVE_Template->assign('config_vars', $config_vars);
 
 	switch($_REQUEST['moduleaction'])
 	{
