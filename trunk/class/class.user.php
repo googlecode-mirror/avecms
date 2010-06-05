@@ -486,10 +486,10 @@ class AVE_User
 							city               = '" . $_POST['city'] . "',
 							Telefon            = '" . $_POST['Telefon'] . "',
 							Telefax            = '" . $_POST['Telefax'] . "',
-						--	Bemerkungen        = '" . $_POST['Bemerkungen'] . "',
+							Bemerkungen        = '" . $_POST['Bemerkungen'] . "',
 							Vorname            = '" . $_POST['Vorname'] . "',
 							Nachname           = '" . $_POST['Nachname'] . "',
-							`UserName`         = '" . $_POST['Username'] . "',
+							`UserName`         = '" . $_POST['UserName'] . "',
 							Benutzergruppe     = '" . $_POST['Benutzergruppe'] . "',
 							Registriert        = '" . time() . "',
 							Status             = '" . $_POST['Status'] . "',
@@ -541,6 +541,12 @@ class AVE_User
 					FROM " . PREFIX . "_users
 					WHERE Id = '" . $user_id . "'
 				")->FetchRow();
+
+				if (!$row)
+				{
+					header('Location:index.php?do=user&cp=' . SESSION);
+					exit;
+				}
 
 				$AVE_Template->assign('row', $row);
 				$AVE_Template->assign('BenutzergruppeMisc', explode(';', $row->BenutzergruppeMisc));
@@ -608,7 +614,7 @@ class AVE_User
 							city               = '" . $_REQUEST['city'] . "',
 							Telefon            = '" . $_REQUEST['Telefon'] . "',
 							Telefax            = '" . $_REQUEST['Telefax'] . "',
-						--	Bemerkungen        = '" . $_REQUEST['Bemerkungen'] . "',
+							Bemerkungen        = '" . $_REQUEST['Bemerkungen'] . "',
 							Vorname            = '" . $_REQUEST['Vorname'] . "',
 							Nachname           = '" . $_REQUEST['Nachname'] . "',
 							`UserName`         = '" . $_REQUEST['UserName'] . "',
