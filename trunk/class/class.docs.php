@@ -398,7 +398,7 @@ class AVE_Document
 		$start = get_current_page() * $limit - $limit;
 
 		$db_sort   = 'ORDER BY DokEdi DESC';
-		$navi_sort = '&sort=ErstelltDesc';
+		$navi_sort = '&sort=EditsDesc';
 
 		if (!empty($_REQUEST['sort']))
 		{
@@ -445,13 +445,13 @@ class AVE_Document
 					break;
 
 				case 'Erstellt' :
-					$db_sort   = 'ORDER BY DokEdi ASC';
+					$db_sort   = 'ORDER BY DokStart ASC';
 					$navi_sort = '&sort=Erstellt';
 					break;
 
 				case 'ErstelltDesc' :
-//					$db_sort   = 'ORDER BY DokEdi DESC';
-//					$navi_sort = '&sort=ErstelltDesc';
+					$db_sort   = 'ORDER BY DokStart DESC';
+					$navi_sort = '&sort=ErstelltDesc';
 					break;
 
 				case 'Klicks' :
