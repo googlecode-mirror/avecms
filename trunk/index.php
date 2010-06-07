@@ -7,6 +7,7 @@
  * @filesource
  */
 
+
 define('START_MICROTIME', microtime());
 
 define('BASE_DIR', str_replace("\\", "/", dirname(__FILE__)));
