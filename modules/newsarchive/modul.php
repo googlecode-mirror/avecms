@@ -48,7 +48,7 @@ function mod_newsarchive($newsarchive_id)
 
 		$AVE_Template->config_load($lang_file, 'admin');
 
-		Newsarchive::showArchive($tpl_dir, $newsarchive_id);
+		Newsarchive::newsarchiveShow($tpl_dir, $newsarchive_id);
 	}
 }
 
@@ -167,27 +167,27 @@ if (defined('ACP') && !empty($_REQUEST['moduleaction']))
 	switch($_REQUEST['moduleaction'])
 	{
 		case '1':
-			Newsarchive::archiveList($tpl_dir);
+			Newsarchive::newsarchiveList($tpl_dir);
 			break;
 
 		case 'add':
-			Newsarchive::addArchive();
+			Newsarchive::newsarchiveNew();
 			break;
 
 		case 'del':
-			Newsarchive::delArchive();
+			Newsarchive::newsarchiveDelete();
 			break;
 
 		case 'savelist':
-			Newsarchive::saveList();
+			Newsarchive::newsarchiveListSave();
 			break;
 
 		case 'edit':
-			Newsarchive::editArchive($tpl_dir);
+			Newsarchive::newsarchiveEdit($tpl_dir);
 			break;
 
 		case 'saveedit':
-			Newsarchive::saveArchive();
+			Newsarchive::newsarchiveSave();
 			break;
 	}
 }
