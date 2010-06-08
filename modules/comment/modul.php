@@ -14,7 +14,7 @@
 
 if (!defined('BASE_DIR')) exit;
 
-// Определяем базоые характеристики модуля
+// Определяем базовые характеристики модуля
 if (defined('ACP'))
 {
     $modul['ModulName'] = 'Комментарии'; // Название модуля
@@ -39,89 +39,76 @@ global $AVE_Template;
 /**
  * Функция, предназначенная для вывода списка комментариев к данному документу.
  * Она будет выполнена при парсинге шаблона вместо системного тега [mod_comment].
- *
- * Сначала происходит подключение класса class.comment.php, в котором содержаться все
- * методы для работы с данным модулем. Далее создается объект класса для дальнейшей
- * работы и подключаются файлы с языковыми переменными. Последней строкой происходит
- * вызов метода commentListShow(), который и отображает список всех комментариев к данному
- * документу.
- *
  */
 function mod_comment()
 {
 	global $AVE_Template;
 
+    // Подключаем класс и создаем объект дял работы
 	require_once(BASE_DIR . '/modules/comment/class.comment.php');
 	$comment = new Comment;
 
+    // Подключаем языковые файлы
 	$tpl_dir = BASE_DIR . '/modules/comment/templates/';
 	$lang_file = BASE_DIR . '/modules/comment/lang/' . $_SESSION['user_language'] . '.txt';
 	$AVE_Template->config_load($lang_file);
 
+    // Обращаемся к методу commentListShow() и отображаем список комментариев
 	$comment->commentListShow($tpl_dir);
 }
 
 /**
  * Следующий раздел описывает правила поведения модуля и его функциональные возможности
  * только при работе в Публичной части сайта.
- *
- * Сначала происходит определение того, что мы не находимся в Панели управления, а также
- * получаем строку запроса, разбирая которую, определяем, что произошел вызов именно этого
- * модуля ($_REQUEST['module'] == 'comment') с каким-либо опеределенный действием (isset($_REQUEST['action'])).
- *
- * Далее подключаем файл с классом, в котором содержатся все методы по работе с модулем.
- * Создаем объект класса. Подключаем файл с языковыми переменными и запускаем управляющую
- * конструкцию switch, которая, в зависимости от переданного параметра в строке запроса (action),
- * будет выполнять те или иные методы, определенные в файле класса.
- * 
- * Если передан параметр:
- * 
- * form    - вызываем метод commentPostFormShow(), который отображает форму для ввода комментария
- * comment - вызываем метод commentPostNew(), который выполняет добавление нового комментария в базу данных
- * edit    - вызываем метод commentPostEdit(), который отображает форму для редактирования комментария
- * delete  - проверяем, чтобы пользователь, вызвавший данный метод относился к группе Администраторы и удаляем комментарий
- * postinfo - вызываем метод commentPostInfoShow(), который отображает информацию об авторе комментария
- * lock/unlock - вызываем метод commentReplyStatusSet(), который разрешает, либо запрещает оставлять ответы для уже имеющихся комментариев
- * open/close - вызываем метод commentStatusSet(), который разрешает, либо запрещает оставлять комментарии к документу
- * 
  */
-if (!defined('ACP') &&
-	isset($_REQUEST['module']) && $_REQUEST['module'] == 'comment' &&
-	isset($_REQUEST['action']))
+
+
+// Определяем, что мы не находимся в Панели управления и в строке запроса происходит обращение именно к данному модулю
+if (!defined('ACP') && isset($_REQUEST['module']) && $_REQUEST['module'] == 'comment' && isset($_REQUEST['action']))
 {
-	require_once(BASE_DIR . '/modules/comment/class.comment.php');
+	// Подключаем основной класс и создаем объект
+    require_once(BASE_DIR . '/modules/comment/class.comment.php');
 	$comment = new Comment;
 
+    // Определяем директори, где хранятся файлы с шаблонами модуля и подключаем языковые переменные
     $tpl_dir = BASE_DIR . '/modules/comment/templates/';
     $lang_file = BASE_DIR . '/modules/comment/lang/' . $_SESSION['user_language'] . '.txt';
     $AVE_Template->config_load($lang_file);
 
+    // Определяем, какой параметр пришел из строки запроса браузера
 	switch($_REQUEST['action'])
 	{
-		case 'form':
+		// Если form, тогда отображаем форму для добавления нового комментария
+        case 'form':
 			$comment->commentPostFormShow($tpl_dir);
 			break;
 
-		case 'comment':
+		// Если comment, тогда производим запись нового комментария в БД
+        case 'comment':
 			$comment->commentPostNew($tpl_dir);
 			break;
 
-		case 'edit':
+		// Если edit, тогда открываем форму для редактирования текста комментария
+        case 'edit':
 			$comment->commentPostEdit((int)$_REQUEST['Id']);
 			break;
 
-		case 'delete':
+
+        // Если delete, тогда удаляем комментарий
+        case 'delete':
 			if (UGROUP==1)
 			{
 				$comment->commentPostDelete((int)$_REQUEST['Id']);
 			}
 			break;
 
-		case 'postinfo':
+		// Если postinfo, тогда отображаем окно с информацией об авторе комментария
+        case 'postinfo':
 			$comment->commentPostInfoShow($tpl_dir);
 			break;
 
-		case 'lock':
+		// Если lock или unlock, тогда запрещаем или разрешаем оставлять ответы для имеющихся комментариев
+        case 'lock':
 		case 'unlock':
 			if (UGROUP==1)
 			{
@@ -129,7 +116,9 @@ if (!defined('ACP') &&
 			}
 			break;
 
-		case 'open':
+		
+        // Если open или close, тогда разрешаем или запрещаем полное комментирование документа
+        case 'open':
 		case 'close':
 			if (UGROUP==1)
 			{
@@ -142,48 +131,40 @@ if (!defined('ACP') &&
 /**
  * Следующий раздел описывает правила поведения модуля и его функциональные возможности
  * только при работе в Административной части сайта.
- *
- * Сначала происходит определение того, что мы находимся в Панели управления (defined('ACP')) и
- * существует какое-либо значение для параметра действия !empty($_REQUEST['moduleaction']).
- *
- * Далее подключаем файл с классом, создаем объект класса и подключаем файл с языковыми переменными.
- * После этого запускаем управляющую конструкцию switch, которая, в зависимости от переданного
- * параметра в строке запроса (action), будет выполнять те или иные методы, определенные в
- * файле класса.
- *
- * Если передан параметр:
- *
- * 1          - вызываем метод commentAdminListShow(), который выводит список всех комментариев к документам
- * admin_edit - вызываем метод commentAdminPostEdit(), который отображает форму для редактирования комментария
- * settings   - вызываем метод commentAdminSettingsEdit(), который отображает раздел с настройками модуля.
- *
- * Также при передаче параметра settings происходит подключение класса для работы с пользователями.
- * Создается объект по работе с пользователями и происходит обращение к методу userGroupListGet(),
- * с целью получения списка всех групп пользователей, определенных в разделе Управление группами.
  */
 if (defined('ACP') && !empty($_REQUEST['moduleaction']))
 {
 	global $AVE_User;
 
-	require_once(BASE_DIR . '/modules/comment/class.comment.php');
+    // Подключаем основной класс и создаем объект
+    require_once(BASE_DIR . '/modules/comment/class.comment.php');
 	$comment = new Comment;
 
+    // Определяем директори, где хранятся файлы с шаблонами модуля и подключаем языковые переменные
     $tpl_dir   = BASE_DIR . '/modules/comment/templates/';
     $lang_file = BASE_DIR . '/modules/comment/lang/' . $_SESSION['admin_language'] . '.txt';
     $AVE_Template->config_load($lang_file, 'admin');
 
-	switch ($_REQUEST['moduleaction'])
+
+    // Определяем, какой параметр пришел из строки запроса браузера
+    switch ($_REQUEST['moduleaction'])
 	{
-		case '1':
+
+        // Если 1, тогда отображаем список всех комментариев с постраничной навигацией
+        case '1':
 			$comment->commentAdminListShow($tpl_dir);
 			break;
 
+        // Если admin_edit, тогда открываем форму для редактирования выбранного комментария
         case 'admin_edit':
             $comment->commentAdminPostEdit($tpl_dir);
             break;
 
-		case 'settings':
-			require_once(BASE_DIR . '/class/class.user.php');
+		// Если settings, тогда открываем страницу с настройками данного модуля
+        case 'settings':
+			// Подключаем файл класса для работы с пользователями, создаем объект и получаем список 
+            // всех групп пользователей, имеющихся в системе.
+            require_once(BASE_DIR . '/class/class.user.php');
 			$AVE_User = new AVE_User;
 			$AVE_Template->assign('groups', $AVE_User->userGroupListGet());
 
