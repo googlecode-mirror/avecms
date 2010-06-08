@@ -22,25 +22,25 @@ function check_name() {ldelim}
 	<strong>{#BANNER_CATEG_LINK#}</strong>
 </div><br />
 
-<form method="post" action="index.php?do=modules&action=modedit&mod={$mod_path}&moduleaction=kategs&cp={$sess}&sub=save" enctype="multipart/form-data">
+<form method="post" action="index.php?do=modules&action=modedit&mod={$mod_path}&moduleaction=category&cp={$sess}&sub=save" enctype="multipart/form-data">
 	<table width="100%" border="0" cellpadding="8" cellspacing="1" class="tableborder">
 		<tr class="tableheader">
 			<td width="1%" align="center"><img src="{$tpl_dir}/images/icon_del.gif" alt="" border="0" /></td>
 			<td width="100">{#BANNER_CATEGORY_TAG#}</td>
 			<td>{#BANNER_CATEGORY_NAME#}</td>
 		</tr>
-		{foreach from=$items item=item}
+		{foreach from=$categories item=category}
 			<tr style="background-color: #eff3eb;" onmouseover="this.style.backgroundColor='#dae0d8';" onmouseout="this.style.backgroundColor='#eff3eb';" id="table_rows">
 				<td width="1%">
-					<input title="{#BANNER_MARK_DELETE#}" name="del[{$item->Id}]" type="checkbox" id="del[{$item->Id}]" value="1" />
+					<input title="{#BANNER_MARK_DELETE#}" name="del[{$category->Id}]" type="checkbox" id="del[{$category->Id}]" value="1" />
 				</td>
 
 				<td width="100">
-					<input name="textfield" type="text" value="[mod_banner:{$item->Id}]" readonly/>
+					<input name="textfield" type="text" value="[mod_banner:{$category->Id}]" readonly/>
 				</td>
 
 				<td>
-					<input name="KatName[{$item->Id}]" type="text" id="KatName[{$item->Id}]" value="{$item->KatName|escape:html|stripslashes}" size="60">
+					<input name="banner_category_name[{$category->Id}]" type="text" id="banner_category_name[{$category->Id}]" value="{$category->banner_category_name|escape:html|stripslashes}" size="60">
 				</td>
 			</tr>
 		{/foreach}
@@ -51,7 +51,7 @@ function check_name() {ldelim}
 
 <h4>{#BANNER_CATEGORY_NEW#}</h4>
 
-<form action="index.php?do=modules&action=modedit&mod={$mod_path}&moduleaction=kategs&cp={$sess}&sub=new" method="post" onSubmit="return check_name();">
+<form action="index.php?do=modules&action=modedit&mod={$mod_path}&moduleaction=category&cp={$sess}&sub=new" method="post" onSubmit="return check_name();">
 	<table width="100%" border="0" cellpadding="8" cellspacing="1" class="tableborder">
 		<tr>
 			<td class="tableheader">{#BANNER_CATEGORY#}</td>
@@ -59,7 +59,7 @@ function check_name() {ldelim}
 
 		<tr>
 			<td class="second">
-				<input name="KatName" type="text" id="Name" size="60">&nbsp;
+				<input name="banner_category_name" type="text" id="Name" size="60">&nbsp;
 				<input name="submit" type="submit" class="button" value="{#BANNER_BUTTON_ADD#}" />
 			</td>
 		</tr>

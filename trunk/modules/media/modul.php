@@ -8,13 +8,13 @@
  * @filesource
  */
 
-if(!defined('BASE_DIR')) exit;
+if (!defined('BASE_DIR')) exit;
 
 if (defined('ACP'))
 {
     $modul['ModulName'] = 'Ѕаннер';
     $modul['ModulPfad'] = 'media';
-    $modul['ModulVersion'] = '1.2';
+    $modul['ModulVersion'] = '1.3';
     $modul['Beschreibung'] = 'ƒанный модуль позвол€ет организовать удобное управление показами рекламных баннеров на вашем сайте. ƒл€ того, чтобы отобразить рекламный баннер, разместите системный тег <strong>[mod_banner:XXX]</strong> в нужном месте вашего шаблона сайта или содержимом документа.<br>ƒопустимые форматы рекламных баннеров: jpg, jpeg, png, gif, swf';
     $modul['Autor'] = 'Arcanum';
     $modul['MCopyright'] = '&copy; 2007 Overdoze Team';
@@ -27,27 +27,29 @@ if (defined('ACP'))
     $modul['CpPHPTag'] = "<?php mod_banner(''$1''); ?>";
 }
 
-if(!defined('BANNER_DIR')) define('BANNER_DIR', 'media');
+if (!defined('BANNER_DIR')) define('BANNER_DIR', 'media');
 
 /**
  * ќбработка тэга модул€
  *
- * @param int $banner_id - идентификатор категории баннеров
+ * @param int $banner_category_id - идентификатор категории баннеров
  */
-function mod_banner($banner_id)
+function mod_banner($banner_category_id)
 {
-	require_once(BASE_DIR . '/modules/' . BANNER_DIR . '/class.banner.php');
+    if (!is_numeric($banner_category_id)) return;
+
+    require_once(BASE_DIR . '/modules/' . BANNER_DIR . '/class.banner.php');
 	$banner = new ModulBanner;
-	$banner->displayBanner(stripslashes($banner_id));
+	$banner->bannerShow($banner_category_id);
 }
 
 if (isset($_REQUEST['module']) && $_REQUEST['module'] == BANNER_DIR)
 {
-	if (is_numeric($_REQUEST['id']))
+	if (isset($_REQUEST['id']) && is_numeric($_REQUEST['id']))
 	{
 		require_once(BASE_DIR . '/modules/' . BANNER_DIR . '/class.banner.php');
 		$banner = new ModulBanner;
-		$banner->fetch_addclick($_REQUEST['id']);
+		$banner->bannerClickCount($_REQUEST['id']);
 	}
 }
 
@@ -56,41 +58,37 @@ if (defined('ACP') && !empty($_REQUEST['moduleaction']))
 	global $AVE_Template;
 
 	require_once(BASE_DIR . '/modules/' . BANNER_DIR . '/class.banner.php');
+	$banner = new ModulBanner;
 
 	$tpl_dir   = BASE_DIR . '/modules/' . BANNER_DIR . '/templates/';
 	$lang_file = BASE_DIR . '/modules/' . BANNER_DIR . '/lang/' . $_SESSION['user_language'] . '.txt';
-
-	$banner = new ModulBanner;
-
 	$AVE_Template->config_load($lang_file);
-	$config_vars = $AVE_Template->get_config_vars();
-	$AVE_Template->assign('config_vars', $config_vars);
 
-	switch($_REQUEST['moduleaction'])
+	switch ($_REQUEST['moduleaction'])
 	{
 		case '1':
-			$banner->showBanner($tpl_dir);
+			$banner->bannerList($tpl_dir);
 			break;
 
 		case 'quicksave':
-			$banner->quickSave($_REQUEST['id']);
+			$banner->bannerSave($_REQUEST['id']);
 			break;
 
-		case 'kategs':
-			$banner->bannerKategs($tpl_dir);
+		case 'category':
+			$banner->bannerCategory($tpl_dir);
 			break;
 
 		case 'editbanner':
-			$banner->editBanner($tpl_dir, $_REQUEST['id']);
+			$banner->bannerEdit($tpl_dir, $_REQUEST['id']);
 			break;
 
 		case 'new':
 		case 'newbanner':
-			$banner->newBanner($tpl_dir);
+			$banner->bannerNew($tpl_dir);
 			break;
 
 		case 'delbanner':
-			$banner->deleteBanner($_REQUEST['id']);
+			$banner->bannerDelete($_REQUEST['id']);
 			break;
 	}
 }
