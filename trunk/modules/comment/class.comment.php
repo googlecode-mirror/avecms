@@ -93,7 +93,7 @@ class Comment
 	var $_edit_link_tpl = 'comment_edit.tpl';
 
 	/**
-	 * Enter description here...
+	 * Имя файла с шаблоном для вывода информации об авторе комментария
 	 *
 	 * @var string
 	 */
@@ -105,21 +105,19 @@ class Comment
 
 	/**
 	 * Метод, предназначенный для получения основных настроек модуля,которые задаются в Панели управления.
-         *
-         * Сначала происходит запрос к БД на получение всех параметров модуля.
-         * Если аргумент не указан, тогда метод возвращает все полученные параметры.
-         * Если аргумент был указан, тогда возвращается только 1 параметр, заданный аргументом.
-         * Если же параметр, заданный аргументом не существует, возвращается значение null
-         *
-	 * @param string $param название параметра
+     *
+     * @param string $param название параметра
 	 * @return mixed значение настройки
-	 */
+	*/
 	function _commentSettingsGet($param = '')
 	{
 		global $AVE_DB;
 
-		static $settings = null;
+		// Определяем статическую переменную, которая будет хранить полученные настройки на протяжении всего
+        // срока жизни объекта.
+        static $settings = null;
 
+        // Если переменная $settings еще не имеет значений, тогда выполняем запрос к БД на получение данных
 		if ($settings === null)
 		{
 			$settings = $AVE_DB->Query("
@@ -131,16 +129,12 @@ class Comment
 
 		if ($param == '') return $settings;
 
+        // В противном случае возвращаем уже имеющиеся значения
 		return (isset($settings[$param]) ? $settings[$param] : null);
 	}
 
     /**
      * Метод, предназначенный для получения количества комментариев для определенного документа.
-     *
-     * В качестве аргумента данный метод принимает id документа. Если в массиве $comments
-     * не существует ключа с переданным id документа, тогда выполняется запрос к БД на
-     * получение количества комментариев.
-     *
      *
      * @param int $document_id - идентификатор документа
      * @return int - количество комментариев
@@ -149,8 +143,13 @@ class Comment
     {
         global $AVE_DB;
 
+   		// Определяем статический массив, который будет хранить количество комментариев для документов на
+        // протяжении всего срока жизни объекта.
         static $comments = array();
 
+
+        // Если в массиве не найден ключ, который соответствует запрашиваемому документу, тогда выполняем
+        // запрос к БД на получение количества комментариев
         if (! isset($comments[$document_id]))
         {
             $comments[$document_id] = $AVE_DB->Query("
@@ -160,13 +159,13 @@ class Comment
             ")->GetCell();
         }
 
+        // Возвращаем количество комментариев для запрашиваемого документа
         return $comments[$document_id];
     }
 
+
     /**
      * Метод, предназначенный для получения всех имеющихся в системе групп пользователей.
-     *
-     * Сначала происходит запрос к БД на получение групп. Далее формируется и возвращается массив.
      *
      * @return array - список групп пользователей
      */
@@ -174,20 +173,25 @@ class Comment
 	{
 		global $AVE_DB;
 
-		$groups = array();
+		// Определяем пустой массив
+        $groups = array();
 
-		$sql = $AVE_DB->Query("
+		// Выполняем запрос к БД на получение списка групп
+        $sql = $AVE_DB->Query("
             SELECT
                 Benutzergruppe,
                 Name
             FROM " . PREFIX . "_user_groups
         ");
-		while($row = $sql->FetchRow())
+
+        // Формируем массив
+        while($row = $sql->FetchRow())
 		{
 			array_push($groups, $row);
 		}
 
-		return $groups;
+		// Возвращаем список групп
+        return $groups;
 	}
 
 /**
@@ -196,19 +200,11 @@ class Comment
 
 	/**
 	 * Следующие методы описывают работу модуля в Публичной части сайта.
-         */
+     */
 
     /**
      * Метод, предназначенный для получения из БД всех комментариев, относящихся к указанному
      * документу с последующим выводом в Публичной части.
-     *
-     *
-     * Сначала проверяем статус модуля (активен/неактивен). Если модуль активен (комментарии разрешены),
-     * тогда проверяем, относится ли текущий пользователь к группе, которой разрешены комментарии.
-     * Далее получаем необходимые параметры из настроек модуля, указанные в Панели управления.
-     * Далее выполняем запрос к БД и получам список всех комментариев для определенного документа.
-     * Далее формируем массив параметров ($assign), который будет передан в шаблон ($AVE_Template->assign($assign);)
-     * и отображаем шаблон в Публичной части ($AVE_Template->display($tpl_dir . $this->_comments_tree_tpl);)
      *
      * @param string $tpl_dir - путь к шаблонам модуля
      *
@@ -218,17 +214,24 @@ class Comment
 	{
 		global $AVE_DB, $AVE_Template;
 
-		if ($this->_commentSettingsGet('active') == 1)
+		// Проверяем, что в настройках модуля разрешено комментирование документов
+        if ($this->_commentSettingsGet('active') == 1)
 		{
 			$assign['display_comments'] = 1;
-			if (in_array(UGROUP, explode(',', $this->_commentSettingsGet('user_groups'))))
+
+            // Если группа пользователя, который в текущий момент просматривает документ попадает в список
+            // разрешенных (в настройках модуля), тогда создаем флаг, который будет разрешать к показу
+            // форму для добавления нового комментария
+            if (in_array(UGROUP, explode(',', $this->_commentSettingsGet('user_groups'))))
 			{
 				$assign['cancomment'] = 1;
 			}
-			$assign['max_chars'] = $this->_commentSettingsGet('max_chars');
+
+            $assign['max_chars'] = $this->_commentSettingsGet('max_chars');
 			$assign['im'] = $this->_commentSettingsGet('spamprotect');
 
-			$comments = array();
+			// Выполняем запрос к БД на получение количества комментариев для текущего документа
+            $comments = array();
 			$sql = $AVE_DB->Query("
 				SELECT *
 				FROM " . PREFIX . "_modul_comment_info
@@ -237,7 +240,9 @@ class Comment
 				ORDER BY published ASC
 			");
 
-			$date_time_format = $AVE_Template->get_config_vars('COMMENT_DATE_TIME_FORMAT');
+			// Получаем формат даты, который указан в общих настройках системы и
+            // приводим дату создания комментария и дату редактирования к этому формату
+            $date_time_format = $AVE_Template->get_config_vars('COMMENT_DATE_TIME_FORMAT');
 			while ($row = $sql->FetchAssocArray())
 			{
 				$row['published']  = strftime($date_time_format, $row['published']);
@@ -251,82 +256,74 @@ class Comment
 				$comments[$row['parent_id']][] = $row;
 			}
 
-			$assign['closed'] = @$comments[0][0]['comments_close'];
+			// Формируем ряд переменных для использования в шаблоне
+            $assign['closed'] = @$comments[0][0]['comments_close'];
 			$assign['comments'] = $comments;
 			$assign['theme'] = defined('THEME_FOLDER') ? THEME_FOLDER : DEFAULT_THEME_FOLDER;
 			$assign['doc_id'] = (int)$_REQUEST['id'];
 			$assign['page'] = base64_encode(get_redirect_link());
 			$assign['subtpl'] = $tpl_dir . $this->_comments_tree_sub_tpl;
-
 			$AVE_Template->assign($assign);
-			$AVE_Template->display($tpl_dir . $this->_comments_tree_tpl);
+
+            // Отображаем шаблон
+            $AVE_Template->display($tpl_dir . $this->_comments_tree_tpl);
 		}
 	}
 
 	/**
 	 * Метод, предназначенный для отображения формы при добавлении нового комментария.
 	 *
-         * Сначала выполняем запрос к БД и получаем список комментариев на которые запрещено оставлять ответы.
-         * Далее получаем основные настройки модуля через внутренний метод _commentSettingsGet(), формируем список
-         * параметров и передаем в шаблон, после чего, отображаем форму для добавления нового комментария.
-         *
-         * @param string $tpl_dir - путь к шаблонам модуля
+     * @param string $tpl_dir - путь к шаблонам модуля
 	 */
 	function commentPostFormShow($tpl_dir)
 	{
 		global $AVE_DB, $AVE_Template;
 
-		$geschlossen = $AVE_DB->Query("
+		// Получаем список комментариев на которые запрещены ответы
+        $geschlossen = $AVE_DB->Query("
 			SELECT comments_close
 			FROM " . PREFIX . "_modul_comment_info
 			WHERE document_id = '" . (int)$_REQUEST['docid'] . "'
 			LIMIT 1
 		")->GetCell();
 
-		$AVE_Template->assign('closed', $geschlossen);
+		// Формируем ряд переменных для использования в шаблоне
+        $AVE_Template->assign('closed', $geschlossen);
 		$AVE_Template->assign('cancomment', ($this->_commentSettingsGet('active') == 1 && in_array(UGROUP, explode(',', $this->_commentSettingsGet('user_groups')))));
 		$AVE_Template->assign('max_chars', $this->_commentSettingsGet('max_chars'));
 		$AVE_Template->assign('theme', defined('THEME_FOLDER') ? THEME_FOLDER : DEFAULT_THEME_FOLDER);
-		$AVE_Template->display($tpl_dir . $this->_comment_form_tpl);
+
+        // Отображаем форму для добавления комментария
+        $AVE_Template->display($tpl_dir . $this->_comment_form_tpl);
 	}
 
 
 
-        /**
+    /**
 	 * Метод, предназначенный для записи в БД нового комментария.
 	 *
-         * Сначала происходит определение, каким методом отправлен запрос на сервер (ajax или нет).
-         * Если нет, происходит преобразование ссылки для последующего редиректа. Далее происходит
-         * проверка на использование защитного кода. Если защитный код используется, тогда происходит
-         * проверка на правильность ввода защитного кода (в случае неудачи происходит обновление формы).
-         * Далее, если в настройках модуля включена модерация комментариев, тогда устанавливаем для
-         * нового комментария статус 0, т.е. неактивный. Далее, формируем массив всех параметров, относящихся
-         * к данному комментарию (Автор, город, сайт и т.д.). Если данные отправлены ajax-запросом, тогда
-         * преобразуем текст в кодировку cp1251. Далее проверям, если длина комментария превышает допустимую,
-         * обрезаем текст, до максимальной длины. Далее выполняем запрос к БД на добавление новых данных,
-         * выполняем отправку сообщения на e-mail, указанный в разделе Настройки системы и делаем обновление
-         * страницы.
-         *
-         * @param string $tpl_dir - путь к шаблонам модуля
-         *
-         * @todo Вывод сообщения о результате добавления комментария, а также
-         * рассмотреть вопрос о добавлении еще одного параметра настройки модуля, который будет определять
-         * необходимость отправки уведомления на e-mail о новом комментарии. Возможно не всем хочется получать
-         * уведомления.
-         *
-         *
+     * @param string $tpl_dir - путь к шаблонам модуля
+     *
+     * @todo Вывод сообщения о результате добавления комментария, а также
+     * рассмотреть вопрос о добавлении еще одного параметра настройки модуля, который будет определять
+     * необходимость отправки уведомления на e-mail о новом комментарии. Возможно не всем хочется получать
+     * уведомления.
+     *
 	 */
 	function commentPostNew($tpl_dir)
 	{
 		global $AVE_DB, $AVE_Template;
-
+        // Если запрос пришел не ajax запросом, тогда формируем ссылку для последующего редиректа
 		if (! $ajax = (isset($_REQUEST['ajax']) && $_REQUEST['ajax'] == 1))
 		{
 			$link = rewrite_link(urldecode(get_redirect_link()));
 		}
 
-		if ($this->_commentSettingsGet('spamprotect') == 1)
+
+        // Если в настройках модуля включено использование защитного кода, тогда
+        if ($this->_commentSettingsGet('spamprotect') == 1)
 		{
+            // Если введенный пользователем защитный код неверен, тогда выполняем обновление кода
             if (! (isset($_SESSION['captcha_keystring']) && isset($_POST['securecode'])
                 && $_SESSION['captcha_keystring'] == $_POST['securecode']))
 			{
@@ -345,9 +342,11 @@ class Comment
             unset($_SESSION['captcha_keystring']);
 		}
 
-		$status = ($this->_commentSettingsGet('moderate') == 1) ? 0 : 1;
+		// Определяем флаг модерации комментариев
+        $status = ($this->_commentSettingsGet('moderate') == 1) ? 0 : 1;
 
-		if ($this->_commentSettingsGet('active') == 1
+		// Если комментарии разрешены, тогда получаем все данные, который пользователь указал в форме
+        if ($this->_commentSettingsGet('active') == 1
 			&& !empty($_POST['message'])
 			&& !empty($_POST['author_name'])
 			&& in_array(UGROUP, explode(',', $this->_commentSettingsGet('user_groups'))))
@@ -364,7 +363,9 @@ class Comment
 			$new_comment['message'] = $_POST['message'];
 			$new_comment['status'] = $status;
 
-			if ($ajax)
+			// Если данные были отправлены с помощью ajax_запроса, преобразуем текстовую информацию 
+            // в кодировку cp1251
+            if ($ajax)
 			{
 				$new_comment['author_name'] = iconv('utf-8', 'cp1251', $new_comment['author_name']);
 				$new_comment['author_email'] = iconv('utf-8', 'cp1251', $new_comment['author_email']);
@@ -373,15 +374,19 @@ class Comment
 				$new_comment['message'] = iconv('utf-8', 'cp1251', $new_comment['message']);
 			}
 
-			$max_chars = $this->_commentSettingsGet('max_chars');
+			// Определяем максимальную длину символов для комментария
+            $max_chars = $this->_commentSettingsGet('max_chars');
 			$max_chars = (!empty($max_chars) && $max_chars > 10) ? $max_chars : 200;
 
+            // Если длина комментария превышает максимально допустимую, обрезаем текст, до максимального значения
 			$new_comment['message'] = substr(stripslashes($new_comment['message']), 0, $max_chars);
 			$new_comment['message'] .= (strlen($new_comment['message']) > $max_chars) ? '…' : '';
 //			$new_comment['message'] = htmlspecialchars($new_comment['message'], ENT_QUOTES);
 			$new_comment['message'] = pretty_chars($new_comment['message']);
 
-			$AVE_DB->Query("
+
+            // Выполняем запрос к БД на добавление комментария
+            $AVE_DB->Query("
 				INSERT INTO " . PREFIX . "_modul_comment_info
 					(" . implode(',', array_keys($new_comment)) .")
 				VALUES
@@ -389,17 +394,20 @@ class Comment
 			");
 			$new_comment['Id'] = $AVE_DB->InsertId();
 
-			$mail_from = get_settings('mail_from');
+			// Получаем e-mail адрес из Общих настроек системы и формируем ссылку на комментарий в Публичной части
+            $mail_from = get_settings('mail_from');
 			$mail_from_name = get_settings('mail_from_name');
 			$page = get_home_link() . urldecode(base64_decode($_REQUEST['page'])) . '&subaction=showonly&comment_id=' . $new_comment['Id'] . '#' . $new_comment['Id'];
 
-			$mail_text = $AVE_Template->get_config_vars('COMMENT_MESSAGE_ADMIN');
+			//  Формируем текст уведомления для отправки на e-mail
+            $mail_text = $AVE_Template->get_config_vars('COMMENT_MESSAGE_ADMIN');
 			$mail_text = str_replace('%COMMENT%', stripslashes($new_comment['message']), $mail_text);
 			$mail_text = str_replace('%N%', "\n", $mail_text);
 			$mail_text = str_replace('%PAGE%', $page, $mail_text);
 			$mail_text = str_replace('&amp;', '&', $mail_text);
 
-			send_mail(
+			// Отправляем уведомление
+            send_mail(
 				$mail_from,
 				$mail_text,
 				$AVE_Template->get_config_vars('COMMENT_SUBJECT_MAIL'),
@@ -408,7 +416,9 @@ class Comment
 				'text'
 			);
 
-			if ($ajax)
+			// Если данные были отправлены ajax-запросом, тогда выполняем автоматический показ комментария
+            // на странице.
+            if ($ajax)
 			{
 				$new_comment['published'] = strftime($AVE_Template->get_config_vars('COMMENT_DATE_TIME_FORMAT'), $new_comment['published']);
 				$subcomments[] = $new_comment;
@@ -422,12 +432,13 @@ class Comment
 //		$AVE_Template->assign('JsAfter', $JsAfter);
 //		$AVE_Template->display($tpl_dir . $this->_comment_thankyou_tpl);
 
+        // Если же данные пришли НЕ ajax-запросом, тогда полностью обновляем страницу.
 		if (! $ajax) header('Location:' . $link . '#end');
 		exit;
 	}
 
     /**
-     * Метод редактирования комментария в публичной части
+     * Метод, предназначенный для редактирования комментария в Публичной части
      *
      * @param int $comment_id - идентификатор комментария
      */
@@ -439,7 +450,8 @@ class Comment
 
         $comment_id  = intval(preg_replace('/\D/', '', $comment_id));
 
-		$row = $AVE_DB->Query("
+		// Выполняем запрос к БД и получаем всю информацию о комментарии, а также ряд значений из настроек модуля
+        $row = $AVE_DB->Query("
 			SELECT
 			--	msg.Id,
 			--	msg.document_id,
@@ -460,16 +472,18 @@ class Comment
 			" . ((UGROUP != 1) ? "AND author_id = " . $_SESSION['user_id'] : '') . "
 		")->FetchAssocArray();
 
-		if ($row !== false)
+		// Если данные получены
+        if ($row !== false)
 		{
-			$max_chars = ($row['max_chars'] != '' && $row['max_chars'] > 10) ? $row['max_chars'] : 20;
+
+            $max_chars = ($row['max_chars'] != '' && $row['max_chars'] > 10) ? $row['max_chars'] : 20;
 
 			$message = iconv('utf-8', 'cp1251', $_POST['text']);
 
-			// Convert all named HTML entities to numeric entities
+			// Преобразуем все HTML сущности к числовым аналогам
 			$message = preg_replace_callback('/&([a-zA-Z][a-zA-Z0-9]{1,7});/', 'convert_entity', $message);
 
-			// Convert all numeric entities to their actual character
+			// Форматируем текст сообщения
 			$message = preg_replace('/&#x([0-9a-f]{1,7});/ei', 'chr(hexdec("\\1"))', $message);
 			$message = preg_replace('/&#([0-9]{1,7});/e', 'chr("\\1")', $message);
 
@@ -481,7 +495,9 @@ class Comment
 			$message .= ($message_length > $max_chars) ? '…' : '';
 //			$message = pretty_chars(htmlspecialchars($message, ENT_QUOTES));
 
-			if (in_array(UGROUP, explode(',', $row['user_groups'])) && $message_length > 3)
+			// Если группа текущего пользователя совпадает с разрешенной группой в настройках модуля, тогда 
+            // выполняем запрос к БД на обновление информации.
+            if (in_array(UGROUP, explode(',', $row['user_groups'])) && $message_length > 3)
 			{
 				$AVE_DB->Query("
 					UPDATE " . PREFIX . "_modul_comment_info
@@ -502,7 +518,9 @@ class Comment
 //				else
 //					echo nl2br(wordwrap($message, 90, "\n", true));
 //				echo nl2br(htmlspecialchars($message, ENT_QUOTES));
-				echo htmlspecialchars($message, ENT_QUOTES);
+
+				// Преобразуем HTML теги в HTML сущности
+                echo htmlspecialchars($message, ENT_QUOTES);
 				exit;
 			}
 
@@ -511,14 +529,16 @@ class Comment
 //			else
 //				echo nl2br(wordwrap($row['message'], 90, "\n", true));
 //			echo nl2br(htmlspecialchars($row['message'], ENT_QUOTES));
-			echo htmlspecialchars($row['message'], ENT_QUOTES);
+
+			// Преобразуем HTML теги в HTML сущности
+            echo htmlspecialchars($row['message'], ENT_QUOTES);
 		}
 		exit;
 	}
 
     /**
-     * Метод удаления комментария
-     * (комментарий удаляется со всеми ответами на него)
+     * Метод, предназначенный для удаления комментария. Если комментарий содержал какие-либо ответы на него,
+     * то все ответы также будут удалены вместе с родительским комментарием.
      *
      * @param int $comment_id - идентификатор комментария
      */
@@ -526,12 +546,15 @@ class Comment
 	{
 		global $AVE_DB;
 
+        // Выполняем запрос к БД на удаление родительского комментария
 		$AVE_DB->Query("
 			DELETE
 			FROM " . PREFIX . "_modul_comment_info
 			WHERE Id = '" . $comment_id . "'
 		");
-		$AVE_DB->Query("
+
+        // Выполняем запрос к БД на удаление дочерних комментариев (ответов)
+        $AVE_DB->Query("
 			DELETE
 			FROM " . PREFIX . "_modul_comment_info
 			WHERE parent_id = '" . $comment_id . "'
@@ -542,7 +565,7 @@ class Comment
 	}
 
 	/**
-	 * Метод вывода информации о авторе комментария
+	 * Метод, предназначенный для вывода детальной информации об авторе комментария
 	 *
      * @param string $tpl_dir - путь к шаблонам модуля
 	 */
@@ -550,28 +573,34 @@ class Comment
 	{
 		global $AVE_DB, $AVE_Template;
 
-		$row = $AVE_DB->Query("
+		// Получаем полную информацию о комментарии
+        $row = $AVE_DB->Query("
 			SELECT *
 			FROM " . PREFIX . "_modul_comment_info
 			WHERE Id = '" . (int)$_REQUEST['Id'] . "'
 		")->FetchAssocArray();
 
+        // Преобразуем адрес сайта к формату ссылки
         $row['author_website'] = str_replace('http://', '', $row['author_website']);
 		$row['author_website'] = ($row['author_website'] != '') ? '<a target="_blank" href="http://' . $row['author_website'] . '">' . $row['author_website'] .'</a>' : '';
 
-		$row['num'] = $AVE_DB->Query("
+		// Выполняем запрос к БД на получение количества всех комментариев, оставленных данным пользователем
+        $row['num'] = $AVE_DB->Query("
 			SELECT COUNT(*)
 			FROM " . PREFIX . "_modul_comment_info
 			WHERE author_id = '" . $row['author_id'] . "'
 			AND author_id != 0
 		")->GetCell();
 
-		$AVE_Template->assign('c', $row);
+		// Отображаем окно с информацией
+        $AVE_Template->assign('c', $row);
 		$AVE_Template->display($tpl_dir . $this->_postinfo_tpl);
 	}
 
-	/**
-	 * Метод управления запретом/разрешением отвечать на комментарии
+
+
+    /**
+	 * Метод, предназначенный для управления запретом или разрешением отвечать на комментарии
 	 *
 	 * @param int $comment_id - идентификатор комментария
 	 * @param string $status - {lock|unlock} признак запрета/разрешения
@@ -589,8 +618,10 @@ class Comment
 		exit;
 	}
 
-	/**
-	 * Метод управления запретом/разрешением комментировать документ
+
+
+    /**
+	 * Метод, предназначенный для управления запретом или разрешением комментировать документ
 	 *
 	 * @param int $document_id - идентификатор документа
 	 * @param string $status - {close|open} признак запрета/разрешения
@@ -608,20 +639,13 @@ class Comment
 		exit;
 	}
 
-	/**
+
+    /**
 	 * Следующие методы описывают работу модуля в Административной части сайта.
 	 */
 
     /**
      * Метод, предназначенный для вывода списка всех комментариев в Административной части.
-     *
-     * Сначала получаем общее количество комментариев для всех документов и определеяем количество страниц вывода,
-     * в зависимости от указанного лимита в свойстве класса $this->_limit.
-     * Далее запускаем управляющую конструкцию switch, которая на основании типа сортировки
-     * комментариев ($_REQUEST['sort']) сформирует параметры, которые будут использованы в запросе к БД.
-     * Далее выполняем комплексный запрос с учетом всех параметров, получаем данные из БД, формируем постраничную
-     * навигацию и отображаем результат работы.
-     *
      *
      * @param string $tpl_dir - путь к шаблонам модуля
      */
@@ -629,9 +653,12 @@ class Comment
 	{
 		global $AVE_DB, $AVE_Template;
 
-		$num = $AVE_DB->Query("SELECT COUNT(*) FROM " . PREFIX . "_modul_comment_info")->GetCell();
+		// Получаем общее количество комментариев
+        $num = $AVE_DB->Query("SELECT COUNT(*) FROM " . PREFIX . "_modul_comment_info")->GetCell();
 
-		@$seiten = @ceil($num / $this->_limit);
+		// Определяем количество страниц, учитывая параметр _limit, который опроеделяет количество
+        // комментариев отображаемых на одной странице
+        @$seiten = @ceil($num / $this->_limit);
 		$start = get_current_page() * $this->_limit - $this->_limit;
 
 		$docs = array();
@@ -639,6 +666,7 @@ class Comment
 		$def_sort = 'ORDER BY doc.Id DESC';
 		$def_nav = '';
 
+        // Определяем условия сортировки комментариев
 		if (!empty($_REQUEST['sort']))
 		{
 			switch ($_REQUEST['sort'])
@@ -675,7 +703,9 @@ class Comment
 			}
 		}
 
-		$sql = $AVE_DB->Query("
+		
+        // Выполняем запрос к БД на получение комметариев с учетом параметров сортировки и лимита.
+        $sql = $AVE_DB->Query("
 			SELECT
 				doc.Id,
 				doc.Titel,
@@ -698,34 +728,43 @@ class Comment
 			array_push($docs, $row);
 		}
 
-		if ($num > $this->_limit)
+
+        // Если количество комментариев полученных из БД превышает допустимое на странице, тогда формируем
+        // меню постраницной навигации
+        if ($num > $this->_limit)
 		{
 			$page_nav = ' <a class="pnav" href="index.php?do=modules&action=modedit&mod=comment&moduleaction=1&cp=' . SESSION . '&page={s}' . $def_nav . '">{t}</a> ';
 			$page_nav = get_pagination($seiten, 'page', $page_nav);
 			$AVE_Template->assign('page_nav', $page_nav);
 		}
 
+        // Передаем данные в шаблон для вывода и отображаем шаблон
         $AVE_Template->assign('docs', $docs);
 		$AVE_Template->assign('content', $AVE_Template->fetch($tpl_dir . $this->_admin_comments_tpl));
 	}
 
+
+
     /**
      * Метод, предназначенный для редактирования комментариев в Административной части.
      *
-     * Сначала получаем из БД коммента
      * @param string $tpl_dir - путь к шаблонам модуля
      */
 	function commentAdminPostEdit($tpl_dir)
 	{
 		global $AVE_DB, $AVE_Template;
 
-		$row = $AVE_DB->Query("
+		// Выполняем запрос к БД на получение информации о редактируемом комментарии
+        $row = $AVE_DB->Query("
 			SELECT *
 			FROM " . PREFIX . "_modul_comment_info
 			WHERE Id = '" . (int)$_REQUEST['Id'] . "'
 			LIMIT 1
 		")->FetchAssocArray();
 
+
+        // Если в запросе содержится подзапрос на сохранение данных (пользователь уже отредактировал комментарий
+        // и нажал кнопку сохранить изменения), тогда выполняем запрос к БД на обновление информации.
         if (isset($_POST['sub']) && $_POST['sub'] == 'send' && false != $row)
         {
             $AVE_DB->Query("
@@ -746,11 +785,13 @@ class Comment
             return;
         }
 
-		if ($row == false)
+		// Если в первой выборке из БД мы получили нулевой результат, тогда генерируем сообщение с ошибкой
+        if ($row == false)
 		{
 			$AVE_Template->assign('editfalse', 1);
 		}
-		else
+		// в противном случае получаем список комментариев, у которых стоит запрет на ответы
+        else
 		{
 		    $closed = $AVE_DB->Query("
 			    SELECT comments_close
@@ -760,21 +801,26 @@ class Comment
 		    ")->GetCell();
 
 		    $AVE_Template->assign('closed', $closed);
-                    $AVE_Template->assign('row', $row);
+            $AVE_Template->assign('row', $row);
 		    $AVE_Template->assign('max_chars', $this->_commentSettingsGet('max_chars'));
         }
 
+        // Отображаем шаблон
         $AVE_Template->assign('content', $AVE_Template->fetch($tpl_dir . $this->_admin_edit_link_tpl));
 	}
 
+
     /**
-     * Метод управления настройками модуля
+     * Метод, предназначенный для управления настройками модуля
      *
      * @param string $tpl_dir - путь к шаблонам модуля
      */
 	function commentAdminSettingsEdit($tpl_dir)
 	{
 		global $AVE_DB, $AVE_Template;
+
+        // Если в запросе содержится подзапрос на сохранение данных (пользователь нажал кнопку
+        // сохранить изменения), тогда выполняем запрос к БД на обновление информации.
 
 		if (isset($_REQUEST['sub']) && $_REQUEST['sub'] == 'save')
 		{
@@ -792,10 +838,12 @@ class Comment
 			");
 		}
 
+        // Получаем список всех настроек модуля
 		$row = $this->_commentSettingsGet();
         $row['user_groups'] = explode(',', $row['user_groups']);
 
-		$AVE_Template->assign($row);
+		// Передаем данные в шаблон и показываем страницу с настройками модуля
+        $AVE_Template->assign($row);
 		$AVE_Template->assign('content', $AVE_Template->fetch($tpl_dir . $this->_admin_settings_tpl));
 	}
 }
