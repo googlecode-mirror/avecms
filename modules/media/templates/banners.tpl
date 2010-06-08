@@ -7,7 +7,7 @@
 <div class="infobox">
 	<strong>{#BANNER_SHOW_ALL#}</strong> |&nbsp;
 	<a href="javascript:void(0);"onclick="window.location.href='index.php?do=modules&action=modedit&mod={$mod_path}&moduleaction=1&cp={$sess}';cp_pop('index.php?do=modules&action=modedit&mod={$mod_path}&moduleaction=newbanner&cp={$sess}&pop=1','860','700','1','modbannenews');">{#BANNER_NEW_LINK#}</a> |&nbsp;
-	<a href="index.php?do=modules&action=modedit&mod={$mod_path}&moduleaction=kategs&cp={$sess}">{#BANNER_CATEG_LINK#}</a>
+	<a href="index.php?do=modules&action=modedit&mod={$mod_path}&moduleaction=category&cp={$sess}">{#BANNER_CATEG_LINK#}</a>
 </div><br />
 
 <table width="100%" border="0" cellpadding="8" cellspacing="1" class="tableborder">
@@ -21,8 +21,8 @@
 		<td>{#BANNER_VIEWS_TABLE#}</td>
 		<td colspan="2">{#BANNER_ACTIONS#}</td>
 	</tr>
-	{foreach from=$items item=item}
-		{if ($item->Aktiv != 1) || ($item->Bannertags=='') || ($item->Klicks >= $item->MaxKlicks && $item->MaxKlicks != 0) || ($item->Views >= $item->MaxViews && $item->MaxViews != 0)}
+	{foreach from=$banners item=banner}
+		{if ($banner->banner_status != 1) || ($banner->banner_file_name=='') || ($banner->banner_clicks >= $banner->banner_max_clicks && $banner->banner_max_clicks != 0) || ($banner->banner_views >= $banner->banner_max_views && $banner->banner_max_views != 0)}
 			{assign var=active value=0}
 		{else}
 			{assign var=active value=1}
@@ -37,23 +37,23 @@
 				{/if}
 			</td>
 
-			<td><a href="javascript:void(0);" title="{#BANNER_EDIT_LINK#}" onclick="cp_pop('index.php?do=modules&action=modedit&mod={$mod_path}&moduleaction=editbanner&cp={$sess}&id={$item->Id}&pop=1','860','700','1','modbanneredit');">{$item->Bannername}</a></td>
-			<td><a href="../modules/{$mod_path}/files/{$item->Bannertags}" title="{#BANNER_VIEW_LINK#}" target="_blank">{$item->Bannertags}</a></td>
+			<td><a href="javascript:void(0);" title="{#BANNER_EDIT_LINK#}" onclick="cp_pop('index.php?do=modules&action=modedit&mod={$mod_path}&moduleaction=editbanner&cp={$sess}&id={$banner->Id}&pop=1','860','700','1','modbanneredit');">{$banner->banner_name}</a></td>
+			<td><a href="../modules/{$mod_path}/files/{$banner->banner_file_name}" title="{#BANNER_VIEW_LINK#}" target="_blank">{$banner->banner_file_name}</a></td>
 			<td>
-				{foreach from=$kategs item=k}
-					{if $k->Id==$item->KatId}{$k->KatName}{/if}
+				{foreach from=$categories item=category}
+					{if $category->Id==$banner->banner_category_id}{$category->banner_category_name}{/if}
 				{/foreach}
 			</td>
-			<td align="center">{if $item->ZStart<10}0{/if}{$item->ZStart}:00  - {if $item->ZEnde<10}0{/if}{$item->ZEnde}:00</td>
-			<td align="center">{$item->Klicks} / {if $item->MaxKlicks==0}~{else}{$item->MaxKlicks}{/if}</td>
-			<td align="center">{$item->Views} / {if $item->MaxViews==0}~{else}{$item->MaxViews}{/if}</td>
+			<td align="center">{if $banner->banner_show_start<10}0{/if}{$banner->banner_show_start}:00  - {if $banner->banner_show_end<10}0{/if}{$banner->banner_show_end}:00</td>
+			<td align="center">{$banner->banner_clicks} / {if $banner->banner_max_clicks==0}~{else}{$banner->banner_max_clicks}{/if}</td>
+			<td align="center">{$banner->banner_views} / {if $banner->banner_max_views==0}~{else}{$banner->banner_max_views}{/if}</td>
 			<td width="1%" align="center">
-				<a title="{#BANNER_EDIT_LINK#}" href="javascript:void(0);" onclick="cp_pop('index.php?do=modules&action=modedit&mod={$mod_path}&moduleaction=editbanner&cp={$sess}&id={$item->Id}&pop=1','860','700','1','modbanneredit');">
+				<a title="{#BANNER_EDIT_LINK#}" href="javascript:void(0);" onclick="cp_pop('index.php?do=modules&action=modedit&mod={$mod_path}&moduleaction=editbanner&cp={$sess}&id={$banner->Id}&pop=1','860','700','1','modbanneredit');">
 					<img src="{$tpl_dir}/images/icon_edit.gif" alt="" border="0" />
 				</a>
 			</td>
 			<td width="1%" align="center">
-				<a title="{#BANNER_DELETE_LINK#}" onclick="return confirm('{#BANNER_DELETE_CONFIRM#}')" href="index.php?do=modules&action=modedit&mod={$mod_path}&moduleaction=delbanner&cp={$sess}&id={$item->Id}">
+				<a title="{#BANNER_DELETE_LINK#}" onclick="return confirm('{#BANNER_DELETE_CONFIRM#}')" href="index.php?do=modules&action=modedit&mod={$mod_path}&moduleaction=delbanner&cp={$sess}&id={$banner->Id}">
 					<img src="{$tpl_dir}/images/icon_del.gif" alt="" border="0" />
 				</a>
 			</td>

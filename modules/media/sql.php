@@ -20,30 +20,31 @@ $modul_sql_deinstall[] = "DROP TABLE IF EXISTS `CPPREFIX_modul_banner_categories
 $modul_sql_deinstall[] = "DROP TABLE IF EXISTS `CPPREFIX_modul_banners`;";
 
 $modul_sql_install[] = "CREATE TABLE `CPPREFIX_modul_banner_categories` (
-	`Id` mediumint(5) unsigned NOT NULL auto_increment,
-	`KatName` varchar(100) NOT NULL default '',
-	PRIMARY KEY  (`Id`)
+  `Id` smallint(3) unsigned NOT NULL auto_increment,
+  `banner_category_name` char(100) NOT NULL default '',
+  PRIMARY KEY  (`Id`)
 ) TYPE=MyISAM DEFAULT CHARSET=cp1251;";
 
 $modul_sql_install[] = "CREATE TABLE `CPPREFIX_modul_banners` (
-	`Id` int(10) unsigned NOT NULL auto_increment,
-	`KatId` mediumint(5) unsigned NOT NULL default '1',
-	`Bannertags` varchar(255) NOT NULL default '',
-	`BannerUrl` varchar(255) NOT NULL default '',
-	`Gewicht` tinyint(3) unsigned NOT NULL default '0',
-	`Bannername` varchar(100) NOT NULL default '',
-	`Views` int(10) unsigned NOT NULL default '0',
-	`Klicks` int(10) unsigned NOT NULL default '0',
-	`BildAlt` varchar(255) NOT NULL default '',
-	`MaxKlicks` int(10) unsigned NOT NULL default '0',
-	`MaxViews` int(10) unsigned NOT NULL default '0',
-	`ZStart` smallint(2) unsigned NOT NULL default '0',
-	`ZEnde` smallint(2) unsigned NOT NULL default '0',
-	`Aktiv` tinyint(1) unsigned NOT NULL default '1',
-	`Target` varchar(255) NOT NULL default '_blank',
-	`Width` int(10) unsigned NOT NULL default '0',
-	`Height` int(10) unsigned NOT NULL default '0',
-	PRIMARY KEY  (`Id`)
+  `Id` mediumint(5) unsigned NOT NULL auto_increment,
+  `banner_category_id` smallint(3) unsigned NOT NULL default '1',
+  `banner_file_name` char(255) NOT NULL default '',
+  `banner_url` char(255) NOT NULL default '',
+  `banner_priority` enum('0','1','2','3') NOT NULL default '0',
+  `banner_name` char(100) NOT NULL default '',
+  `banner_views` mediumint(5) unsigned NOT NULL default '0',
+  `banner_clicks` mediumint(5) unsigned NOT NULL default '0',
+  `banner_alt` char(255) NOT NULL default '',
+  `banner_max_clicks` mediumint(5) unsigned NOT NULL default '0',
+  `banner_max_views` mediumint(5) unsigned NOT NULL default '0',
+  `banner_show_start` tinyint(1) unsigned NOT NULL default '0',
+  `banner_show_end` tinyint(1) unsigned NOT NULL default '0',
+  `banner_status` enum('1','0') NOT NULL default '1',
+  `banner_target` enum('_blank', '_self') NOT NULL DEFAULT '_blank',
+  `banner_width` smallint(3) unsigned NOT NULL default '0',
+  `banner_height` smallint(3) unsigned NOT NULL default '0',
+  PRIMARY KEY  (`Id`),
+  KEY `banner_category_id` (`banner_category_id`)
 ) TYPE=MyISAM DEFAULT CHARSET=cp1251;";
 
 $modul_sql_install[] = "INSERT INTO `CPPREFIX_modul_banner_categories` VALUES ('1', 'Катагория 1');";
