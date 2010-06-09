@@ -73,7 +73,7 @@ if (defined('ACP') && !empty($_REQUEST['moduleaction']))
 			break;
 
 		case 'edit':
-			sysblock::sysblockEdit($_REQUEST['id'], $tpl_dir);
+			sysblock::sysblockEdit(isset($_REQUEST['id']) ? $_REQUEST['id'] : null, $tpl_dir);
 			break;
 
 		case 'saveedit':

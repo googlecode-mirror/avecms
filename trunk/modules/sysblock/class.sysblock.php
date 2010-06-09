@@ -74,6 +74,8 @@ class sysblock
 	 *
 	 * @param int $sysblock_id идентификатор системного блока
 	 * @param string $tpl_dir - путь к папке с шаблонами модуля
+	 *
+	 * @todo сделать отдельно методы добавления и редактирования
 	 */
 	function sysblockEdit($sysblock_id, $tpl_dir)
 	{
@@ -91,6 +93,7 @@ class sysblock
 		}
 		else
 		{
+			$row['sysblock_name'] = '';
 			$row['sysblock_text'] = '';
 		}
 

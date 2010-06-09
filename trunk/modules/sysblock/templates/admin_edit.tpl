@@ -16,13 +16,11 @@
 			<td>{#SYSBLOCK_NAME#}</td>
 		</tr>
 
-		{if $smarty.request.id != ''}
-			<tr>
-				<td class="second">
-					<input name="sysblock_name" type="text" value="{$sysblock_name|escape}" size="80" />
-				</td>
-			</tr>
-		{/if}
+		<tr>
+			<td class="second">
+				<input name="sysblock_name" type="text" value="{$sysblock_name|escape}" size="80" />
+			</td>
+		</tr>
 
 		<tr class="tableheader">
 			<td>{#SYSBLOCK_INTEXT#}</td>
