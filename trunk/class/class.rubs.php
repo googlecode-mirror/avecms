@@ -86,7 +86,7 @@ class AVE_Rubric
 		switch ($_REQUEST['sub'])
 		{
 			case '':
-				$AVE_Template->assign('AlleVorlagen', getAllTemplates());
+				$AVE_Template->assign('AlleVorlagen', get_all_templates());
 				$AVE_Template->assign('content', $AVE_Template->fetch('rubs/rubnew.tpl'));
 				break;
 
@@ -130,7 +130,7 @@ class AVE_Rubric
 					if (!empty($errors))
 					{
 						$AVE_Template->assign('errors', $errors);
-						$AVE_Template->assign('AlleVorlagen', getAllTemplates());
+						$AVE_Template->assign('AlleVorlagen', get_all_templates());
 						$AVE_Template->assign('content', $AVE_Template->fetch('rubs/rubnew.tpl'));
 					}
 					else
@@ -458,7 +458,7 @@ class AVE_Rubric
 		$rubrikName = $sql->GetCell();
 		$AVE_Template->assign('RubrikName', $rubrikName);
 		$AVE_Template->assign('groups', $groups);
-		$AVE_Template->assign('felder', fetchFields());
+		$AVE_Template->assign('felder', get_field_type());
 		$AVE_Template->assign('content', $AVE_Template->fetch('rubs/rub_fields.tpl'));
 	}
 
@@ -620,7 +620,7 @@ class AVE_Rubric
 		}
 		$sql->Close();
 
-		fetchFields(1);
+		$AVE_Template->assign('feld_array', get_field_type());
 
 		if ($show == 1 ) $row->RubrikTemplate = stripslashes($_POST['RubrikTemplate']);
 

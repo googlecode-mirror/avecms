@@ -728,7 +728,7 @@ class AVE_Document
 
 						if (!check_permission('docs_php'))
 						{
-							if (isPhpCode($fld_val)) $fld_val = '';
+							if (is_php_code($fld_val)) $fld_val = '';
 						}
 
 						$fld_val = clean_no_print_char($fld_val);
@@ -958,7 +958,7 @@ class AVE_Document
 
 							if (!check_permission('docs_php'))
 							{
-								if (isPhpCode($fld_val)) continue;
+								if (is_php_code($fld_val)) continue;
 							}
 
 							$fld_val = clean_no_print_char($fld_val);

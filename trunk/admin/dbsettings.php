@@ -43,7 +43,7 @@ if (!empty($_REQUEST['action']))
 	}
 }
 
-$AVE_Template->assign('db_size', MySqlSize());
+$AVE_Template->assign('db_size', get_mysql_size());
 $AVE_Template->assign('tables', $AVE_DB_Service->databaseTableGet());
 $AVE_Template->assign('navi', $AVE_Template->fetch('navi/navi.tpl'));
 $AVE_Template->assign('content', $AVE_Template->fetch('dbactions/actions.tpl'));

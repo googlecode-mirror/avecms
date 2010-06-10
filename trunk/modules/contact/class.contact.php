@@ -444,7 +444,7 @@ class Contact
 			$page_nav = get_pagination($seiten, 'page', $page_nav);
 			$AVE_Template->assign('page_nav', $page_nav);
 		}
-		
+
         // Передаем данные в шаблон и отображаем страницу
         $AVE_Template->assign('items', $items);
 		$AVE_Template->assign('content', $AVE_Template->fetch($tpl_dir . 'admin_forms.tpl'));
@@ -482,7 +482,7 @@ class Contact
 			array_push($items,$row);
 		}
 
-		
+
         // Получаем список групп пользователей в системе
         $Groups = array();
 		$sql_g = $AVE_DB->Query("
@@ -656,7 +656,7 @@ class Contact
 			");
 		}
 
-		// Сохраняем системное сообщние 
+		// Сохраняем системное сообщние
         reportLog($_SESSION['user_name'] . ' - добавил новое поле в модуле контакты (' . $field_title . ')', 2, 2);
 
         // Выполняем обновление страницы
@@ -695,7 +695,7 @@ class Contact
                 $AVE_Template->assign('groups', $Groups);
 				$AVE_Template->assign('tpl_dir', $tpl_dir);
 				$AVE_Template->assign('formaction', 'index.php?do=modules&action=modedit&mod=contact&moduleaction=new&sub=save&cp=' . SESSION . '&pop=1');
-				
+
                 // Отображаем страницу с новой формой
                 $AVE_Template->assign('content', $AVE_Template->fetch($tpl_dir . 'admin_fields.tpl'));
 				break;
@@ -916,7 +916,7 @@ class Contact
 	 */
 	function getAttachment($file)
 	{
-		$file_ex = getMimeTyp($file);
+		$file_ex = get_mime_type($file);
 		header('Pragma: public');
 		header('Expires: 0');
 		header('Cache-Control: must-revalidate, post-check=0, pre-check=0');
@@ -926,7 +926,7 @@ class Contact
 		header('Content-Transfer-Encoding: binary');
 		header('Content-Length: ' . @filesize(BASE_DIR . '/attachments/' . $file));
 		@set_time_limit(0);
-		@cpReadfile(BASE_DIR . '/attachments/' . $file) or die('File not found. ');
+		@file_download(BASE_DIR . '/attachments/' . $file) or die('File not found. ');
 	}
 
 
@@ -1016,7 +1016,7 @@ class Contact
 					}
 				}
 			}
-			
+
             // Выполняем запрос к БД на удаление информации об этих файлах
             $AVE_DB->Query("
 				DELETE

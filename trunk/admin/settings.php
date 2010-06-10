@@ -22,7 +22,7 @@ $AVE_Settings = new AVE_Settings;
 switch($_REQUEST['action'])
 {
 	case '':
-		if(permCheck('gen_settings'))
+		if(check_permission_acp('gen_settings'))
 		{
 			switch ($_REQUEST['sub'])
 			{

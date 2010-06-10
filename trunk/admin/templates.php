@@ -131,7 +131,7 @@ switch ($_REQUEST['action'])
 					}
 
 					$check_code = strtolower($_REQUEST['Template']);
-					if (isPhpCode($check_code) && check_permission('vorlagen_php') )
+					if (is_php_code($check_code) && check_permission('vorlagen_php') )
 					{
 						$AVE_Template->assign('php_forbidden', 1);
 						$save = false;
@@ -141,7 +141,7 @@ switch ($_REQUEST['action'])
 					{
 						fetchPrefabTemplates();
 						$AVE_Template->assign('row', $row);
-						$AVE_Template->assign('tags', fetchTplTags(BASE_DIR . '/inc/data/vorlage.php'));
+						$AVE_Template->assign('tags', get_ave_tags(BASE_DIR . '/inc/data/vorlage.php'));
 						$AVE_Template->assign('content', $AVE_Template->fetch('templates/form.tpl'));
 					}
 					else
@@ -166,7 +166,7 @@ switch ($_REQUEST['action'])
 
 				case '':
 					fetchPrefabTemplates();
-					$AVE_Template->assign('tags', fetchTplTags(BASE_DIR . '/inc/data/vorlage.php'));
+					$AVE_Template->assign('tags', get_ave_tags(BASE_DIR . '/inc/data/vorlage.php'));
 					$AVE_Template->assign('content', $AVE_Template->fetch('templates/form.tpl'));
 					break;
 			}
@@ -236,13 +236,13 @@ switch ($_REQUEST['action'])
 					")->FetchRow();
 
 					$check_code = strtolower($row->Template);
-					if (isPhpCode($check_code) && !check_permission('vorlagen_php'))
+					if (is_php_code($check_code) && !check_permission('vorlagen_php'))
 					{
 						$AVE_Template->assign('php_forbidden', 1);
 						$AVE_Template->assign('read_only', 'readonly');
 					}
 
-					$AVE_Template->assign('tags', fetchTplTags(BASE_DIR . '/inc/data/vorlage.php'));
+					$AVE_Template->assign('tags', get_ave_tags(BASE_DIR . '/inc/data/vorlage.php'));
 
 					$row->Template = pretty_chars($row->Template);
 					$row->Template = stripslashes($row->Template);
@@ -252,7 +252,7 @@ switch ($_REQUEST['action'])
 				case 'save':
 					$ok = true;
 					$check_code = strtolower($_REQUEST['Template']);
-					if (isPhpCode($check_code) && !check_permission('vorlagen_php') )
+					if (is_php_code($check_code) && !check_permission('vorlagen_php') )
 					{
 						reportLog($_SESSION['user_name'] . ' - пытался использовать PHP кода в шаблоне (' . stripslashes($_REQUEST['TplName']) . ')', 2, 2);
 						$AVE_Template->assign('php_forbidden', 1);
@@ -263,7 +263,7 @@ switch ($_REQUEST['action'])
 					{
 						$row->Template = stripslashes($_REQUEST['Template']);
 						$AVE_Template->assign('row', $row);
-						$AVE_Template->assign('tags', fetchTplTags(BASE_DIR . '/inc/data/vorlage.php'));
+						$AVE_Template->assign('tags', get_ave_tags(BASE_DIR . '/inc/data/vorlage.php'));
 					}
 					else
 					{

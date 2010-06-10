@@ -31,7 +31,7 @@ switch($_REQUEST['action'])
 					break;
 			}
 			$AVE_Rubric->rubricList();
-			$AVE_Template->assign('templates', getAllTemplates());
+			$AVE_Template->assign('templates', get_all_templates());
 		}
 		else
 		{
@@ -66,7 +66,7 @@ switch($_REQUEST['action'])
 					$check_code = strtolower($Rtemplate);
 					$ok = true;
 
-					if(isPhpCode($check_code) && !check_permission('rub_php') )
+					if(is_php_code($check_code) && !check_permission('rub_php') )
 					{
 						$AVE_Template->assign('php_forbidden', 1);
 						$ok = false;

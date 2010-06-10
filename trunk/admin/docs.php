@@ -33,7 +33,7 @@ $AVE_Template->config_load(BASE_DIR . '/admin/lang/' . $_SESSION['admin_language
 switch($_REQUEST['action'])
 {
 	case '' :
-		if (permCheck('docs'))
+		if (check_permission_acp('docs'))
 		{
 			switch($_REQUEST['sub'])
 			{
@@ -49,7 +49,7 @@ switch($_REQUEST['action'])
 		break;
 
 	case 'showsimple':
-		if (permCheck('docs'))
+		if (check_permission_acp('docs'))
 		{
 			$AVE_Document->documentListGet();
 			$AVE_Template->assign('content', $AVE_Template->fetch('documents/docs_simple.tpl'));
@@ -57,7 +57,7 @@ switch($_REQUEST['action'])
 		break;
 
 	case 'edit':
-		if (permCheck('docs'))
+		if (check_permission_acp('docs'))
 		{
 			$AVE_Navigation->navigationAllItemList();
 			$AVE_Request->requestListFetch();
@@ -66,7 +66,7 @@ switch($_REQUEST['action'])
 		break;
 
 	case 'new':
-		if (permCheck('docs'))
+		if (check_permission_acp('docs'))
 		{
 			$AVE_Navigation->navigationAllItemList();
 			$AVE_Request->requestListFetch();
@@ -75,7 +75,7 @@ switch($_REQUEST['action'])
 		break;
 
 	case 'open':
-		if (permCheck('docs'))
+		if (check_permission_acp('docs'))
 		{
 			$AVE_Navigation->navigationItemStatusOn((int)$_REQUEST['Id']);
 			$AVE_Document->documentStatusSet((int)$_REQUEST['Id'], '1');
@@ -83,7 +83,7 @@ switch($_REQUEST['action'])
 		break;
 
 	case 'close':
-		if (permCheck('docs'))
+		if (check_permission_acp('docs'))
 		{
 			$AVE_Navigation->navigationItemStatusOff((int)$_REQUEST['Id']);
 			$AVE_Document->documentStatusSet((int)$_REQUEST['Id'], '0');
@@ -91,7 +91,7 @@ switch($_REQUEST['action'])
 		break;
 
 	case 'delete':
-		if (permCheck('docs'))
+		if (check_permission_acp('docs'))
 		{
 			$AVE_Navigation->navigationItemStatusOff((int)$_REQUEST['Id']);
 			$AVE_Document->documentMarkDelete((int)$_REQUEST['Id']);
@@ -167,7 +167,7 @@ switch($_REQUEST['action'])
 		break;
 
 	case 'change':
-		if (permCheck('docs'))
+		if (check_permission_acp('docs'))
 		{
 			$AVE_Document->documentRubricChange();
 		}

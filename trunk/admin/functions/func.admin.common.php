@@ -9,10 +9,38 @@
  */
 
 /**
+ * Форматированный вывод размера
+ *
+ * @param int $file_size размер
+ * @return string нормированный размер с единицой измерения
+ */
+function format_size($file_size)
+{
+	if ($file_size >= 1073741824)
+	{
+		$file_size = round($file_size / 1073741824 * 100) / 100 . ' Gb';
+	}
+	elseif ($file_size >= 1048576)
+	{
+		$file_size = round($file_size / 1048576 * 100) / 100 . ' Mb';
+	}
+	elseif ($file_size >= 1024)
+	{
+		$file_size = round($file_size / 1024 * 100) / 100 . ' Kb';
+	}
+	else
+	{
+		$file_size = $file_size . ' b';
+	}
+
+	return $file_size;
+}
+
+/**
  * Извлечение из БД статистики по основным компонентам системы
  *
  */
-function cntStat()
+function get_ave_info()
 {
 	global $AVE_DB, $AVE_Template;
 
@@ -51,40 +79,12 @@ function cntStat()
 }
 
 /**
- * Форматированный вывод размера
- *
- * @param int $file_size размер
- * @return string нормированный размер с единицой измерения
- */
-function formatsize($file_size)
-{
-	if ($file_size >= 1073741824)
-	{
-		$file_size = round($file_size / 1073741824 * 100) / 100 . ' Gb';
-	}
-	elseif ($file_size >= 1048576)
-	{
-		$file_size = round($file_size / 1048576 * 100) / 100 . ' Mb';
-	}
-	elseif ($file_size >= 1024)
-	{
-		$file_size = round($file_size / 1024 * 100) / 100 . ' Kb';
-	}
-	else
-	{
-		$file_size = $file_size . ' b';
-	}
-
-	return $file_size;
-}
-
-/**
  * Размер дириктории
  *
  * @param string $directory наименование директории
  * @return int
  */
-function dirsize($directory)
+function get_dir_size($directory)
 {
 	if (!is_dir($directory)) return -1;
 	$size = 0;
@@ -99,7 +99,7 @@ function dirsize($directory)
 			}
 			elseif (@is_dir($directory . '/' . $dirfile))
 			{
-				$dirSize = dirsize($directory . '/' . $dirfile);
+				$dirSize = get_dir_size($directory . '/' . $dirfile);
 				if ($dirSize >= 0)
 				{
 					$size += $dirSize;
@@ -121,7 +121,7 @@ function dirsize($directory)
  *
  * @return int
  */
-function MySqlSize()
+function get_mysql_size()
 {
 	global $AVE_DB;
 
@@ -132,88 +132,11 @@ function MySqlSize()
 		$mysql_size += $row['Data_length'] + $row['Index_length'];
 	}
 
-	return formatsize($mysql_size);
+	return format_size($mysql_size);
 }
 
-function cpReadfile($filename, $retbytes=true)
+function get_ave_tags($srcfile)
 {
-	$chunksize = 1*(1024*1024);
-	$buffer = '';
-	$cnt =0;
-
-	$handle = fopen($filename, 'rb');
-
-	if ($handle === false)
-	{
-		return false;
-	}
-
-	while (!feof($handle))
-	{
-		$buffer = fread($handle, $chunksize);
-		echo $buffer;
-		flush();
-		if ($retbytes)
-		{
-			$cnt += strlen($buffer);
-		}
-	}
-
-	$status = fclose($handle);
-
-	if ($retbytes && $status)
-	{
-		return $cnt;
-	}
-
-	return $status;
-}
-
-//function userCheck()
-//{
-//	if (!defined('UID') || !check_permission('adminpanel'))
-//	{
-//		header('Location:admin.php');
-//		exit;
-//	}
-//}
-
-function permCheck($perm)
-{
-	if (!check_permission($perm))
-	{
-		define('NOPERM', 1);
-		return false;
-	}
-
-	return true;
-}
-
-function isPhpCode($check_code)
-{
-	$check_code = stripslashes($check_code);
-	$check_code = str_replace(' ', '', $check_code);
-	$check_code = strtolower($check_code);
-
-	if (strpos($check_code, '<?php') !== false ||
-		strpos($check_code, '<?') !== false ||
-		strpos($check_code, '<? ') !== false ||
-		strpos($check_code, '<?=') !== false ||
-		strpos($check_code, '<script language="php">') !== false ||
-		strpos($check_code, 'language="php"') !== false ||
-		strpos($check_code, "language='php'") !== false ||
-		strpos($check_code, 'language=php') !== false)
-	{
-		return true;
-	}
-
-	return false;
-}
-
-function fetchTplTags($srcfile)
-{
-	global $vorlage;
-
 	if (@include_once($srcfile))
 	{
 		reset ($vorlage);
@@ -229,13 +152,87 @@ function fetchTplTags($srcfile)
 
 		return $vl;
 	}
-	else
-	{
-		return '';
-	}
+
+	return null;
 }
 
-function getMimeTyp($file)
+function get_field_type()
+{
+	global $AVE_Template;
+
+	$AVE_Template->config_load(BASE_DIR . '/admin/lang/' . $_SESSION['admin_language'] . '/fields.txt', 'fields');
+	$felder_vars = $AVE_Template->get_config_vars();
+
+	$felder = array(
+		array('id' => 'kurztext',  'name' => $felder_vars['FIELD_TEXT']),
+		array('id' => 'langtext',  'name' => $felder_vars['FIELD_TEXTAREA']),
+		array('id' => 'smalltext', 'name' => $felder_vars['FIELD_TEXTAREA_S']),
+		array('id' => 'dropdown',  'name' => $felder_vars['FIELD_DROPDOWN']),
+		array('id' => 'bild',      'name' => $felder_vars['FIELD_IMAGE']),
+		array('id' => 'download',  'name' => $felder_vars['FIELD_FILE']),
+		array('id' => 'link',      'name' => $felder_vars['FIELD_LINK']),
+		array('id' => 'video_avi', 'name' => $felder_vars['FIELD_VIDEO_AVI']),
+		array('id' => 'video_wmf', 'name' => $felder_vars['FIELD_VIDEO_WMF']),
+		array('id' => 'video_wmv', 'name' => $felder_vars['FIELD_VIDEO_WMV']),
+		array('id' => 'video_mov', 'name' => $felder_vars['FIELD_VIDEO_MOV']),
+		array('id' => 'flash',     'name' => $felder_vars['FIELD_FLASH'])
+	);
+
+	return $felder;
+}
+
+function get_all_templates()
+{
+	global $AVE_DB;
+
+	static $templates = null;
+
+	if ($templates == null)
+	{
+		$templates = array();
+
+		$sql = $AVE_DB->Query("
+			SELECT
+				Id,
+				TplName
+			FROM " . PREFIX . "_templates
+		");
+
+		while ($row = $sql->FetchRow())
+		{
+			array_push($templates, $row);
+		}
+	}
+
+	return $templates;
+}
+
+function get_editable_module()
+{
+	global $AVE_DB, $AVE_Template;
+
+	$modules = array();
+	$sql = $AVE_DB->Query("
+		SELECT
+			ModulName,
+			ModulPfad
+		FROM " . PREFIX . "_module
+		WHERE `Status` = '1'
+		AND `AdminEdit` = '1'
+		ORDER BY ModulName ASC
+	");
+	while ($row = $sql->FetchRow())
+	{
+		if (check_permission('mod_' . $row->ModulPfad))
+		{
+			array_push($modules, $row);
+		}
+	}
+
+	$AVE_Template->assign('modules', $modules);
+}
+
+function get_mime_type($file)
 {
 	$file_extension = strtolower(substr(strrchr($file, '.'), 1));
 
@@ -321,92 +318,61 @@ function getMimeTyp($file)
 	return $ctype;
 }
 
-function getAllTemplates()
+function file_download($filename, $retbytes = true)
 {
-	global $AVE_DB;
+	$chunksize = 1*(1024*1024);
+	$buffer = '';
+	$cnt = 0;
 
-	static $templates = null;
+	$handle = fopen($filename, 'rb');
 
-	if ($templates == null)
+	if ($handle === false) return false;
+
+	while (!feof($handle))
 	{
-		$templates = array();
-
-		$sql = $AVE_DB->Query("
-			SELECT
-				Id,
-				TplName
-			FROM " . PREFIX . "_templates
-		");
-
-		while ($row = $sql->FetchRow())
-		{
-			array_push($templates, $row);
-		}
+		$buffer = fread($handle, $chunksize);
+		echo $buffer;
+		flush();
+		if ($retbytes) $cnt += strlen($buffer);
 	}
 
-	return $templates;
+	$status = fclose($handle);
+
+	if ($retbytes && $status) return $cnt;
+
+	return $status;
 }
 
-function fetchFields($assign = 0)
+function is_php_code($check_code)
 {
-	global $AVE_Template;
+	$check_code = stripslashes($check_code);
+	$check_code = str_replace(' ', '', $check_code);
+	$check_code = strtolower($check_code);
 
-	$AVE_Template->config_load(BASE_DIR . '/admin/lang/' . $_SESSION['admin_language'] . '/fields.txt', 'fields');
-	$felder_vars = $AVE_Template->get_config_vars();
-
-	$felder = array(
-		array('id' => 'kurztext',  'name' => $felder_vars['FIELD_TEXT']),
-		array('id' => 'langtext',  'name' => $felder_vars['FIELD_TEXTAREA']),
-		array('id' => 'smalltext', 'name' => $felder_vars['FIELD_TEXTAREA_S']),
-		array('id' => 'dropdown',  'name' => $felder_vars['FIELD_DROPDOWN']),
-		array('id' => 'bild',      'name' => $felder_vars['FIELD_IMAGE']),
-		array('id' => 'download',  'name' => $felder_vars['FIELD_FILE']),
-		array('id' => 'link',      'name' => $felder_vars['FIELD_LINK']),
-		array('id' => 'video_avi', 'name' => $felder_vars['FIELD_VIDEO_AVI']),
-		array('id' => 'video_wmf', 'name' => $felder_vars['FIELD_VIDEO_WMF']),
-		array('id' => 'video_wmv', 'name' => $felder_vars['FIELD_VIDEO_WMV']),
-		array('id' => 'video_mov', 'name' => $felder_vars['FIELD_VIDEO_MOV']),
-		array('id' => 'flash',     'name' => $felder_vars['FIELD_FLASH'])
-	);
-
-	if ($assign == 1)
+	if (strpos($check_code, '<?php') !== false ||
+		strpos($check_code, '<?') !== false ||
+		strpos($check_code, '<? ') !== false ||
+		strpos($check_code, '<?=') !== false ||
+		strpos($check_code, '<script language="php">') !== false ||
+		strpos($check_code, 'language="php"') !== false ||
+		strpos($check_code, "language='php'") !== false ||
+		strpos($check_code, 'language=php') !== false)
 	{
-		$AVE_Template->assign('feld_array', $felder);
-		return '';
+		return true;
 	}
-	else
-	{
-		return $felder;
-	}
+
+	return false;
 }
 
-function NaviModule()
+function check_permission_acp($perm)
 {
-	global $AVE_DB, $AVE_Template;
-
-	$modules = array();
-	$sql = $AVE_DB->Query("
-		SELECT
-			ModulName,
-			ModulPfad
-		FROM " . PREFIX . "_module
-		WHERE `Status` = '1'
-		ORDER BY ModulName ASC
-	");
-	while ($row = $sql->FetchRow())
+	if (!check_permission($perm))
 	{
-        unset($modul);
-		if (! @include(BASE_DIR . '/modules/' . $row->ModulPfad . '/modul.php'))
-		{
-			echo 'Ошибка доступа к файлам модуля ' . $row->ModulPfad . '<br />';
-		}
-		elseif ($modul['AdminEdit'] == 1 && check_permission('mod_' . $row->ModulPfad))
-		{
-			array_push($modules, $row);
-		}
+		define('NOPERM', 1);
+		return false;
 	}
 
-	$AVE_Template->assign('modules', $modules);
+	return true;
 }
 
 ?>
