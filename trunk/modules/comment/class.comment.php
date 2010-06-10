@@ -139,7 +139,7 @@ class Comment
      * @param int $document_id - идентификатор документа
      * @return int - количество комментариев
      */
-    function _getCountComments($document_id)
+    function _commentPostCountGet($document_id)
     {
         global $AVE_DB;
 
@@ -162,37 +162,6 @@ class Comment
         // Возвращаем количество комментариев для запрашиваемого документа
         return $comments[$document_id];
     }
-
-
-    /**
-     * Метод, предназначенный для получения всех имеющихся в системе групп пользователей.
-     *
-     * @return array - список групп пользователей
-     */
-	function _listAllGroups()
-	{
-		global $AVE_DB;
-
-		// Определяем пустой массив
-        $groups = array();
-
-		// Выполняем запрос к БД на получение списка групп
-        $sql = $AVE_DB->Query("
-            SELECT
-                Benutzergruppe,
-                Name
-            FROM " . PREFIX . "_user_groups
-        ");
-
-        // Формируем массив
-        while($row = $sql->FetchRow())
-		{
-			array_push($groups, $row);
-		}
-
-		// Возвращаем список групп
-        return $groups;
-	}
 
 /**
  * Внешние методы класса
@@ -297,8 +266,6 @@ class Comment
         $AVE_Template->display($tpl_dir . $this->_comment_form_tpl);
 	}
 
-
-
     /**
 	 * Метод, предназначенный для записи в БД нового комментария.
 	 *
@@ -363,7 +330,7 @@ class Comment
 			$new_comment['message'] = $_POST['message'];
 			$new_comment['status'] = $status;
 
-			// Если данные были отправлены с помощью ajax_запроса, преобразуем текстовую информацию 
+			// Если данные были отправлены с помощью ajax_запроса, преобразуем текстовую информацию
             // в кодировку cp1251
             if ($ajax)
 			{
@@ -495,7 +462,7 @@ class Comment
 			$message .= ($message_length > $max_chars) ? '…' : '';
 //			$message = pretty_chars(htmlspecialchars($message, ENT_QUOTES));
 
-			// Если группа текущего пользователя совпадает с разрешенной группой в настройках модуля, тогда 
+			// Если группа текущего пользователя совпадает с разрешенной группой в настройках модуля, тогда
             // выполняем запрос к БД на обновление информации.
             if (in_array(UGROUP, explode(',', $row['user_groups'])) && $message_length > 3)
 			{
@@ -597,8 +564,6 @@ class Comment
 		$AVE_Template->display($tpl_dir . $this->_postinfo_tpl);
 	}
 
-
-
     /**
 	 * Метод, предназначенный для управления запретом или разрешением отвечать на комментарии
 	 *
@@ -618,8 +583,6 @@ class Comment
 		exit;
 	}
 
-
-
     /**
 	 * Метод, предназначенный для управления запретом или разрешением комментировать документ
 	 *
@@ -638,7 +601,6 @@ class Comment
 
 		exit;
 	}
-
 
     /**
 	 * Следующие методы описывают работу модуля в Административной части сайта.
@@ -703,7 +665,7 @@ class Comment
 			}
 		}
 
-		
+
         // Выполняем запрос к БД на получение комметариев с учетом параметров сортировки и лимита.
         $sql = $AVE_DB->Query("
 			SELECT
@@ -724,7 +686,7 @@ class Comment
 
 		while ($row = $sql->FetchAssocArray())
 		{
-            $row['Comments'] = $this->_getCountComments($row['Id']);
+            $row['Comments'] = $this->_commentPostCountGet($row['Id']);
 			array_push($docs, $row);
 		}
 
@@ -742,8 +704,6 @@ class Comment
         $AVE_Template->assign('docs', $docs);
 		$AVE_Template->assign('content', $AVE_Template->fetch($tpl_dir . $this->_admin_comments_tpl));
 	}
-
-
 
     /**
      * Метод, предназначенный для редактирования комментариев в Административной части.
@@ -808,7 +768,6 @@ class Comment
         // Отображаем шаблон
         $AVE_Template->assign('content', $AVE_Template->fetch($tpl_dir . $this->_admin_edit_link_tpl));
 	}
-
 
     /**
      * Метод, предназначенный для управления настройками модуля
