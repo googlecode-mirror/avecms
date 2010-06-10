@@ -11,11 +11,11 @@ h1, h2, h3 {font-family: Arial, Helvetica, sans-serif;}
 }
 -->
 </style>
-<? if ($row_gw->InstId == '') { ?>
+<?php if ($row_gw->InstId == '') { ?>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
 <p align="center" class="f"><strong>FEHLER!</strong><br />Es wurde keine Installations - ID angegeben!...</p>
-<? exit; } ?>
+<?php exit; } ?>
 
 <body onLoad="document.process.submit();">
 

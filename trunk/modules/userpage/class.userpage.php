@@ -56,8 +56,8 @@ class userpage {
 		# ERSETZEN
 		$tpl = $row_tpl->tpl;
 		$tpl = str_replace("[cp:benutzername]", $row->UserName, $tpl);
-		$tpl = str_replace("[cp:header-1]","<? userpage_header(\"userpanel_forums.tpl\",".$uid."); ?>", $tpl);
-		$tpl = str_replace("[cp:header-2]","<? userpage_header(\"header_sthreads.tpl\",".$uid."); ?>", $tpl);
+		$tpl = str_replace("[cp:header-1]","<?php userpage_header(\"userpanel_forums.tpl\",".$uid."); ?>", $tpl);
+		$tpl = str_replace("[cp:header-2]","<?php userpage_header(\"header_sthreads.tpl\",".$uid."); ?>", $tpl);
 		$tpl = str_replace("[cp:land]", $row_country->LandName, $tpl);
 		$tpl = str_replace("[cp:name]", $row->Vorname ." ". $row->Nachname, $tpl);
 		$tpl = str_replace("[cp:registriert]", date(date_format, $row->Registriert), $tpl);

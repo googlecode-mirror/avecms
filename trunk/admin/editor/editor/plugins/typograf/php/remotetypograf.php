@@ -1,14 +1,14 @@
-<?
+<?php
 /*
 	remotetypograf.php
 	PHP-implementation of ArtLebedevStudio.RemoteTypograf class (web-service client)
-	
+
 	Copyright (c) Art. Lebedev Studio | http://www.artlebedev.ru/
 
 	Typograf homepage: http://typograf.artlebedev.ru/
 	Web-service address: http://typograf.artlebedev.ru/webservices/typograf.asmx
 	WSDL-description: http://typograf.artlebedev.ru/webservices/typograf.asmx?WSDL
-	
+
 	Default charset: UTF-8
 
 	Version: 1.0 (August 30, 2005)
@@ -61,12 +61,12 @@ class RemoteTypograf
 	{
 		$this->_useBr = $value ? 1 : 0;
 	}
-	
+
 	function p ($value)
 	{
 		$this->_useP = $value ? 1 : 0;
 	}
-	
+
 	function nobr ($value)
 	{
 		$this->_maxNobr = $value ? $value : 0;
@@ -141,13 +141,13 @@ function Utf8ToWin($fcontents) {
 			$typografResponse .= fread ($remoteTypograf, 8192);
 		}
 		fclose ($remoteTypograf);
-		
+
 		$startsAt = strpos ($typografResponse, '<ProcessTextResult>') + 19;
 		$endsAt = strpos ($typografResponse, '</ProcessTextResult>');
 		$typografResponse = substr ($typografResponse, $startsAt, $endsAt - $startsAt - 1);
-		
+
 		$typografResponse = Utf8ToWin($typografResponse);
-		
+
 		$typografResponse = str_replace ('&amp;', '&', $typografResponse);
 		$typografResponse = str_replace ('&lt;', '<', $typografResponse);
 		$typografResponse = str_replace ('&gt;', '>', $typografResponse);
