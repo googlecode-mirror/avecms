@@ -1,7 +1,8 @@
 <?php
 
 /**
- * Класс обработки статистики визитов
+ * Класс, включающий все свойства и методы для управления счетчиками статистики как в Публичной части сайта,
+ * так и в Панели управления.
  *
  * @package AVE.cms
  * @subpackage module_Counter
@@ -11,7 +12,7 @@ class Counter
 {
 
 /**
- *	СВОЙСТВА
+ *	Свойства класса
  */
 
 	/**
@@ -22,11 +23,11 @@ class Counter
 	var $_limit = 25;
 
 /**
- *	ВНУТРЕННИЕ МЕТОДЫ
+ *	Внутренние методы класса
  */
 
 	/**
-	 * Выборка сводной статистики из базы
+	 * Метод, рпдназначенный для получния из БД статистики в различных форматах (всё, сегодня, вчера и т.д.)
 	 *
 	 * @param int $id - идентификатор счетчика
 	 * @return array
@@ -40,6 +41,7 @@ class Counter
 	{
 		global $AVE_DB;
 
+        // Выполняем сложный, составной запрос к БД н получение статистики за различные периоды времени
 		$sql = $AVE_DB->Query("
 			SELECT COUNT(*) AS visits
 			FROM " . PREFIX . "_modul_counter_info
@@ -70,7 +72,8 @@ class Counter
 				AND " . (mktime(0,0,0,1,1,date('Y')+1)-1) . ")
 		");
 
-		$row['all']       = $sql->fetchRow()->visits;
+		// Формируем и возвращаем полученные данные
+        $row['all']       = $sql->fetchRow()->visits;
 		$row['today']     = $sql->fetchRow()->visits;
 		$row['yesterday'] = $sql->fetchRow()->visits;
 		$row['prevmonth'] = $sql->fetchRow()->visits;
@@ -80,11 +83,12 @@ class Counter
 	}
 
 /**
- *	ВНЕШНИЕ МЕТОДЫ
+ *	Внешние методы класса
  */
 
 	/**
-	 * Обработка тэга счетчика
+	 * Метод, предназначенный для получения информации о клиенте, создания COOKIE файла сроком на сутки и
+     * записи в БД, если данного клиента еще нет.
 	 *
 	 * @param int $id - идентификатор счетчика
 	 */
@@ -92,7 +96,8 @@ class Counter
 	{
 		global $AVE_DB;
 
-		if (!empty($_SERVER['REMOTE_ADDR']))
+		// Определяем IP адрес клиента
+        if (!empty($_SERVER['REMOTE_ADDR']))
 		{
 			$ip = $_SERVER['REMOTE_ADDR'];
 		}
@@ -101,6 +106,7 @@ class Counter
 			$ip = $_SERVER['HTTP_CLIENT_IP'];
 		}
 
+        // Получаем количестко записей из БД о данном клиенте
 		$exist = $AVE_DB->Query("
 			SELECT 1
 			FROM " . PREFIX . "_modul_counter_info
@@ -110,19 +116,24 @@ class Counter
 			LIMIT 1
 		")->NumRows();
 
-		$expire  = mktime(23, 59, 59);
+		// Устанавливаем срок жизни COOKIE файла
+        $expire  = mktime(23, 59, 59);
 		setcookie('counter_' . $id, '1', $expire);
 
-		if (! $exist)
+		// Если информации о данном клиенте не найдено в БД
+        if (! $exist)
 		{
 			$referer = '';
-			if (isset($_SERVER['HTTP_REFERER']))
+			// Опреляем реферал
+            if (isset($_SERVER['HTTP_REFERER']))
 			{
 				$referer = urldecode(trim($_SERVER['HTTP_REFERER']));
 				$referer = iconv("UTF-8", "WINDOWS-1251", $referer);
 			}
 
-			include_once(BASE_DIR . '/modules/counter/phpSniff.core.php');
+			// Подключаем классы, предназначенные для получения детальной информации о пользователе
+            // (операционная система, браузер и т.д.)
+            include_once(BASE_DIR . '/modules/counter/phpSniff.core.php');
 			include_once(BASE_DIR . '/modules/counter/phpSniff.class.php');
 			$settings = array(
 				'check_cookies'=>'',
@@ -131,6 +142,7 @@ class Counter
 			);
 			$client = new phpSniff('', $settings);
 
+            // Выполняем запрос к БД на запись полученной информации
 			$AVE_DB->Query("
 				INSERT
 				INTO " . PREFIX . "_modul_counter_info
@@ -147,14 +159,15 @@ class Counter
 	}
 
 	/**
-	 * Создание нового счетчика
+	 * Метод, предназначенный для создания нового счетчика в Панели управления
 	 *
 	 */
 	function counterNew()
 	{
 		global $AVE_DB;
 
-		$AVE_DB->Query("
+		// Выполняем запрос к БД на добавление нового счетчика
+        $AVE_DB->Query("
 			INSERT
 			INTO " . PREFIX . "_modul_counter
 			SET
@@ -162,17 +175,19 @@ class Counter
 				counter_name = '" . htmlspecialchars($_POST['counter_name']) . "'
 		");
 
-		header('Location:index.php?do=modules&action=modedit&mod=counter&moduleaction=1&cp=' . SESSION);
+		// Выполняем обновление страницы
+        header('Location:index.php?do=modules&action=modedit&mod=counter&moduleaction=1&cp=' . SESSION);
 		exit;
 	}
 
 	/**
-	 * Запись параметров счетчика
-	 *
+	 * Метод, предназначенный для сохранения изменений у счетчиков (например мы его переименовали в Панели управления),
+	 * либо для удаления счетчиков из системы.
 	 */
 	function counterSettingsSave()
 	{
-		foreach($_POST['counter_name'] as $id => $counter_name)
+		// Циклически обрабатываем все счетчики и обновляем информацию о них в БД
+        foreach($_POST['counter_name'] as $id => $counter_name)
 		{
 			$AVE_DB->Query("
 				UPDATE  " . PREFIX . "_modul_counter
@@ -181,6 +196,8 @@ class Counter
 			");
 		}
 
+        // Циклически обрабатываем все счетчики и удаляем те, которые были помечены на удаление.
+        // Также, вместе с удалением счетчика, происходит удаление всей собранной им информации.
 		foreach($_POST['del'] as $id => $del)
 		{
 			$AVE_DB->Query("
@@ -196,12 +213,15 @@ class Counter
 			");
 		}
 
+        // Выполняем обновление страницы
 		header('Location:index.php?do=modules&action=modedit&mod=counter&moduleaction=1&cp=' . SESSION);
 		exit;
 	}
 
-	/**
-	 * Список счетчиков в админпанели
+
+
+    /**
+	 * Меотд, предназначенный для вывода списка всех счетчиков в системе
 	 *
 	 * @param string $tpl_dir - путь к папке с шаблонами модуля
 	 * @param string $lang_file - путь к языковому файлу модуля
@@ -210,13 +230,15 @@ class Counter
 	{
 		global $AVE_DB, $AVE_Template;
 
-		$sql = $AVE_DB->Query("
+		// Выполняем запрос к БД на получение всех счетчиков
+        $sql = $AVE_DB->Query("
 			SELECT *
 			FROM " . PREFIX . "_modul_counter
 			ORDER BY id ASC
 		");
 
-		$items = array();
+		// Формируем массив данных
+        $items = array();
 		while ($row = $sql->FetchRow())
 		{
 			$stat = $this->_counterStatisticGet($row->id);
@@ -230,15 +252,18 @@ class Counter
 			array_push($items, $row);
 		}
 
-		$AVE_Template->assign('items', $items);
+    	// Передаем данные в шаблон для вывода
+        $AVE_Template->assign('items', $items);
 
 		$AVE_Template->config_load($lang_file, 'admin');
 
-		$AVE_Template->assign('content', $AVE_Template->fetch($tpl_dir . 'admin_counter.tpl'));
+		// Отображаем страницу с данными
+        $AVE_Template->assign('content', $AVE_Template->fetch($tpl_dir . 'admin_counter.tpl'));
 	}
 
-	/**
-	 * Подробная информация о визитах
+
+    /**
+	 * Метод, предназначенный для просмотра подробной статистики по какому-либо счетчику
 	 *
 	 * @param string $tpl_dir - путь к папке с шаблонами модуля
 	 * @param string $lang_file - путь к языковому файлу модуля
@@ -247,10 +272,12 @@ class Counter
 	{
 		global $AVE_DB, $AVE_Template;
 
-		$sort = ' ORDER BY visit DESC';
+		// Определяем метод сортировки данных
+        $sort = ' ORDER BY visit DESC';
 		$sort_navi = '';
 
-		if (!empty($_REQUEST['sort']))
+		// Формируем дополнительной условие для запроса к БД с учетом сортировки
+        if (!empty($_REQUEST['sort']))
 		{
 			switch($_REQUEST['sort'])
 			{
@@ -306,9 +333,11 @@ class Counter
 			}
 		}
 
-		$start = get_current_page() * $this->_limit - $this->_limit;
+		// Определяем начало диапазона вывода данных
+        $start = get_current_page() * $this->_limit - $this->_limit;
 
-		$sql = $AVE_DB->Query("
+    	// Выполняем запрос к БД с учетом всех параметров и лимита записей для вывода на странице
+        $sql = $AVE_DB->Query("
 			SELECT SQL_CALC_FOUND_ROWS *
 			FROM " . PREFIX . "_modul_counter_info
 			WHERE counter_id = '" . intval($_REQUEST['id']) . "'
@@ -316,7 +345,8 @@ class Counter
 			LIMIT " . $start . "," . $this->_limit
 		);
 
-		$items = array();
+		// Формируем массив из полученных данных
+        $items = array();
 		while($row = $sql->FetchRow())
 		{
 			array_push($items, $row);
@@ -324,7 +354,8 @@ class Counter
 
 		$num = $AVE_DB->Query("SELECT FOUND_ROWS()")->GetCell();
 
-		if($num > $this->_limit)
+		// Если количество записей превышает допустимый размер на странице, формируем постраничную навигацию
+        if($num > $this->_limit)
 		{
 			$seiten = ceil($num / $this->_limit);
 			$page_nav = " <a class=\"pnav\" href=\"index.php?do=modules&action=modedit&mod=counter&moduleaction=view_referer&cp=" . SESSION
@@ -333,15 +364,20 @@ class Counter
 			$AVE_Template->assign('page_nav', $page_nav);
 		}
 
-		$AVE_Template->assign('items', $items);
+		// Передаем данные в шаблон для выволда
+        $AVE_Template->assign('items', $items);
 
 		$AVE_Template->config_load($lang_file, 'admin');
 
-		$AVE_Template->assign('content', $AVE_Template->fetch($tpl_dir . 'admin_entries.tpl'));
+		// Отоборажаем окно с данными
+        $AVE_Template->assign('content', $AVE_Template->fetch($tpl_dir . 'admin_entries.tpl'));
 	}
 
-	/**
-	 * Вывод статистики в публичной части
+
+
+
+    /**
+	 * Метод, предназначенный для вывода статистики у определенного счетчика в Публичной части сайта.
 	 *
 	 * @param string $tpl_dir - путь к папке с шаблонами модуля
 	 * @param string $lang_file - путь к языковому файлу модуля
@@ -351,17 +387,21 @@ class Counter
 	{
 		global $AVE_Template;
 
-		if (! (empty($_SERVER['REMOTE_ADDR']) && empty($_SERVER['HTTP_CLIENT_IP'])) &&
+		// Если это новый клиент (в сессии нет информации и куки файл не существует)
+        if (! (empty($_SERVER['REMOTE_ADDR']) && empty($_SERVER['HTTP_CLIENT_IP'])) &&
 			! (isset($_COOKIE['counter_' . $id]) && $_COOKIE['counter_' . $id] == '1'))
 		{
-			$this->counterClientNew($id);
+			// Добавляем информацию о клиента в БД и создаем COOKIE-файл
+            $this->counterClientNew($id);
 		}
 
 		$AVE_Template->config_load($lang_file, 'user');
 
-		$AVE_Template->assign($this->_counterStatisticGet($id));
+		// Получаем данные из БД
+        $AVE_Template->assign($this->_counterStatisticGet($id));
 
-		$AVE_Template->display($tpl_dir . 'show_stat-' . $id . '.tpl');
+		// Вызываем шаблон и отображаем данные в Публичной части
+        $AVE_Template->display($tpl_dir . 'show_stat-' . $id . '.tpl');
 	}
 }
 
