@@ -19,23 +19,25 @@
     License along with this library; if not, write to the Free Software
     Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 *******************************************************************************/
-
+/**
+ * Класс, предназначенный для сбора информации о посетителях
+ */
 class phpSniff_core
-{   // initialize some vars
+{   // Определяем базовые свойства класса
 	var $_browser_info = array(
     	'ua'         => '',
-    	'browser'    => 'Unknown',
+    	'browser'    => 'Неопределен',
     	'version'    => 0,
     	'maj_ver'    => 0,
     	'min_ver'    => 0,
     	'letter_ver' => '',
     	'javascript' => '0.0',
-    	'platform'   => 'Unknown',
-    	'os'         => 'Unknown',
-    	'ip'         => 'Unknown',
-        'cookies'    => 'Unknown', // remains for backwards compatability
-    	'ss_cookies' => 'Unknown',
-        'st_cookies' => 'Unknown',
+    	'platform'   => '',
+    	'os'         => 'Неопределена',
+    	'ip'         => 'Неопределен',
+        'cookies'    => 'Неопределен',
+    	'ss_cookies' => 'Неопределен',
+        'st_cookies' => 'Неопределен',
     	'language'   => '',
 		'long_name'  => '',
 		'gecko'      => '',
@@ -72,36 +74,35 @@ class phpSniff_core
 	var $_language_search_regex = '([a-z-]{2,})';
 	
     /**
-     *  init
-     *  this method starts the madness
+     *  Начинаем сбор информации
      **/
     function init ()
     {   
-        //  collect the ip
+        //  Получаем ip адрес
         	$this->_get_ip();
-        //  run the cookie check routine first
-        //  [note: method only runs if allowed]
+        //  Запускаем проверку на создание cookie файла
+        //  [замечение: данный метод будет выполнен только при условии, что в браузере разрешены cookie]
         	$this->_test_cookies();
-		//  rip the user agent to pieces
+		//  Получаем информацию о раузере пользователя по компонентно
         	$this->_get_browser_info();
-        //	gecko build
+        //	Определяем ядро
 			$this->_get_gecko();
-		//  look for other languages
+		//  Получаем язык
         	$this->_get_languages();
-		//  establish the operating platform
+		//  Определяем операционную систему
         	$this->_get_os_info();
-		//  determine javascript version
+		//  Определяем версию JavaScript
         	$this->_get_javascript();
-		//	determine current feature set
+		//	Определяем дополнительные параметры
 			$this->_get_features();
-		//	point out any quirks
+		//	Определяем персональные настройки пользователя
 			$this->_get_quirks();
 	}
 
     /**
-     *  property
-     *  @param $p property to return . optional (null returns entire array)
-     *  @return array/string entire array or value of property
+     *  Метод, предназначенный для получения свойств браузера
+     *  @param $p название определенного свойства. По умолчанию null - вернуть весь массив свойств.
+     *  @return array/string Целый массив или определенное значение
      **/
     function property ($p=null)
     {   if($p==null)
@@ -113,25 +114,24 @@ class phpSniff_core
     }
 	
 	/**
-	 *	get_property
-	 *	alias for property
+	 *	Алиас для метода property()
 	 **/
 	function get_property ($p)
 	{	return $this->property($p);
 	}
 
     /**
-     *  is
-     *  @param $s string search phrase format = l:lang;b:browser
-     *  @return bool true on success
-     *  ex: $client->is('b:OP5Up');
+     *  Метод, предназначенный для получения языка и браузера
+     *  @param $s Формат строки поиска = l:lang;b:browser
+     *  @return boolean  true, если успешно
+     *  Например: $client->is('b:OP5Up');
      **/
     function is ($s)
-    {   // perform language search
+    {   // Выполняем определение языка
 		if(preg_match('/l:'.$this->_language_search_regex.'/i',$s,$match))
         {   if($match) return $this->_perform_language_search($match);
         }
-        // perform browser search
+        // Выполняем определние браузера
         elseif(preg_match('/b:'.$this->_browser_search_regex.'/i',$s,$match))
         {   if($match) return $this->_perform_browser_search($match);
         }
@@ -139,10 +139,10 @@ class phpSniff_core
     }
 	
 	/**
-	 *	browser_is
-	 *	@param $s string search phrase for browser
-	 *  @return bool true on success
-     *  ex: $client->browser_is('OP5Up');
+	 *	Метод, предназначенный для определения браузера
+	 *	@param string $s строка с данными о браузере
+	 *  @return boolean true, если успешно
+     *  Например: $client->browser_is('OP5Up');
 	 **/
 	function browser_is ($s)
 	{	preg_match('/'.$this->_browser_search_regex.'/i',$s,$match);
@@ -150,10 +150,10 @@ class phpSniff_core
 	}
 	
 	/**
-	 *	language_is
-	 *	@param $s string search phrase for language
-	 *  @return bool true on success
-     *  ex: $client->language_is('en-US');
+	 *	Метод, предназначенный для определения языка
+	 *	@param string $s строка с данными о языке
+	 *  @return boolean true, если успешно
+     *  Например: $client->language_is('en-US');
 	 **/
 	function language_is ($s)
 	{	preg_match('/'.$this->_language_search_regex.'/i',$s,$match);
@@ -161,29 +161,31 @@ class phpSniff_core
 	}
 	
 	/**
-	 *	has_feature
-	 *	@param $s string feature we're checking on
-	 *  @return bool true on success
-     *  ex: $client->has_feature('html');
+	 *	Метод, предназначенный для определения дополнительных параметров
+	 *	@param string $s параметр, который необходимо проверить
+	 *  @return boolean true, если успешно
+     *  Например: $client->has_feature('html');
 	 **/
 	function has_feature ($s)
 	{	return $this->_feature_set[$s];
 	}
 	
 	/**
-	 *	has_quirk
-	 *	@param $s string quirk we're looking for
-	 *  @return bool true on success
-     *  ex: $client->has_quirk('avoid_popup_windows');
+	 *	Метод, предназначенный для определения персональных настроек пользователя
+	 *	@param string $s название персональное настройки
+	 *  @return boolean true, если успешно
+     *  Например: $client->has_quirk('avoid_popup_windows');
 	 **/
 	function has_quirk ($s)
 	{	return $this->_quirks[$s];
 	}
 
+
     /**
-     *  _perform_browser_search
-     *  @param $data string what we're searching for
-     *  @return bool true on success
+     *  Метод, предназначенный для определения детальной информации о браузере.
+     *  Версия браузера, основная версия, подверсия и т.д.
+     *  @param string $data - параметр, который необходимо найти
+     *  @return boolean true, если успешно
      *  @private
      **/
     function _perform_browser_search ($data)
@@ -217,14 +219,15 @@ class phpSniff_core
 		return false;
     }
 
+
     function _perform_language_search ($data)
-    {   // if we've not grabbed the languages, then do so.
-        $this->_get_languages();
+    {   $this->_get_languages();
         return stristr($this->_browser_info['language'],$data[1]);
     }
 
+
     function _get_languages ()
-    {   // capture available languages and insert into container
+    {   // Получаем язык. Если неизвестен, используем значение по умолчанию из свойства _default_language
         if(!$this->_get_languages_ran_once)
         {   if($languages = getenv('HTTP_ACCEPT_LANGUAGE'))
             {   $languages = preg_replace('/(;q=[0-9]+.[0-9]+)/i','',$languages);
@@ -237,8 +240,10 @@ class phpSniff_core
         }
     }
 
+
+    // Метод, предназначенный для получения информации об операционной системе
     function _get_os_info ()
-    {   // regexes to use
+    {   // Список переменных, содержащих регулярные выражения для определения ОС
         $regex_windows  = '/([^dar]win[dows]*)[\s]?([0-9a-z]*)[\w\s]?([a-z0-9.]*)/i';
         $regex_mac      = '/(68[k0]{1,3})|(ppc mac os x)|([p\S]{1,5}pc)|(darwin)/i';
         $regex_os2      = '/os\/2|ibm-webexplorer/i';
@@ -253,52 +258,42 @@ class phpSniff_core
         $regex_bsd      = '/(free)?(bsd)/i';
         $regex_amiga    = '/amiga[os]?/i';
 
-        // look for Windows Box
+        // Определение версии Windows
         if(preg_match_all($regex_windows,$this->_browser_info['ua'],$match))
-        {   /** Windows has some of the most ridiculous HTTP_USER_AGENT strings */
+        {   
 			//$match[1][count($match[0])-1];
             $v  = $match[2][count($match[0])-1];
             $v2 = $match[3][count($match[0])-1];
-            // Establish NT 5.1 as Windows XP
-				if(stristr($v,'NT') && $v2 == 5.1) $v = 'xp';
-			// Establish NT 5.0 and Windows 2000 as win2k
-                elseif($v == '2000') $v = '2k';
-                elseif(stristr($v,'NT') && $v2 == 5.0) $v = '2k';
-			// Establish 9x 4.90 as Windows 98
-				elseif(stristr($v,'9x') && $v2 == 4.9) $v = '98';
-            // See if we're running windows 3.1
-                elseif($v.$v2 == '16bit') $v = '31';
-            // otherwise display as is (31,95,98,NT,ME,XP)
-                else $v .= $v2;
-            // update browser info container array
+            if(stristr($v,'NT') && $v2 == 5.1) $v = 'xp';
+			elseif($v == '2000') $v = '2k';
+            elseif(stristr($v,'NT') && $v2 == 5.0) $v = '2k';
+			elseif(stristr($v,'9x') && $v2 == 4.9) $v = '98';
+            elseif($v.$v2 == '16bit') $v = '31';
+            else $v .= $v2;
+            // Обновляем массив данных с информацей о браузере
             if(empty($v)) $v = 'win';
             $this->_set_browser('os',strtolower($v));
             $this->_set_browser('platform','win');
         }
-        //  look for amiga OS
+        //  Определение версии amiga OS
         elseif(preg_match($regex_amiga,$this->_browser_info['ua'],$match))
         {   $this->_set_browser('platform','amiga');
             if(stristr($this->_browser_info['ua'],'morphos')) {
-                // checking for MorphOS
                 $this->_set_browser('os','morphos');
             } elseif(stristr($this->_browser_info['ua'],'mc680x0')) {
-                // checking for MC680x0
                 $this->_set_browser('os','mc680x0');
             } elseif(stristr($this->_browser_info['ua'],'ppc')) {
-                // checking for PPC
                 $this->_set_browser('os','ppc');
             } elseif(preg_match('/(AmigaOS [\.1-9]?)/i',$this->_browser_info['ua'],$match)) {
-                // checking for AmigaOS version string
                 $this->_set_browser('os',$match[1]);
             }
         }
-        // look for OS2
+        // Определение OS2
         elseif( preg_match($regex_os2,$this->_browser_info['ua']))
         {   $this->_set_browser('os','os2');
             $this->_set_browser('platform','os2');
         }
-        // look for mac
-        // sets: platform = mac ; os = 68k or ppc
+        // Определяем MAC OS
         elseif( preg_match($regex_mac,$this->_browser_info['ua'],$match) )
         {   $this->_set_browser('platform','mac');
             $os = !empty($match[1]) ? '68k' : '';
@@ -307,72 +302,58 @@ class phpSniff_core
             $os = !empty($match[4]) ? 'osx' : $os;
             $this->_set_browser('os',$os);
         }
-        //  look for *nix boxes
-        //  sunos sets: platform = *nix ; os = sun|sun4|sun5|suni86
+        //  Определяем *nix систему
         elseif(preg_match($regex_sunos,$this->_browser_info['ua'],$match))
         {   $this->_set_browser('platform','*nix');
             if(!stristr('sun',$match[1])) $match[1] = 'sun'.$match[1];
             $this->_set_browser('os',$match[1].$match[2]);
         }
-        //  irix sets: platform = *nix ; os = irix|irix5|irix6|...
         elseif(preg_match($regex_irix,$this->_browser_info['ua'],$match))
         {   $this->_set_browser('platform','*nix');
             $this->_set_browser('os',$match[1].$match[2]);
         }
-        //  hp-ux sets: platform = *nix ; os = hpux9|hpux10|...
         elseif(preg_match($regex_hpux,$this->_browser_info['ua'],$match))
         {   $this->_set_browser('platform','*nix');
             $match[1] = str_replace('-','',$match[1]);
             $match[2] = (int) $match[2];
             $this->_set_browser('os',$match[1].$match[2]);
         }
-        //  aix sets: platform = *nix ; os = aix|aix1|aix2|aix3|...
         elseif(preg_match($regex_aix,$this->_browser_info['ua'],$match))
         {   $this->_set_browser('platform','*nix');
             $this->_set_browser('os','aix'.$match[1]);
         }
-        //  dec sets: platform = *nix ; os = dec
         elseif(preg_match($regex_dec,$this->_browser_info['ua'],$match))
         {   $this->_set_browser('platform','*nix');
             $this->_set_browser('os','dec');
         }
-        //  vms sets: platform = *nix ; os = vms
         elseif(preg_match($regex_vms,$this->_browser_info['ua'],$match))
         {   $this->_set_browser('platform','*nix');
             $this->_set_browser('os','vms');
         }
-        //  sco sets: platform = *nix ; os = sco
         elseif(preg_match($regex_sco,$this->_browser_info['ua'],$match))
         {   $this->_set_browser('platform','*nix');
             $this->_set_browser('os','sco');
         }
-        //  unixware sets: platform = *nix ; os = unixware
         elseif(stristr($this->_browser_info['ua'],'unix_system_v'))
         {   $this->_set_browser('platform','*nix');
             $this->_set_browser('os','unixware');
         }
-        //  mpras sets: platform = *nix ; os = mpras
         elseif(stristr($this->_browser_info['ua'],'ncr'))
         {   $this->_set_browser('platform','*nix');
             $this->_set_browser('os','mpras');
         }
-        //  reliant sets: platform = *nix ; os = reliant
         elseif(stristr($this->_browser_info['ua'],'reliantunix'))
         {   $this->_set_browser('platform','*nix');
             $this->_set_browser('os','reliant');
         }
-        //  sinix sets: platform = *nix ; os = sinix
         elseif(stristr($this->_browser_info['ua'],'sinix'))
         {   $this->_set_browser('platform','*nix');
             $this->_set_browser('os','sinix');
         }
-        //  bsd sets: platform = *nix ; os = bsd|freebsd
         elseif(preg_match($regex_bsd,$this->_browser_info['ua'],$match))
         {   $this->_set_browser('platform','*nix');
             $this->_set_browser('os',$match[1].$match[2]);
         }
-        //  last one to look for
-        //  linux sets: platform = *nix ; os = linux
         elseif(preg_match($regex_linux,$this->_browser_info['ua'],$match))
         {   $this->_set_browser('platform','*nix');
             $this->_set_browser('os','linux');
@@ -404,6 +385,8 @@ class phpSniff_core
         }
     }
 
+
+    // Метод, предназначенный для получения IP адреса
     function _get_ip ()
     {   if(getenv('HTTP_CLIENT_IP'))
         {   $ip = getenv('HTTP_CLIENT_IP');
@@ -428,7 +411,7 @@ class phpSniff_core
     {   return $this->_browsers[strtolower($long_name)];
     }
 
-    // medianes :: new test cookie routine
+    // Метод, предназначенный для попытки создания cookie файла
     function _test_cookies()
     {   global $HTTP_COOKIE_VARS;
         $cookies = array();
@@ -458,7 +441,7 @@ class phpSniff_core
                 fclose($fp);
                 $this->_set_browser('ss_cookies',isset($cookies['phpSniff_session'])?'true':'false');
                 $this->_set_browser('st_cookies',isset($cookies['phpSniff_stored'])?'true':'false');
-                // delete the old cookies
+                // Удаляем старые cookie файлы
                 setcookie('phpSniff_session','',0,'/');
                 setcookie('phpSniff_stored','',0,'/');
                 
