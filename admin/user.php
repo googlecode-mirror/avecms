@@ -26,35 +26,35 @@ $AVE_Template->config_load(BASE_DIR . '/admin/lang/' . $_SESSION['admin_language
 switch ($_REQUEST['action'])
 {
 	case '':
-		if (permCheck('user'))
+		if (check_permission_acp('user'))
 		{
 			$AVE_Template->assign('content', $AVE_Template->fetch('user/users.tpl'));
 		}
 		break;
 
 	case 'edit':
-		if (permCheck('user_edit'))
+		if (check_permission_acp('user_edit'))
 		{
 			$AVE_User->userEdit($_REQUEST['Id']);
 		}
 		break;
 
 	case 'new':
-		if (permCheck('user_new'))
+		if (check_permission_acp('user_new'))
 		{
 			$AVE_User->userNew();
 		}
 		break;
 
 	case 'delete':
-		if (permCheck('user_loesch'))
+		if (check_permission_acp('user_loesch'))
 		{
 			$AVE_User->userDelete($_REQUEST['Id']);
 		}
 		break;
 
 	case 'quicksave':
-		if (permCheck('user_edit'))
+		if (check_permission_acp('user_edit'))
 		{
 			$AVE_User->userListEdit();
 		}

@@ -22,14 +22,14 @@ $AVE_Template->config_load(BASE_DIR . '/admin/lang/' . $_SESSION['admin_language
 switch ($_REQUEST['action'])
 {
 	case '':
-		if (permCheck('navigation'))
+		if (check_permission_acp('navigation'))
 		{
 			$AVE_Navigation->navigationList();
 		}
 		break;
 
 	case 'new':
-		if (permCheck('navigation_new'))
+		if (check_permission_acp('navigation_new'))
 		{
 			require(BASE_DIR . '/class/class.user.php');
 			$AVE_User = new AVE_User;
@@ -39,7 +39,7 @@ switch ($_REQUEST['action'])
 		break;
 
 	case 'templates':
-		if (permCheck('navigation_edit'))
+		if (check_permission_acp('navigation_edit'))
 		{
 			require(BASE_DIR . '/class/class.user.php');
 			$AVE_User = new AVE_User;
@@ -49,28 +49,28 @@ switch ($_REQUEST['action'])
 		break;
 
 	case 'copy':
-		if (permCheck('navigation_new'))
+		if (check_permission_acp('navigation_new'))
 		{
 			$AVE_Navigation->navigationCopy($_REQUEST['id']);
 		}
 		break;
 
 	case 'delete':
-		if (permCheck('navigation_edit'))
+		if (check_permission_acp('navigation_edit'))
 		{
 			$AVE_Navigation->navigationDelete($_REQUEST['id']);
 		}
 		break;
 
 	case 'entries':
-		if (permCheck('navigation'))
+		if (check_permission_acp('navigation'))
 		{
 			$AVE_Navigation->navigationItemList($_REQUEST['id']);
 		}
 		break;
 
 	case 'quicksave':
-		if (permCheck('navigation_edit'))
+		if (check_permission_acp('navigation_edit'))
 		{
 			$AVE_Navigation->navigationItemEdit($_REQUEST['id']);
 		}

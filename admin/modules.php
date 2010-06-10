@@ -33,56 +33,56 @@ if (!empty($_REQUEST['module'])) define('MODULE_PATH', $_REQUEST['module']);
 switch($_REQUEST['action'])
 {
 	case '':
-		if (permCheck('modules'))
+		if (check_permission_acp('modules'))
 		{
 			$AVE_Module->moduleList();
 		}
 		break;
 
 	case 'quicksave':
-		if (permCheck('modules_admin'))
+		if (check_permission_acp('modules_admin'))
 		{
 			$AVE_Module->moduleOptionsSave();
 		}
 		break;
 
 	case 'install':
-		if (permCheck('modules_admin'))
+		if (check_permission_acp('modules_admin'))
 		{
 			$AVE_Module->moduleInstall();
 		}
 		break;
 
 	case 'reinstall':
-		if (permCheck('modules_admin'))
+		if (check_permission_acp('modules_admin'))
 		{
 			$AVE_Module->moduleInstall();
 		}
 		break;
 
 	case 'update':
-		if (permCheck('modules_admin'))
+		if (check_permission_acp('modules_admin'))
 		{
 			$AVE_Module->moduleUpdate();
 		}
 		break;
 
 	case 'delete':
-		if (permCheck('modules_admin'))
+		if (check_permission_acp('modules_admin'))
 		{
 			$AVE_Module->moduleDelete();
 		}
 		break;
 
 	case 'onoff':
-		if (permCheck('modules_admin'))
+		if (check_permission_acp('modules_admin'))
 		{
 			$AVE_Module->moduleStatusChange();
 		}
 		break;
 
 	case 'modedit':
-		if (permCheck('modules'))
+		if (check_permission_acp('modules'))
 		{
 			include(BASE_DIR . '/modules/' . $_REQUEST['mod'] . '/modul.php');
 		}

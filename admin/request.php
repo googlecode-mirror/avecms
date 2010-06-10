@@ -29,14 +29,14 @@ $AVE_Template->config_load(BASE_DIR . "/admin/lang/" . $_SESSION['admin_language
 switch ($_REQUEST['action'])
 {
 	case '':
-		if(permCheck('abfragen'))
+		if(check_permission_acp('abfragen'))
 		{
 			$AVE_Request->requestListShow();
 		}
 		break;
 
 	case 'edit':
-		if(permCheck('abfragen'))
+		if(check_permission_acp('abfragen'))
 		{
 			$AVE_Rubric->rubricTemplateShow(0, 1);
 			$AVE_Request->requestEdit((int)$_REQUEST['Id']);
@@ -44,14 +44,14 @@ switch ($_REQUEST['action'])
 		break;
 
 	case 'copy':
-		if(permCheck('abfragen'))
+		if(check_permission_acp('abfragen'))
 		{
 			$AVE_Request->requestCopy((int)$_REQUEST['Id']);
 		}
 		break;
 
 	case 'new':
-		if(permCheck('abfragen_neu'))
+		if(check_permission_acp('abfragen_neu'))
 		{
 			$AVE_Rubric->rubricTemplateShow(0, 1);
 			$AVE_Request->requestNew();
@@ -59,14 +59,14 @@ switch ($_REQUEST['action'])
 		break;
 
 	case 'delete_query':
-		if(permCheck('abfragen_loesch'))
+		if(check_permission_acp('abfragen_loesch'))
 		{
 			$AVE_Request->requestDelete((int)$_REQUEST['Id']);
 		}
 		break;
 
 	case 'konditionen':
-		if(permCheck('abfragen'))
+		if(check_permission_acp('abfragen'))
 		{
 			$AVE_Rubric->rubricTemplateShow(0, 1);
 			$AVE_Request->requestConditionEdit((int)$_REQUEST['Id']);
