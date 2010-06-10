@@ -37,15 +37,12 @@ if (defined('ACP'))
 /**
  * Функция, предназначенная для вывода контактной формы.
  * Она будет выполнена при парсинге шаблона вместо системного тега [mod_contact:XXX],
- * где ХХХ - это внутренний номер контактной формы (их может быть несколько). 
- * 
+ * где ХХХ - это внутренний номер контактной формы (их может быть несколько).
+ *
  * @param int $contact_id - идентификатор контактной формы
  */
-
 function mod_contact($contact_id)
 {
-	global $AVE_DB, $AVE_Template;
-
 	// Подключаем файл с классом, определяем директорию с шаблонами,
     // подключаем языковой файл и создаем объект класса.
     require_once(BASE_DIR . '/modules/contact/class.contact.php');
@@ -60,9 +57,8 @@ function mod_contact($contact_id)
 	// Если в запросе не пришел параметр на отправку формы, показываем пустую форму.
     if (! isset($_REQUEST['contact_action']))
 	{
-        $contact->fetchForm($tpl_dir, $lang_file, $contact_id);
+        $contact->contactFormShow($tpl_dir, $lang_file, $contact_id);
 	}
-
 
     // Если в запросе пришел праметр на отправку формы (contact_action=DoPost), выполняем отправку.
     if (! empty($_REQUEST['modules']) && $_REQUEST['modules'] == 'contact')
@@ -72,13 +68,12 @@ function mod_contact($contact_id)
 			switch ($_REQUEST['contact_action'])
 			{
 				case 'DoPost':
-                    $contact->sendSecure($tpl_dir, $lang_file, $contact_id);
+                    $contact->contactFormSend($tpl_dir, $lang_file, $contact_id);
 					break;
 			}
 		}
 	}
 }
-
 
 /**
  * Следующий раздел описывает правила поведения модуля и его функциональные возможности
@@ -104,57 +99,57 @@ if (defined('ACP') && !empty($_REQUEST['moduleaction']))
 	{
 		// Если 1, тогда отображаем список всех контактных форм
         case '1':
-			$contact->showForms($tpl_dir);
+			$contact->contactFormList($tpl_dir);
 			break;
 
 		// Если edit, тогда открываем окно для редактирования текущей формы
         case 'edit':
-			$contact->editForms($tpl_dir, $_REQUEST['id']);
+			$contact->contactFormEdit($tpl_dir, $_REQUEST['id']);
 			break;
 
 		// Если save, тогда сохраняем результаты изменений для редактируемой формы
         case 'save':
-			$contact->saveForms($_REQUEST['id']);
+			$contact->contactFormSave($_REQUEST['id']);
 			break;
 
-		// Если save_new, тогда добавляем в БД запись с новой контактной формой
+		// Если save_new, тогда добавляем в БД поля новой контактной формой
         case 'save_new':
-			$contact->saveFormsNew($_REQUEST['id']);
+			$contact->contactFormFieldSave($_REQUEST['id']);
 			break;
 
 		// Если new, тогда открываем окно для создания новой формы
         case 'new':
-			$contact->newForms($tpl_dir);
+			$contact->contactFormNew($tpl_dir);
 			break;
 
 		// Если delete, тогда удаляем выбранную контактную форму
         case 'delete':
-			$contact->deleteForms($_REQUEST['id']);
+			$contact->contactFormDelete($_REQUEST['id']);
 			break;
 
 		// Если showmessages_new, тогда показываем список всех новых сообщений (непрочтенные)
         case 'showmessages_new':
-			$contact->showMessages($tpl_dir, $_REQUEST['id'], 'new');
+			$contact->contactMessageShow($tpl_dir, $_REQUEST['id'], 'new');
 			break;
 
 		// Если showmessages_old, тогда показываем список всех старых сообщений (прочтенные)
         case 'showmessages_old':
-			$contact->showMessages($tpl_dir, $_REQUEST['id'], 'old');
+			$contact->contactMessageShow($tpl_dir, $_REQUEST['id'], 'old');
 			break;
 
-		// Если reply, тогда показываем окно для ответа на данное сообщение
+		// Если reply, тогда показываем форму ввода ответа на данное сообщение
         case 'reply':
-			$contact->replyMessage();
+			$contact->contactMessageReply();
 			break;
 
-		// Если quicksave, тогда выполняем быстрое сохранение промежуточных данных, введенных в форму
-        case 'quicksave':
-			$contact->quickSave();
+		// Если del_attachment, тогда удаляем прикрепленные к сообщению файлы
+        case 'del_attachment':
+			$contact->contactAttachmentDelete();
 			break;
 
-        // Если get_attachment, тогда сохраняем прикрепленные к сообщению файлы
+        // Если get_attachment, тогда скачиваем прикрепленные к сообщению файлы
         case 'get_attachment':
-			$contact->getAttachment($_REQUEST['file']);
+			$contact->contactAttachmentGet($_REQUEST['file']);
 			break;
 	}
 }

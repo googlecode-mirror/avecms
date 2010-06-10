@@ -17,7 +17,7 @@
 	<a href="index.php?do=modules&action=modedit&mod=contact&moduleaction=1&cp={$sess}">{#CONTACT_FORM_LIST#}</a>
 </div><br />
 
-<form method="post" action="index.php?do=modules&action=modedit&mod=contact&moduleaction=quicksave&cp={$sess}">
+<form method="post" action="index.php?do=modules&action=modedit&mod=contact&moduleaction=del_attachment&cp={$sess}">
 	<table width="100%" border="0" cellpadding="8" cellspacing="1" class="tableborder">
 		<tr class="tableheader">
 			<td align="center" width="1%"><img src="{$tpl_dir}/images/icon_del.gif" alt="" /></td>
