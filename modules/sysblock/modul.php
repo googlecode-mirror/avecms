@@ -46,7 +46,7 @@ function mod_sysblock($sysblock_id)
 			LIMIT 1
 		")->GetCell();
 
-		eval ('?>' . $return . '<?php');
+		eval ('?>' . $return . '<?');
 	}
 }
 

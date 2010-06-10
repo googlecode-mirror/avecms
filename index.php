@@ -37,7 +37,7 @@ ob_start();
 
 if ($_REQUEST['id'] == 2) header($_SERVER['SERVER_PROTOCOL'] . ' 404 Not Found', true);
 
-eval ('?>' . $content . '<?php');
+eval ('?>' . $content . '<?');
 
 if (isset($cache) && is_object($cache)) $cache->end();
 
