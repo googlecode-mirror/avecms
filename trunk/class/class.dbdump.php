@@ -3,22 +3,21 @@
 /**
  * AVE.cms
  *
+ * Класс, предназначенный для создания и восстановления дампов БД через Панель управления
+ *
  * @package AVE.cms
  * @filesource
  */
 
-/**
- * Класс для создания и восстановления дампа БД
- */
 class AVE_DB_Service
 {
 
 /**
- *	СВОЙСТВА
+ *	Свойства класса
  */
 
 	/**
-	 * Разделитель SQL-запросов
+	 * Метка-разделитель SQL-запросов
 	 *
 	 * @var string
 	 */
@@ -32,11 +31,11 @@ class AVE_DB_Service
 	var $_database_dump = '';
 
 /**
- *	ВНУТРЕННИЕ МЕТОДЫ
+ *	Внутренние методы
  */
 
 	/**
-	 * Метод формирования файла дампа базы данных
+	 * Метод, предназначенный для формирования файла дампа базы данных
 	 *
 	 * @return boolean
 	 */
@@ -51,16 +50,21 @@ class AVE_DB_Service
 
 		$this->_database_dump = '';
 
-		foreach ($_REQUEST['ta'] as $table)
+		// Циклически обрабатываем каждую таблицу
+        foreach ($_REQUEST['ta'] as $table)
 		{
-			if (preg_match('/^' . preg_quote(PREFIX) . '_/', $table))
+			// Если таблица имеет корректный префикс
+            if (preg_match('/^' . preg_quote(PREFIX) . '_/', $table))
 			{
 				$row = $AVE_DB->Query("SHOW CREATE TABLE " . $table)->FetchArray();
-				$this->_database_dump .= "DROP TABLE IF EXISTS `" . $table . "`;" . $this->_delimiter . "\n";
+				// Сохраняем CREATE и DROP запросы
+                $this->_database_dump .= "DROP TABLE IF EXISTS `" . $table . "`;" . $this->_delimiter . "\n";
 				$this->_database_dump .= $row[1] . ";" . $this->_delimiter . "\n\n";
 
 				$nums = 0;
-				$sql = $AVE_DB->Query('SELECT * FROM `' . $table . '`');
+
+                // Получаем данные, которые в дальнейшем будут вставлены в INSERT запросы.
+                $sql = $AVE_DB->Query('SELECT * FROM `' . $table . '`');
 				while ($row = $sql->FetchArray())
 				{
 					if ($nums==0)
@@ -91,7 +95,9 @@ class AVE_DB_Service
 							$temp_array[] = "''";
 						}
 					}
-					$this->_database_dump .= 'INSERT INTO `' . $table . '` ' . $table_list . ' VALUES (' . implode(', ', $temp_array) . ");" . $this->_delimiter . "\n";
+
+                    // Сохряняем INSERT запросы
+                    $this->_database_dump .= 'INSERT INTO `' . $table . '` ' . $table_list . ' VALUES (' . implode(', ', $temp_array) . ");" . $this->_delimiter . "\n";
 				}
 				$this->_database_dump .= "\n";
 
@@ -103,17 +109,19 @@ class AVE_DB_Service
 	}
 
 /**
- *	ВНЕШНИЕ МЕТОДЫ
+ *	Внешние методы класса
  */
 
 	/**
-	 * Отправка файла дампа базы данных
+	 * Метод, предназначенный для сохранения файла дампа базы данных на жеский диск
 	 *
 	 */
 	function databaseDumpExport()
 	{
-		if (!$this->_databaseDumpCreate()) exit;
+		// Если дамп не удалось создать, тогда завершаем работу
+        if (!$this->_databaseDumpCreate()) exit;
 
+        // Формируем заголовок
 		header('Content-Type: text/plain');
 		header('Expires: ' . gmdate('D, d M Y H:i:s') . ' GMT');
 		header('Content-Disposition: attachment; filename=' . $_SERVER['SERVER_NAME'] . '_' . 'DB_BackUP' .  '_' . date('d.m.y') . '.sql');
@@ -121,17 +129,19 @@ class AVE_DB_Service
 		header('Cache-Control: must-revalidate, post-check=0, pre-check=0');
 		header('Pragma: public');
 
-		echo $this->_database_dump;
+		// Выводим данные
+        echo $this->_database_dump;
 
 		$this->_database_dump = '';
 
-		reportLog($_SESSION['user_name'] . ' - выполнил резервное копирование базы данных.', 2, 2);
+		// Выполняем запись системного сообщения в журнал
+        reportLog($_SESSION['user_name'] . ' - выполнил резервное копирование базы данных.', 2, 2);
 
 		exit;
 	}
 
 	/**
-	 * Воззтановление базы данных из дампа
+	 * Метод, предназначенный для восстановления базы данных из дампа
 	 *
 	 * @param string $tempdir путь к папке в которую загружается файл дампа
 	 */
@@ -141,36 +151,51 @@ class AVE_DB_Service
 
 		$insert = false;
 
-		if ($_FILES['file']['size'] != 0)
+		// Если файл не пустой
+        if ($_FILES['file']['size'] != 0)
 		{
-			$fupload_name = $_FILES['file']['name'];
+			// Получаем имя файла и его расширение (должно быть sql)
+            $fupload_name = $_FILES['file']['name'];
 			$end = substr($fupload_name, -3);
-			if ($end == 'sql')
+
+            // Если расширение sql, тогда
+            if ($end == 'sql')
 			{
-				if (!@move_uploaded_file($_FILES['file']['tmp_name'], $tempdir . $fupload_name)) die('Ошибка при загрузке файла!');
-				@chmod($fupload_name, 0777);
-				$insert = true;
+				// Если файл не удалось загрузить, формируем сообщение с ошибкой
+                if (!@move_uploaded_file($_FILES['file']['tmp_name'], $tempdir . $fupload_name)) die('Ошибка при загрузке файла!');
+
+                // Устанавливаем права чтения, записи, выполнения на файл
+                @chmod($fupload_name, 0777);
+
+                // Определяем флаг готовности к записи данных в БД
+                $insert = true;
 			}
 			else
 			{
-				$AVE_Template->assign('msg', '<span style="color:red">' . $AVE_Template->get_config_vars('MAIN_SQL_FILE_ERROR') . '</span>');
+				// В противном случае, если расширение файла НЕ sql, формируем сообщение с ошибкой
+                $AVE_Template->assign('msg', '<span style="color:red">' . $AVE_Template->get_config_vars('MAIN_SQL_FILE_ERROR') . '</span>');
 			}
 		}
 
-		if ($insert)
+		// Если флаг готовности записи установлен, тогда
+        if ($insert)
 		{
-			if ($fupload_name != '' && file_exists($tempdir . $fupload_name))
+			// Еще раз провреяем наличие загруженного файла
+            if ($fupload_name != '' && file_exists($tempdir . $fupload_name))
 			{
-				$handle = @fopen($tempdir . $fupload_name, 'r');
+				// Читаем данные из файла
+                $handle = @fopen($tempdir . $fupload_name, 'r');
 				$db_q = @fread($handle, filesize($tempdir . $fupload_name));
 				fclose($handle);
 
 				$m_ok = 0;
 				$m_fail = 0;
 
-				$querys = @explode($this->_delimiter, $db_q);
+				// Формируем массив запросов ориентируясь по разделителю указанному в свойстве _delimiter
+                $querys = @explode($this->_delimiter, $db_q);
 
-				foreach ($querys as $val)
+				// Циклически обрабатываем массив, выполняя каждый запрос
+                foreach ($querys as $val)
 				{
 					if (chop($val) != '')
 					{
@@ -187,25 +212,32 @@ class AVE_DB_Service
 					}
 				}
 
-				@unlink($tempdir . $fupload_name);
-				$msg = $AVE_Template->get_config_vars('MAIN_RESTORE_OK') . '<br /><br />'
+				// Удаляем файл дампа
+                @unlink($tempdir . $fupload_name);
+
+                // Формируем сопроводительные сообщения
+                $msg = $AVE_Template->get_config_vars('MAIN_RESTORE_OK') . '<br /><br />'
 					. $AVE_Template->get_config_vars('MAIN_TABLE_SUCC')
 					. '<span style="color:green">' . $m_ok . '</span><br/> '
 					. $AVE_Template->get_config_vars('MAIN_TABLE_ERROR')
 					. ' <span style="color:red">' . $m_fail . '</span><br />';
 				$AVE_Template->assign('msg', $msg);
 			}
-			else
+			else // В противном случае, если файл не найден, формируем сообщение с ошибкой
 			{
 				$AVE_Template->assign('msg', '<span style="color:red">Ошибка! Импорт базы данных не выполнен, т.к. отсутсвует файл дампа или он поврежден.</span>');
 			}
 		}
 
+        // Выполняем запись системного сообщения в журнал
 		reportLog($_SESSION['user_name'] . ' - выполнил востановление базы данных из резервной копии', 2, 2);
 	}
 
-	/**
-	 * Оптимизация таблиц базы данных
+
+
+
+    /**
+	 * Метод, предназначенный для оптимизации таблиц базы данных
 	 *
 	 */
 	function databaseTableOptimize()
@@ -214,14 +246,16 @@ class AVE_DB_Service
 
 		if (!empty($_POST['ta']) && is_array($_POST['ta']))
 		{
-			$AVE_DB->Query("OPTIMIZE TABLE `" . implode("`, `", $_POST['ta']) . "`");
+			// Выполняем запрос на оптимизацию
+            $AVE_DB->Query("OPTIMIZE TABLE `" . implode("`, `", $_POST['ta']) . "`");
 
-			reportLog($_SESSION['user_name'] . ' - выполнил оптимизацию базы данных', 2, 2);
+			// Выполняем запись системного сообщения в журнал
+            reportLog($_SESSION['user_name'] . ' - выполнил оптимизацию базы данных', 2, 2);
 		}
 	}
 
 	/**
-	 * Восстановление повреждённых таблиц базы данных
+	 * Метод, предназначенный для восстановления повреждённых таблиц базы данных
 	 *
 	 */
 	function databaseTableRepair()
@@ -230,14 +264,16 @@ class AVE_DB_Service
 
 		if (!empty($_POST['ta']) && is_array($_POST['ta']))
 		{
-			$AVE_DB->Query("REPAIR TABLE `" . implode("`, `", $_POST['ta']) . "`");
+			// Выполняем запрос на восстановление
+            $AVE_DB->Query("REPAIR TABLE `" . implode("`, `", $_POST['ta']) . "`");
 
-			reportLog($_SESSION['user_name'] . ' - выполнил востановление таблиц базы данных', 2, 2);
+			// Выполняем запись системного сообщения в журнал
+            reportLog($_SESSION['user_name'] . ' - выполнил востановление таблиц базы данных', 2, 2);
 		}
 	}
 
 	/**
-	 * Формирование списка таблиц
+	 * Метод, предназначенный для формирования списка всех таблиц в БД
 	 *
 	 * @return string
 	 */
@@ -247,6 +283,7 @@ class AVE_DB_Service
 
 		$tables = '';
 
+        // Получаем список всех таблиц, которые имею префикс, указанный в конфигурации системы
 		$sql = $AVE_DB->Query("SHOW TABLES LIKE '" . PREFIX . "_%'");
 		while ($row = $sql->FetchArray())
 		{
@@ -254,6 +291,7 @@ class AVE_DB_Service
 		}
 		$sql->Close();
 
+        // Возвращаем полученный список
 		return $tables;
 	}
 }
