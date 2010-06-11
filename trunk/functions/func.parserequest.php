@@ -412,7 +412,7 @@ function request_parse($id)
 			$items .= preg_replace('/\[cpabrub:(\d+)]\[(more|[0-9-]+)]/e', "request_get_document_field(\"$1\", $row->Id, \"$2\")", $item_template);
 			$items = str_replace('[link]', $link, $items);
 			$items = str_replace('[docid]', $row->Id, $items);
-			$items = str_replace('[datedoc]', $row->DokStart, $items);
+			$items = str_replace('[datedoc]', pretty_date(strftime($date_time_format, $row->DokStart)), $items);
 			$items = str_replace('[views]', $row->Geklickt, $items);
 			$items = str_replace('[comments]', isset($row->nums) ? $row->nums : '', $items);
 		}
