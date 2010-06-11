@@ -3,34 +3,33 @@
 /**
  * AVE.cms
  *
+ * Класс предназначен для создания обертки над mysql запросами к БД.
+ *
  * @package AVE.cms
  * @filesource
  */
 
 /**
- * Класс работы с результатом выполнения MySQL-запроса
+ * Класс, предназначенный для работы с результатами выполнения MySQL-запроса
  */
 class AVE_DB_Result
 {
 
 /**
- *	СВОЙСТВА
+ *	Свойства класса
  */
 
 	/**
-	 * Результат выполнения запроса
+	 * Конечный результат выполнения запроса
 	 *
 	 * @var resource
 	 * @access private
 	 */
 	var $_result;
 
-/**
- *	ВНУТРЕННИЕ МЕТОДЫ
- */
 
 /**
- *	ВНЕШНИЕ МЕТОДЫ
+ *	Внешние методы класса
  */
 
 	/**
@@ -46,7 +45,8 @@ class AVE_DB_Result
 	}
 
 	/**
-	 * Обрабатывает ряд результата запроса, возвращая ассоциативный массив и численный массив
+	 * Метод, предназначенный для обработки результата запроса.
+     * Возвращает как ассоциативный, так и численный массив.
 	 *
 	 * @return array
 	 * @access public
@@ -57,7 +57,8 @@ class AVE_DB_Result
 	}
 
 	/**
-	 *  Обрабатывает ряд результата запроса и возвращает ассоциативный массив
+	 *  Метод, предназначенный для обработки результата запроса.
+     *  Возвращает только ассоциативный массив.
 	 *
 	 * @return array
 	 * @access public
@@ -68,7 +69,7 @@ class AVE_DB_Result
 	}
 
 	/**
-	 * Обрабатывает ряд результата запроса и возвращает объект
+	 * Метод, предназначенный для обработки результата запроса, возвращая данные в виде объекта.
 	 *
 	 * @return object
 	 * @access public
@@ -79,7 +80,7 @@ class AVE_DB_Result
 	}
 
 	/**
-	 * Возвращает данные результата запроса
+	 * Метод, предназначенный для возвращения данных результата запроса
 	 *
 	 * @return mixed
 	 * @access public
@@ -93,8 +94,9 @@ class AVE_DB_Result
 		return false;
 	}
 
-	/**
-	 * Перемещает внутренний указатель в результате запроса
+
+    /**
+	 * Метод, предназначенный для перемещения внутреннего указателя в результате запроса
 	 *
 	 * @param int $id - номер ряда результатов запроса
 	 * @return bool
@@ -106,7 +108,7 @@ class AVE_DB_Result
 	}
 
 	/**
-	 * Возвращает количество рядов результата запроса
+	 * Метод, преднязначенный для получения количества рядов результата запроса
 	 *
 	 * @return int
 	 * @access public
@@ -116,8 +118,9 @@ class AVE_DB_Result
 		return @mysql_num_rows($this->_result);
 	}
 
-	/**
-	 * Возвращает количество полей результата запроса
+
+    /**
+	 * Метод, преднязначенный для получения количества полей результата запроса
 	 *
 	 * @return int
 	 * @access public
@@ -128,7 +131,7 @@ class AVE_DB_Result
 	}
 
 	/**
-	 * Возвращает название указанной колонки результата запроса
+	 * Метод, преднязначенный для получения названия указанной колонки результата запроса
 	 *
 	 * @param int $i - индекс колонки
 	 * @return string
@@ -140,7 +143,7 @@ class AVE_DB_Result
 	}
 
 	/**
-	 * Освобождает память от результата запроса
+	 * Метод, преднязначенный для освобождения памяти от результата запроса
 	 *
 	 * @return bool
 	 * @access public
@@ -154,13 +157,13 @@ class AVE_DB_Result
 }
 
 /**
- * Класс работы с MySQL
+ * Класс, предназначенный для работы непосредственно с MySQL БД
  */
 class AVE_DB
 {
 
 /**
- *	СВОЙСТВА
+ *	Свойства класса
  */
 
 	/**
@@ -187,9 +190,6 @@ class AVE_DB
 	 */
 	var $_time_exec;
 
-/**
- *	ВНУТРЕННИЕ МЕТОДЫ
- */
 
 	/**
 	 * Конструктор
@@ -203,19 +203,22 @@ class AVE_DB
 	 */
 	function AVE_DB($host, $user, $pass, $db)
 	{
-		if (! $this->_handle = @mysql_connect($host, $user, $pass))
+		// Пытаемся установить соединение с БД
+        if (! $this->_handle = @mysql_connect($host, $user, $pass))
 		{
 			$this->_error('connect');
 			return false;
 		}
 
-		if (! @mysql_select_db($db, $this->_handle))
+		// Пытаемся выбрать БД
+        if (! @mysql_select_db($db, $this->_handle))
 		{
 			$this->_error('select');
 			return false;
 		}
 
-		if (function_exists('mysql_set_charset'))
+		// Устанавливаем кодировку
+        if (function_exists('mysql_set_charset'))
 		{
 			mysql_set_charset('cp1251', $this->_handle);
 		}
@@ -224,7 +227,8 @@ class AVE_DB
 			mysql_query("SET NAMES 'cp1251'");
 		}
 
-		if (defined('PROFILING') && PROFILING)
+		// Определяем профилирование
+        if (defined('PROFILING') && PROFILING)
 		{
 //			mysql_query("QUERY_CACHE_TYPE = OFF");
 //			mysql_query("FLUSH TABLES");
@@ -236,7 +240,7 @@ class AVE_DB
 	}
 
 	/**
-	 * Получить функцию из которой пришел запрос с ошибкой
+	 * Метод, предназначенный для получения функции из которой пришел запрос с ошибкой
 	 *
 	 * @return string
 	 */
@@ -265,10 +269,9 @@ class AVE_DB
 	}
 
 	/**
-	 * Обработка ошибок
+	 * Метод, предназначенный для обработки ошибок
 	 *
-	 * @param string $type - тип ошибки
-	 *         (при подключении к БД или при выполнении SQL-запроса)
+	 * @param string $type - тип ошибки (при подключении к БД или при выполнении SQL-запроса)
 	 * @param string $query - текст SQL запроса вызвавшего ошибку
 	 * @access private
 	 */
@@ -288,16 +291,21 @@ class AVE_DB
 					. "\t\tURL: "   . HOST . $_SERVER['SCRIPT_NAME']
 						            . '?' . $_SERVER['QUERY_STRING'] . PHP_EOL
 			);
-			if (SEND_SQL_ERROR)
+
+            // Если в настройках системы установлен параметр на отправку сообщений на e-mail, тогда
+            if (SEND_SQL_ERROR)
 			{
-				$mail_body = ('SQL ERROR: ' . $my_error . PHP_EOL
+				// Формируем текст сообщения с ошибкой
+                $mail_body = ('SQL ERROR: ' . $my_error . PHP_EOL
 					. 'TIME: '  . date('d-m-Y, H:i:s') . PHP_EOL
 					. 'URL: '   . HOST . $_SERVER['SCRIPT_NAME']
 					            . '?' . $_SERVER['QUERY_STRING'] . PHP_EOL
 					. $this->get_caller() . PHP_EOL
 					. 'QUERY: ' . stripslashes($query) . PHP_EOL
 				);
-				send_mail(
+
+                // Отправляем сообщение
+                send_mail(
 					get_settings('mail_from'),
 					$mail_body,
 					'MySQL Error!',
@@ -310,11 +318,11 @@ class AVE_DB
 	}
 
 /**
- *	ВНЕШНИЕ МЕТОДЫ
+ *	Внешние методы класса
  */
 
 	/**
-	 * Посылает запрос MySQL
+	 * Метод, предназначенный для выполнения запроса к MySQL
 	 *
 	 * @param string $query - текст SQL-запроса
 	 * @return object - объект с указателем на результат выполнения запроса
@@ -332,7 +340,7 @@ class AVE_DB
 	}
 
 	/**
-	 * Экранирует специальные символы в строках для использования в выражениях SQL
+	 * Метод, предназначенный для экранирования специальных символов в строках для использования в выражениях SQL
 	 *
 	 * @param mixed $value - обрабатываемое значение
 	 * @return mixed
@@ -351,7 +359,7 @@ class AVE_DB
 	}
 
 	/**
-	 * Возвращает ID, сгенерированный при последнем INSERT-запросе
+	 * Метод, предназначенный для возвращения ID записи, сгенерированной при последнем INSERT-запросе
 	 *
 	 * @return int
 	 * @access public
@@ -362,7 +370,8 @@ class AVE_DB
 	}
 
 	/**
-	 * Статистика выполнения SQL-запросов
+	 * Метод, предназначенный для формирования статистики выполнения SQL-запросов.
+     *
 	 *
 	 * @param string $type - тип запрашиваемой статистики
 	 * <pre>
@@ -425,7 +434,7 @@ class AVE_DB
 	}
 
 	/**
-	 * Статистика выполнения SQL-запросов
+	 * Метод, предназначенный для формирования статистики выполнения SQL-запросов.
 	 *
 	 * @param string $type - тип запрашиваемой статистики
 	 * <pre>
@@ -486,7 +495,7 @@ class AVE_DB
 	}
 
 	/**
-	 * Возвращает информацию о сервере MySQL
+	 * Метод, предназначенный для получения информации о сервере MySQL
 	 *
 	 * @return string
 	 * @access public
@@ -499,15 +508,21 @@ class AVE_DB
 
 global $AVE_DB;
 
+
+// Еслине существует объекта по работе с БД
 if (! isset($AVE_DB))
 {
-	require(BASE_DIR . '/inc/db.config.php');
+	// Подключаем конфигурационный файл с параметрами подключения
+    require(BASE_DIR . '/inc/db.config.php');
 
-	if (! isset($config)) exit;
+	// Если параметры не указаны, прерываем работу
+    if (! isset($config)) exit;
 
-	if (! defined('PREFIX')) define('PREFIX', $config['dbpref']);
+	// Если константа префикса таблиц не задана, принудительно определяем ее на основании параметров в файле db.config.php
+    if (! defined('PREFIX')) define('PREFIX', $config['dbpref']);
 
-	$AVE_DB = new AVE_DB($config['dbhost'], $config['dbuser'], $config['dbpass'], $config['dbname']);
+	// Создаем объект для работы с БД
+    $AVE_DB = new AVE_DB($config['dbhost'], $config['dbuser'], $config['dbpass'], $config['dbname']);
 
 	unset($config);
 }
