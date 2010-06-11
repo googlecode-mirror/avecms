@@ -3,18 +3,20 @@
 /**
  * AVE.cms
  *
+ * Класс, предназначенный для сбора и формирования общей страницы перед показом в Публичной части.
+ * Фактически, данный класс является ядром системы, на который ложится сборка страницы из отдельных компонентов,
+ * замена системных тегов соответствующими функциями, а также разбор url параметров и поиск документов по url.
+ *
+ * 
  * @package AVE.cms
  * @filesource
  */
 
-/**
- * Основной класс собирающий шаблон для вывода страницы
- */
 class AVE_Core
 {
 
 /**
- *	СВОЙСТВА
+ *	Свойства класса
  */
 
     /**
@@ -32,46 +34,46 @@ class AVE_Core
 	var $install_modules = null;
 
 	/**
-	 * Сообщение об ошибке
+	 * Сообщение об ошибке, если документ не найден
 	 *
 	 * @var string
 	 */
 	var $_doc_not_found = '<center><h1>HTTP Error 404: Page not found</h1></center>';
 
 	/**
-	 * Сообщение об ошибке
+	 * Сообщение об ошибке, если для рубрики не найден шаблон
 	 *
 	 * @var string
 	 */
 	var $_rubric_template_empty = '<h1>Ошибка</h1><br />Не задан шаблон рубрики.';
 
 	/**
-	 * Сообщение об ошибке
+	 * Сообщение об ошибке, если документ запрещен к показу
 	 *
 	 * @var string
 	 */
 	var $_doc_not_published = 'Запрашиваемый документ запрещен к публикации.';
 
 	/**
-	 * Сообщение об ошибке
+	 * Сообщение об ошибке, если модуль не может быть загружен
 	 *
 	 * @var string
 	 */
 	var $_module_error = 'Запрашиваемый модуль не может быть загружен.';
 
 	/**
-	 * Сообщение об ошибке
+	 * Сообщение об ошибке, если модуль, указанный в шаблоне, не установлен в системе
 	 *
 	 * @var string
 	 */
 	var $_module_not_found = 'Запрашиваемый модуль не найден.';
 
 /**
- *	ВНУТРЕННИЕ МЕТОДЫ
+ *	Внутренние методы класса
  */
 
 	/**
-	 * Получить основной шаблон страницы
+	 * Метод, предназначенный для получения шаблонов
 	 *
 	 * @param int $rubrik_id идентификатор рубрики
 	 * @param string $template шаблон
@@ -82,45 +84,55 @@ class AVE_Core
 	{
 		global $AVE_DB;
 
-		if (defined('ONLYCONTENT') || (isset ($_REQUEST['pop']) && $_REQUEST['pop'] == 1))
+		// Если выводится только содержимое модуля или это новое окно (например страница для печати),
+        // просто возвращаем содержимое.
+        if (defined('ONLYCONTENT') || (isset ($_REQUEST['pop']) && $_REQUEST['pop'] == 1))
 		{
 			$out = '[cp:maincontent]';
 		}
 		else
 		{
-			if (!empty ($fetched))
+			// В противном случае, если в качестве аргумента передан шаблон модуля, возвращаем его.
+            if (!empty ($fetched))
 			{
 				$out = $fetched;
 			}
 			else
 			{
-				if (!empty ($template))
+				// В противном случае, если в качестве аргумента передан общий шаблон, возвращаем его
+                if (!empty ($template))
 				{
 					$out = $template;
 				}
-				else
+				else // В противном случае, если аргументы не определены, тогда проверяем
 				{
-					if (!empty ($this->curentdoc->Template))
+					// Если для текущего документа в свойстве класса $this->curentdoc определен шаблон, тогда возвращаем его
+                    if (!empty ($this->curentdoc->Template))
 					{
 						$out = stripslashes($this->curentdoc->Template);
 					}
 					else
 					{
-						if (empty ($rubrik_id))
+    					// В противном случае, если не указан идентификатор рубрики
+                        if (empty ($rubrik_id))
 						{
-							$_REQUEST['id'] = (isset ($_REQUEST['id']) && is_numeric($_REQUEST['id'])) ? $_REQUEST['id'] : 1;
+							// Получаем id документа из запроса
+                            $_REQUEST['id'] = (isset ($_REQUEST['id']) && is_numeric($_REQUEST['id'])) ? $_REQUEST['id'] : 1;
 
-							$rubrik_id = $AVE_DB->Query("
+							// Выполняем запрос к БД на получение id рубрики на основании id документа
+                            $rubrik_id = $AVE_DB->Query("
 								SELECT RubrikId
 								FROM " . PREFIX . "_documents
 								WHERE Id = '" . $_REQUEST['id'] . "'
 								LIMIT 1
 							")->GetCell();
 
-							if (!$rubrik_id) return '';
+							// Если id рубрики не найден, возвращаем пустую строку
+                            if (!$rubrik_id) return '';
 						}
 
-						$tpl = $AVE_DB->Query("
+						// Выполняем запрос к БД на получение основного шаблона, а также шаблона рубрики
+                        $tpl = $AVE_DB->Query("
 							SELECT Template
 							FROM " . PREFIX . "_templates AS tpl
 							LEFT JOIN " . PREFIX . "_rubrics AS rub ON tpl.Id = Vorlage
@@ -128,7 +140,8 @@ class AVE_Core
 							LIMIT 1
 						")->GetCell();
 
-						$out = $tpl ? $tpl : '';
+						// Если запрос выполнился с нулевым результатом, возвращаем пустую строку
+                        $out = $tpl ? $tpl : '';
 					}
 				}
 			}
@@ -138,7 +151,7 @@ class AVE_Core
 	}
 
 	/**
-	 * Получить шаблон модуля
+	 * Метод, предназначенный для получения шаблона модуля
 	 *
 	 * @return string
 	 */
@@ -146,21 +159,29 @@ class AVE_Core
 	{
 		global $AVE_DB;
 
-		if (!is_dir(BASE_DIR . '/modules/' . $_REQUEST['module']))
+		// Если папка, с запрашиваемым модулем не существует, выполняем редирект 
+        // на главную страницу и отображаем сообщение с ошибкой
+        if (!is_dir(BASE_DIR . '/modules/' . $_REQUEST['module']))
 		{
 			echo '<meta http-equiv="Refresh" content="2;URL=' . get_home_link() . '" />';
 			$out = $this->_module_not_found;
 		}
-		else
+		// В противном случае
+        else
 		{
-			$out = $AVE_DB->Query("
+			// Выполняем запрос к БД на получение списка общих шаблонов имеющиюся в системе
+            // и шаблоне, который установлен для данного модуля
+            // Например, в системе есть шаблоны Template_1 и Template_2, а для модуля установлен Template_3
+            $out = $AVE_DB->Query("
 				SELECT tmpl.Template
 				FROM " . PREFIX . "_templates AS tmpl
 				LEFT JOIN " . PREFIX . "_module AS mdl ON tmpl.Id = mdl.Template
 				WHERE ModulPfad = '" . $_REQUEST['module'] . "'
 			")->GetCell();
 
-			if (empty ($out))
+			// Если шаблон, установленный для модуля не найден в системе, принудительно устанавливаем для него
+            // первый шаблон (id=1)
+            if (empty ($out))
 			{
 				$out = $AVE_DB->Query("
 					SELECT Template
@@ -170,12 +191,12 @@ class AVE_Core
 				")->GetCell();
 			}
 		}
-
+        // Возвращаем информацию о полученном шаблоне
 		return $out;
 	}
 
 	/**
-	 * Формирование прав доступа к документам рубрики
+	 * Метод, предназначенный для получения прав доступа к документам рубрики
 	 *
 	 * @param int $rubrik_id идентификатор рубрики
 	 */
@@ -185,24 +206,30 @@ class AVE_Core
 
 		unset ($_SESSION[$rubrik_id . '_docread']);
 
-		if (!empty ($this->curentdoc->Rechte))
+		// Если для документа уже получены права доступа, тогда
+        if (!empty ($this->curentdoc->Rechte))
 		{
-			$Rechte = explode('|', $this->curentdoc->Rechte);
-			foreach ($Rechte as $perm)
+			// Формируем массив с правами доступа
+            $Rechte = explode('|', $this->curentdoc->Rechte);
+
+            // Циклически обрабатываем сформированный массив и создаем в сессии соответсвующие переменные
+            foreach ($Rechte as $perm)
 			{
 				if (!empty ($perm)) $_SESSION[$rubrik_id . '_' . $perm] = 1;
 			}
-		}
+		} // В противном случае
 		else
 		{
-			$sql = $AVE_DB->Query("
+			// Выполняем запрос к БД на получение списка прав для данного документа
+            $sql = $AVE_DB->Query("
 				SELECT Rechte
 				FROM " . PREFIX . "_document_permissions
 				WHERE RubrikId = '" . $rubrik_id . "'
 				AND BenutzerGruppe = '" . UGROUP . "'
 			");
 
-			while ($row = $sql->FetchRow())
+			// Обрабатываем полученные данные и создаем в сессии соответсвующие переменные
+            while ($row = $sql->FetchRow())
 			{
 				$row->Rechte = explode('|', $row->Rechte);
 				foreach ($row->Rechte as $perm)
@@ -214,7 +241,7 @@ class AVE_Core
 	}
 
 	/**
-	 * Обработка события 404 Not Found
+	 * Метод, предназначенный для обработки события 404 Not Found, т.е. когда страница не найдена.
 	 *
 	 * @return unknown
 	 */
@@ -222,18 +249,22 @@ class AVE_Core
 	{
 		global $AVE_DB;
 
-		$available = $AVE_DB->Query("
+		// Выполняем запрос к БД на проверку существования страницы, которая содержит информацию о том, что
+        // запрашиваемая страница не найдена
+        $available = $AVE_DB->Query("
 			SELECT COUNT(*)
 			FROM " . PREFIX . "_documents
 			WHERE Id = '" . PAGE_NOT_FOUND_ID . "'
 			LIMIT 1
 		")->GetCell();
 
-		if ($available)
+		// Если такая страница в БД существует, выполняем переход на страницу с ошибкой
+        if ($available)
 		{
 			header('Location:' . ABS_PATH . 'index.php?id=' . PAGE_NOT_FOUND_ID);
 		}
-		else
+		// Если не существует, тогда просто выводим текст, определенный в свойстве _doc_not_found
+        else
 		{
 			echo $this->_doc_not_found;
 		}
@@ -242,7 +273,7 @@ class AVE_Core
 	}
 
 	/**
-	 * Формирование хэша страницы
+	 * Метод, предназначенный для формирования хэша страницы
 	 *
 	 * @return string
 	 */
@@ -255,10 +286,20 @@ class AVE_Core
 		return md5($hash);
 	}
 
-	function _coreCurrentDocumentFetch($document_id = 1, $user_group = 2)
+
+
+    /**
+     * Метод, предназначенный для проверки существования документа в БД
+     *
+     * @param int $document_id - id документа
+     * @param int $user_group - группа пользователя
+     * @return boolean
+     */
+    function _coreCurrentDocumentFetch($document_id = 1, $user_group = 2)
 	{
 		global $AVE_DB;
 
+        // Выполняем составной  запрос к БД на получение информации о запрашиваемом документе
 		$this->curentdoc = $AVE_DB->Query("/*1*/
 			SELECT
 				doc.*,
@@ -283,14 +324,27 @@ class AVE_Core
 			LIMIT 1
 		")->FetchRow();
 
-		return (isset($this->curentdoc->Id) && $this->curentdoc->Id == $document_id);
+		// Возвращаем 1, если документ найден, либо 0 в противном случае
+        return (isset($this->curentdoc->Id) && $this->curentdoc->Id == $document_id);
 	}
 
-	function _corePageNotFoundFetch($page_not_found_id = 2, $user_group = 2)
+
+
+    /**
+     * Метод, предназначенный для получения содержимого страницы с 404 ошибкой
+     *
+     *
+     * @param int $page_not_found_id
+     * @param int $user_group
+     * @return int/boolean
+     */
+    function _corePageNotFoundFetch($page_not_found_id = 2, $user_group = 2)
 	{
 		global $AVE_DB;
 
-		$this->curentdoc = $AVE_DB->Query("/*2*/
+		// Выполняем запрос к БД на получение полной информации о странице с 404 ошибкой, включая
+        // права доступа, шаблон рубрики и основной шаблон сайта
+        $this->curentdoc = $AVE_DB->Query("/*2*/
 			SELECT
 				doc.*,
 				Rechte,
@@ -317,15 +371,25 @@ class AVE_Core
 		return (isset($this->curentdoc->Id) && $this->curentdoc->Id == $page_not_found_id);
 	}
 
-	function _coreModuleMetatagsFetch()
+
+    /**
+     * Метод, предназначенный для получения МЕТА-тегов для различных модулей.
+     * Мета-теги для модуля МАГАЗИН
+     *
+     * @return boolean
+     */
+    function _coreModuleMetatagsFetch()
 	{
 		global $AVE_DB;
 
+        // Если в запросе не пришел параметр module, заврешаем работу
 		if (! isset($_REQUEST['module'])) return false;
 
-		if ($_REQUEST['module'] == 'shop' && empty ($_REQUEST['product_id']))
+		// Если в запросе пришло значение shop, для параметра module и не указан id товара, тогда
+        if ($_REQUEST['module'] == 'shop' && empty ($_REQUEST['product_id']))
 		{
-			$this->curentdoc = $AVE_DB->Query("
+			// Выполняем запрос к БД на получение ОБЩИХ значений мета-тегов, установленных в настройках модуля "Магазин"
+            $this->curentdoc = $AVE_DB->Query("
 				SELECT
 					a.IndexFollow,
 					b.ShopKeywords AS MetaKeywords,
@@ -337,9 +401,11 @@ class AVE_Core
 		        AND b.Id = 1
 			")->FetchRow();
 		}
-		elseif ($_REQUEST['module'] == 'shop' && !empty ($_REQUEST['product_id']) && is_numeric($_REQUEST['product_id']))
+		// В противном случае, если запрашиваемй модуль "Магазин" и указан id товара, тогда
+        elseif ($_REQUEST['module'] == 'shop' && !empty ($_REQUEST['product_id']) && is_numeric($_REQUEST['product_id']))
 		{
-			$this->curentdoc = $AVE_DB->Query("
+			// Выполняем запрос к БД и получаем значения мета-тегов для конкретного товара
+            $this->curentdoc = $AVE_DB->Query("
 				SELECT
 					a.IndexFollow,
 					b.ProdKeywords AS MetaKeywords,
@@ -351,7 +417,8 @@ class AVE_Core
 				AND b.Id = '" . $_REQUEST['product_id'] . "'
 			")->FetchRow();
 		}
-		else
+		// Если в запросе модуль не указан, получаем общие мета-теги, установленные для главной (id=1) страницы сайта
+        else
 		{
 			$this->curentdoc = $AVE_DB->Query("
 				SELECT
@@ -367,7 +434,14 @@ class AVE_Core
 		return (isset($this->curentdoc->Id) && $this->curentdoc->Id == 1);
 	}
 
-	function _coreDocumentIsPublished()
+
+
+    /**
+     * Метод, предназначенный для определения статуса документа (доступен ли он к публикации).
+     *
+     * @return int/boolean
+     */
+    function _coreDocumentIsPublished()
 	{
 		if (!empty ($this->curentdoc)															// документ есть
 			&& $this->curentdoc->Id != PAGE_NOT_FOUND_ID										// документ не сообщение ошибки 404
@@ -380,11 +454,13 @@ class AVE_Core
 				)
 			)
 		{
-			if (isset ($_SESSION['adminpanel']) || isset ($_SESSION['alles']))
+			// Если пользователь авторизован в Панели управления или имеет полные права на просмотр документа, тогда
+            if (isset ($_SESSION['adminpanel']) || isset ($_SESSION['alles']))
 			{
-				display_notice($this->_doc_not_published);
+				// Отображаем информационное окно с сообщением, определенным в свойстве _doc_not_published
+                display_notice($this->_doc_not_published);
 			}
-			else
+	        else // В противном случае фиксируем ошибку
 			{
 				$this->curentdoc = false;
 			}
@@ -394,13 +470,13 @@ class AVE_Core
 	}
 
 /**
- *	ВНЕШНИЕ МЕТОДЫ
+ *	Внешние методы класса
  */
 
 	/**
-	 * Обработка тэгов модулей
-	 * Подключаются файлы модулей тэги которых обнаружены в шаблоне
-	 * Формирует массив всех установленных модулей проверяя их доступность
+	 * Метод, предназначенный для обработки системных тегов модулей. Здесь подключаются только те файлы модулей,
+	 * системные тэги которых обнаружены в шаблоне при парсинге. Также формирует массив всех установленных модулей
+     * в системе, предварительно проверяя их доступность.
 	 *
 	 * @param string $template текст шаблона с тэгами
 	 * @return string текст шаблона с обработанными тэгами модулей
@@ -409,87 +485,110 @@ class AVE_Core
 	{
 		global $AVE_DB;
 
-		$pattern = array();
-		$replace = array();
+		$pattern = array();  // Массив системных тегов
+		$replace = array();  // Массив функций, на которые будут заменены системные теги
 
-		if (null !== $this->install_modules)
+		// Если уже имеются данные об установленных модулях
+        if (null !== $this->install_modules)
 		{
-			foreach ($this->install_modules as $row)
+			// Циклически обрабатываем каждый модуль
+            foreach ($this->install_modules as $row)
 			{
-				if ((isset($_REQUEST['module']) && $_REQUEST['module'] == $row->ModulPfad) ||
+				// Если в запросе пришел вызов модуля или у модуля есть функция вызываемая тэгом, 
+                // который присутствует в шаблоне
+                if ((isset($_REQUEST['module']) && $_REQUEST['module'] == $row->ModulPfad) ||
 					(1 == $row->IstFunktion && 1 == preg_match($row->CpEngineTag, $template)))
-				{	// выводится модуль или у модуля есть функция вызываемая тэгом присутствующим в шаблоне
-					if (function_exists($row->ModulFunktion))
+				{	
+					// Проверяем, существует ли для данного модуля функция. Если да,
+                    // получаем php код функции.
+                    if (function_exists($row->ModulFunktion))
 					{
 						$pattern[] = $row->CpEngineTag;
 						$replace[] = $row->CpPHPTag;
 					}
-					else
+					else // В противном случае
 					{
-						if (require_once(BASE_DIR . '/modules/' . $row->ModulPfad . '/modul.php'))
-						{	// файл модуля есть
-							if ($row->CpEngineTag)
+						// Проверяем, существует ли для данного модуля файл modul.php в его персональной директории
+                        if (require_once(BASE_DIR . '/modules/' . $row->ModulPfad . '/modul.php'))
+						{	
+							// Если файл модуля найден, тогда
+                            if ($row->CpEngineTag)
 							{
-								$pattern[] = $row->CpEngineTag;
-								$replace[] = function_exists($row->ModulFunktion)
+								$pattern[] = $row->CpEngineTag;  // Получаем его системный тег
+
+                                // Проверяем, существует ли для данного модуля функция. Если да,
+                                // получаем php код функции, в противном случае формируем сообщение с ошибкой
+                                $replace[] = function_exists($row->ModulFunktion)
 									? $row->CpPHPTag
 									: ($this->_module_error . ' &quot;' . $row->ModulName . '&quot;');
 							}
 						}
-						elseif ($row->CpEngineTag)
-						{	// файла модуля нет - ругаемся
-							$pattern[] = $row->CpEngineTag;
+						// Если файла modul.php не существует, формируем сообщение с ошибкой
+                        elseif ($row->CpEngineTag)
+						{	$pattern[] = $row->CpEngineTag;
 							$replace[] = $this->_module_error . ' &quot;' . $row->ModulName . '&quot;';
 						}
 					}
 				}
 			}
 
-			return preg_replace($pattern, $replace, $template);
+			// Выполняем замену систеного тега на php код и возвращаем результат
+            return preg_replace($pattern, $replace, $template);
 		}
-		else
+		else  // В противном случае, если список модулей пустой
 		{
 			$this->install_modules = array();
 
+            // Выполняем запрос к БД на получение информации о всех модулях, которые установлены в системе
+            // (именно установлены, а не просто существуют в виде папок)
 			$sql = $AVE_DB->Query("
 				SELECT *
 				FROM " . PREFIX. "_module
 				WHERE Status = '1'
 			");
-			while ($row = $sql->FetchRow())
+
+            // Циклически обрабатываем полученные данные
+            while ($row = $sql->FetchRow())
 			{
-				if ((isset($_REQUEST['module']) && $_REQUEST['module'] == $row->ModulPfad) ||
+				// Если в запросе пришел параметр module и для данного названия модуля существует
+                // директория или данный модуль имеет функцию и его системный тег указан в каком-либо шаблоне, тогда
+                if ((isset($_REQUEST['module']) && $_REQUEST['module'] == $row->ModulPfad) ||
 					(1 == $row->IstFunktion && 1 == preg_match($row->CpEngineTag, $template)))
-				{	// выводится модуль или у модуля есть функция вызываемая тэгом присутствующим в шаблоне
-					if (require_once(BASE_DIR . '/modules/' . $row->ModulPfad . '/modul.php'))
-					{	// файл модуля есть
+				{	
+					// Проверяем, существует ли для данного модуля файл modul.php в его персональной директории
+                    if (require_once(BASE_DIR . '/modules/' . $row->ModulPfad . '/modul.php'))
+					{	// Если файл модуля найден, тогда
 						if ($row->CpEngineTag)
 						{
-							$pattern[] = $row->CpEngineTag;
-							$replace[] = function_exists($row->ModulFunktion)
+							$pattern[] = $row->CpEngineTag;  // Получаем его системный тег
+
+                            // Проверяем, существует ли для данного модуля функция. Если да,
+                            // получаем php код функции, в противном случае формируем сообщение с ошибкой
+                            $replace[] = function_exists($row->ModulFunktion)
 								? $row->CpPHPTag
 								: ($this->_module_error . ' &quot;' . $row->ModulName . '&quot;');
 						}
-						$this->install_modules[$row->ModulPfad] = $row;
+						// Сохряняем информацию о модуле
+                        $this->install_modules[$row->ModulPfad] = $row;
 					}
-					elseif ($row->CpEngineTag)
-					{	// файла модуля нет - ругаемся
-						$pattern[] = $row->CpEngineTag;
+					elseif ($row->CpEngineTag) // Если файла modul.php не существует, формируем сообщение с ошибкой
+					{
+                        $pattern[] = $row->CpEngineTag;
 						$replace[] = $this->_module_error . ' &quot;' . $row->ModulName . '&quot;';
 					}
 				}
 				else
-				{	// у модуля нет функции или тэг модуля не используется - просто помещаем в массив информацию о модуле
+				{	// Если у модуля нет функции или тэг модуля не используется - просто помещаем в массив информацию о модуле
 					$this->install_modules[$row->ModulPfad] = $row;
 				}
 			}
-
+            // Выполняем замену систеного тега на php код и возвращаем результат
 			return preg_replace($pattern, $replace, $template);
 		}
 	}
 
 	/**
-	 * Сборка страницы
+	 * Метод, предназанченный для сборки всей страницы в единое целое.
 	 *
 	 * @param int $id идентификатор документа
 	 * @param int $rub_id идентификатор рубрики
@@ -498,17 +597,17 @@ class AVE_Core
 	{
 		global $AVE_DB;
 
-		if (!empty ($_REQUEST['module']))
-		{	// вывод модуля
+		// Если происходит вызов модуля, получаем соответствующие мета-теги и получаем шаблон модуля
+        if (!empty ($_REQUEST['module'])) {
 			$out = $this->_coreModuleMetatagsFetch();
-
-			$out = $this->_coreDocumentTemplateGet('', '', $this->_coreModuleTemplateGet());
-		}	// /вывод модуля
-		else
-		{	// вывод документа
-			if (! isset($this->curentdoc->Id) && ! $this->_coreCurrentDocumentFetch($id, UGROUP))
+            $out = $this->_coreDocumentTemplateGet('', '', $this->_coreModuleTemplateGet());
+		}	
+		else // В противном случае начинаем вывод документа
+		{	
+            if (! isset($this->curentdoc->Id) && ! $this->_coreCurrentDocumentFetch($id, UGROUP))
 			{
-				if ($this->_corePageNotFoundFetch(PAGE_NOT_FOUND_ID, UGROUP))
+				// Определяем документ с 404 ошиюкой, в случае, если документ не найден
+                if ($this->_corePageNotFoundFetch(PAGE_NOT_FOUND_ID, UGROUP))
 				{
 					$_REQUEST['id'] = $_GET['id'] = $id = PAGE_NOT_FOUND_ID;
 				}
@@ -520,7 +619,7 @@ class AVE_Core
 				$this->_coreErrorPage404();
 			}
 
-			// права доступа к документам рубрики
+			// Определяем права доступа к документам рубрики
 			define('RUB_ID', !empty ($rub_id) ? $rub_id : $this->curentdoc->RubrikId);
 			$this->_coreRubricPermissionFetch(RUB_ID);
 
@@ -614,7 +713,8 @@ class AVE_Core
 			$out = str_replace('[cp:maincontent]', $main_content, $this->_coreDocumentTemplateGet(RUB_ID));
 		}	// /вывод документа
 
-		// рахитизм от которого надо избавится и сделать всё на CSS
+		// Если в запросе пришел параметр print, т.е. страница для печати, парсим контент, который обрамлен
+        // тегами только для печати
 		if (isset ($_REQUEST['print']) && $_REQUEST['print'] == 1)
 		{
 			$out = str_replace(array('[cp:if_print]', '[/cp:if_print]'), '', $out);
@@ -622,11 +722,12 @@ class AVE_Core
 		}
 		else
 		{
-			$out = preg_replace('/\[cp:if_print\](.*?)\[\/cp:if_print\]/si', '', $out);
+			// В противном случае наоборот, парсим только тот контент, который предназначен НЕ для печати
+            $out = preg_replace('/\[cp:if_print\](.*?)\[\/cp:if_print\]/si', '', $out);
 			$out = str_replace(array('[cp:donot_print]', '[/cp:donot_print]'), '', $out);
 		}
 
-		// извлекаем из шаблона название темы дизайна
+		// получаем из шаблона системный тег, определяющий название темы дизайна
 		$match = '';
 		preg_match('/\[cp:theme:(\w+)]/', $out, $match);
 		define('THEME_FOLDER', empty ($match[1]) ? DEFAULT_THEME_FOLDER : $match[1]);
@@ -704,7 +805,10 @@ class AVE_Core
 	}
 
 	/**
-	 * ЧПУ: поиск документа и разбор дополнительных параметров URL
+	 * Метод, предназначенный для формирования ЧПУ, а также для поиска документа и разбора
+     * дополнительных параметров в URL
+     *
+     * @param string $get_url Строка символов
 	 *
 	 */
 	function coreUrlParse($get_url = '')
@@ -719,7 +823,8 @@ class AVE_Core
 			$get_url = substr($get_url, 0, - strlen(URL_SUFF));
 		}
 
-		$get_url = explode('/', $get_url);
+		// Разбиваем строку пароаметров на отдельные части
+        $get_url = explode('/', $get_url);
 
 		$get_url = array_combine($get_url, $get_url);
 
@@ -734,8 +839,11 @@ class AVE_Core
 			unset ($get_url['print']);
 		}
 
+        // Определяем, используется ли у нас разделение документа по страницам
 		$pages = preg_grep('/^(a|art)?page-\d+$/i', $get_url);
-		if (!empty ($pages))
+		
+        //
+        if (!empty ($pages))
 		{
 			$get_url = implode('/', array_diff($get_url, $pages));
 			$pages = implode('/', $pages);
@@ -749,7 +857,7 @@ class AVE_Core
 				$pages
 			);
 		}
-		else
+		else // В противном случае формируем окончательную ссылку для документа
 		{
 			$get_url = implode('/', $get_url);
 		}
@@ -758,6 +866,7 @@ class AVE_Core
 
 //		unset ($pages);
 
+        // Выполняем запрос к БД на получение
 		$sql = $AVE_DB->Query("
 			SELECT
 				doc.*,
