@@ -1,1 +1,1 @@
-<li><a {if $smarty.request.do=='rubs'}class="active"{else}{/if} href="?do=rubs&amp;cp={$sess}">{#MAIN_RUBRIKS#}</a></li>
+<li><a {if $smarty.request.do=='rubs'}class="active"{else}{/if} href="index.php?do=rubs&amp;cp={$sess}">{#MAIN_RUBRIKS#}</a></li>
