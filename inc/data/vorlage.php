@@ -1,6 +1,6 @@
 <?php
 $vorlage['[cp:theme:ave]'] = "Название шаблона (Имя папки с файлами для данного шаблона)";
-$vorlage['[cp:pagename]'] = "Название сайта";
+$vorlage['[cp:sitename]'] = "Название сайта";
 $vorlage['[cp:title]'] = "Название страницы";
 $vorlage['[cp:keywords]'] = "Ключевые слова (Meta - Keywords)";
 $vorlage['[cp:description]'] = "Описание страницы (Meta - Description)";

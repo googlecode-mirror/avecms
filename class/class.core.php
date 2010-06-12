@@ -7,7 +7,7 @@
  * Фактически, данный класс является ядром системы, на который ложится сборка страницы из отдельных компонентов,
  * замена системных тегов соответствующими функциями, а также разбор url параметров и поиск документов по url.
  *
- * 
+ *
  * @package AVE.cms
  * @filesource
  */
@@ -159,7 +159,7 @@ class AVE_Core
 	{
 		global $AVE_DB;
 
-		// Если папка, с запрашиваемым модулем не существует, выполняем редирект 
+		// Если папка, с запрашиваемым модулем не существует, выполняем редирект
         // на главную страницу и отображаем сообщение с ошибкой
         if (!is_dir(BASE_DIR . '/modules/' . $_REQUEST['module']))
 		{
@@ -494,11 +494,11 @@ class AVE_Core
 			// Циклически обрабатываем каждый модуль
             foreach ($this->install_modules as $row)
 			{
-				// Если в запросе пришел вызов модуля или у модуля есть функция вызываемая тэгом, 
+				// Если в запросе пришел вызов модуля или у модуля есть функция вызываемая тэгом,
                 // который присутствует в шаблоне
                 if ((isset($_REQUEST['module']) && $_REQUEST['module'] == $row->ModulPfad) ||
 					(1 == $row->IstFunktion && 1 == preg_match($row->CpEngineTag, $template)))
-				{	
+				{
 					// Проверяем, существует ли для данного модуля функция. Если да,
                     // получаем php код функции.
                     if (function_exists($row->ModulFunktion))
@@ -510,7 +510,7 @@ class AVE_Core
 					{
 						// Проверяем, существует ли для данного модуля файл modul.php в его персональной директории
                         if (require_once(BASE_DIR . '/modules/' . $row->ModulPfad . '/modul.php'))
-						{	
+						{
 							// Если файл модуля найден, тогда
                             if ($row->CpEngineTag)
 							{
@@ -554,7 +554,7 @@ class AVE_Core
                 // директория или данный модуль имеет функцию и его системный тег указан в каком-либо шаблоне, тогда
                 if ((isset($_REQUEST['module']) && $_REQUEST['module'] == $row->ModulPfad) ||
 					(1 == $row->IstFunktion && 1 == preg_match($row->CpEngineTag, $template)))
-				{	
+				{
 					// Проверяем, существует ли для данного модуля файл modul.php в его персональной директории
                     if (require_once(BASE_DIR . '/modules/' . $row->ModulPfad . '/modul.php'))
 					{	// Если файл модуля найден, тогда
@@ -601,9 +601,9 @@ class AVE_Core
         if (!empty ($_REQUEST['module'])) {
 			$out = $this->_coreModuleMetatagsFetch();
             $out = $this->_coreDocumentTemplateGet('', '', $this->_coreModuleTemplateGet());
-		}	
+		}
 		else // В противном случае начинаем вывод документа
-		{	
+		{
             if (! isset($this->curentdoc->Id) && ! $this->_coreCurrentDocumentFetch($id, UGROUP))
 			{
 				// Определяем документ с 404 ошиюкой, в случае, если документ не найден
@@ -753,7 +753,7 @@ class AVE_Core
 		$search = array(
 			'[cp:mediapath]',
 			'[cp:path]',
-			'[cp:pagename]',
+			'[cp:sitename]',
 			'[cp:document]',
 			'[cp:home]',
 			'[cp:keywords]',
@@ -841,7 +841,7 @@ class AVE_Core
 
         // Определяем, используется ли у нас разделение документа по страницам
 		$pages = preg_grep('/^(a|art)?page-\d+$/i', $get_url);
-		
+
         //
         if (!empty ($pages))
 		{
