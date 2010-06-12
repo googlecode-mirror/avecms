@@ -65,7 +65,6 @@ class AVE_Template extends Smarty
          * Передается наименование функции шаблона и имя функции, реализующей ее.
          */
         $this->register_function('check_permission', 'check_permission');
-        $this->register_function('get_redirect_link', 'get_redirect_link');
         $this->register_function('get_home_link', 'get_home_link');
         $this->register_function('num_format', 'num_format');
 

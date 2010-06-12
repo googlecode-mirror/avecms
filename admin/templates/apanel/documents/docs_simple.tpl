@@ -19,10 +19,10 @@ function insertLink(o) {ldelim}
 <form enctype="multipart/form-data">
 	<table width="100%" border="0" cellpadding="6" cellspacing="1" class="tableborder">
 		<tr>
-			<td width="10" class="tableheader"><a class="header" href="{get_redirect_link}&amp;sort={if $smarty.request.sort=='Id'}IdDesc{else}Id{/if}">{#DOC_ID#}</a></td>
+			<td width="10" class="tableheader"><a class="header" href="index.php?do=docs&amp;action=showsimple&amp;selurl=1&amp;target=txtUrl&amp;pop=1&amp;sort={if $smarty.request.sort=='Id'}IdDesc{else}Id{/if}">{#DOC_ID#}</a></td>
 			<td width="11" class="tableheader">&nbsp;</td>
-			<td class="tableheader"><a class="header" href="{get_redirect_link}&amp;sort={if $smarty.request.sort=='Titel'}TitelDesc{else}Titel{/if}">{#DOC_TITLE#}</a></td>
-			<td width="10%" class="tableheader"><a class="header" href="{get_redirect_link}&amp;sort={if $smarty.request.sort=='Rubrik'}RubrikDesc{else}Rubrik{/if}">{#DOC_IN_RUBRIK#}</a></td>
+			<td class="tableheader"><a class="header" href="index.php?do=docs&amp;action=showsimple&amp;selurl=1&amp;target=txtUrl&amp;pop=1&amp;sort={if $smarty.request.sort=='Titel'}TitelDesc{else}Titel{/if}">{#DOC_TITLE#}</a></td>
+			<td width="10%" class="tableheader"><a class="header" href="index.php?do=docs&amp;action=showsimple&amp;selurl=1&amp;target=txtUrl&amp;pop=1&amp;sort={if $smarty.request.sort=='Rubrik'}RubrikDesc{else}Rubrik{/if}">{#DOC_IN_RUBRIK#}</a></td>
 			<td class="tableheader">&nbsp;</td>
 		</tr>
 

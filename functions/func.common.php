@@ -233,6 +233,8 @@ function get_current_document_id()
  */
 function get_redirect_link($exclude = '')
 {
+	global $AVE_Core;
+
 	$link = 'index.php';
 
 	if (!empty($_GET))
@@ -244,7 +246,17 @@ function get_redirect_link($exclude = '')
 		$params = array();
 		foreach($_GET as $key => $value)
 		{
-			if (!in_array($key, $exclude)) $params[] = @urlencode($key) . '=' . @urlencode($value);
+			if (!in_array($key, $exclude))
+			{
+				if ($key == 'doc')
+				{
+					$params[] = 'doc=' . (empty($AVE_Core->curentdoc->Url) ? prepare_url($AVE_Core->curentdoc->Titel) : $AVE_Core->curentdoc->Url);
+				}
+				else
+				{
+					$params[] = @urlencode($key) . '=' . @urlencode($value);
+				}
+			}
 		}
 
 		if (sizeof($params)) $link .= '?' . implode('&amp;', $params);
