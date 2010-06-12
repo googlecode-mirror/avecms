@@ -2,7 +2,7 @@
 <h2 id="page-heading">{#LOGIN_PLEASE_LOGON#}</h2>
 
 {if $login == 'true'}
-	{#LOGIN_TEXT_TRUE_INFO#} {get_redirect_link}
+	{#LOGIN_TEXT_TRUE_INFO#}
 {else}
 	{#LOGIN_TEXT_FALSE_INFO#}
 
