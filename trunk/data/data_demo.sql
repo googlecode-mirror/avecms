@@ -17,7 +17,7 @@ INSERT INTO `%%PRFX%%_countries` VALUES (16, 'BS', 'Содружество Багамских остров
 INSERT INTO `%%PRFX%%_countries` VALUES (17, 'BH', 'Бахрейн', '2', '2');#inst#
 INSERT INTO `%%PRFX%%_countries` VALUES (18, 'BD', 'Бангладеш', '2', '2');#inst#
 INSERT INTO `%%PRFX%%_countries` VALUES (19, 'BB', 'Барбадос', '2', '2');#inst#
-INSERT INTO `%%PRFX%%_countries` VALUES (20, 'BY', 'Белоруссия', '1', '2');#inst#
+INSERT INTO `%%PRFX%%_countries` VALUES (20, 'BY', 'Беларусь', '1', '2');#inst#
 INSERT INTO `%%PRFX%%_countries` VALUES (21, 'BE', 'Бельгия', '2', '1');#inst#
 INSERT INTO `%%PRFX%%_countries` VALUES (22, 'BZ', 'Белиц', '2', '2');#inst#
 INSERT INTO `%%PRFX%%_countries` VALUES (23, 'BJ', 'Бенин', '2', '2');#inst#
