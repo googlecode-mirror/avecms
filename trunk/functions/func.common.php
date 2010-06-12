@@ -653,7 +653,7 @@ function pretty_date($string, $language = '')
 {
 	if ($language == '')
 	{
-		$language = ACP ? $_SESSION['admin_language'] : $_SESSION['user_language'];
+		$language = (defined('ACP') && ACP) ? $_SESSION['admin_language'] : $_SESSION['user_language'];
 	}
 
 	$language = strtolower($language);
