@@ -38,7 +38,8 @@ function mod_rss($rss_id)
 
 	if (is_numeric($rss_id))
 	{
-		echo '<a href="', ABS_PATH, 'rss/rss-', $rss_id, '.xml" target="blank"><img src="modules/rss/templates/feed.gif" border="0" title="RSS лента новостей" /></a>';
+		echo '<a href="', ABS_PATH, 'rss/rss-', $rss_id, '.xml" target="blank"><img src="',
+			ABS_PATH, 'modules/rss/templates/feed.gif" border="0" title="RSS лента новостей" /></a>';
 	}
 }
 

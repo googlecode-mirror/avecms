@@ -28,7 +28,7 @@ class Rss
 		$sql = $AVE_DB->Query("SELECT * FROM " . PREFIX . "_modul_rss");
 		while ($result = $sql->FetchRow())
 		{
-			$result->tag = '[rss:' . $result->id . ']';
+			$result->tag = '[mod_rss:' . $result->id . ']';
 			array_push($channels, $result);
 		}
 
