@@ -149,18 +149,18 @@ function check_name() {ldelim}
 	<col width="20">
 	<col width="20">
 	<tr class="tableheader">
-		<td><a class="header" href="{get_redirect_link ex='sort'}&amp;sort={if $smarty.request.sort=='Id'}IdDesc{else}Id{/if}">{#DOC_ID#}</a></td>
+		<td><a class="header" href="index.php?do=docs&cp={$sess}&sort={if $smarty.request.sort=='Id'}IdDesc{else}Id{/if}">{#DOC_ID#}</a></td>
 		<td nowrap="nowrap">
-			<a class="header" href="{get_redirect_link ex='sort'}&amp;sort={if $smarty.request.sort=='Titel'}TitelDesc{else}Titel{/if}">{#DOC_TITLE#}</a>
+			<a class="header" href="index.php?do=docs&cp={$sess}&sort={if $smarty.request.sort=='Titel'}TitelDesc{else}Titel{/if}">{#DOC_TITLE#}</a>
 			&nbsp;|&nbsp;
-			<a class="header" href="{get_redirect_link ex='sort'}&amp;sort={if $smarty.request.sort=='Url'}UrlDesc{else}Url{/if}">{#DOC_URL_RUB#}</a>
+			<a class="header" href="index.php?do=docs&cp={$sess}&sort={if $smarty.request.sort=='Url'}UrlDesc{else}Url{/if}">{#DOC_URL_RUB#}</a>
 		</td>
-		<td><a class="header" href="{get_redirect_link ex='sort'}&amp;sort={if $smarty.request.sort=='Rubrik'}RubrikDesc{else}Rubrik{/if}">{#DOC_IN_RUBRIK#}</a></td>
-		<td><a class="header" href="{get_redirect_link ex='sort'}&amp;sort={if $smarty.request.sort=='Erstellt'}ErstelltDesc{else}Erstellt{/if}">{#DOC_CREATED#}</a></td>
-		<td><a class="header" href="{get_redirect_link ex='sort'}&amp;sort={if $smarty.request.sort=='Edits'}EditsDesc{else}Edits{/if}">{#DOC_EDIT#}</a></td>
-		<td><a class="header" href="{get_redirect_link ex='sort'}&amp;sort={if $smarty.request.sort=='KlicksDesc'}Klicks{else}KlicksDesc{/if}">{#DOC_CLICKS#}</a></td>
-		<td><a class="header" href="{get_redirect_link ex='sort'}&amp;sort={if $smarty.request.sort=='DruckDesc'}Druck{else}DruckDesc{/if}">{#DOC_PRINTED#}</a></td>
-		<td><a class="header" href="{get_redirect_link ex='sort'}&amp;sort={if $smarty.request.sort=='Autor'}AutorDesc{else}Autor{/if}">{#DOC_AUTHOR#}</a></td>
+		<td><a class="header" href="index.php?do=docs&cp={$sess}&sort={if $smarty.request.sort=='Rubrik'}RubrikDesc{else}Rubrik{/if}">{#DOC_IN_RUBRIK#}</a></td>
+		<td><a class="header" href="index.php?do=docs&cp={$sess}&sort={if $smarty.request.sort=='Erstellt'}ErstelltDesc{else}Erstellt{/if}">{#DOC_CREATED#}</a></td>
+		<td><a class="header" href="index.php?do=docs&cp={$sess}&sort={if $smarty.request.sort=='Edits'}EditsDesc{else}Edits{/if}">{#DOC_EDIT#}</a></td>
+		<td><a class="header" href="index.php?do=docs&cp={$sess}&sort={if $smarty.request.sort=='KlicksDesc'}Klicks{else}KlicksDesc{/if}">{#DOC_CLICKS#}</a></td>
+		<td><a class="header" href="index.php?do=docs&cp={$sess}&sort={if $smarty.request.sort=='DruckDesc'}Druck{else}DruckDesc{/if}">{#DOC_PRINTED#}</a></td>
+		<td><a class="header" href="index.php?do=docs&cp={$sess}&sort={if $smarty.request.sort=='Autor'}AutorDesc{else}Autor{/if}">{#DOC_AUTHOR#}</a></td>
 		<td colspan="5" align="center">{#DOC_ACTIONS#}</td>
 	</tr>
 
