@@ -29,7 +29,7 @@ $(document).ready(function(){ldelim}
 			url: 'index.php',
 			data: ({ldelim}
 				action: 'checkurl',
-				do: 'docs',
+				'do': 'docs',
 				cp: '{$sess}',
 				id: '{$document->Id}',
 				alias: $("#Url").val()
@@ -49,11 +49,11 @@ $(document).ready(function(){ldelim}
 			url:'index.php',
 			data: ({ldelim}
 				action: 'translit',
-				do: 'docs',
+				'do': 'docs',
 				cp: '{$sess}',
 				alias: $("#Url").val(),
 				title: $("#Titel").val(),
-				prefix: '{$document->rubric_url_prefix}',
+				prefix: '{$document->rubric_url_prefix}'
 				{rdelim}),
 			timeout:3000,
 			success: function(data){ldelim}
