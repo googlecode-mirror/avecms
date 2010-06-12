@@ -1237,9 +1237,9 @@ class AVE_Document
 		$document_id = (int)$_REQUEST['Id'];       // идентификатор документа
 		$rubric_id   = (int)$_REQUEST['RubrikId']; // идентификатор текущей рубрики
 
-		if (!empty($_REQUEST['NewRubr']) && !empty($_REQUEST['Id']))
+		if ((!empty($_POST['NewRubr'])) and (!empty($_GET['Id'])))
 		{
-			$new_rubric_id = (int)$_REQUEST['NewRubr']; // идентификатор целевой рубрики
+			$new_rubric_id = (int)$_POST['NewRubr']; // идентификатор целевой рубрики
 
 			foreach ($_POST as $key => $value)
 			{
@@ -1257,7 +1257,7 @@ class AVE_Document
 							break;
 
 						case -1:
-							//информация о старом поле
+							// информация о старом поле
 							$row_fd = $AVE_DB->Query("
 								SELECT
 									Titel,
@@ -1266,7 +1266,7 @@ class AVE_Document
 								WHERE Id = '" . $key . "'
 							")->FetchRow();
 
-							//последняя позиция в новой рубрике
+							// последняя позиция в новой рубрике
 							$new_pos = $AVE_DB->Query("
 								SELECT rubric_position
 								FROM " . PREFIX . "_rubric_fields
@@ -1276,7 +1276,7 @@ class AVE_Document
 							")->GetCell();
 							++$new_pos;
 
-							//создаем новое поле
+							// создаем новое поле
 							$AVE_DB->Query("
 								INSERT
 								INTO " . PREFIX . "_rubric_fields
@@ -1287,7 +1287,7 @@ class AVE_Document
 									rubric_position = '" . $new_pos . "'
 							");
 
-							//добавляем запись о поле в таблицу с полями документов
+							// добавляем запись о поле в таблицу с полями документов
 							$lastid = $AVE_DB->InsertId();
 							$sql_docs = $AVE_DB->Query("
 								SELECT Id
@@ -1307,7 +1307,7 @@ class AVE_Document
 								");
 							}
 
-							//создаем новое поле для изменяемого документа
+							// создаем новое поле для изменяемого документа
 							$AVE_DB->Query("
 								UPDATE " . PREFIX . "_document_fields
 								SET RubrikFeld = '" . $lastid . "'
@@ -1381,10 +1381,8 @@ class AVE_Document
 			// вывод формы смены рубрики
 			$fields = array();
 
-			if (!empty($_REQUEST['NewRubr']) && $_REQUEST['NewRubr'] != $_REQUEST['RubrikId'])
+			if ((!empty($_GET['NewRubr'])) and ($rubric_id != (int)$_GET['NewRubr']))
 			{
-				$new_rubric_id = (int)$_REQUEST['NewRubr']; // идентификатор целевой рубрики
-
 				// выбираем все поля новой рубрики
 				$sql_rub = $AVE_DB->Query("
 					SELECT
@@ -1392,7 +1390,7 @@ class AVE_Document
 						Titel,
 						RubTyp
 					FROM " . PREFIX . "_rubric_fields
-					WHERE RubrikId = '" . $new_rubric_id . "'
+					WHERE RubrikId = '" . (int)$_GET['NewRubr'] . "'
 					ORDER BY Id ASC
 				");
 				$mass_new_rubr = array();
@@ -1411,7 +1409,7 @@ class AVE_Document
 						Titel,
 						RubTyp
 					FROM " . PREFIX . "_rubric_fields
-					WHERE RubrikId = '" . $new_rubric_id . "'
+					WHERE RubrikId = '" . $rubric_id . "'
 					ORDER BY Id ASC
 				");
 				while ($row_nr = $sql_old_rub->FetchRow()) {
@@ -1428,9 +1426,9 @@ class AVE_Document
 							if ($row_nr->Titel == $row['Titel']) $selected = $row['Id'];
 						}
 					}
-					$fields[$row_nr->Id] = array('Titel'=>$row_nr->Titel,
-												 'Options'=>$option_arr,
-												 'Selected'=>$selected
+					$fields[$row_nr->Id] = array('Titel'    => $row_nr->Titel,
+												 'Options'  => $option_arr,
+												 'Selected' => $selected
 					);
 				}
 			}
