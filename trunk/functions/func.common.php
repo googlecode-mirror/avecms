@@ -433,7 +433,7 @@ function prepare_url($st)
 
 	$st = strtolower($st);
 
-	if (defined('TRANSLIT_URL') && TRANSLIT_URL) translit_string(trim($st));
+	if (defined('TRANSLIT_URL') && TRANSLIT_URL) $st = translit_string(trim($st));
 
 	$st = preg_replace(
 		array('/^[\/-]+|[\/-]+$|[^a-zà-ÿ¸0-9\/-]/', '/--+/', '/-*\/+-*/', '/\/\/+/'),
