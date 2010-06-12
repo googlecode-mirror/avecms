@@ -98,7 +98,7 @@
 
 					<tr>
 						<td class="first">
-							<a title="{#TEMPLATES_TAG_INSERT#}" href="javascript:void(0);" onclick="editAreaLoader.insertTags('{$js_textfeld}', '[cp:pagename]','');">[cp:pagename]</a>
+							<a title="{#TEMPLATES_TAG_INSERT#}" href="javascript:void(0);" onclick="editAreaLoader.insertTags('{$js_textfeld}', '[cp:sitename]','');">[cp:sitename]</a>
 						</td>
 						<td class="first">{#TEMPLATES_PAGENAME#}</td>
 					</tr>
