@@ -23,7 +23,7 @@ class Download {
 
 	function secureRequest()
 	{
-		if(isset($_REQUEST['c'])) $_REQUEST['c'] = preg_replace("/[^_A-Za-zÀ-ßà-ÿ¨¸0-9]/", '', $_REQUEST['c']);
+		if(isset($_REQUEST['c'])) $_REQUEST['c'] = preg_replace("/[^_A-Za-zÀ-ßà-ÿ¨¸¯ª²¿º³0-9]/", '', $_REQUEST['c']);
 		if(isset($_REQUEST['categ'])) $_REQUEST['categ'] = preg_replace('/\D/', '', $_REQUEST['categ']);
 		if(isset($_REQUEST['parent'])) $_REQUEST['parent'] = preg_replace('/\D/', '', $_REQUEST['parent']);
 		if(isset($_REQUEST['navop'])) $_REQUEST['navop'] = preg_replace('/\D/', '', $_REQUEST['navop']);
@@ -45,7 +45,7 @@ class Download {
 		$text = str_replace('ä', 'ae', $text);
 		$text = str_replace('Ä', 'Ae', $text);
 		$text = str_replace(array('&', '&amp;'), 'and', $text);
-		$text = preg_replace("/[^+_A-Za-zÀ-ßà-ÿ¨¸0-9]/", "_", $text);
+		$text = preg_replace("/[^+_A-Za-zÀ-ßà-ÿ¨¸¯ª²¿º³0-9]/", "_", $text);
 */
 		$text = prepare_url($text);
 		return $text;

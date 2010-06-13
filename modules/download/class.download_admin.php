@@ -383,7 +383,7 @@ class Download {
 		// Es wird ein Such-String angegeben
 		if(isset($_REQUEST['dl_query']) && !empty($_REQUEST['dl_query']))
 		{
-			$_REQUEST['dl_query'] = preg_replace('/[^ _A-Za-zÀ-ßà-ÿ¨¸0-9]/', '', $_REQUEST['dl_query']);
+			$_REQUEST['dl_query'] = preg_replace('/[^ _A-Za-zÀ-ßà-ÿ¨¸¯ª²¿º³0-9]/', '', $_REQUEST['dl_query']);
 			$search = " AND Name LIKE '" . $_REQUEST['dl_query'] . "%' ";
 			$search_string = "&amp;dl_query=" . urlencode($_REQUEST['dl_query']);
 			$GLOBALS['AVE_Template']->assign('search_string', $search_string);

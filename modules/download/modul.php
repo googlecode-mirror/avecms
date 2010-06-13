@@ -87,7 +87,7 @@ if( (isset($_REQUEST['module']) && $_REQUEST['module'] == 'download') || (isset(
 				break;
 
 			case 'secure':
-				$sc = preg_replace('/[^A-Za-zÀ-ßà-ÿ¨¸0-9]/', '', $_REQUEST['scode']);
+				$sc = preg_replace('/[^A-Za-zÀ-ßà-ÿ¨¸¯ª²¿º³0-9]/', '', $_REQUEST['scode']);
 				$download->ajaxSecure($sc);
 				break;
 

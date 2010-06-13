@@ -1,0 +1,1 @@
+EXAMPLE_TITLE   = "Робота тестового модуля example:"
