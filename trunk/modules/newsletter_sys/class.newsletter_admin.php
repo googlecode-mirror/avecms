@@ -11,18 +11,17 @@ class systemNewsletter
 
 		if (!empty($_REQUEST['q']))
 		{
-			$query = preg_replace('/([^ +_A-Za-zÀ-ßà-ÿ0-9-])/', '', $_REQUEST['q']);
+			$query = preg_replace('/[^ +_A-Za-zÀ-ßà-ÿ¨¸¯ª²¿º³0-9-]/s', '', $_REQUEST['q']);
 			$db_extra = " WHERE title LIKE '%{$query}%' OR message LIKE '%{$query}%' ";
 			$nav_string = "&q={$query}";
 		}
 
-		$sql = $AVE_DB->Query("
+		$num = $AVE_DB->Query("
 			SELECT id
 			FROM " . PREFIX . "_modul_newsletter_sys
 			" . $db_extra . "
 			ORDER BY id DESC
-		");
-		$num = $sql->NumRows();
+		")->NumRows();
 
 		$limit = 20;
 		@$pages = @ceil($num / $limit);

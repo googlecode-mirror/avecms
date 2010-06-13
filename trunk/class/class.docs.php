@@ -1469,7 +1469,7 @@ class AVE_Document
 
 		if (!empty($alias))
 		{
-			if (preg_match(TRANSLIT_URL ? '/[^a-z0-9\/-]+/' : '/[^a-zà-ÿ¸0-9\/-]+/', $alias))
+			if (preg_match(TRANSLIT_URL ? '/[^a-z0-9\/-]+/' : '/[^a-zà-ÿ¸¿º³0-9\/-]+/', $alias))
 			{
 				$errors[] = $AVE_Template->get_config_vars('DOC_URL_ERROR_SYMBOL');
 			}

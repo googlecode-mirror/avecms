@@ -425,10 +425,11 @@ function translit_string($st)
 	$st = strtr ($st, array('üå'=>'ye', 'úå'=>'ye', 'üè'=>'yi',  'úè'=>'yi',
 							'úî'=>'yo', 'üî'=>'yo', '¸'=>'yo',   'ş'=>'yu',
 							'ÿ'=>'ya',  'æ'=>'zh',  'õ'=>'kh',   'ö'=>'ts',
-							'÷'=>'ch',  'ø'=>'sh',  'ù'=>'shch', 'ú'=>'', 'ü'=>'')
+							'÷'=>'ch',  'ø'=>'sh',  'ù'=>'shch', 'ú'=>'', 
+							'ü'=>'',    '¿'=>'yi',  'º'=>'ye')
 	);
-	$st = strtr($st,'àáâãäåçèéêëìíîïğñòóôûı',
-					'abvgdeziyklmnoprstufye');
+	$st = strtr($st,'àáâãäåçèéêëìíîïğñòóôûı³',
+					'abvgdeziyklmnoprstufyei');
 
 	return trim($st, '-');
 }
@@ -443,13 +444,14 @@ function prepare_url($st)
 {
 	$st = strip_tags($st);
 
-	$st = strtolower($st);
+	$st = strtr($st,'ÀÁÂÃÄÅ¨ÆÇÈÉÊËÌÍÎÏĞÑÒÓÔÕÖ×ØÙÜÚÛİŞß¯ª²',
+					'àáâãäå¸æçèéêëìíîïğñòóôõö÷øùüúûışÿ¿º³');
 
 	if (defined('TRANSLIT_URL') && TRANSLIT_URL) $st = translit_string(trim($st));
 
 	$st = preg_replace(
-		array('/^[\/-]+|[\/-]+$|[^a-zà-ÿ¸0-9\/-]/', '/--+/', '/-*\/+-*/', '/\/\/+/'),
-		array('-',                                  '-',     '/',         '/'),
+		array('/^[\/-]+|[\/-]+$|^[\/_]+|[\/_]+$|[^a-zà-ÿ¸¿º³0-9\/_-]/', '/--+/', '/-*\/+-*/', '/\/\/+/'),
+		array('-',                                                      '-',     '/',         '/'),
 		$st
 	);
 
@@ -466,11 +468,12 @@ function prepare_fname($st)
 {
 	$st = strip_tags($st);
 
-	$st = strtolower($st);
+	$st = strtr($st,'ÀÁÂÃÄÅ¨ÆÇÈÉÊËÌÍÎÏĞÑÒÓÔÕÖ×ØÙÜÚÛİŞß¯ª²',
+					'àáâãäå¸æçèéêëìíîïğñòóôõö÷øùüúûışÿ¿º³');
 
 	translit_string(trim($st));
 
-	$st = preg_replace(array('/[^a-zà-ÿ¸0-9-]/', '/--+/'), '-', $st);
+	$st = preg_replace(array('/[^a-z0-9_-]/', '/--+/'), '-', $st);
 
 	return trim($st, '-');
 }
@@ -485,7 +488,7 @@ function rewrite_link($s)
 {
 	if (!REWRITE_MODE) return $s;
 
-	$doc_regex = '/index.php(?:\?)id=(?:[0-9]+)&(?:amp;)*doc='.(TRANSLIT_URL ? '([a-z0-9\/-]+)' : '([a-zà-ÿ¸0-9\/-]+)');
+	$doc_regex = '/index.php(?:\?)id=(?:[0-9]+)&(?:amp;)*doc='.(TRANSLIT_URL ? '([a-z0-9\/_-]+)' : '([a-zà-ÿ¸¿º³0-9\/_-]+)');
 	$page_regex = '&(?:amp;)*(artpage|apage|page)=([{s}0-9]+)';
 
 	$s = preg_replace($doc_regex.$page_regex.$page_regex.$page_regex.'/', ABS_PATH.'$1/$2-$3/$4-$5/$6-$7'.URL_SUFF, $s);

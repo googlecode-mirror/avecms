@@ -110,7 +110,7 @@ class AVE_Rubric
 
 					if (!empty($_POST['UrlPrefix']))
 					{
-						if (preg_match(TRANSLIT_URL ? '/[^\%HYa-z0-9\/-]+/' : '/[^\%HYa-zà-ÿ¸0-9\/-]+/', $_POST['UrlPrefix']))
+						if (preg_match(TRANSLIT_URL ? '/[^\%HYa-z0-9\/-]+/' : '/[^\%HYa-zà-ÿ¸¿º³0-9\/-]+/', $_POST['UrlPrefix']))
 						{
 							array_push($errors, $AVE_Template->get_config_vars('RUBRIK_PREFIX_BAD_CHAR'));
 						}
@@ -190,7 +190,7 @@ class AVE_Rubric
 
 					if (!empty($_POST['UrlPrefix'][$rubric_id]))
 					{
-						if (!(preg_match((TRANSLIT_URL ? '/[^\%HYa-z0-9\/-]+/' : '/[^\%HYa-zà-ÿ¸0-9\/-]+/'), $_POST['UrlPrefix'][$rubric_id])))
+						if (!(preg_match((TRANSLIT_URL ? '/[^\%HYa-z0-9\/-]+/' : '/[^\%HYa-zà-ÿ¸¿º³0-9\/-]+/'), $_POST['UrlPrefix'][$rubric_id])))
 						{
 							$prefix_exist = $AVE_DB->Query("
 								SELECT 1
@@ -260,7 +260,7 @@ class AVE_Rubric
 
 		if (!empty($_POST['UrlPrefix']))
 		{
-			if (preg_match(TRANSLIT_URL ? '/[^\%HYa-z0-9\/-]+/' : '/[^\%HYa-zà-ÿ¸0-9\/-]+/', $_POST['UrlPrefix']))
+			if (preg_match(TRANSLIT_URL ? '/[^\%HYa-z0-9\/-]+/' : '/[^\%HYa-zà-ÿ¸¿º³0-9\/-]+/', $_POST['UrlPrefix']))
 			{
 				array_push($errors, $AVE_Template->get_config_vars('RUBRIK_PREFIX_BAD_CHAR'));
 			}

@@ -2,7 +2,7 @@
 
 $response = '';
 $query_string = (isset($_REQUEST['ajq']))
-	? preg_replace('/[^ A-Za-zÀ-ßà-ÿ¨¸0-9]/i', '', $_REQUEST['ajq'])
+	? preg_replace('/[^ A-Za-zÀ-ßà-ÿ¨¸¯ª²¿º³0-9]/i', '', $_REQUEST['ajq'])
 	: '';
 
 if (strlen($query_string) > 2)
