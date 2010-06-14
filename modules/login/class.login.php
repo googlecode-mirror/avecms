@@ -146,15 +146,15 @@ class Login
 	{
 		global $AVE_Template;
 
-		if ($this->_loginFieldIsRequired('ZeigeFirma'))
+		if ($this->_loginFieldIsRequired('login_require_company'))
 		{
 			$AVE_Template->assign('FirmName',  1);
 		}
-		if ($this->_loginFieldIsRequired('ZeigeVorname'))
+		if ($this->_loginFieldIsRequired('login_require_firstname'))
 		{
 			$AVE_Template->assign('FirstName', 1);
 		}
-		if ($this->_loginFieldIsRequired('ZeigeNachname'))
+		if ($this->_loginFieldIsRequired('login_require_lastname'))
 		{
 			$AVE_Template->assign('LastName',  1);
 		}
@@ -209,9 +209,9 @@ class Login
 	{
 		if (empty($email)) return false;
 
-		$Verboten = explode(',', chop($this->_loginSettingsGet('EmailsVerboten')));
+		$deny_emails = explode(',', chop($this->_loginSettingsGet('login_deny_email')));
 
-		return !in_array($email, $Verboten);
+		return !in_array($email, $deny_emails);
 	}
 
 	/**
@@ -224,10 +224,10 @@ class Login
 	{
 		if (empty($email)) return false;
 
-		$DomainsVerboten = explode(',', chop($this->_loginSettingsGet('DomainsVerboten')));
-		$DomainGesendet = explode('@', $email);
+		$deny_domains = explode(',', chop($this->_loginSettingsGet('login_deny_domain')));
+		$domain = explode('@', $email);
 
-		return !in_array(@$DomainGesendet[1], $DomainsVerboten);
+		return !in_array(@$domain[1], $deny_domains);
 	}
 
 /**
@@ -244,7 +244,7 @@ class Login
 
 		$AVE_Template->config_load($this->_lang_file, 'displayloginform');
 
-		if ($this->_loginSettingsGet('IstAktiv') == 1) $AVE_Template->assign('active', 1);
+		if ($this->_loginSettingsGet('login_status') == 1) $AVE_Template->assign('active', 1);
 
 		$AVE_Template->display($this->_tpl_dir . 'loginform.tpl');
 	}
@@ -307,7 +307,7 @@ class Login
 			$AVE_Template->assign('login', 'false');
 		}
 
-		if ($this->_loginSettingsGet('IstAktiv') == 1) $AVE_Template->assign('active', 1);
+		if ($this->_loginSettingsGet('login_status') == 1) $AVE_Template->assign('active', 1);
 
 		$AVE_Template->config_load($this->_lang_file, 'loginprocess');
 
@@ -335,9 +335,9 @@ class Login
 
 		define('MODULE_SITE', $AVE_Template->get_config_vars('LOGIN_TEXT_REGISTER'));
 
-		if ($this->_loginSettingsGet('AntiSpam')) define('ANTI_SPAM', 1);
+		if ($this->_loginSettingsGet('login_spam_protect')) define('ANTI_SPAM', 1);
 
-		switch($this->_loginSettingsGet('IstAktiv'))
+		switch($this->_loginSettingsGet('login_status'))
 		{
 			case '1':
 				switch ($_REQUEST['sub'])
@@ -419,7 +419,7 @@ class Login
 						}
 
 						// ÈÌß
-						if ($this->_loginFieldIsRequired('ZeigeVorname') && empty($_POST['reg_firstname']))
+						if ($this->_loginFieldIsRequired('login_require_firstname') && empty($_POST['reg_firstname']))
 						{
 							$error[] = $AVE_Template->get_config_vars('LOGIN_WRONG_FN_EMPTY');
 						}
@@ -429,7 +429,7 @@ class Login
 						}
 
 						// ÔÀÌÈËÈß
-						if ($this->_loginFieldIsRequired('ZeigeNachname') && empty($_POST['reg_lastname']))
+						if ($this->_loginFieldIsRequired('login_require_lastname') && empty($_POST['reg_lastname']))
 						{
 							$error[] = $AVE_Template->get_config_vars('LOGIN_WRONG_LN_EMPTY');
 						}
@@ -471,7 +471,7 @@ class Login
 
 							$emailcode = md5(rand(100000,999999));
 
-							switch ($this->_loginSettingsGet('RegTyp'))
+							switch ($this->_loginSettingsGet('login_reg_type'))
 							{
 								case 'now':
 									$email_body = str_replace("%N%", "\n", $AVE_Template->get_config_vars('LOGIN_MESSAGE_1'));
@@ -596,7 +596,7 @@ class Login
 							")->FetchRow();
 							if ($row)
 							{
-								$AVE_Template->assign('reg_type', $reg_type);
+//								$AVE_Template->assign('reg_type', $reg_type);
 								$AVE_Template->assign('final', 'ok');
 								$AVE_DB->Query("
 									UPDATE " . PREFIX . "_users
@@ -893,7 +893,7 @@ class Login
 		{
 			$errors = array();
 
-			if ($this->_loginFieldIsRequired('ZeigeVorname') && empty($_POST['Vorname']))
+			if ($this->_loginFieldIsRequired('login_require_firstname') && empty($_POST['Vorname']))
 			{
 				$errors[] = $AVE_Template->get_config_vars('LOGIN_WRONG_FN_EMPTY');
 			}
@@ -902,7 +902,7 @@ class Login
 				$errors[] = $AVE_Template->get_config_vars('LOGIN_WRONG_FIRSTNAME');
 			}
 
-			if ($this->_loginFieldIsRequired('ZeigeNachname') && empty($_POST['Nachname']))
+			if ($this->_loginFieldIsRequired('login_require_lastname') && empty($_POST['Nachname']))
 			{
 				$errors[] = $AVE_Template->get_config_vars('LOGIN_WRONG_LN_EMPTY');
 			}
@@ -1037,26 +1037,26 @@ class Login
 
 		if (isset($_REQUEST['sub']) && $_REQUEST['sub'] == 'save')
 		{
-			$DomainsVerboten = str_replace(	array("\r\n", "\n"),
+			$login_deny_domain = str_replace(	array("\r\n", "\n"),
 											',',
-											$_REQUEST['DomainsVerboten']
+											$_REQUEST['login_deny_domain']
 			);
-			$EmailsVerboten = str_replace(	array("\r\n", "\n"),
+			$login_deny_email = str_replace(	array("\r\n", "\n"),
 											',',
-											$_REQUEST['EmailsVerboten']
+											$_REQUEST['login_deny_email']
 			);
 
 			$AVE_DB->Query("
 				UPDATE " . PREFIX . "_modul_login
 				SET
-					RegTyp          = '" . $_REQUEST['RegTyp'] . "',
-					AntiSpam        = '" . $_REQUEST['AntiSpam'] . "',
-					IstAktiv        = '" . $_REQUEST['IstAktiv'] . "',
-					DomainsVerboten = '" . $DomainsVerboten . "',
-					EmailsVerboten  = '" . $EmailsVerboten . "',
-					ZeigeFirma      = '" . $_REQUEST['ZeigeFirma'] . "',
-					ZeigeVorname    = '" . $_REQUEST['ZeigeVorname'] . "',
-					ZeigeNachname   = '" . $_REQUEST['ZeigeNachname'] . "'
+					login_reg_type          = '" . $_REQUEST['login_reg_type'] . "',
+					login_spam_protect      = '" . $_REQUEST['login_spam_protect'] . "',
+					login_status            = '" . $_REQUEST['login_status'] . "',
+					login_deny_domain       = '" . $login_deny_domain . "',
+					login_deny_email        = '" . $login_deny_email . "',
+					login_require_company   = '" . $_REQUEST['login_require_company'] . "',
+					login_require_firstname = '" . $_REQUEST['login_require_firstname'] . "',
+					login_require_lastname  = '" . $_REQUEST['login_require_lastname'] . "'
 				WHERE
 					Id = 1
 			");
@@ -1066,8 +1066,8 @@ class Login
 		}
 
 		$row = $this->_loginSettingsGet();
-		$row['DomainsVerboten'] = str_replace(',', "\n", $row['DomainsVerboten']);
-		$row['EmailsVerboten']  = str_replace(',', "\n", $row['EmailsVerboten']);
+		$row['login_deny_domain'] = str_replace(',', "\n", $row['login_deny_domain']);
+		$row['login_deny_email']  = str_replace(',', "\n", $row['login_deny_email']);
 		$AVE_Template->assign($row);
 
 		$AVE_Template->config_load($this->_lang_file, 'showconfig');

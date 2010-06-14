@@ -50,7 +50,7 @@ function mod_login()
 		$AVE_Template->config_load($lang_file, 'displayloginform');
 
 		$active = $AVE_DB->Query("
-			SELECT IstAktiv
+			SELECT login_status
 			FROM " . PREFIX . "_modul_login
 			WHERE Id = 1
 		")->GetCell();

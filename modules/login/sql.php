@@ -20,14 +20,14 @@ $modul_sql_deinstall[] = "DROP TABLE IF EXISTS CPPREFIX_modul_login;";
 
 $modul_sql_install[] = "CREATE TABLE CPPREFIX_modul_login (
   Id tinyint(1) unsigned NOT NULL auto_increment,
-  RegTyp enum('now','email','byadmin') NOT NULL default 'now',
-  AntiSpam enum('0','1') NOT NULL default '0',
-  IstAktiv enum('1','0') NOT NULL default '1',
-  DomainsVerboten text NOT NULL,
-  EmailsVerboten text NOT NULL,
-  ZeigeFirma enum('0','1') NOT NULL default '0',
-  ZeigeVorname enum('0','1') NOT NULL default '0',
-  ZeigeNachname enum('0','1') NOT NULL default '0',
+  login_reg_type enum('now','email','byadmin') NOT NULL default 'now',
+  login_spam_protect enum('0','1') NOT NULL default '0',
+  login_status enum('1','0') NOT NULL default '1',
+  login_deny_domain text NOT NULL,
+  login_deny_email text NOT NULL,
+  login_require_company enum('0','1') NOT NULL default '0',
+  login_require_firstname enum('0','1') NOT NULL default '0',
+  login_require_lastname enum('0','1') NOT NULL default '0',
   PRIMARY KEY  (Id)
 ) TYPE=MyISAM DEFAULT CHARSET=cp1251;";
 
