@@ -3,18 +3,17 @@
 /**
  * AVE.cms
  *
+ * Класс, предназначенный для управления журналом системных сообщений
+ *
  * @package AVE.cms
  * @filesource
  */
 
-/**
- * Класс для работы с системным журналом
- */
 class AVE_Logs
 {
 
 /**
- *	СВОЙСТВА
+ *	Свойства класса
  */
 
 	/**
@@ -25,16 +24,16 @@ class AVE_Logs
 	var $_limit = 15;
 
 /**
- *	ВНУТРЕННИЕ МЕТОДЫ
+ *	Внутренние методы класса
  */
 
 
 /**
- *	ВНЕШНИЕ МЕТОДЫ
+ *	Внешние методы класса
  */
 
 	/**
-	 * Отображение записей Журнала событий
+	 * Метод, предназначенный для отображения всех записей Журнала событий
 	 *
 	 */
 	function logList()
@@ -42,7 +41,8 @@ class AVE_Logs
 		global $AVE_DB, $AVE_Template;
 
 		$logs = array();
-		$sql = $AVE_DB->Query("SELECT *
+		// Выполняем запрос к БД на получение списка всех системных сообщений в журнале
+        $sql = $AVE_DB->Query("SELECT *
 			FROM " . PREFIX . "_log
 			ORDER BY Id DESC
 		");
@@ -52,23 +52,27 @@ class AVE_Logs
 			array_push($logs, $row);
 		}
 
-		$AVE_Template->assign('logs', $logs);
+		// Передаем данные в шаблон для вывода и отображаем страницу
+        $AVE_Template->assign('logs', $logs);
 		$AVE_Template->assign('content', $AVE_Template->fetch('logs/logs.tpl'));
 	}
 
 	/**
-	 * Удаление записей Журнала событий
+	 * Метод, предназначенный для удаление записей Журнала событий
 	 *
 	 */
 	function logDelete()
 	{
 		global $AVE_DB;
 
-		$AVE_DB->Query("
+    	// Выполняем запрос к БД на удаление системных сообщений из журнала
+        $AVE_DB->Query("
 			DELETE
 			FROM " . PREFIX . "_log
 		");
-		$AVE_DB->Query("
+
+        // Выполняем запрос к БД на обновление структуры таблицы и обнулям все значения
+        $AVE_DB->Query("
 			ALTER
 			TABLE " . PREFIX . "_log
 			PACK_KEYS = 0
@@ -77,20 +81,24 @@ class AVE_Logs
 			AUTO_INCREMENT = 1
 		");
 
-		reportLog($_SESSION['user_name'] . ' - очистил Журнал событий', 2, 2);
 
-		header('Location:index.php?do=logs&cp=' . SESSION);
+        // Сохраняем системное сообщение в журнал
+        reportLog($_SESSION['user_name'] . ' - очистил Журнал событий', 2, 2);
+
+		// Выполняем обновление страницы
+        header('Location:index.php?do=logs&cp=' . SESSION);
 	}
 
 	/**
-	 * Экспорт записей Журнала событий
+	 * Метод, предназначенный для экспорта системных сообщений
 	 *
 	 */
 	function logExport()
 	{
 		global $AVE_DB;
 
-		$datstring = '';
+		// Определяем тип файла (CSV), формат имени файла, разделители и т.д.
+        $datstring = '';
 		$dattype = 'text/csv';
 		$datname = 'system_log_' . date('dmyhis', time()) . '.csv';
 
@@ -102,7 +110,9 @@ class AVE_Logs
 		$cutter = str_replace('\\n', '\012', $cutter);
 		$cutter = str_replace('\\t', '\011', $cutter);
 
-		$sql = $AVE_DB->Query("SELECT *
+
+        // Выполняем запрос к БД на получение списка всех системных сообщений
+        $sql = $AVE_DB->Query("SELECT *
 			FROM " . PREFIX . "_log
 			ORDER BY Id DESC
 		");
@@ -114,7 +124,8 @@ class AVE_Logs
 		}
 		$datstring .= $cutter;
 
-		while ($row = $sql->FetchRow())
+		// Циклически обрабатываем данные и формируем CSV файл с учетом указаны выше параметров
+        while ($row = $sql->FetchRow())
 		{
 			foreach ($row as $key => $val)
 			{
@@ -125,16 +136,19 @@ class AVE_Logs
 			$datstring .= $cutter;
 		}
 
-		header('Content-Type: text/csv' . $dattype);
+		// Определяем заголовки документа
+        header('Content-Type: text/csv' . $dattype);
 		header('Expires: ' . gmdate('D, d M Y H:i:s') . ' GMT');
 		header('Content-Disposition: attachment; filename="' . $datname . '"');
 		header('Content-Length: ' . strlen($datstring));
 		header('Cache-Control: must-revalidate, post-check=0, pre-check=0');
 		header('Pragma: public');
 
-		echo $datstring;
+		// Выводим данные
+        echo $datstring;
 
-		reportLog($_SESSION['user_name'] . ' - экспортировал Журнал событий', 2, 2);
+		// Сохраняем системное сообщение с журнал
+        reportLog($_SESSION['user_name'] . ' - экспортировал Журнал событий', 2, 2);
 
 		exit;
 	}
