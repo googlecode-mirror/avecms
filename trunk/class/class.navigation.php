@@ -3,28 +3,27 @@
 /**
  * AVE.cms
  *
+ * Класс, предназначенный для работы шаблонами и пунктами меню навигаций
+ *
  * @package AVE.cms
  * @filesource
  */
 
-/**
- * Класс работы с навигацией
- */
 class AVE_Navigation
 {
 
 /**
- *	СВОЙСТВА
+ *	Свойства класса
  */
 
 
 /**
- *	ВНУТРЕННИЕ МЕТОДЫ
+ *	Внутренние методы класса
  */
 
 	/**
-	 * Очистка от запрещённых символов
-	 * и преобразование специальных символов в HTML сущности
+	 * Метод, предназначенный для удаления запрещённых символов
+     * и преобразование специальных символов в HTML сущности
 	 *
 	 * @param string $text
 	 * @return string
@@ -38,11 +37,11 @@ class AVE_Navigation
 	}
 
 /**
- *	ВНЕШНИЕ МЕТОДЫ
+ *	Внутренние методы
  */
 
 	/**
-	 * Вывод списка существующих меню навигации в админке
+	 * Метод, предназначенный для вывода списка всех существующих меню навигаций в Паели управления
 	 *
 	 */
 	function navigationList()
@@ -51,6 +50,7 @@ class AVE_Navigation
 
 		$mod_navis = array();
 
+        // Выполняем запрос к БД на получение списка всех меню навигаций
 		$sql = $AVE_DB->Query("
 			SELECT
 				id,
@@ -59,38 +59,55 @@ class AVE_Navigation
 			ORDER BY id ASC
 		");
 
+        // Формируем данные в массив
 		while ($row = $sql->fetchrow())
 		{
 			array_push($mod_navis, $row);
 		}
 		$sql->Close();
 
+        // Передаем данные в шаблон для вывода и отображаем страницу со списком меню
 		$AVE_Template->assign('mod_navis', $mod_navis);
 		$AVE_Template->assign('content', $AVE_Template->fetch('navigation/overview.tpl'));
 	}
 
-	/**
-	 * Новое меню навигации
+
+
+    /**
+	 * Метод, предназначенный для добавления нового меню
 	 *
 	 */
 	function navigationNew()
 	{
 		global $AVE_DB, $AVE_Template, $AVE_User;
 
-		switch($_REQUEST['sub'])
+		// Определяем действие пользователя
+        switch($_REQUEST['sub'])
 		{
-			case '': // вывод формы ввода нового меню навигации
-				$row->AvGroups = $AVE_User->userGroupListGet();
-				$AVE_Template->assign('row', $row);
+			// Если действие не определено, отображаем чистую форму для создания шаблона навигации
+            case '':
+				// Получаем список всех Групп пользователей
+                $row->AvGroups = $AVE_User->userGroupListGet();
+
+                // Передаем данные в шаблон и отображаем страницу для добавления нового шаблона меню
+                $AVE_Template->assign('row', $row);
 				$AVE_Template->assign('formaction', 'index.php?do=navigation&amp;action=new&amp;sub=save&amp;cp=' . SESSION);
 				$AVE_Template->assign('content', $AVE_Template->fetch('navigation/template.tpl'));
 				break;
 
-			case 'save': // запись нового меню навигации
-				$titel   = (empty($_POST['titel']))   ? 'title' : $_POST['titel'];
-				$ebene1  = (empty($_POST['ebene1']))  ? "<a target=\"[cp:target]\" href=\"[cp:link]\">[cp:linkname]</a>" : $_POST['ebene1'];
+
+            // Если пользователь нажал на кнопку Добавить (Сохранить)
+            case 'save':
+				
+                // Определяем название меню навигации
+                $titel   = (empty($_POST['titel']))   ? 'title' : $_POST['titel'];
+
+                // Определяем шаблон оформления 1-го уровня ссылок в меню. Если шаблон не указан пользователем,тогда
+                // используем вариант "по умолчанию"
+                $ebene1  = (empty($_POST['ebene1']))  ? "<a target=\"[cp:target]\" href=\"[cp:link]\">[cp:linkname]</a>" : $_POST['ebene1'];
 				$ebene1a = (empty($_POST['ebene1a'])) ? "<a target=\"[cp:target]\" href=\"[cp:link]\" class=\"first_active\">[cp:linkname]</a>" : $_POST['ebene1a'];
 
+                // Выполняем запрос к БД на добавление нового меню
 				$AVE_DB->Query("
 					INSERT
 					INTO " . PREFIX . "_navigation
@@ -115,15 +132,19 @@ class AVE_Navigation
 						Expand   = '" . (empty($_POST['Expand']) ? '0' : $_POST['Expand']) . "'
 				");
 
-				reportLog($_SESSION['user_name'] . " - создал меню навигации (" . stripslashes($titel) . ")", 2, 2);
+				// Сохраняем системное сообщение в журнал
+                reportLog($_SESSION['user_name'] . " - создал меню навигации (" . stripslashes($titel) . ")", 2, 2);
 
-				header('Location:index.php?do=navigation&cp=' . SESSION);
+				// Выполянем переход к списку меню навигаций
+                header('Location:index.php?do=navigation&cp=' . SESSION);
 				break;
 		}
 	}
 
-	/**
-	 * Изменение настроек меню навигации
+
+
+    /**
+	 * Метод, предназначенный для редактирования шаблона навигации
 	 *
 	 * @param int $navigation_id идентификатор меню навигации
 	 */
@@ -131,26 +152,38 @@ class AVE_Navigation
 	{
 		global $AVE_DB, $AVE_Template, $AVE_User;
 
-		$navigation_id = (int)$navigation_id;
+		// Получаем id меню
+        $navigation_id = (int)$navigation_id;
 
-		switch ($_REQUEST['sub'])
+		// Определяем действие пользователя
+        switch ($_REQUEST['sub'])
 		{
-			case '': // вывод формы редактирования меню навигации
-				$row = $AVE_DB->Query("
+			// Если действие не определено, отображаем форму с данными для редактирования
+            case '':
+				
+                // Выполняем запрос к БД и получаем всю информацию о данном меню
+                $row = $AVE_DB->Query("
 					SELECT *
 					FROM " . PREFIX . "_navigation
 					WHERE id = '" . $navigation_id . "'
 				")->fetchrow();
 
-				$row->Gruppen = explode(',', $row->Gruppen);
+				// Формируем список групп пользователей
+                $row->Gruppen = explode(',', $row->Gruppen);
 				$row->AvGroups = $AVE_User->userGroupListGet();
-				$AVE_Template->assign('nav', $row);
+
+                // Формируем ряд переменных для использования в шаблоне и отображаем форм с данными для редактирования
+                $AVE_Template->assign('nav', $row);
 				$AVE_Template->assign('formaction', 'index.php?do=navigation&amp;action=templates&amp;sub=save&amp;id=' . $navigation_id . '&amp;cp=' . SESSION);
 				$AVE_Template->assign('content', $AVE_Template->fetch('navigation/template.tpl'));
 				break;
 
-			case 'save': // запись изменений меню навигации
-				$AVE_DB->Query("
+
+            // Если пользователь нажал на кнопку Сохранить изменения
+            case 'save':
+
+                // Выполняем запрос к БД и обновляем информацию в таблице для данного меню
+                $AVE_DB->Query("
 					UPDATE " . PREFIX . "_navigation
 					SET
 						titel    = '" . $_POST['titel'] . "',
@@ -174,16 +207,20 @@ class AVE_Navigation
 						id = '" . $navigation_id . "'
 				");
 
-				reportLog($_SESSION['user_name'] . ' - изменил шаблон меню навигации (' . stripslashes($_POST['titel']) . ')', 2, 2);
+				// Сохраняем системное сообщение в журнал
+                reportLog($_SESSION['user_name'] . ' - изменил шаблон меню навигации (' . stripslashes($_POST['titel']) . ')', 2, 2);
 
-				header('Location:index.php?do=navigation&cp=' . SESSION);
+				// Выполянем переход к списку меню навигаций
+                header('Location:index.php?do=navigation&cp=' . SESSION);
 				exit;
 				break;
 		}
 	}
 
-	/**
-	 * Копирование настроек меню навигации
+
+
+    /**
+	 * Метод, предназначенный для копирования шаблона меню
 	 *
 	 * @param int $navigation_id идентификатор меню навигации источника
 	 */
@@ -191,17 +228,25 @@ class AVE_Navigation
 	{
 		global $AVE_DB, $AVE_Template;
 
-		if (is_numeric($navigation_id))
+
+        // Если в запросе указано числовое значение id меню
+        if (is_numeric($navigation_id))
 		{
-			$row = $AVE_DB->Query("
+			// Выполняем запрос к БД на получение информации о копируемом меню
+            $row = $AVE_DB->Query("
 				SELECT *
 				FROM " . PREFIX . "_navigation
 				WHERE id = '" . $navigation_id . "'
 			")->fetchrow();
 
-			if ($row)
+
+            // Если данные получены, тогда
+            if ($row)
 			{
-				$AVE_DB->Query("
+
+                // Выполняем запрос к БД на добавление нового меню и сохраняем информацию с учетом данных,
+                // полученных в предыдущем запросе к БД
+                $AVE_DB->Query("
 					INSERT
 					INTO " . PREFIX . "_navigation
 					SET
@@ -225,15 +270,21 @@ class AVE_Navigation
 						Expand   = '" . addslashes($row->Expand) . "'
 				");
 
-				reportLog($_SESSION['user_name'] . " - создал копию меню навигации (" . $row->titel . ")", 2, 2);
+
+                // Сохраняем системное сообщение в журнал
+                reportLog($_SESSION['user_name'] . " - создал копию меню навигации (" . $row->titel . ")", 2, 2);
 			}
 		}
 
-		header('Location:index.php?do=navigation&cp=' . SESSION);
+
+        // Выполянем переход к списку меню навигаций
+        header('Location:index.php?do=navigation&cp=' . SESSION);
 	}
 
-	/**
-	 * Удаление меню навигации и всех его пунктов
+
+
+    /**
+	 * Метод, предназначенный для удаления меню навигации и всех пунктов относящихся к нему
 	 *
 	 * @param int $navigation_id идентификатор меню навигации
 	 */
@@ -241,27 +292,36 @@ class AVE_Navigation
 	{
 		global $AVE_DB;
 
-		if (is_numeric($navigation_id) && $navigation_id != 1)
+		// Если id меню числовой и это не первое меню (id не 1)
+        if (is_numeric($navigation_id) && $navigation_id != 1)
 		{
-			$AVE_DB->Query("DELETE FROM " . PREFIX . "_navigation WHERE id = '" . $navigation_id . "'");
-			$AVE_DB->Query("DELETE FROM " . PREFIX . "_navigation_items WHERE Rubrik = '" . $navigation_id . "'");
-			reportLog($_SESSION['user_name'] . " - удалил меню навигации (" . $navigation_id . ")", 2, 2);
+			// Выполняем запрос к БД на удаление общей информации и шаблона оформления меню
+            $AVE_DB->Query("DELETE FROM " . PREFIX . "_navigation WHERE id = '" . $navigation_id . "'");
+			// Выполняем запрос к БД на удаление всех пунктов для данного меню
+            $AVE_DB->Query("DELETE FROM " . PREFIX . "_navigation_items WHERE Rubrik = '" . $navigation_id . "'");
+
+            // Сохраняем системное сообщение в журнал
+            reportLog($_SESSION['user_name'] . " - удалил меню навигации (" . $navigation_id . ")", 2, 2);
 		}
 
-		header('Location:index.php?do=navigation&cp=' . SESSION);
+		// Выполянем переход к списку меню навигаций
+        header('Location:index.php?do=navigation&cp=' . SESSION);
 	}
 
-	/**
-	 * Формирование списка пунктов всех меню навигации
+
+
+    /**
+	 * Метод, предназначенный для получения списка всех пунктов у всех меню навигации
 	 *
 	 */
 	function navigationAllItemList()
 	{
 		global $AVE_DB, $AVE_Template;
 
-		$navigation_item = array();
+        $navigation_item = array();
 		$navigations = array();
 
+        // Выполняем запрос к БД на получение id и названия меню навигации
 		$sql = $AVE_DB->Query("
 			SELECT
 				id,
@@ -269,9 +329,13 @@ class AVE_Navigation
 			FROM " . PREFIX . "_navigation
 		");
 
-		while ($navigation = $sql->fetchrow())
+
+        // Циклически обрабатываем полученные данные
+        while ($navigation = $sql->fetchrow())
 		{
-			$sql_navis = $AVE_DB->Query("
+			// Выполняем запрос к БД на получение всех пунктов для каждого меню.  
+            // Фактически получаем пункты первого уровня.
+            $sql_navis = $AVE_DB->Query("
 				SELECT *
 				FROM " . PREFIX . "_navigation_items
 				WHERE Rubrik = '" . $navigation->id . "'
@@ -280,10 +344,13 @@ class AVE_Navigation
 				ORDER BY Rang ASC
 			");
 
-			while ($row_1 = $sql_navis->fetchrow())
+			// Циклически обрабатываем полученые данные
+            while ($row_1 = $sql_navis->fetchrow())
 			{
 				$navigation_item_2 = array();
 
+                // Выполняем запрос к БД на получение подпунктов меню.
+                // Фактически получаем пункты второго уровня.
 				$sql_2 = $AVE_DB->Query("
 					SELECT *
 					FROM " . PREFIX . "_navigation_items
@@ -293,11 +360,14 @@ class AVE_Navigation
 					ORDER BY Rang ASC
 				");
 
-				while ($row_2 = $sql_2->fetchrow())
+                // Циклически обрабатываем полученые данные
+    			while ($row_2 = $sql_2->fetchrow())
 				{
 					$navigation_item_3 = array();
 
-					$sql_3 = $AVE_DB->Query("
+                    // Выполняем запрос к БД на получение подпунктов меню.
+                    // Фактически получаем пункты третьего уровня.
+		            $sql_3 = $AVE_DB->Query("
 						SELECT *
 						FROM " . PREFIX . "_navigation_items
 						WHERE Rubrik = '" . $navigation->id . "'
@@ -305,7 +375,8 @@ class AVE_Navigation
 						AND Ebene = 3
 						ORDER BY Rang ASC
 					");
-					while ($row_3 = $sql_3->fetchrow())
+
+                    while ($row_3 = $sql_3->fetchrow())
 					{
 						array_push($navigation_item_3, $row_3);
 					}
@@ -322,12 +393,14 @@ class AVE_Navigation
 			array_push($navigations, $navigation);
 		}
 
-		$AVE_Template->assign('rubs', $navigations);
+		// Передаем полученные данные в шаблон для вывода
+        $AVE_Template->assign('rubs', $navigations);
 		$AVE_Template->assign('navi_entries', $navigation_item);
 	}
 
-	/**
-	 * Вывод пунктов меню навигации в админке
+
+    /**
+	 * Метод, предназначенный для вывода пунктов меню навигации в Панели управления
 	 *
 	 * @param int $id идентификатор меню навигации
 	 */
@@ -339,7 +412,8 @@ class AVE_Navigation
 
 		$navigation_item = array();
 
-		$sql_navis = $AVE_DB->Query("
+		// Выполняем запрос к БД и получаем список пунктов первого уровня для выбранного меню
+        $sql_navis = $AVE_DB->Query("
 			SELECT *
 			FROM " . PREFIX . "_navigation_items
 			WHERE Rubrik = '" . $id . "'
@@ -351,7 +425,7 @@ class AVE_Navigation
 		while ($row_1 = $sql_navis->fetchrow())
 		{
 			$navigation_item_2 = array();
-
+            // Выполняем запрос к БД и получаем список пунктов второго уровня для выбранного меню
 			$sql_2 = $AVE_DB->Query("
 				SELECT *
 				FROM " . PREFIX . "_navigation_items
@@ -364,6 +438,7 @@ class AVE_Navigation
 			{
 				$navigation_item_3 = array();
 
+                // Выполняем запрос к БД и получаем список пунктов третьего уровня для выбранного меню
 				$sql_3 = $AVE_DB->Query("
 					SELECT *
 					FROM " . PREFIX . "_navigation_items
@@ -384,6 +459,7 @@ class AVE_Navigation
 			array_push($navigation_item, $row_1);
 		}
 
+        // Выполняем запрос к БД и получаем название меню навигации
 		$sql = $AVE_DB->Query("
 			SELECT titel
 			FROM " . PREFIX . "_navigation
@@ -391,13 +467,16 @@ class AVE_Navigation
 		");
 		$row = $sql->fetchrow();
 
+        // Передаем данные в шаблон для вывода и отображаем страницу с пунктами меню
 		$AVE_Template->assign('NavigatonName', $row->titel);
 		$AVE_Template->assign('entries', $navigation_item);
 		$AVE_Template->assign('content', $AVE_Template->fetch('navigation/entries.tpl'));
 	}
 
-	/**
-	 * Управление пунктами меню навигации в админке
+
+
+    /**
+	 * Метод, предназначенный для управления пунктами меню навигации в Панели управления
 	 *
 	 * @param int $id идентификатор меню навигации
 	 */
@@ -407,32 +486,39 @@ class AVE_Navigation
 
 		$nav_id = (int)$nav_id;
 
-		// изменение параметров пунктов меню
+		// Циклически обрабатываем все параметры, пришедшие методом POST при сохранении изменений
 		foreach ($_POST['Titel'] as $id => $Titel)
 		{
-			if (!empty($Titel))
+			// Если название пункта меню не пустое
+            if (!empty($Titel))
 			{
 				$id = (int)$id;
 
-				$_POST['Link'][$id] = (strpos($_POST['Link'][$id], 'javascript') !== false)
+                $_POST['Link'][$id] = (strpos($_POST['Link'][$id], 'javascript') !== false)
 					? str_replace(array(' ', '%'), '-', $_POST['Link'][$id])
 					: $_POST['Link'][$id];
 
-				$aktiv = (empty($_POST['Aktiv'][$id]) || empty($_POST['Link'][$id])) ? 0 : 1;
+				// Определяем флаг статуса пункта меню (активен/неактивен)
+                $aktiv = (empty($_POST['Aktiv'][$id]) || empty($_POST['Link'][$id])) ? 0 : 1;
 
 				$link_url = '';
 				$matches = array();
-				preg_match('/^index\.php\?id=(\d+)$/', trim($_POST['Link'][$id]), $matches);
-				if (isset($matches[1]))
+				// Если ссылка оформлена как index.php?id=XX, где XX - число (id документа)
+                preg_match('/^index\.php\?id=(\d+)$/', trim($_POST['Link'][$id]), $matches);
+				
+                // тогда
+                if (isset($matches[1]))
 				{
-					$link_url = $AVE_DB->Query("
+					// Выполняем запрос к БД и получаем URL (ЧПУ) для  данного документа
+                    $link_url = $AVE_DB->Query("
 						SELECT Url
 						FROM " . PREFIX . "_documents
 						WHERE id = '" . $matches[1] . "'
 					")->GetCell();
 				}
 
-				$AVE_DB->Query("
+				// Выполняем запрос к БД на обновление информации
+                $AVE_DB->Query("
 					UPDATE " . PREFIX . "_navigation_items
 					SET
 						Titel = '" . $this->_replace_wildcode($Titel) . "',
@@ -447,10 +533,11 @@ class AVE_Navigation
 			}
 		}
 
-		// добавление новых пунктов меню первого уровня
+		// Если в запросе пришел параметр на добавление нового пункта меню первого уровня
 		if (!empty($_POST['Titel_N'][0]))
 		{
-			$AVE_DB->Query("
+			// Выполняем запрос к БД и добавляем новый пункт
+            $AVE_DB->Query("
 				INSERT
 				INTO " . PREFIX . "_navigation_items
 				SET
@@ -466,16 +553,20 @@ class AVE_Navigation
 					Url    = '" . prepare_url(empty($_POST['Url_N'][0]) ? $_POST['Titel_N'][0] : $_POST['Url_N'][0]) . "'
 			");
 
+            // Сохраняем системное сообщение в журнал
 			reportLog($_SESSION['user_name'] . " - добавил пункт меню навигации (" . stripslashes($_POST['Titel_N'][0]) . ") - на первый уровень", 2, 2);
 		}
 
-		// добавление новых пунктов меню второго уровня
+		// Обрабатываем данные с целью добавления пунктов меню второго уровня
 		foreach ($_POST['Titel_Neu_2'] as $new2_id => $Titel)
 		{
-			if (!empty($Titel))
+			// Если название пункта не пустое
+            if (!empty($Titel))
 			{
 				$new2_id = (int)$new2_id;
-				$AVE_DB->Query("
+
+                // Выполняем запрос к БД и добавляем новый подпункт
+                $AVE_DB->Query("
 					INSERT
 					INTO " . PREFIX . "_navigation_items
 					SET
@@ -491,17 +582,20 @@ class AVE_Navigation
 						Url    = '" . prepare_url(empty($_POST['Url_Neu_2'][$new2_id]) ? $Titel : $_POST['Url_Neu_2'][$new2_id]) . "'
 				");
 
+                // Сохраняем системное сообщение в журнал
 				reportLog($_SESSION['user_name'] . " - добавил пункт меню навигации (" . stripslashes($Titel) . ") - второй уровень", 2, 2);
 			}
 		}
 
-		// добавление новых пунктов меню третьего уровня
+		// Обрабатываем данные с целью добавления пунктов меню третьего уровня
 		foreach ($_POST['Titel_Neu_3'] as $new3_id => $Titel)
 		{
-			if (!empty($Titel))
+			// Если название пункта не пустое
+            if (!empty($Titel))
 			{
 				$new3_id = (int)$new3_id;
-				$AVE_DB->Query("
+				// Выполняем запрос к БД и добавляем новый подпункт
+                $AVE_DB->Query("
 					INSERT
 					INTO " . PREFIX . "_navigation_items
 					SET
@@ -517,58 +611,70 @@ class AVE_Navigation
 						Url    = '" . prepare_url(empty($_POST['Url_Neu_3'][$new3_id]) ? $Titel : $_POST['Url_Neu_3'][$new3_id]) . "'
 				");
 
-				reportLog($_SESSION['user_name'] . " - добавил пункт меню навигации (" . stripslashes($Titel) . ") - третий уровень", 2, 2);
+				// Сохраняем системное сообщение в журнал
+                reportLog($_SESSION['user_name'] . " - добавил пункт меню навигации (" . stripslashes($Titel) . ") - третий уровень", 2, 2);
 			}
 		}
 
-		// удаление пунктов меню навигации
+		// Если в запросе были отмечены пункты меню, которые необходимо удалить, тогда
 		if (!empty($_POST['del']) && is_array($_POST['del']))
 		{
-			foreach ($_POST['del'] as $del_id => $del)
+			// Циклически обрабатываем помеченные пункты
+            foreach ($_POST['del'] as $del_id => $del)
 			{
 				if (!empty($del))
 				{
 					$del_id = (int)$del_id;
-					$num = $AVE_DB->Query("
+
+                    // Выполняем запрос к БД для определения у удаляемого пункта подпунктов
+                    $num = $AVE_DB->Query("
 						SELECT Id
 						FROM " . PREFIX . "_navigation_items
 						WHERE Elter = '" . $del_id . "'
 						LIMIT 1
 					")->NumRows();
 
-					if ($num==1)
+					// Если данный пункт имеет подпункты, тогда
+                    if ($num==1)
 					{
-						$AVE_DB->Query("
+						// Выполняем запрос к БД и деактивируем пункт меню
+                        $AVE_DB->Query("
 							UPDATE " . PREFIX . "_navigation_items
 							SET Aktiv = 0
 							WHERE Id = '" . $del_id . "'
 						");
 
-						reportLog($_SESSION['user_name'] . " - деактивировал пункт меню навигации (" . $del_id . ")", 2, 2);
+						// Сохраняем системное сообщение в журнал
+                        reportLog($_SESSION['user_name'] . " - деактивировал пункт меню навигации (" . $del_id . ")", 2, 2);
 					}
 					else
-					{
-						$AVE_DB->Query("
+					{ // В противном случае, если данный пункт не имеет подпунктов, тогда
+
+                        // Выполняем запрос к БД и удаляем помеченный пункт
+                        $AVE_DB->Query("
 							DELETE
 							FROM " . PREFIX . "_navigation_items
 							WHERE Id = '" . $del_id . "'
 						");
 
+                        // Сохраняем системное сообщение в журнал
 						reportLog($_SESSION['user_name'] . " - удалил пункт меню навигации (" . $del_id . ")", 2, 2);
 					}
 				}
 			}
 		}
 
-		header('Location:index.php?do=navigation&action=entries&id=' . $nav_id . '&cp=' . SESSION);
+		// Выполняем обновление страницы
+        header('Location:index.php?do=navigation&action=entries&id=' . $nav_id . '&cp=' . SESSION);
 		exit;
 	}
 
-	/**
-	 * Удаление пунктов меню навигации связанных с удаляемым документа
-	 * (вызывается при удалении документа с идентификатором $document_id)
-	 * Если у пункта меню нет потомков - пункт удаляется,
-	 * иначе пункт деактивируется
+
+
+    /**
+	 * Метод, предназначенный для удаления пунктов меню навигации связанных с удаляемым документом.
+	 * Данный метод вызывается при удалении документа с идентификатором $document_id.
+	 * Если у пункта меню нет потомков - пункт удаляется, в противном случае пункт деактивируется
 	 *
 	 * @param int $document_id идентификатор удаляемого документа
 	 */
@@ -578,46 +684,57 @@ class AVE_Navigation
 
 		$document_id = (int)$document_id;
 
+        // Выполняем запрос к БД и получаем ID пункта меню, с которым связан документ
 		$sql = $AVE_DB->Query("
 			SELECT Id
 			FROM " . PREFIX . "_navigation_items
 			WHERE Link = 'index.php?id=" . $document_id . "'
 		");
-		while ($row = $sql->fetchrow())
+
+        while ($row = $sql->fetchrow())
 		{
-			$num = $AVE_DB->Query("
+			// Выполняем запрос к БД для определения у удаляемого пункта подпунктов
+            $num = $AVE_DB->Query("
 				SELECT Id
 				FROM " . PREFIX . "_navigation_items
 				WHERE Elter = '" . $row->Id . "'
 				LIMIT 1
 			")->NumRows();
 
+            // Если данный пункт имеет подпункты, тогда
 			if ($num==1)
 			{
-				$AVE_DB->Query("
+				// Выполняем запрос к БД и деактивируем пункт меню
+                $AVE_DB->Query("
 					UPDATE " . PREFIX . "_navigation_items
 					SET Aktiv = 0
 					WHERE Id = '" . $row->Id . "'
 				");
 
-				reportLog($_SESSION['user_name'] . " - деактивировал пункт меню навигации (" . $row->Id . ")", 2, 2);
+				// Сохраняем системное сообщение в журнал
+                reportLog($_SESSION['user_name'] . " - деактивировал пункт меню навигации (" . $row->Id . ")", 2, 2);
 			}
 			else
-			{
+			{ // В противном случае, если данный пункт не имеет подпунктов, тогда
+
+                // Выполняем запрос к БД и удаляем помеченный пункт
 				$AVE_DB->Query("
 					DELETE
 					FROM " . PREFIX . "_navigation_items
 					WHERE Id = '" . $row->Id . "'
 				");
 
+                // Сохраняем системное сообщение в журнал
 				reportLog($_SESSION['user_name'] . " - удалил пункт меню навигации (" . $row->Id . ")", 2, 2);
 			}
 		}
 	}
 
-	/**
-	 * Активация пунктов меню навигации
-	 * (используется при изменении статуса документа с идентификатором $document_id)
+
+
+    /**
+	 * Метод, предназначенный для активации пункта меню навигации.
+	 * Данный метод используется при изменении статуса документа с идентификатором $document_id
 	 *
 	 * @param int $document_id идентификатор документа на который ссылается пункт меню
 	 */
@@ -627,7 +744,8 @@ class AVE_Navigation
 
 		if (!is_numeric($document_id)) return;
 
-		$sql = $AVE_DB->Query("
+		// Выполняем запрос к БД и получаем id пункта меню, который соответствует идентификатору документа в ссылке
+        $sql = $AVE_DB->Query("
 			SELECT Id
 			FROM " . PREFIX . "_navigation_items
 			WHERE Link = 'index.php?id=" . $document_id . "'
@@ -636,19 +754,21 @@ class AVE_Navigation
 
 		while ($row = $sql->fetchrow())
 		{
-			$AVE_DB->Query("
+			// Выполняем запрос к БД изменяем статус пункта меню на активный (1)
+            $AVE_DB->Query("
 				UPDATE " . PREFIX . "_navigation_items
 				SET Aktiv = '1'
 				WHERE Id = '" . $row->Id . "'
 			");
 
-			reportLog($_SESSION['user_name'] . " - активировал пункт меню навигации (" . $row->Id . ")", 2, 2);
+			// Сохраняем системное сообщение в журнал
+            reportLog($_SESSION['user_name'] . " - активировал пункт меню навигации (" . $row->Id . ")", 2, 2);
 		}
 	}
 
 	/**
-	 * деактивация пунктов меню навигации
-	 * (используется при изменении статуса документа с идентификатором $document_id)
+	 * Метод, предназначенный для деактивации пункта меню навигации.
+	 * Данный метод используется при изменении статуса документа с идентификатором $document_id
 	 *
 	 * @param int $document_id идентификатор документа на который ссылается пункт меню
 	 */
@@ -658,7 +778,8 @@ class AVE_Navigation
 
 		if (!is_numeric($document_id)) return;
 
-		$sql = $AVE_DB->Query("
+		// Выполняем запрос к БД и получаем id пункта меню, который соответствует идентификатору документа в ссылке
+        $sql = $AVE_DB->Query("
 			SELECT Id
 			FROM " . PREFIX . "_navigation_items
 			WHERE Link = 'index.php?id=" . $document_id . "'
@@ -667,13 +788,15 @@ class AVE_Navigation
 
 		while ($row = $sql->fetchrow())
 		{
-			$AVE_DB->Query("
+			// Выполняем запрос к БД изменяем статус пункта меню на неактивный (0)
+            $AVE_DB->Query("
 				UPDATE " . PREFIX . "_navigation_items
 				SET Aktiv = '0'
 				WHERE Id = '" . $row->Id . "'
 			");
 
-			reportLog($_SESSION['user_name'] . " - деактивировал пункт меню навигации (" . $row->Id . ")", 2, 2);
+			// Сохраняем системное сообщение в журнал
+            reportLog($_SESSION['user_name'] . " - деактивировал пункт меню навигации (" . $row->Id . ")", 2, 2);
 		}
 	}
 }
