@@ -3,43 +3,43 @@
 /**
  * AVE.cms
  *
+ * Класс, предназначенный для управления документами в Панели управления
+ *
+ *
  * @package AVE.cms
  * @filesource
  */
 
-/**
- * Класс управления Документами в административной части
- */
 class AVE_Document
 {
 
 /**
- *	СВОЙСТВА
+ *	Свойства класса
  */
 
 	/**
-	 * Количество Документов отображаемых на одной странице списка
+	 * Количество документов отображаемых на одной странице
 	 *
 	 * @var int
 	 */
 	var $_limit = 15;
 
 	/**
-	 * Ширина поля ввода
+	 * Ширина поля ввода (для элементов input)
 	 *
 	 * @var string
 	 */
 	var $_field_width = '400px';
 
 	/**
-	 * Ширина многострочного поля ввода
+	 * Ширина многострочного поля ввода (для элементов textarea)
 	 *
 	 * @var string
 	 */
 	var $_textarea_width = '98%';
 
 	/**
-	 * Высота многострочного поля ввода
+	 * Высота многострочного поля ввода (для элементов textarea)
 	 *
 	 * @var string
 	 */
@@ -53,7 +53,7 @@ class AVE_Document
 	var $_textarea_width_small = '98%';
 
 	/**
-	 * Высота маленького многострочного поля ввода
+	 * Высота маленького многострочного поля ввода (для элементов textarea)
 	 *
 	 * @var string
 	 */
@@ -67,11 +67,12 @@ class AVE_Document
 	var $_max_comment_length = 5000;
 
 /**
- *	ВНУТРЕННИЕ МЕТОДЫ
+ *	Внутренние методы класса
  */
 
 	/**
-	 * Формирование метки времени начала периода для списка Документов
+	 * Метод, предназначенный для формирование метки времени, которая будет определять
+     * начало периода показа списка Документов. Т.е. с какого числа/времени начать вывод списка документов.
 	 *
 	 * @return int	метка времени Unix
 	 */
@@ -81,7 +82,8 @@ class AVE_Document
 	}
 
 	/**
-	 * Формирование метки времени окончания периода для списка Документов
+	 * Метод, предназначенный для формирование метки времени, которая будет определять
+     * окончание периода показа списка Документов. Т.е. по какое число/время ограничить вывод списка документов.
 	 *
 	 * @return int	метка времени Unix
 	 */
@@ -91,7 +93,7 @@ class AVE_Document
 	}
 
 	/**
-	 * Формирование метки времени начала публикации Документа
+	 * Метод, предназначенный для формирование метки времени начала публикации Документа
 	 *
 	 * @return int	метка времени Unix
 	 */
@@ -107,7 +109,7 @@ class AVE_Document
 	}
 
 	/**
-	 * Формирование метки времени окончания публикации Документа
+	 * Метод, предназначенный для формирование метки времени окончания публикации Документа
 	 *
 	 * @return int	метка времени Unix
 	 */
@@ -123,7 +125,8 @@ class AVE_Document
 	}
 
 	/**
-	 * Формирование поля Документа с элементами управления этим полем
+	 * Метод, предназначенный для получения типа поля (изображения, однострочное поле, многострочный текст и т.д.),
+     * а также формирования вспомогательных элементов управления этим полем (например кнопка)
 	 *
 	 * @param string $field_type	тип поля
 	 * @param string $field_value	содержимое поля
@@ -135,17 +138,20 @@ class AVE_Document
 	{
 		global $AVE_Template;
 
-		$img_pixel = ABS_PATH . 'templates/' . $_SESSION['admin_theme'] . '/images/blanc.gif';
+		// Определяем пустое изображение
+        $img_pixel = ABS_PATH . 'templates/' . $_SESSION['admin_theme'] . '/images/blanc.gif';
 		$feld = '';
 
 		switch ($field_type)
 		{
-			case 'kurztext' :
+			// Правила формирования однострочного поля (input)
+            case 'kurztext' :
 				$feld  = '<a name="' . $field_id . '"></a>';
 				$feld .= '<input id="feld_' . $field_id . '" type="text" style="width:' . $this->_field_width . '" name="feld[' . $field_id . ']" value="' . htmlspecialchars($field_value, ENT_QUOTES) . '"> ';
 				break;
 
-			case 'langtext' :
+			// Правила формирования многострочного поля (textarea или FCKEditor в зависимости от настроек)
+            case 'langtext' :
 				if (isset($_COOKIE['no_wysiwyg']) && $_COOKIE['no_wysiwyg'] == 1)
 				{
 					$feld  = '<a name="' . $field_id . '"></a>';
@@ -160,7 +166,8 @@ class AVE_Document
 				}
 				break;
 
-			case 'smalltext' :
+			// Правила формирования упрощенного многострочного поля (textarea или FCKEditor в зависимости от настроек)
+            case 'smalltext' :
 				if (isset($_COOKIE['no_wysiwyg']) && $_COOKIE['no_wysiwyg'] == 1)
 				{
 					$feld  = "<a name=\"" . $field_id . "\"></a>";
@@ -198,7 +205,8 @@ class AVE_Document
 //				$feld .= "<input id=\"feld_" . $field_id . "\" type=\"text\" style=\"width:" . $this->_field_width . "\" name=\"feld[" . $field_id . "]\" value=\"" . htmlspecialchars($field_value, ENT_QUOTES) . "\"> ";
 //				break;
 //
-			case 'bild' :
+			// Правила формирования поля типа Изображение
+            case 'bild' :
 			case 'bild_links' :
 			case 'bild_rechts' :
 				$massiv = explode('|', $field_value);
@@ -209,7 +217,9 @@ class AVE_Document
 				$feld .= "<input value=\"" . $AVE_Template->get_config_vars('MAIN_OPEN_MEDIAPATH') . "\" class=\"button\" type=\"button\" onclick=\"cp_imagepop('img_feld__" . $field_id . "', '', '', '0');\" />";
 				break;
 
-			case 'javascript' :
+
+            // Правила формирования поля типа Код языка программирования
+            case 'javascript' :
 			case 'php' :
 			case 'code' :
 			case 'html' :
@@ -218,7 +228,9 @@ class AVE_Document
 				$feld .= "<textarea id=\"feld_" . $field_id . "\" style=\"width:" . $this->_textarea_width . "; height:" . $this->_textarea_height . "\"  name=\"feld[" . $field_id . "]\">" . $field_value . "</textarea>";
 				break;
 
-			case 'flash' :
+
+            // Правила формирования поля для Flash ролика или какой-либо анимации
+            case 'flash' :
 				$feld  = "<a name=\"" . $field_id . "\"></a>";
 				$feld .= "<div style=\"display:none\" id=\"feld_" . $field_id . "\"><img style=\"display:none\" id=\"_img_feld__" . $field_id . "\" src=\"". (!empty($field_value) ? htmlspecialchars($field_value, ENT_QUOTES) : $img_pixel) . "\" alt=\"\" border=\"0\" /></div>";
 				$feld .= "<div style=\"display:none\" id=\"span_feld__" . $field_id . "\"></div>";
@@ -227,7 +239,8 @@ class AVE_Document
 				$feld .= '<input style="margin-left:5px" class="button" type="button" value="?" onmouseover="return overlib(\'' . $AVE_Template->get_config_vars('DOC_FLASH_TYPE_HELP') . '\',ABOVE,WIDTH,300);" onmouseout="nd();" style="cursor: help;">';
 				break;
 
-			case 'download' :
+			// Правила формирования поля типа Файл
+            case 'download' :
 				$feld  = "<div style=\"\" id=\"feld_" . $field_id . "\"><a name=\"" . $field_id . "\"></a>";
 				$feld .= "<div style=\"display:none\" id=\"feld_" . $field_id . "\">";
 				$feld .= "<img style=\"display:none\" id=\"_img_feld__" . $field_id . "\" src=\"" . (!empty($field_value) ? htmlspecialchars($field_value, ENT_QUOTES) : $img_pixel) . "\" alt=\"\" border=\"0\" /></div>";
@@ -238,7 +251,9 @@ class AVE_Document
 				$feld .= '</div>';
 				break;
 
-			case 'video_avi' :
+
+            // Правила формирования поля типа Видео-файл
+            case 'video_avi' :
 			case 'video_wmf' :
 			case 'video_wmv' :
 			case 'video_mov' :
@@ -251,7 +266,9 @@ class AVE_Document
 				$feld .= '</div>';
 				break;
 
-			case 'dropdown' :
+
+            // Правила формирования поля типа Выпадающий список
+            case 'dropdown' :
 				$items = explode(',', $dropdown);
 				$feld = "<select name=\"feld[" . $field_id . "]\">";
 				$cnt = sizeof($items);
@@ -262,7 +279,9 @@ class AVE_Document
 				$feld .= "</select>";
 				break;
 
-			case 'link' :
+
+            // Правила формирования поля типа Ссылка
+            case 'link' :
 			case 'link_ex' :
 				$feld  = "<a name=\"" . $field_id . "\"></a>";
 				$feld .= "<input id=\"feld_" . $field_id . "\" type=\"text\" style=\"width:" . $this->_field_width . "\" name=\"feld[" . $field_id . "]\" value=\"" . htmlspecialchars($field_value, ENT_QUOTES) . "\">&nbsp;";
@@ -274,7 +293,7 @@ class AVE_Document
 	}
 
 /**
- *	ВНЕШНИЕ МЕТОДЫ
+ *	Внутренние методы
  */
 
 	/**
@@ -282,7 +301,7 @@ class AVE_Document
 	 */
 
 	/**
-	 * Управление списком Документов
+	 * Метод, предназначенный для получения списка документов в Панели управления
 	 *
 	 */
 	function documentListGet()
@@ -299,12 +318,14 @@ class AVE_Document
 		$ex_docstatus = '';
 		$navi_docstatus = '';
 
+        // Если в запросе пришел параметр на поиск документа по названию
 		if (!empty($_REQUEST['QueryTitel']))
 		{
 			$request = $_REQUEST['QueryTitel'];
-			$kette = explode(' ', $request);
+			$kette = explode(' ', $request);  // Получаем список слов, разделяя по пробелу (если их несколько)
 
-			foreach ($kette as $suche)
+			// Циклически обрабатываем слова, формируя условия, которые будут применены в запросе к БД
+            foreach ($kette as $suche)
 			{
 				$und = @explode(' +', $suche);
 				foreach ($und as $und_wort)
@@ -330,16 +351,26 @@ class AVE_Document
 			$nav_titel = '&QueryTitel=' . urlencode($request);
 		}
 
-		if (isset($_REQUEST['RubrikId']) && $_REQUEST['RubrikId'] != 'all')
+
+        // Если в запросе пришел id определенной рубрики
+        if (isset($_REQUEST['RubrikId']) && $_REQUEST['RubrikId'] != 'all')
 		{
-			$ex_rub = " AND RubrikId = '" . $_REQUEST['RubrikId'] . "'";
-			$nav_rub = '&RubrikId=' . $_REQUEST['RubrikId'];
+			// Формируем условия, которые будут применены в запросе к БД
+            $ex_rub = " AND RubrikId = '" . $_REQUEST['RubrikId'] . "'";
+
+            // формируем условия, которые будут применены в ссылках
+            $nav_rub = '&RubrikId=' . $_REQUEST['RubrikId'];
 		}
 
-		if (!empty($_REQUEST['TimeSelect']))
+
+        // Если в запросе пришел параметр на фильтрацию документов по определенному временному интервалу
+        if (!empty($_REQUEST['TimeSelect']))
 		{
-			$ex_zeit = 'AND ((DokStart BETWEEN ' . $this->_documentListStart() . ' AND ' . $this->_documentListEnd() . ') OR DokStart = 0)';
-			$nav_zeit = '&TimeSelect=1'
+			// Формируем условия, которые будут применены в запросе к БД
+            $ex_zeit = 'AND ((DokStart BETWEEN ' . $this->_documentListStart() . ' AND ' . $this->_documentListEnd() . ') OR DokStart = 0)';
+			
+            // формируем условия, которые будут применены в ссылках
+            $nav_zeit = '&TimeSelect=1'
 				. '&DokStartMonth=' . $_REQUEST['DokStartMonth']
 				. '&DokStartDay='   . $_REQUEST['DokStartDay']
 				. '&DokStartYear='  . $_REQUEST['DokStartYear']
@@ -348,35 +379,46 @@ class AVE_Document
 				. '&DokEndeYear='   . $_REQUEST['DokEndeYear'];
 		}
 
-		if (!empty($_REQUEST['DokStatus']))
+
+        // Если в запросе пришел параметр на фильтрацию документов по статусу
+        if (!empty($_REQUEST['DokStatus']))
 		{
-			switch ($_REQUEST['DokStatus'])
+			// Определяем, какой статус запрашивается и формируем условия, которые будут применены в запросе к БД,
+            // а также в ссылках, для дальнейшей навигации
+            switch ($_REQUEST['DokStatus'])
 			{
+                // С любым статусом
 				case '':
 				case 'All':
 					break;
 
-				case 'Opened':
+				// Только опубликованные
+                case 'Opened':
 					$ex_docstatus = 'AND DokStatus = 1';
 					$navi_docstatus = '&DokStatus=Opened';
 					break;
 
-				case 'Closed':
+				// Только неопубликованные
+                case 'Closed':
 					$ex_docstatus = 'AND DokStatus = 0';
 					$navi_docstatus = '&DokStatus=Closed';
 					break;
 
-				case 'Deleted':
+				// Помеченные на удаление
+                case 'Deleted':
 					$ex_docstatus = 'AND Geloescht = 1';
 					$navi_docstatus = '&DokStatus=Deleted';
 					break;
 			}
 		}
 
-		$ex_Geloescht = (UGROUP != 1) ? 'AND Geloescht != 1' : '' ;
+		// Определяем группу пользоваеля и id документа, если он присутствует в запросе
+        $ex_Geloescht = (UGROUP != 1) ? 'AND Geloescht != 1' : '' ;
 		$w_id = !empty($_REQUEST['doc_id']) ? " AND Id = '" . $_REQUEST['doc_id'] . "'" : '';
 
-		$num = $AVE_DB->Query("
+
+        // Выполняем запрос к БД на получение количества документов соответствующих вышеопределенным условиям
+        $num = $AVE_DB->Query("
 			SELECT COUNT(*)
 			FROM " . PREFIX . "_documents
 			WHERE 1
@@ -388,113 +430,145 @@ class AVE_Document
 			" . $w_id . "
 		")->GetCell();
 
-		$limit = (isset($_REQUEST['Datalimit']) && is_numeric($_REQUEST['Datalimit']) && $_REQUEST['Datalimit'] > 0)
+		// Определяем лимит документов, который будет показан на 1 странице
+        $limit = (isset($_REQUEST['Datalimit']) && is_numeric($_REQUEST['Datalimit']) && $_REQUEST['Datalimit'] > 0)
 			? $_REQUEST['Datalimit']
 			: $limit = $this->_limit;
 
 		$nav_limit = '&Datalimit=' . $limit;
 
-		$seiten = ceil($num / $limit);
+		// Определяем количество страниц, которые будут сформированы на основании количества полученных документов
+        $seiten = ceil($num / $limit);
 		$start = get_current_page() * $limit - $limit;
 
 		$db_sort   = 'ORDER BY DokEdi DESC';
 		$navi_sort = '&sort=EditsDesc';
 
-		if (!empty($_REQUEST['sort']))
+		// Если в запросе используется параметр сортировки
+        if (!empty($_REQUEST['sort']))
 		{
-			switch ($_REQUEST['sort'])
+			// Определяем, по какому параметру происходит сортировка
+            switch ($_REQUEST['sort'])
 			{
-				case 'Id' :
+				// По id документа, по возрастанию
+                case 'Id' :
 					$db_sort   = 'ORDER BY Id ASC';
 					$navi_sort = '&sort=Id';
 					break;
 
-				case 'IdDesc' :
+				// По id документа, по убыванию
+                case 'IdDesc' :
 					$db_sort   = 'ORDER BY Id DESC';
 					$navi_sort = '&sort=IdDesc';
 					break;
 
-				case 'Titel' :
+				// По названию документа, по алфавитному возрастанию
+                case 'Titel' :
 					$db_sort   = 'ORDER BY Titel ASC';
 					$navi_sort = '&sort=Titel';
 					break;
 
-				case 'TitelDesc' :
+				// По названию документа, по алфавитному убыванию
+                case 'TitelDesc' :
 					$db_sort   = 'ORDER BY Titel DESC';
 					$navi_sort = '&sort=TitelDesc';
 					break;
 
-				case 'Url' :
+
+                // По url-адресу, по алфавитному возрастанию
+                case 'Url' :
 					$db_sort   = 'ORDER BY Url ASC';
 					$navi_sort = '&sort=Url';
 					break;
 
-				case 'UrlDesc' :
+				// По url-адресу, по алфавитному убыванию
+                case 'UrlDesc' :
 					$db_sort   = 'ORDER BY Url DESC';
 					$navi_sort = '&sort=UrlDesc';
 					break;
 
-				case 'Rubrik' :
+				// По id рубрики, по возрастанию
+                case 'Rubrik' :
 					$db_sort   = 'ORDER BY RubrikId ASC';
 					$navi_sort = '&sort=Rubrik';
 					break;
 
-				case 'RubrikDesc' :
+				// По id рубрики, по убыванию
+                case 'RubrikDesc' :
 					$db_sort   = 'ORDER BY RubrikId DESC';
 					$navi_sort = '&sort=RubrikDesc';
 					break;
 
-				case 'Erstellt' :
+
+                // По дате публикации, по возрастанию
+                case 'Erstellt' :
 					$db_sort   = 'ORDER BY DokStart ASC';
 					$navi_sort = '&sort=Erstellt';
 					break;
 
-				case 'ErstelltDesc' :
+				// По дате публикации, по убыванию
+                case 'ErstelltDesc' :
 					$db_sort   = 'ORDER BY DokStart DESC';
 					$navi_sort = '&sort=ErstelltDesc';
 					break;
 
-				case 'Klicks' :
+				
+                // По количеству просмотров, по возрастанию
+                case 'Klicks' :
 					$db_sort   = 'ORDER BY Geklickt ASC';
 					$navi_sort = '&sort=Klicks';
 					break;
 
-				case 'KlicksDesc' :
+				// По количеству просмотров, по убыванию
+                case 'KlicksDesc' :
 					$db_sort   = 'ORDER BY Geklickt DESC';
 					$navi_sort = '&sort=KlicksDesc';
 					break;
 
-				case 'Druck' :
+
+                // По количеству печати документа, по возрастанию
+                case 'Druck' :
 					$db_sort   = 'ORDER BY Drucke ASC';
 					$navi_sort = '&sort=Druck';
 					break;
 
-				case 'DruckDesc' :
+				// По количеству печати документа, по убыванию
+                case 'DruckDesc' :
 					$db_sort   = 'ORDER BY Drucke DESC';
 					$navi_sort = '&sort=DruckDesc';
 					break;
 
-				case 'Autor' :
+
+                // По автору, по алфавитному возрастанию
+                case 'Autor' :
 					$db_sort   = 'ORDER BY Redakteur ASC';
 					$navi_sort = '&sort=Autor';
 					break;
 
-				case 'AutorDesc' :
+				// По автору, по алфавитному убыванию
+                case 'AutorDesc' :
 					$db_sort   = 'ORDER BY Redakteur DESC';
 					$navi_sort = '&sort=AutorDesc';
 					break;
 
-				case 'Edits':
+
+                // По дате последнего редактирования, по возрастанию
+                case 'Edits':
 					$db_sort   = 'ORDER BY DokEdi ASC';
 					$navi_sort = '&sort=Edits';
 					break;
 
-				case 'EditsDesc':
+
+                // По дате последнего редактирования, по убыванию
+                case 'EditsDesc':
 					$db_sort   = 'ORDER BY DokEdi DESC';
 					$navi_sort = '&sort=EditsDesc';
 					break;
 
-				default :
+
+                // По умолчанию, по дате последнего редактирования по убыванию. Т.е. последний отредактированный
+                // документ, будет самым первым в списке.
+                default :
 					$db_sort   = 'ORDER BY DokEdi DESC';
 					$navi_sort = '&sort=EditsDesc';
 					break;
@@ -502,7 +576,11 @@ class AVE_Document
 		}
 
 		$docs = array();
-		$sql = $AVE_DB->Query("
+
+        // Выполняем запрос к БД на получение уже не количества документов, отвечающих условиям, а уже на
+        // получение всех данных, с учетом всех условий, а также типа сортировки и лимита для вывода на
+        // одну страницу.
+        $sql = $AVE_DB->Query("
 			SELECT *
 			FROM " . PREFIX . "_documents
 			WHERE 1
@@ -515,9 +593,13 @@ class AVE_Document
 			" . $db_sort . "
 			LIMIT " . $start . "," . $limit . "
 		");
-		while ($row = $sql->FetchRow())
+
+        // Циклически обрабатываем полученные данные с целью приведения некоторых из них к удобочитаемому виду
+        while ($row = $sql->FetchRow())
 		{
-			$row->Kommentare = $AVE_DB->Query("
+
+            // Определяем количество комментариев, оставленных для данного документа
+            $row->Kommentare = $AVE_DB->Query("
 				SELECT COUNT(*)
 				FROM " . PREFIX . "_document_comments
 				WHERE DokumentId = '" . $row->Id . "'
@@ -525,8 +607,9 @@ class AVE_Document
 
 			$this->documentPermissionFetch($row->RubrikId);
 
-			$row->RubName      = $AVE_Rubric->rubricNameByIdGet($row->RubrikId)->RubrikName;
-			$row->RBenutzer    = get_username_by_id($row->Redakteur);
+			// Получаем название рубрики по ее Id
+            $row->RubName      = $AVE_Rubric->rubricNameByIdGet($row->RubrikId)->RubrikName;
+			$row->RBenutzer    = get_username_by_id($row->Redakteur); // Получаем имя пользователя (Автора)
 			$row->cantEdit     = 0;
 			$row->canDelete    = 0;
 			$row->canEndDel    = 0;
@@ -554,7 +637,7 @@ class AVE_Document
             {
 				$row->canOpenClose = 1;
 			}
-			// разрешаем всё если пользователь принадлежит группе Администраторов или имеет все права на рубрику
+			// разрешаем всё, если пользователь принадлежит группе Администраторов или имеет все права на рубрику
 			if (UGROUP == 1 || @$_SESSION[$row->RubrikId . '_alles'] == 1)
 			{
 				$row->cantEdit     = 1;
@@ -562,7 +645,7 @@ class AVE_Document
 				$row->canEndDel    = 1;
 				$row->canOpenClose = 1;
 			}
-			// Главную страницу и страницу ошибки 404 удалять нельзя
+			// Запрещаем удаление Главной страницы и страницы с 404 ошибкой
 			if ($row->Id == 1 || $row->Id == PAGE_NOT_FOUND_ID)
 			{
 				$row->canDelete = 0;
@@ -572,9 +655,14 @@ class AVE_Document
 			array_push($docs, $row);
 		}
 
-		$AVE_Template->assign('docs', $docs);
 
-		if ($num > $limit)
+        // Передаем полученные данные в шаблон для вывода
+        $AVE_Template->assign('docs', $docs);
+
+
+        // Если количество полученных документов превышает лимит на одной странице, тогда формируем
+        // постраничную навигацию
+        if ($num > $limit)
 		{
 			$nav_target = !empty($_REQUEST['target'])                                         ? '&target=' . $_REQUEST['target'] : '';
 			$nav_doc    = !empty($_REQUEST['doc'])                                            ? '&doc=' . $_REQUEST['doc'] : '';
@@ -595,7 +683,7 @@ class AVE_Document
 	}
 
 	/**
-	 * Создать новый Документ
+	 * Метод, предназначенный для добавления нового документа в БД
 	 *
 	 * @param int $rubric_id	идентификатор Рубрики
 	 */
@@ -605,25 +693,35 @@ class AVE_Document
 
 		$this->documentPermissionFetch($rubric_id);
 
+        // Если пользователь имеет права на добавление документов в указанную рубрику, тогда
 		if ( (isset($_SESSION[$rubric_id . '_newnow'])  && $_SESSION[$rubric_id . '_newnow'] == 1)
 			|| (isset($_SESSION[$rubric_id . '_new'])   && $_SESSION[$rubric_id . '_new']    == 1)
 			|| (isset($_SESSION[$rubric_id . '_alles']) && $_SESSION[$rubric_id . '_alles']  == 1)
 			|| (defined('UGROUP') && UGROUP == 1) )
 		{
-			switch ($_REQUEST['sub'])
-			{
-				case 'save':
-					$innavi = 1;
-					$ende = $this->_documentEnd();
-					$start = $this->_documentStart();
-					$document_status = !empty($_REQUEST['DokStatus']) ? (int)$_REQUEST['DokStatus'] : '';
 
-					if (empty($document_status))
+            // Определяем вид действия, переданный в параметре sub
+            switch ($_REQUEST['sub'])
+			{
+
+                // Сохранение документа в БД
+                case 'save':
+					$innavi = 1;
+					$start = $this->_documentStart(); // Дата/время начала публикации документа
+                    $ende = $this->_documentEnd();    // Дата/время окончания публикации документа
+					
+                    // Определяем статус документа
+                    $document_status = !empty($_REQUEST['DokStatus']) ? (int)$_REQUEST['DokStatus'] : '';
+
+					// Если статус документа не определен
+                    if (empty($document_status))
 					{
 						$innavi = 0;
 						@reset($_POST);
 						$newtext = "\n\n";
 
+                        // Формируем текст сообщения, в котором хранятся те данные, которые пользователь
+                        // ввел в поля документа
 						foreach ($_POST['feld'] as $val)
 						{
 							if (!empty($val))
@@ -634,10 +732,11 @@ class AVE_Document
 						}
 						$text = strip_tags($newtext);
 
-						$system_mail = get_settings('mail_from');
+						// Получаем e-mail адрес из Общих настроек системы
+                        $system_mail = get_settings('mail_from');
 						$system_mail_name = get_settings('mail_from_name');
 
-						// Письмо админу
+						// И высылаем письмо администартору с информацией, что необходимо проверить документ
 						$body_to_admin = $AVE_Template->get_config_vars('DOC_MAIL_BODY_CHECK');
 						$body_to_admin = str_replace('%N%', "\n", $body_to_admin);
 						$body_to_admin = str_replace('%TITLE%', stripslashes($_POST['Titel']), $body_to_admin);
@@ -652,7 +751,7 @@ class AVE_Document
 							''
 						);
 
-						// Письмо автору
+						// Формируем и отправляем письмо автору, что документ находится на проверке
 						$body_to_author = str_replace('%N%', "\n", $AVE_Template->get_config_vars('DOC_MAIL_BODY_USER'));
 						$body_to_author = str_replace('%TITLE%', stripslashes($_POST['Titel']), $body_to_author);
 						$body_to_author = str_replace('%USER%', "'" . $_SESSION['user_name'] . "'", $body_to_author);
@@ -676,7 +775,7 @@ class AVE_Document
 
 					$suche = (isset($_POST['Suche']) && $_POST['Suche'] == 1) ? 1 : 0;
 
-					// формирование/проверка алиаса на уникальность
+					// Формируем/проверяем алиас адреса на уникальность
 					$_REQUEST['Url'] = $_url = prepare_url(empty($_POST['Url']) ? trim($_POST['prefix'] . '/' . $_POST['Titel'], '/') : $_POST['Url']);
 					$cnt = 1;
 					while (
@@ -691,6 +790,7 @@ class AVE_Document
 						$cnt++;
 					}
 
+                    // Выполняем запрос к БД на добавлние нового документа
 					$AVE_DB->Query("
 						INSERT
 						INTO " . PREFIX . "_documents
@@ -709,11 +809,15 @@ class AVE_Document
 							DokStatus       = '" . $document_status . "',
 							ElterNavi       = '" . (int)$_POST['ElterNavi'] . "'
 					");
-					$iid = $AVE_DB->InsertId();
+					
+                    // Получаем id последней записи
+                    $iid = $AVE_DB->InsertId();
 
+                    // Сохраняем системное сообщение в журнал
 					reportLog($_SESSION['user_name'] . ' - добавил документ (' . $iid . ')', 2, 2);
 
-					foreach ($_POST['feld'] as $fld_id => $fld_val)
+					// Циклически обрабатываем поля документа
+                    foreach ($_POST['feld'] as $fld_id => $fld_val)
 					{
 						if (!$AVE_DB->Query("
 								SELECT 1
@@ -726,15 +830,18 @@ class AVE_Document
 							continue;
 						}
 
-						if (!check_permission('docs_php'))
+						// Если запрещено использование php кода, тогда обнуляем данные поля
+                        if (!check_permission('docs_php'))
 						{
 							if (is_php_code($fld_val)) $fld_val = '';
 						}
 
-						$fld_val = clean_no_print_char($fld_val);
+						// Убираем из текста непчатбемые символы
+                        $fld_val = clean_no_print_char($fld_val);
 						$fld_val = pretty_chars($fld_val);
 
-						$AVE_DB->Query("
+						// Выполняем запрос к БД на добавление нового поля с его содержимым
+                        $AVE_DB->Query("
 							INSERT
 							INTO " . PREFIX . "_document_fields
 							SET
@@ -744,22 +851,27 @@ class AVE_Document
 								Suche      = '" . $suche . "'
 						");
 					}
-
+                    // Фромируем рд перемены, которые передаем в шаблон (для последующих операций)
 					$AVE_Template->assign('name_empty', $AVE_Template->get_config_vars('DOC_TOP_MENU_ITEM'));
 					$AVE_Template->assign('Id', $iid);
 					$AVE_Template->assign('innavi', $innavi);
 					$AVE_Template->assign('RubrikId', $rubric_id);
+                    // Отображаем страницу
 					$AVE_Template->assign('content', $AVE_Template->fetch('documents/form_after.tpl'));
 					break;
 
-				case 'savenavi':
-					$elter_pre = ($_REQUEST['Elter']=='0') ? 0 : explode('____', $_REQUEST['Elter']);
+                    // Привязка документа к уже существующему пункту навигации
+                    case 'savenavi':
+					// Получаем id пункта меню из запроса
+                    $elter_pre = ($_REQUEST['Elter']=='0') ? 0 : explode('____', $_REQUEST['Elter']);
 					$elter = is_array($elter_pre) ? $elter_pre[0] : 0;
 					$ebene = is_array($elter_pre) ? $elter_pre[1] : 1;
 
-					if ($elter != '0')
+					// Если id не равен нулю, т.е. пункт не родительский, а какой-либо дочерний
+                    if ($elter != '0')
 					{
-						$rubrik = $AVE_DB->Query("
+						// Выполняем запрос к БД на получение id рубрики
+                        $rubrik = $AVE_DB->Query("
 							SELECT Rubrik
 							FROM " . PREFIX . "_navigation_items
 							WHERE Id = '" . $elter . "'
@@ -770,7 +882,9 @@ class AVE_Document
 						$rubrik = $_REQUEST['NaviRubric'];
 					}
 
-					$AVE_DB->Query("
+					// Выполняем запрос к БД на добавление информации о новой связке Документ<->Пункт меню, 
+                    // в таблицу БД с навигацией
+                    $AVE_DB->Query("
 						INSERT
 						INTO " . PREFIX . "_navigation_items
 						SET
@@ -784,13 +898,15 @@ class AVE_Document
 							Url    = '" . prepare_url(empty($_REQUEST['Url']) ? $_REQUEST['Titel'] : $_REQUEST['Url']) . "'
 					");
 
+                    // Если у нас было вызвано отдельное окно, закрываем его и обновляем страницу
 					if (isset($_REQUEST['pop']) && $_REQUEST['pop'] == 1)
 					{
 						echo '<script>window.opener.location.reload(); window.close();</script>';
 					}
 					else
 					{
-						echo '<script>window.opener.location.reload();</script>';
+						// В противном случае просто обновляем страницу
+                        echo '<script>window.opener.location.reload();</script>';
 					}
 
 					$AVE_Template->assign('innavi', 0);
@@ -799,11 +915,15 @@ class AVE_Document
 					$AVE_Template->assign('content', $AVE_Template->fetch('documents/form_after.tpl'));
 					break;
 
-				case '':
-					$document = '';
-					$this->documentPermissionFetch($rubric_id);
 
-					if (isset($_SESSION[$rubric_id . '_newnow']) && $_SESSION[$rubric_id . '_newnow'] == 1)
+                // Действия по умолчанию, если не задано
+                case '':
+					$document = '';
+					// Получаем список прав доступа на добавление документов в определенную рубрику
+                    $this->documentPermissionFetch($rubric_id);
+
+					// Определяем флаг, который будет активировать или запрещать смену статуса у документа
+                    if (isset($_SESSION[$rubric_id . '_newnow']) && $_SESSION[$rubric_id . '_newnow'] == 1)
 					{
 						$document->dontChangeStatus = 0;
 					}
@@ -813,7 +933,9 @@ class AVE_Document
 					}
 
 					$fields = array();
-					$sql = $AVE_DB->Query("
+
+                    // Выполняем запрос к БД на получение списка полей, которые относятся к данному документу
+                    $sql = $AVE_DB->Query("
 						SELECT *
 						FROM " . PREFIX . "_rubric_fields
 						WHERE RubrikId = '" . $rubric_id . "'
@@ -825,6 +947,7 @@ class AVE_Document
 						array_push($fields, $row);
 					}
 
+                    // Формируем данные и передаем в шаблон
 					$document->fields = $fields;
 					$document->rubric_name = $AVE_Rubric->rubricNameByIdGet($rubric_id)->RubrikName;
 					$document->rubric_url_prefix = strftime($AVE_Rubric->rubricNameByIdGet($rubric_id)->UrlPrefix);
@@ -837,14 +960,16 @@ class AVE_Document
 					break;
 			}
 		}
-		else
+		// В противном случае, если пользователь не имеет прав на создание документа, формируем сообщение с ошибкой
+        else
 		{
 			$AVE_Template->assign('content', $AVE_Template->get_config_vars('DOC_NO_PERMISSION_RUB'));
 		}
 	}
 
-	/**
-	 * Редактирование Документа
+
+    /**
+	 * Метод, предназначенный для редактирования документа
 	 *
 	 * @param int $document_id	идентификатор Документа
 	 */
@@ -852,10 +977,15 @@ class AVE_Document
 	{
 		global $AVE_DB, $AVE_Rubric, $AVE_Template;
 
-		switch ($_REQUEST['sub'])
+
+        // Определяем действие, выбранное пользователем
+        switch ($_REQUEST['sub'])
 		{
-			case 'save':
-				$row = $AVE_DB->Query("
+			// Если была нажата кнопка Сохранить изменения
+            case 'save':
+
+                // Выполняем запрос к БД на получение автора документа и id Рубрики
+                $row = $AVE_DB->Query("
 					SELECT
 						RubrikId,
 						Redakteur
@@ -865,7 +995,8 @@ class AVE_Document
 
 				$row->cantEdit = 0;
 
-				$this->documentPermissionFetch($row->RubrikId);
+				// Определяем права доступа к документам в данной рубрики
+                $this->documentPermissionFetch($row->RubrikId);
 
 				// разрешаем редактирование
 				// если автор имеет право изменять свои документы в рубрике
@@ -881,16 +1012,19 @@ class AVE_Document
 				{
 					$row->cantEdit = 0;
 				}
-				// разрешаем редактирование если пользователь принадлежит группе Администраторов или имеет все права на рубрику
+				// разрешаем редактирование, если пользователь принадлежит группе Администраторов или имеет все права на рубрику
 				if ( (defined('UGROUP') && UGROUP == 1)
 					|| (isset($_SESSION[$row->RubrikId . '_alles']) && $_SESSION[$row->RubrikId . '_alles'] == 1) )
 				{
 					$row->cantEdit = 1;
 				}
 
-				if ($row->cantEdit == 1)
+
+                // Если редактирование разрешено для данного пользователя
+                if ($row->cantEdit == 1)
 				{
-					$suche     = (isset($_POST['Suche']) && $_POST['Suche'] == 1) ? '1' : '0';
+					// Обрабатываем все данные, пришедшие в запросе
+                    $suche     = (isset($_POST['Suche']) && $_POST['Suche'] == 1) ? '1' : '0';
 					$docstatus = ( (isset($_SESSION[$row->RubrikId . '_newnow']) && $_SESSION[$row->RubrikId . '_newnow'] == 1)
 								|| (isset($_SESSION[$row->RubrikId . '_alles']) && $_SESSION[$row->RubrikId . '_alles'] == 1)
 								|| (defined('UGROUP') && UGROUP == 1) ) ? (isset($_REQUEST['DokStatus']) ? $_REQUEST['DokStatus'] : '0') : '0';
@@ -898,7 +1032,7 @@ class AVE_Document
 					$docend    = ($document_id == 1 || $document_id == PAGE_NOT_FOUND_ID) ? '0' : $this->_documentEnd();
 					$docstart  = ($document_id == 1 || $document_id == PAGE_NOT_FOUND_ID) ? '0' : $this->_documentStart();
 
-					// формирование/проверка алиаса на уникальность
+					// Формируем/проверяем адрес на уникальность
 					$_REQUEST['Url'] = $_url = prepare_url(empty($_POST['Url'])
 						? trim($_POST['prefix'] . '/' . $_POST['Titel'], '/')
 						: $_POST['Url']);
@@ -915,7 +1049,9 @@ class AVE_Document
 						$cnt++;
 					}
 
-					$AVE_DB->Query("
+
+                    // Выполняем запрос к БД на сохранение изменений в таблице документов
+                    $AVE_DB->Query("
 						UPDATE " . PREFIX . "_documents
 						SET
 							Titel           = '" . clean_no_print_char($_POST['Titel']) . "',
@@ -933,15 +1069,20 @@ class AVE_Document
 							Id = '" . $document_id . "'
 					");
 
-					$AVE_DB->Query("
+
+                    // Выполняем запрос к БД на сохранение изменений в таблице навигации
+                    $AVE_DB->Query("
 						UPDATE " . PREFIX . "_navigation_items
 						SET Url  = '" . $_REQUEST['Url'] . "'
 						WHERE Link = 'index.php?id=" . $document_id . "'
 					");
 
-					if (isset($_POST['feld']))
+
+                    // Если документ содержит поля
+                    if (isset($_POST['feld']))
 					{
-						foreach ($_POST['feld'] as $fld_id => $fld_val)
+						// Циклически обрабатываем каждое поле
+                        foreach ($_POST['feld'] as $fld_id => $fld_val)
 						{
 							$row_df = $AVE_DB->Query("
 								SELECT
@@ -956,15 +1097,19 @@ class AVE_Document
 
 							if ($row_df->Suche == $suche && $row_df->Inhalt == pretty_chars(stripslashes($fld_val))) continue;
 
-							if (!check_permission('docs_php'))
+							// Если запрещено использование php-кода в полях, пропускаем это поле
+                            if (!check_permission('docs_php'))
 							{
 								if (is_php_code($fld_val)) continue;
 							}
 
-							$fld_val = clean_no_print_char($fld_val);
+							// Удаляем непечатаемые символы
+                            $fld_val = clean_no_print_char($fld_val);
 							$fld_val = pretty_chars($fld_val);
 
-							$AVE_DB->Query("
+							
+                            // Выполняем запрос к БД на сохранение изменений в таблице полей документов
+                            $AVE_DB->Query("
 								UPDATE " . PREFIX . "_document_fields
 								SET
 									Inhalt = '" . $fld_val . "' ,
@@ -982,10 +1127,12 @@ class AVE_Document
 						WHERE doc_id = '" . $document_id . "'
 					");
 
-					reportLog($_SESSION['user_name'] . ' - отредактировал документ (' . $document_id . ')', 2, 2);
+					// Сохраняем системное сообщение в журнал
+                    reportLog($_SESSION['user_name'] . ' - отредактировал документ (' . $document_id . ')', 2, 2);
 				}
 
-				if (isset($_REQUEST['closeafter']) && $_REQUEST['closeafter']==1)
+				// Закрываем окно и обновляем страницу
+                if (isset($_REQUEST['closeafter']) && $_REQUEST['closeafter']==1)
 				{
 					echo '<script>window.opener.location.reload(); window.close();</script>';
 					exit;
@@ -993,15 +1140,20 @@ class AVE_Document
 
 				echo '<script>window.opener.location.reload();</script>';
 
-				$AVE_Template->assign('name_empty', $AVE_Template->get_config_vars('DOC_TOP_MENU_ITEM'));
+				// Формируем ряд переменных, передаем в шаблон и отображаем страницу со списком дальнейших действий
+                $AVE_Template->assign('name_empty', $AVE_Template->get_config_vars('DOC_TOP_MENU_ITEM'));
 				$AVE_Template->assign('innavi', 0);
 				$AVE_Template->assign('Id', $document_id);
 				$AVE_Template->assign('RubrikId', $row->RubrikId);
 				$AVE_Template->assign('content', $AVE_Template->fetch('documents/form_after.tpl'));
 				break;
 
-			case '':
-				$document = $AVE_DB->Query("
+
+            // Если пользователь не выполнял никаких действий, а просто открыл документ для редактирования
+            case '':
+
+                // Выполняем запрос к БД на получение данных о документе
+                $document = $AVE_DB->Query("
 					SELECT *
 					FROM " . PREFIX . "_documents
 					WHERE Id = '" . $document_id . "'
@@ -1009,9 +1161,10 @@ class AVE_Document
 
 				$show = true;
 
-				$this->documentPermissionFetch($document->RubrikId);
+				// Проверяем права доступа к документу
+                $this->documentPermissionFetch($document->RubrikId);
 
-				// запрещаем доступ
+				// запрещаем доступ,
 				// если автору документа не разрешено изменять свои документы в рубрике
 				// или пользователю не разрешено изменять все документы в рубрике
 				if (!( (isset($_SESSION['user_id']) && $document->Redakteur == $_SESSION['user_id']
@@ -1020,13 +1173,13 @@ class AVE_Document
 				{
 					$show = false;
 				}
-				// запрещаем доступ к главной странице и странице ошибки 404 если требуется одобрение Администратора
+				// запрещаем доступ к главной странице и странице ошибки 404, если требуется одобрение Администратора
 				if ( ($document_id == 1 || $document_id == PAGE_NOT_FOUND_ID) &&
 					!(isset($_SESSION[$document->RubrikId . '_newnow']) && $_SESSION[$document->RubrikId . '_newnow'] == 1) )
 				{
 					$show = false;
 				}
-				// разрешаем доступ если пользователь принадлежит группе Администраторов или имеет все права на рубрику
+				// разрешаем доступ, если пользователь принадлежит группе Администраторов или имеет все права на рубрику
 				if ( (defined('UGROUP') && UGROUP == 1)
 					|| (isset($_SESSION[$document->RubrikId . '_alles']) && $_SESSION[$document->RubrikId . '_alles'] == 1) )
 				{
@@ -1046,7 +1199,8 @@ class AVE_Document
 						$document->dontChangeStatus = 1;
 					}
 
-					$sql = $AVE_DB->Query("
+					// Выполняем запрос к БД и получаем все данные для полей документа
+                    $sql = $AVE_DB->Query("
 						SELECT
 							doc.Id AS df_id,
 							rub.*,
@@ -1063,7 +1217,8 @@ class AVE_Document
 						array_push($fields, $row);
 					}
 
-					$document->fields = $fields;
+					// Формируем ряд переменных и передаем их в шаблон для вывода
+                    $document->fields = $fields;
 					$document->rubric_name = $AVE_Rubric->rubricNameByIdGet($document->RubrikId)->RubrikName;
 					$document->rubric_url_prefix = $AVE_Rubric->rubricNameByIdGet($document->RubrikId)->UrlPrefix;
 					$document->formaction = 'index.php?do=docs&action=edit&sub=save&Id=' . $document_id . '&cp=' . SESSION;
@@ -1071,9 +1226,11 @@ class AVE_Document
 					$AVE_Template->assign('document', $document);
 					$AVE_Template->assign('DEF_DOC_START_YEAR', mktime(0, 0, 0, date("m"), date("d"), date("Y") - 10));
 					$AVE_Template->assign('DEF_DOC_END_YEAR', mktime(0, 0, 0, date("m"), date("d"), date("Y") + 20));
-					$AVE_Template->assign('content', $AVE_Template->fetch('documents/form.tpl'));
+					
+                    // Отображаем страницу для редактирования
+                    $AVE_Template->assign('content', $AVE_Template->fetch('documents/form.tpl'));
 				}
-				else
+				else // Если пользователь не имеет прав на редактирование, формируем сообщение об ошибке
 				{
 					$AVE_Template->assign('content', $AVE_Template->get_config_vars('DOC_NO_PERMISSION'));
 				}
@@ -1081,8 +1238,10 @@ class AVE_Document
 		}
 	}
 
-	/**
-	 * Пометить Документ для удаления
+
+
+    /**
+	 * Метод, предназначенный для пометки документа к удалению
 	 *
 	 * @param int $document_id	идентификатор Документа
 	 */
@@ -1090,6 +1249,7 @@ class AVE_Document
 	{
 		global $AVE_DB;
 
+        // Выполняем запрос к БД на получение информации о документе (id, id рубрики, автор)
 		$row = $AVE_DB->Query("
 			SELECT
 				Id,
@@ -1099,27 +1259,36 @@ class AVE_Document
 			WHERE Id = '" . $document_id . "'
 		")->FetchRow();
 
-		if ( (isset($_SESSION['user_id']) && $_SESSION['user_id'] == $row->Redakteur)
+		// Если у пользователя достаточно прав на выполнение данной операции
+        if ( (isset($_SESSION['user_id']) && $_SESSION['user_id'] == $row->Redakteur)
 			&& (isset($_SESSION[$row->RubrikId . '_editown']) && $_SESSION[$row->RubrikId . '_editown'] == 1)
 			|| (isset($_SESSION[$row->RubrikId . '_alles']) && $_SESSION[$row->RubrikId . '_alles'] == 1)
 			|| (defined('UGROUP') && UGROUP == 1) )
 		{
-			if ($document_id != 1 && $document_id != PAGE_NOT_FOUND_ID)
+			// и это не главная страница и не страница с ошибкой 404
+            if ($document_id != 1 && $document_id != PAGE_NOT_FOUND_ID)
 			{
-				$AVE_DB->Query("
+				// Выполняем запрос к БД на обновление данных (пометка на удаление)
+                $AVE_DB->Query("
 					UPDATE " . PREFIX . "_documents
 					SET Geloescht = '1'
 					WHERE Id = '" . $document_id . "'
 				");
-				reportLog($_SESSION['user_name'] . ' - временно удалил документ (' . $document_id . ')', 2, 2);
+
+                // Сохраняем системное сообщение в журнал
+                reportLog($_SESSION['user_name'] . ' - временно удалил документ (' . $document_id . ')', 2, 2);
 			}
 		}
-		header('Location:index.php?do=docs&cp=' . SESSION);
+
+        // Выполняем обновление страницы
+        header('Location:index.php?do=docs&cp=' . SESSION);
 
 	}
 
-	/**
-	 * Отменить пометку удаления
+
+
+    /**
+	 * Метод, предназначенный для снятия отметки об удаления
 	 *
 	 * @param int $document_id	идентификатор Документа
 	 */
@@ -1127,19 +1296,24 @@ class AVE_Document
 	{
 		global $AVE_DB;
 
-		$AVE_DB->Query("
+		// Выполняем запрос к БД на обновление информации (снятие отметки об удалении)
+        $AVE_DB->Query("
 			UPDATE " . PREFIX . "_documents
 			SET Geloescht = '0'
 			WHERE Id = '" . $document_id . "'
 		");
 
-		reportLog($_SESSION['user_name'] . ' - восстановил удаленный документ (' . $document_id . ')', 2, 2);
+		// Сохраняем системное сообщение в журнал
+        reportLog($_SESSION['user_name'] . ' - восстановил удаленный документ (' . $document_id . ')', 2, 2);
 
-		header('Location:index.php?do=docs&cp=' . SESSION);
+		// Выполняем обновление страницы
+        header('Location:index.php?do=docs&cp=' . SESSION);
 	}
 
-	/**
-	 * Уничтожить Документ без возможности восстановления
+
+
+    /**
+	 * Метод, предназначенный для полного удаления документа без возможности восстановления
 	 *
 	 * @param int $document_id	идентификатор Документа
 	 */
@@ -1147,14 +1321,19 @@ class AVE_Document
 	{
 		global $AVE_DB;
 
-		if ($document_id != 1 && $document_id != PAGE_NOT_FOUND_ID)
+		// Проверяем, чтобы удаляемый документ не являлся главной страницей и не страницей с 404 ощибкой
+        if ($document_id != 1 && $document_id != PAGE_NOT_FOUND_ID)
 		{
-			$AVE_DB->Query("
+
+            // Выполняем запрос к БД на удаление информации о документе
+            $AVE_DB->Query("
 				DELETE
 				FROM " . PREFIX . "_documents
 				WHERE Id = '" . $document_id . "'
 			");
-			$AVE_DB->Query("
+
+            // Выполняем запрос к БД на удаление полей, которые относились к документу
+            $AVE_DB->Query("
 				DELETE
 				FROM " . PREFIX . "_document_fields
 				WHERE DokumentId = '" . $document_id . "'
@@ -1167,14 +1346,19 @@ class AVE_Document
 				WHERE doc_id = '" . $document_id . "'
 			");
 
-			reportLog($_SESSION['user_name'] . ' - окончательно удалил документ (' . $document_id . ')', 2, 2);
+
+            // Сохраняем системное сообщение в журнал
+            reportLog($_SESSION['user_name'] . ' - окончательно удалил документ (' . $document_id . ')', 2, 2);
 		}
 
-		header('Location:index.php?do=docs&cp=' . SESSION);
+		// Выполняем обновление страницы
+        header('Location:index.php?do=docs&cp=' . SESSION);
 	}
 
-	/**
-	 * Опубликовать/Отменить публикацию Документа
+
+
+    /**
+	 * Метод, предназначенный для публикации или отмены публикации документа
 	 *
 	 * @param int $document_id	идентификатор Документа
 	 * @param string $openclose	статус Документа {open|close}
@@ -1183,7 +1367,8 @@ class AVE_Document
 	{
 		global $AVE_DB;
 
-		$row = $AVE_DB->Query("
+		// Выполняем запрос к БД на получение id автора документа, чтобы проверить уровень прав доступа
+        $row = $AVE_DB->Query("
 			SELECT
 				RubrikId,
 				Redakteur
@@ -1191,28 +1376,35 @@ class AVE_Document
 			WHERE Id = '" . $document_id . "'
 		")->FetchRow();
 
-		if ( ($row->Redakteur == @$_SESSION['user_id'])
+		// Проверем, чтобы у пользователя было достаточно прав на выполнение данной операции
+        if ( ($row->Redakteur == @$_SESSION['user_id'])
 			&& (isset($_SESSION[$row->RubrikId . '_newnow']) && @$_SESSION[$row->RubrikId . '_newnow'] == 1)
 			|| @$_SESSION[$row->RubrikId . '_alles'] == 1
 			|| UGROUP == 1)
 		{
-			if ($document_id != 1 && $document_id != PAGE_NOT_FOUND_ID)
+
+            // Если это не главная страница и не страница с 404 ошибкой
+            if ($document_id != 1 && $document_id != PAGE_NOT_FOUND_ID)
 			{
-				$AVE_DB->Query("
+				// Выполянем запрос к БД на смену статуса у документа
+                $AVE_DB->Query("
 					UPDATE " . PREFIX . "_documents
 					SET DokStatus = '" . $openclose . "'
 					WHERE Id = '" . $document_id . "'
 				");
 
-				reportLog($_SESSION['user_name'] . ' - ' . (($openclose=='open') ? 'активировал' : 'деактивировал') . ' документ (' . $document_id . ')', 2, 2);
+				// Сохраняем системное сообщение в журнал
+                reportLog($_SESSION['user_name'] . ' - ' . (($openclose=='open') ? 'активировал' : 'деактивировал') . ' документ (' . $document_id . ')', 2, 2);
 			}
 		}
 
-		header('Location:index.php?do=docs&cp=' . SESSION);
+		// Выполняем обновление страницы
+        header('Location:index.php?do=docs&cp=' . SESSION);
 	}
 
 	/**
-	 * Передача в Smarty меток периода времени отображаемых в списке Документов
+	 * Метод, предназначенный для передачи в Smarty шаблонизатор меток периода времени отображаемых
+     * в списке документов
 	 *
 	 */
 	function documentTemplateTimeAssign()
@@ -1227,7 +1419,7 @@ class AVE_Document
 	}
 
 	/**
-	 * Перенос Документа в другую рубрику
+	 * Метод, предназначенный для переноса документа в другую рубрику
 	 *
 	 */
 	function documentRubricChange()
@@ -1237,18 +1429,24 @@ class AVE_Document
 		$document_id = (int)$_REQUEST['Id'];       // идентификатор документа
 		$rubric_id   = (int)$_REQUEST['RubrikId']; // идентификатор текущей рубрики
 
+        // Если в запросе пришел идентификатор новой рубрики и id документа, тогда
+        // выполняем автоматический перенос документа из одной рубрики в другую
 		if ((!empty($_POST['NewRubr'])) and (!empty($_GET['Id'])))
 		{
 			$new_rubric_id = (int)$_POST['NewRubr']; // идентификатор целевой рубрики
 
-			foreach ($_POST as $key => $value)
+			// Циклически обрабатываем данные, пришедшие в запросе методо POST
+            foreach ($_POST as $key => $value)
 			{
 				if (is_integer($key))
 				{
-					switch ($value)
+					// Определяем флаг поля
+                    switch ($value)
 					{
-						case 0:
-							$AVE_DB->Query("
+						// Если 0, тогда
+                        case 0:
+							// Выполняем запрос к БД на удаление старого поля (лишнее или не требует переноса)
+                            $AVE_DB->Query("
 								DELETE
 								FROM " . PREFIX . "_document_fields
 								WHERE DokumentId = '" . $document_id . "'
@@ -1256,8 +1454,9 @@ class AVE_Document
 							");
 							break;
 
-						case -1:
-							// информация о старом поле
+						// Если -1, тогда
+                        case -1:
+							// Выполняем запрос на получение данных для этого (старого) поля
 							$row_fd = $AVE_DB->Query("
 								SELECT
 									Titel,
@@ -1266,7 +1465,7 @@ class AVE_Document
 								WHERE Id = '" . $key . "'
 							")->FetchRow();
 
-							// последняя позиция в новой рубрике
+							// Выполняем запрос к БД и получаем последнюю позицию полей в рубрики КУДА переносим
 							$new_pos = $AVE_DB->Query("
 								SELECT rubric_position
 								FROM " . PREFIX . "_rubric_fields
@@ -1276,7 +1475,7 @@ class AVE_Document
 							")->GetCell();
 							++$new_pos;
 
-							// создаем новое поле
+							// Выполняем запрос к БД и добавляем новое поле в новую рубрику
 							$AVE_DB->Query("
 								INSERT
 								INTO " . PREFIX . "_rubric_fields
@@ -1287,14 +1486,16 @@ class AVE_Document
 									rubric_position = '" . $new_pos . "'
 							");
 
-							// добавляем запись о поле в таблицу с полями документов
-							$lastid = $AVE_DB->InsertId();
+                            $lastid = $AVE_DB->InsertId();
+
+							// Выполняем запрос к БД и добавляем запись о поле в таблицу с полями документов
 							$sql_docs = $AVE_DB->Query("
 								SELECT Id
 								FROM " . PREFIX . "_documents
 								WHERE RubrikId = '" . $new_rubric_id . "'
 							");
-							while ($row_docs = $sql_docs->FetchRow())
+
+                            while ($row_docs = $sql_docs->FetchRow())
 							{
 								$AVE_DB->Query("
 									INSERT
@@ -1307,7 +1508,7 @@ class AVE_Document
 								");
 							}
 
-							// создаем новое поле для изменяемого документа
+							// Выполняем запрос к БД и создаем новое поле для изменяемого документа
 							$AVE_DB->Query("
 								UPDATE " . PREFIX . "_document_fields
 								SET RubrikFeld = '" . $lastid . "'
@@ -1316,8 +1517,11 @@ class AVE_Document
 							");
 							break;
 
-						default:
-							$AVE_DB->Query("
+						// По умолчанию
+                        default:
+							
+                            // Выполняем запрос к БД и просто обновляем имеющиеся данные
+                            $AVE_DB->Query("
 								UPDATE " . PREFIX . "_document_fields
 								SET RubrikFeld = '" . $value . "'
 								WHERE RubrikFeld = '" . $key . "'
@@ -1328,7 +1532,7 @@ class AVE_Document
 				}
 			}
 
-			// получаем список всех полей новой рубрики
+			// Выполняем запрос к БД и получаем список всех полей у новой рубрики
 			$sql_rub = $AVE_DB->Query("
 				SELECT Id
 				FROM " . PREFIX . "_rubric_fields
@@ -1336,7 +1540,7 @@ class AVE_Document
 				ORDER BY Id ASC
 			");
 
-			// проверяем наличие нужных полей
+			// Выполняем запросы к БД на проверку наличия нужных полей.
 			while ($row_rub = $sql_rub->FetchRow())
 			{
 				$num = $AVE_DB->Query("
@@ -1347,7 +1551,7 @@ class AVE_Document
 					LIMIT 1
 				")->NumRows();
 
-				// если поля нет, тогда создадим его
+				// Если в новой рубрики требуемого поля нет, выполняем запрос к БД на добавление нового типа поля
 				if ($num != 1)
 				{
 					$AVE_DB->Query("
@@ -1361,13 +1565,15 @@ class AVE_Document
 				}
 			}
 
+            // Выполянем запрос к БД на обновление информации, в котором устанавливаем для перенесенного документа
+            // новое значение id рубрики
 			$AVE_DB->Query("
 				UPDATE " . PREFIX . "_documents
 				SET RubrikId = '" . $new_rubric_id . "'
 				WHERE Id = '" . $document_id . "'
 			");
 
-			// очищаем кэш шаблона документа
+			// Выполняем запрос к БД и очищаем кэш шаблона документа
 			$AVE_DB->Query("
 				DELETE
 				FROM " . PREFIX . "_rubric_template_cache
@@ -1376,14 +1582,14 @@ class AVE_Document
 
 			echo '<script>window.opener.location.reload(); window.close();</script>';
 		}
-		else
+		else  // Если в запросе не был указан id рубрики и id документа
 		{
-			// вывод формы смены рубрики
+			// Формируем и отображаем форму, где пользователь самостоятельно определяет перенос
 			$fields = array();
 
 			if ((!empty($_GET['NewRubr'])) and ($rubric_id != (int)$_GET['NewRubr']))
 			{
-				// выбираем все поля новой рубрики
+				// Выполняем запрос к БД  и выбираем все поля новой рубрики
 				$sql_rub = $AVE_DB->Query("
 					SELECT
 						Id,
@@ -1402,7 +1608,7 @@ class AVE_Document
 					);
 				}
 
-				// обрабатываем все поля старой рубрики
+				// Выполняем запрос к БД и выбираем все поля старой рубрики
 				$sql_old_rub = $AVE_DB->Query("
 					SELECT
 						Id,
@@ -1412,7 +1618,9 @@ class AVE_Document
 					WHERE RubrikId = '" . $rubric_id . "'
 					ORDER BY Id ASC
 				");
-				while ($row_nr = $sql_old_rub->FetchRow()) {
+
+                // Циклически обрабатываем полученные данные
+                while ($row_nr = $sql_old_rub->FetchRow()) {
 					$type = $row_nr->RubTyp;
 					$option_arr = array('0'  => $AVE_Template->get_config_vars('DOC_CHANGE_DROP_FIELD'),
 										'-1' => $AVE_Template->get_config_vars('DOC_CHANGE_CREATE_FIELD')
@@ -1433,14 +1641,15 @@ class AVE_Document
 				}
 			}
 
-			$AVE_Template->assign('fields', $fields);
+			// Формируем ряд переменых и отображаем страницу с выбором рубрики
+            $AVE_Template->assign('fields', $fields);
 			$AVE_Template->assign('formaction', 'index.php?do=docs&action=change&Id=' . $document_id . '&RubrikId=' . $rubric_id . '&pop=1&cp=' . SESSION);
 			$AVE_Template->assign('content', $AVE_Template->fetch('documents/change.tpl'));
 		}
 	}
 
 	/**
-	 * Транслитерация URL
+	 * Метод, предназначенный для формирования URL
 	 *
 	 */
 	function documentAliasCreate()
@@ -1455,7 +1664,7 @@ class AVE_Document
 	}
 
 	/**
-	 * Контроль уникальности URL
+	 * Метод, предназначенный для контроля уникальности URL
 	 *
 	 */
 	function documentAliasCheck()
@@ -1467,21 +1676,28 @@ class AVE_Document
 
 		$errors = array();
 
-		if (!empty($alias))
+		// Если указанный URL пользователем не пустой
+        if (!empty($alias))
 		{
+
+			// Проверяем, чтобы данный URL соответствовал требованиям
 			if (preg_match(TRANSLIT_URL ? '/[^a-z0-9\/-]+/' : '/[^a-zа-яёїєі0-9\/-]+/', $alias))
 			{
 				$errors[] = $AVE_Template->get_config_vars('DOC_URL_ERROR_SYMBOL');
 			}
 
-			if ($alias[0] == '/') $errors[] = $AVE_Template->get_config_vars('DOC_URL_ERROR_START');
+			// Если URL начинается с "/" - фиксируем ошибку
+            if ($alias[0] == '/') $errors[] = $AVE_Template->get_config_vars('DOC_URL_ERROR_START');
 
-			if (substr($alias, -1) == '/') $errors[] = $AVE_Template->get_config_vars('DOC_URL_ERROR_END');
+			// Если URL заканчивается на "/" - фиксируем ошибку
+            if (substr($alias, -1) == '/') $errors[] = $AVE_Template->get_config_vars('DOC_URL_ERROR_END');
 
-			$matches = preg_grep('/^(apage-\d+|artpage-\d+|page-\d+|print)$/i', explode('/', $alias));
+			// Если в URL используются слова apage-XX, artpage-XX,page-XX,print, фиксируем ошибку, где ХХ - число
+            $matches = preg_grep('/^(apage-\d+|artpage-\d+|page-\d+|print)$/i', explode('/', $alias));
 			if (!empty($matches)) $errors[] = $AVE_Template->get_config_vars('DOC_URL_ERROR_SEGMENT') . implode(', ', $matches);
 
-			if (empty($errors))
+			// Выполняем запрос к БД на получение ивсе URL и проверку на уникальность
+            if (empty($errors))
 			{
 				$alias_exist = $AVE_DB->Query("
 					SELECT 1
@@ -1495,22 +1711,26 @@ class AVE_Document
 			}
 		}
 		else
-		{
+		{  // В противном случае, если URL пустой, формируем сообщение об ошибке
 			$errors[] = $AVE_Template->get_config_vars('DOC_URL_ERROR_EMTY');
 		}
 
-		if (empty($errors))
+
+        // Если ошибок не найдено, формируем сообщение об успешной операции
+        if (empty($errors))
 		{
 			return '<font class="checkUrlOk">' . $AVE_Template->get_config_vars('DOC_URL_CHECK_OK') . '</font>';
 		}
 		else
-		{
+		{ // В противном случае формируем сообщение с ошибкой
 			return '<font class="checkUrlErr">' . implode(', ', $errors) . '</font>';
 		}
 	}
 
-	/**
-	 * Формирование прав доступа Группы пользователей на Документы определённой Рубрики
+
+
+    /**
+	 * Метод, предназначенный для формирования прав доступа Группы пользователей на Документы определённой Рубрики
 	 *
 	 * @param int $rubric_id	идентификатор Рубрики
 	 */
@@ -1518,18 +1738,24 @@ class AVE_Document
 	{
 		global $AVE_DB;
 
-		static $rubric_permissions = array();
+		// Массив прав пользователей
+        static $rubric_permissions = array();
 
-		if (isset($rubric_permissions[$rubric_id])) return;
+		// Если у нас уже имеются полученные права для данной рубрики, просто прерываем проверку
+        if (isset($rubric_permissions[$rubric_id])) return;
 
-		$sql = $AVE_DB->Query("
+
+        // Выполняем запрос к БД на получение прав для данной рубрики
+        $sql = $AVE_DB->Query("
 			SELECT
 				RubrikId,
 				Rechte
 			FROM " . PREFIX . "_document_permissions
 			WHERE BenutzerGruppe = " . UGROUP . "
 		");
-		while ($row = $sql->FetchRow())
+
+        // Циклически обрабатываем полученные данные и формируем массив прав
+        while ($row = $sql->FetchRow())
 		{
 			$rubric_permissions[$row->RubrikId] = 1;
 
@@ -1545,12 +1771,11 @@ class AVE_Document
 		}
 	}
 
-	/**
-	 *	Управление Заметками
-	 */
 
-	/**
-	 * Просмотр и Добавление Заметок к Документу
+
+
+    /**
+	 * Метод, предназначенный для просмотра и добавления Заметок к Документу
 	 *
 	 * @param int $reply	признак ответа на Заметку
 	 */
@@ -1558,13 +1783,17 @@ class AVE_Document
 	{
 		global $AVE_DB, $AVE_Template;
 
+        // Если id документа не число или 0, прерываем выполнение
 		if (!(is_numeric($document_id) && $document_id > 0)) exit;
 
-		if (isset($_REQUEST['sub']) && $_REQUEST['sub'] == 'save')
+		// Если в запросе пришел параметр на Сохранение
+        if (isset($_REQUEST['sub']) && $_REQUEST['sub'] == 'save')
 		{
-			if (!empty($_REQUEST['Kommentar']) && check_permission('docs_comments') && $_REQUEST['reply'] != 1)
+			// Если пользователь оставил комментарий и у него имеются права и это не ответ, а новая заметка, тогда
+            if (!empty($_REQUEST['Kommentar']) && check_permission('docs_comments') && $_REQUEST['reply'] != 1)
 			{
-				$AVE_DB->Query("
+				// Выполняем запрос к БД на добавление новой заметки для документа
+                $AVE_DB->Query("
 					INSERT " . PREFIX . "_document_comments
 					SET
 						DokumentId     = '" . $document_id . "',
@@ -1576,23 +1805,31 @@ class AVE_Document
 						AntwortEMail   = '" . $_SESSION['user_email'] . "'
 				");
 			}
-			header('Location:index.php?do=docs&action=comment_reply&Id=' . $document_id . '&pop=1&cp=' . SESSION);
+
+            // Выполняем обновление страницы
+            header('Location:index.php?do=docs&action=comment_reply&Id=' . $document_id . '&pop=1&cp=' . SESSION);
 		}
 
+        // Если это ответ на уже существующую заметку
 		if ($reply == 1)
 		{
 			if (isset($_REQUEST['sub']) && $_REQUEST['sub'] == 'save')
 			{
-				if (!empty($_REQUEST['Kommentar']) && check_permission('docs_comments'))
+				// Если пользователь оставил ответ и имеет на это права
+                if (!empty($_REQUEST['Kommentar']) && check_permission('docs_comments'))
 				{
-					$AntwortEMail = $AVE_DB->Query("
+
+                    // Выполняем запрос на получение e-mail адреса автора заметки
+                    $AntwortEMail = $AVE_DB->Query("
 						SELECT AntwortEMail
 						FROM  " . PREFIX . "_document_comments
 						WHERE KommentarStart = 1
 						AND DokumentId = '" . $document_id . "'
 					")->GetCell();
 
-					$AVE_DB->Query("
+					
+                    // Выполняем запрос к БД на добавление заметки в БД
+                    $AVE_DB->Query("
 						INSERT " . PREFIX . "_document_comments
 						SET
 							DokumentId     = '" . $document_id . "',
@@ -1605,7 +1842,7 @@ class AVE_Document
 					");
 				}
 
-				// Письмо автору
+				// Формируем сообщение и отправляем письмо автору, с информацией о том, что на его заметку есть ответ
 				$system_mail = get_settings('mail_from');
 				$system_mail_name = get_settings('mail_from_name');
 				$link = get_home_link() . 'index.php?do=docs&doc_id=' . $document_id;
@@ -1625,21 +1862,27 @@ class AVE_Document
 					''
 				);
 
-				header('Location:index.php?do=docs&action=comment_reply&Id=' . $document_id . '&pop=1&cp=' . SESSION);
+				// Выполняем обновление страницы
+                header('Location:index.php?do=docs&action=comment_reply&Id=' . $document_id . '&pop=1&cp=' . SESSION);
 			}
 
-			$num = $AVE_DB->Query("
+
+            // Получаем общее количество заметок для документа
+            $num = $AVE_DB->Query("
 				SELECT COUNT(*)
 				FROM " . PREFIX . "_document_comments
 				WHERE DokumentId = '" . $document_id . "'
 			")->GetCell();
 
-			$limit = 10;
+			// Определяыем лимит заметок на 1 странице и подсчитываем количество страниц
+            $limit = 10;
 			$seiten = ceil($num / $limit);
 			$start = get_current_page() * $limit - $limit;
 
 			$answers = array();
-			$sql = $AVE_DB->Query("
+
+            // Выполняем запрос к БД на получение заметок с учетом количества на 1 странцу
+            $sql = $AVE_DB->Query("
 				SELECT *
 				FROM " . PREFIX . "_document_comments
 				WHERE DokumentId = '" . $document_id . "'
@@ -1659,21 +1902,25 @@ class AVE_Document
 				AND KommentarStart = 1
 			")->FetchAssocArray();
 
-			if ($num > $limit)
+
+            // Если количество заметок превышает допустимое значение, определенное в переменной $limit, тогда
+            // формируем постраничную навигацию
+            if ($num > $limit)
 			{
 				$page_nav = " <a class=\"pnav\" href=\"index.php?do=docs&action=comment_reply&Id=" . $document_id . "&page={s}&pop=1&cp=" . SESSION . "\">{t}</a> ";
 				$page_nav = get_pagination($seiten, 'page', $page_nav);
 				$AVE_Template->assign('page_nav', $page_nav);
 			}
 
-			$AVE_Template->assign('row_a', $row_a);
+			// Передаем данные  в шаблон и отображаем страницу со списком заметок
+            $AVE_Template->assign('row_a', $row_a);
 			$AVE_Template->assign('answers', $answers);
 			$AVE_Template->assign('reply', 1);
 			$AVE_Template->assign('formaction', 'index.php?do=docs&action=comment_reply&sub=save&Id=' . $document_id . '&reply=1&cp=' . SESSION);
 			$AVE_Template->assign('content', $AVE_Template->fetch('documents/newcomment.tpl'));
 		}
 		else
-		{
+		{ // В противном случае, если заметок еще нет, открываем форму для добавление заметки
 			$AVE_Template->assign('reply', 1);
 			$AVE_Template->assign('new', 1);
 			$AVE_Template->assign('formaction', 'index.php?do=docs&action=comment&sub=save&Id=' . $document_id . '&cp=' . SESSION);
@@ -1681,8 +1928,11 @@ class AVE_Document
 		}
 	}
 
-	/**
-	 * Управление статусом дискусии
+
+
+    /**
+	 * Метод, предназначенный для управления статусами дискусии (разрешить или запретить оставлять
+     * ответы на заметки для других пользователей)
 	 *
 	 * @param int $document_id	идентификатор документа
 	 * @param int $status		статус дискусии
@@ -1691,9 +1941,12 @@ class AVE_Document
 	{
 		global $AVE_DB;
 
-		if (is_numeric($document_id) && $document_id > 0)
+		// Если id документа число и оно больше 0, тогда
+        if (is_numeric($document_id) && $document_id > 0)
 		{
-			$AVE_DB->Query("
+
+            // Выполняем запрос к БД на обновление статуса у заметок
+            $AVE_DB->Query("
 				UPDATE " . PREFIX . "_document_comments
 				SET Aktiv = '" . ($status != 1 ? 0 : 1) . "'
 				WHERE KommentarStart = 1
@@ -1701,12 +1954,15 @@ class AVE_Document
 			");
 		}
 
-		header('Location:index.php?do=docs&action=comment_reply&Id=' . $document_id . '&pop=1&cp=' . SESSION);
+		// Выполняем обновление данных
+        header('Location:index.php?do=docs&action=comment_reply&Id=' . $document_id . '&pop=1&cp=' . SESSION);
 		exit;
 	}
 
-	/**
-	 * Удаление Заметок
+
+
+    /**
+	 * Метод, предназначенный для удаление заметок
 	 *
 	 * @param int $all	признак удаления всех Заметок (1 - удалить все)
 	 */
@@ -1714,16 +1970,20 @@ class AVE_Document
 	{
 		global $AVE_DB;
 
+        // Если id документа не число или 0, прерываем выполнение
 		if (!(is_numeric($document_id) && $document_id > 0)) exit;
 
-		if ($all == 1)
+		// Если в запросе пришел параметр на полное удаление всех заметок
+        if ($all == 1)
 		{
-			$AVE_DB->Query("
+			// Выполянем запрос к БД и удалаем заметки
+            $AVE_DB->Query("
 				DELETE
 				FROM " . PREFIX . "_document_comments
 				WHERE DokumentId = '" . $document_id . "'
 			");
 
+            // Выполняем обновление страницы
 			header('Location:index.php?do=docs&action=comment&Id=' . $document_id . '&pop=1&cp=' . SESSION);
 			exit;
 		}
@@ -1731,6 +1991,7 @@ class AVE_Document
 		{
 			if (!(isset($_REQUEST['CId']) && is_numeric($_REQUEST['CId']) && $_REQUEST['CId'] > 0)) exit;
 
+            // В противном случае, выполняем запрос к БД и удаляем только ту заметку, которая была выбрана
 			$AVE_DB->Query("
 				DELETE
 				FROM " . PREFIX . "_document_comments
@@ -1738,7 +1999,8 @@ class AVE_Document
 				AND Id = '" . $_REQUEST['CId'] . "'
 			");
 
-			header('Location:index.php?do=docs&action=comment_reply&Id=' . $document_id . '&pop=1&cp=' . SESSION);
+			// Выполняем обновление страницы
+            header('Location:index.php?do=docs&action=comment_reply&Id=' . $document_id . '&pop=1&cp=' . SESSION);
 			exit;
 		}
 	}
