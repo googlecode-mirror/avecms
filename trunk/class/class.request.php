@@ -3,18 +3,17 @@
 /**
  * AVE.cms
  *
+ * Класс, предназначеный для работы с системой запросов в Панели управления
  * @package AVE.cms
  * @filesource
  */
 
-/**
- * Класс работы с системой внутренних запросов
- */
+
 class AVE_Request
 {
 
 /**
- *	СВОЙСТВА
+ *	Свойстав класса
  */
 
 	/**
@@ -25,11 +24,11 @@ class AVE_Request
 	var $_limit = 15;
 
 /**
- *	ВНУТРЕННИЕ МЕТОДЫ
+ *	Внутренние методы
  */
 
 	/**
-	 * Метод получения списка Запросов
+	 * Метод, предназначенный для получения и вывода списка Запросов
 	 *
 	 * @param boolean $pagination признак формирования постраничного списка
 	 */
@@ -39,14 +38,18 @@ class AVE_Request
 
 		$limit = '';
 
-		if ($pagination)
+		// Если используется постраничная навигация
+        if ($pagination)
 		{
-			$limit = $this->_limit;
+			// Определяем лимит записей на страницу и начало диапазона выборки
+            $limit = $this->_limit;
 			$start = get_current_page() * $limit - $limit;
 
-			$num = $AVE_DB->Query("SELECT COUNT(*) FROM " . PREFIX . "_queries")->GetCell();
+			// Получаем общее количество запросов
+            $num = $AVE_DB->Query("SELECT COUNT(*) FROM " . PREFIX . "_queries")->GetCell();
 
-			if ($num > $limit)
+			// Если количество больше, чем установленный лимит, тогда формируем постраничную навигацию
+            if ($num > $limit)
 			{
 				$page_nav = " <a class=\"pnav\" href=\"index.php?do=request&page={s}&amp;cp=" . SESSION . "\">{t}</a> ";
 				$page_nav = get_pagination(ceil($num / $limit), 'page', $page_nav);
@@ -56,6 +59,7 @@ class AVE_Request
 			$limit = $pagination ? "LIMIT " . $start . "," . $limit : '';
 		}
 
+        // Выполняем запрос к БД на получение списка запросов с учетом лимита вывода на страницу (если необходимо)
 		$items = array();
 		$sql = $AVE_DB->Query("
 			SELECT *
@@ -63,21 +67,24 @@ class AVE_Request
 			ORDER BY Titel ASC
 			" . $limit . "
 		");
-		while ($row = $sql->FetchRow())
+
+        // Формируем массив из полученных данных
+        while ($row = $sql->FetchRow())
 		{
 			$row->Autor = get_username_by_id($row->Autor);
 			array_push($items, $row);
 		}
 
-		return $items;
+		// Возвращаем массив
+        return $items;
 	}
 
 /**
- *	ВНЕШНИЕ МЕТОДЫ
+ *	Внешние методы класса
  */
 
 	/**
-	 * Метод формирования списка Запросов
+	 * Метод, предназначенный для формирования списка Запросов
 	 *
 	 */
 	function requestListFetch()
@@ -87,35 +94,48 @@ class AVE_Request
 		$AVE_Template->assign('conditions', $this->_requestListGet(false));
 	}
 
-	/**
-	 * Метод отображения списка Запросов
+
+    /**
+	 * Метод, предназначенный для отображения списка Запросов
 	 *
 	 */
 	function requestListShow()
 	{
 		global $AVE_Template;
 
+        // Получаем список запросов
 		$AVE_Template->assign('items', $this->_requestListGet());
+
+        // Передаем в шаблон и отображаем страницу со списком
 		$AVE_Template->assign('content', $AVE_Template->fetch('request/request.tpl'));
 	}
 
-	/**
-	 * Метод создания нового Запроса
+
+
+    /**
+	 * Метод, предназначенный для создания нового Запроса
 	 *
 	 */
 	function requestNew()
 	{
 		global $AVE_DB, $AVE_Template;
 
-		switch ($_REQUEST['sub'])
+		// Определяем действие пользователя
+        switch ($_REQUEST['sub'])
 		{
-			case '':
-				$AVE_Template->assign('formaction', 'index.php?do=request&amp;action=new&amp;sub=save&amp;cp=' . SESSION);
+			// Действие не определено
+            case '':
+				// Отображаем пустую форму для создания нового запроса
+                $AVE_Template->assign('formaction', 'index.php?do=request&amp;action=new&amp;sub=save&amp;cp=' . SESSION);
 				$AVE_Template->assign('content', $AVE_Template->fetch('request/form.tpl'));
 				break;
 
-			case 'save':
-				$AVE_DB->Query("
+
+            // Нажата кнопка Сохранить запрос
+            case 'save':
+
+                // Выполняем запрос к БД и сохраняем введенную пользователем информацию
+                $AVE_DB->Query("
 					INSERT " . PREFIX . "_queries
 					SET
 						RubrikId     = '" . $_REQUEST['RubrikId'] . "',
@@ -130,24 +150,31 @@ class AVE_Request
 						AscDesc      = '" . $_REQUEST['AscDesc'] . "',
 						Navi         = '" . $_REQUEST['Navi'] . "'
 				");
-				$iid = $AVE_DB->InsertId();
 
-				reportLog($_SESSION['user_name'] . ' - добавил новый запрос (' . stripslashes($_REQUEST['Titel']) . ')', 2, 2);
+                // Получаем id последней записи
+                $iid = $AVE_DB->InsertId();
 
-				if ($_REQUEST['reedit'] == 1)
+				// Сохраняем системное сообщение в журнал
+                reportLog($_SESSION['user_name'] . ' - добавил новый запрос (' . stripslashes($_REQUEST['Titel']) . ')', 2, 2);
+
+
+                // Если в запросе пришел параметр на продолжение редактирования запроса
+                if ($_REQUEST['reedit'] == 1)
 				{
-					header('Location:index.php?do=request&action=edit&Id=' . $iid . '&RubrikId=' . $_REQUEST['RubrikId'] . '&cp=' . SESSION);
+					// Выполняем переход на страницу с редактированием запроса
+                    header('Location:index.php?do=request&action=edit&Id=' . $iid . '&RubrikId=' . $_REQUEST['RubrikId'] . '&cp=' . SESSION);
 				}
 				else
 				{
-					header('Location:index.php?do=request&cp=' . SESSION);
+					// В противном случае выполняем переход к списку запросов
+                    header('Location:index.php?do=request&cp=' . SESSION);
 				}
 				exit;
 		}
 	}
 
 	/**
-	 * Метод редактирования Запроса
+	 * Метод, предназначенный для редактирования Запроса
 	 *
 	 * @param int $request_id идентификатор запроса
 	 */
@@ -155,23 +182,30 @@ class AVE_Request
 	{
 		global $AVE_DB, $AVE_Template;
 
-		switch ($_REQUEST['sub'])
+		// Определяем действие пользователя
+        switch ($_REQUEST['sub'])
 		{
-			case '':
-				$sql = $AVE_DB->Query("
+			// Если действие не определено
+            case '':
+				// Выполняем запрос к БД и получаем всю информацию о запросе
+                $sql = $AVE_DB->Query("
 					SELECT *
 					FROM " . PREFIX . "_queries
 					WHERE Id = '" . $request_id . "'
 				");
 				$row = $sql->FetchRow();
 
+                // Передаем данные в шаблон и отображаем страницу с редактированием запроса
 				$AVE_Template->assign('row', $row);
 				$AVE_Template->assign('formaction', 'index.php?do=request&amp;action=edit&amp;sub=save&amp;Id=' . $request_id . '&amp;cp=' . SESSION);
 				$AVE_Template->assign('content', $AVE_Template->fetch('request/form.tpl'));
 				break;
 
-			case 'save':
-				$AVE_DB->Query("
+
+            // Пользователь нажал кнопку Сохранить изменения
+            case 'save':
+				// Выполняем запрос к БД и обновляем имеющиеся данные
+                $AVE_DB->Query("
 					UPDATE " . PREFIX . "_queries
 					SET
 						Titel        = '" . $_REQUEST['Titel'] . "',
@@ -186,14 +220,18 @@ class AVE_Request
 					WHERE
 						Id = '" . $request_id . "'
 				");
-				reportLog($_SESSION['user_name'] . ' - отредактировал запрос (' . stripslashes($_REQUEST['Titel']) . ')', 2, 2);
 
-				if ($_REQUEST['pop'] == 1)
+                // Сохраняем системное сообщение в журнал
+                reportLog($_SESSION['user_name'] . ' - отредактировал запрос (' . stripslashes($_REQUEST['Titel']) . ')', 2, 2);
+
+				// Если редактирование было в отдельном окне, закрываем его
+                if ($_REQUEST['pop'] == 1)
 				{
 					echo '<script>self.close();</script>';
 				}
 				else
 				{
+                    // В противном случае выполняем переход к списку запросов
 					header('Location:index.php?do=request&cp=' . SESSION);
 					exit;
 				}
@@ -202,7 +240,7 @@ class AVE_Request
 	}
 
 	/**
-	 * Метод создания копии Запроса
+	 * Метод, предназначенный для создания копии Запроса
 	 *
 	 * @param int $request_id идентификатор запроса
 	 */
@@ -210,13 +248,16 @@ class AVE_Request
 	{
 		global $AVE_DB;
 
-		$row = $AVE_DB->Query("
+		// Выполняем запрос к БД на получение информации о копиреумом запросе
+        $row = $AVE_DB->Query("
 			SELECT *
 			FROM " . PREFIX . "_queries
 			WHERE Id = '" . $request_id . "'
 		")->FetchRow();
 
-		$AVE_DB->Query("
+
+        // Выполняем запрос к БД на добавление нового запроса на основании полученных ранее данных
+        $AVE_DB->Query("
 			INSERT " . PREFIX . "_queries
 			SET
 				RubrikId     = '" . $row->RubrikId . "',
@@ -231,19 +272,26 @@ class AVE_Request
 				AscDesc      = '" . $row->AscDesc . "',
 				Navi         = '" . $row->Navi . "'
 		");
-		$iid = $AVE_DB->InsertId();
 
-		reportLog($_SESSION['user_name'] . ' - создал копию запроса (' . $request_id . ')', 2, 2);
+        // Получаем id последней записи
+        $iid = $AVE_DB->InsertId();
 
-		$sql = $AVE_DB->Query("
+		// Сохраняем системное сообщение в журнал
+        reportLog($_SESSION['user_name'] . ' - создал копию запроса (' . $request_id . ')', 2, 2);
+
+
+        // Выполняем запрос к БД и получаем все условия запроса для копируемого запроса
+        $sql = $AVE_DB->Query("
 			SELECT *
 			FROM " . PREFIX . "_queries_conditions
 			WHERE Abfrage = '" . $request_id . "'
 		");
 
-		while ($row_ak = $sql->FetchRow())
+		// Обрабатываем полученные данные и
+        while ($row_ak = $sql->FetchRow())
 		{
-			$AVE_DB->Query("
+			// Выполняем запрос к БД на добавление условий для нового, скопированного запроса
+            $AVE_DB->Query("
 				INSERT " . PREFIX . "_queries_conditions
 				SET
 					Abfrage  = '" . $iid . "',
@@ -254,12 +302,16 @@ class AVE_Request
 			");
 		}
 
-		header('Location:index.php?do=request&cp=' . SESSION);
+
+        // Выполянем переход к списку запросов
+        header('Location:index.php?do=request&cp=' . SESSION);
 		exit;
 	}
 
-	/**
-	 * Метод удаления запроса
+
+
+    /**
+	 * Метод, предназначенный для удаления запроса
 	 *
 	 * @param int $request_id идентификатор запроса
 	 */
@@ -267,25 +319,31 @@ class AVE_Request
 	{
 		global $AVE_DB;
 
-		$AVE_DB->Query("
+		// Выполняем запрос к БД на удаление общей информации о запросе
+        $AVE_DB->Query("
 			DELETE
 			FROM " . PREFIX . "_queries
 			WHERE Id = '" . $request_id . "'
 		");
-		$AVE_DB->Query("
+
+        // Выполняем запрос к БД на удаление условий запроса
+        $AVE_DB->Query("
 			DELETE
 			FROM " . PREFIX . "_queries_conditions
 			WHERE Abfrage = '" . $request_id . "'
 		");
 
-		reportLog($_SESSION['user_name'] . ' - удалил запрос (' . $request_id . ')', 2, 2);
+		// Сохраняем системное сообщение в журнал
+        reportLog($_SESSION['user_name'] . ' - удалил запрос (' . $request_id . ')', 2, 2);
 
-		header('Location:index.php?do=request&cp=' . SESSION);
+
+        // Выполянем переход к списку запросов
+        header('Location:index.php?do=request&cp=' . SESSION);
 		exit;
 	}
 
 	/**
-	 * Метод редактирования условий Запроса
+	 * Метод, предназначенный для редактирования условий Запроса
 	 *
 	 * @param int $request_id идентификатор запроса
 	 */
@@ -293,48 +351,66 @@ class AVE_Request
 	{
 		global $AVE_DB, $AVE_Template;
 
-		switch ($_REQUEST['sub'])
+		// Определяем действие пользователя
+        switch ($_REQUEST['sub'])
 		{
-			case '':
+			// Если действие не определено
+            case '':
 				$felder = array();
-				$sql = $AVE_DB->Query("
+
+                // Выполняем запрос к БД и получаем список полей у той рубрики, к которой относится данный запрос
+                $sql = $AVE_DB->Query("
 					SELECT *
 					FROM " . PREFIX . "_rubric_fields
 					WHERE RubrikId = '" . $_REQUEST['RubrikId'] . "'
 				");
-				while ($row = $sql->FetchRow())
+
+                // Обрабатываем полученные данные и формируем массив
+                while ($row = $sql->FetchRow())
 				{
 					array_push($felder, $row);
 				}
 
 				$afkonditionen = array();
-				$sql = $AVE_DB->Query("
+				
+                // Выполняем запрос к БД и получаем условия запроса
+                $sql = $AVE_DB->Query("
 					SELECT *
 					FROM " . PREFIX . "_queries_conditions
 					WHERE Abfrage = '" . $request_id . "'
 				");
-				while ($row = $sql->FetchRow())
+
+                // Обрабатываем полученные данные и формируем массив
+                while ($row = $sql->FetchRow())
 				{
 					array_push($afkonditionen, $row);
 				}
 
-				$titel = $AVE_DB->Query("
+				// Выполняем запрос к БД и получаем название запроса
+                $titel = $AVE_DB->Query("
 					SELECT Titel
 					FROM " . PREFIX . "_queries
 					WHERE id = '" . $request_id . "'
 					LIMIT 1
 				")->GetCell();
 
-				$AVE_Template->assign('QureyName', $titel);
+
+                // Передаем данные в шаблон и отображаем страницу с редактированием условий
+                $AVE_Template->assign('QureyName', $titel);
 				$AVE_Template->assign('felder', $felder);
 				$AVE_Template->assign('afkonditionen', $afkonditionen);
 				$AVE_Template->assign('content', $AVE_Template->fetch('request/conditions.tpl'));
 				break;
 
-			case 'save':
-				if (!empty($_POST['Wert_Neu']))
+
+            // Если пользователь нажал кнопку Сохранить изменения
+            case 'save':
+
+                // Если пользователь добавил новое условие
+                if (!empty($_POST['Wert_Neu']))
 				{
-					$AVE_DB->Query("
+					// Выполняем запрос к БД на добавление нового условия
+                    $AVE_DB->Query("
 						INSERT " . PREFIX . "_queries_conditions
 						SET
 							Abfrage  = '" . $request_id . "',
@@ -344,18 +420,23 @@ class AVE_Request
 							Oper     = '" . $_POST['Oper_Neu'] . "'
 					");
 
-					reportLog($_SESSION['user_name'] . ' - добавил условие запроса (' . $request_id . ')', 2, 2);
+					// Сохраняем системное сообщение в журнал
+                    reportLog($_SESSION['user_name'] . ' - добавил условие запроса (' . $request_id . ')', 2, 2);
 				}
 
-				if (isset($_POST['Feld']) && is_array($_POST['Feld']))
+
+                // Если существует хотя бы одно условие, тогда
+                if (isset($_POST['Feld']) && is_array($_POST['Feld']))
 				{
 					$condition_edited = false;
 
-					foreach ($_POST['Feld'] as $condition_id => $val)
+					// Обрабатываем данные полей
+                    foreach ($_POST['Feld'] as $condition_id => $val)
 					{
 						if (!empty($_POST['Wert'][$condition_id]))
 						{
-							$AVE_DB->Query("
+							// Выполняем запрос к БД на обновление информации об условиях
+                            $AVE_DB->Query("
 								UPDATE " . PREFIX . "_queries_conditions
 								SET
 									Abfrage  = '" . $request_id . "',
@@ -371,21 +452,27 @@ class AVE_Request
 						}
 					}
 
-					if ($condition_edited) reportLog($_SESSION['user_name'] . ' - изменил условия запроса (' . $request_id . ')', 2, 2);
+					// Если изменения были, сохраняем системное сообщение в журнал
+                    if ($condition_edited) reportLog($_SESSION['user_name'] . ' - изменил условия запроса (' . $request_id . ')', 2, 2);
 				}
 
-				if (isset($_POST['del']) && is_array($_POST['del']))
+
+                // Если некоторые из условий были помечены на удаление
+                if (isset($_POST['del']) && is_array($_POST['del']))
 				{
-					foreach ($_POST['del'] as $condition_id => $val)
+					// Обрабатываем все поля помеченные на удаление
+                    foreach ($_POST['del'] as $condition_id => $val)
 					{
-						$AVE_DB->Query("
+						// Выполняем запрос к БД на удаление условий
+                        $AVE_DB->Query("
 							DELETE
 							FROM " . PREFIX . "_queries_conditions
 							WHERE Id = '" . $condition_id . "'
 						");
 					}
 
-					reportLog($_SESSION['user_name'] . ' - удалил условия запроса (' . $request_id . ')', 2, 2);
+					// Сохраняем системное сообщение в журнал
+                    reportLog($_SESSION['user_name'] . ' - удалил условия запроса (' . $request_id . ')', 2, 2);
 				}
 
 				// Нет смысла каждый раз формировать SQL-запрос с условиями Запроса
@@ -393,7 +480,8 @@ class AVE_Request
 				require(BASE_DIR . '/functions/func.parserequest.php');
 				request_get_condition_sql_string($request_id);
 
-				header('Location:index.php?do=request&action=konditionen&RubrikId=' . $_REQUEST['RubrikId'] . '&Id=' . $request_id . '&pop=1&cp=' . SESSION);
+				// Выполняем обновление страницы
+                header('Location:index.php?do=request&action=konditionen&RubrikId=' . $_REQUEST['RubrikId'] . '&Id=' . $request_id . '&pop=1&cp=' . SESSION);
 				exit;
 		}
 	}
