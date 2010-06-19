@@ -1,0 +1,22 @@
+Index: class.banner.php
+===================================================================
+--- class.banner.php	(revision 65)
++++ class.banner.php	(working copy)
+@@ -441,7 +441,16 @@
+ 				}
+ 
+ 				foreach ($_POST['del'] as $banner_category_id => $del)
+-				{
++				{   $row = $AVE_DB->Query("
++		            	SELECT
++				        banner_file_name,
++			         	banner_name
++			            FROM " . PREFIX . "_modul_banners
++		            	WHERE banner_category_id = '" . $banner_category_id . "'
++	            	")->FetchRow();
++
++		        @unlink(BASE_DIR . '/modules/' . BANNER_DIR . '/files/' . $row->banner_file_name);
++		        
+ 					$AVE_DB->Query("
+ 						DELETE
+ 						FROM " . PREFIX . "_modul_banners
