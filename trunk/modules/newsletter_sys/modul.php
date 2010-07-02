@@ -20,7 +20,7 @@ if (defined('ACP'))
     $modul['CpPHPTag'] = null;
 }
 
-if (defined('ACP') && isset($_REQUEST['module']) && $_REQUEST['module'] == 'newsletter_sys')
+if (defined('ACP') && (isset($_REQUEST['mod']) && $_REQUEST['mod'] == 'newsletter_sys') || (isset($_REQUEST['module']) && $_REQUEST['module'] == 'newsletter_sys'))
 {
 	require_once(BASE_DIR . '/modules/newsletter_sys/class.newsletter_admin.php');
 	$newsletter = new systemNewsletter;
