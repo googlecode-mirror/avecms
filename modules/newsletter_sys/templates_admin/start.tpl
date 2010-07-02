@@ -6,7 +6,7 @@
 
 <div class="infobox">
 	<strong>{#SNL_SENDING_LIST#}</strong> |
-	<a href="javascript:void(0);" onclick="window.open('index.php?do=modules&amp;action=modedit&amp;module=newsletter_sys&amp;moduleaction=new&amp;cp={$sess}&pop=1','newnl','top=0,left=0,width=850,height=750,scrollbars=1,resizable=1');">{#SNL_SEND_NEW#}</a>
+	<a href="javascript:void(0);" onclick="window.open('index.php?do=modules&amp;action=modedit&amp;mod=newsletter_sys&amp;moduleaction=new&amp;cp={$sess}&pop=1','newnl','top=0,left=0,width=850,height=750,scrollbars=1,resizable=1');">{#SNL_SEND_NEW#}</a>
 </div><br />
 
 <div class="infobox">
