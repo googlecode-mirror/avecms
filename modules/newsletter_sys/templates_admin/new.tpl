@@ -45,7 +45,7 @@ function check_nl() {ldelim}
 	<div class="HeaderText">{#SNL_NEW_INFO#}</div>
 </div><br>
 
-<form onsubmit="return check_nl();" action="index.php?do=modules&action=modedit&module=newsletter_sys&moduleaction=new&cp={$sess}&sub=send&pop=1" method="post" enctype="multipart/form-data">
+<form onsubmit="return check_nl();" action="index.php?do=modules&action=modedit&mod=newsletter_sys&moduleaction=new&cp={$sess}&sub=send&pop=1" method="post" enctype="multipart/form-data">
 	<table width="100%" border="0" cellpadding="8" cellspacing="1" class="tableborder">
 		<col width="220" />
 		<tr>
