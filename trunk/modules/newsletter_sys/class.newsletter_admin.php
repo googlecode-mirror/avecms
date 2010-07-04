@@ -222,7 +222,7 @@ class systemNewsletter
 
 						$AVE_Template->assign('prozent', $prozent);
 						$AVE_Template->assign('dotcount', str_repeat('.',$count));
-						echo '<meta http-equiv="Refresh" content="0;URL=index.php?do=modules&action=modedit&module=newsletter_sys&moduleaction=new&cp=', SESSION, '&sub=send&pop=1&count=', $count, '&g=', $g, '&countall=', $ca, (($_REQUEST['type'] == 'html') ? '' : '&type=html' ), '" />';
+						echo '<meta http-equiv="Refresh" content="0;URL=index.php?do=modules&action=modedit&mod=newsletter_sys&moduleaction=new&cp=', SESSION, '&sub=send&pop=1&count=', $count, '&g=', $g, '&countall=', $ca, (($_REQUEST['type'] == 'html') ? '' : '&type=html' ), '" />';
 						$tpl_out = "progress.tpl";
 					}
 					else
