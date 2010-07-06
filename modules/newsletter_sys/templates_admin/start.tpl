@@ -6,7 +6,7 @@
 	<a href="javascript:void(0);" onclick="window.open('index.php?do=modules&amp;action=modedit&amp;mod=newsletter_sys&amp;moduleaction=new&amp;cp={$sess}&pop=1','newnl','top=0,left=0,width=850,height=750,scrollbars=1,resizable=1');">{#SNL_SEND_NEW#}</a>
 </div><br />
 
-<form method="post" action="index.php?do=modules&action=modedit&module=newsletter_sys&moduleaction=delete&cp=$sess">
+<form method="post" action="index.php?do=modules&action=modedit&mod=newsletter_sys&moduleaction=delete&cp=$sess">
 	{if $smarty.request.file_not_found==1}
 		<br />
 		<div class="infobox">{#SNL_FILE_NOT_FOUND#}</div><br />
@@ -61,7 +61,7 @@
 <br /><br />
 
 <div class="infobox">
-	<form method="post" action="index.php?do=modules&action=modedit&module=newsletter_sys&moduleaction=1&cp=$sess">
+	<form method="post" action="index.php?do=modules&action=modedit&mod=newsletter_sys&moduleaction=1&cp=$sess">
 		<input name="q" type="text" value="{$smarty.request.q|escape}" size="40" />
 		<input type="submit" class="button" value="{#SNL_BUTTON_SEARCH#}" />
 	</form>

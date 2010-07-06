@@ -55,7 +55,7 @@ class systemNewsletter
 
 		if ($num > $limit)
 		{
-			$page_nav = " <a class=\"pnav\" href=\"index.php?do=modules&action=modedit&module=newsletter_sys&moduleaction=1" . $nav_string . "&page={s}&cp=" . SESSION . "\">{t}</a> ";
+			$page_nav = " <a class=\"pnav\" href=\"index.php?do=modules&action=modedit&mod=newsletter_sys&moduleaction=1" . $nav_string . "&page={s}&cp=" . SESSION . "\">{t}</a> ";
 			$page_nav = get_pagination($pages, 'page', $page_nav);
 			$AVE_Template->assign('page_nav', $page_nav);
 		}
@@ -76,7 +76,7 @@ class systemNewsletter
 				WHERE id = '". $id ."'
 			");
 		}
-		header("Location:index.php?do=modules&action=modedit&module=newsletter_sys&moduleaction=1&cp=" . SESSION);
+		header("Location:index.php?do=modules&action=modedit&mod=newsletter_sys&moduleaction=1&cp=" . SESSION);
 		exit;
 	}
 
@@ -126,7 +126,7 @@ class systemNewsletter
 			{
 				case 'send':
 					$gruppen = '';
-					$count = (!empty($_REQUEST['count'])) ? (int)$_REQUEST['count'] : 0;
+					$count = (isset($_REQUEST['count']) && $_REQUEST['count'] != '') ? $_REQUEST['count'] : 0;
 
 					if (isset($_REQUEST['g']))
 					{
@@ -174,18 +174,18 @@ class systemNewsletter
 						$c_all = $AVE_DB->Query("
 							SELECT Benutzergruppe
 							FROM " . PREFIX . "_users
-							WHERE Benutzergruppe = '" . $gruppen . "'
+							WHERE Benutzergruppe = $gruppen
 						")->NumRows();
 					}
 
+					
 					$c = $AVE_DB->Query("
-						SELECT Benutzergruppe
+						SELECT Id
 						FROM " . PREFIX . "_users
-						WHERE Benutzergruppe = '" . $gruppen . "'
-						LIMIT " . $count . "," . $steps
+						WHERE Benutzergruppe = $gruppen 
+						LIMIT " . $count . " , " . $steps
 					)->NumRows();
-
-
+					
 					if ($c >= 1)
 					{
 						$sql = $AVE_DB->Query("
@@ -194,13 +194,13 @@ class systemNewsletter
 								Nachname,
 								Email
 							FROM " . PREFIX . "_users
-							WHERE Benutzergruppe = '" . $gruppen . "'
+							WHERE Benutzergruppe =  $gruppen
 							LIMIT " . $count . "," . $steps
 						);
 						while ($row = $sql->FetchRow())
 						{
 							$nl_text = $_SESSION['nl_text'];
-							$html_mode = ($_REQUEST['type'] == 'html' || $_REQUEST['html'] == 1) ? '1' : '';
+							$html_mode = ($_REQUEST['type'] == 'html' || @$_REQUEST['html'] == 1) ? '1' : '';
 							$nl_text = str_replace('%%USER%%', $row->Nachname . ' ' . $row->Vorname, $nl_text);
 							send_mail(
 								$row->Email,
@@ -222,7 +222,7 @@ class systemNewsletter
 
 						$AVE_Template->assign('prozent', $prozent);
 						$AVE_Template->assign('dotcount', str_repeat('.',$count));
-						echo '<meta http-equiv="Refresh" content="0;URL=index.php?do=modules&action=modedit&mod=newsletter_sys&moduleaction=new&cp=', SESSION, '&sub=send&pop=1&count=', $count, '&g=', $g, '&countall=', $ca, (($_REQUEST['type'] == 'html') ? '' : '&type=html' ), '" />';
+						echo '<meta http-equiv="Refresh" content="0;URL=index.php?do=modules&action=modedit&mod=newsletter_sys&moduleaction=new&cp='. SESSION. '&sub=send&pop=1&count='. $count. '&g='. $g. '&countall='. $ca. (($_REQUEST['type'] == 'html') ? '' : '&type=html' ). '" />';
 						$tpl_out = "progress.tpl";
 					}
 					else
@@ -234,7 +234,7 @@ class systemNewsletter
 								id        = '',
 								sender    = '" . $nl_from . "',
 								send_date = '" . time() . "',
-								format    = '" . (($_REQUEST['type'] == 'html' || $_REQUEST['html'] == 1) ? 'html' : 'text') . "',
+								format    = '" . (($_REQUEST['type'] == 'html' || @$_REQUEST['html'] == 1) ? 'html' : 'text') . "',
 								title     = '" . $nl_titel . "',
 								message   = '" . $nl_text . "',
 								groups    = '" . $gruppen_db. "',
@@ -320,7 +320,7 @@ class systemNewsletter
 		if (!file_exists(BASE_DIR . '/attachments/' . $file))
 		{
 			$page = !empty($_REQUEST['page']) ? '&page=' . $_REQUEST['page'] : '';
-			header("Location:index.php?do=modules&action=modedit&module=newsletter_sys&moduleaction=1" . $page . "&file_not_found=1&cp=" . SESSION);
+			header("Location:index.php?do=modules&action=modedit&mod=newsletter_sys&moduleaction=1" . $page . "&file_not_found=1&cp=" . SESSION);
 			exit;
 		}
 		@ob_start();
