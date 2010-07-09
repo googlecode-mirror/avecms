@@ -43,7 +43,7 @@ if (defined('ACP')
 	if (defined('THEME_FOLDER')) $AVE_Template->assign('theme_folder', THEME_FOLDER);
 	$_REQUEST['action'] = empty($_REQUEST['action']) ? 'overview' : $_REQUEST['action'];
 
-	$tpl_dir   = BASE_DIR . '/modules/newsletter/templates_admin/';
+	$tpl_dir   = BASE_DIR . '/modules/newsletter/templates/';
 	$lang_file = BASE_DIR . '/modules/newsletter/lang/' . $_SESSION['admin_language'] . '.txt';
 
 	$AVE_Template->config_load($lang_file, 'admin');
