@@ -20,13 +20,13 @@
     <td width="100">
 <select style="width:160px" name="KatId[{$ss->Id}]">
 {foreach from=$ProductCategs item=pc}
-<option value="{$pc->Id}" {if $pc->Elter == 0}style="font-weight:bold"{/if} {if $pc->Id==$ss->KatId}selected="selected"{/if}>{$pc->visible_title}</option>
+<option value="{$pc->Id}" {if $pc->parent_id == 0}style="font-weight:bold"{/if} {if $pc->Id==$ss->KatId}selected="selected"{/if}>{$pc->visible_title}</option>
 {/foreach}
 </select>
 	</td>
     <td width="100">
-     <input type="radio" name="Aktiv[{$ss->Id}]" value="1" {if $ss->Aktiv=='1'}checked{/if}> {#Yes#}
-    <input type="radio" name="Aktiv[{$ss->Id}]" value="0" {if $ss->Aktiv=='0'}checked{/if}> {#No#}	</td>
+     <input type="radio" name="status[{$ss->Id}]" value="1" {if $ss->status=='1'}checked{/if}> {#Yes#}
+    <input type="radio" name="status[{$ss->Id}]" value="0" {if $ss->status=='0'}checked{/if}> {#No#}	</td>
 	<td>
 	<a href="javascript:void(0);" onclick="cp_pop('index.php?do=modules&action=modedit&mod=shop&moduleaction=edit_variants_category&cp={$sess}&pop=1&Id={$ss->Id}','800','550','1','shopshipper');">{#EditDescr#}</a>
 	|
@@ -52,7 +52,7 @@
  <td class="first">
 <select style="width:160px" name="KatId">
 {foreach from=$ProductCategs item=pc}
-<option value="{$pc->Id}" {if $pc->Elter == 0}style="font-weight:bold"{/if} {if $pc->Id==$smarty.post.product_categ}selected="selected"{/if}>{$pc->visible_title}</option>
+<option value="{$pc->Id}" {if $pc->parent_id == 0}style="font-weight:bold"{/if} {if $pc->Id==$smarty.post.product_categ}selected="selected"{/if}>{$pc->visible_title}</option>
 {/foreach}
 </select>
 <input type="submit" class="button" value="{#ButtonSave#}" />

@@ -66,7 +66,7 @@
 					<select class="mod_shop_inputfields" style="width:150px" name="product_categ" id="pc">
 						<option>{#ProductCategsAll#}</option>
 						{foreach from=$ProductCategs item=pc}
-							<option value="{$pc->Id}"{if $pc->Elter == 0} style="font-weight:bold"{/if}{if $pc->Id==$smarty.post.product_categ} selected="selected"{/if}>{$pc->visible_title}</option>
+							<option value="{$pc->Id}"{if $pc->parent_id == 0} style="font-weight:bold"{/if}{if $pc->Id==$smarty.post.product_categ} selected="selected"{/if}>{$pc->visible_title}</option>
 						{/foreach}
 					</select>
 				</td>
@@ -152,7 +152,7 @@
 				</td>
 
 				<td>
-					{if $i->Aktiv==1}
+					{if $i->status==1}
 						<a title="{#ProductEdit#}" href="javascript:void(0);" onclick="cp_pop('index.php?do=modules&action=modedit&mod=shop&moduleaction=edit_product&cp={$sess}&pop=1&Id={$i->Id}','980','740','1','edit_product');">{$i->ArtName|truncate:45|stripslashes|escape}</a>
 					{else}
 						<span style="text-decoration:line-through">{$i->ArtName|truncate:45|stripslashes}</span>
@@ -176,7 +176,7 @@
 				<td width="100">
 					<select name="KatId[{$i->Id}]">
 						{foreach from=$ProductCategs item=pc}
-							<option value="{$pc->Id}" {if $pc->Elter == 0}style="font-weight:bold"{/if} {if $pc->Id==$i->KatId}selected="selected"{/if}>{$pc->visible_title}</option>
+							<option value="{$pc->Id}" {if $pc->parent_id == 0}style="font-weight:bold"{/if} {if $pc->Id==$i->KatId}selected="selected"{/if}>{$pc->visible_title}</option>
 						{/foreach}
 					</select>
 				</td>

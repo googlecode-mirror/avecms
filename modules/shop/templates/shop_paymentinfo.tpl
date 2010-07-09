@@ -9,7 +9,7 @@
 
 <body id="body_popup">
 	<h1>{$row->Name|stripslashes}</h1><br />
-	{$row->Beschreibung|stripslashes}<br />
+	{$row->description|stripslashes}<br />
 	<br />
 	<div align="center">
 		<input class="button" type="button" onclick="window.close();" value="{#WindowClose#}" />

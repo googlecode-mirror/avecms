@@ -8,6 +8,12 @@
  * @filesource
  */
 
+@error_reporting(E_ALL | E_STRICT);
+@ini_set('display_errors', true);
+@ini_set('html_errors', true);
+@ini_set('error_reporting', E_ALL | E_STRICT);
+@date_default_timezone_set('Europe/Moscow');
+
 ob_start();
 
 define('BASE_DIR', str_replace("\\", "/", substr(dirname(__FILE__), 0, -6)));
@@ -349,7 +355,7 @@ if ($_REQUEST['action']=='list' || $_REQUEST['done']==1)
 	$bfiles = array();
 	while (list($key, $val) = @each($elem['dir']))
 	{
-		unset($row);
+		$row = new stdClass();
 		$row->fileopen = $_REQUEST['typ'] . "&amp;cpengine=" . SESSION . "&amp;dir=" . $dir . $val . "/&amp;action=list";
 		$row->val = $val;
 		array_push($bfiles, $row);
@@ -379,6 +385,7 @@ if ($_REQUEST['action']=='list' || $_REQUEST['done']==1)
 
 		$val_allowed = substr($val, -4);
 
+		$row = new stdClass();
 		$row->gifends = (file_exists($tpl_dir . '/images/mediapool/' . $endg . '.gif')) ? $endg : 'attach';
 		$row->gifend = $row->gifends;
 		$row->datsize = @round(@filesize('../uploads' . $dir . $val)/1024, 2);

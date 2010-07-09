@@ -43,7 +43,7 @@
 	</tr>
 
 	{foreach from=$installed_modules item=module}
-		{if $module->permission}
+		{if $module->mod_permission}
 			<tr style="background-color: #eff3eb;" onmouseover="this.style.backgroundColor='#dae0d8';" onmouseout="this.style.backgroundColor='#eff3eb';" id="table_rows">
 				<td align="center">
 					<a title="<b>{$module->name}</b><br>{$module->info|escape|default:''}" href="javascript:void(0);" style="cursor:help;">
@@ -148,7 +148,7 @@
 	</tr>
 
 	{foreach from=$not_installed_modules item=module}
-		{if $module->permission}
+		{if $module->mod_permission}
 			<tr style="background-color: #eff3eb;" onmouseover="this.style.backgroundColor='#dae0d8';" onmouseout="this.style.backgroundColor='#eff3eb';" id="table_rows">
 				<td align="center">
 					<a title="{$module->name} :: {$module->info|escape|default:''}" href="javascript:void(0);" style="cursor: help;">

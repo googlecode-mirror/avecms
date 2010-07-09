@@ -14,7 +14,7 @@ if (!defined('ACP'))
 	exit;
 }
 
-if (!check_permission('gen_settings')) define('NOPERM', 1);
+check_permission_acp('dbactions');
 
 $AVE_Template->config_load(BASE_DIR . '/admin/lang/' . $_SESSION['admin_language'] . '/dbactions.txt', 'db');
 

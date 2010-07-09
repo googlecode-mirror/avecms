@@ -103,13 +103,7 @@ class AVE_Logs
 		$datname = 'system_log_' . date('dmyhis', time()) . '.csv';
 
 		$separator = ';';
-		$enclosed = "\"";
-		$cutter = '\r\n';
-
-		$cutter = str_replace('\\r', '\015', $cutter);
-		$cutter = str_replace('\\n', '\012', $cutter);
-		$cutter = str_replace('\\t', '\011', $cutter);
-
+		$enclosed = '"';
 
         // Выполняем запрос к БД на получение списка всех системных сообщений
         $sql = $AVE_DB->Query("SELECT *
@@ -122,18 +116,17 @@ class AVE_Logs
 		{
 			$datstring .= $enclosed . $sql->FieldName($it) . $enclosed . $separator;
 		}
-		$datstring .= $cutter;
+		$datstring .= PHP_EOL;
 
 		// Циклически обрабатываем данные и формируем CSV файл с учетом указаны выше параметров
         while ($row = $sql->FetchRow())
 		{
 			foreach ($row as $key => $val)
 			{
-				$val = str_replace("\r\n", "\n", $val);
-				$val = ($key=='Zeit') ? date('d-m-Y, H:i:s', $row->Zeit) : $val;
+				$val = ($key=='log_time') ? date('d-m-Y, H:i:s', $row->log_time) : $val;
 				$datstring .= ($val == '') ? $separator : $enclosed . stripslashes($val) . $enclosed . $separator;
 			}
-			$datstring .= $cutter;
+			$datstring .= PHP_EOL;
 		}
 
 		// Определяем заголовки документа
@@ -147,7 +140,7 @@ class AVE_Logs
 		// Выводим данные
         echo $datstring;
 
-		// Сохраняем системное сообщение с журнал
+		// Сохраняем системное сообщение в журнал
         reportLog($_SESSION['user_name'] . ' - экспортировал Журнал событий', 2, 2);
 
 		exit;

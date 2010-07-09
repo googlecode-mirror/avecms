@@ -3,30 +3,30 @@
 if (!defined('USER_IMPORT')) exit;
 
 $csv_available_fields = array(
-	'Id'             => $GLOBALS['config_vars']['UserImport_Id'],
-	'Kennwort'       => $GLOBALS['config_vars']['UserImport_Kennwort'],
-	'Email'          => $GLOBALS['config_vars']['UserImport_Email'],
-	'Strasse'        => $GLOBALS['config_vars']['UserImport_Strasse'],
-	'HausNr'         => $GLOBALS['config_vars']['UserImport_HausNr'],
-	'Postleitzahl'   => $GLOBALS['config_vars']['UserImport_Postleitzahl'],
-	'city'           => $GLOBALS['config_vars']['UserImport_City'],
-	'Telefon'        => $GLOBALS['config_vars']['UserImport_Telefon'],
-	'Telefax'        => $GLOBALS['config_vars']['UserImport_Telefax'],
-	'Bemerkungen'    => $GLOBALS['config_vars']['UserImport_Bemerkungen'],
-	'Vorname'        => $GLOBALS['config_vars']['UserImport_Vorname'],
-	'Nachname'       => $GLOBALS['config_vars']['UserImport_Nachname'],
-	'UserName'       => $GLOBALS['config_vars']['UserImport_UserName'],
-	'Benutzergruppe' => $GLOBALS['config_vars']['UserImport_Benutzergruppe'],
-	'Registriert'    => $GLOBALS['config_vars']['UserImport_Registriert'],
-	'Status'         => $GLOBALS['config_vars']['UserImport_Status'],
-	'ZuletztGesehen' => $GLOBALS['config_vars']['UserImport_ZuletztGesehen'],
-	'Land'           => $GLOBALS['config_vars']['UserImport_Land'],
-	'GebTag'         => $GLOBALS['config_vars']['UserImport_GebTag'],
-	'emc'            => $GLOBALS['config_vars']['UserImport_emc'],
-	'IpReg'          => $GLOBALS['config_vars']['UserImport_IpReg'],
-	'new_pass'       => $GLOBALS['config_vars']['UserImport_newPass'],
-	'Firma'          => $GLOBALS['config_vars']['UserImport_Firma'],
-	'UStPflichtig'   => $GLOBALS['config_vars']['UserImport_UStPflichtig']
+	'Id'          => $GLOBALS['config_vars']['UserImport_Id'],
+	'password'    => $GLOBALS['config_vars']['UserImport_Kennwort'],
+	'email'       => $GLOBALS['config_vars']['UserImport_Email'],
+	'street'      => $GLOBALS['config_vars']['UserImport_Strasse'],
+	'street_nr'   => $GLOBALS['config_vars']['UserImport_HausNr'],
+	'zipcode'     => $GLOBALS['config_vars']['UserImport_Postleitzahl'],
+	'city'        => $GLOBALS['config_vars']['UserImport_City'],
+	'phone'       => $GLOBALS['config_vars']['UserImport_Telefon'],
+	'telefax'     => $GLOBALS['config_vars']['UserImport_Telefax'],
+	'description' => $GLOBALS['config_vars']['UserImport_Bemerkungen'],
+	'firstname'   => $GLOBALS['config_vars']['UserImport_Vorname'],
+	'lastname'    => $GLOBALS['config_vars']['UserImport_Nachname'],
+	'user_name'   => $GLOBALS['config_vars']['UserImport_UserName'],
+	'user_group'  => $GLOBALS['config_vars']['UserImport_Benutzergruppe'],
+	'reg_time'    => $GLOBALS['config_vars']['UserImport_Registriert'],
+	'Status'      => $GLOBALS['config_vars']['UserImport_Status'],
+	'last_visit'  => $GLOBALS['config_vars']['UserImport_ZuletztGesehen'],
+	'country'     => $GLOBALS['config_vars']['UserImport_Land'],
+	'birthday'    => $GLOBALS['config_vars']['UserImport_GebTag'],
+	'emc'         => $GLOBALS['config_vars']['UserImport_emc'],
+	'reg_ip'      => $GLOBALS['config_vars']['UserImport_IpReg'],
+	'new_pass'    => $GLOBALS['config_vars']['UserImport_newPass'],
+	'company'     => $GLOBALS['config_vars']['UserImport_Firma'],
+	'taxpay'      => $GLOBALS['config_vars']['UserImport_UStPflichtig']
 );
 
 $AVE_Template->assign('method', 'shop');
@@ -96,12 +96,12 @@ if (!empty($_REQUEST['sub']))
 				foreach ($fields as $csv_field)
 				{
 					$my_field = @$csv_assocs[$csv_field];
-					if ($csv_field != 'Geloescht' && $csv_field != 'GeloeschtDatum')
+					if ($csv_field != 'deleted' && $csv_field != 'del_time')
 					{
 						$field_table[] = array(
-						'id'		=> md5($csv_field),
-						'csv_field'	=> $csv_field,
-						'my_field'	=> $my_field
+							'id'		=> md5($csv_field),
+							'csv_field'	=> $csv_field,
+							'my_field'	=> $my_field
 						);
 					}
 				}
@@ -167,30 +167,30 @@ if (!empty($_REQUEST['sub']))
 			{
 				if (count($row) == $csv->NumFields())
 				{
-					$Id             = '';
-					$Kennwort       = '';
-					$Email          = '';
-					$Strasse        = '';
-					$HausNr         = '';
-					$Postleitzahl   = '';
-					$City            = '';
-					$Telefon        = '';
-					$Telefax        = '';
-					$Bemerkungen    = '';
-					$Vorname        = '';
-					$Nachname       = '';
-					$UserName       = '';
-					$Benutzergruppe = '';
-					$Registriert    = '';
-					$Status         = '';
-					$ZuletztGesehen = '';
-					$Land           = '';
-					$GebTag         = '';
-					$emc            = '';
-					$IpReg          = '';
-					$new_pass       = '';
-					$Firma          = '';
-					$UStPflichtig   = '';
+					$Id          = '';
+					$password    = '';
+					$email       = '';
+					$street      = '';
+					$street_nr   = '';
+					$zipcode     = '';
+					$City        = '';
+					$phone       = '';
+					$telefax     = '';
+					$description = '';
+					$firstname   = '';
+					$lastname    = '';
+					$user_name   = '';
+					$user_group  = '';
+					$reg_time    = '';
+					$status      = '';
+					$last_visit  = '';
+					$country     = '';
+					$birthday    = '';
+					$emc         = '';
+					$reg_ip      = '';
+					$new_pass    = '';
+					$company     = '';
+					$taxpay      = '';
 
 					$i = 0;
 
@@ -202,30 +202,30 @@ if (!empty($_REQUEST['sub']))
 						$field = @$_REQUEST['field_' . md5($key)];
 						switch ($field)
 						{
-							case 'Id'             : $Id = $value; break;
-							case 'Kennwort'       : $Kennwort = $value; break;
-							case 'Email'          : $Email = $value; break;
-							case 'Strasse'        : $Strasse = $value; break;
-							case 'HausNr'         : $HausNr = $value; break;
-							case 'Postleitzahl'   : $Postleitzahl = $value; break;
-							case 'city'           : $city = $value; break;
-							case 'Telefon'        : $Telefon = $value; break;
-							case 'Telefax'        : $Telefax = $value; break;
-							case 'Bemerkungen'    : $Bemerkungen = $value; break;
-							case 'Vorname'        : $Vorname = $value; break;
-							case 'Nachname'       : $Nachname = $value; break;
-							case 'UserName'       : $UserName = $value; break;
-							case 'Benutzergruppe' : $Benutzergruppe = $value; break;
-							case 'Registriert'    : $Registriert = $value; break;
-							case 'Status'         : $Status = $value; break;
-							case 'ZuletztGesehen' : $ZuletztGesehen = $value; break;
-							case 'Land'           : $Land = $value; break;
-							case 'GebTag'         : $GebTag = $value; break;
-							case 'emc'            : $emc = $value; break;
-							case 'IpReg'          : $IpReg = $value; break;
-							case 'new_pass'       : $new_pass = $value; break;
-							case 'Firma'          : $Firma = $value; break;
-							case 'UStPflichtig'   : $UStPflichtig = $value; break;
+							case 'Id'          : $Id = $value; break;
+							case 'password'    : $password = $value; break;
+							case 'email'       : $email = $value; break;
+							case 'street'      : $street = $value; break;
+							case 'street_nr'   : $street_nr = $value; break;
+							case 'zipcode'     : $zipcode = $value; break;
+							case 'city'        : $city = $value; break;
+							case 'phone'       : $phone = $value; break;
+							case 'telefax'     : $telefax = $value; break;
+							case 'description' : $description = $value; break;
+							case 'firstname'   : $firstname = $value; break;
+							case 'lastname'    : $lastname = $value; break;
+							case 'user_name'   : $user_name = $value; break;
+							case 'user_group'  : $user_group = $value; break;
+							case 'reg_time'    : $reg_time = $value; break;
+							case 'Status'      : $status = $value; break;
+							case 'last_visit'  : $last_visit = $value; break;
+							case 'country'     : $country = $value; break;
+							case 'birthday'    : $birthday = $value; break;
+							case 'emc'         : $emc = $value; break;
+							case 'reg_ip'      : $reg_ip = $value; break;
+							case 'new_pass'    : $new_pass = $value; break;
+							case 'company'     : $company = $value; break;
+							case 'taxpay'      : $taxpay = $value; break;
 						}
 
 					}
@@ -250,34 +250,34 @@ if (!empty($_REQUEST['sub']))
 
 						if ($update)
 						{
-							$Benutzergruppe = (isset($_REQUEST['Benutzergruppe']) && $_REQUEST['Benutzergruppe'] != 'FILE') ? $_REQUEST['Benutzergruppe'] : $Benutzergruppe;
+							$user_group = (isset($_REQUEST['user_group']) && $_REQUEST['user_group'] != 'FILE') ? $_REQUEST['user_group'] : $user_group;
 
 							$AVE_DB->Query("
 								UPDATE " . PREFIX . "_users
 								SET
-									Kennwort       = '" . $Kennwort . "',
-									Email          = '" . $Email . "',
-									Strasse        = '" . $Strasse . "',
-									HausNr         = '" . $HausNr . "',
-									Postleitzahl   = '" . $Postleitzahl . "',
-									city           = '" . $city . "',
-									Telefon        = '" . $Telefon . "',
-									Telefax        = '" . $Telefax . "',
-									Bemerkungen    = '" . $Bemerkungen . "',
-									Vorname        = '" . $Vorname . "',
-									Nachname       = '" . $Nachname . "',
-									`UserName`     = '" . $UserName . "',
-									Benutzergruppe = '" . $Benutzergruppe . "',
-									Registriert    = '" . $Registriert . "',
-									Status         = '" . $Status . "',
-									ZuletztGesehen = '" . $ZuletztGesehen . "',
-									Land           = '" . $Land . "',
-									GebTag         = '" . $GebTag . "',
-									emc            = '" . $emc . "',
-									IpReg          = '" . $IpReg . "',
-									new_pass       = '" . $new_pass . "',
-									Firma          = '" . $Firma . "',
-									UStPflichtig   = '" . $UStPflichtig . "'
+									password    = '" . $password . "',
+									email       = '" . $email . "',
+									street      = '" . $street . "',
+									street_nr   = '" . $street_nr . "',
+									zipcode     = '" . $zipcode . "',
+									city        = '" . $city . "',
+									phone       = '" . $phone . "',
+									telefax     = '" . $telefax . "',
+									description = '" . $description . "',
+									firstname   = '" . $firstname . "',
+									lastname    = '" . $lastname . "',
+									user_name   = '" . $user_name . "',
+									user_group  = '" . $user_group . "',
+									reg_time    = '" . $reg_time . "',
+									status      = '" . $status . "',
+									last_visit  = '" . $last_visit . "',
+									country     = '" . $country . "',
+									birthday    = '" . $birthday . "',
+									emc         = '" . $emc . "',
+									reg_ip      = '" . $reg_ip . "',
+									new_pass    = '" . $new_pass . "',
+									company     = '" . $company . "',
+									taxpay      = '" . $taxpay . "'
 								WHERE
 									Id  = '" . $Id . "'
 								AND
@@ -297,30 +297,30 @@ if (!empty($_REQUEST['sub']))
 									INSERT
 									INTO " . PREFIX . "_users
 									SET
-										Id             = '" . $Id . "',
-										Kennwort       = '" . $Kennwort . "',
-										Email          = '" . $Email . "',
-										Strasse        = '" . $Strasse . "',
-										HausNr         = '" . $HausNr . "',
-										Postleitzahl   = '" . $Postleitzahl . "',
-										city           = '" . $city . "',
-										Telefon        = '" . $Telefon . "',
-										Telefax        = '" . $Telefax . "',
-										Bemerkungen    = '" . $Bemerkungen . "',
-										Vorname        = '" . $Vorname . "',
-										Nachname       = '" . $Nachname . "',
-										`UserName`     = '" . $UserName . "',
-										Benutzergruppe = '" . $Benutzergruppe . "',
-										Registriert    = '" . $Registriert . "',
-										Status         = '" . $Status . "',
-										ZuletztGesehen = '" . $ZuletztGesehen . "',
-										Land           = '" . $Land . "',
-										GebTag         = '" . $GebTag . "',
-										emc            = '" . $emc . "',
-										IpReg          = '" . $IpReg . "',
-										new_pass       = '" . $new_pass . "',
-										Firma          = '" . $Firma . "',
-										UStPflichtig   = '" . $UStPflichtig . "'
+										Id          = '" . $Id . "',
+										password    = '" . $password . "',
+										email       = '" . $email . "',
+										street      = '" . $street . "',
+										street_nr   = '" . $street_nr . "',
+										zipcode     = '" . $zipcode . "',
+										city        = '" . $city . "',
+										phone       = '" . $phone . "',
+										telefax     = '" . $telefax . "',
+										description = '" . $description . "',
+										firstname   = '" . $firstname . "',
+										lastname    = '" . $lastname . "',
+										user_name   = '" . $user_name . "',
+										user_group  = '" . $user_group . "',
+										reg_time    = '" . $reg_time . "',
+										status      = '" . $status . "',
+										last_visit  = '" . $last_visit . "',
+										country     = '" . $country . "',
+										birthday    = '" . $birthday . "',
+										emc         = '" . $emc . "',
+										reg_ip      = '" . $reg_ip . "',
+										new_pass    = '" . $new_pass . "',
+										company     = '" . $company . "',
+										taxpay      = '" . $taxpay . "'
 								");
 							}
 						}

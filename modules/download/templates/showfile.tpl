@@ -171,7 +171,7 @@ eval("{$wm_script}");
 
 
 <strong>{#Descr#}</strong> <br />
-{$Beschreibung}
+{$description}
 
 {if $row->RegGebuehr != ''}
 <br /><br />

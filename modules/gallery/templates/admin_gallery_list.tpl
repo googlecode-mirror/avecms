@@ -35,10 +35,10 @@
 						<input name="textfield" type="text" value="[mod_gallery:{$gallery.id}]" size="17" />
 					</td>
 					<td>
-						<a title="{#UserProfile#}" href="index.php?do=user&action=edit&id={$gallery.gallery_author}&cp={$sess}">{$gallery.username|escape}</a>
+						<a title="{#UserProfile#}" href="index.php?do=user&action=edit&id={$gallery.gallery_author_id}&cp={$sess}">{$gallery.username|escape}</a>
 					</td>
 					<td>{$gallery.gallery_folder|escape}</td>
-					<td class="time">{$gallery.gallery_date|date_format:$TIME_FORMAT|pretty_date}</td>
+					<td class="time">{$gallery.gallery_created|date_format:$TIME_FORMAT|pretty_date}</td>
 					<td width="5%">
 						<div align="center">
 							{if $gallery.image_count > 0}

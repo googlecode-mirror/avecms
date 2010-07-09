@@ -14,19 +14,19 @@ if (isset($_GET['user_id']) && is_numeric($_GET['user_id']) && $_GET['user_id'] 
 	$poster = $AVE_DB->Query("
 		SELECT
 			u.Avatar,
-			us.Benutzergruppe,
+			us.user_group,
 			u.AvatarStandard,
 			u.BenutzerName,
-			u.Email,
+			u.email,
 			u.Webseite,
-			u.Registriert,
+			u.reg_time,
 			u.Signatur,
 			u.Unsichtbar,
 			u.BenutzerId,
-			us.Vorname,
-			us.Benutzergruppe,
-			us.Nachname,
-			ug.Name
+			us.firstname,
+			us.user_group,
+			us.lastname,
+			ug.user_group_name
 		FROM
 			" . PREFIX . "_modul_forum_userprofile AS u
 		JOIN
@@ -34,7 +34,7 @@ if (isset($_GET['user_id']) && is_numeric($_GET['user_id']) && $_GET['user_id'] 
 				ON us.Id = u.BenutzerId
 		JOIN
 			" . PREFIX . "_user_groups AS ug
-				ON ug.Benutzergruppe = us.Benutzergruppe
+				ON ug.user_group = us.user_group
 		WHERE
 			u.BenutzerId = '" . intval($_GET['user_id']) . "'
 	")->FetchRow();
@@ -55,8 +55,8 @@ if (isset($_GET['user_id']) && is_numeric($_GET['user_id']) && $_GET['user_id'] 
 		LIMIT 1
 	")->GetCell();
 
-	$poster->avatar = $this->getAvatar($poster->Benutzergruppe,$poster->Avatar,$poster->AvatarStandard);
-	$poster->regdate = $poster->Registriert;
+	$poster->avatar = $this->getAvatar($poster->user_group,$poster->Avatar,$poster->AvatarStandard);
+	$poster->regdate = $poster->reg_time;
 	$poster->user_sig = $this->kcodes($poster->Signatur);
 
 	if (SMILIES==1) $poster->user_sig = $this->replaceWithSmileys($poster->Signatur);

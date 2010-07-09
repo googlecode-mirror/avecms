@@ -116,7 +116,7 @@
                 <option value="{$vi->Id}">{$vi->Name} ({$vi->Operant}{num_format val=$vi->Wert} {$Currency})</option>
                 {/foreach}
                 </select>
-                <input title="{$vars->Beschreibung|default:'-'}" type="button" class="button" value="?" style="margin-left:2px" />
+                <input title="{$vars->description|default:'-'}" type="button" class="button" value="?" style="margin-left:2px" />
                 </td>
                 </tr>
                 {/foreach}
@@ -346,11 +346,11 @@
 {foreach from=$Comments item=c}
 <table width="100%" border="0" cellspacing="0" cellpadding="0" class="mod_comment_box">
 <tr>
-<td class="mod_comment_header">{$c->Datum|date_format:#DateFormatRelease#} оставил рецензию {$c->Titel|stripslashes} </td>
+<td class="mod_comment_header">{$c->Datum|date_format:#DateFormatRelease#} оставил рецензию {$c->title|stripslashes} </td>
 </tr>
 <tr>
 <td class="mod_comment_text">
-{$c->Kommentar|stripslashes}
+{$c->comment_text|stripslashes}
 </td>
 </tr>
 </table>

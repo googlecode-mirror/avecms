@@ -5,6 +5,7 @@
  *
  * @package AVE.cms
  * @subpackage module_Navigation
+ * @since 1.4
  * @filesource
  */
 
@@ -15,7 +16,7 @@ if (defined('ACP'))
 	$modul['ModulName'] = 'Ќавигаци€';
 	$modul['ModulPfad'] = 'navigation';
 	$modul['ModulVersion'] = '1.2';
-	$modul['Beschreibung'] = 'ƒанный модуль предназначен не только дл€ создани€ различных видов меню (горизонтального или вертикального), но и меню навигаций, состо€щих из различного количества пунктов и уровней вложенности. ѕомните, что максимальна€ глубина уровней вложенности не может быть больше 3. ƒл€ создани€ меню, перейдите в раздел <strong>Ќавигаци€</strong>. ƒл€ отображени€ меню на сайте разместите системный тег <strong>[mod_navigation:XXX]</strong> в нужном месте вашего шаблона. ’’’ - это пор€дковый номер меню.';
+	$modul['description'] = 'ƒанный модуль предназначен не только дл€ создани€ различных видов меню (горизонтального или вертикального), но и меню навигаций, состо€щих из различного количества пунктов и уровней вложенности. ѕомните, что максимальна€ глубина уровней вложенности не может быть больше 3. ƒл€ создани€ меню, перейдите в раздел <strong>Ќавигаци€</strong>. ƒл€ отображени€ меню на сайте разместите системный тег <strong>[mod_navigation:XXX]</strong> в нужном месте вашего шаблона. ’’’ - это пор€дковый номер меню.';
 	$modul['Autor'] = 'Arcanum';
 	$modul['MCopyright'] = '&copy; 2007 Overdoze Team';
 	$modul['Status'] = 1;
@@ -61,39 +62,39 @@ function mod_navigation($navigation_id)
 	}
 
 	if (!defined('UGROUP')) define('UGROUP', 2);
-	if (!in_array(UGROUP, $nav->Gruppen)) return;
+	if (!in_array(UGROUP, $nav->navi_user_group)) return;
 
 	if (empty($_REQUEST['module']))
 	{
 		$curent_doc_id = (isset($_GET['id']) && is_numeric($_GET['id'])) ? $_GET['id'] : 1;
 
 		$row_navi = $AVE_DB->Query("
-			SELECT CONCAT_WS(',', nav.Id, nav.Elter, nav2.Elter)
+			SELECT CONCAT_WS(',', nav.Id, nav.parent_id, nav2.parent_id)
 			FROM
 				" . PREFIX . "_navigation_items AS nav
 			JOIN
 				" . PREFIX . "_documents AS doc
 			LEFT JOIN
-				" . PREFIX . "_navigation_items AS nav2 ON nav2.Id = nav.Elter
-			WHERE nav.Aktiv = 1
-			AND nav.Rubrik = '" . $navigation_id . "'
+				" . PREFIX . "_navigation_items AS nav2 ON nav2.Id = nav.parent_id
+			WHERE nav.navi_item_status = 1
+			AND nav.navi_id = '" . $navigation_id . "'
 			AND doc.Id = '" . $curent_doc_id . "'
-			AND (nav.Link = 'index.php?id=" . $curent_doc_id . "'"
-				. ((!empty($AVE_Core->curentdoc->Url) && $AVE_Core->curentdoc->Id == $curent_doc_id) ? " OR nav.Url = '" . $AVE_Core->curentdoc->Url . "'" : '')
-				. " OR nav.Id = doc.ElterNavi)
+			AND (nav.navi_item_link = 'index.php?id=" . $curent_doc_id . "'"
+				. ((!empty($AVE_Core->curentdoc->document_alias) && $AVE_Core->curentdoc->Id == $curent_doc_id) ? " OR nav.document_alias = '" . $AVE_Core->curentdoc->document_alias . "'" : '')
+				. " OR nav.Id = doc.document_linked_navi_id)
 		")->GetCell();
 	}
 	else
 	{
 		$row_navi = $AVE_DB->Query("
-			SELECT CONCAT_WS(',', nav.Id, nav.Elter, nav2.Elter)
+			SELECT CONCAT_WS(',', nav.Id, nav.parent_id, nav2.parent_id)
 			FROM
 				" . PREFIX . "_navigation_items AS nav
 			LEFT JOIN
-				" . PREFIX . "_navigation_items AS nav2 ON nav2.Id = nav.Elter
-			WHERE nav.Aktiv = 1
-			AND nav.Rubrik = '" . $navigation_id . "'
-			AND nav.Link LIKE 'index.php?module=" . $_REQUEST['module'] . "%%'
+				" . PREFIX . "_navigation_items AS nav2 ON nav2.Id = nav.parent_id
+			WHERE nav.navi_item_status = '1'
+			AND nav.navi_id = '" . $navigation_id . "'
+			AND nav.navi_item_link LIKE 'index.php?module=" . $_REQUEST['module'] . "%%'
 		")->GetCell();
 	}
 
@@ -101,79 +102,79 @@ function mod_navigation($navigation_id)
 	if ($row_navi !== false)
 	{
 		$way = explode(',', $row_navi);
-		if ($nav->Expand!=1) $where_elter = "AND Elter IN(0," . $row_navi . ")";
+		if ($nav->navi_expand!=1) $where_elter = "AND parent_id IN(0," . $row_navi . ")";
 	}
 	else
 	{
 		$way = array('');
-		if ($nav->Expand!=1) $where_elter = "AND Elter = 0";
+		if ($nav->navi_expand!=1) $where_elter = "AND parent_id = 0";
 	}
 
 	$nav_items = array();
 	$sql = $AVE_DB->Query("
 		SELECT *
 		FROM " . PREFIX . "_navigation_items
-		WHERE Aktiv = 1
-		AND Rubrik = '" . $navigation_id . "'
+		WHERE navi_item_status = '1'
+		AND navi_id = '" . $navigation_id . "'
 		" . $where_elter . "
-		ORDER BY Rang ASC
+		ORDER BY navi_item_position ASC
 	");
 	while ($row_nav_item = $sql->FetchAssocArray())
 	{
-		$nav_items[$row_nav_item['Elter']][] = $row_nav_item;
+		$nav_items[$row_nav_item['parent_id']][] = $row_nav_item;
 	}
 
 	$ebenen = array(
 		1 =>  array(
-			'aktiv' => str_replace('[cp:mediapath]', ABS_PATH . 'templates/' . THEME_FOLDER . '/', $nav->ebene1a),
-			'inaktiv' => str_replace('[cp:mediapath]', ABS_PATH . 'templates/' . THEME_FOLDER . '/', $nav->ebene1),
+			'aktiv' => str_replace('[tag:mediapath]', ABS_PATH . 'templates/' . THEME_FOLDER . '/', $nav->navi_level1active),
+			'inaktiv' => str_replace('[tag:mediapath]', ABS_PATH . 'templates/' . THEME_FOLDER . '/', $nav->navi_level1),
 		),
 		2 =>  array(
-			'aktiv' => str_replace('[cp:mediapath]', ABS_PATH . 'templates/' . THEME_FOLDER . '/', $nav->ebene2a),
-			'inaktiv' => str_replace('[cp:mediapath]', ABS_PATH . 'templates/' . THEME_FOLDER . '/', $nav->ebene2),
+			'aktiv' => str_replace('[tag:mediapath]', ABS_PATH . 'templates/' . THEME_FOLDER . '/', $nav->navi_level2active),
+			'inaktiv' => str_replace('[tag:mediapath]', ABS_PATH . 'templates/' . THEME_FOLDER . '/', $nav->navi_level2),
 		),
 		3 =>  array(
-			'aktiv' => str_replace('[cp:mediapath]', ABS_PATH . 'templates/' . THEME_FOLDER . '/', $nav->ebene3a),
-			'inaktiv' => str_replace('[cp:mediapath]', ABS_PATH . 'templates/' . THEME_FOLDER . '/', $nav->ebene3),
+			'aktiv' => str_replace('[tag:mediapath]', ABS_PATH . 'templates/' . THEME_FOLDER . '/', $nav->navi_level3active),
+			'inaktiv' => str_replace('[tag:mediapath]', ABS_PATH . 'templates/' . THEME_FOLDER . '/', $nav->navi_level3),
 		)
 	);
 
-	$END = str_replace('[cp:mediapath]', ABS_PATH . 'templates/' . THEME_FOLDER . '/', $nav->vor);
+	$END = str_replace('[tag:mediapath]', ABS_PATH . 'templates/' . THEME_FOLDER . '/', $nav->navi_begin);
 
 	printNavi($END, $ebenen, $way, $navigation_id, $nav_items, $nav);
 
-	$END .= str_replace('[cp:mediapath]', ABS_PATH . 'templates/' . THEME_FOLDER . '/', $nav->nach);
+	$END .= str_replace('[tag:mediapath]', ABS_PATH . 'templates/' . THEME_FOLDER . '/', $nav->navi_end);
 	$END = rewrite_link($END);
 	$END = preg_replace("/(^[\r\n]*|[\r\n]+)[\s\t]*[\r\n]+/", "\n", $END);
 //	$END = str_replace(array("\r\n","\n","\r"),'',$END);
 	$END = str_replace(array("\n","\r"),'',$END);
 
 	$search = array (
-		$nav->ebene1_v . $nav->ebene1_n,
-		$nav->ebene2_v . $nav->ebene2_n,
-		$nav->ebene3_v . $nav->ebene3_n,
-		'</li>' . $nav->ebene2_v . '<li',
-		'</li>' . $nav->ebene3_v . '<li',
-		'</li>' . $nav->ebene1_n . '<li',
-		'</li>' . $nav->ebene2_n . '<li',
-		'</li>' . $nav->ebene1_n . $nav->ebene2_n . '<li',
-		'</li>' . $nav->ebene1_n . $nav->ebene2_n . $nav->ebene3_n,
-		'</li>' . $nav->ebene1_n . $nav->ebene2_n,
-		'</li>' . $nav->ebene2_n . $nav->ebene3_n
+		$nav->navi_level1begin . $nav->navi_level1end,
+		$nav->navi_level2begin . $nav->navi_level2end,
+		$nav->navi_level3begin . $nav->navi_level3end,
+		'</li>' . $nav->navi_level2begin . '<li',
+		'</li>' . $nav->navi_level3begin . '<li',
+		'</li>' . $nav->navi_level1end . '<li',
+		'</li>' . $nav->navi_level2end . '<li',
+		'</li>' . $nav->navi_level1end . $nav->navi_level2end . '<li',
+		'</li>' . $nav->navi_level1end . $nav->navi_level2end . $nav->navi_level3end,
+		'</li>' . $nav->navi_level1end . $nav->navi_level2end,
+		'</li>' . $nav->navi_level2end . $nav->navi_level3end
 	);
 
 	$replace = array (
 		'',
 		'',
 		'',
-		$nav->ebene2_v . '<li',
-		$nav->ebene3_v . '<li',
-		'</li>' . $nav->ebene1_n . '</li><li',
-		'</li>' . $nav->ebene2_n . '</li><li',
-		'</li>' . $nav->ebene1_n . '</li>' . $nav->ebene2_n . '</li><li',
-		'</li>' . $nav->ebene1_n . '</li>' . $nav->ebene2_n . '</li>' . $nav->ebene3_n,
-		'</li>' . $nav->ebene1_n . '</li>' . $nav->ebene2_n,
-		'</li>' . $nav->ebene2_n . '</li>' . $nav->ebene3_n
+		$nav->navi_level2begin . '<li',
+		$nav->navi_level3begin . '<li',
+		'</li>' . $nav->navi_level1end . '</li><li',
+		'</li>' . $nav->navi_level2end . '</li><li',
+		'</li>' . $nav->navi_level1end . '</li>' . $nav->navi_level2end . '</li><li',
+		'</li>' . $nav->navi_level1end . '</li>' . $nav->navi_level2end . '</li>' . $nav->navi_level3end,
+		'</li>' . $nav->navi_level1end . '</li>' . $nav->navi_level2end,
+		'</li>' . $nav->navi_level2end . '</li>' . $nav->navi_level3end
 	);
 	$END = str_replace($search, $replace, $END);
 
@@ -195,34 +196,34 @@ function mod_navigation($navigation_id)
  */
 function printNavi(&$navi, &$ebenen, &$way, &$rub, &$nav_items, &$row_ul, $parent = 0)
 {
-	$ebene = $nav_items[$parent][0]['Ebene'];
+	$ebene = $nav_items[$parent][0]['navi_item_level'];
 
 	switch ($ebene)
 	{
-		case 1 : $navi .= $row_ul->ebene1_v;  break;
-		case 2 : $navi .= $row_ul->ebene2_v;  break;
-		case 3 : $navi .= $row_ul->ebene3_v;  break;
+		case 1 : $navi .= $row_ul->navi_level1begin;  break;
+		case 2 : $navi .= $row_ul->navi_level2begin;  break;
+		case 3 : $navi .= $row_ul->navi_level3begin;  break;
 	}
 
 	foreach ((array) $nav_items[$parent] as $row)
 	{
-//		$aktiv = (in_array($row['Id'], $way) || strpos($row['Link'], 'index.php?' . $_SERVER['QUERY_STRING']) !== false) ? 'aktiv' : 'inaktiv';
+//		$aktiv = (in_array($row['Id'], $way) || strpos($row['navi_item_link'], 'index.php?' . $_SERVER['QUERY_STRING']) !== false) ? 'aktiv' : 'inaktiv';
 		$aktiv = (in_array($row['Id'], $way)) ? 'aktiv' : 'inaktiv';
-		$akt = str_replace('[cp:linkname]', $row['Titel'], $ebenen[$ebene][$aktiv]);
+		$akt = str_replace('[tag:linkname]', $row['title'], $ebenen[$ebene][$aktiv]);
 
-		if (strpos($row['Link'], 'module=') === false && start_with('index.php?', $row['Link']))
+		if (strpos($row['navi_item_link'], 'module=') === false && start_with('index.php?', $row['navi_item_link']))
 		{
-			$akt = str_replace('[cp:link]', $row['Link'] . "&amp;doc=" . (empty($row['Url']) ? prepare_url($row['Titel']) : $row['Url']), $akt);
+			$akt = str_replace('[tag:link]', $row['navi_item_link'] . "&amp;doc=" . (empty($row['document_alias']) ? prepare_url($row['title']) : $row['document_alias']), $akt);
 		}
 		else
 		{
-//			if (strpos($row['Link'], 'module=') === false) $row['Link'] = $row['Link'] . URL_SUFF;
-			$akt = str_replace('[cp:link]', $row['Link'], $akt);
-			if (start_with('www.', $row['Link'])) $akt = str_replace('www.', 'http://www.', $akt);
+//			if (strpos($row['navi_item_link'], 'module=') === false) $row['navi_item_link'] = $row['navi_item_link'] . URL_SUFF;
+			$akt = str_replace('[tag:link]', $row['navi_item_link'], $akt);
+			if (start_with('www.', $row['navi_item_link'])) $akt = str_replace('www.', 'http://www.', $akt);
 		}
 
-		$navi .= str_replace('[cp:target]', $row['Ziel'], $akt);
-//		$akt = str_replace('[cp:target]', $row['Ziel'], $akt);
+		$navi .= str_replace('[tag:target]', $row['navi_item_target'], $akt);
+//		$akt = str_replace('[tag:target]', $row['navi_item_target'], $akt);
 //		$navi .= rewrite_link($akt);
 
 		if (isset($nav_items[$row['Id']]))
@@ -233,9 +234,9 @@ function printNavi(&$navi, &$ebenen, &$way, &$rub, &$nav_items, &$row_ul, $paren
 
 	switch ($ebene)
 	{
-		case 1 : $navi .= $row_ul->ebene1_n;  break;
-		case 2 : $navi .= $row_ul->ebene2_n;  break;
-		case 3 : $navi .= $row_ul->ebene3_n;  break;
+		case 1 : $navi .= $row_ul->navi_level1end;  break;
+		case 2 : $navi .= $row_ul->navi_level2end;  break;
+		case 3 : $navi .= $row_ul->navi_level3end;  break;
 	}
 }
 

@@ -110,8 +110,8 @@
 		<tr>
 			<td width="190" class="first">{#ProductDActive#} </td>
 			<td class="second">
-				<input type="radio" name="Aktiv" value="1" {if $row.Aktiv=='1'}checked="checked" {/if}/>{#Yes#}&nbsp;
-				<input type="radio" name="Aktiv" value="0" {if $row.Aktiv=='0'}checked="checked" {/if}/>{#No#}
+				<input type="radio" name="status" value="1" {if $row.status=='1'}checked="checked" {/if}/>{#Yes#}&nbsp;
+				<input type="radio" name="status" value="0" {if $row.status=='0'}checked="checked" {/if}/>{#No#}
 			</td>
 		</tr>
 
@@ -130,7 +130,7 @@
 			<td class="second">
 				<select style="width:250px" name="KatId">
 					{foreach from=$ProductCategs item=pc}
-						<option value="{$pc->Id}" {if $pc->Elter=='0'}style="font-weight:bold"{/if} {if $pc->Id==$row.KatId}selected="selected"{/if}>{$pc->visible_title}</option>
+						<option value="{$pc->Id}" {if $pc->parent_id=='0'}style="font-weight:bold"{/if} {if $pc->Id==$row.KatId}selected="selected"{/if}>{$pc->visible_title}</option>
 					{/foreach}
 				</select>
 			</td>
@@ -150,7 +150,7 @@
 								{assign var='sel' value='selected'}
 							{/if}
 						{/if}
-						<option {if $pc->Elter=='0'}style="font-weight:bold"{/if} value="{$pc->Id}" {$sel}>{$pc->visible_title}</option>
+						<option {if $pc->parent_id=='0'}style="font-weight:bold"{/if} value="{$pc->Id}" {$sel}>{$pc->visible_title}</option>
 					{/foreach}
 				</select>
 			</td>

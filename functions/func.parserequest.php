@@ -43,13 +43,13 @@ function request_get_condition_sql_string($id)
 
 	$sql_ak = $AVE_DB->Query("
 		SELECT *
-		FROM " . PREFIX . "_queries_conditions
-		WHERE Abfrage = '" . $id . "'
+		FROM " . PREFIX . "_request_conditions
+		WHERE request_id = '" . $id . "'
 	");
 
 	while ($row_ak = $sql_ak->FetchRow())
 	{
-		$feld = $row_ak->Feld;
+		$feld = $row_ak->condition_field_id;
 
 		if (!empty($_REQUEST['fld'][$feld]))
 		{
@@ -58,16 +58,16 @@ function request_get_condition_sql_string($id)
 		}
 		else
 		{
-			$wert = $row_ak->Wert;
+			$wert = $row_ak->condition_value;
 		}
 
-		if ($row_ak->Oper != 'OR')
+		if ($row_ak->condition_join != 'OR')
 		{
 			$where = ' WHERE 1';
 			$start_bracket = ' AND ';
 			$lastb_bracket = '';
 			$alias = 't' . $start;
-			$from .= ($start != 0) ? ' JOIN ' . PREFIX . '_document_fields AS ' . $alias . ' ON ' . $alias . '.DokumentId = t0.DokumentId' : '';
+			$from .= ($start != 0) ? ' JOIN ' . PREFIX . '_document_fields AS ' . $alias . ' ON ' . $alias . '.document_id = t0.document_id' : '';
 		}
 		else
 		{
@@ -77,42 +77,42 @@ function request_get_condition_sql_string($id)
 			$alias = 't0';
 		}
 
-		switch ($row_ak->Operator)
+		switch ($row_ak->condition_compare)
 		{
 			case '%%':
-				$eq_string .= $start_bracket . $alias . ".RubrikFeld = '" . $feld . "' AND " . $alias . ".Inhalt like '%" . $wert . "%' " . $lastb_bracket;
+				$eq_string .= $start_bracket . $alias . ".rubric_field_id = '" . $feld . "' AND " . $alias . ".field_value LIKE '%" . $wert . "%' " . $lastb_bracket;
 				break;
 
 			case '%':
-				$eq_string .= $start_bracket . $alias . ".RubrikFeld = '" . $feld . "' AND " . $alias . ".Inhalt like '" . $wert . "%' " . $lastb_bracket;
+				$eq_string .= $start_bracket . $alias . ".rubric_field_id = '" . $feld . "' AND " . $alias . ".field_value LIKE '" . $wert . "%' " . $lastb_bracket;
 				break;
 
 			case '<':
-				$eq_string .= $start_bracket . $alias . ".RubrikFeld = '" . $feld . "' AND " . $alias . ".Inhalt < '" . $wert . "' " . $lastb_bracket;
+				$eq_string .= $start_bracket . $alias . ".rubric_field_id = '" . $feld . "' AND " . $alias . ".field_value < '" . $wert . "' " . $lastb_bracket;
 				break;
 
 			case '<=':
-				$eq_string .= $start_bracket . $alias . ".RubrikFeld = '" . $feld . "' AND " . $alias . ".Inhalt <= '" . $wert . "' " . $lastb_bracket;
+				$eq_string .= $start_bracket . $alias . ".rubric_field_id = '" . $feld . "' AND " . $alias . ".field_value <= '" . $wert . "' " . $lastb_bracket;
 				break;
 
 			case '>':
-				$eq_string .= $start_bracket . $alias . ".RubrikFeld = '" . $feld . "' AND " . $alias . ".Inhalt > '" . $wert . "' " . $lastb_bracket;
+				$eq_string .= $start_bracket . $alias . ".rubric_field_id = '" . $feld . "' AND " . $alias . ".field_value > '" . $wert . "' " . $lastb_bracket;
 				break;
 
 			case '>=':
-				$eq_string .= $start_bracket . $alias . ".RubrikFeld = '" . $feld . "' AND " . $alias . ".Inhalt >= '" . $wert . "' " . $lastb_bracket;
+				$eq_string .= $start_bracket . $alias . ".rubric_field_id = '" . $feld . "' AND " . $alias . ".field_value >= '" . $wert . "' " . $lastb_bracket;
 				break;
 
 			case '==':
-				$eq_string .= $start_bracket . $alias . ".RubrikFeld = '" . $feld . "' AND " . $alias . ".Inhalt = '" . $wert . "' " . $lastb_bracket;
+				$eq_string .= $start_bracket . $alias . ".rubric_field_id = '" . $feld . "' AND " . $alias . ".field_value = '" . $wert . "' " . $lastb_bracket;
 				break;
 
 			case '!=':
-				$eq_string .= $start_bracket . $alias . ".RubrikFeld = '" . $feld . "' AND " . $alias . ".Inhalt != '" . $wert . "' " . $lastb_bracket;
+				$eq_string .= $start_bracket . $alias . ".rubric_field_id = '" . $feld . "' AND " . $alias . ".field_value != '" . $wert . "' " . $lastb_bracket;
 				break;
 
 			case '--':
-				$eq_string .= $start_bracket . $alias . ".RubrikFeld = '" . $feld . "' AND " . $alias . ".Inhalt not like '%" . $wert . "%' " . $lastb_bracket;
+				$eq_string .= $start_bracket . $alias . ".rubric_field_id = '" . $feld . "' AND " . $alias . ".field_value NOT LIKE '%" . $wert . "%' " . $lastb_bracket;
 				break;
 		}
 		++$start;
@@ -125,22 +125,22 @@ function request_get_condition_sql_string($id)
 		{
 			$where = ' WHERE 1';
 			$alias = 't' . $start;
-			$from .= ($start != 0) ? ' JOIN ' . PREFIX . '_document_fields AS ' . $alias . ' ON ' . $alias . '.DokumentId = t0.DokumentId' : '';
-			$eq_string .= ' AND ' . $alias . ".RubrikFeld = '" . $feld . "' AND " . $alias . ".Inhalt = '" . $wert . "'";
+			$from .= ($start != 0) ? ' JOIN ' . PREFIX . '_document_fields AS ' . $alias . ' ON ' . $alias . '.document_id = t0.document_id' : '';
+			$eq_string .= ' AND ' . $alias . ".rubric_field_id = '" . $feld . "' AND " . $alias . ".field_value = '" . $wert . "'";
 			++$start;
 		}
 	}
 
 	if ($where != '')
 	{
-		$ueb = 'AND a.Id = ANY(SELECT t0.DokumentId FROM ' . $from . $where . $eq_string . ')';
+		$ueb = 'AND a.Id = ANY(SELECT t0.document_id FROM ' . $from . $where . $eq_string . ')';
 	}
 
 	if (empty($_SESSION[$doc_request]['fld']))
 	{
 		$AVE_DB->Query("
-			UPDATE " . PREFIX . "_queries
-			SET	where_cond = '" . addslashes($ueb) . "'
+			UPDATE " . PREFIX . "_request
+			SET	request_where_cond = '" . addslashes($ueb) . "'
 			WHERE Id = '" . $id . "'
 		");
 	}
@@ -165,7 +165,7 @@ function request_get_document_field($rubric_id, $document_id, $maxlength = '')
 
 	if (empty($document_fields[$rubric_id])) return '';
 
-	$field_value = trim($document_fields[$rubric_id]['Inhalt']);
+	$field_value = trim($document_fields[$rubric_id]['field_value']);
 	if ($field_value == '' && $document_fields[$rubric_id]['tpl_req_empty']) return '';
 
 //	if ($maxlength != 'more')
@@ -173,7 +173,7 @@ function request_get_document_field($rubric_id, $document_id, $maxlength = '')
 //		$field_value = strip_tags($field_value, '<br /><strong><em><p><i>');
 //	}
 
-	switch ($document_fields[$rubric_id]['RubTyp'])
+	switch ($document_fields[$rubric_id]['rubric_field_type'])
 	{
 		case 'bild' :
 			$field_value = clean_php($field_value);
@@ -185,7 +185,7 @@ function request_get_document_field($rubric_id, $document_id, $maxlength = '')
 			}
 			else
 			{
-				$field_value = preg_replace('/\[field_param:(\d+)\]/ie', '@$field_param[\\1]', $document_fields[$rubric_id]['tpl_req']);
+				$field_value = preg_replace('/\[tag:parametr:(\d+)\]/ie', '@$field_param[\\1]', $document_fields[$rubric_id]['rubric_field_template_request']);
 			}
 			$maxlength = '';
 			break;
@@ -200,7 +200,7 @@ function request_get_document_field($rubric_id, $document_id, $maxlength = '')
 			}
 			else
 			{
-				$field_value = preg_replace('/\[field_param:(\d+)\]/ie', '@$field_param[\\1]', $document_fields[$rubric_id]['tpl_req']);
+				$field_value = preg_replace('/\[tag:parametr:(\d+)\]/ie', '@$field_param[\\1]', $document_fields[$rubric_id]['rubric_field_template_request']);
 			}
 			$maxlength = '';
 			break;
@@ -235,7 +235,7 @@ function request_get_document_field($rubric_id, $document_id, $maxlength = '')
 
 	if (!$document_fields[$rubric_id]['tpl_req_empty'])
 	{
-		$field_value = preg_replace('/\[field_param:(\d+)\]/ie', '@$field_param[\\1]', $document_fields[$rubric_id]['tpl_req']);
+		$field_value = preg_replace('/\[tag:parametr:(\d+)\]/ie', '@$field_param[\\1]', $document_fields[$rubric_id]['rubric_field_template_request']);
 	}
 
 	return $field_value;
@@ -259,7 +259,7 @@ function request_parse($id)
 
 	$row_ab = $AVE_DB->Query("
 		SELECT *
-		FROM " . PREFIX . "_queries
+		FROM " . PREFIX . "_request
 		WHERE Id = '" . $id . "'
 	")->FetchRow();
 
@@ -271,20 +271,20 @@ function request_parse($id)
 //		$first = '';
 //		$second = '';
 
-		$limit = ($row_ab->Zahl < 1) ? 1 : $row_ab->Zahl;
-		$main_template = $row_ab->AbGeruest;
-		$item_template = $row_ab->Template;
-		$sortierung = $row_ab->Sortierung;
-		$asc_desc = $row_ab->AscDesc;
+		$limit = ($row_ab->request_items_per_page < 1) ? 1 : $row_ab->request_items_per_page;
+		$main_template = $row_ab->request_template_main;
+		$item_template = $row_ab->request_template_item;
+		$request_order_by = $row_ab->request_order_by;
+		$request_asc_desc = $row_ab->request_asc_desc;
 
-		$doctime = get_settings('use_doctime') ? ("AND (DokEnde = 0 || DokEnde > '" . time() . "') AND (DokStart = 0 || DokStart < '" . time() . "')") : '';
+		$doctime = get_settings('use_doctime') ? ("AND (a.document_expire = 0 OR a.document_expire >= '" . time() . "') AND a.document_published <= '" . time() . "'") : '';
 
 		$lbl = 'doc' . $AVE_Core->curentdoc->Id . '_request' . $id;
 		$where_cond = (empty($_REQUEST['fld']) && empty($_SESSION[$lbl]['fld']))
-			? $row_ab->where_cond
+			? $row_ab->request_where_cond
 			: request_get_condition_sql_string($row_ab->Id);
 
-		if ($row_ab->Navi == 1)
+		if ($row_ab->request_show_pagination == 1)
 		{
 			if (!empty($AVE_Core->install_modules['comment']->Status))
 			{
@@ -295,9 +295,9 @@ function request_parse($id)
 						a.Id != '1'
 					AND a.Id != '" . PAGE_NOT_FOUND_ID . "'
 					AND a.Id != '" . $AVE_Core->curentdoc->Id . "'
-					AND a.RubrikId = '" . $row_ab->RubrikId . "'
-					AND a.Geloescht != '1'
-					AND a.DokStatus != '0'
+					AND a.rubric_id = '" . $row_ab->rubric_id . "'
+					AND a.document_deleted != '1'
+					AND a.document_status != '0'
 					" . $where_cond . "
 					" . $doctime . "
 				")->GetCell();
@@ -308,12 +308,12 @@ function request_parse($id)
 					SELECT COUNT(*)
 					FROM " . PREFIX . "_documents AS a
 					WHERE
-						Id != '1'
-					AND Id != '" . PAGE_NOT_FOUND_ID . "'
-					AND Id != '" . $AVE_Core->curentdoc->Id . "'
-					AND RubrikId = '" . $row_ab->RubrikId . "'
-					AND Geloescht != 1
-					AND DokStatus != 0
+						a.Id != '1'
+					AND a.Id != '" . PAGE_NOT_FOUND_ID . "'
+					AND a.Id != '" . $AVE_Core->curentdoc->Id . "'
+					AND a.rubric_id = '" . $row_ab->rubric_id . "'
+					AND a.document_deleted != '1'
+					AND a.document_status != '0'
 					" . $where_cond . "
 					" . $doctime . "
 				")->GetCell();
@@ -332,27 +332,27 @@ function request_parse($id)
 			$q = $AVE_DB->Query("
 				SELECT
 					a.Id,
-					a.Titel,
-					a.Url,
-					Geklickt,
-					DokStart,
+					a.document_title,
+					a.document_alias,
+					a.document_count_view,
+					a.document_published,
 					COUNT(b.document_id) AS nums
 				FROM
 					" . PREFIX . "_documents AS a
 				LEFT JOIN
 					" . PREFIX . "_modul_comment_info AS b
-						ON document_id = a.Id
+						ON b.document_id = a.Id
 				WHERE
 					a.Id != '1'
 				AND a.Id != '" . PAGE_NOT_FOUND_ID . "'
 				AND a.Id != '" . $AVE_Core->curentdoc->Id . "'
-				AND RubrikId = '" . $row_ab->RubrikId . "'
-				AND Geloescht != '1'
-				AND DokStatus != '0'
+				AND a.rubric_id = '" . $row_ab->rubric_id . "'
+				AND a.document_deleted != '1'
+				AND a.document_status != '0'
 				" . $where_cond . "
 				" . $doctime . "
 				GROUP BY a.Id
-				ORDER BY " . $sortierung . " " . $asc_desc . "
+				ORDER BY a." . $request_order_by . " " . $request_asc_desc . "
 				LIMIT " . $start . "," . $limit
 			);
 		}
@@ -360,43 +360,43 @@ function request_parse($id)
 		{
 			$q = $AVE_DB->Query("
 				SELECT
-					Id,
-					Titel,
-					Url,
-					Geklickt,
-					DokStart
+					a.Id,
+					a.document_title,
+					a.document_alias,
+					a.document_count_view,
+					a.document_published
 				FROM
 					" . PREFIX . "_documents AS a
 				WHERE
-					Id != '1'
-				AND Id != '" . PAGE_NOT_FOUND_ID . "'
-				AND Id != '" . $AVE_Core->curentdoc->Id . "'
-				AND RubrikId = '" . $row_ab->RubrikId . "'
-				AND Geloescht != '1'
-				AND DokStatus != '0'
+					a.Id != '1'
+				AND a.Id != '" . PAGE_NOT_FOUND_ID . "'
+				AND a.Id != '" . $AVE_Core->curentdoc->Id . "'
+				AND a.rubric_id = '" . $row_ab->rubric_id . "'
+				AND a.document_deleted != '1'
+				AND a.document_status != '0'
 				" . $where_cond . "
 				" . $doctime . "
-				ORDER BY " . $sortierung . " " . $asc_desc . "
+				ORDER BY a." . $request_order_by . " " . $request_asc_desc . "
 				LIMIT " . $start . "," . $limit
 			);
 		}
 
 		if ($q->NumRows() > 0)
 		{
-			$main_template = preg_replace('/\[cp:if_empty](.*?)\[\/cp:if_empty]/si', '', $main_template);
-			$main_template = str_replace (array('[cp:not_empty]','[/cp:not_empty]'), '', $main_template);
+			$main_template = preg_replace('/\[tag:if_empty](.*?)\[\/tag:if_empty]/si', '', $main_template);
+			$main_template = str_replace (array('[tag:if_notempty]','[/tag:if_notempty]'), '', $main_template);
 		}
 		else
 		{
-			$main_template = preg_replace('/\[cp:not_empty](.*?)\[\/cp:not_empty]/si', '', $main_template);
-			$main_template = str_replace (array('[cp:if_empty]','[/cp:if_empty]'), '', $main_template);
+			$main_template = preg_replace('/\[tag:if_notempty](.*?)\[\/tag:if_notempty]/si', '', $main_template);
+			$main_template = str_replace (array('[tag:if_empty]','[/tag:if_empty]'), '', $main_template);
 		}
 
 		$page_nav   = '';
-		if ($row_ab->Navi == 1 && $seiten > 1)
+		if ($row_ab->request_show_pagination == 1 && $seiten > 1)
 		{
 			$page_nav = ' <a class="pnav" href="index.php?id=' . $AVE_Core->curentdoc->Id
-				. '&amp;doc=' . (empty($AVE_Core->curentdoc->Url) ? prepare_url($AVE_Core->curentdoc->Titel) : $AVE_Core->curentdoc->Url)
+				. '&amp;doc=' . (empty($AVE_Core->curentdoc->document_alias) ? prepare_url($AVE_Core->curentdoc->document_title) : $AVE_Core->curentdoc->document_alias)
 				. ((isset($_REQUEST['artpage']) && is_numeric($_REQUEST['artpage'])) ? '&amp;artpage=' . $_REQUEST['artpage'] : '')
 				. '&amp;apage={s}'
 				. ((isset($_REQUEST['page']) && is_numeric($_REQUEST['page'])) ? '&amp;page=' . $_REQUEST['page'] : '')
@@ -408,23 +408,23 @@ function request_parse($id)
 		$items = '';
 		while ($row = $q->FetchRow())
 		{
-			$link = rewrite_link('index.php?id=' . $row->Id . '&amp;doc=' . (empty($row->Url) ? prepare_url($row->Titel) : $row->Url));
-			$items .= preg_replace('/\[cpabrub:(\d+)]\[(more|[0-9-]+)]/e', "request_get_document_field(\"$1\", $row->Id, \"$2\")", $item_template);
-			$items = str_replace('[link]', $link, $items);
-			$items = str_replace('[docid]', $row->Id, $items);
-			$items = str_replace('[datedoc]', pretty_date(strftime(TIME_FORMAT, $row->DokStart)), $items);
-			$items = str_replace('[views]', $row->Geklickt, $items);
-			$items = str_replace('[comments]', isset($row->nums) ? $row->nums : '', $items);
+			$link = rewrite_link('index.php?id=' . $row->Id . '&amp;doc=' . (empty($row->document_alias) ? prepare_url($row->document_title) : $row->document_alias));
+			$items .= preg_replace('/\[tag:rfld:(\d+)]\[(more|[0-9-]+)]/e', "request_get_document_field(\"$1\", $row->Id, \"$2\")", $item_template);
+			$items = str_replace('[tag:link]', $link, $items);
+			$items = str_replace('[tag:docid]', $row->Id, $items);
+			$items = str_replace('[tag:docdate]', pretty_date(strftime(TIME_FORMAT, $row->document_published)), $items);
+			$items = str_replace('[tag:docviews]', $row->document_count_view, $items);
+			$items = str_replace('[tag:doccomments]', isset($row->nums) ? $row->nums : '', $items);
 		}
 
-		$main_template = str_replace('[pages]', $page_nav, $main_template);
-		$main_template = str_replace('[docid]', $AVE_Core->curentdoc->Id, $main_template);
-		$main_template = str_replace('[datedoc]', $AVE_Core->curentdoc->DokStart, $main_template);
-		$main_template = preg_replace('/\[cpctrlrub:([,0-9]+)\]/e', "request_get_dropdown(\"$1\", " . $row_ab->RubrikId . ", " . $row_ab->Id . ");", $main_template);
+		$main_template = str_replace('[tag:pages]', $page_nav, $main_template);
+		$main_template = str_replace('[tag:docid]', $AVE_Core->curentdoc->Id, $main_template);
+		$main_template = str_replace('[tag:docdate]', $AVE_Core->curentdoc->document_published, $main_template);
+		$main_template = preg_replace('/\[tag:dropdown:([,0-9]+)\]/e', "request_get_dropdown(\"$1\", " . $row_ab->rubric_id . ", " . $row_ab->Id . ");", $main_template);
 
-		$return = str_replace('[content]', $items, $main_template);
-		$return = str_replace('[cp:path]', ABS_PATH, $return);
-		$return = str_replace('[cp:mediapath]', ABS_PATH . 'templates/' . THEME_FOLDER . '/', $return);
+		$return = str_replace('[tag:content]', $items, $main_template);
+		$return = str_replace('[tag:path]', ABS_PATH, $return);
+		$return = str_replace('[tag:mediapath]', ABS_PATH . 'templates/' . THEME_FOLDER . '/', $return);
 
 		$return = $AVE_Core->coreModuleTagParse($return);
 	}
@@ -438,13 +438,13 @@ function request_parse($id)
  * ѕример использовани€ в шаблоне:
  *   <li>
  *     <?php
- *      $r = request_get_document_field_value(12, [cpabid]);
+ *      $r = request_get_document_field_value(12, [tag:docid]);
  *      echo $r . ' (' . strlen($r) . ')';
  *     ?>
  *   </li>
  * </pre>
  *
- * @param int $rubric_id	идентификатор пол€, дл€ [cpabrub:12][150] $rubric_id = 12
+ * @param int $rubric_id	идентификатор пол€, дл€ [tag:rfld:12][150] $rubric_id = 12
  * @param int $document_id	идентификатор документа к которому принадлежит поле.
  * @param int $maxlength	необ€зательный параметр, количество возвращаемых символов.
  * 							≈сли данный параметр указать со знаком минус
@@ -457,12 +457,12 @@ function request_get_document_field_value($rubric_id, $document_id, $maxlength =
 
 	$document_fields = get_document_fields($document_id);
 
-	$field_value = isset($document_fields[$rubric_id]) ? $document_fields[$rubric_id]['Inhalt'] : '';
+	$field_value = isset($document_fields[$rubric_id]) ? $document_fields[$rubric_id]['field_value'] : '';
 
 	if (!empty($field_value))
 	{
 		$field_value = strip_tags($field_value, '<br /><strong><em><p><i>');
-		$field_value = str_replace('[cp:mediapath]', ABS_PATH . 'templates/' . THEME_FOLDER . '/', $field_value);
+		$field_value = str_replace('[tag:mediapath]', ABS_PATH . 'templates/' . THEME_FOLDER . '/', $field_value);
 	}
 
 	if (is_numeric($maxlength) && $maxlength != 0)
@@ -492,29 +492,29 @@ function request_get_document_field_value($rubric_id, $document_id, $maxlength =
  */
 function request_get_dropdown($dropdown_ids, $rubric_id, $request_id)
 {
-	global $AVE_DB, $AVE_Template;
+	global $AVE_Core, $AVE_DB, $AVE_Template;
 
 	$dropdown_ids = explode(',', preg_replace('/[^,\d]/', '', $dropdown_ids));
 	$dropdown_ids[] = 0;
 	$dropdown_ids = implode(',', $dropdown_ids);
-	$doc_request = 'doc' . get_current_document_id() . '_request' . $request_id;
+	$doc_request = 'doc' . $AVE_Core->curentdoc->Id . '_request' . $request_id;
 	$control = array();
 
 	$sql = $AVE_DB->Query("
 		SELECT
 			Id,
-			Titel,
-			StdWert
+			rubric_field_title,
+			rubric_field_default
 		FROM " . PREFIX . "_rubric_fields
 		WHERE Id IN(" . $dropdown_ids . ")
-		AND RubrikId = '" . $rubric_id . "'
-		AND RubTyp = 'dropdown'
+		AND rubric_id = '" . $rubric_id . "'
+		AND rubric_field_type = 'dropdown'
 	");
 	while ($row = $sql->FetchRow())
 	{
-		$dropdown['titel'] = $row->Titel;
-		$dropdown['selected'] = !empty($_SESSION[$doc_request]['fld'][$row->Id]) ? $_SESSION[$doc_request]['fld'][$row->Id] : $row->Wert;
-		$dropdown['options'] = explode(',', $row->StdWert);
+		$dropdown['titel'] = $row->rubric_field_title;
+		$dropdown['selected'] = !empty($_SESSION[$doc_request]['fld'][$row->Id]) ? $_SESSION[$doc_request]['fld'][$row->Id] : $row->condition_value;
+		$dropdown['options'] = explode(',', $row->rubric_field_default);
 		$control[$row->Id] = $dropdown;
 	}
 

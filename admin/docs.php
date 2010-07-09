@@ -33,7 +33,7 @@ $AVE_Template->config_load(BASE_DIR . '/admin/lang/' . $_SESSION['admin_language
 switch($_REQUEST['action'])
 {
 	case '' :
-		if (check_permission_acp('docs'))
+		if (check_permission_acp('documents'))
 		{
 			switch($_REQUEST['sub'])
 			{
@@ -44,12 +44,12 @@ switch($_REQUEST['action'])
 			$AVE_Document->documentListGet();
 		}
 		$AVE_Template->assign('DEF_DOC_START_YEAR', mktime(0, 0, 0, date("m"), date("d"), date("Y") - 10));
-		$AVE_Template->assign('DEF_DOC_END_YEAR', mktime(0, 0, 0, date("m"), date("d"), date("Y") + 20));
+		$AVE_Template->assign('DEF_DOC_END_YEAR', mktime(0, 0, 0, date("m"), date("d"), date("Y") + 10));
 		$AVE_Template->assign('content', $AVE_Template->fetch('documents/docs.tpl'));
 		break;
 
 	case 'showsimple':
-		if (check_permission_acp('docs'))
+		if (check_permission_acp('documents'))
 		{
 			$AVE_Document->documentListGet();
 			$AVE_Template->assign('content', $AVE_Template->fetch('documents/docs_simple.tpl'));
@@ -57,7 +57,7 @@ switch($_REQUEST['action'])
 		break;
 
 	case 'edit':
-		if (check_permission_acp('docs'))
+		if (check_permission_acp('documents'))
 		{
 			$AVE_Navigation->navigationAllItemList();
 			$AVE_Request->requestListFetch();
@@ -66,32 +66,32 @@ switch($_REQUEST['action'])
 		break;
 
 	case 'new':
-		if (check_permission_acp('docs'))
+		if (check_permission_acp('documents'))
 		{
 			$AVE_Navigation->navigationAllItemList();
 			$AVE_Request->requestListFetch();
-			$AVE_Document->documentNew((int)$_REQUEST['RubrikId']);
+			$AVE_Document->documentNew((int)$_REQUEST['rubric_id']);
 		}
 		break;
 
 	case 'open':
-		if (check_permission_acp('docs'))
+		if (check_permission_acp('documents'))
 		{
 			$AVE_Navigation->navigationItemStatusOn((int)$_REQUEST['Id']);
-			$AVE_Document->documentStatusSet((int)$_REQUEST['Id'], '1');
+			$AVE_Document->documentStatusSet((int)$_REQUEST['Id'], 1);
 		}
 		break;
 
 	case 'close':
-		if (check_permission_acp('docs'))
+		if (check_permission_acp('documents'))
 		{
 			$AVE_Navigation->navigationItemStatusOff((int)$_REQUEST['Id']);
-			$AVE_Document->documentStatusSet((int)$_REQUEST['Id'], '0');
+			$AVE_Document->documentStatusSet((int)$_REQUEST['Id'], 0);
 		}
 		break;
 
 	case 'delete':
-		if (check_permission_acp('docs'))
+		if (check_permission_acp('documents'))
 		{
 			$AVE_Navigation->navigationItemStatusOff((int)$_REQUEST['Id']);
 			$AVE_Document->documentMarkDelete((int)$_REQUEST['Id']);
@@ -99,75 +99,51 @@ switch($_REQUEST['action'])
 		break;
 
 	case 'redelete':
-		if (UGROUP == 1)
+		if (check_permission_acp('alles'))
 		{
 			$AVE_Navigation->navigationItemStatusOn((int)$_REQUEST['Id']);
-			$AVE_Document->documentUndelete((int)$_REQUEST['Id']);
-		}
-		else
-		{
-			define('NOPERM', 1);
+			$AVE_Document->documentUnmarkDelete((int)$_REQUEST['Id']);
 		}
 		break;
 
 	case 'enddelete':
-		if (UGROUP == 1)
+		if (check_permission_acp('alles'))
 		{
 			$AVE_Navigation->navigationItemDelete((int)$_REQUEST['Id']);
 			$AVE_Document->documentDelete((int)$_REQUEST['Id']);
 		}
-		else
-		{
-			define('NOPERM', 1);
-		}
 		break;
 
-	case 'comment':
-		if (check_permission('docs_comments'))
+	case 'remark':
+		if (check_permission_acp('remarks'))
 		{
 			$AVE_Document->documentRemarkNew((int)$_REQUEST['Id'], 0);
 		}
-		else
-		{
-			define('NOPERM', 1);
-		}
 		break;
 
-	case 'comment_reply':
-		if (check_permission('docs_comments'))
+	case 'remark_reply':
+		if (check_permission_acp('remarks'))
 		{
 			$AVE_Document->documentRemarkNew((int)$_REQUEST['Id'], 1);
 		}
-		else
+		break;
+
+	case 'remark_status':
+		if (check_permission_acp('remark_status'))
 		{
-			define('NOPERM', 1);
+			$AVE_Document->documentRemarkStatus((int)$_REQUEST['Id'], (int)$_REQUEST['remark_status']);
 		}
 		break;
 
-	case 'openclose_discussion':
-		if (check_permission('comments_openlose'))
+	case 'remark_del':
+		if (check_permission_acp('remark_del'))
 		{
-			$AVE_Document->documentRemarkStatus((int)$_REQUEST['Id'], (int)$_REQUEST['Aktiv']);
-		}
-		else
-		{
-			define('NOPERM', 1);
-		}
-		break;
-
-	case 'del_comment':
-		if (check_permission('docs_comments_del'))
-		{
-			$AVE_Document->documentRemarkDelete((int)$_REQUEST['Id'], (int)$_REQUEST['KommentarStart']);
-		}
-		else
-		{
-			define('NOPERM', 1);
+			$AVE_Document->documentRemarkDelete((int)$_REQUEST['Id'], (int)$_REQUEST['remark_first']);
 		}
 		break;
 
 	case 'change':
-		if (check_permission_acp('docs'))
+		if (check_permission_acp('documents'))
 		{
 			$AVE_Document->documentRubricChange();
 		}

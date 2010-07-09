@@ -17,8 +17,8 @@
 
 		{foreach from=$Groups item=ss}
 			<tr style="background-color: #eff3eb;" onmouseover="this.style.backgroundColor='#dae0d8';" onmouseout="this.style.backgroundColor='#eff3eb';" id="table_rows">
-				<td width="200"><strong>{$ss->Name|stripslashes}</strong></td>
-				<td><input name="Wert[{$ss->Benutzergruppe}]" type="text" style="width:60px" value="{$ss->Wert}" maxlength="10" /> %</td>
+				<td width="200"><strong>{$ss->user_group_name|escape}</strong></td>
+				<td><input name="Wert[{$ss->user_group}]" type="text" style="width:60px" value="{$ss->Wert}" maxlength="10" /> %</td>
 			</tr>
 		{/foreach}
 	</table><br />

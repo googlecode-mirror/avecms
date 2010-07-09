@@ -29,7 +29,7 @@ function presel() {ldelim}
 function openLinkWindow(target,doc) {ldelim}
 	if (typeof width=='undefined' || width=='') var width = screen.width * 0.6;
 	if (typeof height=='undefined' || height=='') var height = screen.height * 0.6;
-	if (typeof doc=='undefined') var doc = 'Titel';
+	if (typeof doc=='undefined') var doc = 'title';
 	if (typeof scrollbar=='undefined') var scrollbar=1;
 	window.open('index.php?idonly=1&doc='+doc+'&target='+target+'&do=docs&action=showsimple&cp={$sess}&pop=1','pop','left=0,top=0,width='+width+',height='+height+',scrollbars='+scrollbar+',resizable=1');
 {rdelim}
@@ -77,7 +77,7 @@ function openLinkWindow(target,doc) {ldelim}
 			<td>
 				<select name="default_country" style="width:250px">
 					{foreach from=$available_countries item=land}
-						<option value="{$land->LandCode}"{if $row.default_country==$land->LandCode} selected{/if}>{$land->LandName}</option>
+						<option value="{$land->country_code}"{if $row.default_country==$land->country_code} selected{/if}>{$land->country_name}</option>
 					{/foreach}
 				</select>
 			</td>

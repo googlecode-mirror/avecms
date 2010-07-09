@@ -26,7 +26,7 @@
 		<tr>
 			<td>{#Position#}</td>
 			<td>
-				<input name="Rang" type="text" value="{$row->Rang}" size="10" maxlength="4" />
+				<input name="position" type="text" value="{$row->position}" size="10" maxlength="4" />
 			</td>
 		</tr>
 

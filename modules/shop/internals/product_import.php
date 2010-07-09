@@ -8,7 +8,7 @@ $csv_available_fields = array(
 	'KatId'         => $GLOBALS['config_vars']['ItemImport_KatId'],
 	'KatId_Multi'   => $GLOBALS['config_vars']['ItemImport_KatId_Multi'],
 	'ArtName'       => $GLOBALS['config_vars']['ItemImport_ArtName'],
-	'Aktiv'         => $GLOBALS['config_vars']['ItemImport_Aktiv'],
+	'status'         => $GLOBALS['config_vars']['ItemImport_Aktiv'],
 	'Preis'         => $GLOBALS['config_vars']['ItemImport_Preis'],
 	'PreisListe'    => $GLOBALS['config_vars']['ItemImport_PreisListe'],
 	'Bild'          => $GLOBALS['config_vars']['ItemImport_Bild'],
@@ -175,7 +175,7 @@ if (!empty($_REQUEST['sub']))
 					$KatId         = '';
 					$KatId_Multi   = '';
 					$ArtName       = '';
-					$Aktiv         = '';
+					$status         = '';
 					$Preis         = '';
 					$PreisListe    = '';
 					$Bild          = '';
@@ -221,7 +221,7 @@ if (!empty($_REQUEST['sub']))
 							case 'KatId'         : $KatId         = $value; break;
 							case 'KatId_Multi'   : $KatId_Multi   = $value; break;
 							case 'ArtName'       : $ArtName       = $value; break;
-							case 'Aktiv'         : $Aktiv         = $value; break;
+							case 'status'         : $status         = $value; break;
 							case 'Preis'         : $Preis         = $value; break;
 							case 'PreisListe'    : $PreisListe    = $value; break;
 							case 'Bild'          : $Bild          = $value; break;
@@ -258,7 +258,7 @@ if (!empty($_REQUEST['sub']))
 					// ========================================================
 					$Lager   = ($Lager == '')   ? 1000 : $Lager;
 					$UstZone = ($UstZone == '') ? 1    : $UstZone;
-					$Aktiv   = ($Aktiv == '')   ? 1    : $Aktiv;
+					$status   = ($status == '')   ? 1    : $status;
 					/*
 						$TextKurz = addslashes($TextKurz);
 						$TextLang = addslashes($TextLang);
@@ -312,7 +312,7 @@ if (!empty($_REQUEST['sub']))
 									KatId         = '" . $KatId . "',
 									KatId_Multi   = '" . $KatId_Multi . "',
 									ArtName       = '" . $ArtName . "',
-									Aktiv         = '" . $Aktiv . "',
+									status         = '" . $status . "',
 									Preis         = '" . $Preis . "',
 									PreisListe    = '" . $PreisListe . "',
 									Bild          = '" . $Bild . "',
@@ -362,7 +362,7 @@ if (!empty($_REQUEST['sub']))
 									KatId         = '" . $KatId . "',
 									KatId_Multi   = '" . $KatId_Multi . "',
 									ArtName       = '" . $ArtName . "',
-									Aktiv         = '" . $Aktiv . "',
+									status         = '" . $status . "',
 									Preis         = '" . $Preis . "',
 									PreisListe    = '" . $PreisListe . "',
 									Bild          = '" . $Bild . "',

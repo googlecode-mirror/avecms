@@ -1,16 +1,13 @@
 <?php
 
 /**
- * AVE.cms - Модуль Системные блоки
- *
- * @filesource
- */
-
-/**
  * Класс работы с системными блоками
  *
  * @package AVE.cms
  * @subpackage module_SysBlock
+ * @author Mad Den
+ * @since 2.07
+ * @filesource
  */
 class sysblock
 {

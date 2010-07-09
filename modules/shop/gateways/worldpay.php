@@ -38,7 +38,7 @@ h1, h2, h3 {font-family: Arial, Helvetica, sans-serif;}
 	<input name="M_articles" type="hidden" value="<?php echo (serialize($_SESSION['Product'])); ?>" />
 	<input name="name" type="hidden" value="<?php echo $_SESSION['billing_firstname'] . ' ' . $_SESSION['billing_lastname']; ?>" />
 	<input name="address" type="hidden" value="<?php echo $_SESSION['billing_firstname'] . ' ' . $_SESSION['billing_lastname'] . ', ' . $_SESSION['billing_street'] . ' ' . $_SESSION['billing_streetnumber']; ?>" />
-	<input name="postcode" type="hidden" value="<?php echo $_SESSION['billing_zip']; ?>" />
+	<input name="zipcode" type="hidden" value="<?php echo $_SESSION['billing_zip']; ?>" />
 	<input name="tel" type="hidden" value="<?php echo $_SESSION['OrderPhone']; ?>" />
 	<input name="fax" type="hidden" value="" />
 	<input name="email" type="hidden" value="<?php echo $_SESSION['OrderEmail']; ?>" />

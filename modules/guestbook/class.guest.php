@@ -1,66 +1,38 @@
 <?php
 
 /**
- * Класс работы с Гостевой книгой в публичной части
+ * Класс работы с Гостевой книгой
  *
  * @package AVE.cms
  * @subpackage module_Guestbook
  * @filesource
  */
-class Guest_Module_Pub
+class Guest
 {
 	/**
-	 * Метод генерации секретного кода
+	 * Получение параметра настройки модуля Гостевая книга
 	 *
-	 * @param int $c количество символов в секретном коде
-	 * @return int
+	 * @param string $field название параметра
+	 * @return mixed значение параметра или массив параметров если не указан $field
 	 */
-	function secureCode($c = 0)
+	function _guestbookSettingsGet($field = '')
 	{
 		global $AVE_DB;
 
-		$tdel = time() - 1200;
-		$AVE_DB->Query("DELETE FROM " . PREFIX . "_antispam WHERE Ctime < '" . $tdel . "'");
-		$code = '';
-		$chars = array(
-			'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'J', 'K', 'M', 'N',
-			'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z',
-			'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'j', 'k', 'm', 'n',
-			'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z',
-			'2', '3', '4', '5', '6', '7', '8', '9'
-		);
-		$ch = ($c != 0) ? $c : 7;
-		$count = count($chars) - 1;
-		srand((double) microtime() * 1000000);
-		for ($i = 0; $i < $ch; $i++)
+		static $settings = null;
+
+		if ($settings === null)
 		{
-			$code .= $chars[rand(0, $count)];
+			$settings = $AVE_DB->Query("
+				SELECT *
+				FROM " . PREFIX . "_modul_guestbook
+				WHERE Id = 1
+			")->FetchAssocArray();
 		}
 
-		$AVE_DB->Query("
-			INSERT
-			INTO " . PREFIX . "_antispam
-			SET
-				Id = '',
-				Code = '" . $code . "',
-				Ctime = '" . time() . "'
-		");
-		$codeid = $AVE_DB->InsertId();
+		if ($field == '') return $settings;
 
-		return $codeid;
-	}
-
-	/**
-	 * Метод ограничения количества символов в сообщении
-	 *
-	 * @param string $text
-	 * @param int $maxlength
-	 * @return string
-	 */
-	function formtext($text, $maxlength)
-	{
-		$text = substr($text, 0, $maxlength);
-		return $text;
+		return (isset($settings[$field]) ? $settings[$field] : null);
 	}
 
 	/**
@@ -68,100 +40,15 @@ class Guest_Module_Pub
 	 *
 	 * @return array
 	 */
-	function ppsite()
+	function _guestbookPostPerSiteGet()
 	{
 		$pps_array = array();
 		for ($a = 5; $a <= 50; $a += 5)
 		{
-			unset ($pps_sel);
-			if ($_REQUEST['pp'] == $a)
-			{
-				$pps_sel = 'selected';
-			}
-			array_push($pps_array, array('ps' => $a, 'pps_sel' => $pps_sel));
+			array_push($pps_array, array('ps' => $a, 'pps_sel' => (($_REQUEST['pp'] == $a) ? 'selected="selected"' : '')));
 		}
+
 		return $pps_array;
-	}
-
-	/**
-	 * Метод получения списка всех смайлов
-	 *
-	 * @return string
-	 */
-	function listsmilies()
-	{
-		$row = $GLOBALS['AVE_DB']->Query("SELECT smiliebr FROM " . PREFIX . "_modul_guestbook_settings")->FetchRow();
-		$smilie_id = 0;
-		$smiliesw .= '<table border="0"><tr>';
-
-		$sql = $GLOBALS['AVE_DB']->Query("
-			SELECT
-				code,
-				path
-			FROM " . PREFIX . "_modul_guestbook_smileys
-			WHERE active = '1'
-			ORDER BY posi ASC
-		");
-		while ($row_s = $sql->FetchRow())
-		{
-			$val = $row_s->code;
-			$key = $row_s->path;
-			$smiliesw .= '<td align="center">';
-			$smiliesw .= '<a href="javascript:smilie(\'' . $val . '\')"><img hspace="2" vspace="2" src="modules/guestbook/smilies/' . $key . '" border="0" alt="" /></a>';
-			$smilie_id++;
-			$smiliesw .= '</td>';
-			$edit = $row->smiliebr;
-			if ($smilie_id == $edit)
-			{
-				$smiliesw .= '</tr><tr>';
-				$smilie_id = 0;
-			}
-
-		}
-		$smiliesw .= '</tr></table>';
-		return $smiliesw;
-	}
-
-	/**
-	 * Метод преобразования графических смайлов в их текстовый эквивалент
-	 *
-	 * @param string $texts
-	 * @return string
-	 */
-	function dosmilies($texts)
-	{
-		$sql = $GLOBALS['AVE_DB']->Query("
-			SELECT
-				code,
-				path
-			FROM " . PREFIX . "_modul_guestbook_smileys
-			WHERE active = '1'
-		");
-		while ($row_s = $sql->FetchRow())
-		{
-			$texts = @ str_replace($row_s->code, '<img src="modules/guestbook/smilies/' . $row_s->path . '" border="0" alt="" />', $texts);
-		}
-		return $texts;
-	}
-
-	/**
-	 * Обработка bbCode для сообщений
-	 *
-	 * @param string $text
-	 * @return string
-	 */
-	function kcodes_comments($text)
-	{
-		$row = $GLOBALS['AVE_DB']->Query("SELECT bbcodes FROM " . PREFIX . "_modul_guestbook_settings")->FetchRow();
-		if ($row->bbcodes == 1)
-		{
-			$text = $this->pre_kcodes($text);
-		}
-		else
-		{
-			$text = nl2br(htmlspecialchars($text));
-		}
-		return $text;
 	}
 
 	/**
@@ -170,124 +57,13 @@ class Guest_Module_Pub
 	 * @param string $text
 	 * @return string
 	 */
-	function pre_kcodes($text)
+	function _guestbookBbcodeParse($text)
 	{
-		$divheight = $this->divheight($text);
-		$bwidth = '100';
+		global $AVE_Template;
 
-		$head = '<div style="margin: 5px 0 0"><em>Программный код:</em></div><div class="divcode" style="margin:0; padding:5px; border:1px inset; width:' . $bwidth . '; height:' . $divheight . 'px; overflow:auto"><code style="white-space:nowrap">';
-		$foot = '</code></div>';
+		require_once(BASE_DIR . '/lib/markitup/sets/bbcode/markitup.bbcode-parser.php');
 
-		$head_quote = '<div style="MARGIN: 5px 0px 0px">%%boxtitle%%</div><div class="divcode" style="margin:0; padding:5px; border:1px inset; width:95%;"><span style="font-style:italic;">';
-		$foot_quote = '</span></div>';
-
-		$pstring = time() . mt_rand(0, 10000000);
-		$treffer = '/\[php\](.*?)\[\/php\]/si';
-		@ preg_match_all($treffer, $text, $erg);
-		for ($i = 0; $i < count($erg[1]); $i++)
-		{
-			$text = str_replace($erg[1][$i], $pstring . $i . $pstring, $text);
-		}
-
-		$text = htmlspecialchars($text);
-		$lines = explode(PHP_EOL, $text);
-		$c_mlength = 1000;
-		for ($n = 0; $n < count($lines); $n++)
-		{
-			$words = explode(' ', $lines[$n]);
-			$pstringount_w = count($words) - 1;
-			if ($pstringount_w >= 0)
-			{
-				for ($i = 0; $i <= $pstringount_w; $i++)
-				{
-					$max_length_word = $c_mlength;
-					$tword = trim($words[$i]);
-					$tword = preg_replace('/\[(.*?)\]/si', '', $tword);
-					$displaybox = substr_count($tword, 'http://') + substr_count($tword, 'https://') + substr_count($tword, 'www.') + substr_count($tword, 'ftp://');
-					if ($displaybox > 0)
-					{
-						$max_length_word = 200;
-					}
-					if (strlen($tword) > $max_length_word)
-					{
-						$words[$i] = chunk_split($words[$i], $max_length_word, '<br />');
-						$length = strlen($words[$i]) - 5;
-						$words[$i] = substr($words[$i], 0, $length);
-					}
-				}
-				$lines[$n] = implode(' ', $words);
-			}
-			else
-			{
-				$lines[$n] = chunk_split($lines[$n], $max_length_word, '<br />');
-			}
-		}
-		$text = implode(PHP_EOL, $lines);
-		$text = nl2br($text);
-		$text = preg_replace('#\[color=(\#?[\da-fA-F]{6}|[a-z\ \-]{3,})\](.*?)\[/color\]+#i', "<font color=\"\\1\">\\2</font>", $text);
-		$text = preg_replace('#\[size=()?(.*?)\](.*?)\[/size\]#si', "<font size=\"\\2\">\\3</font>", $text);
-		$text = preg_replace('#\[face=()?(.*?)\](.*?)\[/face\]#si', "<span style=\"font-family:\\2\">\\3</span>", $text);
-		$text = preg_replace('#\[font=()?(.*?)\](.*?)\[/font\]#si', "<span style=\"font-family:\\2\">\\3</span>", $text);
-		$text = preg_replace('!\[(?i)b\]!', '<b>', $text);
-		$text = preg_replace('!\[/(?i)b\]!', '</b>', $text);
-		$text = preg_replace('!\[(?i)u\]!', '<u>', $text);
-		$text = preg_replace('!\[/(?i)u\]!', '</u>', $text);
-		$text = preg_replace('!\[(?i)i\]!', '<i>', $text);
-		$text = preg_replace('!\[/(?i)i\]!', '</i>', $text);
-		$text = preg_replace('!\[(?i)url\](http://|ftp://)(.*?)\[/(?i)url\]+!', "<a href=\"\\1\\2\" target=\"_blank\">\\1\\2</a>", $text);
-		$text = preg_replace('!\[(?i)url\](.*?)\[/(?i)url\]+!', "<a href=\"http://\\1\" target=\"_blank\">\\1</a>", $text);
-		$text = preg_replace('#\[url=(http://)?(.*?)\](.*?)\[/url\]#si', "<a href=\"http://\\2\" target=\"_blank\">\\3</a>", $text);
-		$text = preg_replace('!\[(?i)email\]([a-zA-Z0-9-._]+@[a-zA-Z0-9-.]+)\[/(?i)email\]!', "<a href=\"mailto:\\1\">\\1</a>", $text);
-		$text = preg_replace('#\[email=()?(.*?)\](.*?)\[/email\]#si', "<a href=\"mailto:\\2\">\\3</a>", $text);
-		$text = preg_replace('!\[(?i)img\]([_-a-zA-Z0-9:/\?\[\]=.@-]+)\[(?i)/img\]!', "<img src=\"\\1\" border=\"0\" alt=\"\" />", $text);
-		$text = preg_replace('!\[(?i)IMG\]([_-a-zA-Z0-9:/\?\[\]=.@-]+)\[(?i)/IMG\]!', "<img src=\"\\1\" border=\"0\" alt=\"\" />", $text);
-		$text = preg_replace('/\[code\](.*?)\[\/code\]/si', str_replace('%%boxtitle%%', $lang['code'], $head) . '\\1' . $foot, $text);
-		$text = preg_replace('!\[(?i)quote\]!', str_replace('%%boxtitle%%', '<em>Цитата:</em>', $head_quote), $text);
-		$text = preg_replace('!\[/(?i)quote\]!', $foot_quote, $text);
-		$text = preg_replace('/\[list\](.*?)\[\/list\]/si', "<ul>\\1</ul>", $text);
-		$text = preg_replace('/\[list=(.*?)\](.*?)\[\/list\]/si', "<ol type=\"\\1\">\\2</ol>", $text);
-		$text = preg_replace('/\[\*\](.*?)\\n/si', "<li>\\1</li>", $text);
-
-		for ($i = 0; $i < count($erg[1]); $i++)
-		{
-			ob_start();
-			@ highlight_string(trim($erg[1][$i]));
-			$highlight_string = ob_get_contents();
-			ob_end_clean();
-			$displaybox = str_replace('%%boxtitle%%', 'Код:', $head) . $highlight_string . $foot;
-			$text = str_replace('[PHP]', '[php]', $text);
-			$text = str_replace('[/PHP]', '[/php]', $text);
-			$text = str_replace('[php]' . $pstring . $i . $pstring . '[/php]', $displaybox, $text);
-		}
-		return $text;
-	}
-
-	/**
-	 * Получение размера окна для Цитаты, Кода и т.д.
-	 *
-	 * @param string $text
-	 * @return string
-	 */
-	function divheight($text)
-	{
-		static $maxlines;
-
-		$row = $GLOBALS['AVE_DB']->Query("SELECT maxlines FROM " . PREFIX . "_modul_guestbook_settings")->FetchRow();
-		if (!isset ($maxlines))
-		{
-			$maxlines = $row->maxlines;
-		}
-
-		$lines = max(substr_count($text, PHP_EOL), substr_count($text, '<br />')) + 1;
-		if ($lines > $maxlines && $maxlines > 0)
-		{
-			$lines = $maxlines;
-		}
-		elseif ($lines < 1)
-		{
-			$lines = 1;
-		}
-		return ($lines) * 15 + 18;
+		return BBCode2Html($text);
 	}
 
 	/**
@@ -297,16 +73,295 @@ class Guest_Module_Pub
 	 * @param string $goto
 	 * @param string $tpl
 	 */
-	function msg($msg = '', $goto = '', $tpl = '')
+	function _guestbookMessageShow($msg = '', $goto = '')
 	{
+		global $AVE_Template, $mod;
+
 		$goto = ($goto == '') ? 'index.php?module=guestbook' : $goto;
 		$msg = str_replace('%%GoTo%%', $goto, $msg);
-		$GLOBALS['AVE_Template']->assign('theme_folder', THEME_FOLDER);
-		$GLOBALS['AVE_Template']->assign('GoTo', $goto);
-		$GLOBALS['AVE_Template']->assign('content', $msg);
-		$tpl_out = $GLOBALS['AVE_Template']->fetch($GLOBALS['mod']['tpl_dir'] . 'redirect.tpl');
-		define('MODULE_CONTENT', $tpl_out);
+		$AVE_Template->assign('theme_folder', THEME_FOLDER);
+		$AVE_Template->assign('GoTo', $goto);
+		$AVE_Template->assign('content', $msg);
+		$tpl_out = $AVE_Template->fetch($mod['tpl_dir'] . 'redirect.tpl');
 		echo $tpl_out;
+		exit;
+	}
+
+	/**
+	 * Вывод гостевой книги в публичной части
+	 *
+	 */
+	function guestbookShow()
+	{
+		global $AVE_DB, $AVE_Template, $mod;
+
+		$_REQUEST['pp'] = (!empty ($_REQUEST['pp']) && is_numeric($_REQUEST['pp'])) ? $_REQUEST['pp'] : '10';
+		if (empty ($_REQUEST['sort'])) $_REQUEST['sort'] = 'asc';
+		if ($_REQUEST['sort'] != 'asc') $_REQUEST['sort'] = 'desc';
+
+		// Если надо использовать защиту от спама - проверяем наличие библиотеки GD и функции вывода текста на изображение
+		if ($this->_guestbookSettingsGet('guestbook_antispam') == 1 && @ extension_loaded('gd') == 1 && function_exists('imagettftext'))
+		{
+			$AVE_Template->assign('use_code', 1);
+		}
+
+		$AVE_Template->assign('post_max_length', $this->_guestbookSettingsGet('guestbook_post_max_length'));
+		$AVE_Template->assign('dessel', ($_REQUEST['sort'] == 'desc') ? 'selected="selected"' : '');
+		$AVE_Template->assign('ascsel', ($_REQUEST['sort'] == 'asc')  ? 'selected="selected"' : '');
+		$AVE_Template->assign('pps_array', $this->_guestbookPostPerSiteGet());
+
+		// Если разрешено использовать bbCode, передаем в шаблон разрешение
+		if ($this->_guestbookSettingsGet('guestbook_use_bbcode') == 1)
+		{
+			$AVE_Template->assign('use_bbcode', 1);
+		}
+
+		// Получаем количество сообщений и формируем постраничную навигацию
+		$inserts = array();
+		$num = $AVE_DB->Query("
+			SELECT COUNT(*)
+			FROM " . PREFIX . "_modul_guestbook_post
+			WHERE guestbook_post_approve = '1'
+		")->GetCell();
+
+		if ($num > $_REQUEST['pp'])
+		{
+			$page_nav = " <a class=\"page_navigation\" href=\"index.php?module=guestbook&amp;pp=" . $_REQUEST['pp'] . "&amp;sort=" . $_REQUEST['sort'] . "&amp;page={s}\">{t}</a> ";
+			$page_nav = get_pagination(ceil($num / $_REQUEST['pp']), 'page', $page_nav);
+			$AVE_Template->assign('pages', $page_nav);
+		}
+
+		$start = get_current_page() * $_REQUEST['pp'] - $_REQUEST['pp'];
+
+		// Получаем список всех сообщений и передаем их в шаблон для вывода
+		$sql = $AVE_DB->Query("
+			SELECT *
+			FROM " . PREFIX . "_modul_guestbook_post
+			WHERE guestbook_post_approve = '1'
+			ORDER BY id " . $_REQUEST['sort'] . "
+			LIMIT " . $start . "," . $_REQUEST['pp']
+		);
+
+		while ($row = $sql->FetchRow())
+		{
+			if ($this->_guestbookSettingsGet('guestbook_use_bbcode') == 1)
+			{
+				$row->guestbook_post_text = $this->_guestbookBbcodeParse($row->guestbook_post_text);
+			}
+			else
+			{
+				$row->guestbook_post_text = htmlspecialchars($row->guestbook_post_text);
+				$row->guestbook_post_text = str_replace("\r", "", $row->guestbook_post_text);
+				$row->guestbook_post_text = "<p>".preg_replace("/(\n){2,}/", "</p><p>", $row->guestbook_post_text)."</p>";
+				$row->guestbook_post_text = nl2br($row->guestbook_post_text);
+			}
+
+			array_push($inserts, $row);
+		}
+
+		$AVE_Template->assign('comments_array', $inserts);
+		$AVE_Template->assign('allcomments', $num);
+		define('MODULE_CONTENT', $AVE_Template->fetch($mod['tpl_dir'] . 'guestbook.tpl'));
+	}
+
+	/**
+	 * Новое сообщение
+	 *
+	 */
+	function guestbookPostNew()
+	{
+		global $AVE_DB, $mod;
+
+		// Если надо проверяем защитный код
+		if ($this->_guestbookSettingsGet('guestbook_antispam') == 1)
+		{
+			if (! (isset($_SESSION['captcha_keystring']) && isset($_POST['securecode'])
+				&& $_SESSION['captcha_keystring'] == $_POST['securecode']))
+			{
+				unset($_SESSION['captcha_keystring']);
+				$this->_guestbookMessageShow($mod['config_vars']['GUEST_WRONG_SCODE']);
+			}
+			unset($_SESSION['captcha_keystring']);
+		}
+
+		// Проверяем время между добавлением сообщений (защита от спама)
+		if ($this->_guestbookSettingsGet('guestbook_antispam_time') > 0 && !$error)
+		{
+			$last_post_created = $AVE_DB->Query("
+				SELECT
+					guestbook_post_created
+				FROM " . PREFIX . "_modul_guestbook_post
+				WHERE guestbook_post_author_ip = '" . $_SERVER['REMOTE_ADDR'] . "'
+				ORDER BY id DESC
+				LIMIT 1
+			")->GetCell();
+
+			if ($last_post_created)
+			{
+				if (($last_post_created) + (60 * $this->_guestbookSettingsGet('guestbook_antispam_time')) > time())
+				{
+					$this->_guestbookMessageShow($mod['config_vars']['GUEST_WRONG_SPAM']);
+				}
+			}
+		}
+
+		if (strlen(trim($_POST['text'])) < 10)
+		{
+			$this->_guestbookMessageShow($mod['config_vars']['GUEST_SMALL_TEXT']);
+		}
+
+		if ($this->_guestbookSettingsGet('guestbook_need_approve') == 1)
+		{
+			$entry_now = 0;
+			$text_thankyou = $mod['config_vars']['GUEST_CHECK_THANKS'];
+		}
+		else
+		{
+			$entry_now = 1;
+			$text_thankyou = $mod['config_vars']['GUEST_THANKS'];
+		}
+
+		$text = substr($_POST['text'], 0, $this->_guestbookSettingsGet('guestbook_post_max_length'));
+
+		$AVE_DB->Query("
+			INSERT
+			INTO " . PREFIX . "_modul_guestbook_post
+			SET
+				id                          = '',
+				guestbook_post_author_name  = '" . substr($_REQUEST['author'], 0, 25) . "',
+				guestbook_post_author_email = '" . substr($_REQUEST['email'], 0, 100) . "',
+				guestbook_post_author_web   = '" . substr($_REQUEST['web'], 0, 100) . "',
+				guestbook_post_author_ip    = '" . getenv('REMOTE_ADDR') . "',
+				guestbook_post_author_sity  = '" . substr($_REQUEST['sity'], 0, 100) . "',
+				guestbook_post_text         = '" . $text . "',
+				guestbook_post_approve      = '" . $entry_now . "',
+				guestbook_post_created      = '" . time() . "'
+		");
+
+		// Отправляем сообщение администратору на E-mail
+		if ($this->_guestbookSettingsGet('guestbook_send_copy') == 1)
+		{
+			send_mail(
+				$this->_guestbookSettingsGet('guestbook_email_copy'),
+				$text,
+				$mod['config_vars']['GUEST_NEW_MAIL'],
+				$this->_guestbookSettingsGet('guestbook_email_copy'),
+				$mod['config_vars']['GUEST_PUB_NAME'],
+				$this->_guestbookSettingsGet('guestbook_email_copy'),
+				'text',
+				''
+			);
+		}
+
+		$this->_guestbookMessageShow($text_thankyou);
+	}
+
+	/**
+	 * Метод управления настройками модуля
+	 *
+	 * @param string $tpl_dir путь к папке с шаблонами
+	 */
+	function guestbookSettingsEdit($tpl_dir)
+	{
+		global $AVE_DB, $AVE_Template;
+
+		switch ($_REQUEST['sub'])
+		{
+			case 'save' :
+				$AVE_DB->Query("
+					UPDATE " . PREFIX . "_modul_guestbook
+					SET
+						guestbook_antispam        = '" . $_REQUEST['antispam'] . "',
+						guestbook_send_copy       = '" . $_REQUEST['send_copy'] . "',
+						guestbook_email_copy      = '" . $_REQUEST['email_copy'] . "',
+						guestbook_post_max_length = '" . $_REQUEST['post_max_length'] . "',
+						guestbook_antispam_time   = '" . $_REQUEST['antispam_time'] . "',
+						guestbook_need_approve    = '" . $_REQUEST['need_approve'] . "',
+						guestbook_use_bbcode      = '" . $_REQUEST['use_bbcode'] . "'
+				");
+				header('Location:index.php?do=modules&action=modedit&mod=guestbook&moduleaction=1&cp=' . SESSION);
+				exit;
+
+			case '' :
+			default :
+				// Если в запросе не пришел параметр на сохранение, тогда
+				// получаем все настройки для модуля и передаем их в шаблон
+				$AVE_Template->assign('settings', $this->_guestbookSettingsGet());
+
+				if (empty ($_REQUEST['sort'])) $_REQUEST['sort'] = 'asc';
+				if ($_REQUEST['sort'] != 'asc') $_REQUEST['sort'] = 'desc';
+
+				$limit = (!empty ($_REQUEST['pp']) && is_numeric($_REQUEST['pp'])) ? $_REQUEST['pp'] : '15';
+
+				// Получеам количество сообщений
+				$num = $AVE_DB->Query("SELECT COUNT(*) FROM " . PREFIX . "_modul_guestbook_post")->GetCell();
+
+				// Формируем навигацию между сообщениями
+				if ($num > $limit)
+				{
+					$page_nav = " <a class=\"page_navigation\" href=\"index.php?do=modules&action=modedit&mod=guestbook&moduleaction=1&cp=" . SESSION . "&pp=" . $limit . "&sort=" . $_REQUEST['sort'] . "&page={s}\">{t}</a> ";
+					$page_nav = get_pagination(ceil($num / $limit), 'page', $page_nav);
+					$AVE_Template->assign('pnav', $page_nav);
+				}
+
+				$start = get_current_page() * $limit - $limit;
+
+				//Получаем сообщения которые будут выведены в зависимости от страницы
+				$sql = $AVE_DB->Query("
+					SELECT *
+					FROM " . PREFIX . "_modul_guestbook_post
+					ORDER BY id " . $_REQUEST['sort'] . "
+					LIMIT " . $start . "," . $limit
+				);
+				$inserts = array();
+				while ($row = $sql->FetchRow())
+				{
+					array_push($inserts, $row);
+				}
+
+				$AVE_Template->assign('comments_array', $inserts);
+				$AVE_Template->assign('content', $AVE_Template->fetch($tpl_dir . 'admin_conf.tpl'));
+				break;
+		}
+	}
+
+	/**
+	 * Метод управления сообщениями (активация, удаление и т.д.)
+	 *
+	 */
+	function guestbookPostEdit()
+	{
+		global $AVE_DB;
+
+		if (count($_POST['author']) > 0)
+		{
+			foreach ($_POST['author'] as $id => $author)
+			{
+				$AVE_DB->Query("
+					UPDATE " . PREFIX . "_modul_guestbook_post
+					SET
+						" . (isset($_POST['approve'][$id]) ? "guestbook_post_approve = '" . $_POST['approve'][$id] . "'," : '') . "
+						guestbook_post_author_name  = '" . $author . "',
+						guestbook_post_author_email = '" . $_POST['email'][$id] . "',
+						guestbook_post_author_web   = '" . $_POST['web'][$id] . "',
+						guestbook_post_author_sity  = '" . $_POST['sity'][$id] . "',
+						guestbook_post_text         = '" . $_POST['post_text'][$id] . "'
+					WHERE
+						id = '" . $id . "'
+				");
+			}
+		}
+
+		if (count($_POST['del']) > 0)
+		{
+			foreach ($_POST['del'] as $id => $del)
+			{
+				$AVE_DB->Query("DELETE FROM " . PREFIX . "_modul_guestbook_post WHERE id = '" . $id . "'");
+				$AVE_DB->Query("ALTER TABLE " . PREFIX . "_modul_guestbook_post PACK_KEYS = 0 CHECKSUM = 0 DELAY_KEY_WRITE = 0 AUTO_INCREMENT = 1");
+			}
+		}
+
+		header('Location:index.php?do=modules&action=modedit&mod=guestbook&moduleaction=1&cp=' . SESSION);
 		exit;
 	}
 }

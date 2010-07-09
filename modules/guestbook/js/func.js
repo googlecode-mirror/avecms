@@ -439,7 +439,7 @@ function doInsert(ktag,kctag,once){
 		// obj_ta.value += ktag;
 		// Fix für Mozilla:
 		// Fügt Tag an der gewünschten position ein!
-		var tarea = document.getElementById('msgform');
+		var tarea = document.getElementById('post');
 		var selEnd = tarea.selectionEnd;
 		var txtLen = tarea.value.length;
 		var txtbefore = tarea.value.substring(0,selEnd);

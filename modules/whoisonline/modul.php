@@ -1,5 +1,14 @@
 <?php
 
+/**
+ * AVE.cms - ћодуль Who is online
+ *
+ * @package AVE.cms
+ * @subpackage module_WhoIsOnline
+ * @since 2.09
+ * @filesource
+ */
+
 if (!defined('BASE_DIR')) exit;
 
 if (defined('ACP'))
@@ -7,7 +16,7 @@ if (defined('ACP'))
     $modul['ModulName'] = 'Who is online';
     $modul['ModulPfad'] = 'whoisonline';
     $modul['ModulVersion'] = '1.0';
-    $modul['Beschreibung'] = 'ƒанный модуль предназначен дл€ отображени€ присутствующих на сайте пользователей с гео-информацией.';
+    $modul['description'] = 'ƒанный модуль предназначен дл€ отображени€ присутствующих на сайте пользователей с гео-информацией.';
     $modul['Autor'] = '&copy;';
     $modul['MCopyright'] = '&copy; 2007-2010 Overdoze.Ru';
     $modul['Status'] = 1;

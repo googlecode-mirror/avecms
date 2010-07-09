@@ -5,6 +5,8 @@
  *
  * @package AVE.cms
  * @subpackage module_Newsarchive
+ * @author Arcanum
+ * @since 2.0
  * @filesource
  */
 

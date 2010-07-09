@@ -12,14 +12,14 @@
 		<tr>
 			<td class="first" width="135"><strong>{#DOC_NOTICE_TITLE#}</strong></td>
 			<td class="second">
-				<input name="Titel" type="text" id="Titel" style="width:600px" value="">
+				<input name="remark_title" type="text" id="remark_title" style="width:600px" value="">
 			</td>
 		</tr>
 
 		<tr>
 			<td class="first" width="135"><strong>{#DOC_NOTICE_TEXT#}</strong></td>
 			<td class="second">
-				<textarea name="Kommentar" style="width:600px;height:100px" id="Kommentar"></textarea>
+				<textarea name="remark_text" style="width:600px;height:100px" id="remark_text"></textarea>
 			</td>
 		</tr>
 
@@ -27,7 +27,7 @@
 			<td class="first" width="135"></td>
 			<td class="second">
 				<input type="submit" class="button" value="{#DOC_BUTTON_ADD_NOTICE#}" />
-				<span class="first"><a name="comment"></a></span>
+				<a name="comment"></a>
 			</td>
 		</tr>
 	</table>

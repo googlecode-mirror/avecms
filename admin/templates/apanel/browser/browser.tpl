@@ -2,7 +2,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=windows-1251">
-<title>({$smarty.session.user_name})</title>
+<title>({$smarty.session.user_name|escape})</title>
 <meta name="robots" content="noindex,nofollow">
 <meta http-equiv="pragma" content="no-cache">
 <meta name="generator" content="">
@@ -40,7 +40,7 @@ function selcommon(src) {ldelim}
 
 function delfile(src) {ldelim}
 	if (window.confirm('{#MAIN_MP_DELETE_CONFIRM#} ' + src + ' ')) {ldelim}
-		parent.frames['zf'].location.href = 'browser.php?df='+src+'&typ={$smarty.request.typ}&action=delfile&dir={$dir}&file={$dir}' + src + '&cpengine={$sess}';
+		parent.frames['zf'].location.href = 'browser.php?df='+src+'&typ={$smarty.request.typ|escape}&action=delfile&dir={$dir}&file={$dir}' + src + '&cpengine={$sess}';
 	{rdelim}
 {rdelim}
 
@@ -50,8 +50,8 @@ parent.document.dat.dateiname.value='{$dir}';
 {if $dirup==1}
 	<div>
 		<div class="mb_imgcontainer">
-			<div class="mb_image" align="center"><a title="{#MAIN_MP_UP_LEVEL#}" href="browser.php?typ={$smarty.request.typ}&cpengine={$sess}&dir={$dir}../&action=list"><img src="{$tpl_dir}/images/folder_up.gif" alt="" border="0" width="128" height="128" /></a></div>
-			<div class="mb_kb" align="center"><a title="{#MAIN_MP_UP_LEVEL#}" href="browser.php?typ={$smarty.request.typ}&cpengine={$sess}&dir={$dir}../&action=list">..</a></div>
+			<div class="mb_image" align="center"><a title="{#MAIN_MP_UP_LEVEL#}" href="browser.php?typ={$smarty.request.typ|escape}&cpengine={$sess}&dir={$dir}../&action=list"><img src="{$tpl_dir}/images/folder_up.gif" alt="" border="0" width="128" height="128" /></a></div>
+			<div class="mb_kb" align="center"><a title="{#MAIN_MP_UP_LEVEL#}" href="browser.php?typ={$smarty.request.typ|escape}&cpengine={$sess}&dir={$dir}../&action=list">..</a></div>
 		</div>
 	</div>
 {/if}

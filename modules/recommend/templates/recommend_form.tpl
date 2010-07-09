@@ -23,21 +23,21 @@
     <legend>
     <label for="l_recommend_name">{#RECOMMEND_YOUR_NAME#}</label>
     </legend>
-    <input name="recommend_name" type="text" id="l_recommend_name" style="width:250px" value="{$smarty.session.user_name}" />
+    <input name="recommend_name" type="text" id="l_recommend_name" style="width:250px" value="{$smarty.session.user_name|escape}" />
     </fieldset>
     <br />
     <fieldset>
     <legend>
     <label for="l_recommend_email">{#RECOMMEND_YOUR_EMAIL#}</label>
     </legend>
-    <input name="recommend_email" type="text" id="l_recommend_email" style="width:250px" value="{$smarty.session.user_email}" />
+    <input name="recommend_email" type="text" id="l_recommend_email" style="width:250px" value="{$smarty.session.user_email|escape}" />
     </fieldset>
-    <input name="theme_folder" type="hidden" id="theme_folder" value="{$smarty.request.theme_folder}" />
+    <input name="theme_folder" type="hidden" id="theme_folder" value="{$smarty.request.theme_folder|escape}" />
     <input name="module" type="hidden" id="module" value="recommend" />
     <input name="action" type="hidden" id="action" value="recommend" />
     <input name="pop" type="hidden" id="pop" value="1" />
     <input name="sub" type="hidden" id="sub" value="send" />
-    <input name="page" type="hidden" id="page" value="{$smarty.request.page}" />
+    <input name="page" type="hidden" id="page" value="{$smarty.request.page|escape}" />
     <p>
       <input type="submit" class="button" value="{#RECOMMEND_BUTTON#}" />
     </p>

@@ -7,6 +7,11 @@
  * @filesource
  */
 
+@error_reporting(E_ALL | E_STRICT);
+@ini_set('display_errors', true);
+@ini_set('html_errors', true);
+@ini_set('error_reporting', E_ALL | E_STRICT);
+@date_default_timezone_set('Europe/Moscow');
 
 define('START_MICROTIME', microtime());
 

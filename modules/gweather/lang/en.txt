@@ -1,0 +1,45 @@
+gWEATHER_NAME = '<span class="first-word">WEATHER</span>'
+
+[admin]
+gWEATHER_MODULE_NAME = "Module WEATHER"
+gWEATHER_MODULE_INFO = "Module info"
+gWEATHER_MODULE_EDIT = "Edit"
+gWEATHER_CITY=Location
+gWEATHER_CITY_DESC=Please specify location to get weather data. I.e. 'Varna,Bulgaria'
+gWEATHER_FCITY=Full city name
+gWEATHER_FCITY_DESC=Please specify full name of city which will be visible in the module
+gWEATHER_LANG=Language
+gWEATHER_LANG_DESC=Please specify language for forecast - i.e. 'en' for english, 'bg' for bulgarian
+gWEATHER_TIMEZONE=Timezone
+gWEATHER_TIMEZONE_DESC=This option is connected with day-night check - please read manual for more informations
+gWEATHER_LATITUDE=Latitude
+gWEATHER_LATITUDE_DESC=This option is connected with day-night check - please read manual for more informations
+gWEATHER_LONGITUDE=Longitude
+gWEATHER_LONGITUDE_DESC=This option is connected with day-night check - please read manual for more informations
+gWEATHER_SHOWCITY=Show city name
+gWEATHER_SHOWCITY_DESC=Enable this option if you want to show city name
+gWEATHER_SHOWWIND=Show wind condition
+gWEATHER_SHOWWIND_DESC=Enable this option if you want to show wind conditions
+gWEATHER_SHOWHUM=Show humidity
+gWEATHER_SHOWHUM_DESC=Enable this option if you want to show humidity information
+gWEATHER_AMOUNT_DAYS=Amount of days
+gWEATHER_AMOUNT_DAYS_DESC=Amount of days in forecast.<br />0 - display only current day.
+gWEATHER_UNIT=Units
+gWEATHER_UNIT_DESC=Select units used in your weather - Celsius or Fahrenheit
+gWEATHER_FICONSIZE=Forecast icon size
+gWEATHER_FICONSIZE_DESC=Size for icons in forecast weather
+gWEATHER_CICONSIZE=Current date icon size
+gWEATHER_CICONSIZE_DESC=Size for icon in current date weather forecast
+gWEATHER_USECSS=Use module CSS
+gWEATHER_USECSS_DESC=Disable this option when you are using template with built-in styles for this module
+gWEATHER_CACHETIME=Cache time
+gWEATHER_CACHETIME_DESC=Set time for cache in minutes.<br />0 - disable cache
+gWEATHER_ENCODING="Site codepage"
+gWEATHER_ENCODING_DESC="Site codepage - cp1251 or ......"
+gWEATHER_ENABLE = "Enable"
+gWEATHER_DISABLE = "Disable"
+gWEATHER_BUTTON_SAVE = "Save"
+gWEATHER_TEMPLATE = "Template"
+gWEATHER_TEMPLATE_DESC = "gweather-big, simple - only current day"
+gWEATHER_NAMECSS = "CSS file name"
+gWEATHER_NAMECSS_DESC = "CSS file name: gweather-big, simple - only current day"

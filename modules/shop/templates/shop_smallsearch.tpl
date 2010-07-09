@@ -9,10 +9,10 @@
 	<select class="inputbox" name="product_categ" id="pc">
 	<option>{#ProductCategsAll#}</option>
 	{foreach from=$ProductCategs item=pc}
-	<option  class="inputbox" value="{$pc->Id}" {if $pc->Elter == 0}style="font-weight:bold"{/if} {if $pc->Id==$smarty.post.product_categ||$pc->Id==$smarty.request.categx}selected="selected"{/if}>{$pc->visible_title}</option>
+	<option  class="inputbox" value="{$pc->Id}" {if $pc->parent_id == 0}style="font-weight:bold"{/if} {if $pc->Id==$smarty.post.product_categ||$pc->Id==$smarty.request.categx}selected="selected"{/if}>{$pc->visible_title}</option>
 	{/foreach}
 	</select>
-	
+
 	<br />
   <input class="inputbox priceinput"   type="text" name="price_start" id="pfpt" value="{$smarty.post.price_start|stripslashes|escape:html|default:'1.00'}" />
 - <input class="inputbox priceinput"  type="text" name="price_end" value="{$smarty.post.price_end|stripslashes|escape:html|default:'100000.00'}" />

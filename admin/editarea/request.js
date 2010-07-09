@@ -1,6 +1,6 @@
 // initialisation
 editAreaLoader.init({
-	id: "AbGeruest"	// id of the textarea to transform
+	id: "request_template_main"	// id of the textarea to transform
 	,start_highlight: true	// if start with highlight
 	,allow_toggle: true
 	,language: "ru"
@@ -14,7 +14,7 @@ editAreaLoader.init({
     ,font_family: "verdana, monospace"
 });
 editAreaLoader.init({
-	id: "Template"	// id of the textarea to transform
+	id: "request_template_item"	// id of the textarea to transform
 	,start_highlight: true	// if start with highlight
 	,allow_toggle: true
 	,language: "ru"

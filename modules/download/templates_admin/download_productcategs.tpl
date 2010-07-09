@@ -16,13 +16,13 @@
   {foreach from=$ProductCategs item=ss}
   <tr style="background-color: #eff3eb;" onmouseover="this.style.backgroundColor='#dae0d8';" onmouseout="this.style.backgroundColor='#eff3eb';" id="table_rows">
     <td width="10%" nowrap="nowrap">
-	{if $ss->Elter != 0}
+	{if $ss->parent_id != 0}
 	{$ss->expander}&raquo;
 	{/if}
-	<input style="width:400px;border: solid 1px #ccc;{if $ss->Elter == 0}font-weight:bold; background:#ffffcc{/if}" name="KatName[{$ss->Id}]" type="text" value="{$ss->KatName|escape:html|stripslashes}">
+	<input style="width:400px;border: solid 1px #ccc;{if $ss->parent_id == 0}font-weight:bold; background:#ffffcc{/if}" name="KatName[{$ss->Id}]" type="text" value="{$ss->KatName|escape:html|stripslashes}">
 	</td>
     <td width="50" align="center">
-      <input name="Rang[{$ss->Id}]" type="text" style="width:40px;border: solid 1px #ccc;{if $ss->Elter == 0}font-weight:bold; background:#ffffcc"{/if}" value="{$ss->Rang}" />
+      <input name="position[{$ss->Id}]" type="text" style="width:40px;border: solid 1px #ccc;{if $ss->parent_id == 0}font-weight:bold; background:#ffffcc"{/if}" value="{$ss->position}" />
 	  </td>
     <td>
 	<a title="{#ProductCategEEdit#}" href="javascript:void(0);" onclick="cp_pop('index.php?do=modules&action=modedit&mod=download&moduleaction=edit_categ&cp={$sess}&pop=1&Id={$ss->Id}','980','740','1','edit_categ');"><img src="{$tpl_dir}/images/icon_edit.gif" alt="" border="0" /></a>

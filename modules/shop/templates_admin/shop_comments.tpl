@@ -30,11 +30,11 @@
 				</td>
 
 				<td>
-					<input style="width:160px" type="text" name="Titel[{$ss->Id}]" value="{$ss->Titel|stripslashes}" />
+					<input style="width:160px" type="text" name="title[{$ss->Id}]" value="{$ss->title|stripslashes}" />
 				</td>
 
 				<td>
-					<textarea onclick="this.style.height='200px'" onmouseout="this.style.height='80px'" style="width:500px; height:80px" name="Kommentar[{$ss->Id}]">{$ss->Kommentar}</textarea>
+					<textarea onclick="this.style.height='200px'" onmouseout="this.style.height='80px'" style="width:500px; height:80px" name="comment_text[{$ss->Id}]">{$ss->comment_text}</textarea>
 				</td>
 			</tr>
 		{/foreach}

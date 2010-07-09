@@ -5,6 +5,7 @@
  *
  * @package AVE.cms
  * @subpackage module_RSS
+ * @since 2.07
  * @filesource
  */
 

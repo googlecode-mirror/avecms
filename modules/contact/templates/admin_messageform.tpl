@@ -8,14 +8,14 @@
 	{/if}
 </div><br />
 
-<form name="replay" enctype="multipart/form-data" method="post" action="index.php?do=modules&action=modedit&mod=contact&moduleaction=reply&cp={$sess}&id={$smarty.request.id}&pop=1">
+<form name="replay" enctype="multipart/form-data" method="post" action="index.php?do=modules&action=modedit&mod=contact&moduleaction=reply&cp={$sess}&id={$smarty.request.id|escape}&pop=1">
 	<table width="100%" border="0" cellspacing="1" cellpadding="8" class="tableborder">
 		<tr class="tableheader">
-			<td colspan="2">{#CONTACT_AUTHOR#}{$row->in_email} ({$row->in_date|date_format:$TIME_FORMAT|pretty_date})</td>
+			<td colspan="2">{#CONTACT_AUTHOR#}{$row->contact_form_in_email} ({$row->contact_form_in_date|date_format:$TIME_FORMAT|pretty_date})</td>
 		</tr>
 
 		<tr>
-			<td colspan="2" class="first"><textarea readonly style="width:98%;height:200px">{$row->in_message}</textarea></td>
+			<td colspan="2" class="first"><textarea readonly style="width:98%;height:200px">{$row->contact_form_in_message}</textarea></td>
 		</tr>
 
 		{if $attachments}
@@ -39,22 +39,22 @@
 
 		<tr>
 			<td class="first">{#CONTACT_RECIVER_EMAIL#}</td>
-			<td class="second"><input name="to" type="text" id="to" value="{$row->in_email}" size="50" /></td>
+			<td class="second"><input name="to" type="text" id="to" value="{$row->contact_form_in_email}" size="50" /></td>
 		</tr>
 
 		<tr>
 			<td width="150" class="first">{#CONTACT_SUJECT_EMAIL#}</td>
-			<td class="second"><input name="subject" type="text" id="subject" value="RE:{$row->in_subject|escape:html|stripslashes}" size="50" /></td>
+			<td class="second"><input name="subject" type="text" id="subject" value="RE:{$row->contact_form_in_subject|escape|stripslashes}" size="50" /></td>
 		</tr>
 
 		<tr>
 			<td width="150" class="first">{#CONTACT_REPLY_NAME#}</td>
-			<td class="second"><input name="fromname" type="text" id="fromname" value="{$smarty.session.user_name}" size="50" /></td>
+			<td class="second"><input name="fromname" type="text" id="fromname" value="{$smarty.session.user_name|escape}" size="50" /></td>
 		</tr>
 
 		<tr>
 			<td width="150" class="first">{#CONTACT_REPLY_EMAIL#}</td>
-			<td class="second"><input name="fromemail" type="text" id="fromemail" value="{$smarty.session.user_email}" size="50" /></td>
+			<td class="second"><input name="fromemail" type="text" id="fromemail" value="{$smarty.session.user_email|escape}" size="50" /></td>
 		</tr>
 
 		<tr>
@@ -63,10 +63,10 @@
 				<textarea name="message" id="message" style="width:98%;height:200px">
       {#CONTACT_MESSAGE_HEADER#}
       {#CONTACT_MESSAGE_YOUR_TEXT#}
-      {#CONTACT_YOUR_INFO#}{$smarty.session.user_name}
+      {#CONTACT_YOUR_INFO#}{$smarty.session.user_name|escape}
 ---------------------------------------------------
 ---------------------------------------------------
-{#CONTACT_YOUR_DATE#} {$row->in_date|date_format:$TIME_FORMAT|pretty_date}
+{#CONTACT_YOUR_DATE#} {$row->contact_form_in_date|date_format:$TIME_FORMAT|pretty_date}
 
 {$row->replytext}
 				</textarea>

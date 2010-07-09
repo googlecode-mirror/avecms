@@ -19,7 +19,7 @@
 	{foreach from=$items item=item}
 		<tr style="background-color: #eff3eb;" onmouseover="this.style.backgroundColor='#dae0d8';" onmouseout="this.style.backgroundColor='#eff3eb';" id="table_rows">
 			<td>
-				<a href="javascript:void(0);" onclick="cp_pop('index.php?do=modules&action=modedit&mod=contact&moduleaction=edit&cp={$sess}&id={$item->Id}&pop=1','1000','850','1','modcontactedit');"><strong>{$item->form_name|stripslashes|escape:html}</strong></a>
+				<a href="javascript:void(0);" onclick="cp_pop('index.php?do=modules&action=modedit&mod=contact&moduleaction=edit&cp={$sess}&id={$item->Id}&pop=1','1000','850','1','modcontactedit');"><strong>{$item->contact_form_title|stripslashes|escape}</strong></a>
 			</td>
 
 			<td>

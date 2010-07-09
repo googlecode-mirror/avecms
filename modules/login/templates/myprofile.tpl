@@ -16,7 +16,7 @@
 			</div><br />
 		{/if}
 
-		{if $changed==1}
+		{if $password_changed==1}
 			<p>{#LOGIN_CHANGED_OK#}</p>
 		{/if}
 
@@ -24,26 +24,26 @@
 			<fieldset>
 				<p>
 					<label>{#LOGIN_YOUR_FIRSTNAME#}</label>
-					<input name="Vorname" type="text" value="{$smarty.request.Vorname|default:$row.Vorname|escape|stripslashes}" />
+					<input name="firstname" type="text" value="{$smarty.request.firstname|default:$row.firstname|escape|stripslashes}" />
 				</p>
 				<p>
 					<label>{#LOGIN_YOUR_LASTNAME#}</label>
-					<input name="Nachname" type="text" value="{$smarty.request.Nachname|default:$row.Nachname|escape|stripslashes}" />
+					<input name="lastname" type="text" value="{$smarty.request.lastname|default:$row.lastname|escape|stripslashes}" />
 				</p>
 				<p>
 					<label>{#LOGIN_YOUR_BIRTHDAY#} {#LOGIN_DATE_FORMAT#}</label>
-					<input name="GebTag" type="text" value="{$smarty.request.GebTag|default:$row.GebTag|escape|stripslashes}" />
+					<input name="birthday" type="text" value="{$smarty.request.birthday|default:$row.birthday|escape|stripslashes}" />
 				</p>
 				<p>
 					<label>{#LOGIN_YOUR_MAIL#}</label>
-					<input name="Email" type="text" value="{$smarty.request.Email|default:$row.Email|escape|stripslashes}" />
+					<input name="email" type="text" value="{$smarty.request.email|default:$row.email|escape|stripslashes}" />
 				</p>
 				<p>
 					<label>{#LOGIN_YOUR_COUNTRY#}</label>
-					<select name="Land">
-						{assign var=uc value=$row->Land|default:$smarty.session.user_language|lower}
+					<select name="country">
+						{assign var=uc value=$row->country|default:$smarty.session.user_language|lower}
 						{foreach from=$available_countries item=land}
-							<option value="{$land->LandCode}"{if $land->LandCode == $smarty.request.Land|default:$row.Land|default:$smarty.session.user_language|lower} selected{/if}>{$land->LandName}</option>
+							<option value="{$land->country_code}"{if $land->country_code == $smarty.request.country|default:$row.country|default:$smarty.session.user_language|lower} selected{/if}>{$land->country_name}</option>
 						{/foreach}
 					</select>
 				</p>
@@ -53,27 +53,27 @@
 				</p>
 				<p>
 					<label>{#LOGIN_YOUR_ZIP#}</label>
-					<input name="Postleitzahl" type="text" value="{$smarty.request.Postleitzahl|default:$row.Postleitzahl|escape|stripslashes}" />
+					<input name="zipcode" type="text" value="{$smarty.request.zipcode|default:$row.zipcode|escape|stripslashes}" />
 				</p>
 				<p>
 					<label>{#LOGIN_YOUR_STREET#}</label>
-					<input name="Strasse" type="text" value="{$smarty.request.Strasse|default:$row.Strasse|escape|stripslashes}" />
+					<input name="street" type="text" value="{$smarty.request.street|default:$row.street|escape|stripslashes}" />
 				</p>
 				<p>
 					<label>{#LOGIN_YOUR_HOUSE#}</label>
-					<input name="HausNr" type="text" value="{$smarty.request.HausNr|default:$row.HausNr|escape|stripslashes}" />
+					<input name="street_nr" type="text" value="{$smarty.request.street_nr|default:$row.street_nr|escape|stripslashes}" />
 				</p>
 				<p>
 					<label>{#LOGIN_YOUR_PHONE#}</label>
-					<input name="Telefon" type="text" value="{$smarty.request.Telefon|default:$row.Telefon|escape|stripslashes}" />
+					<input name="phone" type="text" value="{$smarty.request.phone|default:$row.phone|escape|stripslashes}" />
 				</p>
 				<p>
 					<label>{#LOGIN_YOUR_FAX#}</label>
-					<input name="Telefax" type="text" value="{$smarty.request.Telefax|default:$row.Telefax|escape|stripslashes}" />
+					<input name="telefax" type="text" value="{$smarty.request.telefax|default:$row.telefax|escape|stripslashes}" />
 				</p>
 				<p>
 					<label>{#LOGIN_YOUR_COMPANY#}</label>
-					<input name="Firma" type="text" value="{$smarty.request.Firma|default:$row.Firma|escape|stripslashes}" />
+					<input name="company" type="text" value="{$smarty.request.company|default:$row.company|escape|stripslashes}" />
 				</p>
 				<input class="confirm button" value="{#LOGIN_BUTTON_CHANGE#}" type="submit">
 			</fieldset>
@@ -97,7 +97,7 @@
 		</div><br />
 	{/if}
 
-	{if $changed==1}
+	{if $password_changed==1}
 		<p>&nbsp;</p>
 		<p><h2>{#LOGIN_CHANGED_OK#}</h2></p>
 		<p>&nbsp;</p>
@@ -106,66 +106,66 @@
 	<form method="post" action="index.php?module=login&action=profile&sub=update">
 		<div class="formleft"><label for="l_reg_Firma">{#LOGIN_YOUR_COMPANY#}</label></div>
 		<div class="formright">
-			<input name="Firma" type="text" id="l_reg_Firma" style="width:200px" value="{$smarty.request.Firma|default:$row.Firma|escape}" size="80" />
+			<input name="company" type="text" id="l_reg_Firma" style="width:200px" value="{$smarty.request.company|default:$row.company|escape}" size="80" />
 		</div>
 		<div class="clear"></div>
 
 		<div class="formleft"><label for="l_reg_firstname">{#LOGIN_YOUR_FIRSTNAME#}</label></div>
 		<div class="formright">
-			<input name="Vorname" type="text" id="l_reg_firstname" style="width:200px" value="{$smarty.request.Vorname|default:$row.Vorname|escape}" size="80" />
+			<input name="firstname" type="text" id="l_reg_firstname" style="width:200px" value="{$smarty.request.firstname|default:$row.firstname|escape}" size="80" />
 		</div>
 		<div class="clear"></div>
 
 		<div class="formleft"><label for="l_reg_lastname">{#LOGIN_YOUR_LASTNAME#}</label></div>
 		<div class="formright">
-			<input name="Nachname" type="text" id="l_reg_lastname" style="width:200px" value="{$smarty.request.Nachname|default:$row.Nachname|escape}" size="50" />
+			<input name="lastname" type="text" id="l_reg_lastname" style="width:200px" value="{$smarty.request.lastname|default:$row.lastname|escape}" size="50" />
 		</div>
 		<div class="clear"></div>
 
 		<div class="formleft"><label for="l_street">{#LOGIN_YOUR_STREET#}</label> / <label for="l_nr">{#LOGIN_YOUR_HOUSE#}</label></div>
 		<div class="formright">
-			<input name="Strasse" type="text" id="l_street" style="width:150px" value="{$smarty.request.Strasse|default:$row.Strasse|escape}" size="50" maxlength="50" />&nbsp;
-			<input name="HausNr" type="text" id="l_nr" style="width:40px" value="{$smarty.request.HausNr|default:$row.HausNr|escape}" size="50" maxlength="10" />
+			<input name="street" type="text" id="l_street" style="width:150px" value="{$smarty.request.street|default:$row.street|escape}" size="50" maxlength="50" />&nbsp;
+			<input name="street_nr" type="text" id="l_nr" style="width:40px" value="{$smarty.request.street_nr|default:$row.street_nr|escape}" size="50" maxlength="10" />
 		</div>
 		<div class="clear"></div>
 
 		<div class="formleft"><label for="l_zip">{#LOGIN_YOUR_ZIP#}</label> / <label for="l_town">{#LOGIN_YOUR_TOWN#}</label></div>
 		<div class="formright">
-			<input name="Postleitzahl" type="text" id="l_zip" style="width:40px" value="{$smarty.request.Postleitzahl|default:$row.Postleitzahl|escape}" size="50" maxlength="15" />&nbsp;
+			<input name="zipcode" type="text" id="l_zip" style="width:40px" value="{$smarty.request.zipcode|default:$row.zipcode|escape}" size="50" maxlength="15" />&nbsp;
 			<input name="city" type="text" id="l_town" style="width:150px" value="{$smarty.request.city|default:$row.city|escape}" size="50" maxlength="50" />
 		</div>
 		<div class="clear"></div>
 
 		<div class="formleft"><label for="l_email">{#LOGIN_YOUR_MAIL#}</label></div>
 		<div class="formright">
-			<input name="Email" type="text" id="l_email" style="width:200px" value="{$smarty.request.Email|default:$row.Email|escape}" size="80" />
+			<input name="email" type="text" id="l_email" style="width:200px" value="{$smarty.request.email|default:$row.email|escape}" size="80" />
 		</div>
 		<div class="clear"></div>
 
 		<div class="formleft"><label for="l_phone">{#LOGIN_YOUR_PHONE#}</label></div>
 		<div class="formright">
-			<input name="Telefon" type="text" id="l_phone" style="width:200px" value="{$smarty.request.Telefon|default:$row.Telefon|escape}" size="80" />
+			<input name="phone" type="text" id="l_phone" style="width:200px" value="{$smarty.request.phone|default:$row.phone|escape}" size="80" />
 		</div>
 		<div class="clear"></div>
 
 		<div class="formleft"><label for="l_fax">{#LOGIN_YOUR_FAX#}</label></div>
 		<div class="formright">
-			<input name="Telefax" type="text" id="l_fax" style="width:200px" value="{$smarty.request.Telefax|default:$row.Telefax|escape}" size="80" />
+			<input name="telefax" type="text" id="l_fax" style="width:200px" value="{$smarty.request.telefax|default:$row.telefax|escape}" size="80" />
 		</div>
 		<div class="clear"></div>
 
 		<div class="formleft"><label for="l_geb">{#LOGIN_YOUR_BIRTHDAY#}</label></div>
 		<div class="formright">
-			<input name="GebTag" type="text" id="l_geb" style="width:100px" value="{$smarty.request.GebTag|default:$row.GebTag|escape}" size="80" maxlength="10" />&nbsp;
+			<input name="birthday" type="text" id="l_geb" style="width:100px" value="{$smarty.request.birthday|default:$row.birthday|escape}" size="80" maxlength="10" />&nbsp;
 			{#LOGIN_DATE_FORMAT#}
 		</div>
 		<div class="clear"></div>
 
 		<div class="formleft"><label for="l_land">{#LOGIN_YOUR_COUNTRY#}</label></div>
 		<div class="formright">
-			<select name="Land" id="l_land">
+			<select name="country" id="l_land">
 				{foreach from=$available_countries item=land}
-					<option value="{$land->LandCode}"{if $land->LandCode == $row.land|default} selected{/if}>{$land->LandName}</option>
+					<option value="{$land->country_code}"{if $land->country_code == $row.land|default} selected{/if}>{$land->country_name}</option>
 				{/foreach}
 			</select>
 		</div>

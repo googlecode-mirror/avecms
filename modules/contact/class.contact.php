@@ -1,11 +1,12 @@
 <?php
 
 /**
- * Класс, включающий все свойства и методы для управления контактными формами и сообщениями
- * как в Публичной части сайта, так и в Панели управления.
+ * Класс, включающий все свойства и методы для управления контактными формами
+ * и сообщениями как в Публичной части сайта, так и в Панели управления.
  *
  * @package AVE.cms
  * @subpackage module_Contact
+ * @since 1.4
  * @filesource
  */
 class Contact
@@ -140,17 +141,17 @@ class Contact
 	 *
 	 * @param string $tpl_dir путь к папке с шаблонами
 	 * @param string $lang_file путь к языковому файлу
-	 * @param int $form_id идентификатор формы
+	 * @param int $contact_form_id идентификатор формы
 	 * @param int $spam_protect использовать защитный код 1
 	 * @param int $max_upload максимальный размер прикреплённого файла
 	 * @param int $fetch вывод в браузер 1
 	 * @return string контактная форма
 	 */
-	function contactFormShow($tpl_dir, $lang_file, $form_id, $spam_protect = null, $max_upload = null, $fetch = '0')
+	function contactFormShow($tpl_dir, $lang_file, $contact_form_id, $spam_protect = null, $max_upload = null, $fetch = '0')
 	{
 		global $AVE_Core, $AVE_DB, $AVE_Template;
 
-        $form_id = preg_replace('/\D/', '', $form_id);
+        $contact_form_id = preg_replace('/\D/', '', $contact_form_id);
 
 		$AVE_Template->config_load($lang_file);
 
@@ -158,34 +159,41 @@ class Contact
 		$row = $AVE_DB->Query("
 			SELECT *
 			FROM " . PREFIX . "_modul_contacts
-			WHERE Id = '" . $form_id . "'
+			WHERE Id = '" . $contact_form_id . "'
 		")->FetchRow();
 
         // Определяем группы, которым разрешен доступ к данной контактной форме
-        @$allowed_groups = explode(',', $row->form_allow_group);
+        $allowed_groups = array();
+        if (isset($row->contact_form_allow_group))
+        {
+			$allowed_groups = explode(',', $row->contact_form_allow_group);
+        }
 
         // Если группа пользователя не входит в разрешенный список групп,
         // фиксируем ошибку и выводим сообщение.
         if (!in_array($_SESSION['user_group'], $allowed_groups))
         {
             $AVE_Template->assign('no_access', 1);
-            $AVE_Template->assign('form_message_noaccess', $row->form_message_noaccess);
+			if (isset($row->contact_form_message_noaccess))
+			{
+				$AVE_Template->assign('contact_form_message_noaccess', $row->contact_form_message_noaccess);
+			}
         }
         // В противном случае
         else
         {
             // Определяем ряд переменных для использования в шаблоне
-            $AVE_Template->assign('form_id', $form_id);
-            $AVE_Template->assign('im', $spam_protect === null ? $row->form_antispam : $spam_protect);
-            $AVE_Template->assign('maxupload', $max_upload === null ? $row->form_max_upload : $max_upload);
-            $AVE_Template->assign('send_copy', $row->form_send_copy);
+            $AVE_Template->assign('contact_form_id', $contact_form_id);
+            $AVE_Template->assign('im', $spam_protect === null ? $row->contact_form_antispam : $spam_protect);
+            $AVE_Template->assign('maxupload', $max_upload === null ? $row->contact_form_max_upload : $max_upload);
+            $AVE_Template->assign('send_copy', $row->contact_form_send_copy);
 
 		    $receiver = '';
 		    // Формируем список получателей данного сообщения (если их несколько)
-            if ($row->form_receiver_multi != '')
+            if ($row->contact_form_receiver_multi != '')
 		    {
 			    $receiver = array();
-			    $e = explode(';', $row->form_receiver_multi);
+			    $e = explode(';', $row->contact_form_receiver_multi);
 			    foreach ($e as $em)
 			    {
 				    $e_name = explode(',', $em);
@@ -196,9 +204,9 @@ class Contact
 		    $AVE_Template->assign('receiver', $receiver);
 
             // Если тема сообщения не указана, тогда используем название темы по умолчанию
-            if ($row->form_show_subject == '0' && $row->form_default_subject != '')
+            if ($row->contact_form_subject_show == '0' && $row->contact_form_subject_default != '')
 		    {
-			    $AVE_Template->assign('default_subject', $row->form_default_subject);
+			    $AVE_Template->assign('default_subject', $row->contact_form_subject_default);
 		    }
 
 		    // Выполняем запрос к БД на получение списка всех полей формы
@@ -206,53 +214,53 @@ class Contact
 		    $sql = $AVE_DB->Query("
 			    SELECT *
 			    FROM " . PREFIX . "_modul_contact_fields
-			    WHERE field_status = '1'
-			    AND form_id = '" . $form_id . "'
-			    ORDER BY field_position ASC
+			    WHERE contact_field_status = '1'
+			    AND contact_form_id = '" . $contact_form_id . "'
+			    ORDER BY contact_field_position ASC
 		    ");
 		    while ($row = $sql->FetchRow())
 		    {
 			    // Определяем тип поля и формируем регулярное выражение
 			    // для проверки введённых символов и их количества
-                switch ($row->field_datatype)
+                switch ($row->contact_field_datatype)
 			    {
 				    // Любые символы
                     case 'anysymbol':
-					    $row->field_pattern = $row->field_maxchars != '' ? ('^([\s\S]{' . $row->field_maxchars . '})' . ($row->field_required != 1 ? '?$' : '{1}$')) : '';
+					    $row->field_pattern = $row->contact_field_max_chars != '' ? ('^([\s\S]{' . $row->contact_field_max_chars . '})' . ($row->contact_field_required != 1 ? '?$' : '{1}$')) : '';
 					    break;
 
 				    // Только целые числа
                     case 'onlydecimal':
-					    $row->field_pattern = $row->field_maxchars != '' ? ('^(\d{' . $row->field_maxchars . '})' . ($row->field_required != 1 ? '?$' : '{1}$')) : '';
+					    $row->field_pattern = $row->contact_field_max_chars != '' ? ('^(\d{' . $row->contact_field_max_chars . '})' . ($row->contact_field_required != 1 ? '?$' : '{1}$')) : '';
 					    break;
 
 				    // Только буквы
                     case 'onlychars':
-					    $row->field_pattern = $row->field_maxchars != '' ? ('^(\D{' . $row->field_maxchars . '})' . ($row->field_required != 1 ? '?$' : '{1}$')) : '';
+					    $row->field_pattern = $row->contact_field_max_chars != '' ? ('^(\D{' . $row->contact_field_max_chars . '})' . ($row->contact_field_required != 1 ? '?$' : '{1}$')) : '';
 					    break;
 
 				    // По умолчанию любые символы
                     default:
-					    $row->field_pattern = $row->field_maxchars != '' ? ('^([\s\S]{' . $row->field_maxchars . '})' . ($row->field_required != 1 ? '?$' : '{1}$')) : '';
+					    $row->field_pattern = $row->contact_field_max_chars != '' ? ('^([\s\S]{' . $row->contact_field_max_chars . '})' . ($row->contact_field_required != 1 ? '?$' : '{1}$')) : '';
 					    break;
 			    }
 
                 // Если тип поля "Выпадающий список", тогда получем все его элементы
-                if ($row->field_type == 'dropdown' && $row->field_default != '')
+                if ($row->contact_field_type == 'dropdown' && $row->contact_field_default != '')
 			    {
-				    $value = explode(',', $row->field_default);
-				    $row->field_default = $value;
+				    $value = explode(',', $row->contact_field_default);
+				    $row->contact_field_default = $value;
 			    }
 
 			    // В имени поля заменяем пробелы на подчерки, и формируем массив данных полей
-                $field_title = $_REQUEST[str_replace(' ', '_', $row->field_title)];
-			    $row->value = isset($field_title) ? $field_title : '';
+                $field_title_ = str_replace(' ', '_', $row->contact_field_title);
+			    $row->value = isset($_REQUEST[$field_title_]) ? $_REQUEST[$field_title_] : '';
 			    array_push($fields, $row);
 		    }
 
             // Перердаем в шаблон массив с данными полей и формируем ссылку для редиректа после отправки
             $AVE_Template->assign('fields', $fields);
-		    $action = rewrite_link('index.php?id=' . $AVE_Core->curentdoc->Id . '&amp;doc=' . (empty($AVE_Core->curentdoc->Url) ? prepare_url($AVE_Core->curentdoc->Titel) : $AVE_Core->curentdoc->Url));
+		    $action = rewrite_link('index.php?id=' . $AVE_Core->curentdoc->Id . '&amp;doc=' . (empty($AVE_Core->curentdoc->document_alias) ? prepare_url($AVE_Core->curentdoc->document_title) : $AVE_Core->curentdoc->document_alias));
 		    $AVE_Template->assign('contact_action', $action);
 		}
 
@@ -268,11 +276,11 @@ class Contact
 	 *
 	 * @param string $tpl_dir путь к папке с шаблонами
 	 * @param string $lang_file путь к языковому файлу
-	 * @param int $form_id идентификатор формы
+	 * @param int $contact_form_id идентификатор формы
 	 * @param int $spam_protect защита от спама 1
 	 * @param int $max_upload максимальный размер прикреплённого файла
 	 */
-	function contactFormSend($tpl_dir, $lang_file, $form_id, $spam_protect = null, $max_upload = '0')
+	function contactFormSend($tpl_dir, $lang_file, $contact_form_id, $spam_protect = null, $max_upload = '0')
 	{
 		global $AVE_DB, $AVE_Template;
 
@@ -280,11 +288,11 @@ class Contact
         $row = $AVE_DB->Query("
             SELECT *
             FROM " . PREFIX . "_modul_contacts
-            WHERE Id = '" . $form_id . "'
+            WHERE Id = '" . $contact_form_id . "'
         ")->FetchRow();
 
 		// Если для данной формы используется защитный код, тогда
-        $spam_protect = $spam_protect === null ? $row->form_antispam : $spam_protect;
+        $spam_protect = $spam_protect === null ? $row->contact_form_antispam : $spam_protect;
         if ($spam_protect == 1)
 		{
             // Проверяем, правильно ли он указан пользователем
@@ -293,7 +301,7 @@ class Contact
 			{
 				// Если нет, фиксируем ошибку и снова показываем форму
                 $AVE_Template->assign('wrong_securecode', 1);
-                $this->contactFormShow($tpl_dir, $lang_file, $form_id);
+                $this->contactFormShow($tpl_dir, $lang_file, $contact_form_id);
                 unset($_SESSION['captcha_keystring']);
                 return;
 			}
@@ -307,7 +315,7 @@ class Contact
 		{
 			// Формируем список получателей
             $_REQUEST['reciever'] = $_REQUEST['reciever']-1;
-			$arr = explode(';', $row->form_receiver_multi);
+			$arr = explode(';', $row->contact_form_receiver_multi);
 			$i = 0;
 
 			while (list(, $value) = each($arr))
@@ -316,7 +324,7 @@ class Contact
 				$multi_e[$i]['email'] = $tom[1];
 				if ($i == $_REQUEST['reciever'])
 				{
-					$row->form_receiver = $multi_e[$i]['email'];
+					$row->contact_form_receiver = $multi_e[$i]['email'];
 				}
 				$i++;
 			}
@@ -330,8 +338,8 @@ class Contact
             'contact_action',
             'sendcopy',
             'reciever',
-            'form_num',
-            'form_id',
+            'contact_form_number',
+            'contact_form_id',
             'secure_image_id',
             'action',
             'modules',
@@ -342,22 +350,22 @@ class Contact
 		{
 			if (!empty($val) && !in_array($key, $skip_keys))
 			{
-				$key = ($key == 'in_subject' || $key == 'in_email')
+				$key = ($key == 'contact_form_in_subject' || $key == 'contact_form_in_email')
                     ? $AVE_Template->get_config_vars('CONTACT_' . strtoupper($key))
                     : $key;
 				$newtext .= str_replace('_', ' ', $key) . ':  ' . $val . "\n\n";
 			}
 		}
 		$text = strip_tags($newtext);
-		$in_attachment = (is_array($attach) && count($attach) >= 1) ? implode(';', $attach) : '';
+		$contact_form_in_attachment = (is_array($attach) && count($attach) >= 1) ? implode(';', $attach) : '';
 
 		// Отправляем сообщение получателям с учетом прикрепленных файлов
         send_mail(
-			$row->form_receiver,
-			stripslashes(substr($text, 0, $row->form_mail_max_chars)),
-			$_POST['in_subject'],
-			$_POST['in_email'],
-			$_POST['in_email'],
+			$row->contact_form_receiver,
+			stripslashes(substr($text, 0, $row->contact_form_mail_max_chars)),
+			$_POST['contact_form_in_subject'],
+			$_POST['contact_form_in_email'],
+			$_POST['contact_form_in_email'],
 			'text',
 			$attach
 		);
@@ -369,9 +377,9 @@ class Contact
 			$mail_from = get_settings('mail_from');
 			$mail_from_name = get_settings('mail_from_name');
 			send_mail(
-				$_POST['in_email'],
-				$AVE_Template->get_config_vars('CONTACT_TEXT_THANKYOU') . "\n\n" . stripslashes(substr($text, 0, $row->form_mail_max_chars)),
-				$_POST['in_subject'] . ' ' . $AVE_Template->get_config_vars('CONTACT_SUBJECT_COPY'),
+				$_POST['contact_form_in_email'],
+				$AVE_Template->get_config_vars('CONTACT_TEXT_THANKYOU') . "\n\n" . stripslashes(substr($text, 0, $row->contact_form_mail_max_chars)),
+				$_POST['contact_form_in_subject'] . ' ' . $AVE_Template->get_config_vars('CONTACT_SUBJECT_COPY'),
 				$mail_from,
 				$mail_from_name,
 				'text',
@@ -384,12 +392,12 @@ class Contact
 			INSERT
 			INTO " . PREFIX . "_modul_contact_info
 			SET
-                form_id       = '" . (int)$_REQUEST['form_id'] . "',
-				in_email      = '" . $_POST['in_email'] . "',
-				in_date       = '" . time() . "',
-				in_subject    = '" . $_POST['in_subject'] . "',
-				in_message    = '" . stripslashes(substr($text, 0, $row->form_mail_max_chars)) . "',
-				in_attachment = '" . $in_attachment . "'
+                contact_form_id            = '" . (int)$_REQUEST['contact_form_id'] . "',
+				contact_form_in_email      = '" . $_POST['contact_form_in_email'] . "',
+				contact_form_in_date       = '" . time() . "',
+				contact_form_in_subject    = '" . $_POST['contact_form_in_subject'] . "',
+				contact_form_in_message    = '" . stripslashes(substr($text, 0, $row->contact_form_mail_max_chars)) . "',
+				contact_form_in_attachment = '" . $contact_form_in_attachment . "'
 		");
 
         // Отображаем сообщение о успешной отправке формы с благодарностью
@@ -424,13 +432,13 @@ class Contact
 		$sql = $AVE_DB->Query("
             SELECT
                 frm.*,
-                SUM(IF(out_date>0,1,0)) AS messages_new,
-                SUM(IF(out_date=0,1,0)) AS messages
+                SUM(IF(contact_form_out_date>0,1,0)) AS messages_new,
+                SUM(IF(contact_form_out_date=0,1,0)) AS messages
             FROM
             	" . PREFIX . "_modul_contacts AS frm
             LEFT OUTER JOIN
             	" . PREFIX . "_modul_contact_info
-                	ON form_id = frm.Id
+                	ON contact_form_id = frm.Id
             GROUP BY frm.Id
 			LIMIT " . $start . "," . $limit
 		);
@@ -469,8 +477,8 @@ class Contact
                 $user_groups = array();
 				$sql_g = $AVE_DB->Query("
 					SELECT
-						Benutzergruppe,
-						Name
+						user_group,
+						user_group_name
 					FROM " . PREFIX . "_user_groups
 				");
 				while ($row_g = $sql_g->FetchRow())
@@ -494,21 +502,21 @@ class Contact
 					INSERT
 					INTO " . PREFIX . "_modul_contacts
 					SET
-						Id                    = '',
-						form_name             = '" . $_REQUEST['form_name'] . "',
-						form_mail_max_chars   = '" . $_REQUEST['form_mail_max_chars'] . "',
-						form_receiver         = '" . $_REQUEST['form_receiver'] . "',
-						form_receiver_multi   = '" . $_REQUEST['form_receiver_multi'] . "',
-						form_antispam         = '" . $_REQUEST['form_antispam'] . "',
-						form_max_upload       = '" . $_REQUEST['form_max_upload'] . "',
-						form_allow_group      = '" . @implode(',', $_REQUEST['form_allow_group']) . "',
-						form_message_noaccess = '" . $_REQUEST['form_message_noaccess'] . "',
-						form_send_copy        = '" . $_REQUEST['form_send_copy'] . "'
+						Id                            = '',
+						contact_form_title            = '" . $_REQUEST['contact_form_title'] . "',
+						contact_form_mail_max_chars   = '" . $_REQUEST['contact_form_mail_max_chars'] . "',
+						contact_form_receiver         = '" . $_REQUEST['contact_form_receiver'] . "',
+						contact_form_receiver_multi   = '" . $_REQUEST['contact_form_receiver_multi'] . "',
+						contact_form_antispam         = '" . $_REQUEST['contact_form_antispam'] . "',
+						contact_form_max_upload       = '" . $_REQUEST['contact_form_max_upload'] . "',
+						contact_form_allow_group      = '" . @implode(',', $_REQUEST['contact_form_allow_group']) . "',
+						contact_form_message_noaccess = '" . $_REQUEST['contact_form_message_noaccess'] . "',
+						contact_form_send_copy        = '" . $_REQUEST['contact_form_send_copy'] . "'
 				");
 				$iid = $AVE_DB->InsertId();
 
                 // Сохраняем системное сообщние
-				reportLog($_SESSION['user_name'] . ' - добавил новую контактную форму (' . stripslashes($_REQUEST['form_name']) . ')', 2, 2);
+				reportLog($_SESSION['user_name'] . ' - добавил новую контактную форму (' . stripslashes($_REQUEST['contact_form_title']) . ')', 2, 2);
 
                 // Выполняем обновление страницы
 				header('Location:index.php?do=modules&action=modedit&mod=contact&moduleaction=edit&id=' . $iid . '&pop=1&cp=' . SESSION);
@@ -519,20 +527,20 @@ class Contact
 	/**
 	 * Метод, предназначенный для добавления полей новой формы в БД
 	 *
-	 * @param int $form_id идентификатор формы
+	 * @param int $contact_form_id идентификатор формы
 	 */
-	function contactFormFieldSave($form_id)
+	function contactFormFieldSave($contact_form_id)
 	{
 		global $AVE_DB;
 
         // Обрабатываем все поля формы (если они были созданы)
-		if (!empty($_POST['field_title']))
+		if (!empty($_POST['contact_field_title']))
 		{
 			// Убираем из названия поля непечатаемые символы
-            $field_title = $this->_contactTextClean($_REQUEST['field_title']);
-			if (isset($_REQUEST['field_datatype']))
+            $contact_field_title = $this->_contactTextClean($_REQUEST['contact_field_title']);
+			if (isset($_REQUEST['contact_field_datatype']))
 			{
-				switch ($_REQUEST['field_datatype'])
+				switch ($_REQUEST['contact_field_datatype'])
 				{
 					case 'anysymbol':
 					case 'onlydecimal':
@@ -540,13 +548,13 @@ class Contact
 						break;
 
 					default:
-						$_REQUEST['field_datatype'] = 'anysymbol';
+						$_REQUEST['contact_field_datatype'] = 'anysymbol';
 						break;
 				}
 			}
 			else
 			{
-				$_REQUEST['field_datatype'] = 'anysymbol';
+				$_REQUEST['contact_field_datatype'] = 'anysymbol';
 			}
 
             // Выполняем запрок к БД на добавление новых полей в форму
@@ -554,36 +562,36 @@ class Contact
 				INSERT
 				INTO " . PREFIX . "_modul_contact_fields
 				SET
-					Id             = '',
-					form_id        = '" . $form_id . "',
-					field_type     = '" . $_REQUEST['field_type'] . "',
-					field_position = '" . $_REQUEST['field_position'] . "',
-					field_title    = '" . $field_title . "',
-					field_required = '" . $_REQUEST['field_required'] . "',
-					field_default  = '" . $this->_contactTextClean($_REQUEST['field_default']) . "',
-					field_status   = '" . $_REQUEST['field_status'] . "',
-					field_size     = '" . (int)$_REQUEST['field_size'] . "',
-					field_newline  = '" . (int)$_REQUEST['field_newline'] . "',
-					field_datatype = '" . $_REQUEST['field_datatype'] . "',
-					field_maxchars = '" . $this->_contactTextClean($_REQUEST['field_maxchars']) . "',
-					field_message  = '" . $this->_contactTextClean($_REQUEST['field_message']) . "'
+					Id                      = '',
+					contact_form_id         = '" . $contact_form_id . "',
+					contact_field_type      = '" . $_REQUEST['contact_field_type'] . "',
+					contact_field_position  = '" . $_REQUEST['contact_field_position'] . "',
+					contact_field_title     = '" . $contact_field_title . "',
+					contact_field_required  = '" . $_REQUEST['contact_field_required'] . "',
+					contact_field_default   = '" . $this->_contactTextClean($_REQUEST['contact_field_default']) . "',
+					contact_field_status    = '" . $_REQUEST['contact_field_status'] . "',
+					contact_field_size      = '" . (int)$_REQUEST['contact_field_size'] . "',
+					contact_field_newline   = '" . (int)$_REQUEST['contact_field_newline'] . "',
+					contact_field_datatype  = '" . $_REQUEST['contact_field_datatype'] . "',
+					contact_field_max_chars = '" . $this->_contactTextClean($_REQUEST['contact_field_max_chars']) . "',
+					contact_field_value     = '" . $this->_contactTextClean($_REQUEST['contact_field_value']) . "'
 			");
 		}
 
 		// Сохраняем системное сообщние
-        reportLog($_SESSION['user_name'] . ' - добавил новое поле в модуле контакты (' . $field_title . ')', 2, 2);
+        reportLog($_SESSION['user_name'] . ' - добавил новое поле в модуле контакты (' . $contact_field_title . ')', 2, 2);
 
         // Выполняем обновление страницы
-		header('Location:index.php?do=modules&action=modedit&mod=contact&moduleaction=edit&id=' . $form_id . '&pop=1&cp=' . SESSION);
+		header('Location:index.php?do=modules&action=modedit&mod=contact&moduleaction=edit&id=' . $contact_form_id . '&pop=1&cp=' . SESSION);
 	}
 
     /**
 	 * Метод, предназначенный для редактирование формы в Панели управления
 	 *
 	 * @param string $tpl_dir путь к папке с шаблонами
-	 * @param int $form_id идентификатор формы
+	 * @param int $contact_form_id идентификатор формы
 	 */
-	function contactFormEdit($tpl_dir, $form_id)
+	function contactFormEdit($tpl_dir, $contact_form_id)
 	{
 		global $AVE_DB, $AVE_Template;
 
@@ -591,7 +599,7 @@ class Contact
         $row_e = $AVE_DB->Query("
 			SELECT *
 			FROM " . PREFIX . "_modul_contacts
-			WHERE Id = '" . $form_id . "'
+			WHERE Id = '" . $contact_form_id . "'
 		")->FetchRow();
 
 		// Получаем всю информацию о полях формы, которую мы хотим отредактировать
@@ -599,8 +607,8 @@ class Contact
 		$sql = $AVE_DB->Query("
 			SELECT *
 			FROM " . PREFIX . "_modul_contact_fields
-			WHERE form_id = '" . $form_id . "'
-			ORDER BY field_position ASC
+			WHERE contact_form_id = '" . $contact_form_id . "'
+			ORDER BY contact_field_position ASC
 		");
 		while ($row = $sql->FetchRow())
 		{
@@ -611,8 +619,8 @@ class Contact
         $user_groups = array();
 		$sql_g = $AVE_DB->Query("
 			SELECT
-				Benutzergruppe,
-				Name
+				user_group,
+				user_group_name
 			FROM " . PREFIX . "_user_groups
 		");
 		while ($row_g = $sql_g->FetchRow())
@@ -622,7 +630,7 @@ class Contact
 
 		// Передаем в шаблон полученные данные и отображаем страницу
         $AVE_Template->assign('groups', $user_groups);
-		$AVE_Template->assign('groups_form', explode(',', $row_e->form_allow_group));
+		$AVE_Template->assign('groups_form', explode(',', $row_e->contact_form_allow_group));
 		$AVE_Template->assign('row', $row_e);
 		$AVE_Template->assign('items', $items);
 		$AVE_Template->assign('tpl_dir', $tpl_dir);
@@ -633,9 +641,9 @@ class Contact
 	/**
 	 * Метод, предназначенный для сохранения изменений отредактированной формы в БД
 	 *
-	 * @param int $form_id идентификатор формы
+	 * @param int $contact_form_id идентификатор формы
 	 */
-	function contactFormSave($form_id)
+	function contactFormSave($contact_form_id)
 	{
 		global $AVE_DB;
 
@@ -643,19 +651,19 @@ class Contact
         $AVE_DB->Query("
 			UPDATE " . PREFIX . "_modul_contacts
 			SET
-				form_name             = '" . $_REQUEST['form_name'] . "',
-				form_mail_max_chars   = '" . $_REQUEST['form_mail_max_chars'] . "',
-				form_receiver         = '" . $_REQUEST['form_receiver'] . "',
-				form_receiver_multi   = '" . $_REQUEST['form_receiver_multi'] . "',
-				form_antispam         = '" . $_REQUEST['form_antispam'] . "',
-				form_max_upload       = '" . $_REQUEST['form_max_upload'] . "',
-				form_show_subject     = '" . $_REQUEST['form_show_subject'] . "',
-				form_default_subject  = '" . $_REQUEST['form_default_subject'] . "',
-				form_allow_group      = '" . @implode(',', $_REQUEST['form_allow_group']) . "',
-				form_message_noaccess = '" . $_POST['form_message_noaccess'] . "',
-				form_send_copy        = '" . $_POST['form_send_copy'] . "'
+				contact_form_title            = '" . $_REQUEST['contact_form_title'] . "',
+				contact_form_mail_max_chars   = '" . $_REQUEST['contact_form_mail_max_chars'] . "',
+				contact_form_receiver         = '" . $_REQUEST['contact_form_receiver'] . "',
+				contact_form_receiver_multi   = '" . $_REQUEST['contact_form_receiver_multi'] . "',
+				contact_form_antispam         = '" . $_REQUEST['contact_form_antispam'] . "',
+				contact_form_max_upload       = '" . $_REQUEST['contact_form_max_upload'] . "',
+				contact_form_subject_show     = '" . $_REQUEST['contact_form_subject_show'] . "',
+				contact_form_subject_default  = '" . $_REQUEST['contact_form_subject_default'] . "',
+				contact_form_allow_group      = '" . @implode(',', $_REQUEST['contact_form_allow_group']) . "',
+				contact_form_message_noaccess = '" . $_POST['contact_form_message_noaccess'] . "',
+				contact_form_send_copy        = '" . $_POST['contact_form_send_copy'] . "'
 			WHERE
-				Id = '" . $form_id . "'
+				Id = '" . $contact_form_id . "'
 		");
 
 		// Если в запросе пришел параметр на удаление каких-либо полей, тогда
@@ -674,16 +682,16 @@ class Contact
 		}
 
 		// Обрабатываем все поля формы
-        foreach ($_POST['field_title'] as $id => $field)
+        foreach ($_POST['contact_field_title'] as $id => $field)
 		{
 			// Если поле не пустое
             if (!empty($field))
 			{
 				// Убираем из названия поля некорректные символы
-                $field_title = $this->_contactTextClean($field);
-				if (isset($_POST['field_datatype'][$id]))
+                $contact_field_title = $this->_contactTextClean($field);
+				if (isset($_POST['contact_field_datatype'][$id]))
 				{
-					switch ($_POST['field_datatype'][$id])
+					switch ($_POST['contact_field_datatype'][$id])
 					{
 						case 'anysymbol':
 						case 'onlydecimal':
@@ -691,49 +699,49 @@ class Contact
 							break;
 
 						default:
-							$_POST['field_datatype'][$id] = 'anysymbol';
+							$_POST['contact_field_datatype'][$id] = 'anysymbol';
 							break;
 					}
 				}
 				else
 				{
-					$_POST['field_datatype'][$id] = 'anysymbol';
+					$_POST['contact_field_datatype'][$id] = 'anysymbol';
 				}
 
                 // Выполняем запрос к БД на обновление информации
                 $AVE_DB->Query("
 					UPDATE " . PREFIX . "_modul_contact_fields
 					SET
-						field_title    = '" . $field_title . "',
-						field_type     = '" . $_POST['field_type'][$id] . "',
-						field_position = '" . $_POST['field_position'][$id] . "',
-						field_required = '" . $_POST['field_required'][$id] . "',
-						field_default  = '" . $this->_contactTextClean($_POST['field_default'][$id]) . "',
-						field_status   = '" . (int)$_POST['field_status'][$id] . "',
-						field_size     = '" . (int)$_POST['field_size'][$id] . "',
-						field_newline  = '" . (int)$_POST['field_newline'][$id] . "',
-						field_datatype = '" . $_POST['field_datatype'][$id] . "',
-						field_maxchars = '" . $this->_contactTextClean($_POST['field_maxchars'][$id]) . "',
-						field_message  = '" . $this->_contactTextClean($_POST['field_message'][$id]) . "'
+						contact_field_title     = '" . $contact_field_title . "',
+						contact_field_type      = '" . $_POST['contact_field_type'][$id] . "',
+						contact_field_position  = '" . $_POST['contact_field_position'][$id] . "',
+						contact_field_required  = '" . $_POST['contact_field_required'][$id] . "',
+						contact_field_default   = '" . $this->_contactTextClean($_POST['contact_field_default'][$id]) . "',
+						contact_field_status    = '" . (int)$_POST['contact_field_status'][$id] . "',
+						contact_field_size      = '" . (int)$_POST['contact_field_size'][$id] . "',
+						contact_field_newline   = '" . (int)$_POST['contact_field_newline'][$id] . "',
+						contact_field_datatype  = '" . $_POST['contact_field_datatype'][$id] . "',
+						contact_field_max_chars = '" . $this->_contactTextClean($_POST['contact_field_max_chars'][$id]) . "',
+						contact_field_value     = '" . $this->_contactTextClean($_POST['contact_field_value'][$id]) . "'
 					WHERE
 						Id = '" . $id . "'
 				");
 				// Сохраняем системное сообщние
-                reportLog($_SESSION['user_name'] . ' - отредактировал поле в модуле контакты (' . $field_title . ')', 2, 2);
+                reportLog($_SESSION['user_name'] . ' - отредактировал поле в модуле контакты (' . $contact_field_title . ')', 2, 2);
 			}
 		}
 
 		// Выполняем обновление страницы
-        header('Location:index.php?do=modules&action=modedit&mod=contact&moduleaction=edit&id=' . $form_id . '&pop=1&cp=' . SESSION);
+        header('Location:index.php?do=modules&action=modedit&mod=contact&moduleaction=edit&id=' . $contact_form_id . '&pop=1&cp=' . SESSION);
         exit;
 	}
 
 	/**
 	 * Метод, предназначенный для удаления контактной формы
 	 *
-	 * @param int $form_id идентификатор формы
+	 * @param int $contact_form_id идентификатор формы
 	 */
-	function contactFormDelete($form_id)
+	function contactFormDelete($contact_form_id)
 	{
 		global $AVE_DB;
 
@@ -741,29 +749,29 @@ class Contact
         $AVE_DB->Query("
 			DELETE
 			FROM " . PREFIX . "_modul_contacts
-			WHERE Id = '" . $form_id . "'
+			WHERE Id = '" . $contact_form_id . "'
 		");
 
         // Выполняем запрос к БД на удаление полей, относящихся к данной контактной форме
         $AVE_DB->Query("
 			DELETE
 			FROM " . PREFIX . "_modul_contact_fields
-			WHERE form_id = '" . $form_id . "'
+			WHERE contact_form_id = '" . $contact_form_id . "'
 		");
 
         // Получаем список всех прикрепленных файлов у сообщений, относящихся к данной контактной форме
         $row = $AVE_DB->Query("
 			SELECT
-				in_attachment,
-				out_attachment
+				contact_form_in_attachment,
+				contact_form_out_attachment
 			FROM " . PREFIX . "_modul_contact_info
-			WHERE form_id = '" . $form_id . "'
+			WHERE contact_form_id = '" . $contact_form_id . "'
 		")->FetchRow();
 
 		// Удаляем все прикрепленные сообщения из папки /attachments для входящих писем
-        if ($row->in_attachment != '')
+        if ($row->contact_form_in_attachment != '')
 		{
-			$del = explode(';', $row->in_attachment);
+			$del = explode(';', $row->contact_form_in_attachment);
 			foreach ($del as $delfile)
 			{
 				@unlink(BASE_DIR . '/attachments/' . $delfile);
@@ -771,9 +779,9 @@ class Contact
 		}
 
         // Удаляем все прикрепленные сообщения из папки /attachments для исходящих писем
-		if ($row->out_attachment != '')
+		if ($row->contact_form_out_attachment != '')
 		{
-			$del = explode(';', $row->out_attachment);
+			$del = explode(';', $row->contact_form_out_attachment);
 			foreach ($del as $delfile)
 			{
 				@unlink(BASE_DIR . '/attachments/' . $delfile);
@@ -784,11 +792,11 @@ class Contact
         $AVE_DB->Query("
 			DELETE
 			FROM " . PREFIX . "_modul_contact_info
-			WHERE form_id = '" . $form_id . "'
+			WHERE contact_form_id = '" . $contact_form_id . "'
 		");
 
 		// Сохраняем системное сообщние
-        reportLog($_SESSION['user_name'] . ' - удалил контактную форму (' . $form_id . ')', 2, 2);
+        reportLog($_SESSION['user_name'] . ' - удалил контактную форму (' . $contact_form_id . ')', 2, 2);
 
         // Выполняем обновление страницы
 		header('Location:index.php?do=modules&action=modedit&mod=contact&moduleaction=1&cp=' . SESSION);
@@ -802,10 +810,10 @@ class Contact
      * 2) Полный просмотр любого сообщения
 	 *
 	 * @param string $tpl_dir путь к папке с шаблонами
-	 * @param int $form_id идентификатор формы
+	 * @param int $contact_form_id идентификатор формы
 	 * @param string $newold сообщение без ответа new
 	 */
-	function contactMessageShow($tpl_dir, $form_id, $newold = '')
+	function contactMessageShow($tpl_dir, $contact_form_id, $newold = '')
 	{
 		global $AVE_DB, $AVE_Template;
 
@@ -815,14 +823,14 @@ class Contact
 			// Если нет, тогда
             case '':
 				// Определяем условия просмотра (прочитанные или новые)
-                $n_o     = ($newold == 'new') ? 'AND out_date < 1' : 'AND out_date > 1';
+                $n_o     = ($newold == 'new') ? 'AND contact_form_out_date < 1' : 'AND contact_form_out_date > 1';
 				$new_old = ($newold == 'new') ? 'showmessages_new' : 'showmessages_old';
 
 				// Выполняем запрос к БД на получение списка сообщений согласно условиям
                 $num = $AVE_DB->Query("
 					SELECT COUNT(*)
 					FROM " . PREFIX . "_modul_contact_info
-					WHERE form_id = '" . $form_id . "'
+					WHERE contact_form_id = '" . $contact_form_id . "'
 					" . $n_o . "
 				")->GetCell();
 
@@ -837,9 +845,9 @@ class Contact
 				$sql = $AVE_DB->Query("
 					SELECT *
 					FROM " . PREFIX . "_modul_contact_info
-					WHERE form_id = '" . $form_id . "'
+					WHERE contact_form_id = '" . $contact_form_id . "'
 					" . $n_o . "
-					ORDER BY in_date DESC
+					ORDER BY contact_form_in_date DESC
 					LIMIT " . $start . "," . $limit
 				);
 				while ($row = $sql->FetchRow())
@@ -875,10 +883,10 @@ class Contact
 				$attachments = '';
 
 				// Если сообщение имеет прикрепленные файлы, тогда получаем названия файлов
-                if ($row->in_attachment != '')
+                if ($row->contact_form_in_attachment != '')
 				{
 					$attachments = array();
-					$attachments_arr = explode(';', $row->in_attachment);
+					$attachments_arr = explode(';', $row->contact_form_in_attachment);
 
 					foreach ($attachments_arr as $attachment)
 					{
@@ -890,8 +898,8 @@ class Contact
 				}
 
                 // Приводим текст сообщения к правильному формату и передаем в шаблон полученные данные
-				$row->nl2brText = nl2br(stripslashes($row->in_message));
-				$row->replytext = $row->in_message;
+				$row->nl2brText = nl2br(stripslashes($row->contact_form_in_message));
+				$row->replytext = $row->contact_form_in_message;
 				$AVE_Template->assign('attachments', $attachments);
 				$AVE_Template->assign('row', $row);
 
@@ -911,7 +919,7 @@ class Contact
 
 		// Подготавливаем прикрепленные файлы для отправки
         $attach = $this->_contactFileUpload(100000);
-		$out_attachment = (is_array($attach) && count($attach) >= 1) ? implode(';', $attach) : '';
+		$contact_form_out_attachment = (is_array($attach) && count($attach) >= 1) ? implode(';', $attach) : '';
 
 		// Выполняем отправку сообщения
         send_mail(
@@ -928,11 +936,11 @@ class Contact
 		$AVE_DB->Query("
 			UPDATE " . PREFIX . "_modul_contact_info
 			SET
-				out_date       = '" . time() . "',
-				out_email      = '" . $_REQUEST['fromemail'] . "',
-				out_sender     = '" . $_POST['fromname'] . "',
-				out_message    = '" . $_REQUEST['message'] . "',
-				out_attachment = '" . $out_attachment . "'
+				contact_form_out_date       = '" . time() . "',
+				contact_form_out_email      = '" . $_REQUEST['fromemail'] . "',
+				contact_form_out_sender     = '" . $_POST['fromname'] . "',
+				contact_form_out_message    = '" . $_REQUEST['message'] . "',
+				contact_form_out_attachment = '" . $contact_form_out_attachment . "'
 			WHERE
 				Id = '" . $_REQUEST['id'] . "'
 		");
@@ -977,17 +985,17 @@ class Contact
 				// Выполняем запрос к БД на получение информации о прикрепленных файлах для данной формы
                 $row = $AVE_DB->Query("
 					SELECT
-						in_attachment,
-						out_attachment
+						contact_form_in_attachment,
+						contact_form_out_attachment
 					FROM " . PREFIX . "_modul_contact_info
 					WHERE Id = '" . $id . "'
 				")->FetchRow();
 
 				// Если полученные данные содержат информацию о прикрепленных файлах у входящих сообщений для данной формы
-                if ($row->in_attachment != '')
+                if ($row->contact_form_in_attachment != '')
 				{
 					// Получаем список названий файлов и удаляем их из директории /attachments
-                    $del = explode(';', $row->in_attachment);
+                    $del = explode(';', $row->contact_form_in_attachment);
 					foreach ($del as $delfile)
 					{
 						@unlink(BASE_DIR . '/attachments/' . $delfile);
@@ -995,11 +1003,11 @@ class Contact
 				}
 
 				// Если полученные данные содержат информацию о прикрепленных файлах у исходящих сообщений для данной формы
-                if ($row->out_attachment != '')
+                if ($row->contact_form_out_attachment != '')
 				{
 
                     // Получаем список названий файлов и удаляем их из директории /attachments
-                    $del = explode(';', $row->out_attachment);
+                    $del = explode(';', $row->contact_form_out_attachment);
 					foreach ($del as $delfile)
 					{
 						@unlink(BASE_DIR . '/attachments/' . $delfile);

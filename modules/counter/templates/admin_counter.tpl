@@ -43,7 +43,7 @@ function check_name() {ldelim}
 		{foreach from=$items item=item}
 			<tr style="background-color:#eff3eb" onmouseover="this.style.backgroundColor='#dae0d8';" onmouseout="this.style.backgroundColor='#eff3eb';" id="table_rows">
 				<td><input type="checkbox" name="del[{$item->id}]" id="del[{$item->id}]" value="1" title="{#COUNTER_MARK_DELETE#}" /></td>
-				<td><input type="text" name="counter_name[{$item->id}]" id="counter_name[{$item->id}]" value="{$item->counter_name|escape:html|stripslashes}" size="60" maxlength="50" /></td>
+				<td><input type="text" name="counter_title[{$item->id}]" id="counter_title[{$item->id}]" value="{$item->counter_title|escape|stripslashes}" size="60" maxlength="50" /></td>
 				<td><input type="text" name="CpEngineTag{$item->id}" id="CpEngineTag_{$item->id}" value="[mod_counter:{$item->id}]" readonly="" style="width:100%" /></td>
 				<td align="center">{$item->all}</td>
 				<td align="center">{$item->today}</td>
@@ -72,7 +72,7 @@ function check_name() {ldelim}
 
 		<tr>
 			<td class="first">
-				<input name="counter_name" type="text" id="Name" size="60" maxlength="50" />&nbsp;
+				<input name="counter_title" type="text" id="Name" size="60" maxlength="50" />&nbsp;
 				<input type="submit" class="button"  value="{#COUNTER_BUTTON_CREATE#}" />
 			</td>
 		</tr>

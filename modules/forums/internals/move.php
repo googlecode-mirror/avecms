@@ -81,7 +81,7 @@ if($NOOUT != 1)
 		//=======================================================
 		// Zum Beitrag im neuen Forum leiten
 		//=======================================================
-		header("Location:index.php?module=forums&show=showtopic&toid=$_REQUEST[toid]&fid=$_REQUEST[dest]");
+		header("Location:index.php?module=forums&show=showtopic&toid=" . $_REQUEST['toid'] . "&fid=" . $_REQUEST['dest'] . "");
 		exit;
 
 	} else {

@@ -5,6 +5,7 @@
  *
  * @package AVE.cms
  * @subpackage module_Login
+ * @since 1.4
  * @filesource
  */
 class Login
@@ -173,7 +174,7 @@ class Login
 		$exist = $AVE_DB->Query("
 			SELECT 1
 			FROM " . PREFIX . "_users
-			WHERE Email = '" . addslashes($email) . "'
+			WHERE email = '" . addslashes($email) . "'
 		")->NumRows();
 
 		return (bool)$exist;
@@ -192,7 +193,7 @@ class Login
 		$exist = $AVE_DB->Query("
 			SELECT 1
 			FROM " . PREFIX . "_users
-			WHERE `UserName` = '" . addslashes($user_name) . "'
+			WHERE user_name = '" . addslashes($user_name) . "'
 			LIMIT 1
 		")->NumRows();
 
@@ -335,7 +336,7 @@ class Login
 
 		define('MODULE_SITE', $AVE_Template->get_config_vars('LOGIN_TEXT_REGISTER'));
 
-		if ($this->_loginSettingsGet('login_spam_protect')) define('ANTI_SPAM', 1);
+		if ($this->_loginSettingsGet('login_antispam')) define('ANTISPAM', 1);
 
 		switch($this->_loginSettingsGet('login_status'))
 		{
@@ -345,8 +346,8 @@ class Login
 					case 'register':
 						$error = array();
 
-						$_POST['UserName']         = (!empty($_POST['UserName']))
-													  ? trim($_POST['UserName'])
+						$_POST['user_name']         = (!empty($_POST['user_name']))
+													  ? trim($_POST['user_name'])
 													  : '';
 
 						$_POST['reg_email']        = (!empty($_POST['reg_email']))
@@ -358,15 +359,15 @@ class Login
 													  : '';
 
 						// ËÎÃÈÍ
-						if (empty($_POST['UserName']))
+						if (empty($_POST['user_name']))
 						{
 							$error[] = $AVE_Template->get_config_vars('LOGIN_WRONG_L_EMPTY');
 						}
-						elseif (!ctype_alnum($_POST['UserName']))
+						elseif (!ctype_alnum($_POST['user_name']))
 						{
 							$error[] = $AVE_Template->get_config_vars('LOGIN_WRONG_LOGIN');
 						}
-						elseif ($this->_loginUserNameExistsCheck($_POST['UserName']))
+						elseif ($this->_loginUserNameExistsCheck($_POST['user_name']))
 						{
 							$error[] = $AVE_Template->get_config_vars('LOGIN_WRONG_L_INUSE');
 						}
@@ -439,7 +440,7 @@ class Login
 						}
 
 						// ÊÀÏ×À
-						if (defined("ANTI_SPAM"))
+						if (defined("ANTISPAM"))
 						{
 							if (empty($_POST['reg_secure']))
 							{
@@ -457,7 +458,7 @@ class Login
 						{
 							$AVE_Template->assign('errors', $error);
 
-							if (defined('ANTI_SPAM')) $AVE_Template->assign('im', 1);
+							if (defined('ANTISPAM')) $AVE_Template->assign('im', 1);
 
 							$this->_loginRequiredFieldFetch();
 
@@ -475,7 +476,7 @@ class Login
 							{
 								case 'now':
 									$email_body = str_replace("%N%", "\n", $AVE_Template->get_config_vars('LOGIN_MESSAGE_1'));
-									$email_body = str_replace("%NAME%", $_POST['UserName'], $email_body);
+									$email_body = str_replace("%NAME%", $_POST['user_name'], $email_body);
 									$email_body = str_replace("%HOST%", get_home_link(), $email_body);
 									$email_body = str_replace("%KENNWORT%", $_POST['reg_pass'], $email_body);
 									$email_body = str_replace("%EMAIL%", $_POST['reg_email'], $email_body);
@@ -486,7 +487,7 @@ class Login
 								case 'email':
 									$email_body = str_replace("%N%", "\n", $AVE_Template->get_config_vars('LOGIN_MESSAGE_2')
 																		 . $AVE_Template->get_config_vars('LOGIN_MESSAGE_3'));
-									$email_body = str_replace("%NAME%", $_POST['UserName'], $email_body);
+									$email_body = str_replace("%NAME%", $_POST['user_name'], $email_body);
 									$email_body = str_replace("%KENNWORT%", $_POST['reg_pass'], $email_body);
 									$email_body = str_replace("%EMAIL%", $_POST['reg_email'], $email_body);
 									$email_body = str_replace("%REGLINK%",
@@ -504,7 +505,7 @@ class Login
 								case 'byadmin':
 									$email_body = str_replace("%N%", "\n", $AVE_Template->get_config_vars('LOGIN_MESSAGE_2')
 																		 . $AVE_Template->get_config_vars('LOGIN_MESSAGE_4'));
-									$email_body = str_replace("%NAME%", $_POST['UserName'], $email_body);
+									$email_body = str_replace("%NAME%", $_POST['user_name'], $email_body);
 									$email_body = str_replace("%KENNWORT%", $_POST['reg_pass'], $email_body);
 									$email_body = str_replace("%EMAIL%", $_POST['reg_email'], $email_body);
 									$email_body = str_replace("%HOST%", get_home_link(), $email_body);
@@ -513,7 +514,7 @@ class Login
 							}
 
 							$bodytoadmin = str_replace("%N%", "\n", $AVE_Template->get_config_vars('LOGIN_MESSAGE_5'));
-							$bodytoadmin = str_replace("%NAME%", $_POST['UserName'], $bodytoadmin);
+							$bodytoadmin = str_replace("%NAME%", $_POST['user_name'], $bodytoadmin);
 							$bodytoadmin = str_replace("%EMAIL%", $_POST['reg_email'], $bodytoadmin);
 
 							$salt = make_random_string();
@@ -523,35 +524,35 @@ class Login
 								INSERT
 								INTO " . PREFIX . "_users
 								SET
-									Id             = '',
-									`UserName`     = '" . $_POST['UserName'] . "',
-									Kennwort       = '" . addslashes($md5_pass_salt) . "',
-									Vorname        = '" . $_POST['reg_firstname'] . "',
-									Nachname       = '" . $_POST['reg_lastname'] . "',
-									Benutzergruppe = '" . $this->_newuser_group . "',
-									Registriert    = '" . time() . "',
-									Status         = '" . (int)$status . "',
-									Email          = '" . $_POST['reg_email'] . "',
-									emc            = '" . addslashes($emailcode) . "',
-									Land           = '" . strtoupper($_POST['Land']) . "',
-									IpReg          = '" . addslashes($_SERVER['REMOTE_ADDR']) . "',
-									UStPflichtig   = '1',
-									Firma          = '" . @$_POST['Firma'] . "',
-									salt           = '" . addslashes($salt) . "'
+									Id         = '',
+									user_name  = '" . $_POST['user_name'] . "',
+									password   = '" . addslashes($md5_pass_salt) . "',
+									firstname  = '" . $_POST['reg_firstname'] . "',
+									lastname   = '" . $_POST['reg_lastname'] . "',
+									user_group = '" . $this->_newuser_group . "',
+									reg_time   = '" . time() . "',
+									status     = '" . (int)$status . "',
+									email      = '" . $_POST['reg_email'] . "',
+									emc        = '" . addslashes($emailcode) . "',
+									country    = '" . strtoupper($_POST['country']) . "',
+									reg_ip     = '" . addslashes($_SERVER['REMOTE_ADDR']) . "',
+									taxpay     = '1',
+									company    = '" . @$_POST['company'] . "',
+									salt       = '" . addslashes($salt) . "'
 							");
 
 							if ($status == 1)
 							{
 								$_SESSION['user_id']      = $AVE_DB->InsertId();
 						        $_SESSION['user_name']    = get_username(
-									stripslashes($_POST['UserName']),
+									stripslashes($_POST['user_name']),
 									stripslashes($_POST['reg_firstname']),
 									stripslashes($_POST['reg_lastname'])
 						        );
 								$_SESSION['user_email']   = $_POST['reg_email'];
 								$_SESSION['user_pass']    = $md5_pass_salt;
 								$_SESSION['user_group']   = $this->_newuser_group;
-								$_SESSION['user_country'] = strtoupper($_POST['Land']);
+								$_SESSION['user_country'] = strtoupper($_POST['country']);
 								$_SESSION['user_ip']      = addslashes($_SERVER['REMOTE_ADDR']);
 							}
 
@@ -600,15 +601,15 @@ class Login
 								$AVE_Template->assign('final', 'ok');
 								$AVE_DB->Query("
 									UPDATE " . PREFIX . "_users
-									SET Status = 1
+									SET status = '1'
 									WHERE emc = '" . $_REQUEST['emc'] . "'
 								");
 								$_SESSION['user_id']    = $row->Id;
-								$_SESSION['user_pass']  = $row->Kennwort;
-								$_SESSION['user_email'] = $row->Email;
-								$_SESSION['user_name']  = get_username($row->UserName,
-																	   $row->Vorname,
-																	   $row->Nachname);
+								$_SESSION['user_pass']  = $row->password;
+								$_SESSION['user_email'] = $row->email;
+								$_SESSION['user_name']  = get_username($row->user_name,
+																	   $row->firstname,
+																	   $row->lastname);
 								$_SESSION['user_ip']    = addslashes($_SERVER['REMOTE_ADDR']);
 							}
 						}
@@ -624,7 +625,7 @@ class Login
 
 					case '':
 					default :
-						if (defined('ANTI_SPAM')) $AVE_Template->assign('im', 1);
+						if (defined('ANTISPAM')) $AVE_Template->assign('im', 1);
 
 						$this->_loginRequiredFieldFetch();
 
@@ -668,7 +669,7 @@ class Login
 					new_pass,
 					new_salt
 				FROM " . PREFIX . "_users
-				WHERE Email   = '" . $_REQUEST['email'] . "'
+				WHERE email   = '" . $_REQUEST['email'] . "'
 				AND new_pass != ''
 				AND new_pass  = '" . $_REQUEST['code'] . "'
 				LIMIT 1
@@ -678,9 +679,9 @@ class Login
 				$AVE_DB->Query("
 					UPDATE " . PREFIX . "_users
 					SET
-						Kennwort = '" . addslashes($row_remind->new_pass) . "',
+						password = '" . addslashes($row_remind->new_pass) . "',
 						salt     = '" . addArray($row_remind->new_salt) . "'
-					WHERE Email  = '" . $_REQUEST['email'] . "'
+					WHERE email  = '" . $_REQUEST['email'] . "'
 					AND new_pass = '" . $_REQUEST['code'] . "'
 				");
 			}
@@ -694,11 +695,11 @@ class Login
 			{
 				$row_remind = $AVE_DB->Query("
 					SELECT
-						Email,
-						Vorname,
-						Nachname
+						email,
+						firstname,
+						lastname
 					FROM " . PREFIX . "_users
-					WHERE Email = '" . $_POST['f_mailreminder'] . "'
+					WHERE email = '" . $_POST['f_mailreminder'] . "'
 					LIMIT 1
 				")->FetchRow();
 
@@ -719,12 +720,12 @@ class Login
 						SET
 							new_pass = '" . addslashes($md5_pass_salt) . "',
 							new_salt = '" . addslashes($newsalt) . "'
-						WHERE Email = '" . $_POST['f_mailreminder'] . "'
+						WHERE email = '" . $_POST['f_mailreminder'] . "'
 						LIMIT 1
 					");
 
 					$body = $AVE_Template->get_config_vars('LOGIN_MESSAGE_6');
-					$body = str_replace("%NAME%", $row_remind->UserName, $body);
+					$body = str_replace("%NAME%", $row_remind->user_name, $body);
 					$body = str_replace("%PASS%", $newpass, $body);
 					$body = str_replace("%HOST%", get_home_link(), $body);
 					$body = str_replace("%LINK%",
@@ -822,11 +823,11 @@ class Login
 				$AVE_DB->Query("
 					UPDATE " . PREFIX . "_users
 					SET
-						Kennwort = '" . addslashes($md5_pass_salt) . "',
+						password = '" . addslashes($md5_pass_salt) . "',
 						salt     = '" . addslashes($newsalt) . "'
 					WHERE Id     = '" . (int)$_SESSION['user_id'] . "'
-					AND Email    = '" . addslashes($_SESSION['user_email']) . "'
-					AND Kennwort = '" . addslashes($_SESSION['user_pass']) . "'
+					AND email    = '" . addslashes($_SESSION['user_email']) . "'
+					AND password = '" . addslashes($_SESSION['user_pass']) . "'
 				");
 				$_SESSION['user_pass'] = $md5_pass_salt;
 				$AVE_Template->assign('changeok', 1);
@@ -893,33 +894,33 @@ class Login
 		{
 			$errors = array();
 
-			if ($this->_loginFieldIsRequired('login_require_firstname') && empty($_POST['Vorname']))
+			if ($this->_loginFieldIsRequired('login_require_firstname') && empty($_POST['firstname']))
 			{
 				$errors[] = $AVE_Template->get_config_vars('LOGIN_WRONG_FN_EMPTY');
 			}
-			if (preg_match($this->_regex, $_POST['Vorname']))
+			if (preg_match($this->_regex, $_POST['firstname']))
 			{
 				$errors[] = $AVE_Template->get_config_vars('LOGIN_WRONG_FIRSTNAME');
 			}
 
-			if ($this->_loginFieldIsRequired('login_require_lastname') && empty($_POST['Nachname']))
+			if ($this->_loginFieldIsRequired('login_require_lastname') && empty($_POST['lastname']))
 			{
 				$errors[] = $AVE_Template->get_config_vars('LOGIN_WRONG_LN_EMPTY');
 			}
-			if (preg_match($this->_regex, $_POST['Nachname']))
+			if (preg_match($this->_regex, $_POST['lastname']))
 			{
 				$errors[] = $AVE_Template->get_config_vars('LOGIN_WRONG_LASTNAME');
 			}
 
-			if (!empty($_POST['Strasse']) && preg_match($this->_regex, $_POST['Strasse']))
+			if (!empty($_POST['street']) && preg_match($this->_regex, $_POST['street']))
 			{
 				$errors[] = $AVE_Template->get_config_vars('LOGIN_WRONG_STREET');
 			}
-			if (!empty($_POST['HausNr']) && preg_match($this->_regex, $_POST['HausNr']))
+			if (!empty($_POST['street_nr']) && preg_match($this->_regex, $_POST['street_nr']))
 			{
 				$errors[] = $AVE_Template->get_config_vars('LOGIN_WRONG_HOUSE');
 			}
-			if (!empty($_POST['Postleitzahl']) && preg_match($this->_regex, $_POST['Postleitzahl']))
+			if (!empty($_POST['zipcode']) && preg_match($this->_regex, $_POST['zipcode']))
 			{
 				$errors[] = $AVE_Template->get_config_vars('LOGIN_WRONG_ZIP');
 			}
@@ -927,16 +928,16 @@ class Login
 			{
 				$errors[] = $AVE_Template->get_config_vars('LOGIN_WRONG_TOWN');
 			}
-			if (!empty($_POST['Telefon']) && preg_match($this->_regex, $_POST['Telefon']))
+			if (!empty($_POST['phone']) && preg_match($this->_regex, $_POST['phone']))
 			{
 				$errors[] = $AVE_Template->get_config_vars('LOGIN_WRONG_PHONE');
 			}
-			if (!empty($_POST['Telefax']) && preg_match($this->_regex, $_POST['Telefax']))
+			if (!empty($_POST['telefax']) && preg_match($this->_regex, $_POST['telefax']))
 			{
 				$errors[] = $AVE_Template->get_config_vars('LOGIN_WRONG_FAX');
 			}
 
-			if (!preg_match($this->_regex_email, $_POST['Email']))
+			if (!preg_match($this->_regex_email, $_POST['email']))
 			{
 				$errors[] = $AVE_Template->get_config_vars('LOGIN_WRONG_EMAIL');
 			}
@@ -946,7 +947,7 @@ class Login
 					SELECT 1
 					FROM " . PREFIX . "_users
 					WHERE Id != '" . (int)$_SESSION['user_id'] . "'
-					AND Email = '" . $_POST['Email'] . "'
+					AND email = '" . $_POST['email'] . "'
 				")->NumRows();
 
 				if ($exist)
@@ -955,14 +956,14 @@ class Login
 				}
 			}
 
-			if (!empty($_POST['GebTag']) && !preg_match($this->_regex_geb, $_POST['GebTag']))
+			if (!empty($_POST['birthday']) && !preg_match($this->_regex_geb, $_POST['birthday']))
 			{
 				$errors[] = $AVE_Template->get_config_vars('LOGIN_WRONG_BIRTHDAY');
 			}
 
-			if (!empty($_POST['GebTag']))
+			if (!empty($_POST['birthday']))
 			{
-				$birthday = preg_split('/[[:punct:]| ]/', $_POST['GebTag']);
+				$birthday = preg_split('/[[:punct:]| ]/', $_POST['birthday']);
 				if (empty($birthday[0]) || $birthday[0] > 31)
 				{
 					$errors[] = $AVE_Template->get_config_vars('LOGIN_WRONG_DATE');
@@ -978,7 +979,7 @@ class Login
 
 				if (empty($errors))
 				{
-					$_POST['GebTag'] = $birthday[0] . '.' . $birthday[1] . '.' . $birthday[2];
+					$_POST['birthday'] = $birthday[0] . '.' . $birthday[1] . '.' . $birthday[2];
 				}
 			}
 
@@ -991,24 +992,24 @@ class Login
 				$AVE_DB->Query("
 					UPDATE " . PREFIX . "_users
 					SET
-						Email        = '" . $_POST['Email'] . "',
-						Strasse      = '" . $_POST['Strasse'] . "',
-						HausNr       = '" . $_POST['HausNr'] . "',
-						Postleitzahl = '" . $_POST['Postleitzahl'] . "',
-						city         = '" . $_POST['city'] . "',
-						Telefon      = '" . $_POST['Telefon'] . "',
-						Telefax      = '" . $_POST['Telefax'] . "',
-						Vorname      = '" . $_POST['Vorname'] . "',
-						Nachname     = '" . $_POST['Nachname'] . "',
-						Land         = '" . $_POST['Land'] . "',
-						GebTag       = '" . $_POST['GebTag'] . "',
-						Firma        = '" . $_POST['Firma'] . "'
+						email     = '" . $_POST['email'] . "',
+						street    = '" . $_POST['street'] . "',
+						street_nr = '" . $_POST['street_nr'] . "',
+						zipcode   = '" . $_POST['zipcode'] . "',
+						city      = '" . $_POST['city'] . "',
+						phone     = '" . $_POST['phone'] . "',
+						telefax   = '" . $_POST['telefax'] . "',
+						firstname = '" . $_POST['firstname'] . "',
+						lastname  = '" . $_POST['lastname'] . "',
+						country   = '" . $_POST['country'] . "',
+						birthday  = '" . $_POST['birthday'] . "',
+						company   = '" . $_POST['company'] . "'
 					WHERE
 						Id = '" . (int)$_SESSION['user_id'] . "'
 					AND
-						Kennwort = '" . addslashes($_SESSION['user_pass']) . "'
+						password = '" . addslashes($_SESSION['user_pass']) . "'
 				");
-				$AVE_Template->assign('changed', 1);
+				$AVE_Template->assign('password_changed', 1);
 			}
 		}
 
@@ -1050,7 +1051,7 @@ class Login
 				UPDATE " . PREFIX . "_modul_login
 				SET
 					login_reg_type          = '" . $_REQUEST['login_reg_type'] . "',
-					login_spam_protect      = '" . $_REQUEST['login_spam_protect'] . "',
+					login_antispam          = '" . $_REQUEST['login_antispam'] . "',
 					login_status            = '" . $_REQUEST['login_status'] . "',
 					login_deny_domain       = '" . $login_deny_domain . "',
 					login_deny_email        = '" . $login_deny_email . "',

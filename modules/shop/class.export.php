@@ -32,9 +32,9 @@ class DataExport
 		switch($table)
 		{
 			case 'user':
-				$whichgroups_pre = " OR Benutzergruppe = " . @implode(" OR Benutzergruppe = ", $groups);
-				$whichgroups = " AND (Benutzergruppe = " . $groups[0] . " " . $whichgroups_pre . ")";
-				$sql = $AVE_DB->Query("SELECT *  FROM  " . PREFIX . "_users WHERE Benutzergruppe != 0 " . $whichgroups);
+				$whichgroups_pre = " OR user_group = " . @implode(" OR user_group = ", $groups);
+				$whichgroups = " AND (user_group = " . $groups[0] . " " . $whichgroups_pre . ")";
+				$sql = $AVE_DB->Query("SELECT *  FROM " . PREFIX . "_users WHERE user_group != 0 " . $whichgroups);
 				break;
 
 			case 'orders':

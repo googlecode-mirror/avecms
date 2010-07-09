@@ -17,17 +17,17 @@
     <td class="second">
 <select style="width:300px" name="KatId">
 {foreach from=$Categs item=pc}
-<option value="{$pc->Id}" {if $pc->Elter == 0}style="font-weight:bold"{/if} {if $pc->Id==$row->KatId}selected="selected"{/if}>{$pc->visible_title}</option>
+<option value="{$pc->Id}" {if $pc->parent_id == 0}style="font-weight:bold"{/if} {if $pc->Id==$row->KatId}selected="selected"{/if}>{$pc->visible_title}</option>
 {/foreach}
 </select>	</td>
   </tr>
   <tr>
   <td width="150" class="first">{#ActiveInactive#}</td>
   <td class="second">
-  <label><input name="Aktiv" type="radio" value="1" checked="checked" />
+  <label><input name="status" type="radio" value="1" checked="checked" />
   {#Yes#}</label>
 
- <label><input name="Aktiv" type="radio" value="0" />{#No#}	</label>  </td>
+ <label><input name="status" type="radio" value="0" />{#No#}	</label>  </td>
   </tr>
   <tr>
     <td colspan="2" class="tableheader">{#FirstM#}</td>
@@ -77,7 +77,7 @@
     <td colspan="2" class="tableheader">{#DlDescr#}</td>
     </tr>
   <tr>
-    <td colspan="2" class="second"> {$Beschreibung} </td>
+    <td colspan="2" class="second"> {$description} </td>
     </tr>
    <tr>
     <td colspan="2" class="tableheader">{#Limits#}</td>
@@ -191,7 +191,7 @@
     <tr>
     <td class="first">{#DlMoney#}</td>
     <td class="second">
-	<input name="valuta" type="radio" value="0" checked="checked" />$ 
+	<input name="valuta" type="radio" value="0" checked="checked" />$
 	<input name="valuta" type="radio" value="1" />{#DlRub#}	</td>
   </tr>
   <tr>

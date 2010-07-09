@@ -2,11 +2,11 @@
 	{include file='documents/nav.tpl'}
 {/if}
 
-{if check_permission('rubriken') || check_permission('rubs')}
+{if check_permission('rubriken') || check_permission('rubrics')}
 	{include file='rubs/nav.tpl'}
 {/if}
 
-{if check_permission('abfragen')}
+{if check_permission('request')}
 	{include file='request/nav.tpl'}
 {/if}
 
@@ -14,7 +14,7 @@
 	{include file='navigation/nav.tpl'}
 {/if}
 
-{if check_permission('vorlagen') || check_permission('vorlagen_multi') || check_permission('vorlagen_loesch') || check_permission('vorlagen_edit') || check_permission('vorlagen_neu')}
+{if check_permission('template') || check_permission('template_multi') || check_permission('template_del') || check_permission('template_edit') || check_permission('template_new')}
 	{include file='templates/nav.tpl'}
 {/if}
 

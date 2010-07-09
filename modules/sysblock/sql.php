@@ -5,6 +5,8 @@
  *
  * @package AVE.cms
  * @subpackage module_SysBlock
+ * @author Mad Den
+ * @since 2.07
  * @filesource
  */
 

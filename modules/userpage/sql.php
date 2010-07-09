@@ -51,8 +51,8 @@ $modul_sql_install[] = "CREATE TABLE CPPREFIX_modul_userpage_template (
 $modul_sql_install[] = "INSERT INTO  CPPREFIX_modul_userpage VALUES ('1', '1', '1');";
 $modul_sql_install[] = "INSERT INTO  CPPREFIX_modul_userpage_template VALUES ('1', '
 <br />
-[cp:header-1]
-[cp:header-2]
+[tag:header-1]
+[tag:header-2]
 
 <div id=\"userpage\">
   <table width=\"100%\" align=\"center\">
@@ -61,31 +61,31 @@ $modul_sql_install[] = "INSERT INTO  CPPREFIX_modul_userpage_template VALUES ('1
         <!-- *********** BENUTZERBOX *********** -->
         <div class=\"mod_userpage_border_profil\">
           <div class=\"mod_userpage_header\">
-            <strong>[cp:benutzername] [cp_lang:UPheader]</strong>
-            <span class=\"mod_userpage_right\">[cp:onlinestatus]</span>
+            <strong>[tag:benutzername] [tag_lang:UPheader]</strong>
+            <span class=\"mod_userpage_right\">[tag:onlinestatus]</span>
           </div>
 
           <div class=\"mod_userpage_profil\">
-            <strong>[cp_lang:UPname]:</strong>
+            <strong>[tag_lang:UPname]:</strong>
             <br />
-            [cp:name]
+            [tag:name]
             <br />
-            <strong>[cp_lang:UPcountry]:</strong>
+            <strong>[tag_lang:UPcountry]:</strong>
             <br />
-            [cp:land]
+            [tag:land]
             <br />
-            <strong>[cp_lang:UPreg]:</strong>
+            <strong>[tag_lang:UPreg]:</strong>
             <br />
-            [cp:registriert]
+            [tag:registriert]
             <br />
           </div>
 
           <div class=\"mod_userpage_avatar\">
-            [cp:avatar]
+            [tag:avatar]
           </div>
         </div>
         <br />
-        [cp_guestbook:3]
+        [tag_guestbook:3]
       </td>
 
       <td width=\"50\"></td>
@@ -94,15 +94,15 @@ $modul_sql_install[] = "INSERT INTO  CPPREFIX_modul_userpage_template VALUES ('1
       <td>
         <div class=\"mod_userpage_border\">
           <div class=\"mod_userpage_header\">
-            <strong>[cp_lang:UPabout]</strong>
+            <strong>[tag_lang:UPabout]</strong>
           </div>
 
           <div class=\"mod_userpage_content\">
-            [cp:interessen]
-            [cp:kontakt]
-            [cp:webseite]
-            [cp:geburtstag]
-            [cp:geschlecht]
+            [tag:interessen]
+            [tag:kontakt]
+            [tag:webseite]
+            [tag:geburtstag]
+            [tag:geschlecht]
           </div>
         </div>
       </td>

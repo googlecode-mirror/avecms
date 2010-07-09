@@ -1,6 +1,6 @@
 // initialisation
 editAreaLoader.init({
-	id: "RubrikTemplate"	// id of the textarea to transform
+	id: "rubric_template"	// id of the textarea to transform
 	,start_highlight: true	// if start with highlight
 	,allow_toggle: true
 	,language: "ru"

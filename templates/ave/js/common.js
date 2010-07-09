@@ -110,9 +110,9 @@ function show_hide_text(divObj,text) {
     var div = divObj.parentNode.getElementsByTagName('div')[1];
     if (div.style.display == 'none') {
         div.style.display = 'block';
-        divObj.innerHTML = text;
+//        divObj.innerHTML = text;
     } else {
         div.style.display = 'none';
-        divObj.innerHTML = text;
+//        divObj.innerHTML = text;
     }
 }

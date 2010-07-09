@@ -17,8 +17,8 @@ function getParentShopcateg($param = '')
 		{
 			$sql = $AVE_DB->Query("
 				SELECT
-					Elter,
-					Id
+					Id,
+					parent_id
 				FROM " . PREFIX . "_modul_shop_kategorie
 			");
 			while($row = $sql->FetchRow())
@@ -28,7 +28,7 @@ function getParentShopcateg($param = '')
 		}
 		$row = $shop->_catParent[$parent_id];
 
-		@$parent_id = $row->Elter;
+		@$parent_id = $row->parent_id;
 		@$id = $row->Id;
 	}
 

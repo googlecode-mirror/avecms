@@ -476,7 +476,7 @@ else
 				$row_u = $AVE_DB->Query ("
 					SELECT
 						BenutzerName,
-						Email
+						email
 					FROM " . PREFIX . "_modul_forum_userprofile
 					WHERE BenutzerId = '" . $mail_to . "'
 				")
@@ -488,14 +488,14 @@ else
 
 				$n_body = $GLOBALS['mod']['config_vars']['BodyNewPostToUser'];
 				$n_body = str_replace("%%DATUM%%", $datum, $n_body);
-				$n_body = str_replace("%%USER%%", @$row_u->UserName, $n_body);
+				$n_body = str_replace("%%USER%%", @$row_u->user_name, $n_body);
 				$n_body = str_replace("%%AUTOR%%", $Autor, $n_body);
 				$n_body = str_replace("%%SUBJECT%%", $title, $n_body);
 				$n_body = str_replace("%%LINK%%", $link, $n_body);
 				$n_body = str_replace("%%MESSAGE%%", $message, $n_body);
 				$n_body = str_replace("%%N%%", "\n", $n_body);
 				send_mail(
-					$row_u->Email,
+					$row_u->email,
 					stripslashes($n_body),
 					$GLOBALS['mod']['config_vars']['SubjectNewPostEmail'],
 					FORUMEMAIL,

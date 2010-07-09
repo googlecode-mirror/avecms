@@ -5,6 +5,7 @@
  *
  * @package AVE.cms
  * @subpackage module_Login
+ * @since 1.4
  * @filesource
  */
 
@@ -21,7 +22,7 @@ $modul_sql_deinstall[] = "DROP TABLE IF EXISTS CPPREFIX_modul_login;";
 $modul_sql_install[] = "CREATE TABLE CPPREFIX_modul_login (
   Id tinyint(1) unsigned NOT NULL auto_increment,
   login_reg_type enum('now','email','byadmin') NOT NULL default 'now',
-  login_spam_protect enum('0','1') NOT NULL default '0',
+  login_antispam enum('0','1') NOT NULL default '0',
   login_status enum('1','0') NOT NULL default '1',
   login_deny_domain text NOT NULL,
   login_deny_email text NOT NULL,

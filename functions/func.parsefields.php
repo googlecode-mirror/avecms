@@ -25,7 +25,7 @@ function document_pagination($text)
 		$text = @$pages[get_current_page('artpage')-1];
 
 		$page_nav = ' <a class="pnav" href="index.php?id=' . $AVE_Core->curentdoc->Id
-			. '&amp;doc=' . (empty($AVE_Core->curentdoc->Url) ? prepare_url($AVE_Core->curentdoc->Titel) : $AVE_Core->curentdoc->Url)
+			. '&amp;doc=' . (empty($AVE_Core->curentdoc->document_alias) ? prepare_url($AVE_Core->curentdoc->document_title) : $AVE_Core->curentdoc->document_alias)
 			. '&amp;artpage={s}'
 //			. ((isset($_REQUEST['apage']) && is_numeric($_REQUEST['apage'])) ? '&amp;apage=' . $_REQUEST['apage'] : '')
 //			. ((isset($_REQUEST['page']) && is_numeric($_REQUEST['page'])) ? '&amp;page=' . $_REQUEST['page'] : '')
@@ -54,15 +54,15 @@ function document_get_field($field_id)
 
 	if (empty($document_fields[$field_id])) return '';
 
-	$field_value = trim($document_fields[$field_id]['Inhalt']);
+	$field_value = trim($document_fields[$field_id]['field_value']);
 
 	$tpl_field_empty = $document_fields[$field_id]['tpl_field_empty'];
 
 	if ($field_value == '' && $tpl_field_empty) return '<!-- EMPTY -->';
 
-	$field_type = $document_fields[$field_id]['RubTyp'];
+	$field_type = $document_fields[$field_id]['rubric_field_type'];
 
-	$tpl_field = trim($document_fields[$field_id]['tpl_field']);
+	$rubric_field_template = trim($document_fields[$field_id]['rubric_field_template']);
 
 //	$field_value = parse_hide($field_value);
 //	$field_value = ($length != '') ? truncate_text($field_value, $length, 'Е', true) : $field_value;
@@ -76,7 +76,7 @@ function document_get_field($field_id)
 			if (!$tpl_field_empty)
 			{
 				$field_param = explode('|', $field_value);
-				$field_value = preg_replace('/\[field_param:(\d+)\]/ie', '@$field_param[\\1]', $tpl_field);
+				$field_value = preg_replace('/\[tag:parametr:(\d+)\]/ie', '@$field_param[\\1]', $rubric_field_template);
 			}
 			break;
 
@@ -87,7 +87,7 @@ function document_get_field($field_id)
 			if (!$tpl_field_empty)
 			{
 				$field_param = explode('|', $field_value);
-				$field_value = preg_replace('/\[field_param:(\d+)\]/ie', '@$field_param[\\1]', $tpl_field);
+				$field_value = preg_replace('/\[tag:parametr:(\d+)\]/ie', '@$field_param[\\1]', $rubric_field_template);
 			}
 			break;
 
@@ -96,7 +96,7 @@ function document_get_field($field_id)
 			if (!$tpl_field_empty)
 			{
 				$field_param = explode('|', $field_value);
-				$field_value = preg_replace('/\[field_param:(\d+)\]/ie', '@$field_param[\\1]', $tpl_field);
+				$field_value = preg_replace('/\[tag:parametr:(\d+)\]/ie', '@$field_param[\\1]', $rubric_field_template);
 			}
 			break;
 
@@ -110,7 +110,7 @@ function document_get_field($field_id)
 			}
 			else
 			{
-				$field_value = preg_replace('/\[field_param:(\d+)\]/ie', '@$field_param[\\1]', $tpl_field);
+				$field_value = preg_replace('/\[tag:parametr:(\d+)\]/ie', '@$field_param[\\1]', $rubric_field_template);
 			}
 			break;
 
@@ -125,7 +125,7 @@ function document_get_field($field_id)
 			}
 			else
 			{
-				$field_value = preg_replace('/\[field_param:(\d+)\]/ie', '@$field_param[\\1]', $tpl_field);
+				$field_value = preg_replace('/\[tag:parametr:(\d+)\]/ie', '@$field_param[\\1]', $rubric_field_template);
 			}
 			break;
 
@@ -139,7 +139,7 @@ function document_get_field($field_id)
 			}
 			else
 			{
-				$field_value = preg_replace('/\[field_param:(\d+)\]/ie', '@$field_param[\\1]', $tpl_field);
+				$field_value = preg_replace('/\[tag:parametr:(\d+)\]/ie', '@$field_param[\\1]', $rubric_field_template);
 			}
 			break;
 
@@ -166,7 +166,7 @@ function document_get_field($field_id)
 			}
 			else
 			{
-				$field_value = preg_replace('/\[field_param:(\d+)\]/ie', '@$field_param[\\1]', $tpl_field);
+				$field_value = preg_replace('/\[tag:parametr:(\d+)\]/ie', '@$field_param[\\1]', $rubric_field_template);
 			}
 			break;
 
@@ -191,7 +191,7 @@ function document_get_field($field_id)
 			}
 			else
 			{
-				$field_value = preg_replace('/\[field_param:(\d+)\]/ie', '@$field_param[\\1]', $tpl_field);
+				$field_value = preg_replace('/\[tag:parametr:(\d+)\]/ie', '@$field_param[\\1]', $rubric_field_template);
 			}
 			break;
 
@@ -208,7 +208,7 @@ function document_get_field($field_id)
 			}
 			else
 			{
-				$field_value = preg_replace('/\[field_param:(\d+)\]/ie', '@$field_param[\\1]', $tpl_field);
+				$field_value = preg_replace('/\[tag:parametr:(\d+)\]/ie', '@$field_param[\\1]', $rubric_field_template);
 			}
 			break;
 	}
@@ -221,12 +221,12 @@ function document_get_field($field_id)
 		elseif (isset($_SESSION[RUB_ID . '_alles'])   && $_SESSION[RUB_ID . '_alles']   == 1) $wysmode = true;
 		elseif (isset($_SESSION[RUB_ID . '_editall']) && $_SESSION[RUB_ID . '_editall'] == 1) $wysmode = true;
 		elseif (isset($_SESSION[RUB_ID . '_editown']) && $_SESSION[RUB_ID . '_editown'] == 1 &&
-				isset($_SESSION['user_id']) && $_SESSION['user_id'] == $document_fields[$field_id]['Redakteur']) $wysmode = true;
+				isset($_SESSION['user_id']) && $_SESSION['user_id'] == $document_fields[$field_id]['document_author_id']) $wysmode = true;
 
 		if ($wysmode)
 		{
 			$field_value .= "<a href=\"javascript:;\" onclick=\"window.open('" . ABS_PATH
-				. "admin/index.php?do=docs&action=edit&closeafter=1&RubrikId=" . RUB_ID . "&Id=" . ((int)$_REQUEST['id'])
+				. "admin/index.php?do=docs&action=edit&closeafter=1&rubric_id=" . RUB_ID . "&Id=" . ((int)$_REQUEST['id'])
 				. "&pop=1&feld=" . $document_fields[$field_id]['Id'] . "#" . $document_fields[$field_id]['Id']
 				. "','EDIT','left=0,top=0,width=950,height=700,scrollbars=1');\">"
 				. "<img style=\"vertical-align:middle\" src=\"" . ABS_PATH . "inc/stdimage/edit.gif\" border=\"0\" alt=\"\" /></a>";
@@ -245,7 +245,7 @@ function document_get_field($field_id)
 /**
  * ‘ункци€ получени€ содержимого пол€ дл€ обработки в шаблоне рубрики
  *
- * @param int $field_id	идентификатор пол€, дл€ [cprub:12] $field_id = 12
+ * @param int $field_id	идентификатор пол€, дл€ [tag:fld:12] $field_id = 12
  * @param int $length	необ€зательный параметр,
  * 						количество возвращаемых символов содержимого пол€.
  * 						если данный параметр указать со знаком минус
@@ -258,7 +258,7 @@ function document_get_field_value($field_id, $length = 0)
 
 	$document_fields = get_document_fields(get_current_document_id());
 
-	$field_value = trim($document_fields[$field_id]['Inhalt']);
+	$field_value = trim($document_fields[$field_id]['field_value']);
 
 	if ($field_value != '')
 	{

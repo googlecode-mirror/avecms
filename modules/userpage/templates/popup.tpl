@@ -27,7 +27,7 @@
         <legend>
           <label for="l_Titel">{#Betreff#}</label>
         </legend>
-        <input name="Titel" type="text" style="width:250px" value="" />
+        <input name="title" type="text" style="width:250px" value="" />
       </fieldset>
       <br />
       <!-- BETREFF -->

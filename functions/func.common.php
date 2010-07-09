@@ -165,7 +165,7 @@ function get_navigations($navi_id = '')
 
 		while ($row = $sql->FetchRow())
 		{
-			$row->Gruppen = explode(',', $row->Gruppen);
+			$row->navi_user_group = explode(',', $row->navi_user_group);
 			$navigations[$row->id] = $row;
 		}
 	}
@@ -185,16 +185,16 @@ function check_navi_permission($id)
 {
 	$navigation = get_navigations($id);
 
-	if (empty($navigation->Gruppen)) return false;
+	if (empty($navigation->navi_user_group)) return false;
 
 	if (!defined('UGROUP')) define('UGROUP', 2);
-	if (!in_array(UGROUP, $navigation->Gruppen)) return false;
+	if (!in_array(UGROUP, $navigation->navi_user_group)) return false;
 
 	return true;
 }
 
 /**
- * Îáðàáîòêà ïàðíîãî òýãà [hide:X,X]...[/hide] (ñêðûòûé òåêñò)
+ * Îáðàáîòêà ïàðíîãî òýãà [tag:hide:X,X]...[/tag:hide] (ñêðûòûé òåêñò)
  * Çàìåíÿåò ñêðûâàåìûé òåêñò â çàâèñèìîñòè îò ãðóïïû ïîëüçîâàòåëÿ
  *
  * @param string $data îáðàáàòûâàåìûé òåêñò
@@ -204,12 +204,12 @@ function parse_hide($data)
 {
 	static $hidden_text = null;
 
-	if (1 != preg_match('/\[hide:\d+(,\d+)*].*?\[\/hide]/s', $data)) return $data;
+	if (1 != preg_match('/\[tag:hide:\d+(,\d+)*].*?\[\/tag:hide]/s', $data)) return $data;
 
 	if ($hidden_text === null) $hidden_text = trim(get_settings('hidden_text'));
 
-	$data = preg_replace('/\[hide:(\d+,)*' . UGROUP . '(,\d+)*].*?\[\/hide]/s', $hidden_text, $data);
-	$data = preg_replace('/\[hide:\d+(,\d+)*](.*?)\[\/hide]/s', '\\2', $data);
+	$data = preg_replace('/\[tag:hide:(\d+,)*' . UGROUP . '(,\d+)*].*?\[\/tag:hide]/s', $hidden_text, $data);
+	$data = preg_replace('/\[tag:hide:\d+(,\d+)*](.*?)\[\/tag:hide]/s', '\\2', $data);
 
 	return $data;
 }
@@ -250,7 +250,7 @@ function get_redirect_link($exclude = '')
 			{
 				if ($key == 'doc')
 				{
-					$params[] = 'doc=' . (empty($AVE_Core->curentdoc->Url) ? prepare_url($AVE_Core->curentdoc->Titel) : $AVE_Core->curentdoc->Url);
+					$params[] = 'doc=' . (empty($AVE_Core->curentdoc->document_alias) ? prepare_url($AVE_Core->curentdoc->document_title) : $AVE_Core->curentdoc->document_alias);
 				}
 				else
 				{
@@ -425,7 +425,7 @@ function translit_string($st)
 	$st = strtr ($st, array('üå'=>'ye', 'úå'=>'ye', 'üè'=>'yi',  'úè'=>'yi',
 							'úî'=>'yo', 'üî'=>'yo', '¸'=>'yo',   'þ'=>'yu',
 							'ÿ'=>'ya',  'æ'=>'zh',  'õ'=>'kh',   'ö'=>'ts',
-							'÷'=>'ch',  'ø'=>'sh',  'ù'=>'shch', 'ú'=>'', 
+							'÷'=>'ch',  'ø'=>'sh',  'ù'=>'shch', 'ú'=>'',
 							'ü'=>'',    '¿'=>'yi',  'º'=>'ye')
 	);
 	$st = strtr($st,'àáâãäåçèéêëìíîïðñòóôûý³',
@@ -444,8 +444,8 @@ function prepare_url($st)
 {
 	$st = strip_tags($st);
 
-	$st = strtr($st,'ÀÁÂÃÄÅ¨ÆÇÈÉÊËÌÍÎÏÐÑÒÓÔÕÖ×ØÙÜÚÛÝÞß¯ª²',
-					'àáâãäå¸æçèéêëìíîïðñòóôõö÷øùüúûýþÿ¿º³');
+	$st = strtr($st,'ABCDEFGHIJKLMNOPQRSTUVWXYZÀÁÂÃÄÅ¨ÆÇÈÉÊËÌÍÎÏÐÑÒÓÔÕÖ×ØÙÜÚÛÝÞß¯ª²',
+					'abcdefghijklmnopqrstuvwxyzàáâãäå¸æçèéêëìíîïðñòóôõö÷øùüúûýþÿ¿º³');
 
 	if (defined('TRANSLIT_URL') && TRANSLIT_URL) $st = translit_string(trim($st));
 
@@ -468,8 +468,8 @@ function prepare_fname($st)
 {
 	$st = strip_tags($st);
 
-	$st = strtr($st,'ÀÁÂÃÄÅ¨ÆÇÈÉÊËÌÍÎÏÐÑÒÓÔÕÖ×ØÙÜÚÛÝÞß¯ª²',
-					'àáâãäå¸æçèéêëìíîïðñòóôõö÷øùüúûýþÿ¿º³');
+	$st = strtr($st,'ABCDEFGHIJKLMNOPQRSTUVWXYZÀÁÂÃÄÅ¨ÆÇÈÉÊËÌÍÎÏÐÑÒÓÔÕÖ×ØÙÜÚÛÝÞß¯ª²',
+					'abcdefghijklmnopqrstuvwxyzàáâãäå¸æçèéêëìíîïðñòóôõö÷øùüúûýþÿ¿º³');
 
 	translit_string(trim($st));
 
@@ -513,13 +513,13 @@ function reportLog($meldung, $typ = 0, $rub = 0)
 	$AVE_DB->Query("
 		INSERT INTO " . PREFIX . "_log
 		SET
-			Id		= '',
-			Zeit	= '" . time() . "',
-			IpCode	= '" . addslashes($_SERVER['REMOTE_ADDR']) . "',
-			Seite	= '" . addslashes($_SERVER['QUERY_STRING']) . "',
-			Meldung	= '" . addslashes($meldung) . "',
-			LogTyp	= '" . (int)$typ . "',
-			Rub		= '" . (int)$rub . "'
+			Id         = '',
+			log_time   = '" . time() . "',
+			log_ip     = '" . addslashes($_SERVER['REMOTE_ADDR']) . "',
+			log_url	   = '" . addslashes($_SERVER['QUERY_STRING']) . "',
+			log_text   = '" . addslashes($meldung) . "',
+			log_type   = '" . (int)$typ . "',
+			log_rubric = '" . (int)$rub . "'
 	");
 }
 
@@ -538,47 +538,47 @@ function get_document_fields($document_id)
 		$sql = $AVE_DB->Query("
 			SELECT
 				doc_field.Id,
-				RubrikFeld,
-				RubTyp,
-				Inhalt,
-				Redakteur,
-				tpl_req,
-				tpl_field
+				rubric_field_id,
+				rubric_field_type,
+				field_value,
+				document_author_id,
+				rubric_field_template,
+				rubric_field_template_request
 			FROM
 				" . PREFIX . "_document_fields AS doc_field
 			JOIN
 				" . PREFIX . "_rubric_fields AS rub_field
-					ON RubrikFeld = rub_field.Id
+					ON doc_field.rubric_field_id = rub_field.Id
 			JOIN
 				" . PREFIX . "_documents AS doc
-					ON doc.Id = DokumentId
+					ON doc.Id = doc_field.document_id
 			WHERE
-				DokumentId = '" . $document_id . "'
+				doc_field.document_id = '" . $document_id . "'
 		");
 
 		while ($row = $sql->FetchAssocArray())
 		{
-			$row['tpl_req_empty'] = (trim($row['tpl_req']) == '');
-			$row['tpl_field_empty'] = (trim($row['tpl_field']) == '');
+			$row['tpl_req_empty'] = (trim($row['rubric_field_template_request']) == '');
+			$row['tpl_field_empty'] = (trim($row['rubric_field_template']) == '');
 
-			if ($row['Inhalt'] === '')
+			if ($row['field_value'] === '')
 			{
-				$row['tpl_req']   = preg_replace('/\[cp:not_empty](.*?)\[\/cp:not_empty]/si', '', $row['tpl_req']);
-				$row['tpl_req']   = trim(str_replace(array('[cp:if_empty]','[/cp:if_empty]'), '', $row['tpl_req']));
+				$row['rubric_field_template_request'] = preg_replace('/\[tag:if_notempty](.*?)\[\/tag:if_notempty]/si', '', $row['rubric_field_template_request']);
+				$row['rubric_field_template_request'] = trim(str_replace(array('[tag:if_empty]','[/tag:if_empty]'), '', $row['rubric_field_template_request']));
 
-				$row['tpl_field'] = preg_replace('/\[cp:not_empty](.*?)\[\/cp:not_empty]/si', '', $row['tpl_field']);
-				$row['tpl_field'] = trim(str_replace(array('[cp:if_empty]','[/cp:if_empty]'), '', $row['tpl_field']));
+				$row['rubric_field_template'] = preg_replace('/\[tag:if_notempty](.*?)\[\/tag:if_notempty]/si', '', $row['rubric_field_template']);
+				$row['rubric_field_template'] = trim(str_replace(array('[tag:if_empty]','[/tag:if_empty]'), '', $row['rubric_field_template']));
 			}
 			else
 			{
-				$row['tpl_req']   = preg_replace('/\[cp:if_empty](.*?)\[\/cp:if_empty]/si', '', $row['tpl_req']);
-				$row['tpl_req']   = trim(str_replace(array('[cp:not_empty]','[/cp:not_empty]'), '', $row['tpl_req']));
+				$row['rubric_field_template_request'] = preg_replace('/\[tag:if_empty](.*?)\[\/tag:if_empty]/si', '', $row['rubric_field_template_request']);
+				$row['rubric_field_template_request'] = trim(str_replace(array('[tag:if_notempty]','[/tag:if_notempty]'), '', $row['rubric_field_template_request']));
 
-				$row['tpl_field'] = preg_replace('/\[cp:if_empty](.*?)\[\/cp:if_empty]/si', '', $row['tpl_field']);
-				$row['tpl_field'] = trim(str_replace(array('[cp:not_empty]','[/cp:not_empty]'), '', $row['tpl_field']));
+				$row['rubric_field_template'] = preg_replace('/\[tag:if_empty](.*?)\[\/tag:if_empty]/si', '', $row['rubric_field_template']);
+				$row['rubric_field_template'] = trim(str_replace(array('[tag:if_notempty]','[/tag:if_notempty]'), '', $row['rubric_field_template']));
 			}
 
-			$fields[$row['RubrikFeld']] = $row;
+			$fields[$row['rubric_field_id']] = $row;
 		}
 
 		$document_fields[$document_id] = $fields;
@@ -643,14 +643,14 @@ function get_username_by_id($id)
 	{
 		$row = $AVE_DB->Query("
 			SELECT
-				UserName,
-				Vorname,
-				Nachname
+				user_name,
+				firstname,
+				lastname
 			FROM " . PREFIX . "_users
 			WHERE Id = '" . (int)$id . "'
 		")->FetchRow();
 
-		$users[$id] = !empty($row) ? get_username($row->UserName, $row->Vorname, $row->Nachname, 1) : get_username();
+		$users[$id] = !empty($row) ? get_username($row->user_name, $row->firstname, $row->lastname, 1) : get_username();
 	}
 
 	return $users[$id];
@@ -695,6 +695,16 @@ function pretty_date($string, $language = '')
 			break;
 
 		case 'ua':
+			$pretty = array(
+				'Ñ³÷åíü' =>'ñ³÷íÿ',  'Ëþòèé'    =>'ëþòîãî',    'Áåðåçåíü'=>'áåðåçíÿ',
+				'Êâ³òåíü'=>'êâ³òíÿ', 'Òðàâåíü'  =>'òðàâíÿ',    '×åðâåíü' =>'÷åðâíÿ',
+				'Ëèïåíü' =>'ëèïíÿ',  'Ñåðïåíü'  =>'ñåðïíÿ',    'Âåðåñåíü'=>'âåðåñíÿ',
+				'Æîâòåíü'=>'æîâòíÿ', 'Ëèñòîïàä' =>'ëèñòîïàäà', 'Ãðóäåíü' =>'ãðóäíÿ',
+
+				'íåä³ëÿ' =>'Íåä³ëÿ', 'ïîíåä³ëîê'=>'Ïîíåä³ëîê', 'â³âòîðîê'=>'Â³âòîðîê',
+				'ñåðåäà' =>'Ñåðåäà', '÷åòâåð'   =>'×åòâåð',    "ï'ÿòíèöÿ"=>"Ï'ÿòíèöÿ",
+				'ñóáîòà' =>'Ñóáîòà'
+			);
 			break;
 
 		default:
@@ -769,13 +779,13 @@ function get_country_list($status = '')
 	$sql = $AVE_DB->Query("
 		SELECT
 			Id,
-			LOWER(LandCode) AS LandCode,
-			LandName,
-			Aktiv,
-			IstEU
+			LOWER(country_code) AS country_code,
+			country_name,
+			country_status,
+			country_eu
 		FROM " . PREFIX . "_countries
-		" . (($status != '') ? "WHERE Aktiv = '" . $status . "'" : '') . "
-		ORDER BY LandName ASC
+		" . (($status != '') ? "WHERE country_status = '" . $status . "'" : '') . "
+		ORDER BY country_name ASC
 	");
 	while ($row = $sql->FetchRow()) array_push($countries, $row);
 

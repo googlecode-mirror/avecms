@@ -30,7 +30,7 @@ function check_name() {ldelim}
 						<input name="newsarchive_name[{$archive->id}]" type="text" id="newsarchive_name[{$archive->id}]" value="{$archive->newsarchive_name|escape:html|stripslashes}" size="40" />
 					</td>
 					<td width="100"><input name="textfield" type="text" value="[mod_newsarchive:{$archive->id}]" readonly /></td>
-					<td>{if !$archive->RubrikName}{#ARCHIVE_NO_RUBRIKS#}{else}{$archive->RubrikName}{/if}</td>
+					<td>{if !$archive->rubric_title}{#ARCHIVE_NO_RUBRIKS#}{else}{$archive->rubric_title}{/if}</td>
 					<td align="center">
 						<a title="{#ARCHIVE_EDIT_HINT#}" href="index.php?do=modules&action=modedit&mod=newsarchive&moduleaction=edit&cp={$sess}&id={$archive->id}">
 						<img src="{$tpl_dir}/images/icon_edit.gif" alt="" border="0" /></a>

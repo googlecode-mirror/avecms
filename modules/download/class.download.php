@@ -96,15 +96,15 @@ class Download {
 	//=======================================================
 	// Funktion zum kürzen überlanger Wörter (Spam)
 	//=======================================================
-	function cutLongWords($Kommentar)
+	function cutLongWords($comment_text)
 	{
 		$len = $this->_maxLenWord;
-		$neutext = $Kommentar;
+		$neutext = $comment_text;
 		do
 		{
-			$Kommentar = $neutext;
-			$neutext = preg_replace('~(^|\s)(\S{'.$len.'})(\S)~S', '\1\2 \3', $Kommentar);
-		} while ($neutext != $Kommentar);
+			$comment_text = $neutext;
+			$neutext = preg_replace('~(^|\s)(\S{'.$len.'})(\S)~S', '\1\2 \3', $comment_text);
+		} while ($neutext != $comment_text);
 		return $neutext;
 	}
 
@@ -129,7 +129,7 @@ class Download {
 					$parent_id = $parents[$id];
 					continue;
 				}
-				$parent_id = $this->getCategory($parent_id, 'Elter');
+				$parent_id = $this->getCategory($parent_id, 'parent_id');
 				$parents[$id] = $parent_id;
 			}
 		}
@@ -150,22 +150,22 @@ class Download {
 				" . PREFIX . "_modul_download_kat AS cat
 			LEFT JOIN
 				" . PREFIX . "_modul_download_files AS files
-					ON files.KatId = cat.Id AND files.Aktiv = '1'
-			WHERE cat.Elter = '$id'
+					ON files.KatId = cat.Id AND files.status = '1'
+			WHERE cat.parent_id = '$id'
 			GROUP BY cat.Id
-			ORDER BY cat.Rang ASC
+			ORDER BY cat.position ASC
 		");
 		if (!$query->NumRows()) return;
 
 		while ($item = $query->FetchRow())
 		{
-			$gruppen = explode("|", $item->Gruppen);
+			$gruppen = explode("|", $item->user_group);
 			if(in_array(UGROUP, $gruppen))
 			{
-				$item->visible_title = $prefix . /*(($item->Elter!=0 && $admin != 1) ? '' : '') .*/ $item->KatName;
+				$item->visible_title = $prefix . /*(($item->parent_id!=0 && $admin != 1) ? '' : '') .*/ $item->KatName;
 				$item->expander = $prefix;
-				$item->sub = ($item->Elter==0) ? 0 : 1;
-				$item->dyn_link = "index.php?module=download&amp;categ=$item->Id&amp;parent=$item->Elter&amp;navop=" . (($item->Elter==0) ? $item->Id : $this->getParentDownloadCateg($item->Elter)) . "&amp;c=" . $this->replaceWild($item->KatName);
+				$item->sub = ($item->parent_id==0) ? 0 : 1;
+				$item->dyn_link = "index.php?module=download&amp;categ=$item->Id&amp;parent=$item->parent_id&amp;navop=" . (($item->parent_id==0) ? $item->Id : $this->getParentDownloadCateg($item->parent_id)) . "&amp;c=" . $this->replaceWild($item->KatName);
 				$item->dyn_link = $this->DL_Rewrite($item->dyn_link);
 
 				// 1. Unterkategorie durchgehen
@@ -178,18 +178,18 @@ class Download {
 						" . PREFIX . "_modul_download_kat AS cat
 					LEFT JOIN
 						" . PREFIX . "_modul_download_files AS files
-							ON files.KatId = cat.Id AND files.Aktiv = '1'
-					WHERE cat.Elter = '$item->Id'
+							ON files.KatId = cat.Id AND files.status = '1'
+					WHERE cat.parent_id = '$item->Id'
 					GROUP BY cat.Id
-					ORDER BY cat.Rang ASC
+					ORDER BY cat.position ASC
 				");
 
 				while($sub = $query_sub->FetchRow())
 				{
-					$sub->visible_title = $prefix . /*(($sub->Elter!=0 && $admin != 1) ? '' : '') .*/ $sub->KatName;
+					$sub->visible_title = $prefix . /*(($sub->parent_id!=0 && $admin != 1) ? '' : '') .*/ $sub->KatName;
 					$sub->expander = $prefix;
-					$sub->sub = ($sub->Elter==0) ? 0 : 1;
-					$sub->dyn_link = "index.php?module=download&amp;categ=$sub->Id&amp;parent=$sub->Elter&amp;navop=" . (($sub->sub==0) ? $sub->Id : $this->getParentDownloadCateg($sub->Elter)) . "&amp;c=" . $this->replaceWild($sub->KatName);
+					$sub->sub = ($sub->parent_id==0) ? 0 : 1;
+					$sub->dyn_link = "index.php?module=download&amp;categ=$sub->Id&amp;parent=$sub->parent_id&amp;navop=" . (($sub->sub==0) ? $sub->Id : $this->getParentDownloadCateg($sub->parent_id)) . "&amp;c=" . $this->replaceWild($sub->KatName);
 					$sub->dyn_link = $this->DL_Rewrite($sub->dyn_link);
 
 					array_push($sub_categs, $sub);
@@ -214,16 +214,16 @@ class Download {
 
 		if($item)
 		{
-			$esn  = $item->Elter;
-			$result_link = $this->DL_Rewrite("index.php?module=download&amp;categ={$item->Id}&amp;parent={$item->Elter}&amp;navop=" . $this->getParentDownloadCateg($item->Id) . "&amp;c=" . $this->replaceWild($item->KatName));
-			if ($item->Elter == 0) return "<a class='mod_download_navi' href='".$this->DL_Rewrite("index.php?module=download")."'>".$GLOBALS['mod']['config_vars']['PageName']."</a>".$GLOBALS['mod']['config_vars']['PageSep']."<a class='mod_download_navi' href='$result_link'>" . $item->KatName . "</a>" . ($result ? $GLOBALS['mod']['config_vars']['PageSep'] : '') . $result;
+			$esn  = $item->parent_id;
+			$result_link = $this->DL_Rewrite("index.php?module=download&amp;categ={$item->Id}&amp;parent={$item->parent_id}&amp;navop=" . $this->getParentDownloadCateg($item->Id) . "&amp;c=" . $this->replaceWild($item->KatName));
+			if ($item->parent_id == 0) return "<a class='mod_download_navi' href='".$this->DL_Rewrite("index.php?module=download")."'>".$GLOBALS['mod']['config_vars']['PageName']."</a>".$GLOBALS['mod']['config_vars']['PageSep']."<a class='mod_download_navi' href='$result_link'>" . $item->KatName . "</a>" . ($result ? $GLOBALS['mod']['config_vars']['PageSep'] : '') . $result;
 
 			// Daten des darüberliegenden Bereiches
-//			$parent = $this->getCategory($item->Elter);
-//			$result_link = $this->DL_Rewrite("index.php?module=download&amp;categ={$item->Id}&amp;parent=$item->Elter&amp;navop=" . $this->getParentDownloadCateg($item->Id) . "&amp;c=" . $this->replaceWild($item->KatName));
+//			$parent = $this->getCategory($item->parent_id);
+//			$result_link = $this->DL_Rewrite("index.php?module=download&amp;categ={$item->Id}&amp;parent=$item->parent_id&amp;navop=" . $this->getParentDownloadCateg($item->Id) . "&amp;c=" . $this->replaceWild($item->KatName));
 
 			$result = "<a class='mod_download_navi' href='$result_link'>" . $item->KatName . "</a>"  . ($result ? $GLOBALS['mod']['config_vars']['PageSep'] : '') . $result ;
-			return $this->getNavigationPath($item->Elter, $result, $extra, $nav_op);
+			return $this->getNavigationPath($item->parent_id, $result, $extra, $nav_op);
 		}
 	}
 
@@ -372,7 +372,7 @@ class Download {
 		$file_id = (!is_numeric($file_id)) ? 0 : $file_id;
 		$sql = $GLOBALS['AVE_DB']->Query("SELECT
 			a.*,
-			b.Gruppen,
+			b.user_group,
 			b.Id
 		FROM
 			" . PREFIX . "_modul_download_files  as a,
@@ -380,7 +380,7 @@ class Download {
 		WHERE
 			a.Id = '{$file_id}' AND
 			b.Id = a.KatId
-			AND Aktiv = 1");
+			AND status = 1");
 
 		$row = $sql->FetchRow();
 
@@ -401,7 +401,7 @@ class Download {
 			$row->WertungenGesamt = $row->Wertungen_top+$row->Wertungen_flop;
 			$row->WertungenTop  = @round((100)/($row->WertungenGesamt/$row->Wertungen_top));
 			$row->WertungenFlop = @round((100)/($row->WertungenGesamt/$row->Wertungen_flop));
-			$g_array = explode('|', $row->Gruppen);
+			$g_array = explode('|', $row->user_group);
 			$GLOBALS['AVE_Template']->assign('pname', strip_tags($row->Name));
 		}
 
@@ -446,13 +446,13 @@ class Download {
           }
     		}
 
-				if(empty($_POST['Titel']))
+				if(empty($_POST['title']))
 				{
 					$error = true;
 					$GLOBALS['AVE_Template']->assign('NoTitle', 1);
 				}
 
-				if(empty($_POST['Kommentar']))
+				if(empty($_POST['comment_text']))
 				{
 					$error = true;
 					$GLOBALS['AVE_Template']->assign('NoComment', 1);
@@ -465,7 +465,7 @@ class Download {
 				}
 
 				$regex_email = '/^[\w.-]+@[a-z0-9.-]+\.(?:[a-z]{2}|com|org|net|edu|gov|mil|biz|info|mobi|name|aero|asia|jobs|museum)$/i';
-				if(empty($_POST['Email']) || (@!preg_match($regex_email, $_POST['Email'])) )
+				if(empty($_POST['email']) || (@!preg_match($regex_email, $_POST['email'])) )
 				{
 					$error = true;
 					$GLOBALS['AVE_Template']->assign('NoEmail', 1);
@@ -485,20 +485,20 @@ class Download {
 						Id,
 						FileId,
 						Datum,
-						Titel,
-						Kommentar,
+						title,
+						comment_text,
 						Name,
-						Email,
+						email,
 						Ip,
-						Aktiv
+						status
 					) VALUES (
 						'',
 						'$file_id',
 						'" . time() . "',
-						'" . addslashes($_POST['Titel']) . "',
-						'" . substr(addslashes($_POST['Kommentar']),0, $this->_maxCommentLength) . "',
+						'" . addslashes($_POST['title']) . "',
+						'" . substr(addslashes($_POST['comment_text']),0, $this->_maxCommentLength) . "',
 						'" . addslashes($_POST['Name']). "',
-						'" . addslashes($_POST['Email']) . "',
+						'" . addslashes($_POST['email']) . "',
 						'" . $_SERVER['REMOTE_ADDR'] . "',
 						'1'
 					)";
@@ -518,10 +518,10 @@ class Download {
 			if($this->CheckActive('Empfehlen') &&
 				@isset($_POST['fileaction']) && $_POST['fileaction']=='email' &&
 				@!empty($_SERVER['REMOTE_ADDR']) &&
-				@!empty($_POST['Email']) &&
+				@!empty($_POST['email']) &&
 				@!empty($_POST['myEmail'])&&
 				@!empty($_POST['myName']) &&
-				@preg_match($regex_email, $_POST['Email']) &&
+				@preg_match($regex_email, $_POST['email']) &&
 				@preg_match($regex_email, $_POST['myEmail'])
 			)
 			{
@@ -535,7 +535,7 @@ class Download {
 				$MailText = str_replace('%BENUTZER%', substr($_POST['myName'],0,25), $MailText);
 				$MailText = str_replace('%URL%', $File_URL, $MailText);
 				send_mail(
-					$_POST['Email'],
+					$_POST['email'],
 					$MailText,
 					$GLOBALS['mod']['config_vars']['Recommend_Subject'],
 					$SystemMail,
@@ -624,7 +624,7 @@ class Download {
 			}
 
 			//=======================================================
-			// Kommentar erlaubt?
+			// comment_text erlaubt?
 			//=======================================================
 			if($this->CheckActive('Kommentare') && $row_v->Kommentar_ja=='1')
 			{
@@ -633,10 +633,10 @@ class Download {
 				$sql_k = $GLOBALS['AVE_DB']->Query("SELECT * FROM " . PREFIX . "_modul_download_comments WHERE FileId = '$file_id' ORDER BY Id DESC");
 				while($row_k = $sql_k->FetchRow())
 				{
-					$row_k->Kommentar = strip_tags($row_k->Kommentar,'<b><em><u><s>');
-					$row_k->Kommentar = htmlspecialchars(stripslashes($row_k->Kommentar));
-					$row_k->Kommentar = $this->cutLongWords($row_k->Kommentar);
-					$row_k->Kommentar = nl2br($row_k->Kommentar);
+					$row_k->comment_text = strip_tags($row_k->comment_text,'<b><em><u><s>');
+					$row_k->comment_text = htmlspecialchars(stripslashes($row_k->comment_text));
+					$row_k->comment_text = $this->cutLongWords($row_k->comment_text);
+					$row_k->comment_text = nl2br($row_k->comment_text);
 
 					array_push($Comments, $row_k);
 				}
@@ -753,7 +753,7 @@ class Download {
 			$GLOBALS['AVE_Template']->assign('row', $row);
 			$GLOBALS['AVE_Template']->assign('Sprachen', $DL_Sprachen);
 			if(isset($DL_Os)) $GLOBALS['AVE_Template']->assign('Os', $DL_Os);
-			$GLOBALS['AVE_Template']->assign('Beschreibung', $row->Beschreibung);
+			$GLOBALS['AVE_Template']->assign('description', $row->description);
 			$GLOBALS['AVE_Template']->assign('DLCategs', $this->getCategs());
 			$GLOBALS['AVE_Template']->assign('SearchPanel', $GLOBALS['AVE_Template']->fetch($GLOBALS['mod']['tpl_dir'] . 'search_simple.tpl'));
 			$GLOBALS['AVE_Template']->assign('Tellform', $GLOBALS['AVE_Template']->fetch($GLOBALS['mod']['tpl_dir'] . 'tellform.tpl'));
@@ -856,19 +856,19 @@ class Download {
 		$file_id = (!is_numeric($file_id)) ? 0 : $file_id;
 		$sql = $GLOBALS['AVE_DB']->Query("SELECT
 			a.*,
-			b.Gruppen,
+			b.user_group,
 			b.Id
 		FROM
 			" . PREFIX . "_modul_download_files  as a,
 			" . PREFIX . "_modul_download_kat  as b
 		WHERE
 			a.Id = '{$file_id}' AND
-			b.Id = a.KatId AND Aktiv = 1");
+			b.Id = a.KatId AND status = 1");
 
 		$row = $sql->FetchRow();
 		if(is_object($row))
 		{
-			$g_array = explode('|', $row->Gruppen);
+			$g_array = explode('|', $row->user_group);
 			$GLOBALS['AVE_Template']->assign('pname', strip_tags($row->Name));
 		}
 		$group_ids = UGROUP;
@@ -1053,10 +1053,10 @@ class Download {
 		//=======================================================
 		if(!empty($_REQUEST['categ']) && is_numeric($_REQUEST['categ']))
 		{
-			$GLOBALS['AVE_Template']->assign('LinkNameSort', (isset($_REQUEST['orderby']) && $_REQUEST['orderby'] == 'name_asc') ? $this->DL_Rewrite("index.php?module=download&amp;categ=$_REQUEST[categ]&amp;parent=$_REQUEST[parent]&amp;navop=$_REQUEST[navop]&amp;c=$_REQUEST[c]&amp;page=$_REQUEST[page]&amp;orderby=name_desc") : $this->DL_Rewrite("index.php?module=download&amp;categ=$_REQUEST[categ]&amp;parent=$_REQUEST[parent]&amp;navop=$_REQUEST[navop]&amp;c=$_REQUEST[c]&amp;page=$_REQUEST[page]&amp;orderby=name_asc"));
-			$GLOBALS['AVE_Template']->assign('LinkDateSort', (isset($_REQUEST['orderby']) && $_REQUEST['orderby'] == 'date_asc') ? $this->DL_Rewrite("index.php?module=download&amp;categ=$_REQUEST[categ]&amp;parent=$_REQUEST[parent]&amp;navop=$_REQUEST[navop]&amp;c=$_REQUEST[c]&amp;page=$_REQUEST[page]&amp;orderby=date_desc") : $this->DL_Rewrite("index.php?module=download&amp;categ=$_REQUEST[categ]&amp;parent=$_REQUEST[parent]&amp;navop=$_REQUEST[navop]&amp;c=$_REQUEST[c]&amp;page=$_REQUEST[page]&amp;orderby=date_asc"));
-			$GLOBALS['AVE_Template']->assign('LinkChangedSort', (isset($_REQUEST['orderby']) && $_REQUEST['orderby'] == 'changed_asc') ? $this->DL_Rewrite("index.php?module=download&amp;categ=$_REQUEST[categ]&amp;parent=$_REQUEST[parent]&amp;navop=$_REQUEST[navop]&amp;c=$_REQUEST[c]&amp;page=$_REQUEST[page]&amp;orderby=changed_desc") : $this->DL_Rewrite("index.php?module=download&amp;categ=$_REQUEST[categ]&amp;parent=$_REQUEST[parent]&amp;navop=$_REQUEST[navop]&amp;c=$_REQUEST[c]&amp;page=$_REQUEST[page]&amp;orderby=changed_asc"));
-			$GLOBALS['AVE_Template']->assign('LinkDownloadSort', (isset($_REQUEST['orderby']) && $_REQUEST['orderby'] == 'download_asc') ? $this->DL_Rewrite("index.php?module=download&amp;categ=$_REQUEST[categ]&amp;parent=$_REQUEST[parent]&amp;navop=$_REQUEST[navop]&amp;c=$_REQUEST[c]&amp;page=$_REQUEST[page]&amp;orderby=download_desc") : $this->DL_Rewrite("index.php?module=download&amp;categ=$_REQUEST[categ]&amp;parent=$_REQUEST[parent]&amp;navop=$_REQUEST[navop]&amp;c=$_REQUEST[c]&amp;page=$_REQUEST[page]&amp;orderby=download_asc"));
+			$GLOBALS['AVE_Template']->assign('LinkNameSort', (isset($_REQUEST['orderby']) && $_REQUEST['orderby'] == 'name_asc') ? $this->DL_Rewrite("index.php?module=download&amp;categ=" . $_REQUEST['categ'] . "&amp;parent=" . $_REQUEST['parent'] . "&amp;navop=" . $_REQUEST['navop'] . "&amp;c=" . $_REQUEST['c'] . "&amp;page=" . $_REQUEST['page'] . "&amp;orderby=name_desc") : $this->DL_Rewrite("index.php?module=download&amp;categ=" . $_REQUEST['categ'] . "&amp;parent=" . $_REQUEST['parent'] . "&amp;navop=" . $_REQUEST['navop'] . "&amp;c=" . $_REQUEST['c'] . "&amp;page=" . $_REQUEST['page'] . "&amp;orderby=name_asc"));
+			$GLOBALS['AVE_Template']->assign('LinkDateSort', (isset($_REQUEST['orderby']) && $_REQUEST['orderby'] == 'date_asc') ? $this->DL_Rewrite("index.php?module=download&amp;categ=" . $_REQUEST['categ'] . "&amp;parent=" . $_REQUEST['parent'] . "&amp;navop=" . $_REQUEST['navop'] . "&amp;c=" . $_REQUEST['c'] . "&amp;page=" . $_REQUEST['page'] . "&amp;orderby=date_desc") : $this->DL_Rewrite("index.php?module=download&amp;categ=" . $_REQUEST['categ'] . "&amp;parent=" . $_REQUEST['parent'] . "&amp;navop=" . $_REQUEST['navop'] . "&amp;c=" . $_REQUEST['c'] . "&amp;page=" . $_REQUEST['page'] . "&amp;orderby=date_asc"));
+			$GLOBALS['AVE_Template']->assign('LinkChangedSort', (isset($_REQUEST['orderby']) && $_REQUEST['orderby'] == 'changed_asc') ? $this->DL_Rewrite("index.php?module=download&amp;categ=" . $_REQUEST['categ'] . "&amp;parent=" . $_REQUEST['parent'] . "&amp;navop=" . $_REQUEST['navop'] . "&amp;c=" . $_REQUEST['c'] . "&amp;page=" . $_REQUEST['page'] . "&amp;orderby=changed_desc") : $this->DL_Rewrite("index.php?module=download&amp;categ=" . $_REQUEST['categ'] . "&amp;parent=" . $_REQUEST['parent'] . "&amp;navop=" . $_REQUEST['navop'] . "&amp;c=" . $_REQUEST['c'] . "&amp;page=" . $_REQUEST['page'] . "&amp;orderby=changed_asc"));
+			$GLOBALS['AVE_Template']->assign('LinkDownloadSort', (isset($_REQUEST['orderby']) && $_REQUEST['orderby'] == 'download_asc') ? $this->DL_Rewrite("index.php?module=download&amp;categ=" . $_REQUEST['categ'] . "&amp;parent=" . $_REQUEST['parent'] . "&amp;navop=" . $_REQUEST['navop'] . "&amp;c=" . $_REQUEST['c'] . "&amp;page=" . $_REQUEST['page'] . "&amp;orderby=download_desc") : $this->DL_Rewrite("index.php?module=download&amp;categ=" . $_REQUEST['categ'] . "&amp;parent=" . $_REQUEST['parent'] . "&amp;navop=" . $_REQUEST['navop'] . "&amp;c=" . $_REQUEST['c'] . "&amp;page=" . $_REQUEST['page'] . "&amp;orderby=download_asc"));
 
 			$nav_link = '';
 			if(!empty($_REQUEST['orderby']))
@@ -1122,13 +1122,13 @@ class Download {
 					" . PREFIX . "_modul_download_kat as b
 
 				WHERE
-					a.Aktiv=1 AND
+					a.status=1 AND
 					a.KatId=b.Id AND
 					(
-						b.Gruppen like '{$allowed}|%' OR
-						b.Gruppen like '%|{$allowed}' OR
-						b.Gruppen like '%|{$allowed}|%' OR
-						b.Gruppen = '{$allowed}'
+						b.user_group LIKE '{$allowed}|%' OR
+						b.user_group LIKE '%|{$allowed}' OR
+						b.user_group LIKE '%|{$allowed}|%' OR
+						b.user_group = '{$allowed}'
 					)
 				$s_categ
 			")->NumRows();
@@ -1167,22 +1167,22 @@ class Download {
 				 a.Geaendert,
 				 a.Name,
 				 a.Wertung,
-				 a.Aktiv,
-				 b.Gruppen,
-				 b.Elter,
+				 a.status,
+				 b.user_group,
+				 b.parent_id,
 				 b.KatName
 			FROM
 				" . PREFIX . "_modul_download_files as a,
 				" . PREFIX . "_modul_download_kat as b
 
 			WHERE
-				a.Aktiv=1 AND
+				a.status=1 AND
 				a.KatId=b.Id AND
 				(
-					b.Gruppen like '{$allowed}|%' OR
-					b.Gruppen like '%|{$allowed}' OR
-					b.Gruppen like '%|{$allowed}|%' OR
-					b.Gruppen = '{$allowed}'
+					b.user_group LIKE '{$allowed}|%' OR
+					b.user_group LIKE '%|{$allowed}' OR
+					b.user_group LIKE '%|{$allowed}|%' OR
+					b.user_group = '{$allowed}'
 				)
 			$s_categ
 			$oBy
@@ -1192,7 +1192,7 @@ class Download {
 		$items = array();
 		while($row = $sql->FetchRow())
 		{
-			$row->KatLink = "index.php?module=download&amp;categ=$row->KatId&amp;parent=$row->Elter&amp;navop=" . (($row->Elter==0) ? $row->Id : $this->getParentDownloadCateg($row->Elter)) . "&amp;c=" . $this->replaceWild($row->KatName);
+			$row->KatLink = "index.php?module=download&amp;categ=$row->KatId&amp;parent=$row->parent_id&amp;navop=" . (($row->parent_id==0) ? $row->Id : $this->getParentDownloadCateg($row->parent_id)) . "&amp;c=" . $this->replaceWild($row->KatName);
 			$row->KatLink = $this->DL_Rewrite($row->KatLink);
 			$row->KatName = $this->getCategory($row->KatId, 'KatName');
 			$row->Link = $this->DL_Rewrite("index.php?module=download&amp;action=showfile&amp;file_id={$row->Id}&amp;categ=$row->KatId");
@@ -1215,7 +1215,7 @@ class Download {
 			$sql = $GLOBALS['AVE_DB']->Query("
 				SELECT
 					Id,
-					Elter,
+					parent_id,
 					KatName
 				FROM " . PREFIX . "_modul_download_kat
 			");
@@ -1269,10 +1269,10 @@ class Download {
 				" . PREFIX . "_modul_download_kat as b
 			WHERE
 				(
-					b.Gruppen like '{$allowed}|%' OR
-					b.Gruppen like '%|{$allowed}' OR
-					b.Gruppen like '%|{$allowed}|%' OR
-					b.Gruppen = '{$allowed}'
+					b.user_group LIKE '{$allowed}|%' OR
+					b.user_group LIKE '%|{$allowed}' OR
+					b.user_group LIKE '%|{$allowed}|%' OR
+					b.user_group = '{$allowed}'
 				)
 			ORDER BY
 				KatName ASC
@@ -1382,10 +1382,10 @@ class Download {
 
 	function getNoUserPayFile($file_id,$diff,$val){
 
-			$sql = $GLOBALS['AVE_DB']->Query("SELECT Vorname,Nachname FROM " . PREFIX . "_users WHERE Id = '" .$_SESSION['user_id']. "'");
+			$sql = $GLOBALS['AVE_DB']->Query("SELECT firstname,lastname FROM " . PREFIX . "_users WHERE Id = '" .$_SESSION['user_id']. "'");
 			$row = $sql->FetchRow();
 			if(!empty($row)) {
-				$user = substr($row->Vorname,0,1) . "." . $row->Nachname;
+				$user = substr($row->firstname,0,1) . "." . $row->lastname;
 			} else {
 				$user = 'ãîñòü';
 			}

@@ -7,7 +7,7 @@
 <td><strong>{$row->project_name}</strong></td>
 <td align="right">{#ROADMAP_SELECT_STATUS#}:
   <form method="POST">
-    <select name="closed" onchange="location.href='index.php?module=roadmap&action=show_t&pid={$smarty.request.pid}&closed={if $smarty.request.closed == "1"}0{else}1{/if}'">
+    <select name="closed" onchange="location.href='index.php?module=roadmap&action=show_t&pid={$smarty.request.pid|escape}&closed={if $smarty.request.closed == "1"}0{else}1{/if}'">
       <option value="1" {if $smarty.request.closed == "1"}selected{/if}>{#ROADMAP_CLOSED#}</option>
       <option value="0" {if $smarty.request.closed == "0"}selected{/if}>{#ROADMAP_OPEN#}</option>
     </select>

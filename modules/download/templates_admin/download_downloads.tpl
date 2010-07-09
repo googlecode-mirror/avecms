@@ -18,7 +18,7 @@
 
 {foreach from=$Categs item=pc}
 
-          <option value="{$pc->Id}" {if $pc->Elter == 0}style="font-weight:bold"{/if} {if $pc->Id==$smarty.request.KatId}selected="selected"{/if}>{$pc->visible_title}</option>
+          <option value="{$pc->Id}" {if $pc->parent_id == 0}style="font-weight:bold"{/if} {if $pc->Id==$smarty.request.KatId}selected="selected"{/if}>{$pc->visible_title}</option>
 
 {/foreach}
 
@@ -28,9 +28,9 @@
       <tr>
         <td width="120" class="first">{#ActiveInactive#}</td>
         <td width="100" class="second">
-		<label><input type="radio" name="Aktiv" value="Alle"  {if $smarty.request.Aktiv=='' || $smarty.request.Aktiv=='Alle'}checked{/if}/>{#All#}</label>
-		<label><input type="radio" name="Aktiv" value="1" {if $smarty.request.Aktiv=='1'}checked="checked"{/if}  />{#Active#}</label>
-		<label><input type="radio" name="Aktiv" value="0" {if $smarty.request.Aktiv=='0'}checked="checked"{/if}  />{#InActive#}</label>		</td>
+		<label><input type="radio" name="status" value="Alle"  {if $smarty.request.status=='' || $smarty.request.status=='Alle'}checked{/if}/>{#All#}</label>
+		<label><input type="radio" name="status" value="1" {if $smarty.request.status=='1'}checked="checked"{/if}  />{#Active#}</label>
+		<label><input type="radio" name="status" value="0" {if $smarty.request.status=='0'}checked="checked"{/if}  />{#InActive#}</label>		</td>
         <td align="right" class="first"><label for="rs">{#Recordset#}</label>        </td>
         <td class="second"><select class="mod_shop_inputfields" name="recordset" id="rs">
 
@@ -84,7 +84,7 @@
 <select style="width:150px" name="KatId[{$i->Id}]">
 {*foreach from=$i->Categ item=pc*}
 {foreach from=$Categs item=pc}
-<option value="{$pc->Id}" {if $pc->Elter == 0}style="font-weight:bold"{/if} {if $pc->Id==$i->KatId}selected="selected"{/if}>{$pc->visible_title}</option>
+<option value="{$pc->Id}" {if $pc->parent_id == 0}style="font-weight:bold"{/if} {if $pc->Id==$i->KatId}selected="selected"{/if}>{$pc->visible_title}</option>
 {/foreach}
 </select>
 	  </td>
@@ -142,7 +142,7 @@
 	  <img src="{$tpl_dir}/images/icon_edit.gif" alt="{#DokEdit#}" border="0" />
 	  </a>
 </td><td>
-	  {if $i->Aktiv == 1}
+	  {if $i->status == 1}
 	 <a href="javascript:void(0);" onclick="cp_pop('index.php?do=modules&action=modedit&mod=download&moduleaction=setmodus&cp={$sess}&Status=off&Id={$i->Id}','1','1','1','status')" title="{#SetOffline#}"><img src="{$tpl_dir}/images/icon_unlock.gif" alt="" border="0" /></a>
 	  {else}
 	  <a href="javascript:void(0);" onclick="cp_pop('index.php?do=modules&action=modedit&mod=download&moduleaction=setmodus&cp={$sess}&Status=on&Id={$i->Id}','1','1','1','status')" title="{#SetOnline#}"><img src="{$tpl_dir}/images/icon_lock.gif" alt="" border="0" /></a>

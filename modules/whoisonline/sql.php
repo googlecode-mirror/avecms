@@ -1,5 +1,14 @@
 <?php
 
+/**
+ * AVE.cms - Модуль Who is online
+ *
+ * @package AVE.cms
+ * @subpackage module_WhoIsOnline
+ * @since 2.09
+ * @filesource
+ */
+
 $modul_sql_install = array();
 $modul_sql_deinstall = array();
 $modul_sql_update = array();

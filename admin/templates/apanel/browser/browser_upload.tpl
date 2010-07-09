@@ -2,7 +2,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=windows-1251">
-<title>({$smarty.session.user_name})</title>
+<title>({$smarty.session.user_name|escape})</title>
 <meta name="robots" content="noindex,nofollow">
 <meta http-equiv="pragma" content="no-cache">
 <meta name="generator" content="">
@@ -13,7 +13,7 @@
 </head>
 
 <body>
-<form action="browser.php?cpengine={$sess}&action=upload2&typ={$smarty.request.typ}&pfad={$smarty.request.pfad}" method="post" enctype="multipart/form-data" name="upform" id="upform" style="display:inline;">
+<form action="browser.php?cpengine={$sess}&action=upload2&typ={$smarty.request.typ|escape}&pfad={$smarty.request.pfad|escape}" method="post" enctype="multipart/form-data" name="upform" id="upform" style="display:inline;">
 	<center>
 		<table width="100%" border="0" cellpadding="0" cellspacing="0">
 			<tr>

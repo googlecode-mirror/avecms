@@ -19,7 +19,7 @@
 
 		<tr>
 			<td>{#SisActive#}</td>
-			<td><input name="Aktiv" type="checkbox" value="1" {if $row->Aktiv=='1'}checked="checked" {/if} /></td>
+			<td><input name="status" type="checkbox" value="1" {if $row->status=='1'}checked="checked" {/if} /></td>
 		</tr>
 
 		<tr>
@@ -123,12 +123,12 @@
 				<select name="VersandLaender[]" multiple="multiple" size="6" style="width:200px">
 					{foreach from=$laender item=g}
 						{assign var='sel' value=''}
-						{if $g->LandCode}
-							{if (in_array($g->LandCode,$row->VersandLaender)) }
+						{if $g->country_code}
+							{if (in_array($g->country_code,$row->VersandLaender)) }
 								{assign var='sel' value='selected'}
 							{/if}
 						{/if}
-						<option value="{$g->LandCode}" {$sel}>{$g->LandName|escape:html}</option>
+						<option value="{$g->country_code}" {$sel}>{$g->country_name|escape:html}</option>
 					{/foreach}
 				</select>
 			</td>

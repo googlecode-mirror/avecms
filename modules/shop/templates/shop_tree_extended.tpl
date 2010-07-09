@@ -25,18 +25,18 @@
 			{foreach from=$item->sub item=sub name=subs}
 				{if $smarty.request.categ==""}
 					{if ($smarty.foreach.subs.iteration <= $maxsubs)}
-						<li><a class="categtitle_n" title="{$sub->visible_title|escape:'html'}" href="index.php?module=shop&categ={$sub->Id}&amp;parent={$sub->Elter}&amp;navop={get_parent_shopcateg id=$sub->Id}">{$sub->visible_title|escape:'html'} </a></li>
+						<li><a class="categtitle_n" title="{$sub->visible_title|escape:'html'}" href="index.php?module=shop&categ={$sub->Id}&amp;parent={$sub->parent_id}&amp;navop={get_parent_shopcateg id=$sub->Id}">{$sub->visible_title|escape:'html'} </a></li>
 						{if !$smarty.foreach.subs.last}{/if}
 					{else}
 						{if $showalllink!=1}
 							<li>
-							<a class="categtitle_n" href="index.php?module=shop&categ={$item->Id}&amp;parent={$item->Elter}&amp;navop={get_parent_shopcateg id=$item->Id}">{#ShowAll#}</a></li>
+							<a class="categtitle_n" href="index.php?module=shop&categ={$item->Id}&amp;parent={$item->parent_id}&amp;navop={get_parent_shopcateg id=$item->Id}">{#ShowAll#}</a></li>
 							{assign var=showalllink value=1}
 						{/if}
 					{/if}
 				{else}
 					<li>
-					<a class="categtitle_n" title="{$sub->visible_title|escape:'html'}" href="index.php?module=shop&categ={$sub->Id}&amp;parent={$sub->Elter}&amp;navop={get_parent_shopcateg id=$sub->Id}">{$sub->visible_title|escape:'html'} </a></li>
+					<a class="categtitle_n" title="{$sub->visible_title|escape:'html'}" href="index.php?module=shop&categ={$sub->Id}&amp;parent={$sub->parent_id}&amp;navop={get_parent_shopcateg id=$sub->Id}">{$sub->visible_title|escape:'html'} </a></li>
 					{*... {$sub->data} *}
 				{/if}
 			{/foreach}

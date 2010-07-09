@@ -34,11 +34,11 @@ function check_name() {ldelim}
 				<input type="hidden" name="do" value="docs" />
 				<input type="hidden" name="action" value="new" />
 				<strong>{#MAIN_ADD_IN#}</strong>&nbsp;
-				<select style="width:45%" name="RubrikId" id="DocName">
+				<select style="width:45%" name="rubric_id" id="DocName">
 					<option value=""></option>
 					{foreach from=$rubrics item=rubric}
 						{if $rubric->Show==1}
-							<option value="{$rubric->Id}">{$rubric->RubrikName|escape}</option>
+							<option value="{$rubric->Id}">{$rubric->rubric_title|escape}</option>
 						{/if}
 					{/foreach}
 				</select>
@@ -52,11 +52,11 @@ function check_name() {ldelim}
 				<input type="hidden" name="cp" value="{$sess}" />
 				<input type="hidden" name="do" value="docs" />
 				<strong>{#MAIN_ADD_IN#}</strong>&nbsp;
-				<select style="width:45%" name="RubrikId" id="RubrikSort">
+				<select style="width:45%" name="rubric_id" id="RubrikSort">
 					<option value="all">{#MAIN_ALL_RUBRUKS#}</option>
 					{foreach from=$rubrics item=rubric}
 						{if $rubric->Show==1}
-							<option value="{$rubric->Id}"{if $smarty.request.RubrikId==$rubric->Id} selected{/if}>{$rubric->RubrikName|escape}</option>
+							<option value="{$rubric->Id}"{if $smarty.request.rubric_id==$rubric->Id} selected{/if}>{$rubric->rubric_title|escape}</option>
 						{/if}
 					{/foreach}
 				</select>
@@ -75,15 +75,8 @@ function check_name() {ldelim}
 	<table width="100%" border="0" cellpadding="8" cellspacing="1" class="tableborder">
 		<tr class="first">
 			<td rowspan="2" class="second"><strong>{#MAIN_TIME_PERIOD#}</strong></td>
-			{if $sel_start != ''}
-				{assign var=ZeitStart value=$sel_start}
-				{assign var=ZeitEnde value=$sel_ende}
-			{else}
-				{assign var=ZeitStart value=$DEF_DOC_START_YEAR}
-				{assign var=ZeitEnde value=$DEF_DOC_END_YEAR}
-			{/if}
 			<td nowrap="nowrap">
-				{html_select_date time=$ZeitStart prefix="DokStart" end_year="+10" start_year="-10" display_days=true month_format="%B" reverse_years=false day_size=1 field_order=DMY month_extra="style=\"width:80px\"" all_extra=""}
+				{html_select_date time=$sel_start|default:$DEF_DOC_START_YEAR prefix="published" start_year="-10" end_year="+10" field_order=DMY}
 			</td>
 			<td class="second"><strong>{#MAIN_TITLE_SEARCH#}</strong></td>
 			<td nowrap="nowrap">
@@ -92,10 +85,10 @@ function check_name() {ldelim}
 			</td>
 			<td class="second"><strong>{#MAIN_SELECT_RUBRIK#}</strong></td>
 			<td>
-				<select name="RubrikId" style="width:185px">
+				<select name="rubric_id" style="width:185px">
 					<option value="all">{#MAIN_ALL_RUBRUKS#}</option>
 					{foreach from=$rubrics item=rubric}
-						<option value="{$rubric->Id}" {if $smarty.request.RubrikId==$rubric->Id}selected{/if}>{$rubric->RubrikName|escape}</option>
+						<option value="{$rubric->Id}" {if $smarty.request.rubric_id==$rubric->Id}selected{/if}>{$rubric->rubric_title|escape}</option>
 					{/foreach}
 				</select>
 			</td>
@@ -103,17 +96,17 @@ function check_name() {ldelim}
 
 		<tr class="first">
 			<td nowrap="nowrap">
-				{html_select_date time=$ZeitEnde prefix="DokEnde" end_year="+30" start_year="-10" display_days=true month_format="%B" reverse_years=false day_size=1 field_order=DMY month_extra="style=\"width:80px\"" all_extra=""}
+				{html_select_date time=$sel_ende|default:$DEF_DOC_END_YEAR prefix="expire" start_year="-10" end_year="+10" field_order=DMY}
 			</td>
 			<td class="second"><strong>{#MAIN_ID_SEARCH#}</strong></td>
 			<td><input style="width:160px" type="text" name="doc_id" value="{$smarty.request.doc_id|escape|stripslashes}" /></td>
 			<td class="second"><strong>{#MAIN_DOCUMENT_STATUS#}</strong></td>
 			<td>
-				<select style="width:185px" name="DokStatus">
+				<select style="width:185px" name="status">
 					<option value="All">{#MAIN_ALL_DOCUMENTS#}</option>
-					<option value="Opened" {if $smarty.request.DokStatus=='Opened'}selected{/if}>{#MAIN_DOCUMENT_ACTIVE#}</option>
-					<option value="Closed" {if $smarty.request.DokStatus=='Closed'}selected{/if}>{#MAIN_DOCUMENT_INACTIVE#}</option>
-					<option value="Deleted" {if $smarty.request.DokStatus=='Deleted'}selected{/if}>{#MAIN_TEMP_DELETE_DOCS#}</option>
+					<option value="Opened" {if $smarty.request.status=='Opened'}selected{/if}>{#MAIN_DOCUMENT_ACTIVE#}</option>
+					<option value="Closed" {if $smarty.request.status=='Closed'}selected{/if}>{#MAIN_DOCUMENT_INACTIVE#}</option>
+					<option value="Deleted" {if $smarty.request.status=='Deleted'}selected{/if}>{#MAIN_TEMP_DELETE_DOCS#}</option>
 				</select>
 			</td>
 		</tr>
@@ -149,18 +142,18 @@ function check_name() {ldelim}
 	<col width="20">
 	<col width="20">
 	<tr class="tableheader">
-		<td><a class="header" href="index.php?do=docs&cp={$sess}&sort={if $smarty.request.sort=='Id'}IdDesc{else}Id{/if}">{#DOC_ID#}</a></td>
+		<td><a class="header" href="index.php?do=docs&cp={$sess}&sort=id{if $smarty.request.sort=='id'}_desc{/if}">{#DOC_ID#}</a></td>
 		<td nowrap="nowrap">
-			<a class="header" href="index.php?do=docs&cp={$sess}&sort={if $smarty.request.sort=='Titel'}TitelDesc{else}Titel{/if}">{#DOC_TITLE#}</a>
+			<a class="header" href="index.php?do=docs&cp={$sess}&sort=title{if $smarty.request.sort=='title'}_desc{/if}">{#DOC_TITLE#}</a>
 			&nbsp;|&nbsp;
-			<a class="header" href="index.php?do=docs&cp={$sess}&sort={if $smarty.request.sort=='Url'}UrlDesc{else}Url{/if}">{#DOC_URL_RUB#}</a>
+			<a class="header" href="index.php?do=docs&cp={$sess}&sort=alias{if $smarty.request.sort=='alias'}_desc{/if}">{#DOC_URL_RUB#}</a>
 		</td>
-		<td><a class="header" href="index.php?do=docs&cp={$sess}&sort={if $smarty.request.sort=='Rubrik'}RubrikDesc{else}Rubrik{/if}">{#DOC_IN_RUBRIK#}</a></td>
-		<td><a class="header" href="index.php?do=docs&cp={$sess}&sort={if $smarty.request.sort=='Erstellt'}ErstelltDesc{else}Erstellt{/if}">{#DOC_CREATED#}</a></td>
-		<td><a class="header" href="index.php?do=docs&cp={$sess}&sort={if $smarty.request.sort=='Edits'}EditsDesc{else}Edits{/if}">{#DOC_EDIT#}</a></td>
-		<td><a class="header" href="index.php?do=docs&cp={$sess}&sort={if $smarty.request.sort=='KlicksDesc'}Klicks{else}KlicksDesc{/if}">{#DOC_CLICKS#}</a></td>
-		<td><a class="header" href="index.php?do=docs&cp={$sess}&sort={if $smarty.request.sort=='DruckDesc'}Druck{else}DruckDesc{/if}">{#DOC_PRINTED#}</a></td>
-		<td><a class="header" href="index.php?do=docs&cp={$sess}&sort={if $smarty.request.sort=='Autor'}AutorDesc{else}Autor{/if}">{#DOC_AUTHOR#}</a></td>
+		<td><a class="header" href="index.php?do=docs&cp={$sess}&sort=rubric{if $smarty.request.sort=='rubric'}_desc{/if}">{#DOC_IN_RUBRIK#}</a></td>
+		<td><a class="header" href="index.php?do=docs&cp={$sess}&sort=published{if $smarty.request.sort=='published'}_desc{/if}">{#DOC_CREATED#}</a></td>
+		<td><a class="header" href="index.php?do=docs&cp={$sess}&sort={if $smarty.request.sort=='changed'}changed_desc{else}changed{/if}">{#DOC_EDIT#}</a></td>
+		<td><a class="header" href="index.php?do=docs&cp={$sess}&sort=view{if $smarty.request.sort=='view'}_desc{/if}">{#DOC_CLICKS#}</a></td>
+		<td><a class="header" href="index.php?do=docs&cp={$sess}&sort=print{if $smarty.request.sort=='print'}_desc{/if}">{#DOC_PRINTED#}</a></td>
+		<td><a class="header" href="index.php?do=docs&cp={$sess}&sort=author{if $smarty.request.sort=='author'}_desc{/if}">{#DOC_AUTHOR#}</a></td>
 		<td colspan="5" align="center">{#DOC_ACTIONS#}</td>
 	</tr>
 
@@ -171,44 +164,44 @@ function check_name() {ldelim}
 			<td>
 				<strong>
 					{if $item->cantEdit==1}
-						<a title="{#DOC_EDIT_TITLE#}" href="index.php?do=docs&action=edit&RubrikId={$item->RubrikId}&Id={$item->Id}&cp={$sess}">{$item->Titel|escape}</a>
+						<a title="{#DOC_EDIT_TITLE#}" href="index.php?do=docs&action=edit&rubric_id={$item->rubric_id}&Id={$item->Id}&cp={$sess}">{$item->document_title}</a>
 					{else}
-						{$item->Titel|escape}
+						{$item->document_title}
 					{/if}
 				</strong><br />
-				<a title="{#DOC_SHOW_TITLE#}" href="../index.php?id={$item->Id}&amp;cp={$sess}" target="_blank"><span class="url">{$item->Url}</span></a>
+				<a title="{#DOC_SHOW_TITLE#}" href="../index.php?id={$item->Id}&amp;cp={$sess}" target="_blank"><span class="url">{$item->document_alias}</span></a>
 			</td>
 
 			<td nowrap="nowrap">
 				{if $item->cantEdit==1}
-					<select style="width:100%;" {if $item->cantEdit==1}onchange="cp_pop('index.php?do=docs&action=change&Id={$item->Id}&RubrikId={$item->RubrikId}&NewRubr='+this.value+'&pop=1&cp={$sess}','550','550','1','docs');"{else}disabled="disabled"{/if}>
+					<select style="width:100%;" {if $item->cantEdit==1}onchange="cp_pop('index.php?do=docs&action=change&Id={$item->Id}&rubric_id={$item->rubric_id}&NewRubr='+this.value+'&pop=1&cp={$sess}','550','550','1','docs');"{else}disabled="disabled"{/if}>
 						{foreach from=$rubrics item=rubric}
-							<option value="{$rubric->Id}"{if $item->RubrikId == $rubric->Id} selected="selected"{/if}>{$rubric->RubrikName|escape}</option>
+							<option value="{$rubric->Id}"{if $item->rubric_id == $rubric->Id} selected="selected"{/if}>{$rubric->rubric_title|escape}</option>
 						{/foreach}
 					</select>
 				{else}
 					{foreach from=$rubrics item=rubric}
-						{if $item->RubrikId == $rubric->Id}{$rubric->RubrikName|escape}{/if}
+						{if $item->rubric_id == $rubric->Id}{$rubric->rubric_title|escape}{/if}
 					{/foreach}
 				{/if}
 			</td>
 
-			<td align="right">{$item->DokStart|date_format:$TIME_FORMAT|pretty_date}<br /></td>
+			<td align="right">{$item->document_published|date_format:$TIME_FORMAT|pretty_date}<br /></td>
 
-			<td align="right">{$item->DokEdi|date_format:$TIME_FORMAT|pretty_date}<br /></td>
+			<td align="right">{$item->document_changed|date_format:$TIME_FORMAT|pretty_date}<br /></td>
 
-			<td align="center">{$item->Geklickt}</td>
+			<td align="center">{$item->document_count_view}</td>
 
-			<td align="center">{$item->Drucke}</td>
+			<td align="center">{$item->document_count_print}</td>
 
-			<td align="center">{$item->RBenutzer|escape}</td>
+			<td align="center">{$item->document_author|escape}</td>
 
 			<td align="center" nowrap="nowrap">
-				{if check_permission("docs_comments")}
-					{if $item->Kommentare=='0'}
-						<a title="{#DOC_CREATE_NOTICE_TITLE#}" href="javascript:void(0);" onclick="cp_pop('index.php?do=docs&action=comment&RubrikId={$item->RubrikId}&Id={$item->Id}&pop=1&cp={$sess}','800','700','1','docs');"><img src="{$tpl_dir}/images/icon_comment.gif" alt="" border="0" /></a>
+				{if check_permission("remarks")}
+					{if $item->ist_remark=='0'}
+						<a title="{#DOC_CREATE_NOTICE_TITLE#}" href="javascript:void(0);" onclick="cp_pop('index.php?do=docs&action=remark&Id={$item->Id}&pop=1&cp={$sess}','800','700','1','docs');"><img src="{$tpl_dir}/images/icon_comment.gif" alt="" border="0" /></a>
 					{else}
-						<a title="{#DOC_REPLY_NOTICE_TITLE#}" href="javascript:void(0);" onclick="cp_pop('index.php?do=docs&action=comment_reply&RubrikId={$item->RubrikId}&Id={$item->Id}&pop=1&cp={$sess}','800','700','1','docs');"><img src="{$tpl_dir}/images/icon_iscomment.gif" alt="" border="0" /></a>
+						<a title="{#DOC_REPLY_NOTICE_TITLE#}" href="javascript:void(0);" onclick="cp_pop('index.php?do=docs&action=remark_reply&Id={$item->Id}&pop=1&cp={$sess}','800','700','1','docs');"><img src="{$tpl_dir}/images/icon_iscomment.gif" alt="" border="0" /></a>
 					{/if}
 				{else}
 					<img src="{$tpl_dir}/images/icon_comment_no.gif" alt="" border="0" />
@@ -217,19 +210,19 @@ function check_name() {ldelim}
 
 			<td align="center" nowrap="nowrap">
 				{if $item->cantEdit==1}
-					<a title="{#DOC_EDIT_TITLE#}" href="index.php?do=docs&action=edit&RubrikId={$item->RubrikId}&Id={$item->Id}&cp={$sess}"><img src="{$tpl_dir}/images/icon_edit.gif" alt="{#DOC_EDIT_TITLE#}" border="0" /></a>
+					<a title="{#DOC_EDIT_TITLE#}" href="index.php?do=docs&action=edit&rubric_id={$item->rubric_id}&Id={$item->Id}&cp={$sess}"><img src="{$tpl_dir}/images/icon_edit.gif" alt="{#DOC_EDIT_TITLE#}" border="0" /></a>
 				{else}
 					<img src="{$tpl_dir}/images/icon_edit_no.gif" alt="" border="0" />
 				{/if}
 			</td>
 
 			<td align="center" nowrap="nowrap">
-				{if $item->Geloescht==1}
+				{if $item->document_deleted==1}
 					<img src="{$tpl_dir}/images/icon_blank.gif" alt="" border="0" />
 				{else}
-					{if $item->DokStatus==1}
+					{if $item->document_status==1}
 						{if $item->canOpenClose==1 && $item->Id != 1 && $item->Id != $PAGE_NOT_FOUND_ID}
-							<a title="{#DOC_DISABLE_TITLE#}" href="index.php?do=docs&action=close&RubrikId={$item->RubrikId}&Id={$item->Id}&cp={$sess}"><img src="{$tpl_dir}/images/icon_unlock.gif" alt="" border="0" /></a>
+							<a title="{#DOC_DISABLE_TITLE#}" href="index.php?do=docs&action=close&rubric_id={$item->rubric_id}&Id={$item->Id}&cp={$sess}"><img src="{$tpl_dir}/images/icon_unlock.gif" alt="" border="0" /></a>
 						{else}
 							{if $item->cantEdit==1 && $item->Id != 1 && $item->Id != $PAGE_NOT_FOUND_ID}
 								<img src="{$tpl_dir}/images/icon_unlock_no.gif" alt="" border="0" />
@@ -239,7 +232,7 @@ function check_name() {ldelim}
 						{/if}
 					{else}
 						{if $item->canOpenClose==1}
-							<a title="{#DOC_ENABLE_TITLE#}" href="index.php?do=docs&action=open&RubrikId={$item->RubrikId}&Id={$item->Id}&cp={$sess}"><img src="{$tpl_dir}/images/icon_lock.gif" alt="" border="0" /></a>
+							<a title="{#DOC_ENABLE_TITLE#}" href="index.php?do=docs&action=open&rubric_id={$item->rubric_id}&Id={$item->Id}&cp={$sess}"><img src="{$tpl_dir}/images/icon_lock.gif" alt="" border="0" /></a>
 						{else}
 							{if $item->cantEdit==1 && $item->Id != 1 && $item->Id != $PAGE_NOT_FOUND_ID}
 								<img src="{$tpl_dir}/images/icon_lock.gif" alt="" border="0" />
@@ -252,11 +245,11 @@ function check_name() {ldelim}
 			</td>
 
 			<td align="center" nowrap="nowrap">
-				{if $item->Geloescht==1}
-					<a title="{#DOC_RESTORE_DELETE#}" href="index.php?do=docs&action=redelete&RubrikId={$item->RubrikId}&Id={$item->Id}&cp={$sess}"><img src="{$tpl_dir}/images/icon_active.gif" alt="" border="0" /></a>
+				{if $item->document_deleted==1}
+					<a title="{#DOC_RESTORE_DELETE#}" href="index.php?do=docs&action=redelete&rubric_id={$item->rubric_id}&Id={$item->Id}&cp={$sess}"><img src="{$tpl_dir}/images/icon_active.gif" alt="" border="0" /></a>
 				{else}
 					{if $item->canDelete==1}
-						<a title="{#DOC_TEMPORARY_DELETE#}" onclick="return confirm('{#DOC_TEMPORARY_CONFIRM#}')"  href="index.php?do=docs&action=delete&RubrikId={$item->RubrikId}&Id={$item->Id}&cp={$sess}"><img src="{$tpl_dir}/images/icon_inactive.gif" alt="" border="0" /></a>
+						<a title="{#DOC_TEMPORARY_DELETE#}" onclick="return confirm('{#DOC_TEMPORARY_CONFIRM#}')"  href="index.php?do=docs&action=delete&rubric_id={$item->rubric_id}&Id={$item->Id}&cp={$sess}"><img src="{$tpl_dir}/images/icon_inactive.gif" alt="" border="0" /></a>
 					{else}
 						<img src="{$tpl_dir}/images/icon_active_no.gif" alt="" border="0" />
 					{/if}
@@ -265,7 +258,7 @@ function check_name() {ldelim}
 
 			<td align="center" nowrap="nowrap">
 				{if $item->canEndDel==1 && $item->Id != 1 && $item->Id != $PAGE_NOT_FOUND_ID}
-					<a title="{#DOC_FINAL_DELETE#}" onclick="return confirm('{#DOC_FINAL_CONFIRM#}')" href="index.php?do=docs&action=enddelete&RubrikId={$item->RubrikId}&Id={$item->Id}&cp={$sess}"><img src="{$tpl_dir}/images/icon_delete.gif" alt="" border="0" /></a>
+					<a title="{#DOC_FINAL_DELETE#}" onclick="return confirm('{#DOC_FINAL_CONFIRM#}')" href="index.php?do=docs&action=enddelete&rubric_id={$item->rubric_id}&Id={$item->Id}&cp={$sess}"><img src="{$tpl_dir}/images/icon_delete.gif" alt="" border="0" /></a>
 				{else}
 					<img src="{$tpl_dir}/images/icon_delete_no.gif" alt="" border="0" />
 				{/if}

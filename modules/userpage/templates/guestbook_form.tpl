@@ -31,7 +31,7 @@
           <legend>
             <label for="l_Titel">{#Title#}</label>
           </legend>
-          <input name="Titel" type="text" id="l_ACity" style="width:250px" value="{$titel}" />
+          <input name="title" type="text" id="l_ACity" style="width:250px" value="{$titel}" />
         </fieldset>
         <br />
         <!-- TITEL -->

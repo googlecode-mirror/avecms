@@ -7,7 +7,7 @@ if (defined('ACP'))
 	$modul['ModulName'] = 'Магазин';
 	$modul['ModulPfad'] = 'shop';
 	$modul['ModulVersion'] = '1.4';
-	$modul['Beschreibung'] = 'Модуль электронного магазина';
+	$modul['description'] = 'Модуль электронного магазина';
 	$modul['Autor'] = "Bj&ouml;rn Wunderlich";
 	$modul['MCopyright'] = "&copy; 2006 ";
 	$modul['Status'] = 1;

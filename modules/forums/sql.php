@@ -109,7 +109,7 @@ $modul_sql_install[] = "CREATE TABLE CPPREFIX_modul_forum_forum (
 
 $modul_sql_install[] = "CREATE TABLE CPPREFIX_modul_forum_groupavatar (
   Id int(10) unsigned NOT NULL auto_increment,
-  Benutzergruppe int(10) unsigned NOT NULL default '0',
+  user_group int(10) unsigned NOT NULL default '0',
   IstStandard tinyint(1) unsigned NOT NULL default '1',
   StandardAvatar varchar(255) NOT NULL default '',
   PRIMARY KEY  (Id)
@@ -122,8 +122,8 @@ $modul_sql_install[] = "INSERT INTO CPPREFIX_modul_forum_groupavatar VALUES (4, 
 
 $modul_sql_install[] = "CREATE TABLE CPPREFIX_modul_forum_grouppermissions (
   Id int(10) unsigned NOT NULL auto_increment,
-  Benutzergruppe int(10) unsigned NOT NULL default '0',
-  Rechte text,
+  user_group int(10) unsigned NOT NULL default '0',
+  permission text,
   MAX_AVATAR_BYTES int(8) unsigned NOT NULL default '10240',
   MAX_AVATAR_HEIGHT mediumint(3) unsigned NOT NULL default '90',
   MAX_AVATAR_WIDTH mediumint(3) unsigned NOT NULL default '90',
@@ -134,7 +134,7 @@ $modul_sql_install[] = "CREATE TABLE CPPREFIX_modul_forum_grouppermissions (
   MAXATTACHMENTS smallint(2) unsigned NOT NULL default '5',
   MAX_EDIT_PERIOD smallint(4) unsigned NOT NULL default '672',
   PRIMARY KEY  (Id),
-  UNIQUE KEY Benutzergruppe (Benutzergruppe)
+  UNIQUE KEY user_group (user_group)
 ) TYPE=MyISAM DEFAULT CHARSET=cp1251;";
 
 $modul_sql_install[] = "INSERT INTO CPPREFIX_modul_forum_grouppermissions VALUES (1, 1, 'own_avatar|canpn|accessforums|cansearch|last24|userprofile|changenick', 45056, 120, 120, 1, 100, 50000, 10000, 10, 1440);";
@@ -360,8 +360,8 @@ $modul_sql_install[] = "CREATE TABLE CPPREFIX_modul_forum_userprofile (
   Webseite varchar(255) default NULL,
   Unsichtbar tinyint(1) unsigned NOT NULL default '1',
   Interessen text,
-  Email varchar(200) default NULL,
-  Registriert int(14) unsigned NOT NULL default '0',
+  email varchar(200) default NULL,
+  reg_time int(14) unsigned NOT NULL default '0',
   GeburtsTag varchar(10) default NULL,
   Email_show tinyint(1) unsigned NOT NULL default '0',
   Icq_show tinyint(1) unsigned NOT NULL default '1',

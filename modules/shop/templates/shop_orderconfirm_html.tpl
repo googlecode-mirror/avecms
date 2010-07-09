@@ -62,7 +62,7 @@ html, body, td, div, th {
 							<br />
 							{$smarty.session.billing_street} {$smarty.session.billing_streetnumber}<br />
 							{$smarty.session.billing_zip} {$smarty.session.billing_town}<br />
-							{$smarty.request.Land}<br />
+							{$smarty.request.country}<br />
 						</td>
 
 						<td valign="top">

@@ -76,7 +76,7 @@ if($NOOUT != 1)
 		header("Location:index.php?module=forums&show=showforum&fid=$forum->id");
 		exit;
 	} else {
-		header("Location:index.php?module=forums&show=showtopic&toid=$_GET[toid]&fid=$_REQUEST[fid]");
+		header("Location:index.php?module=forums&show=showtopic&toid=" . (int)$_GET['toid'] . "&fid=" . $_REQUEST['fid'] . "");
 		exit;
 	}
 }

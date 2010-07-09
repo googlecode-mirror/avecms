@@ -138,7 +138,7 @@ class Shop
 
 		$topSeller = array();
 		$db_categ = (!empty($_REQUEST['categ'])) ? " AND KatId = '" . $_REQUEST['categ'] . "'" : '';
-		$AscDesc = ($flop == 1) ? 'ASC' : 'DESC';
+		$asc_desc = ($flop == 1) ? 'ASC' : 'DESC';
 		$sql = $AVE_DB->Query("
 			SELECT
 				Id,
@@ -151,10 +151,10 @@ class Shop
 				Bestellungen
 			FROM
 				" . PREFIX . "_modul_shop_artikel
-			WHERE Aktiv = 1
+			WHERE status = 1
 			AND Erschienen <= '" . time() . "'
 			" . $db_categ . "
-			ORDER BY Bestellungen " . $AscDesc . "
+			ORDER BY Bestellungen " . $asc_desc . "
 			LIMIT " . $limit
 		);
 		while ($row = $sql->FetchRow())
@@ -457,8 +457,8 @@ class Shop
 					DateiTyp     = '" . (!empty($_POST['DateiTyp']) ? $_POST['DateiTyp'] : '') . "',
 					TageNachKauf = '" . (!empty($_POST['TageNachKauf']) ? $_POST['TageNachKauf'] : '') . "',
 					Bild         = '" . (!empty($_POST['Bild']) ? $_POST['Bild'] : '') . "',
-					Titel        = '" . (!empty($_POST['Titel']) ? $_POST['Titel'] : '') . "',
-					Beschreibung = '" . (!empty($_POST['Beschreibung']) ? $_POST['Beschreibung'] : '') . "',
+					title        = '" . (!empty($_POST['title']) ? $_POST['title'] : '') . "',
+					description = '" . (!empty($_POST['description']) ? $_POST['description'] : '') . "',
 					Position     = '" . (!empty($_POST['Position']) ? $_POST['Position'] : '') . "'
 			");
 		}
@@ -487,8 +487,8 @@ class Shop
 						DateiTyp     = '" . (!empty($_POST['DateiTyp'][$id]) ? $_POST['DateiTyp'][$id] : '') . "',
 						TageNachKauf = '" . (!empty($_POST['TageNachKauf'][$id]) ? $_POST['TageNachKauf'][$id] : '') . "',
 						Bild         = '" . (!empty($_POST['Bild'][$id]) ? $_POST['Bild'][$id] : '') . "',
-						Titel        = '" . (!empty($_POST['Titel'][$id]) ? $_POST['Titel'][$id] : '') . "',
-						Beschreibung = '" . (!empty($_POST['Beschreibung'][$id]) ? $_POST['Beschreibung'][$id] : '') . "',
+						title        = '" . (!empty($_POST['title'][$id]) ? $_POST['title'][$id] : '') . "',
+						description = '" . (!empty($_POST['description'][$id]) ? $_POST['description'][$id] : '') . "',
 						Position     = '" . (!empty($_POST['Position'][$id]) ? $_POST['Position'][$id] : '') . "'
 					WHERE
 						Id = '" . $id . "'
@@ -716,14 +716,14 @@ class Shop
 
 		$sql = $AVE_DB->Query("
 			SELECT
-				Vorname,
-				Nachname
+				firstname,
+				lastname
 			FROM " . PREFIX . "_users
 			WHERE Id = '" . $id . "'
 		");
 		$row = $sql->FetchRow();
 
-		return (is_object($row) ? (substr($row->Vorname,0,1) . '. ' . $row->Nachname) : '');
+		return (is_object($row) ? (substr($row->firstname,0,1) . '. ' . $row->lastname) : '');
 	}
 
 	function mailPage($tpl_dir,$orderid)
@@ -882,7 +882,7 @@ class Shop
 		if (isset($_REQUEST['start_Day']))
 		{
 			$ZeitStart = mktime(0,0,0,$_REQUEST['start_Month'],$_REQUEST['start_Day'],$_REQUEST['start_Year']);
-			$ZeitStart_nav = "&start_Month=$_REQUEST[start_Month]&start_Day=$_REQUEST[start_Day]&start_Year=$_REQUEST[start_Year]";
+			$ZeitStart_nav = "&start_Month=" . $_REQUEST['start_Month'] . "&start_Day=" . $_REQUEST['start_Day'] . "&start_Year=" . $_REQUEST['start_Year'];
 		}
 		else
 		{
@@ -1168,10 +1168,10 @@ class Shop
 			$AVE_DB->Query("
 				INSERT " . PREFIX . "_modul_shop_kategorie
 				SET
-					Elter           = '" . ((!empty($_POST['Elter']) && is_numeric($_POST['Elter'])) ? $_POST['Elter'] : '0') . "',
+					parent_id           = '" . ((!empty($_POST['parent_id']) && is_numeric($_POST['parent_id'])) ? $_POST['parent_id'] : '0') . "',
 					KatName         = '" . $_POST['KatName'] . "',
 					KatBeschreibung = '" . $_POST['KatBeschreibung'] . "',
-					Rang            = '" . ((!empty($_POST['Rang']) && is_numeric($_POST['Rang'])) ? $_POST['Rang'] : '1') . "',
+					position            = '" . ((!empty($_POST['position']) && is_numeric($_POST['position'])) ? $_POST['position'] : '1') . "',
 					Bild            = '" . $DbImage . "',
 					bid             = '" . ((!empty($_POST['bid']) && is_numeric($_POST['bid'])) ? $_POST['bid'] : '0') . "',
 					cbid            = '" . ((!empty($_POST['cbid']) && is_numeric($_POST['cbid'])) ? $_POST['cbid'] : '0') . "'
@@ -1240,7 +1240,7 @@ class Shop
 					" . $DbImage . "
 					KatName         = '" . $_POST['KatName'] . "',
 					KatBeschreibung = '" . (!empty($_POST['KatBeschreibung']) ? $_POST['KatBeschreibung'] : '') . "',
-					Rang            = '" . (!empty($_POST['Rang']) ? $_POST['Rang'] : '') . "',
+					position            = '" . (!empty($_POST['position']) ? $_POST['position'] : '') . "',
 					bid             = '" . ((!empty($_POST['bid']) && is_numeric($_POST['bid'])) ? $_POST['bid'] : '0') . "',
 					cbid            = '" . ((!empty($_POST['cbid']) && is_numeric($_POST['cbid'])) ? $_POST['cbid'] : '0') . "'
 				WHERE
@@ -1287,7 +1287,7 @@ class Shop
 		$query = $AVE_DB->Query("
 			SELECT *
 			FROM " . PREFIX . "_modul_shop_kategorie
-			WHERE Elter = '" . $id . "'
+			WHERE parent_id = '" . $id . "'
 		");
 
 		while ($item = $query->FetchRow())
@@ -1319,7 +1319,7 @@ class Shop
 					UPDATE " . PREFIX . "_modul_shop_kategorie
 					SET
 						KatName = '" . $KatName . "',
-						Rang    = '" . $_REQUEST['Rang'][$id] . "'
+						position    = '" . $_REQUEST['position'][$id] . "'
 					WHERE
 						Id = '" . $id . "'
 				");
@@ -1501,7 +1501,7 @@ class Shop
 		if (isset($_REQUEST['recordset']) && is_numeric($_REQUEST['recordset']))
 		{
 			$limit = $_REQUEST['recordset'];
-			$recordset_n = "&amp;recordset=$_REQUEST[recordset]";
+			$recordset_n = "&amp;recordset=" . $_REQUEST['recordset'];
 		}
 
 		if (isset($_REQUEST['categ']) && is_numeric($_REQUEST['categ']))
@@ -1539,7 +1539,7 @@ class Shop
 
 		if (!empty($_REQUEST['active']) && $_REQUEST['active'] != 'all')
 		{
-			$active = " AND a.Aktiv = '" . $_REQUEST['active'] . "'";
+			$active = " AND a.status = '" . $_REQUEST['active'] . "'";
 			$active_n = "&amp;active=" . $_REQUEST['active'];
 		}
 
@@ -1708,13 +1708,13 @@ class Shop
 
 		if (isset($_REQUEST['sub']) && $_REQUEST['sub'] == 'save')
 		{
-			foreach ($_POST['Titel'] as $id => $Titel)
+			foreach ($_POST['title'] as $id => $title)
 			{
 				$AVE_DB->Query("
 					UPDATE " . PREFIX . "_modul_shop_artikel_kommentare
 					SET
-						Titel     = '" . $Titel . "',
-						Kommentar = '" . $_POST['Kommentar'][$id] . "',
+						title     = '" . $title . "',
+						comment_text = '" . $_POST['comment_text'][$id] . "',
 						Wertung   = '" . (($_POST['Wertung'][$id]<1 || $_POST['Wertung'][$id]>5) ? 3 : $_POST['Wertung'][$id]) . "',
 						Publik    = '" . $_POST['Publik'][$id] . "'
 					WHERE
@@ -1763,25 +1763,25 @@ class Shop
 		$query = $AVE_DB->Query("
 			SELECT *
 			FROM " . PREFIX . "_modul_shop_kategorie
-			WHERE Elter = '" . $id . "'
-			ORDER BY Rang ASC
+			WHERE parent_id = '" . $id . "'
+			ORDER BY position ASC
 		");
 
 		if (!$query->NumRows()) return '';
 
 		while ($item = $query->FetchRow())
 		{
-			$item->visible_title = $prefix . (($item->Elter != 0 && $admin != 1) ? '' : '') . $item->KatName;
+			$item->visible_title = $prefix . (($item->parent_id != 0 && $admin != 1) ? '' : '') . $item->KatName;
 			$item->expander = $prefix;
-			$item->sub = ($item->Elter == 0) ? 0 : 1;
-			$item->dyn_link = "index.php?module=shop&amp;categ=" . $item->Id . "&amp;parent=" . $item->Elter . "&amp;navop=" . (($item->sub == 0) ? $item->Id : getParentShopcateg($item->Elter));
+			$item->sub = ($item->parent_id == 0) ? 0 : 1;
+			$item->dyn_link = "index.php?module=shop&amp;categ=" . $item->Id . "&amp;parent=" . $item->parent_id . "&amp;navop=" . (($item->sub == 0) ? $item->Id : getParentShopcateg($item->parent_id));
 			$sql = $AVE_DB->Query("
 				SELECT
 					Id,
 					KatId
 				FROM " . PREFIX . "_modul_shop_artikel
 				WHERE KatId = '" . $item->Id . "'
-				AND Aktiv = 1
+				AND status = 1
 			");
 			$item->acount = $sql->NumRows();
 
@@ -1837,11 +1837,11 @@ class Shop
 		$laender = array();
 		$sql = $AVE_DB->Query("
 			SELECT
-				LandCode,
-				LandName
+				country_code,
+				country_name
 			FROM " . PREFIX . "_countries
-			WHERE Aktiv = 1
-			ORDER BY LandName ASC
+			WHERE country_status = '1'
+			ORDER BY country_name ASC
 		");
 		while ($row = $sql->FetchRow()) array_push($laender,$row);
 
@@ -1859,22 +1859,22 @@ class Shop
 		$shippingcost = array();
 		$sql = $AVE_DB->Query("
 			SELECT
-				LandCode,
-				LandName
+				country_code,
+				country_name
 			FROM " . PREFIX . "_countries
-			WHERE Aktiv = 1
-			ORDER BY LandName ASC
+			WHERE country_status = '1'
+			ORDER BY country_name ASC
 		");
 
 		while ($row = $sql->FetchRow())
 		{
 			$vcost = array();
-			if (in_array($row->LandCode,$arr))
+			if (in_array($row->country_code,$arr))
 			{
 				$sql_vcost = $AVE_DB->Query("
 					SELECT *
 					FROM " . PREFIX . "_modul_shop_versandkosten
-					WHERE Land = '" . $row->LandCode . "'
+					WHERE country = '" . $row->country_code . "'
 					AND VersandId = '" . $vid . "'
 					ORDER BY KVon ASC
 				");
@@ -1947,7 +1947,7 @@ class Shop
 								SET
 									Name        = '" . htmlspecialchars($Name) . "',
 									KeineKosten = '" . intval($_POST['KeineKosten'][$id]) . "',
-									Aktiv       = '" . intval($_POST['Aktiv'][$id]) . "'
+									status       = '" . intval($_POST['status'][$id]) . "'
 								WHERE
 									Id = '" . (int)$id . "'
 							");
@@ -2000,7 +2000,7 @@ class Shop
 				UPDATE " . PREFIX . "_modul_shop_versandarten
 				SET
 					Name              = '" . $_POST['Name'] . "',
-					Beschreibung      = '" . $_POST['Beschreibung'] . "',
+					description      = '" . $_POST['description'] . "',
 					Icon              = '" . $Icon . "',
 					LaenderVersand    = '" . (!empty($_POST['LaenderVersand']) ? implode(',', $_POST['LaenderVersand']) : '') . "',
 					Pauschalkosten    = '" . str_replace(',','.',$_POST['Pauschalkosten']) . "',
@@ -2020,13 +2020,13 @@ class Shop
 		");
 		$row = $sql->FetchRow();
 		$row->VersandLaender = explode(',', $row->LaenderVersand);
-		$row->Gruppen = explode(',', $row->ErlaubteGruppen);
+		$row->user_group = explode(',', $row->ErlaubteGruppen);
 
-		$oFCKeditor = new FCKeditor('Beschreibung') ;
+		$oFCKeditor = new FCKeditor('description') ;
 		$oFCKeditor->Height = '100';
 		$oFCKeditor->ToolbarSet = 'Basic';
-		$oFCKeditor->Value = $row->Beschreibung;
-		$row->Beschreibung = $oFCKeditor->Create();
+		$oFCKeditor->Value = $row->description;
+		$row->description = $oFCKeditor->Create();
 
 		$AVE_Template->assign('laender', $this->displayCountries());
 		$AVE_Template->assign('gruppen', $this->displayGroups());
@@ -2071,7 +2071,7 @@ class Shop
 							INSERT " . PREFIX . "_modul_shop_versandkosten
 							SET
 								VersandId = '" . $_REQUEST['Id'] . "',
-								Land      = '" . $land . "',
+								country      = '" . $land . "',
 								KVon      = '" . $this->kReplace($NeuVon) . "',
 								KBis      = '" . $this->kReplace($_POST['NeuBis'][$land]) . "',
 								Betrag    = '" . $this->kReplace($_POST['NeuBetrag'][$land]) . "'
@@ -2167,7 +2167,7 @@ class Shop
 			$AVE_DB->Query("
 				UPDATE " . PREFIX . "_modul_shop
 				SET
-					Aktiv             = '" . (empty($_POST['Aktiv'])             ? '0'   : (int)$_POST['Aktiv']) . "',
+					status             = '" . (empty($_POST['status'])             ? '0'   : (int)$_POST['status']) . "',
 					Waehrung          = '" . (empty($_POST['Waehrung'])          ? 'RUR' : htmlspecialchars(trim($_POST['Waehrung']))) . "',
 					WaehrungSymbol    = '" . (empty($_POST['WaehrungSymbol'])    ? ''    : $_POST['WaehrungSymbol']) . "',
 					Waehrung2         = '" . (empty($_POST['Waehrung2'])         ? ''    : $_POST['Waehrung2']) . "',
@@ -2422,7 +2422,7 @@ class Shop
 						UPDATE " . PREFIX . "_modul_shop_zahlungsmethoden
 						SET
 							Name     = '" . $Name . "',
-							Aktiv    = '" . $_POST['Aktiv'][$id] . "',
+							status    = '" . $_POST['status'][$id] . "',
 							Position = '" . $_POST['Position'][$id] . "'
 						WHERE
 							Id = '" . $id . "'
@@ -2447,11 +2447,11 @@ class Shop
 				UPDATE " . PREFIX . "_modul_shop_zahlungsmethoden
 				SET
 					Name                   = '" . $_POST['Name'] . "',
-					Beschreibung           = '" . $_POST['Beschreibung'] . "',
+					description           = '" . $_POST['description'] . "',
 					ErlaubteVersandLaender = '" . ((isset($_POST['ErlaubteVersandLaender']) && is_array($_POST['ErlaubteVersandLaender'])) ? implode(',', $_POST['ErlaubteVersandLaender']) : '') . "',
 					ErlaubteVersandarten   = '" . ((isset($_POST['ErlaubteVersandarten']) && is_array($_POST['ErlaubteVersandarten'])) ? implode(',', $_POST['ErlaubteVersandarten']) : '') . "',
 					ErlaubteGruppen        = '" . ((isset($_POST['ErlaubteGruppen']) && is_array($_POST['ErlaubteGruppen'])) ? implode(',', $_POST['ErlaubteGruppen']) : '') . "',
-					Aktiv                  = '" . $_POST['Aktiv'] . "',
+					status                  = '" . $_POST['status'] . "',
 					Kosten                 = '" . $this->kReplace($_POST['Kosten']) . "',
 					KostenOperant          = '" . $_POST['KostenOperant'] . "',
 					InstId                 = '" . (!empty($_POST['InstId']) ? chop($_POST['InstId']) : '') . "',
@@ -2473,13 +2473,13 @@ class Shop
 		");
 		$row = $sql->FetchRow();
 		$row->VersandLaender = explode(',', $row->ErlaubteVersandLaender);
-		$row->Gruppen = explode(',', $row->ErlaubteGruppen);
+		$row->user_group = explode(',', $row->ErlaubteGruppen);
 		$row->Versandarten = explode(',', $row->ErlaubteVersandarten);
 
-		$oFCKeditor = new FCKeditor('Beschreibung') ;
+		$oFCKeditor = new FCKeditor('description') ;
 		$oFCKeditor->Height = '200';
 		$oFCKeditor->ToolbarSet = 'Basic';
-		$oFCKeditor->Value	= $row->Beschreibung;
+		$oFCKeditor->Value	= $row->description;
 		$Edi = $oFCKeditor->Create();
 
 		$AVE_Template->assign('Edi', $Edi);
@@ -2591,7 +2591,7 @@ class Shop
 						SET
 							KatId = '" . $_POST['KatId'][$id] . "',
 							Name  = '" . $Name . "',
-							Aktiv = '" . $_POST['Aktiv'][$id] . "'
+							status = '" . $_POST['status'][$id] . "'
 						WHERE
 							Id = '" . $id . "'
 					");
@@ -2627,7 +2627,7 @@ class Shop
 		{
 			$AVE_DB->Query("
 				UPDATE " . PREFIX . "_modul_shop_varianten_kategorien
-				SET Beschreibung = '" . $_POST['Beschreibung'] . "'
+				SET description = '" . $_POST['description'] . "'
 				WHERE Id = '" . $id . "'
 			");
 
@@ -2641,10 +2641,10 @@ class Shop
 		");
 		$row = $sql->FetchRow();
 
-		$oFCKeditor = new FCKeditor('Beschreibung') ;
+		$oFCKeditor = new FCKeditor('description') ;
 		$oFCKeditor->Height = '400';
 		$oFCKeditor->ToolbarSet = 'Simple';
-		$oFCKeditor->Value	= $row->Beschreibung;
+		$oFCKeditor->Value	= $row->description;
 		$Edi = $oFCKeditor->Create();
 
 		$AVE_Template->assign('Edi', $Edi);
@@ -2698,11 +2698,11 @@ class Shop
 					switch ($_REQUEST['SubAction'])
 					{
 						case 'close':
-							$dbAct = "SET Aktiv = '0'";
+							$dbAct = "SET status = '0'";
 							break;
 
 						case 'open':
-							$dbAct = "SET Aktiv = '1'";
+							$dbAct = "SET status = '1'";
 							break;
 
 						case 'del':
@@ -3090,7 +3090,7 @@ class Shop
 					ArtNr           = '" . (empty($_POST['ArtNr']) ? '' : chop($_POST['ArtNr'])) . "',
 					" . $DbNewImage . "
 					Artname         = '" . chop($_POST['ArtName']) . "',
-					Aktiv           = '" . (empty($_POST['Aktiv']) ? '0' : (int)$_POST['Aktiv']) . "',
+					status           = '" . (empty($_POST['status']) ? '0' : (int)$_POST['status']) . "',
 					KatId           = '" . (empty($_POST['KatId']) ? '0' : (int)$_POST['KatId']) . "',
 					KatId_Multi     = '" . (empty($_POST['KatId_Multi']) ? '' : implode(',', $_POST['KatId_Multi'])) . "',
 					TextKurz        = '" . chop($_POST['TextKurz']) . "',
@@ -3338,7 +3338,7 @@ class Shop
 						KatId           = '" . $_POST['KatId'] . "',
 						KatId_Multi     = '" . implode(',', $_POST['KatId_Multi']) . ",',
 						Artname         = '" . chop($_POST['ArtName']) . "',
-						Aktiv           = 1,
+						status           = 1,
 						Preis           = '" . $this->kReplace(chop($_POST['Preis'])) . "',
 						PreisListe      = '" . $this->kReplace(chop($_POST['PreisListe'])) . "',
 						Bild            = '" . $DbImage . "',
@@ -3623,7 +3623,7 @@ class Shop
 				grp.*,
 				IFNULL(Wert,'0.00') AS Wert
 			FROM " . PREFIX . "_user_groups AS grp
-			LEFT JOIN " . PREFIX . "_modul_shop_kundenrabatte ON GruppenId = Benutzergruppe
+			LEFT JOIN " . PREFIX . "_modul_shop_kundenrabatte ON GruppenId = user_group
 		");
 		while ($row = $sql->FetchRow()) array_push($ugroups, $row);
 
@@ -3802,41 +3802,41 @@ class Shop
 						Webseite       = '" . $row->url . "',
 						Unsichtbar     = '" . (($row->invisible == 'yes') ? 1 : 0) . "',
 						Interessen     = '" . $row->user_interests . "',
-						Email          = '" . $row->email . "',
-						Registriert    = '" . $row->user_regdate . "',
+						email          = '" . $row->email . "',
+						reg_time       = '" . $row->user_regdate . "',
 						GeburtsTag     = '" . $row->user_birthday . "'
 				");
 
 				if ($row->uid != 2) $AVE_DB->Query("
 					INSERT " . PREFIX . "_users
 					SET
-						Id                 = '" . $row->uid . "',
-						Kennwort           = '" . $row->pass . "',
-						Email              = '" . $row->email . "',
-						Strasse            = '" . $row->street . "',
-						HausNr             = '',
-						Postleitzahl       = '" . $row->zip . "',
-						city                = '" . $row->user_from . "',
-						Telefon            = '" . $row->phone . "',
-						Telefax            = '" . $row->fax . "',
-						Bemerkungen        = '',
-						Vorname            = '" . $row->name . "',
-						Nachname           = '" . $row->lastname . "',
-						`UserName`         = '" . $row->uname . "',
-						Benutzergruppe     = '" . $row->ugroup . "',
-						BenutzergruppeMisc = '" . $row->group_id_misc . "',
-						Registriert        = '" . $row->user_regdate . "',
-						Status             = '" . $row->status . "',
-						ZuletztGesehen     = '" . $row->last_login . "',
-						Land               = '" . $row->country . "',
-						Geloescht          = '',
-						GeloeschtDatum     = '',
-						emc                = '',
-						IpReg              = '',
-						new_pass           = '" . $row->passtemp . "',
-						Firma              = '" . $row->company . "',
-						UStPflichtig       = '1',
-						GebTag             = '" . $row->user_birthday . "'
+						Id               = '" . $row->uid . "',
+						password         = '" . $row->pass . "',
+						email            = '" . $row->email . "',
+						street           = '" . $row->street . "',
+						street_nr        = '',
+						zipcode          = '" . $row->zip . "',
+						city             = '" . $row->user_from . "',
+						phone            = '" . $row->phone . "',
+						telefax          = '" . $row->fax . "',
+						description      = '',
+						firstname        = '" . $row->name . "',
+						lastname         = '" . $row->lastname . "',
+						user_name        = '" . $row->uname . "',
+						user_group       = '" . $row->ugroup . "',
+						user_group_extra = '" . $row->group_id_misc . "',
+						reg_time         = '" . $row->user_regdate . "',
+						status           = '" . $row->status . "',
+						last_visit       = '" . $row->last_login . "',
+						country          = '" . $row->country . "',
+						deleted          = '',
+						del_time         = '',
+						emc              = '',
+						reg_ip           = '',
+						new_pass         = '" . $row->passtemp . "',
+						company          = '" . $row->company . "',
+						taxpay           = '1',
+						birthday         = '" . $row->user_birthday . "'
 				");
 			}
 		}
@@ -3883,8 +3883,8 @@ class Shop
 							Datei        = '" . $row->file_name . "',
 							DateiTyp     = '" . $ft . "',
 							Bild         = '',
-							Titel        = '" . $row->file_name . "',
-							Beschreibung = '" . $row->text . "',
+							title        = '" . $row->file_name . "',
+							description = '" . $row->text . "',
 							Position     = '1',
 							Datum        = '" . $row->ctime . "'
 					";

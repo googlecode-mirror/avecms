@@ -35,7 +35,7 @@
 						<br />
 						{$smarty.session.billing_street} {$smarty.session.billing_streetnumber}<br />
 						{$smarty.session.billing_zip} {$smarty.session.billing_town}<br />
-						{$smarty.request.Land}
+						{$smarty.request.country}
 					</td>
 
 					<td>&nbsp;&nbsp;</td>
@@ -239,7 +239,7 @@
 			<input type="hidden" name="PaymentId" value="{$smarty.session.PaymentId}" />
 			<input type="hidden" name="ShipperId" value="{$smarty.session.ShipperId}" />
 			<input type="hidden" name="billing_zip" value="{$smarty.session.billing_zip}" />
-			<input type="hidden" name="Land" value="{$smarty.request.Land}" />
+			<input type="hidden" name="country" value="{$smarty.request.country}" />
 			<input type="hidden" name="RLand" value="{$smarty.request.RLand}" />
 			<input type="image" class="absmiddle" src="{$shop_images}sendorder.gif" />
 		</div>

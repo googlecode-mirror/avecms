@@ -45,9 +45,9 @@ function check_name() {ldelim}
 			<td>
 				<strong>
 					{if check_permission('navigation_edit')}
-						<a title="{#NAVI_EDIT_ITEMS#}" href="index.php?do=navigation&amp;action=entries&amp;cp={$sess}&amp;id={$item->id}">{$item->titel|escape:html|stripslashes}</a>
+						<a title="{#NAVI_EDIT_ITEMS#}" href="index.php?do=navigation&amp;action=entries&amp;cp={$sess}&amp;id={$item->id}">{$item->navi_titel|escape:html|stripslashes}</a>
 					{else}
-						{$item->titel|escape:html|stripslashes}
+						{$item->navi_titel|escape:html|stripslashes}
 					{/if}
 				</strong>
 			</td>

@@ -98,12 +98,12 @@ if (isset($_SESSION['Product']))
 		//
 		$row->Preis = (!$this->_getNewPrice($key, $value) ) ? (($value >= 2) ? $this->_getNewPrice($key, $value, 1, $this->_getDiscountVal($row->Preis)) : $row->Preis ) : $this->_getNewPrice($key, $value);
 
-		// Wenn Benutzer registriert ist, muss hier geschaut werden, welches Land der
+		// Wenn Benutzer registriert ist, muss hier geschaut werden, welches country der
 		// Benutzer bei der Registrierung angegeben hat, damit der richtige Preis angezeigt wird
 		// Wenn nach dem Ansenden des Formulars (Checkout) ein anderes Versandland angegeben wird
-		// als bei der Registrierung, muss dieses Land verwendet werden um die Versandkosten zu berechnen
+		// als bei der Registrierung, muss dieses country verwendet werden um die Versandkosten zu berechnen
 		if (!isset($_SESSION['user_country'])) $_SESSION['user_country'] = '';
-		if (isset($_POST['Land']) && $_POST['Land'] != $_SESSION['user_country']) $_SESSION['user_country'] = $_POST['Land'];
+		if (isset($_POST['country']) && $_POST['country'] != $_SESSION['user_country']) $_SESSION['user_country'] = $_POST['country'];
 		if (!empty($_SESSION['user_country']))
 		{
 			if (isset($shop->_landIstEU[$_SESSION['user_country']]) && is_object($shop->_landIstEU[$_SESSION['user_country']]))
@@ -113,10 +113,10 @@ if (isset($_SESSION['Product']))
 			else
 			{
 				$sql_ieu = $AVE_DB->Query("
-					SELECT IstEU
+					SELECT country_eu
 					FROM " . PREFIX . "_countries
-					WHERE Aktiv = 1
-					AND LandCode = '" . $_SESSION['user_country'] . "'
+					WHERE country_status = '1'
+					AND country_code = '" . $_SESSION['user_country'] . "'
 				");
 				$row_ieu = $sql_ieu->FetchRow();
 				$sql_ieu->Close();
@@ -127,7 +127,7 @@ if (isset($_SESSION['Product']))
 		// Muss der Käufer USt. zahlen?
 		// ShipperId
 		$PayUSt = true;
-		if (is_object($row_ieu) && $row_ieu->IstEU == 2)
+		if (is_object($row_ieu) && $row_ieu->country_eu == 2)
 		{
 			// Benutzer ist angemeldet, hat Umsatzsteuerbefreiung
 			if (!empty($_SESSION['user_id']) && $_SESSION['GewichtSumm'] >= '0.001')
@@ -135,7 +135,7 @@ if (isset($_SESSION['Product']))
 				$PayUSt = false;
 			}
 			// Benutzer ist angemeldet, hat keine Umsatzsteuerbefreiung
-			elseif (!empty($_SESSION['user_id']) && $_SESSION['GewichtSumm'] < '0.001' && $this->_getUserInfo($_SESSION['user_id'],'UStPflichtig') == 1)
+			elseif (!empty($_SESSION['user_id']) && $_SESSION['GewichtSumm'] < '0.001' && $this->_getUserInfo($_SESSION['user_id'],'taxpay') == 1)
 			{
 				$PayUSt = true;
 				$_SESSION['ShowNoVatInfo'] = 1;

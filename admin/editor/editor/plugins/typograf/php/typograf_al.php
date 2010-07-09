@@ -1,6 +1,6 @@
 <?php
 
-if ($_POST[text])
+if ($_POST['text'])
 {
 	$text = urldecode($_POST['text']);
 	include "remotetypograf.php";

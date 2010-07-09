@@ -29,8 +29,8 @@
 				</td>
 
 				<td>
-					<input type="radio" name="Aktiv[{$ss->Id}]" value="1" {if $ss->Aktiv == '1'}checked="checked" {/if}/>{#Yes#}&nbsp;
-					<input type="radio" name="Aktiv[{$ss->Id}]" value="0" {if $ss->Aktiv == '0'}checked="checked" {/if}/>{#No#}
+					<input type="radio" name="status[{$ss->Id}]" value="1" {if $ss->status == '1'}checked="checked" {/if}/>{#Yes#}&nbsp;
+					<input type="radio" name="status[{$ss->Id}]" value="0" {if $ss->status == '0'}checked="checked" {/if}/>{#No#}
 				</td>
 
 				<td>
@@ -39,7 +39,7 @@
 				</td>
 
 				<td>
-					{if $ss->Aktiv == '1'}
+					{if $ss->status == '1'}
 						<a href="javascript:void(0);" onclick="cp_pop('index.php?do=modules&action=modedit&mod=shop&moduleaction=editshipper&cp={$sess}&pop=1&Id={$ss->Id}','750','600','1','shopshipper');">{#DokEdit#}</a>
 						{if $ss->KeineKosten == '1' && $ss->LaenderVersand != ''}
 							&nbsp;| <a href="javascript:void(0);" onclick="cp_pop('index.php?do=modules&action=modedit&mod=shop&moduleaction=editshipper_cost&cp={$sess}&pop=1&Id={$ss->Id}','750','600','1','shopshipper');">{#EditShipperCost#}</a>

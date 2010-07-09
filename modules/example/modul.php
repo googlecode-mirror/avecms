@@ -7,7 +7,7 @@ if (defined('ACP'))
     $modul['ModulName'] = "Тестовый модуль";
     $modul['ModulPfad'] = "example";
     $modul['ModulVersion'] = "1.0";
-    $modul['Beschreibung'] = "Данный модуль предназначен для того, чтобы показать как сделать запрос и вывести его в шаблоне. Результат запроса кешируются средствами Smarty.<BR /><BR />Для вывода результатов используйте системный тег <strong>[mod_example]</strong>";
+    $modul['description'] = "Данный модуль предназначен для того, чтобы показать как сделать запрос и вывести его в шаблоне. Результат запроса кешируются средствами Smarty.<BR /><BR />Для вывода результатов используйте системный тег <strong>[mod_example]</strong>";
     $modul['Autor'] = "censored!";
     $modul['MCopyright'] = "&copy; 2008 Overdoze Team";
     $modul['Status'] = 1;
@@ -44,20 +44,21 @@ function mod_example()
 		$sql = $AVE_DB->Query("
 			SELECT
 				Id,
-				Titel
+				document_title,
+				document_alias
 			FROM " . PREFIX . "_documents
 			WHERE Id != 1
 			AND Id != '" . PAGE_NOT_FOUND_ID . "'
-			AND RubrikId = 2
-			AND Geloescht != 1
-			AND DokStatus != 0
+			AND rubric_id = 2
+			AND document_deleted != 1
+			AND document_status != 0
 			ORDER BY Id DESC
 		");
 
 		while($row = $sql->FetchRow())
 		{
-			$row->Url = rewrite_link('index.php?id=' . $row->Id . '&amp;doc=' . prepare_url($row->Titel));
-			array_push($example,$row);
+			$row->document_alias = rewrite_link('index.php?id=' . $row->Id . '&amp;doc=' . (empty($row->document_alias) ? prepare_url($row->document_title) : $row->document_alias));
+			array_push($example, $row);
 		}
 		// Закрываем соединение
 		$sql->Close();

@@ -10,9 +10,9 @@
 {if check_permission('group_new')}
 <script type="text/javascript" language="JavaScript">
 function check_name() {ldelim}
-	if (document.getElementById('Name').value == '') {ldelim}
+	if (document.getElementById('user_group_name').value == '') {ldelim}
 		alert("{#UGROUP_ENTER_NAME#}");
-		document.getElementById('Name').focus();
+		document.getElementById('user_group_name').focus();
 		return false;
 	{rdelim}
 	return true;
@@ -23,7 +23,7 @@ function check_name() {ldelim}
 <form method="post" action="index.php?do=groups&amp;action=new&amp;cp={$sess}" onSubmit="return check_name();">
 	<table width="100%" border="0" cellspacing="1" cellpadding="8" class="tableborder">
 		<tr>
-			<td class="second">{#UGROUP_NEW_NAME#} <input type="text" name="Name" id="Name" value="{$g_name|escape}" style="width: 250px;">&nbsp;<input type="submit" class="button" value="{#UGROUP_BUTTON_ADD#}" />
+			<td class="second">{#UGROUP_NEW_NAME#} <input type="text" name="user_group_name" id="user_group_name" value="{$g_name|escape}" style="width: 250px;">&nbsp;<input type="submit" class="button" value="{#UGROUP_BUTTON_ADD#}" />
 		</tr>
 	</table>
 </form>
@@ -40,29 +40,29 @@ function check_name() {ldelim}
 
 	{foreach from=$ugroups item=g}
 		<tr style="background-color: #eff3eb;" onmouseover="this.style.backgroundColor='#dae0d8';" onmouseout="this.style.backgroundColor='#eff3eb';" id="table_rows">
-			<td width="1%" class="itcen">{$g->Benutzergruppe}</td>
+			<td width="1%" class="itcen">{$g->user_group}</td>
 
 			<td>
 				{if check_permission('group_edit')}
-					{if $g->Benutzergruppe > 2}
-						<a title="{#UGROUP_EDIT#}" href="index.php?do=groups&amp;action=grouprights&amp;cp={$sess}&amp;Id={$g->Benutzergruppe}"><strong>{$g->Name|escape}</strong></a>
+					{if $g->user_group > 2}
+						<a title="{#UGROUP_EDIT#}" href="index.php?do=groups&amp;action=grouprights&amp;cp={$sess}&amp;Id={$g->user_group}"><strong>{$g->user_group_name|escape}</strong></a>
 					{else}
-						<a title="{#UGROUP_NAME_EDIT#}" href="index.php?do=groups&amp;action=grouprights&amp;cp={$sess}&amp;Id={$g->Benutzergruppe}"><strong>{$g->Name|escape}</strong></a>
+						<a title="{#UGROUP_NAME_EDIT#}" href="index.php?do=groups&amp;action=grouprights&amp;cp={$sess}&amp;Id={$g->user_group}"><strong>{$g->user_group_name|escape}</strong></a>
 					{/if}
 				{else}
-					<strong>{$g->Name|escape}</strong>
+					<strong>{$g->user_group_name|escape}</strong>
 				{/if}
 			</td>
 
-			<td align="center" width="1%">{if check_permission('user')}{if $g->Benutzergruppe==2 || $g->UserCount < 1}-{else}<a title="{#UGROUP_IN_GROUP#}" href="index.php?do=user&amp;cp={$sess}&amp;Benutzergruppe={$g->Benutzergruppe}">{$g->UserCount}</a>{/if}{else}<strong>{$g->UserCount}</strong>{/if}</td>
+			<td align="center" width="1%">{if check_permission('user')}{if $g->user_group==2 || $g->UserCount < 1}-{else}<a title="{#UGROUP_IN_GROUP#}" href="index.php?do=user&amp;cp={$sess}&amp;user_group={$g->user_group}">{$g->UserCount}</a>{/if}{else}<strong>{$g->UserCount}</strong>{/if}</td>
 
 			<td width="1%" align="center">
 				{if check_permission('group_edit')}
-					{if $g->Benutzergruppe > 2}
-						<a title="{#UGROUP_EDIT#}" href="index.php?do=groups&amp;action=grouprights&amp;cp={$sess}&amp;Id={$g->Benutzergruppe}">
+					{if $g->user_group > 2}
+						<a title="{#UGROUP_EDIT#}" href="index.php?do=groups&amp;action=grouprights&amp;cp={$sess}&amp;Id={$g->user_group}">
 						<img src="{$tpl_dir}/images/icon_edit.gif" alt="" border="0" /></a>
 					{else}
-						<a title="{#UGROUP_NAME_EDIT#}" href="index.php?do=groups&amp;action=grouprights&amp;cp={$sess}&amp;Id={$g->Benutzergruppe}">
+						<a title="{#UGROUP_NAME_EDIT#}" href="index.php?do=groups&amp;action=grouprights&amp;cp={$sess}&amp;Id={$g->user_group}">
 						<img src="{$tpl_dir}/images/icon_edit.gif" alt="" border="0" /></a>
 					{/if}
 				{else}
@@ -72,11 +72,11 @@ function check_name() {ldelim}
 
 			<td width="1%" align="center">
 				{if check_permission('group_edit')}
-					{if $g->Benutzergruppe > 2}
+					{if $g->user_group > 2}
 						{if $g->UserCount > 0}
 							<img title="{#UGROUP_USERS_IN_GROUP#}" src="{$tpl_dir}/images/icon_delete_no.gif" alt="" border="0" />
 						{else}
-							<a title="{#UGROUP_DELETE#}" onclick="return confirm('{#UGROUP_DELETE_CONFIRM#}')" href="index.php?do=groups&amp;action=delete&amp;cp={$sess}&amp;Id={$g->Benutzergruppe}">
+							<a title="{#UGROUP_DELETE#}" onclick="return confirm('{#UGROUP_DELETE_CONFIRM#}')" href="index.php?do=groups&amp;action=delete&amp;cp={$sess}&amp;Id={$g->user_group}">
 							<img src="{$tpl_dir}/images/icon_delete.gif" alt="" border="0" /></a>
 						{/if}
 					{else}

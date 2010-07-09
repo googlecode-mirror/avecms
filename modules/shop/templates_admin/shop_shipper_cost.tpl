@@ -8,7 +8,7 @@
 	<table width="100%" border="0" cellspacing="1" cellpadding="8" class="tableborder">
 		{foreach from=$laender item=sc}
 			<tr>
-				<td colspan="4" class="tableheader"><strong>{$sc->LandName}</strong></td>
+				<td colspan="4" class="tableheader"><strong>{$sc->country_name}</strong></td>
 			</tr>
 
 			<tr>
@@ -20,9 +20,9 @@
 
 			<tr>
 				<td width="1%">&nbsp;</td>
-				<td width="100"><input style="width:100px; background:#FFFFCC" type="text" name="NeuVon[{$sc->LandCode}]" /></td>
-				<td width="100"><input style="width:100px; background:#FFFFCC" type="text" name="NeuBis[{$sc->LandCode}]" /></td>
-				<td><input  style="width:80px; background:#FFFFCC" type="text" name="NeuBetrag[{$sc->LandCode}]" /> {#InsertNewCost#}</td>
+				<td width="100"><input style="width:100px; background:#FFFFCC" type="text" name="NeuVon[{$sc->country_code}]" /></td>
+				<td width="100"><input style="width:100px; background:#FFFFCC" type="text" name="NeuBis[{$sc->country_code}]" /></td>
+				<td><input  style="width:80px; background:#FFFFCC" type="text" name="NeuBetrag[{$sc->country_code}]" /> {#InsertNewCost#}</td>
 			</tr>
 
 			{foreach from=$sc->versandkosten item=w_table}

@@ -3,147 +3,202 @@
 /* -----------------------------
  =модуль ћагазин
 ----------------------------- */
-
-.mod_shop_newprod_box table			{background: #FFF; border: none; margin:0;}
-.mod_shop_newprod_box td			{ background: #FFF; border: none; padding-bottom:10px; width: 100px; } /*  здесь ширина €чейки в выводе категорий товаров. кол-во в строке надо правитьв файле /modules/shop/templates/shop_tree.tpl */
-.mod_shop_newprod_box img 			{margin-bottom:5px;}
-.mod_shop_newprod_box h3 			{border-style: none; }
-
-.mod_shop_price_small 				{ color: #333; padding-top: 5px; display: block; font-size: 1.2em; font-style: normal; font-weight: bold; font-variant: normal; }
-.mod_shop_container_adv	 img			{ padding: 0; margin: 0; border: 1px solid #CCC; height: 200px; width: 698px; } /*  здесь ширина и высота картинки баннера */
-
-
-.mod_shop_container_1									{ position:relative; margin: 0; }
-.mod_shop_container_1 h3							  	{ font-size: 18px; font-weight: normal; border-style: none; }
-.mod_shop_container_1 p							  		{ font-size: 11px; }
-.mod_shop_container_1 small							  	{ font-size: 10px; }
-.mod_shop_container_1 small em							{ color:#769C38;font-style:normal }
-.mod_shop_container_1 .shop_stars						{ margin: 10px 0; }
-.mod_shop_container_1 .mod_shop_price_big             	{ display: block; color: #FFF; background: #709536; padding: 5px; margin: 0px; font-size: 1.6em; font-style: normal; line-height: 1em; font-weight: normal; font-variant: normal; }
-.mod_shop_container_1 .mod_shop_price_new             	{ display: block; color: #C00; background: #FC0; padding: 5px; margin: 0px; font-size: 1.6em; font-style: normal; line-height: 1em; font-weight: normal; font-variant: normal; position: relative; }
-.mod_shop_container_1 .mod_shop_price_new img             	{ position: absolute; left: -20px; top: 1px; }
-.mod_shop_container_1 .mod_shop_price_alert             { display: block; color: #000; background: #D9E9C0; padding: 8px 5px; margin: 0px; font-size: 0.9em; font-style: normal; line-height: 1em; font-weight: normal; font-variant: normal; }
-.mod_shop_container_1 .mod_shop_price_box				{ display: block; text-align: center; }
-
-#shop-search 		{ margin-bottom: 7px; }
-#shop-search input	{ width: 190px; margin-bottom: 5px; }
-#shop-search select	{ width: 196px; margin-bottom: 5px; }
-#shop-search .button	{ width: 100px; }
-#shop-search .priceinput	{width: 70px; }
-
-.mod_shop_table                 {margin: 10px 0 0 0;}
+.mod_shop_newprod_box table						{background:#fff; border:none; margin:0;}
+.mod_shop_newprod_box td						{background:#fff; border:none; padding-bottom:10px; width:100px;}/* здесь ширина €чейки в выводе категорий товаров. кол-во в строке надо правитьв файле /modules/shop/templates/shop_tree.tpl */
+.mod_shop_newprod_box img						{margin-bottom:5px;}
+.mod_shop_newprod_box h3						{border:none;}
+.mod_shop_price_small							{color:#333; display:block; font-size:1.2em; font-style:normal; font-variant:normal; font-weight:bold; padding-top:5px;}
+.mod_shop_container_adv img						{border:1px solid #ccc; height:200px; margin:0; padding:0; width:698px;}/* здесь ширина и высота картинки баннера */
+.mod_shop_container_1							{margin:0; position:relative;}
+.mod_shop_container_1 h3						{border:none; font-size:18px; font-weight:normal;}
+.mod_shop_container_1 p							{font-size:11px;}
+.mod_shop_container_1 small						{font-size:10px;}
+.mod_shop_container_1 small em					{color:#769c38; font-style:normal;}
+.mod_shop_container_1 .shop_stars				{margin:10px 0;}
+.mod_shop_container_1 .mod_shop_price_big		{background:#709536; color:#fff; display:block; font-size:1.6em; font-style:normal; font-variant:normal; font-weight:normal; line-height:1em; margin:0; padding:5px;}
+.mod_shop_container_1 .mod_shop_price_new		{background:#fc0; color:#c00; display:block; font-size:1.6em; font-style:normal; font-variant:normal; font-weight:normal; line-height:1em; margin:0; padding:5px; position:relative;}
+.mod_shop_container_1 .mod_shop_price_new img	{left:-20px; position:absolute; top:1px;}
+.mod_shop_container_1 .mod_shop_price_alert		{background:#d9e9c0; color:#000; display:block; font-size:0.9em; font-style:normal; font-variant:normal; font-weight:normal; line-height:1em; margin:0; padding:8px 5px;}
+.mod_shop_container_1 .mod_shop_price_box		{display:block; text-align:center;}
+#shop-search									{margin-bottom:7px;}
+#shop-search input								{margin-bottom:5px; width:190px;}
+#shop-search select								{margin-bottom:5px; width:196px;}
+#shop-search .button							{width:100px;}
+#shop-search .priceinput						{width:70px;}
+.mod_shop_table									{margin:10px 0 0 0;}
 .mod_shop_table table,
-.mod_shop_table td              { background:#fff; padding:3px 6px; color:#333; border-style: none; margin: 0;}
-.mod_shop_table .tdleft         { text-align: right; width: 1%; white-space: nowrap; color: #666; vertical-align: middle; }
-.mod_shop_table .mod_shop_price_big             	{ color: #709536; padding: 5px; margin: 0px; font-size: 2em; font-style: normal; line-height: 1em; font-weight: normal; font-variant: normal; }
-.mod_shop_img_box               	{ position:relative; width: 220px; display: block; margin: 10px 0 0 20px;}
-.mod_shop_img_box a.image 			{ float:left; margin:0 7px 7px 0; padding:4px; border:1px solid #bbb; background:#fff; }
-.mod_shop_img_box a.image:hover 	{ border:1px solid #666; }
-.mod_shop_img_box a.image img 		{ float:left; }
-.mod_shop_toptopseller_bottom   { font-weight:bold; text-align:center; padding:3px; font-size:16px;}
-.mod_shop_basket_row_price      {padding:5px;background-color:#E4E4E4;color:#698B32;font-weight:bold}
-.mod_shop_basket_row_right      {padding:5px;background-color:#EFEFEF}
-.mod_shop_basket_summ           {font-weight:bold;color:#eec00a}
-.mod_shop_ust                   {color:#85816e}
-.mod_shop_bar_active            {width:50px;background-color:#99CC00;color:#fff;font-size:42px;font-weight:bold;text-align:center}
-.mod_shop_bar_inactive          {width:50px;background-color:#BCBCBA;color:#797979;font-size:24px;font-weight:bold;text-align:center}
-.mod_shop_steps_active          {color:#777;background-color:#E8E8E8;width:25%;padding:4px}
-.mod_shop_steps_inactive        {color:#BEBEBE;background-color:#E8E8E8;width:25%;padding:4px}
-
-
-
-
+.mod_shop_table td								{background:#fff; border:none; color:#333; margin:0; padding:3px 6px;}
+.mod_shop_table .tdleft							{color:#666; text-align:right; vertical-align:middle; white-space:nowrap; width:1%;}
+.mod_shop_table .mod_shop_price_big				{color:#709536; font-size:2em; font-style:normal; font-variant:normal; font-weight:normal; line-height:1em; margin:0; padding:5px;}
+.mod_shop_img_box								{display:block; margin:10px 0 0 20px; position:relative; width:220px;}
+.mod_shop_img_box a.image						{background:#fff; border:1px solid #bbb; float:left; margin:0 7px 7px 0; padding:4px;}
+.mod_shop_img_box a.image:hover					{border:1px solid #666;}
+.mod_shop_img_box a.image img					{float:left;}
+.mod_shop_toptopseller_bottom					{font-size:16px; font-weight:bold; padding:3px; text-align:center;}
+.mod_shop_basket_row_price						{background:#e4e4e4; color:#698b32; font-weight:bold; padding:5px;}
+.mod_shop_basket_row_right						{background:#efefef; padding:5px;}
+.mod_shop_basket_summ							{color:#eec00a; font-weight:bold;}
+.mod_shop_ust									{color:#85816e;}
+.mod_shop_bar_active							{background:#9c0; color:#fff; font-size:42px; font-weight:bold; text-align:center; width:50px;}
+.mod_shop_bar_inactive							{background:#bcbcba; color:#797979; font-size:24px; font-weight:bold; text-align:center; width:50px;}
+.mod_shop_steps_active							{background:#e8e8e8; color:#777; padding:4px; width:25%;}
+.mod_shop_steps_inactive						{background:#e8e8e8; color:#bebebe; padding:4px; width:25%;}
 /*
-.mod_shop_header                {position:relative}
-.mod_shop_header h2             {color:#eec00a}
-.mod_shop_text                  {font-size:11px;color:#666;padding-right:10px}
-.mod_shop_text p                {padding:0;display:block;margin:0}
-.mod_shop_text_mini             {font-size:10px;margin:3px 0}
-.mod_shop_text_mini em          {color:#769C38;font-style:normal}
-.mod_shop_insertrow             {width:110px;background:#f8f8f8;border:1px solid #d9d7cf;font-size:11px}
-.mod_shop_price_big_shopstar    {font-size:15px;font-weight:bold;color:#789E3A}
-.mod_shop_price_big_shopstar em {color:#CC6600;font-style:normal}
-.mod_shop_basket_price          {color:#85816e}
-.mod_shop_basket                {margin-top:0;padding:8px; border:1px solid #ddd}
-.mod_shop_addtotd               {background:#f8f8f8}
-.mod_shop_tabs                  {line-height:0.1em}
-.mod_shop_box                   {font-size:11px;color:#666;padding:10px;border:1px solid #e1dfd6}
-.mod_shop_itabs                 {cursor:pointer;background:#f8f8f8;border:1px solid #e1dfd6;border-bottom:0;float:left;width:auto;padding:5px;white-space:nowrap;margin-right:2px}
-.mod_shop_tabs_text             {display:block;padding:5px}
-.mod_shop_itabs:hover           {background:#fff;color:#ccc;border:1px solid #ddd;border-bottom:0}
-.mod_shop_none_display          {display:none}
-.mod_shop_topnav                {font-size:11px;color:#999;display:block;margin:3px 0}
-.mod_shop_searchbox             {background:url(../images/module-left.png) no-repeat left bottom;padding-bottom:20px;padding-left:10px;text-align:left}
-.mod_shop_myordersbox           {background:url(../images/module-left.png) no-repeat left bottom;padding-bottom:20px;padding-left:10px;text-align:left}
-.mod_shop_preorder_warn         {color:#CC0000;font-weight:bold}
-.mod_shop_wishlist_td           {width:300px}
-.mod_shop_basket_table          {background:#ccc}
-.mod_shop_basket_header         {font-weight:bold;background:#E1E1E1;padding:5px;border-bottom:2px solid #999;font-size:10px;color:#666}
-.mod_shop_basket_header h3      {color:#666}
-.mod_shop_basket_row            {padding:5px;background:#fff}
-.mod_shop_basket_row_price      {padding:5px;background-color:#E4E4E4;color:#698B32;font-weight:bold}
-.mod_shop_basket_row_right      {padding:5px;background-color:#EFEFEF}
-.mod_shop_basket_summ           {font-weight:bold;color:#eec00a}
-.mod_shop_popupheader           {background-color:#eec00a;color:#fff;padding:5px;font-size:14px}
-.mod_shop_timetillshipping      {color:#85816e}
-.mod_shop_warn                  {border:1px solid #f00;color:#f00;padding:4px;background:#FFFFEC;margin-bottom:5px}
-.mod_shop_checkoutborder        {border:1px solid #bab7ac}
-.mod_shop_bar                   {background-color:#f0eee7;color:#777;padding:5px}
-.mod_shop_barborder             {background-color:#fff}
-.mod_shop_summoverall           {font-size:14px;background-color:#f0eee7;border-top:1px solid #777;padding:2px;font-weight:bold}
-.mod_shop_incvat                {padding:1px;color:#777}
-.mod_shop_orders_form           {background-color:#f0eee7}
-.mod_shop_orders_wait           {background-color:#ccc;width:50px;height:50px;border:1px solid #fff}
-.mod_shop_orders_progress       {background-color:#fc0;width:50px;height:50px;border:1px solid #fff}
-.mod_shop_orders_ok             {background-color:#090;width:50px;height:50px;border:1px solid #fff}
-.mod_shop_orders_ok_send        {background-color:#09f;width:50px;height:50px;border:1px solid #fff}
-.mod_shop_orders_failed         {background-color:#f00;width:50px;height:50px;border:1px solid #fff}
-.mod_shop_shop_items_left       {background-color:#fff;border:1px solid #F1F1F1;height:150px;margin-right:10px;padding:5px}
-.mod_shop_shop_items_right      {background-color:#fff;border:1px solid #F1F1F1;height:150px;margin-bottom:10px;padding:5px}*/
+.mod_shop_header								{position:relative;}
+.mod_shop_header h2								{color:#eec00a;}
+.mod_shop_text									{color:#666; font-size:11px; padding-right:10px;}
+.mod_shop_text p								{display:block; margin:0; padding:0;}
+.mod_shop_text_mini								{font-size:10px; margin:3px 0;}
+.mod_shop_text_mini em							{color:#769c38; font-style:normal;}
+.mod_shop_insertrow								{background:#f8f8f8; border:1px solid #d9d7cf; font-size:11px; width:110px;}
+.mod_shop_price_big_shopstar					{color:#789e3a; font-size:15px; font-weight:bold;}
+.mod_shop_price_big_shopstar em					{color:#c60; font-style:normal;}
+.mod_shop_basket_price							{color:#85816e;}
+.mod_shop_basket								{border:1px solid #ddd; margin-top:0; padding:8px;}
+.mod_shop_addtotd								{background:#f8f8f8;}
+.mod_shop_tabs									{line-height:0.1em;}
+.mod_shop_box									{border:1px solid #e1dfd6; color:#666; font-size:11px; padding:10px;}
+.mod_shop_itabs									{background:#f8f8f8; border:1px solid #e1dfd6; border-bottom:0; cursor:pointer; float:left; margin-right:2px; padding:5px; white-space:nowrap; width:auto;}
+.mod_shop_tabs_text								{display:block; padding:5px;}
+.mod_shop_itabs:hover							{background:#fff; border:1px solid #ddd; border-bottom:0; color:#ccc;}
+.mod_shop_none_display							{display:none;}
+.mod_shop_topnav								{color:#999; display:block; font-size:11px; margin:3px 0;}
+.mod_shop_searchbox								{background:url(../images/module-left.png) no-repeat left bottom; padding-bottom:20px; padding-left:10px; text-align:left;}
+.mod_shop_myordersbox							{background:url(../images/module-left.png) no-repeat left bottom; padding-bottom:20px; padding-left:10px; text-align:left;}
+.mod_shop_preorder_warn							{color:#c00; font-weight:bold;}
+.mod_shop_wishlist_td							{width:300px;}
+.mod_shop_basket_table							{background:#ccc;}
+.mod_shop_basket_header							{background:#e1e1e1; border-bottom:2px solid #999; color:#666; font-size:10px; font-weight:bold; padding:5px;}
+.mod_shop_basket_header h3						{color:#666;}
+.mod_shop_basket_row							{background:#fff; padding:5px;}
+.mod_shop_basket_row_price						{background:#e4e4e4; color:#698b32; font-weight:bold; padding:5px;}
+.mod_shop_basket_row_right						{background:#efefef; padding:5px;}
+.mod_shop_basket_summ							{color:#eec00a; font-weight:bold;}
+.mod_shop_popupheader							{background:#eec00a; color:#fff; font-size:14px; padding:5px;}
+.mod_shop_timetillshipping						{color:#85816e;}
+.mod_shop_warn									{background:#ffffec; border:1px solid #f00; color:#f00; margin-bottom:5px; padding:4px;}
+.mod_shop_checkoutborder						{border:1px solid #bab7ac;}
+.mod_shop_bar									{background:#f0eee7; color:#777; padding:5px;}
+.mod_shop_barborder								{background:#fff;}
+.mod_shop_summoverall							{background:#f0eee7; border-top:1px solid #777; font-size:14px; font-weight:bold; padding:2px;}
+.mod_shop_incvat								{color:#777; padding:1px;}
+.mod_shop_orders_form							{background:#f0eee7;}
+.mod_shop_orders_wait							{background:#ccc; border:1px solid #fff; height:50px; width:50px;}
+.mod_shop_orders_progress						{background:#fc0; border:1px solid #fff; height:50px; width:50px;}
+.mod_shop_orders_ok								{background:#090; border:1px solid #fff; height:50px; width:50px;}
+.mod_shop_orders_ok_send						{background:#09f; border:1px solid #fff; height:50px; width:50px;}
+.mod_shop_orders_failed							{background:#f00; border:1px solid #fff; height:50px; width:50px;}
+.mod_shop_shop_items_left						{background:#fff; border:1px solid #f1f1f1; height:150px; margin-right:10px; padding:5px;}
+.mod_shop_shop_items_right						{background:#fff; border:1px solid #f1f1f1; height:150px; margin-bottom:10px; padding:5px;}
+*/
 
+/* -----------------------------
+ =модуль ‘орумы
+----------------------------- */
+#forums_content									{margin-top:2em;}
+#forums_content table							{border-collapse:separate; border-spacing:1px;}
+#forums_pop										{margin:5px; text-align:left;}
+.forum_attachment_box							{border:1px inset #dedede; margin:10px; padding:3px;}
+.forum_small									{font-size:11px;}
+.toggletr										{background:#dedede;}
+.lastthreads_first								{background:#f1f1f1;}
+.lastthreads_second								{background:#f0f0f0;}
+a.forum_links:link,
+a.forum_links:visited							{color:#555; font-weight:bold; text-decoration:underline;}
+a.forum_links:hover								{color:#555; font-weight:bold; text-decoration:none;}
+a.forum_head:link,
+a.forum_head:visited							{color:#000; text-decoration:underline;}
+a.forum_head:hover								{text-decoration:none;}
+a.forum_links_small:link						{color:#000; font-weight:normal; text-decoration:underline;}
+a.forum_links_small:visited						{color:#000; font-weight:normal; text-decoration:underline;}
+a.forum_links_small:hover						{color:#777; font-weight:normal; text-decoration:none;}
+a.forum_links_navi:link,
+a.forum_links_navi:visited						{color:#777; font-weight:bold; text-decoration:none;}
+a.forum_links_navi:hover						{color:#000; font-weight:bold; text-decoration:none;}
+a.forum_links_cat:link,
+a.forum_links_cat:visited						{color:#3c3a3a; font-size:12px; font-weight:bold;}
+a.forum_links_cat:hover							{color:#3c3a3a; font-size:12px; font-weight:bold;}
+.forum_topicheader								{color:#fff;}
+a.forum_topicheader:link,
+a.forum_topicheader:visited						{color:#fff; font-weight:bold; text-decoration:underline;}
+a.forum_topicheader:hover						{color:#fff; font-weight:bold; text-decoration:none;}
+.f_info_comment									{font-size:11px;}
+.forum_post_first								{background:#f1f1f1;}
+.forum_post_second								{background:#fafafa;}
+.forum_topic_topheader							{background:#fafafa;}
+.forum_post_footer								{background:#e9e9e9;}
+.forum_header									{background:#dedede; padding:5px;}
+.forum_info_icon								{background:#f1f1f1; padding:2px; text-align:center; width:30px;}
+.forum_info_main								{background:#f1f1f1; padding:8px;}
+.forum_info_main:hover							{background:#fafafa; padding:8px;}
+.forum_info_meta								{background:#fafafa; padding:8px;}
+.forum_toggle									{background:#dedede; width:20px;}
+.forum_frame									{background:#fff; margin-bottom:1px;}
+.forum_navi										{padding:3px;}
+.forum_header_bolder							{background:#cdcdcd; color:#3c3a3a; padding:5px;}
+.forum_tableborder								{background:#cdcdcd; border:0 solid #878373; padding:0;}
+.forum_stats_box								{background:#f3f3f3; color:#777; font-weight:bold;}
+.user_sig										{padding-top:4px;}
+.user_sig_bar									{color:#ccc; padding-top:4px;}
+.forum_pn_unread								{color:#f00; font-weight:bold; text-decoration:blink;}
+
+/* -----------------------------
+ =модуль «агрузки
+----------------------------- */
+#mod_download									{}
+#mod_download h1								{}
+#mod_download a:link,
+#mod_download a:visited							{text-decoration:underline;}
+#mod_download a:hover							{text-decoration:none;}
+#mod_download .download_categ,
+#mod_download a.download_categ:link,
+#mod_download a.download_categ:visited			{}
+#mod_download a.download_categ:hover			{}
+#mod_download a.mod_download_navi:link,
+#mod_download a.mod_download_navi:visited		{color:#88c13e; text-decoration:none;}
+#mod_download a.mod_download_navi:hover			{color:#000; text-decoration:none;}
+#mod_download a.mod_download_ajsearch:link,
+#mod_download a.mod_download_ajsearch:visited	{color:#000; display:block; text-decoration:none;}
+#mod_download a.mod_download_ajsearch:hover		{background:#b4b4b4; color:#fff; display:block; text-decoration:none;}
+.mod_download_topnav							{border:1px solid #e8e7e3; margin-bottom:8px; padding:4px;}
+.mod_download_ajaxsearchcontainer				{background:#b4b4b4; padding:5px;}
+.mod_download_ajaxsearchcontainer_td			{background:#b4b4b4; color:#fff;}
+.mod_download_ajaxsearchdiv						{background:#fff; border:1px solid #000; border-top:1px solid #999; padding:0; position:absolute; width:232px;}
+.mod_download_ajaxsearch_info					{background:#eaeaea; padding:5px;}
+.mod_download_ajaxsearchfield					{width:230px;}
+.mod_download_topheader							{background:#b4b4b4; color:#fff; padding:4px;}
+.mod_download_dlbox								{border:1px solid #fff; padding:2px;}
+.mod_download_spacer							{border-bottom:1px solid #ccc5af; margin-bottom:10px; margin-top:10px;}
+.mod_download_commentbox						{background:#fcfaf2; border:1px solid #ccc5af; height:150px; overflow:auto; padding:5px;}
+.mod_download_commenterror						{font-style:italic; font-weight:bold;}
+#mod_download a.mod_download_sort:link,
+#mod_download a.mod_download_sort:visited		{color:#fff; text-decoration:underline;}
+#mod_download a.mod_download_sort:hover			{color:#fff; text-decoration:none;}
+.mod_download_titlebar							{background:#eaeaea; border-bottom:1px solid #b4b4b4; border-top:1px solid #b4b4b4; font-weight:bold; padding:5px;}
+.mod_download_nospam							{color:#f00;}
+.dl_nt_first									{background:#fff; border-bottom:1px solid #fff; padding:5px;}
+.dl_nt_second									{background:#eaeaea; border-bottom:1px solid #fff; padding:5px;}
+.dl_first										{background:#fff; border:1px solid #ccc5af; padding:4px;}
+.dl_second										{background:#eaeaea; border:1px solid #ccc5af; padding:4px;}
 
 /* -----------------------------
  =SLIMBOX 1.63
 ----------------------------- */
-#lbOverlay                      {position:absolute;z-index:9999;left:0;width:100%;background-color:#000;cursor:pointer}
+#lbOverlay										{background:#000; cursor:pointer; left:0; position:absolute; width:100%; z-index:9999;}
 #lbCenter,
-#lbBottomContainer              {position:absolute;z-index:9999;left:50%;overflow:hidden;background-color:#fff}
-.lbLoading                      {background:#fff url(../images/loading.gif) no-repeat center}
-#lbImage                        {position:absolute;left:0;top:0;border:10px solid #fff;background-repeat:no-repeat}
+#lbBottomContainer								{background:#fff; left:50%; overflow:hidden; position:absolute; z-index:9999;}
+.lbLoading										{background:#fff url(../images/loading.gif) no-repeat center;}
+#lbImage										{background:no-repeat; border:10px solid #fff; left:0; position:absolute; top:0;}
 #lbPrevLink,
-#lbNextLink                     {display:block;position:absolute;top:0;width:50%;outline:none}
-#lbPrevLink                     {left:0}
-#lbPrevLink:hover               {background:transparent url(../images/prevlabel.gif) no-repeat 0% 15%}
-#lbNextLink                     {right:0}
-#lbNextLink:hover               {background:transparent url(../images/nextlabel.gif) no-repeat 100% 15%}
-#lbBottom                       {font-family:Verdana, Arial, Geneva, Helvetica, sans-serif;font-size:10px;color:#666;line-height:1.4em;text-align:left;border:10px solid #fff;border-top-style:none}
-#lbCloseLink                    {display:block;float:right;width:66px;height:22px;background:transparent url(../images/closelabel.gif) no-repeat center;margin:5px 0;outline:none}
-#lbCaption, #lbNumber           {margin-right:71px}
-#lbCaption                      {font-weight:bold}
+#lbNextLink										{display:block; outline:none; position:absolute; top:0; width:50%;}
+#lbPrevLink										{left:0;}
+#lbPrevLink:hover								{background:transparent url(../images/prevlabel.gif) no-repeat 0% 15%;}
+#lbNextLink										{right:0;}
+#lbNextLink:hover								{background:transparent url(../images/nextlabel.gif) no-repeat 100% 15%;}
+#lbBottom										{border:10px solid #fff; border-top-style:none; color:#666; font:10px/1.4em Verdana, Arial, Geneva, Helvetica, sans-serif; text-align:left;}
+#lbCloseLink									{background:transparent url(../images/closelabel.gif) no-repeat center; display:block; float:right; height:22px; margin:5px 0; outline:none; width:66px;}
+#lbCaption,
+#lbNumber										{margin-right:71px;}
+#lbCaption										{font-weight:bold;}
 
-
-
-/* -----------------------------
- =яндекс сервер
------------------------------ */
-table.search                        {background:#fc0;margin-top:.5em}
-table.search td.arr                 {padding:0;background-image:url(../images/arr-t.gif);background-repeat:no-repeat}
-table.search td.arr                 {background-image:url(../images/arr-t.gif)}
-table.search td.tune                {padding:0 2px 6px 2px}
-table.search td.tune table td       {padding:0;margin:0}
-form.search                         {margin-bottom:0.4em}
-form.search table.search td.tune    {padding:3px 6px 0 5px}
-form.search table.search td.tune td {padding-bottom:6px}
-form.search td                      {font-size:100%;padding:6px}
-form.search p                       {margin-bottom:1.2em;font-size:70%}
-td.tune                             {text-align:right}
-td.tune a                           {color:black}
-.adv-search                         {text-align:left}
-.ya-results li, .ya-copyright       {padding-top:1em}
-.ya-title                           {font-size:100%}
-.ya-text                            {padding-bottom:.1em}
-.ya-info                            {padding-top:.3em}
-
-
-
-#lightview ul li {background:none}
+#lightview ul li								{background:none;}

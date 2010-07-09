@@ -5,6 +5,7 @@
  *
  * @package AVE.cms
  * @subpackage module_Gallery
+ * @since 1.4
  * @filesource
  */
 

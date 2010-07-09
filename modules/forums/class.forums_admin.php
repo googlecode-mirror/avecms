@@ -143,7 +143,7 @@ class Forum
 			$forum_id = $GLOBALS['AVE_DB']->InsertId();
 
 			// gruppen
-			$q_groups = "SELECT Benutzergruppe as ugroup FROM " . PREFIX . "_user_groups";
+			$q_groups = "SELECT user_group as ugroup FROM " . PREFIX . "_user_groups";
 			$r_groups = $GLOBALS['AVE_DB']->Query($q_groups);
 
 			// standardmaske fuer die rechte einer gruppe
@@ -199,8 +199,8 @@ class Forum
 		}
 
 		$query = "SELECT
-			Benutzergruppe as ugroup,
-			Name as groupname
+			user_group as ugroup,
+			user_group_name as groupname
 		FROM
 			" . PREFIX . "_user_groups";
 
@@ -248,8 +248,8 @@ class Forum
 
 		// gruppen
 		$query = "SELECT
-			Benutzergruppe as ugroup,
-			Name as groupname
+			user_group as ugroup,
+			user_group_name as groupname
 		FROM
 			" . PREFIX . "_user_groups";
 
@@ -447,8 +447,8 @@ class Forum
 
 		// gruppen
 		$query = "SELECT
-			Benutzergruppe as ugroup,
-			Name as groupname
+			user_group as ugroup,
+			user_group_name as groupname
 		FROM
 			" . PREFIX . "_user_groups";
 
@@ -612,8 +612,8 @@ class Forum
 	function getGroups()
 	{
 		$query = "SELECT
-			Benutzergruppe as ugroup,
-			Name as groupname
+			user_group as ugroup,
+			user_group_name as groupname
 		FROM
 			" . PREFIX . "_user_groups";
 
@@ -731,7 +731,7 @@ class Forum
 	function listGroups()
 	{
 		$groups = array();
-		$sql = $GLOBALS['AVE_DB']->Query("SELECT * FROM " . PREFIX . "_user_groups ORDER BY Name ASC");
+		$sql = $GLOBALS['AVE_DB']->Query("SELECT * FROM " . PREFIX . "_user_groups ORDER BY user_group_name ASC");
 		while($row = $sql->FetchRow())
 		{
 			array_push($groups, $row);
@@ -747,10 +747,10 @@ class Forum
 	{
 		// Wenn eine Gruppe in Gruppenberechtigung noch nicht angelegt wurde, anlegen!
 		$sql = $GLOBALS['AVE_DB']->Query("
-			SELECT ug.Benutzergruppe
+			SELECT ug.user_group
 			FROM " . PREFIX . "_user_groups AS ug
 			LEFT JOIN " . PREFIX . "_modul_forum_grouppermissions
-				USING(Benutzergruppe)
+				USING(user_group)
 			WHERE Id IS NULL
 		");
 		while($row = $sql->FetchRow())
@@ -760,8 +760,8 @@ class Forum
 					" . PREFIX . "_modul_forum_grouppermissions
 				SET
 					Id = '',
-					Benutzergruppe = '" . $row->Benutzergruppe . "',
-					Rechte = '" . $this->_default_permission . "',
+					user_group = '" . $row->user_group . "',
+					permission = '" . $this->_default_permission . "',
 					MAX_AVATAR_BYTES = '10240',
 					MAX_AVATAR_HEIGHT = '90',
 					MAX_AVATAR_WIDTH = '90',
@@ -790,7 +790,7 @@ class Forum
 				UPDATE
 					" . PREFIX  . "_modul_forum_grouppermissions
 				SET
-					Rechte = '" . @implode("|", $_POST['perm']) . "',
+					permission = '" . @implode("|", $_POST['perm']) . "',
 					MAX_AVATAR_BYTES = '" . (@$_POST['MAX_AVATAR_BYTES']*1024) . "',
 					MAX_AVATAR_HEIGHT = '" . @$_POST['MAX_AVATAR_HEIGHT'] . "',
 					MAX_AVATAR_WIDTH = '" . @$_POST['MAX_AVATAR_WIDTH'] . "',
@@ -801,7 +801,7 @@ class Forum
 					MAXATTACHMENTS = '" . @$_POST['MAXATTACHMENTS'] . "',
 					MAX_EDIT_PERIOD = '" . (@$_POST['MAX_EDIT_PERIOD']*24) . "'
 				WHERE
-					Benutzergruppe = '"  . @$_REQUEST['group'] . "'
+					user_group = '"  . @$_REQUEST['group'] . "'
 				");
 				echo '<script>window.close();</script>';
 			}
@@ -811,18 +811,18 @@ class Forum
 			FROM
 				" . PREFIX . "_modul_forum_grouppermissions
 			WHERE
-				Benutzergruppe = '" .  $_REQUEST['group'] . "'
+				user_group = '" .  $_REQUEST['group'] . "'
 				");
 			$row = $sql->FetchRow();
 			$row->MAX_AVATAR_BYTES = $row->MAX_AVATAR_BYTES/1024;
 			$row->MAX_EDIT_PERIOD = $row->MAX_EDIT_PERIOD/24;
 
-			$GLOBALS['AVE_Template']->assign('Perms', explode("|", $row->Rechte));
+			$GLOBALS['AVE_Template']->assign('Perms', explode("|", $row->permission));
 			$GLOBALS['AVE_Template']->assign('row', $row);
 			$GLOBALS['AVE_Template']->assign('content', $GLOBALS['AVE_Template']->fetch($tpl_dir . 'group_perms_pop.tpl'));
 		} else {
 			$groups = array();
-			$sql = $GLOBALS['AVE_DB']->Query("SELECT * FROM " . PREFIX . "_user_groups ORDER BY Name ASC");
+			$sql = $GLOBALS['AVE_DB']->Query("SELECT * FROM " . PREFIX . "_user_groups ORDER BY user_group_name ASC");
 			while($row = $sql->FetchRow())
 			{
 				array_push($groups, $row);
@@ -838,7 +838,7 @@ class Forum
 	//=======================================================
 	function userRanks($tpl_dir)
 	{
-		// Rang löschen
+		// position löschen
 		if(isset($_REQUEST['del_rank']) && $_REQUEST['del_rank']==1)
 		{
 			$GLOBALS['AVE_DB']->Query("DELETE FROM " . PREFIX . "_modul_forum_rank WHERE id = '" . $_GET['id'] . "'");
@@ -846,7 +846,7 @@ class Forum
 			exit;
 		}
 
-		// Neuer Rang
+		// Neuer position
 		if(isset($_REQUEST['add_rank']) && $_REQUEST['add_rank']==1)
 		{
 			$_POST['title'] = (empty($_POST['title'])) ? 'Unbekannt' : $_POST['title'];
@@ -1322,15 +1322,15 @@ class Forum
 		$Truncate = (isset($_REQUEST['truncate']) && $_REQUEST['truncate']==1) ? 1 : '';
 		$What = (isset($_REQUEST['what']) && $_REQUEST['what'] != '') ? $_REQUEST['what'] : '';
 
-		switch($What)
+		switch ($What)
 		{
 			case 'user':
 				$this->userImport($Prefix,$Truncate);
-			break;
+				break;
 
 			case 'forums':
 				$this->forumImport($Prefix,$Truncate);
-			break;
+				break;
 		}
 
 		$sql = $GLOBALS['AVE_DB']->Query("SELECT Id FROM " . PREFIX . "_users");
@@ -1339,7 +1339,6 @@ class Forum
 		$GLOBALS['AVE_Template']->assign('usercount', $num);
 		$GLOBALS['AVE_Template']->assign('content', $GLOBALS['AVE_Template']->fetch($tpl_dir . 'import.tpl'));
 	}
-
 
 	function forumImport($Prefix='',$Truncate='')
 	{
@@ -1350,9 +1349,8 @@ class Forum
 		$sql2 = $GLOBALS['AVE_DB']->Query("SELECT id FROM " . $Prefix . "_f_post") ;
 		$num2 = $sql2->NumRows();
 
-		if($num>0 && $num2>0)
+		if ($num > 0 && $num2 > 0)
 		{
-
 			/*
 			$GLOBALS['AVE_DB']->Query("DROP TABLE " . PREFIX . "_modul_forum_allowed_files") ;
 			$GLOBALS['AVE_DB']->Query("ALTER TABLE " . $Prefix . "_f_allowed_files RENAME " . PREFIX . "_modul_forum_allowed_files") ;
@@ -1412,27 +1410,25 @@ class Forum
 			$GLOBALS['AVE_DB']->Query("INSERT INTO " . PREFIX . "_modul_forum_topic_read SELECT * FROM " . $Prefix . "_f_topic_read ;");
 
 			$this->userImport($Prefix,$Truncate);
-
 		}
 
 		header("Location:index.php?do=modules&action=modedit&mod=forums&moduleaction=import&cp=" . SESSION);
 		exit;
 	}
-	//
 
 	//=======================================================
 	// Für den Import von Benutzern aus Koobi
 	//=======================================================
-	function userImport($Prefix='',$Truncate='')
+	function userImport($Prefix = '', $Truncate = '')
 	{
 		$sql = $GLOBALS['AVE_DB']->Query("SELECT * FROM " . $Prefix . "_user WHERE uid != 1");
 		$num = $sql->NumRows();
 
 		// Gibt es Benutzer in der alten Tabelle?
-		if($num>0)
+		if ($num>0)
 		{
 
-			if($Truncate==1)
+			if ($Truncate==1)
 			{
 				$GLOBALS['AVE_DB']->Query("DELETE FROM " . PREFIX . "_modul_forum_userprofile WHERE BenutzerId != 1 AND BenutzerId != '" . $_SESSION['user_id'] . "'");
 				$GLOBALS['AVE_DB']->Query("DELETE FROM " . PREFIX . "_users WHERE Id != 1 AND Id != '" . $_SESSION['user_id'] . "'");
@@ -1440,122 +1436,74 @@ class Forum
 				$GLOBALS['AVE_DB']->Query("ALTER TABLE " . PREFIX . "_users PACK_KEYS =0 CHECKSUM =0 DELAY_KEY_WRITE =0 AUTO_INCREMENT =1");
 			}
 
-
-
-			while($row = $sql->FetchRow())
+			while ($row = $sql->FetchRow())
 			{
-				$q = "INSERT INTO " . PREFIX . "_modul_forum_userprofile
-					(
-						Id,
-						BenutzerId,
-						BenutzerName,
-						GroupIdMisc,
-						Beitraege,
-						ZeigeProfil,
-						Signatur,
-						Icq,
-						Aim,
-						Skype,
-						Emailempfang,
-						Pnempfang,
-						Avatar,
-						AvatarStandard,
-						Webseite,
-						Unsichtbar,
-						Interessen,
-						Email,
-						Registriert,
-						GeburtsTag
-					) VALUES (
-						'',
-						'" . $row->uid . "'
-						'" . $row->uname . "'
-						'" . $row->group_id_misc . "'
-						'" . $row->user_posts . "'
-						'" . $row->show_public . "'
-						'" . $row->user_sig . "'
-						'" . $row->user_icq . "'
-						'" . $row->user_aim . "'
-						'" . $row->user_skype . "'
-						'" . (($row->user_viewemail=='yes' || $row->user_viewemail=='') ? 1 : 0) . "',
-						'" . (($row->user_canpn=='yes') ? 1 : 0) . "',
-						'" . $row->user_avatar . "'
-						'" . $row->usedefault_avatar . "'
-						'" . $row->url . "'
-						'" . (($row->invisible=='yes') ? 1 : 0) . "',
-						'" . $row->user_interests . "'
-						'" . $row->email . "'
-						'" . $row->user_regdate . "'
-						'" . $row->user_birthday . "'
-					)";
-				$GLOBALS['AVE_DB']->Query($q);
+				$GLOBALS['AVE_DB']->Query("
+					INSERT
+					INTO " . PREFIX . "_modul_forum_userprofile
+					SET
+						Id             = '',
+						BenutzerId     = '" . $row->uid . "'
+						BenutzerName   = '" . $row->uname . "'
+						GroupIdMisc    = '" . $row->group_id_misc . "'
+						Beitraege      = '" . $row->user_posts . "'
+						ZeigeProfil    = '" . $row->show_public . "'
+						Signatur       = '" . $row->user_sig . "'
+						Icq            = '" . $row->user_icq . "'
+						Aim            = '" . $row->user_aim . "'
+						Skype          = '" . $row->user_skype . "'
+						Emailempfang   = '" . (($row->user_viewemail=='yes' || $row->user_viewemail=='') ? 1 : 0) . "',
+						Pnempfang      = '" . (($row->user_canpn=='yes') ? 1 : 0) . "',
+						Avatar         = '" . $row->user_avatar . "'
+						AvatarStandard = '" . $row->usedefault_avatar . "'
+						Webseite       = '" . $row->url . "'
+						Unsichtbar     = '" . (($row->invisible=='yes') ? 1 : 0) . "',
+						Interessen     = '" . $row->user_interests . "'
+						email          = '" . $row->email . "'
+						reg_time       = '" . $row->user_regdate . "'
+						GeburtsTag     = '" . $row->user_birthday . "'
+					");
 
-				$q = "INSERT INTO " . PREFIX . "_users
-					(
-						Id,
-						Kennwort,
-						Email,
-						Strasse,
-						HausNr,
-						Postleitzahl,
-						city,
-						Telefon,
-						Telefax,
-						Bemerkungen,
-						Vorname,
-						Nachname,
-						`UserName`,
-						Benutzergruppe,
-						BenutzergruppeMisc,
-						Registriert,
-						Status,
-						ZuletztGesehen,
-						Land,
-						Geloescht,
-						GeloeschtDatum,
-						emc,
-						IpReg,
-						new_pass,
-						Firma,
-						UStPflichtig,
-						GebTag
-					) VALUES (
-						'" . $row->uid . "',
-						'" . $row->pass . "',
-						'" . $row->email . "',
-						'" . $row->street . "',
-						'',
-						'" . $row->zip . "',
-						'" . $row->user_from . "',
-						'" . $row->phone . "',
-						'" . $row->fax . "',
-						'',
-						'" . $row->name . "',
-						'" . $row->lastname . "',
-						'" . $row->uname . "',
-						'" . $row->ugroup . "',
-						'" . $row->group_id_misc . "'
-						'" . $row->user_regdate . "',
-						'" . $row->status . "',
-						'" . $row->last_login . "',
-						'" . $row->country . "',
-						'',
-						'',
-						'',
-						'',
-						'" . $row->passtemp . "',
-						'" . addslashes($row->company) . "',
-						'1',
-						'" . $row->user_birthday . "')";
-				if($row->uid != 2) $GLOBALS['AVE_DB']->Query($q);
-				//echo "<pre>$q</pre>";
+				if ($row->uid != 2)
+				{
+					$GLOBALS['AVE_DB']->Query("
+						INSERT INTO " . PREFIX . "_users
+						SET
+							Id               = '" . $row->uid . "',
+							password         = '" . $row->pass . "',
+							email            = '" . $row->email . "',
+							street           = '" . $row->street . "',
+							street_nr        = '',
+							zipcode          = '" . $row->zip . "',
+							city             = '" . $row->user_from . "',
+							phone            = '" . $row->phone . "',
+							telefax          = '" . $row->fax . "',
+							description      = '',
+							firstname        = '" . $row->name . "',
+							lastname         = '" . $row->lastname . "',
+							user_name        = '" . $row->uname . "',
+							user_group       = '" . $row->ugroup . "',
+							user_group_extra = '" . $row->group_id_misc . "'
+							reg_time         = '" . $row->user_regdate . "',
+							status           = '" . $row->status . "',
+							last_visit       = '" . $row->last_login . "',
+							country          = '" . $row->country . "',
+							deleted          = '',
+							del_time         = '',
+							emc              = '',
+							reg_ip           = '',
+							new_pass         = '" . $row->passtemp . "',
+							company          = '" . addslashes($row->company) . "',
+							taxpay           = '1',
+							birthday         = '" . $row->user_birthday . "'
+					");
+				}
 			}
 		}
+
 		header("Location:index.php?do=modules&action=modedit&mod=forums&moduleaction=import&cp=" . SESSION);
 		exit;
 	}
-
-
-
 }
+
 ?>

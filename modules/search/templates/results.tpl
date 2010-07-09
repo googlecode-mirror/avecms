@@ -6,8 +6,8 @@
 	{if $q_navi}<div class="page_navigation_box">{#SEARCH_PAGES#} {$q_navi}</div>{/if}
 
 	{foreach from=$searchresults item=result}
-		<h4><a href="{$result->Url}">{$result->Titel|escape}</a></h4>
-		<blockquote>{$result->Text}<br /><a href="{$result->Url}">{#SEARCH_VIEW#}</a> | <a target="_blank" href="{$result->Url}">{#SEARCH_VIEW_BLANK#}</a> {$Geklickt}</blockquote><br />
+		<h4><a href="{$result->document_alias}">{$result->title|escape}</a></h4>
+		<blockquote>{$result->Text}<br /><a href="{$result->document_alias}">{#SEARCH_VIEW#}</a> | <a target="_blank" href="{$result->document_alias}">{#SEARCH_VIEW_BLANK#}</a> {$result->document_count_view}</blockquote><br />
 	{/foreach}
 
 	{if $q_navi}<div class="page_navigation_box">{#SEARCH_PAGES#} {$q_navi}</div>{/if}

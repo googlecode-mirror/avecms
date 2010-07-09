@@ -5,6 +5,7 @@
  *
  * @package AVE.cms
  * @subpackage module_Gallery
+ * @since 1.4
  * @filesource
  */
 
@@ -15,7 +16,7 @@ if (defined('ACP'))
     $modul['ModulName'] = 'Галерея';
     $modul['ModulPfad'] = 'gallery';
     $modul['ModulVersion'] = '2.2';
-    $modul['Beschreibung'] = 'Gallery + Watermark + Lightbox + Lightview Внимание! У директории /modules/gallery/uploads/ должны быть права на запись!<br />Вы можете ограничить количество выводимых изображений, указав после Gallery-ID следующее: -3 (в этом случае количество будет ограничено тремя изображениями на страницу)';
+    $modul['description'] = 'Gallery + Watermark + Lightbox + Lightview Внимание! У директории /modules/gallery/uploads/ должны быть права на запись!<br />Вы можете ограничить количество выводимых изображений, указав после Gallery-ID следующее: -3 (в этом случае количество будет ограничено тремя изображениями на страницу)';
     $modul['Autor'] = 'cron';
     $modul['MCopyright'] = '&copy; 2008 Overdoze Team';
     $modul['Status'] = 1;

@@ -1,11 +1,17 @@
 <?php
 
 /**
+ * AVE.cms - Модуль Архив новостей
+ *
+ * @filesource
+ */
+/**
  * Класс работы с архивом новостей
  *
  * @package AVE.cms
  * @subpackage module_Newsarchive
- * @filesource
+ * @author Arcanum
+ * @since 2.0
  */
 class Newsarchive
 {
@@ -36,7 +42,7 @@ class Newsarchive
 		$sql = $AVE_DB->Query("
 			SELECT
 				Id,
-				RubrikName
+				rubric_title
 			FROM " . PREFIX . "_rubrics
 		");
 		while ($row = $sql->FetchRow())
@@ -45,7 +51,7 @@ class Newsarchive
 			{
 				if (in_array($row->Id, $ids[$i]))
 				{
-					@$archives[$i]->RubrikName = strstr($archives[$i]->RubrikName . ', ' . $row->RubrikName, ' ');
+					@$archives[$i]->rubric_title = strstr($archives[$i]->rubric_title . ', ' . $row->rubric_title, ' ');
 				}
 			}
 		}
@@ -89,7 +95,7 @@ class Newsarchive
 		$mid = array('','01','02','03','04','05','06','07','08','09','10','11','12');
 		$dd = array();
 		$doctime = get_settings('use_doctime')
-			? ("AND (DokEnde = 0 || DokEnde > '" . time() . "') AND DokStart < '" . time() . "'")
+			? ("AND (document_expire = 0 || document_expire >= '" . time() . "') AND document_published <= '" . time() . "'")
 			: '';
 
 		$row = $AVE_DB->Query("
@@ -102,16 +108,16 @@ class Newsarchive
 
 		$query = $AVE_DB->Query("
 			SELECT
-				MONTH(FROM_UNIXTIME(DokStart)) AS `month`,
-				YEAR(FROM_UNIXTIME(DokStart)) AS `year`,
+				MONTH(FROM_UNIXTIME(document_published)) AS `month`,
+				YEAR(FROM_UNIXTIME(document_published)) AS `year`,
 				COUNT(*) AS nums
 			FROM " . PREFIX . "_documents
-			WHERE RubrikId IN (" . $row->newsarchive_rubrics . ")
+			WHERE rubric_id IN (" . $row->newsarchive_rubrics . ")
 			AND Id != '1'
 			AND Id != '" . PAGE_NOT_FOUND_ID . "'
-			AND Geloescht = '0'
-			AND DokStatus = '1'
-			AND DokStart > UNIX_TIMESTAMP(DATE_FORMAT((CURDATE() - INTERVAL 11 MONTH),'%Y-%m-01'))
+			AND document_deleted = '0'
+			AND document_status = '1'
+			AND document_published > UNIX_TIMESTAMP(DATE_FORMAT((CURDATE() - INTERVAL 11 MONTH),'%Y-%m-01'))
 			" . $doctime . "
 			GROUP BY `month`
 			ORDER BY `year` DESC,`month` DESC
@@ -174,7 +180,7 @@ class Newsarchive
 		$sql = $AVE_DB->Query("
 			SELECT
 				Id,
-				RubrikName
+				rubric_title
 			FROM " . PREFIX . "_rubrics
 		");
 		$newsarchive_rubrics = array();

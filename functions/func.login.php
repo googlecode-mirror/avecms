@@ -11,27 +11,27 @@ function user_login($login, $password, $attach_ip = 0, $keep_in = 0, $sleep = 0)
 	$row = $AVE_DB->Query("
 		SELECT
 			usr.Id,
-			usr.Benutzergruppe,
-			UserName,
-			Vorname,
-			Nachname,
-			Email,
-			Land,
-			Rechte,
-			Kennwort,
-			salt,
-			Status
+			usr.user_group,
+			usr.user_name,
+			usr.firstname,
+			usr.lastname,
+			usr.email,
+			usr.country,
+			usr.password,
+			usr.salt,
+			usr.status,
+			grp.user_group_permission
 		FROM
 			" . PREFIX . "_users AS usr
 		LEFT JOIN
 			" . PREFIX . "_user_groups AS grp
-				ON grp.Benutzergruppe = usr.Benutzergruppe
-		WHERE Email = '" . $login . "'
-		OR `UserName` = '" . $login . "'
+				ON grp.user_group = usr.user_group
+		WHERE email = '" . $login . "'
+		OR user_name = '" . $login . "'
 		LIMIT 1
 	")->FetchRow();
 
-	if (! (isset($row->Status) && $row->Status == '1' && $row->Kennwort == md5(md5($password . $row->salt)))) return false;
+	if (! (isset($row->status) && $row->status == '1' && $row->password == md5(md5($password . $row->salt)))) return false;
 
 	$salt = make_random_string();
 
@@ -44,25 +44,25 @@ function user_login($login, $password, $attach_ip = 0, $keep_in = 0, $sleep = 0)
 	$AVE_DB->Query("
 		UPDATE " . PREFIX . "_users
 		SET
-			ZuletztGesehen = '" . $time . "',
-			Kennwort       = '" . $hash . "',
-			salt           = '" . $salt . "',
-			user_ip        =  " . $u_ip . "
+			last_visit = '" . $time . "',
+			password   = '" . $hash . "',
+			salt       = '" . $salt . "',
+			user_ip    =  " . $u_ip . "
 		WHERE
 			Id = '" . $row->Id . "'
 	");
 
 	$_SESSION['user_id']       = $row->Id;
-	$_SESSION['user_name']     = get_username($row->UserName, $row->Vorname, $row->Nachname);
+	$_SESSION['user_name']     = get_username($row->user_name, $row->firstname, $row->lastname);
 	$_SESSION['user_pass']     = $hash;
-	$_SESSION['user_group']    = $row->Benutzergruppe;
-	$_SESSION['user_email']    = $row->Email;
-	$_SESSION['user_country']  = strtoupper($row->Land);
-	$_SESSION['user_language'] = strtolower($row->Land);
+	$_SESSION['user_group']    = $row->user_group;
+	$_SESSION['user_email']    = $row->email;
+	$_SESSION['user_country']  = strtoupper($row->country);
+	$_SESSION['user_language'] = strtolower($row->country);
 	$_SESSION['user_ip']       = $_SERVER['REMOTE_ADDR'];
 
-	$permissions = explode('|', preg_replace('/\s+/', '', $row->Rechte));
-	foreach ($permissions as $permission) $_SESSION[$permission] = 1;
+	$user_group_permissions = explode('|', preg_replace('/\s+/', '', $row->user_group_permission));
+	foreach ($user_group_permissions as $user_group_permission) $_SESSION[$user_group_permission] = 1;
 
 //	$_SESSION['admin_theme'] = DEFAULT_ADMIN_THEME_FOLDER;
 //	$_SESSION['admin_language']  = DEFAULT_LANGUAGE;
@@ -111,7 +111,7 @@ function auth_sessions()
 			SELECT 1
 			FROM " . PREFIX . "_users
 			WHERE Id = '" . (int)$_SESSION['user_id'] . "'
-			AND Kennwort = '" . addslashes($_SESSION['user_pass']) . "'
+			AND password = '" . addslashes($_SESSION['user_pass']) . "'
 			LIMIT 1
 		")->NumRows();
 
@@ -145,39 +145,39 @@ function auth_cookie()
 
 	$row = $AVE_DB->Query("
 		SELECT
-			usr.Benutzergruppe,
-			UserName,
-			Vorname,
-			Nachname,
-			Email,
-			Land,
-			Rechte,
-			Kennwort,
-			Status,
-			INET_NTOA(user_ip) AS ip
+			usr.user_group,
+			usr.user_name,
+			usr.firstname,
+			usr.lastname,
+			usr.email,
+			usr.country,
+			usr.password,
+			usr.status,
+			INET_NTOA(usr.user_ip) AS ip,
+			grp.user_group_permission
 		FROM
 			" . PREFIX . "_users AS usr
 		LEFT JOIN
 			" . PREFIX . "_user_groups AS grp
-				ON grp.Benutzergruppe = usr.Benutzergruppe
+				ON grp.user_group = usr.user_group
 		WHERE usr.Id = '" . $auth['id'] . "'
 		LIMIT 1
 	")->FetchRow();
 
 	if (empty($row)) return false;
-	if ( ($row->ip !== '0.0.0.0' && $row->ip !== $_SERVER['REMOTE_ADDR']) || !($row->Status === '1' && $row->Kennwort === $auth['hash']) ) return false;
+	if ( ($row->ip !== '0.0.0.0' && $row->ip !== $_SERVER['REMOTE_ADDR']) || !($row->status === '1' && $row->password === $auth['hash']) ) return false;
 
 	$_SESSION['user_id']       = (int)$auth['id'];
-	$_SESSION['user_name']     = get_username($row->UserName, $row->Vorname, $row->Nachname);
+	$_SESSION['user_name']     = get_username($row->user_name, $row->firstname, $row->lastname);
 	$_SESSION['user_pass']     = $auth['hash'];
-	$_SESSION['user_group']    = (int)$row->Benutzergruppe;
-	$_SESSION['user_email']    = $row->Email;
-	$_SESSION['user_country']  = strtoupper($row->Land);
-	$_SESSION['user_language'] = strtolower($row->Land);
+	$_SESSION['user_group']    = (int)$row->user_group;
+	$_SESSION['user_email']    = $row->email;
+	$_SESSION['user_country']  = strtoupper($row->country);
+	$_SESSION['user_language'] = strtolower($row->country);
 	$_SESSION['user_ip']       = $_SERVER['REMOTE_ADDR'];
 
-	$permissions = explode('|', preg_replace('/\s+/', '', $row->Rechte));
-	foreach ($permissions as $permission) $_SESSION[$permission] = 1;
+	$user_group_permissions = explode('|', preg_replace('/\s+/', '', $row->user_group_permission));
+	foreach ($user_group_permissions as $user_group_permission) $_SESSION[$user_group_permission] = 1;
 
 //	$_SESSION['admin_theme'] = DEFAULT_ADMIN_THEME_FOLDER;
 //	$_SESSION['admin_language']  = DEFAULT_LANGUAGE;

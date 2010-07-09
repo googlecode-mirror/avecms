@@ -7,7 +7,7 @@ if (defined('ACP'))
     $modul['ModulName'] = 'Форумы';
     $modul['ModulPfad'] = 'forums';
     $modul['ModulVersion'] = '1.2';
-    $modul['Beschreibung'] = 'Система форумов для cpengine, разработанная компанией dream4';
+    $modul['description'] = 'Система форумов для cpengine, разработанная компанией dream4';
     $modul['Autor'] = 'Bj&ouml;rn Wunderlich';
     $modul['MCopyright'] = '&copy; 2006 dream4';
     $modul['Status'] = 1;
@@ -70,7 +70,7 @@ if( (isset($_REQUEST['module']) && $_REQUEST['module'] == 'forums') || (isset($_
 		$row_gs = $AVE_DB->Query("
 			SELECT *
 			FROM " . PREFIX . "_modul_forum_grouppermissions
-			WHERE Benutzergruppe = '" . UGROUP . "'
+			WHERE user_group = '" . UGROUP . "'
 			LIMIT 1
 		")->FetchRow();
 

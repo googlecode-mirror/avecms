@@ -1,4 +1,4 @@
-<script language="Javascript" type="text/javascript" src="editarea/edit_area_full.js"></script>
+<script src="editarea/edit_area_full.js"></script>
 
 <div class="pageHeaderTitle" style="padding-top:7px">
 	<div class="h_module">&nbsp;</div>
@@ -12,7 +12,7 @@
 	<a href="index.php?do=modules&action=modedit&mod=gallery&moduleaction=1&cp={$sess}">&raquo;&nbsp;{#GalView#}</a>
 </div><br />
 
-<form method="post" name="gallery_form" action="index.php?do=modules&action=modedit&mod=gallery&moduleaction=editgallery&id={$smarty.request.id}&cp={$sess}&sub=save">
+<form method="post" name="gallery_form" action="index.php?do=modules&action=modedit&mod=gallery&moduleaction=editgallery&id={$smarty.request.id|escape}&cp={$sess}&sub=save">
 	{assign var=js_form value='gallery_form'}
 	<table width="100%" border="0" cellpadding="8" cellspacing="1" class="tableborder">
 		<col width="200" class="first">
@@ -48,62 +48,62 @@
 		<tr>
 			<td>{#Watermark#}</td>
 			<td>
-				<input name="watermark" type="text" id="watermark" value="{$gallery.watermark|escape}" size="40" style="width:500px" />
+				<input name="gallery_watermark" type="text" id="gallery_watermark" value="{$gallery.gallery_watermark|escape}" size="40" style="width:500px" />
 			</td>
 		</tr>
 
 		<tr>
 			<td>{#MaxWidth#}</td>
 			<td>
-				<input name="thumb_width" title="{#MaxWidthWarn#}" type="text" id="thumb_width" value="{$gallery.thumb_width}" size="5" maxlength="3" />
-				<input name="thumb_width_old" type="hidden" value="{$gallery.thumb_width}" />
+				<input name="gallery_thumb_width" title="{#MaxWidthWarn#}" type="text" id="gallery_thumb_width" value="{$gallery.gallery_thumb_width}" size="5" maxlength="3" />
+				<input name="thumb_width_old" type="hidden" value="{$gallery.gallery_thumb_width}" />
 			</td>
 		</tr>
 
 		<tr>
 			<td>{#MaxImagesERow#}</td>
 			<td>
-				<input name="image_on_line" type="text" id="image_on_line" value="{$gallery.image_on_line}" size="5" maxlength="2" />
+				<input name="gallery_image_on_line" type="text" id="gallery_image_on_line" value="{$gallery.gallery_image_on_line}" size="5" maxlength="2" />
 			</td>
 		</tr>
 
 		<tr>
 			<td class="first">{#MaxImagesPage#}</td>
 			<td>
-				<input name="image_on_page" type="text" id="image_on_page" value="{$gallery.image_on_page}" size="5" maxlength="4" />
+				<input name="gallery_image_on_page" type="text" id="gallery_image_on_page" value="{$gallery.gallery_image_on_page}" size="5" maxlength="4" />
 			</td>
 		</tr>
 
 		<tr>
 			<td>{#ShowHeader#}</td>
 			<td>
-				<input name="show_title" type="checkbox" id="show_title" value="1" {if $gallery.show_title == 1}checked="checked" {/if}/>
+				<input name="gallery_title_show" type="checkbox" id="gallery_title_show" value="1" {if $gallery.gallery_title_show == 1}checked="checked" {/if}/>
 			</td>
 		</tr>
 
 		<tr>
 			<td>{#Showdescr#}</td>
 			<td>
-				<input name="show_description" type="checkbox" id="show_description" value="1" {if $gallery.show_description == 1}checked="checked" {/if}/>
+				<input name="gallery_description_show" type="checkbox" id="gallery_description_show" value="1" {if $gallery.gallery_description_show == 1}checked="checked" {/if}/>
 			</td>
 		</tr>
 
 		<tr>
 			<td>{#ShowSize#}</td>
 			<td>
-				<input name="show_size" type="checkbox" id="show_size" value="1" {if $gallery.show_size == 1}checked="checked" {/if}/>
+				<input name="gallery_image_size_show" type="checkbox" id="gallery_image_size_show" value="1" {if $gallery.gallery_image_size_show == 1}checked="checked" {/if}/>
 			</td>
 		</tr>
 
 		<tr>
 			<td>{#OrderImage#}</td>
 			<td>
-				<select name="orderby" style="width:200px">
-					<option value="dateasc" {if $gallery.orderby == 'dateasc'}selected="selected" {/if}/>{#OrderDateAsc#}</option>
-					<option value="datedesc" {if $gallery.orderby == 'datedesc'}selected="selected" {/if}/>{#OrderDateDesc#}</option>
-					<option value="titleasc" {if $gallery.orderby == 'titleasc'}selected="selected" {/if}/>{#OrderTitleAsc#}</option>
-					<option value="titledesc" {if $gallery.orderby == 'titledesc'}selected="selected" {/if}/>{#OrderTitleDesc#}</option>
-					<option value="position" {if $gallery.orderby == 'position'}selected="selected" {/if}/>{#OrderPosition#}</option>
+				<select name="gallery_orderby" style="width:200px">
+					<option value="dateasc" {if $gallery.gallery_orderby == 'dateasc'}selected="selected" {/if}/>{#OrderDateAsc#}</option>
+					<option value="datedesc" {if $gallery.gallery_orderby == 'datedesc'}selected="selected" {/if}/>{#OrderDateDesc#}</option>
+					<option value="titleasc" {if $gallery.gallery_orderby == 'titleasc'}selected="selected" {/if}/>{#OrderTitleAsc#}</option>
+					<option value="titledesc" {if $gallery.gallery_orderby == 'titledesc'}selected="selected" {/if}/>{#OrderTitleDesc#}</option>
+					<option value="position" {if $gallery.gallery_orderby == 'position'}selected="selected" {/if}/>{#OrderPosition#}</option>
 				</select>
 			</td>
 		</tr>
@@ -111,51 +111,51 @@
 		<tr>
 			<td>{#TypeOut#}</td>
 			<td>
-				<select name="type_out" style="width:200px">
-					<option value="1" {if $gallery.type_out == 1}selected="selected" {/if}/>{#TypeOut1#}</option>
-					<option value="2" {if $gallery.type_out == 2}selected="selected" {/if}/>{#TypeOut2#}</option>
-					<option value="3" {if $gallery.type_out == 3}selected="selected" {/if}/>{#TypeOut3#}</option>
-					<option value="4" {if $gallery.type_out == 4}selected="selected" {/if}/>{#TypeOut4#}</option>
-					<option value="5" {if $gallery.type_out == 5}selected="selected" {/if}/>{#TypeOut5#}</option>
-					<option value="6" {if $gallery.type_out == 6}selected="selected" {/if}/>{#TypeOut6#}</option>
-					<option value="7" {if $gallery.type_out == 7}selected="selected" {/if}/>{#TypeOut7#}</option>
+				<select id="gallery_type" name="gallery_type" style="width:200px">
+					<option value="1" {if $gallery.gallery_type == 1}selected="selected" {/if}/>{#TypeOut1#}</option>
+					<option value="2" {if $gallery.gallery_type == 2}selected="selected" {/if}/>{#TypeOut2#}</option>
+					<option value="3" {if $gallery.gallery_type == 3}selected="selected" {/if}/>{#TypeOut3#}</option>
+					<option value="4" {if $gallery.gallery_type == 4}selected="selected" {/if}/>{#TypeOut4#}</option>
+					<option value="5" {if $gallery.gallery_type == 5}selected="selected" {/if}/>{#TypeOut5#}</option>
+					<option value="6" {if $gallery.gallery_type == 6}selected="selected" {/if}/>{#TypeOut6#}</option>
+					<option value="7" {if $gallery.gallery_type == 7}selected="selected" {/if}/>{#TypeOut7#}</option>
 				</select>
 			</td>
 		</tr>
 
-		<tr>
+		<tr class="tr-toggle">
 			<td>{#GalleryScripts#}</td>
 			<td>
-				<textarea name="script_out" cols="80" rows="10" id="script_out" style="width:100%">{$gallery.script_out|escape}</textarea>
-				{assign var=js_textfeld value='script_out'}
+				<textarea name="gallery_script" cols="80" rows="10" id="gallery_script" style="width:100%">{$gallery.gallery_script|escape}</textarea>
+				{assign var=js_textfeld value='gallery_script'}
 			</td>
 		</tr>
 
-		<tr>
+		<tr class="tr-toggle">
 			<td>{#GalleryScriptsTag#}</td>
 			<td>
 				<table width="100%" border="0" cellspacing="1" cellpadding="4">
 					<col class="first" width="130">
 					<col class="first">
 					<tr>
-						<td scope="row"><strong><a href="javascript:void(0);" onclick="editAreaLoader.insertTags('{$js_textfeld}', '[gal_id]', '');">[gal_id]</a></strong></td>
+						<td scope="row"><strong><a href="javascript:void(0);" onclick="editAreaLoader.insertTags('{$js_textfeld}', '[tag:gal:id]', '');">[tag:gal:id]</a></strong></td>
 						<td>{#GalleryTagId#}</td>
 					</tr>
 
 					<tr>
-						<td scope="row"><strong><a href="javascript:void(0);" onclick="editAreaLoader.insertTags('{$js_textfeld}', '[gal_folder]', '');">[gal_folder]</a></strong></td>
+						<td scope="row"><strong><a href="javascript:void(0);" onclick="editAreaLoader.insertTags('{$js_textfeld}', '[tag:gal:folder]', '');">[tag:gal:folder]</a></strong></td>
 						<td>{#GalleryTagFolder#}</td>
 					</tr>
 				</table>
 			</td>
 		</tr>
 
-		<tr>
+		<tr class="tr-toggle">
 			<td>{#ImageTpl#}</td>
 			<td>
-				<textarea name="image_tpl" cols="80" rows="10" id="image_tpl" style="width:100%">{$gallery.image_tpl|escape}</textarea>
+				<textarea name="gallery_image_template" cols="80" rows="10" id="gallery_image_template" style="width:100%">{$gallery.gallery_image_template|escape}</textarea>
 				<div class="infobox">
-					{assign var=js_textfeld value='image_tpl'}|&nbsp;
+					{assign var=js_textfeld value='gallery_image_template'}
 					<a href="javascript:void(0);" onclick="editAreaLoader.insertTags('{$js_textfeld}', '<p>', '</p>');">P</a>&nbsp;|&nbsp;
 					<a href="javascript:void(0);" onclick="editAreaLoader.insertTags('{$js_textfeld}', '<strong>', '</strong>');">B</a>&nbsp;|&nbsp;
 					<a href="javascript:void(0);" onclick="editAreaLoader.insertTags('{$js_textfeld}', '<em>', '</em>');">I</a>&nbsp;|&nbsp;
@@ -166,48 +166,49 @@
 					<a href="javascript:void(0);" onclick="editAreaLoader.insertTags('{$js_textfeld}', '<span>', '</span>');">SPAN</a>&nbsp;|&nbsp;
 					<a href="javascript:void(0);" onclick="editAreaLoader.insertTags('{$js_textfeld}', '<pre>', '</pre>');">PRE</a>&nbsp;|&nbsp;
 					<a href="javascript:void(0);" onclick="editAreaLoader.insertTags('{$js_textfeld}', '<br />', '');">BR</a>&nbsp;|&nbsp;
+					<a href="javascript:void(0);" onclick="editAreaLoader.insertTags('{$js_textfeld}', '\t', '');">TAB</a>&nbsp;
 				</div>
 			</td>
 		</tr>
 
-		<tr>
+		<tr class="tr-toggle">
 			<td>{#ImageTplTag#}</td>
 			<td>
 				<table width="100%" border="0" cellspacing="1" cellpadding="4">
 					<col class="first" width="130">
 					<col class="first">
 					<tr>
-						<td scope="row"><strong><a href="javascript:void(0);" onclick="editAreaLoader.insertTags('{$js_textfeld}', '[gal_id]', '');">[gal_id]</a></strong></td>
+						<td scope="row"><strong><a href="javascript:void(0);" onclick="editAreaLoader.insertTags('{$js_textfeld}', '[tag:gal:id]', '');">[tag:gal:id]</a></strong></td>
 						<td>{#GalleryTagId#}</td>
 					</tr>
 
 					<tr>
-						<td scope="row"><strong><a href="javascript:void(0);" onclick="editAreaLoader.insertTags('{$js_textfeld}', '[gal_folder]', '');">[gal_folder]</a></strong></td>
+						<td scope="row"><strong><a href="javascript:void(0);" onclick="editAreaLoader.insertTags('{$js_textfeld}', '[tag:gal:folder]', '');">[tag:gal:folder]</a></strong></td>
 						<td>{#GalleryTagFolder#}</td>
 					</tr>
 
 					<tr>
-						<td scope="row"><strong><a href="javascript:void(0);" onclick="editAreaLoader.insertTags('{$js_textfeld}', '[img_id]', '');">[img_id]</a></strong></td>
+						<td scope="row"><strong><a href="javascript:void(0);" onclick="editAreaLoader.insertTags('{$js_textfeld}', '[tag:img:id]', '');">[tag:img:id]</a></strong></td>
 						<td>{#GalleryTagImgId#}</td>
 					</tr>
 
 					<tr>
-						<td scope="row"><strong><a href="javascript:void(0);" onclick="editAreaLoader.insertTags('{$js_textfeld}', '[img_title]', '');">[img_title]</a></strong></td>
+						<td scope="row"><strong><a href="javascript:void(0);" onclick="editAreaLoader.insertTags('{$js_textfeld}', '[tag:img:title]', '');">[tag:img:title]</a></strong></td>
 						<td>{#GalleryTagImgTitle#}</td>
 					</tr>
 
 					<tr>
-						<td scope="row"><strong><a href="javascript:void(0);" onclick="editAreaLoader.insertTags('{$js_textfeld}', '[img_description]', '');">[img_description]</a></strong></td>
+						<td scope="row"><strong><a href="javascript:void(0);" onclick="editAreaLoader.insertTags('{$js_textfeld}', '[tag:img:description]', '');">[tag:img:description]</a></strong></td>
 						<td>{#GalleryTagImgDesc#}</td>
 					</tr>
 
 					<tr>
-						<td scope="row"><strong><a href="javascript:void(0);" onclick="editAreaLoader.insertTags('{$js_textfeld}', '[img_filename]', '');">[img_filename]</a></strong></td>
+						<td scope="row"><strong><a href="javascript:void(0);" onclick="editAreaLoader.insertTags('{$js_textfeld}', '[tag:img:filename]', '');">[tag:img:filename]</a></strong></td>
 						<td>{#GalleryTagImgFilename#}</td>
 					</tr>
 
 					<tr>
-						<td scope="row"><strong><a href="javascript:void(0);" onclick="editAreaLoader.insertTags('{$js_textfeld}', '[img_thumbnail]', '');">[img_thumbnail]</a></strong></td>
+						<td scope="row"><strong><a href="javascript:void(0);" onclick="editAreaLoader.insertTags('{$js_textfeld}', '[tag:img:thumbnail]', '');">[tag:img:thumbnail]</a></strong></td>
 						<td>{#GalleryTagImgThumb#}</td>
 					</tr>
 				</table>
@@ -215,21 +216,26 @@
 		</tr>
 
 		<tr>
-			<td colspan="2">
+			<td colspan="2" class="third">
 				<input type="submit" class="button" value="{#ButtonSave#}" />
 			</td>
 		</tr>
 	</table><br />
 </form>
 
+<script>
 {if $empty_gallery_title == 1}
-	<script type="text/javascript" language="JavaScript">
-		alert("{#EmptyGalleryTitle#}");
-	</script>
+alert("{#EmptyGalleryTitle#}");
+{/if}{if $folder_exist == 1}
+alert("{#FolderExists#}");
+{/if}{if $gallery.gallery_type != 7}
+$('.tr-toggle').hide();
 {/if}
-
-{if $folder_exist == 1}
-	<script type="text/javascript" language="JavaScript">
-		alert("{#FolderExists#}");
-	</script>
-{/if}
+$(document).ready(function(){ldelim}
+	$('#gallery_type').change(function(){ldelim}
+		var gtype = $('#gallery_type').val();
+		if (gtype == 7) $('.tr-toggle').show();
+		else $('.tr-toggle').hide();
+	{rdelim});
+{rdelim});
+</script>

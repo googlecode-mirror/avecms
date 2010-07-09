@@ -3,7 +3,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=windows-1251" />
 <title>{#RECOMMEND_TITLE#}</title>
-<link href="templates/{$smarty.request.theme_folder}/css/style.css" rel="stylesheet" type="text/css" media="screen" />
+<link href="templates/{$smarty.request.theme_folder|escape}/css/style.css" rel="stylesheet" type="text/css" media="screen" />
 </head>
 <body id="body_popup">
 <div id="module_header">

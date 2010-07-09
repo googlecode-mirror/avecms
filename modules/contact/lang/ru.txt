@@ -22,6 +22,7 @@ CONTACT_CHECK_END2         = ", которое является обязательным к заполнению. Пожа
 CONTACT_FORM_RECIVER       = "Адресат:"
 CONTACT_IN_SUBJECT         = "Тема сообщения"
 CONTACT_IN_EMAIL           = "Контактный E-mail"
+CONTACT_NO_ACCESS          = "Запрошенная контактная форма не существует."
 
 
 [admin]

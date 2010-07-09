@@ -2,7 +2,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=windows-1251">
-<title>({$smarty.session.user_name})</title>
+<title>({$smarty.session.user_name|escape})</title>
 <meta name="robots" content="noindex,nofollow">
 <meta http-equiv="pragma" content="no-cache">
 <meta name="generator" content="">
@@ -41,7 +41,7 @@
 			<td width="100%">
 				{assign var=height value=490}
 				<div style="border:1px solid #D4D4D4;overflow:hidden;height:{$height}px;width:100%">
-					<iframe frameborder="0" name="zf" id="zf" width="100%" height="{$height}" scrolling="Yes" src="browser.php?typ={$smarty.request.typ}&cpengine={$sess}&dir=/&action=list"></iframe>
+					<iframe frameborder="0" name="zf" id="zf" width="100%" height="{$height}" scrolling="Yes" src="browser.php?typ={$smarty.request.typ|escape}&cpengine={$sess}&dir=/&action=list"></iframe>
 				</div>
 			</td>
 		</tr>
@@ -68,7 +68,7 @@ function submitTheForm() {ldelim}
 	{rdelim}
 	else {ldelim}
 {if $smarty.request.fillout=='textfield'}
-		window.opener.document.dokument['{$smarty.request.target}'].value = document.dat.dateiname.value + document.dat.fn.value;
+		window.opener.document.dokument['{$smarty.request.target|escape}'].value = document.dat.dateiname.value + document.dat.fn.value;
 {else}
 {if $smarty.request.target=='filename'}
 		window.opener.document.target['f_href'].value = 'uploads' + document.dat.dateiname.value + document.dat.fn.value;
@@ -90,7 +90,7 @@ function submitTheForm() {ldelim}
 {/if}
 
 {elseif $smarty.request.target=='navi'}
-		window.opener.document.getElementById('{$smarty.request.id}').value = '{$cppath}/uploads' + document.dat.dateiname.value + document.dat.fn.value;
+		window.opener.document.getElementById('{$smarty.request.id|escape}').value = '{$cppath}/uploads' + document.dat.dateiname.value + document.dat.fn.value;
 
 {elseif $smarty.request.target=='img_feld' || $target_img=='img_feld'}
 		window.opener.document.getElementById('img_feld__{$pop_id}').value = 'uploads' + document.dat.dateiname.value + document.dat.fn.value;
@@ -102,14 +102,14 @@ function submitTheForm() {ldelim}
 
 {elseif $smarty.request.target!='all'}
 {if $smarty.request.fillout=='dl'}
-		window.opener.document.getElementById('{$smarty.request.target}').value = 'uploads' + document.dat.dateiname.value + document.dat.fn.value;
+		window.opener.document.getElementById('{$smarty.request.target|escape}').value = 'uploads' + document.dat.dateiname.value + document.dat.fn.value;
 {else}
 		window.opener.updatePreview();
 {/if}
 
 {else}
-		window.opener.document.dokument['img_{$smarty.request.target}'].{if $smarty.request.target=='vide'}dyn{/if}src = '{$cppath}/uploads' + document.dat.dateiname.value + document.dat.fn.value;
-		window.opener.document.dokument['{$smarty.request.target}'].value = document.dat.dateiname.value + document.dat.fn.value;
+		window.opener.document.dokument['img_{$smarty.request.target|escape}'].{if $smarty.request.target=='vide'}dyn{/if}src = '{$cppath}/uploads' + document.dat.dateiname.value + document.dat.fn.value;
+		window.opener.document.dokument['{$smarty.request.target|escape}'].value = document.dat.dateiname.value + document.dat.fn.value;
 {/if}
 {/if}
 		setTimeout("self.close();", 100);
@@ -122,12 +122,12 @@ function NewFolder() {ldelim}
 		alert('{#MAIN_NO_ADD_FOLDER#}');
 	{rdelim}
 	else {ldelim}
-		parent.frames['zf'].location.href='browser.php?typ={$smarty.request.typ}&dir=' + document.dat.dateiname.value + '&cpengine={$sess}&action=list&newdir=' + dname;
+		parent.frames['zf'].location.href='browser.php?typ={$smarty.request.typ|escape}&dir=' + document.dat.dateiname.value + '&cpengine={$sess}&action=list&newdir=' + dname;
 	{rdelim}
 {rdelim}
 
 function updlg() {ldelim}
-	var url = 'browser.php?cpengine={$sess}&action=upload&pfad=' + document.dat.dateiname.value + '&typ={$smarty.request.typ}';
+	var url = 'browser.php?cpengine={$sess}&action=upload&pfad=' + document.dat.dateiname.value + '&typ={$smarty.request.typ|escape}';
 	var winWidth = 500;
 	var winHeight = 300;
 	var w = (screen.width - winWidth)/2;

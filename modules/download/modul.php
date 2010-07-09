@@ -7,7 +7,7 @@ if (defined('ACP'))
     $modul['ModulName'] = 'Download';
     $modul['ModulPfad'] = 'download';
     $modul['ModulVersion'] = '2.0';
-    $modul['Beschreibung'] = 'Download-System, с аддоном позвол€ющим назначать плату за скачивание файла.';
+    $modul['description'] = 'Download-System, с аддоном позвол€ющим назначать плату за скачивание файла.';
     $modul['Autor'] = 'cron';
     $modul['MCopyright'] = 'cron';
     $modul['Status'] = 1;

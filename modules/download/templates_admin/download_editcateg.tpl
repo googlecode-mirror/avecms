@@ -14,10 +14,10 @@
   <tr>
     <td class="first">{#CatParent#}</td>
     <td class="second">
-<select style="width:250px" name="Elter">
+<select style="width:250px" name="parent_id">
 <option value="0">{#ProductCategsNoParent#}</option>
 {foreach from=$Categs item=pc}
-<option value="{$pc->Id}" {if $pc->Elter == 0}style="font-weight:bold"{/if} {if $pc->Id==$smarty.request.Id}selected="selected"{/if}>{$pc->visible_title}</option>
+<option value="{$pc->Id}" {if $pc->parent_id == 0}style="font-weight:bold"{/if} {if $pc->Id==$smarty.request.Id}selected="selected"{/if}>{$pc->visible_title}</option>
 {/foreach}
 </select>	</td>
   </tr>
@@ -32,19 +32,19 @@
 	<br />
      <small>{#GroupInf#}</small>	 </td>
     <td class="second">
-	<select name="Gruppen[]" size="8" multiple="multiple">
+	<select name="user_group[]" size="8" multiple="multiple">
 	{foreach from=$Groups item=g}
-      <option value="{$g->Benutzergruppe}" {if $GruppenErlaubt}{if in_array($g->Benutzergruppe,$GruppenErlaubt)} selected="selected"{/if}{/if}>{$g->Name|stripslashes}</option>
+      <option value="{$g->user_group}" {if $GruppenErlaubt}{if in_array($g->user_group,$GruppenErlaubt)} selected="selected"{/if}{/if}>{$g->user_group_name|escape}</option>
 	 {/foreach}
       </select>	  </td>
   </tr>
-  
+
   <tr>
     <td class="first">{#CatPosi#}</td>
     <td class="second">
-	<select name="Rang" id="Rang">
+	<select name="position" id="position">
       {section name=r loop=100}
-	  <option value="{$smarty.section.r.index+1}" {if $row->Rang==$smarty.section.r.index+1}selected="selected"{/if}>{$smarty.section.r.index+1}</option>
+	  <option value="{$smarty.section.r.index+1}" {if $row->position==$smarty.section.r.index+1}selected="selected"{/if}>{$smarty.section.r.index+1}</option>
 	  {/section}
     </select>
     </td>
