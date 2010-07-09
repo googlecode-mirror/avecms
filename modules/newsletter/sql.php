@@ -17,7 +17,7 @@
 $modul_sql_install = array();
 $modul_sql_deinstall = array();
 
-$modul_sql_deinstall[] = "DROP TABLE CPPREFIX_modul_newsletter";
+$modul_sql_deinstall[] = "DROP TABLE IF EXISTS CPPREFIX_modul_newsletter";
 
 $modul_sql_install[] = "CREATE TABLE CPPREFIX_modul_newsletter (
   id int(10) unsigned NOT NULL auto_increment,
