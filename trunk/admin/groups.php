@@ -24,18 +24,14 @@ $AVE_Template->config_load(BASE_DIR . '/admin/lang/' . $_SESSION['admin_language
 switch ($_REQUEST['action'])
 {
 	case '':
-		if (check_permission('group'))
+		if (check_permission_acp('group'))
 		{
 			$AVE_User->userGroupListShow();
-		}
-		else
-		{
-			define('NOPERM', 1);
 		}
 		break;
 
 	case 'grouprights':
-		if (check_permission('group_edit'))
+		if (check_permission_acp('group_edit'))
 		{
 			switch ($_REQUEST['sub'])
 			{
@@ -50,31 +46,19 @@ switch ($_REQUEST['action'])
 					break;
 			}
 		}
-		else
-		{
-			define('NOPERM', 1);
-		}
 		break;
 
 	case 'new':
-		if (check_permission('group_new'))
+		if (check_permission_acp('group_new'))
 		{
 			$AVE_User->userGroupNew();
-		}
-		else
-		{
-			define('NOPERM', 1);
 		}
 		break;
 
 	case 'delete':
-		if (check_permission('group_edit'))
+		if (check_permission_acp('group_edit'))
 		{
 			$AVE_User->userGroupDelete($_REQUEST['Id']);
-		}
-		else
-		{
-			define('NOPERM', 1);
 		}
 		break;
 }

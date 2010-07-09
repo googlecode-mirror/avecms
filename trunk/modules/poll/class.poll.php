@@ -1,72 +1,85 @@
 <?php
 
-class poll
+class Poll
 {
 
 /**
  *	СВОЙСТВА
  */
 
-	var $_adminlimit = 15;
+	var $_adminlimit = 5;
 	var $_limit = 5;
 	var $_commentwords = 1000;
-	var $_anti_spam = 1;
+	var $_antispam = 0;
+
+/**
+ *	ВНУТРЕННИЕ МЕТОДЫ
+ */
+
+	function _pollLinkRewrite($string)
+	{
+		return (REWRITE_MODE) ? PollRewrite($string) : $string;
+	}
 
 /**
  *	ВНЕШНИЕ МЕТОДЫ
  */
 
 	/**
+	 * Методы публичной части
+	 */
+
+	/**
 	 * Отображение опроса (вывод тэгами)
 	 *
-	 * @param string $tpl_dir - путь к папке с шаблонами модуля
-	 * @param string $lang_file - путь к языковому файлу модуля
-	 * @param int $id - идентификатор опроса
+	 * @param string $tpl_dir	путь к папке с шаблонами модуля
+	 * @param string $lang_file	путь к языковому файлу модуля
+	 * @param int $pid			идентификатор опроса
 	 */
-	function showPoll($tpl_dir, $lang_file, $id)
+	function pollShow($tpl_dir, $lang_file, $pid)
 	{
 		global $AVE_DB, $AVE_Template;
 
-		if (isset($_REQUEST['module']) && $_REQUEST['module'] == 'poll') return;
+//		if (isset($_REQUEST['module']) && $_REQUEST['module'] == 'poll') return;
 
 		$AVE_Template->config_load($lang_file, 'showpoll');
 
-		$sql = $AVE_DB->Query("
+		$row = $AVE_DB->Query("
 			SELECT
 				poll.*,
-				SUM(itm.hits) AS sumhits
+				SUM(itm.poll_item_hits) AS sumhits
 			FROM
 				" . PREFIX . "_modul_poll AS poll
 			LEFT JOIN
 				" . PREFIX . "_modul_poll_items AS itm
-					ON pollid = poll.id
+					ON poll_id = poll.id
 			WHERE
-				active = '1' AND
-				poll.title != '' AND
-				poll.id = '" . $id . "' AND
-				`start` < '" . time() . "'
+				poll.id = '" . $pid . "' AND
+				poll.poll_title != '' AND
+				poll.poll_status = '1' AND
+				poll.poll_start < '" . time() . "'
 			GROUP BY poll.id
-		");
-		$row = $sql->FetchRow();
+		")->FetchRow();
 
 		if (!$row) return;
 
-		$uid = ($row->uid == '') ? '' : explode(',', $row->uid);
-		$ip_a = ($row->ip == '') ? '' : explode(',', $row->ip);
-		$group_id = ($row->group_id == '') ? '' : explode(',', $row->group_id);
-		$ip = empty($_SERVER['REMOTE_ADDR']) ? '' : $_SERVER['REMOTE_ADDR'];
+		$poll_groups_id = empty($row->poll_groups_id) ? array() : explode(',', $row->poll_groups_id);
+		$poll_users_id  = empty($row->poll_users_id)  ? array() : explode(',', $row->poll_users_id);
+		$poll_users_ip  = empty($row->poll_users_ip)  ? array() : explode(',', $row->poll_users_ip);
 
-		if (@in_array($ip, $ip_a) ||
-			@in_array($_SESSION['user_id'], $uid) ||
-			$_COOKIE['poll_' . $id] == '1')
+		$current_user_ip = empty($_SERVER['REMOTE_ADDR']) ? '' : $_SERVER['REMOTE_ADDR'];
+
+		if (@in_array($current_user_ip, $poll_users_ip) ||
+			@in_array($_SESSION['user_id'], $poll_users_id) ||
+			(isset($_COOKIE['poll_' . $pid]) && $_COOKIE['poll_' . $pid] == '1') )
 		{
 				$row->message = $AVE_Template->get_config_vars('POLL_ALREADY_POLL');
 		}
-		elseif (!(@in_array(UGROUP, $group_id)))
+		elseif (!(@in_array(UGROUP, $poll_groups_id)))
 		{
 			$row->message = $AVE_Template->get_config_vars('POLL_NO_PERMISSION');
 		}
-		elseif ($row->ende < time())
+		elseif ($row->poll_end < time())
 		{
 			$row->message = $AVE_Template->get_config_vars('POLL_EXPIRED');
 		}
@@ -75,19 +88,19 @@ class poll
 		$sql = $AVE_DB->Query("
 			SELECT
 				*,
-				" . ($row->sumhits > 0 ? 'ROUND(hits*100/' . $row->sumhits . ')' : 0) . " AS sum
+				" . ($row->sumhits > 0 ? 'ROUND(poll_item_hits*100/' . $row->sumhits . ')' : 0) . " AS sum
 			FROM " . PREFIX . "_modul_poll_items
-			WHERE pollid = '" . $id . "'
-			ORDER BY posi ASC
+			WHERE poll_id = '" . $pid . "'
+			ORDER BY poll_item_position ASC
 		");
 		while ($row_items = $sql->FetchRow())
 		{
 			array_push($items, $row_items);
 		}
 
-		$AVE_Template->assign('formaction', 'index.php?module=poll&amp;action=vote&amp;pid=' . $id);
-		$AVE_Template->assign('formaction_result', $this->_PL_Rewrite('index.php?module=poll&amp;action=result&amp;pid=' . $id));
-		$AVE_Template->assign('formaction_archive', $this->_PL_Rewrite('index.php?module=poll&amp;action=archive'));
+		$AVE_Template->assign('formaction', 'index.php?module=poll&amp;action=vote&amp;pid=' . $pid);
+		$AVE_Template->assign('formaction_result', $this->_pollLinkRewrite('index.php?module=poll&amp;action=result&amp;pid=' . $pid));
+		$AVE_Template->assign('formaction_archive', $this->_pollLinkRewrite('index.php?module=poll&amp;action=archive'));
 
 		$AVE_Template->assign('poll', $row);
 		$AVE_Template->assign('items', $items);
@@ -105,226 +118,271 @@ class poll
 	/**
 	 * Учет результатов опроса
 	 *
-	 * @param int $pid - идентификатор опроса
+	 * @param int $pid	идентификатор опроса
 	 */
-	function vote($pid)
+	function pollVote($pid)
 	{
 		global $AVE_DB;
 
-		$sql = $AVE_DB->Query("
+		$row = $AVE_DB->Query("
 			SELECT *
 			FROM " . PREFIX . "_modul_poll
 			WHERE id = '" . $pid . "'
-		");
-		$row = $sql->FetchRow();
+		")->FetchRow();
 
-		$uid  = ($row->uid == '') ? $row->uid : explode(',', $row->uid);
-		$ip_a = ($row->ip == '')  ? $row->ip  : explode(',', $row->ip);
-		$group_id = ($row->group_id == '') ? $row->group_id : explode(',', $row->group_id);
-		$ip = empty($_SERVER['REMOTE_ADDR']) ? '' : $_SERVER['REMOTE_ADDR'];
+		$poll_groups_id = empty($row->poll_groups_id) ? array() : explode(',', $row->poll_groups_id);
+		$poll_users_id  = empty($row->poll_users_id)  ? array() : explode(',', $row->poll_users_id);
+		$poll_users_ip  = empty($row->poll_users_ip)  ? array() : explode(',', $row->poll_users_ip);
 
-		$back = $this->_PL_Rewrite('index.php?module=poll&amp;action=result&amp;pid=' . $pid);
+		$current_user_ip = empty($_SERVER['REMOTE_ADDR']) ? '' : $_SERVER['REMOTE_ADDR'];
 
-		if (@in_array($ip, $ip_a) ||
-			@in_array($_SESSION['user_id'], $uid) ||
+		$back = $this->_pollLinkRewrite('index.php?module=poll&amp;action=result&amp;pid=' . $pid);
+
+		if (!(@in_array(UGROUP, $poll_groups_id)))
+		{
+			header('Location:' . $back);
+			exit;
+		}
+
+		if (@in_array($current_user_ip, $poll_users_ip) ||
+			@in_array($_SESSION['user_id'], $poll_users_id) ||
 			$_COOKIE['poll_' . $pid] == '1')
 		{
 			header('Location:' . $back);
-			return;
-		}
-
-		if (!(@in_array(UGROUP, $group_id)))
-		{
-			header('Location:' . $back);
-			return;
+			exit;
 		}
 
 		setcookie('poll_' . $pid, '1', time() + 3600 * 3600);
 
 		$AVE_DB->Query("
 			UPDATE " . PREFIX . "_modul_poll_items
-			SET hits = hits + 1
+			SET poll_item_hits = poll_item_hits + 1
 			WHERE id = '" . (int)$_POST['p_item'] . "'
 		");
 
 		$AVE_DB->Query("
 			UPDATE " . PREFIX . "_modul_poll
 			SET
-				ip = CONCAT_WS(',', ip, '" . $ip . "')
-				" . ((UGROUP!='2') ? ", uid = CONCAT_WS(',', uid, '" . $_SESSION['user_id'] . "')" : '') . "
+				poll_users_ip = CONCAT_WS(',', poll_users_ip, '" . $current_user_ip . "')
+				" . ((UGROUP != 2) ? ", poll_users_id = CONCAT_WS(',', poll_users_id, '" . $_SESSION['user_id'] . "')" : '') . "
 			WHERE
 				id = '" . $pid . "'
 		");
 
 		header('Location:' . $back);
+		exit;
 	}
 
 	/**
 	 * Подробная информация и статистика опроса, комментарии пользователей
 	 *
-	 * @param string $tpl_dir - путь к папке с шаблонами модуля
-	 * @param string $lang_file - путь к языковому файлу модуля
-	 * @param int $pid - идентификатор опроса
+	 * @param string $tpl_dir	путь к папке с шаблонами модуля
+	 * @param string $lang_file	путь к языковому файлу модуля
+	 * @param int $pid			идентификатор опроса
 	 */
-	function showResult($tpl_dir, $lang_file, $pid)
+	function pollResultShow($tpl_dir, $lang_file, $pid)
 	{
 		global $AVE_DB, $AVE_Template;
 
 		$AVE_Template->config_load($lang_file, 'showresult');
 
-		$sql = $AVE_DB->Query("
+		if (isset($_REQUEST['sub']) && $_REQUEST['sub'] == 'new')
+		{
+			$errors = $this->pollCommentNew($pid);
+
+			if (sizeof($errors) == 0)
+			{
+				header('Location:' . $this->_pollLinkRewrite('index.php?module=poll&amp;action=result&amp;pid=' . $pid));
+				exit;
+			}
+
+			$AVE_Template->assign('errors', $errors);
+		}
+
+		$poll = $AVE_DB->Query("
 			SELECT
 				poll.*,
-				SUM(itm.hits) AS votes
+				SUM(itm.poll_item_hits) AS votes
 			FROM
 				" . PREFIX . "_modul_poll AS poll
 			LEFT JOIN
 				" . PREFIX . "_modul_poll_items AS itm
-					ON pollid = poll.id
+					ON poll_id = poll.id
 			WHERE
-				active = '1' AND
-				poll.title != '' AND
 				poll.id = '" . $pid . "' AND
-				`start` < '" . time() . "'
+				poll.poll_title != '' AND
+				poll.poll_status = '1' AND
+				poll.poll_start < '" . time() . "'
 			GROUP BY poll.id
-		");
-		$row = $sql->FetchRow();
+		")->FetchRow();
 
-		if (!$row) return;
+		if ($poll === false) return;
 
 		$items = array();
 		$sql = $AVE_DB->Query("
 			SELECT
 				*,
-				" . ($row->votes > 0 ? 'ROUND(hits*100/' . $row->votes . ')' : 0) . " AS sum
+				" . ($poll->votes > 0 ? 'ROUND(poll_item_hits*100/' . $poll->votes . ')' : 0) . " AS sum
 			FROM " . PREFIX . "_modul_poll_items
-			WHERE pollid = '" . $pid . "'
-			ORDER BY posi ASC
+			WHERE poll_id = '" . $pid . "'
+			ORDER BY poll_item_position ASC
 		");
 		while ($row_items = $sql->FetchRow())
 		{
 			array_push($items, $row_items);
 		}
 
-		if ($row->can_comment == '1')
+		if ($poll->poll_can_comment == 1)
 		{
+			include_once(BASE_DIR . '/lib/markitup/sets/bbcode/markitup.bbcode-parser.php');
+
 			$comments = array();
 			$sql = $AVE_DB->Query("
 				SELECT
 					cmnt.*,
-					IFNULL(Vorname, '') AS firstname,
-					IFNULL(Nachname, '" . $AVE_Template->get_config_vars('POLL_GUEST') . "') AS lastname
+					IFNULL(firstname, '') AS firstname,
+					IFNULL(lastname, '" . $AVE_Template->get_config_vars('POLL_GUEST') . "') AS lastname
 				FROM
 					" . PREFIX . "_modul_poll_comments AS cmnt
 				LEFT JOIN
 					" . PREFIX . "_users AS usr
-						ON usr.Id = cmnt.author
-				WHERE pollid = '" . $pid . "'
-				ORDER BY ctime DESC
+						ON usr.Id = cmnt.poll_comment_author_id
+				WHERE poll_id = '" . $pid . "'
+				ORDER BY poll_comment_time DESC
 			");
 			while ($row_comments = $sql->FetchRow())
 			{
+				$row_comments->poll_comment_text = BBCode2Html($row_comments->poll_comment_text);
+
 				array_push($comments, $row_comments);
 			}
-			$AVE_Template->assign('count_comments', $sql->NumRows());
+
+			$poll->count_comments = $sql->NumRows();
 		}
 
-		$ip_a = ($row->ip == '') ? '' : explode(',', $row->ip);
-		$uid = ($row->uid == '') ? '' : explode(',', $row->uid);
-		$ip = empty($_SERVER['REMOTE_ADDR']) ? '' : $_SERVER['REMOTE_ADDR'];
+		$poll_users_id = empty($poll->poll_users_id) ? array() : explode(',', $poll->poll_users_id);
+		$poll_users_ip = empty($poll->poll_users_ip) ? array() : explode(',', $poll->poll_users_ip);
 
-		if (@in_array($ip, $ip_a) ||
-			@in_array($_SESSION['user_id'], $uid) ||
+		$current_user_ip = empty($_SERVER['REMOTE_ADDR']) ? '' : $_SERVER['REMOTE_ADDR'];
+
+		$is_vote = 1;
+		if (@in_array($current_user_ip, $poll_users_ip) ||
+			@in_array($_SESSION['user_id'], $poll_users_id) ||
 			(isset($_COOKIE['poll_' . $pid]) && $_COOKIE['poll_' . $pid] == '1'))
 		{
-			$vote = 1;
+			$is_vote = 0;
 		}
 
+		$rights = 0;
 		$groups = array();
-		if ($row->group_id != '')
+		if ($poll->poll_groups_id != '')
 		{
 			$sql = $AVE_DB->Query("
 				SELECT
-					Benutzergruppe,
-					Name
+					user_group,
+					user_group_name
 				FROM
 					" . PREFIX . "_user_groups
 				WHERE
-					Benutzergruppe IN(" . $row->group_id . ")
+					user_group IN(" . $poll->poll_groups_id . ")
 			");
 			while ($row_g = $sql->FetchRow())
 			{
-				if (UGROUP == $row_g->Benutzergruppe) $rights = 1;
-				array_push($groups, $row_g->Name);
+				if (UGROUP == $row_g->user_group) $rights = 1;
+				array_push($groups, $row_g->user_group_name);
 			}
 		}
-		$row->can_vote = (empty($vote) && !empty($rights)) ? '1' : '0';
-		$row->groups = implode(', ', $groups);
 
-		$AVE_Template->assign('formaction', 'index.php?module=poll&amp;action=vote&amp;pid=' . $pid);
-		$AVE_Template->assign('formaction_result', $this->_PL_Rewrite('index.php?module=poll&amp;action=result&amp;pid=' . $pid));
-		$AVE_Template->assign('formaction_archive', $this->_PL_Rewrite('index.php?module=poll&amp;action=archive'));
-		$AVE_Template->assign('formaction_comment', $this->_PL_Rewrite('index.php?module=poll&amp;action=form&amp;pid=' . $pid . '&amp;theme_folder=' . THEME_FOLDER . '&amp;pop=1'));
+		$poll->can_vote = ($is_vote == 1 && $rights == 1) ? 1 : 0;
+		$poll->groups = implode(', ', $groups);
+		$poll->can_comment = ($poll->poll_status == 1 && $poll->poll_can_comment == 1 && $rights == 1) ? 1 : 0;
+		$poll->anti_spam = ($this->_antispam == 1 && function_exists('imagettftext') && function_exists('imagejpeg')) ? 1 : 0;
+		$poll->comment_max_chars = $this->_commentwords;
+		$poll->items = $items;
+		$poll->comments = $comments;
+		$poll->formaction = 'index.php?module=poll&amp;action=vote&amp;pid=' . $pid;
+		$poll->link_result = $this->_pollLinkRewrite('index.php?module=poll&amp;action=result&amp;pid=' . $pid);
+//		$poll->link_archive = $this->_pollLinkRewrite('index.php?module=poll&amp;action=archive');
+//		$poll->link_comment = $this->_pollLinkRewrite('index.php?module=poll&amp;action=form&amp;pop=1&amp;pid=' . $pid);
 
-		$AVE_Template->assign('poll', $row);
-		$AVE_Template->assign('items', $items);
-		$AVE_Template->assign('comments', $comments);
+		$AVE_Template->assign('poll', $poll);
 
-		define('MODULE_SITE', $AVE_Template->get_config_vars('POLL_PAGE_TITLE_PREFIX') . $row->title);
+		define('MODULE_SITE', $AVE_Template->get_config_vars('POLL_PAGE_TITLE_PREFIX') . $poll->poll_title);
 		define('MODULE_CONTENT', $AVE_Template->fetch($tpl_dir . 'result.tpl'));
 	}
 
 	/**
 	 * Список завершенных и действующих опросов
 	 *
-	 * @param string $tpl_dir - путь к папке с шаблонами модуля
-	 * @param string $lang_file - путь к языковому файлу модуля
+	 * @param string $tpl_dir	путь к папке с шаблонами модуля
+	 * @param string $lang_file	путь к языковому файлу модуля
 	 */
-	function showArchive($tpl_dir, $lang_file)
+	function pollArchiveShow($tpl_dir, $lang_file)
 	{
 		global $AVE_DB, $AVE_Template;
 
-		if (!empty($_REQUEST['order']))
+		if (empty($_REQUEST['order']))
 		{
-			$order = $_REQUEST['order'];
+			$order = 'poll_title';
 		}
 		else
 		{
-			$order = 'title';
+			switch ($_REQUEST['order'])
+			{
+				case 'title':
+					$order = 'poll_title';
+					break;
+
+				case 'start':
+					$order = 'poll_start';
+					break;
+
+				case 'end':
+					$order = 'poll_end';
+					break;
+
+				case 'votes':
+					$order = 'votes';
+					break;
+
+				default:
+					$order = 'poll_title';
+					break;
+			}
 		}
 
 		if (isset($_REQUEST['by']) && $_REQUEST['by'] == 'desc')
 		{
-			$by = ' DESC';
+			$order .= ' DESC';
 		}
 		else
 		{
-			$by = ' ASC';
+			$order .= ' ASC';
 		}
 
 		$items = array();
 		$sql = $AVE_DB->Query("
 			SELECT
 				poll.id,
-				poll.title,
-				poll.`start`,
-				poll.ende,
-				SUM(itm.hits) AS votes
+				poll.poll_title,
+				poll.poll_start,
+				poll.poll_end,
+				SUM(itm.poll_item_hits) AS votes
 			FROM
 				" . PREFIX . "_modul_poll AS poll
 			LEFT JOIN
 				" . PREFIX . "_modul_poll_items AS itm
-					ON pollid = poll.id
+					ON poll_id = poll.id
 			WHERE
-				active = '1' AND
-				poll.title != '' AND
-				`start` < '" . time() . "'
+				poll.poll_title != '' AND
+				poll.poll_status = '1' AND
+				poll.poll_start < '" . time() . "'
 			GROUP BY poll.id
-			ORDER BY " . $order . $by
+			ORDER BY " . $order
 		);
 		while ($row = $sql->FetchRow())
 		{
-			$row->plink = $this->_PL_Rewrite('index.php?module=poll&amp;action=result&amp;pid=' . $row->id);
+			$row->plink = $this->_pollLinkRewrite('index.php?module=poll&amp;action=result&amp;pid=' . $row->id);
 			array_push($items, $row);
 		}
 
@@ -332,47 +390,42 @@ class poll
 		$AVE_Template->config_load($lang_file, 'showarchive');
 
 		define('MODULE_SITE', $AVE_Template->get_config_vars('POLL_ARCHIVE_TITLE'));
-
-		$tpl_out = $AVE_Template->fetch($tpl_dir . 'archive.tpl');
-		define('MODULE_CONTENT', $tpl_out);
+		define('MODULE_CONTENT', $AVE_Template->fetch($tpl_dir . 'archive.tpl'));
 	}
 
-	function displayForm($tpl_dir, $lang_file, $pid, $theme, $errors='', $text='', $title='')
+	/**
+	 * Метод отображения комментариев
+	 *
+	 * @param string $tpl_dir	путь к папке с шаблонами модуля
+	 * @param string $lang_file	путь к языковому файлу модуля
+	 * @param ini $pid			идентификатор опроса
+	 * @param string $theme
+	 * @param string $errors
+	 * @param string $text
+	 * @param string $title
+	 */
+	function pollCommentShow($tpl_dir, $lang_file, $pid, $theme, $errors='', $text='', $title='')
 	{
 		global $AVE_DB, $AVE_Template;
 
 		$AVE_Template->config_load($lang_file, 'displayform');
 
-		$sql = $AVE_DB->Query("
+		$row = $AVE_DB->Query("
 			SELECT *
 			FROM " . PREFIX . "_modul_poll
 			WHERE id = '" . $pid . "'
 			LIMIT 1
-		");
-		$row = $sql->FetchRow();
-		$groups = explode(',', $row->group_id);
+		")->FetchRow();
+		$groups = explode(',', $row->poll_groups_id);
 
-		if ($row->active == 1 && $row->can_comment == 1 && in_array(UGROUP, $groups))
+		if ($row->poll_status == 1 && $row->poll_can_comment == 1 && in_array(UGROUP, $groups))
 		{
 			$AVE_Template->assign('cancomment', 1);
 		}
 		$AVE_Template->assign('max_chars', $this->_commentwords);
 
-		$im = '';
-
-		if (function_exists('imagettftext') && function_exists('imagejpeg') && $this->_anti_spam == 1)
+		if ($this->_antispam == 1 && function_exists('imagettftext') && function_exists('imagejpeg'))
 		{
-			$codeid = $this->_secureCode();
-			$im = $codeid;
-			$sql = $AVE_DB->Query("
-				SELECT Code
-				FROM " . PREFIX . "_antispam
-				WHERE id = '" . $codeid . "'
-			");
-			$row_sc = $sql->FetchRow();
-			$AVE_Template->assign('im', $im);
-			$_SESSION['cpSecurecode'] = $row_sc->Code;
-			$_SESSION['cpSecurecode_id'] = $codeid;
 			$AVE_Template->assign('anti_spam', 1);
 		}
 
@@ -384,90 +437,100 @@ class poll
 		$AVE_Template->display($tpl_dir . 'poll_form.tpl');
 	}
 
-	function sendForm($tpl_dir, $lang_file, $pid)
+	/**
+	 * Метод создания нового комментария
+	 *
+	 * @param string $tpl_dir	путь к папке с шаблонами модуля
+	 * @param string $lang_file	путь к языковому файлу модуля
+	 * @param int $pid			идентификатор опроса
+	 */
+	function pollCommentNew($pid)
 	{
 		global $AVE_DB, $AVE_Template;
 
-		$sql = $AVE_DB->Query("
-			SELECT *
-			FROM " . PREFIX . "_modul_poll
-			WHERE id = '" . $pid . "'
-			AND active = 1
-			AND can_comment = 1
-		");
-		$row = $sql->FetchRow();
-		$groups = explode(',', $row->group_id);
-
-		$text = substr(htmlspecialchars($_POST['comment_text']), 0, $this->_commentwords);
-		$text_length = strlen($text);
-		$text .= ($text_length > $this->_commentwords) ? '...' : '';
-		$text = pretty_chars($text);
-
 		$errors = array();
-		if (empty($_POST['comment_title'])) $error[] = $AVE_Template->get_config_vars('POLL_ENTER_TITLE');
-		if (empty($text)) $error[] = $AVE_Template->get_config_vars('POLL_ENTER_TEXT');
 
-		if ($this->_anti_spam == 1)
+		if (isset($_REQUEST['ajax']) && $_REQUEST['ajax'] == 1)
 		{
-			if (isset($_POST['comment_code']) && $_POST['comment_code'] == $_SESSION['cpSecurecode'])
-			{
-//				$sql = $AVE_DB->Query("
-//					SELECT id
-//					FROM " . PREFIX . "_antispam
-//					WHERE Code = '" . addslashes($_POST['cpSecurecode']) . "'
-//				");
-//				$row_sc = $sql->FetchRow();
-//				$im = $row_sc->id;
-			}
-			else
-			{
-				$errors[] = $AVE_Template->get_config_vars('POLL_ENTER_CODE');
-			}
-		}
-
-		if (count($errors)>0)
-		{
-			$this->displayForm($tpl_dir, $lang_file, $pid, THEME_FOLDER, $errors, $text, $_POST['comment_title']);
-			exit();
-		}
-
-		if (isset($_SESSION['user_id']))
-		{
-			$author = $_SESSION['user_id'];
+			$comment_title = iconv('utf-8', 'cp1251', $_POST['comment_title']);
+			$comment_text = iconv('utf-8', 'cp1251', $_POST['comment_text']);
 		}
 		else
 		{
-			$author = '0';
+			$comment_title = $_POST['comment_title'];
+			$comment_text = $_POST['comment_text'];
 		}
 
-		if ($row->active == 1 && in_array(UGROUP, $groups) && $text_length > 3)
+		$text = (strlen($comment_text) > $this->_commentwords)
+			? substr($comment_text, 0, $this->_commentwords) . '...'
+			: $comment_text;
+
+		if (strlen($text) <= 10)   $errors[] = $AVE_Template->get_config_vars('POLL_ENTER_TEXT');
+		if (empty($comment_title)) $errors[] = $AVE_Template->get_config_vars('POLL_ENTER_TITLE');
+
+		if ($this->_antispam == 1)
 		{
-			$ip = empty($_SERVER['REMOTE_ADDR']) ? '' : $_SERVER['REMOTE_ADDR'];
+			if (! (isset($_SESSION['captcha_keystring']) && isset($_POST['securecode'])
+				&& $_SESSION['captcha_keystring'] == $_POST['securecode']))
+			{
+				$errors[] = $AVE_Template->get_config_vars('POLL_ENTER_CODE');
+			}
 
-			$AVE_DB->Query("
-				INSERT " . PREFIX . "_modul_poll_comments
-				SET
-					pollid  = '" . $pid . "',
-					ctime   = '" . time() . "',
-					author  = '" . $author . "',
-					title   = '" . $_POST['comment_title'] . "',
-					comment = '" . $text . "',
-					ip      = '" . $ip . "'
-			");
+			unset($_SESSION['captcha_keystring']);
 		}
-		echo '<script>window.opener.location.reload(); window.close();</script>';
+
+		if (sizeof($errors) == 0)
+		{
+			$poll_groups_id = $AVE_DB->Query("
+				SELECT poll_groups_id
+				FROM " . PREFIX . "_modul_poll
+				WHERE id = '" . $pid . "'
+				AND poll_status = '1'
+				AND poll_can_comment = '1'
+			")->GetCell();
+
+			if (!empty($poll_groups_id) && in_array(UGROUP, explode(',', $poll_groups_id)))
+			{
+				$author_id = isset($_SESSION['user_id']) ? $_SESSION['user_id'] : 0;
+				$author_ip = empty($_SERVER['REMOTE_ADDR']) ? '' : $_SERVER['REMOTE_ADDR'];
+
+				$AVE_DB->Query("
+					INSERT " . PREFIX . "_modul_poll_comments
+					SET
+						poll_id                = '" . $pid . "',
+						poll_comment_time      = '" . time() . "',
+						poll_comment_author_id = '" . $author_id . "',
+						poll_comment_author_ip = '" . $author_ip . "',
+						poll_comment_title     = '" . $comment_title . "',
+						poll_comment_text      = '" . $text . "'
+				");
+
+				return $errors;
+			}
+
+			$errors[] = $AVE_Template->get_config_vars('POLL_ERROR_PERM');
+		}
+
+		return $errors;
 	}
 
-	function showPolls($tpl_dir, $lang_file)
+	/**
+	 * Методы административной части
+	 */
+
+	/**
+	 * Метод вывода списка опросов
+	 *
+	 * @param string $tpl_dir	путь к папке с шаблонами модуля
+	 * @param string $lang_file	путь к языковому файлу модуля
+	 */
+	function pollList($tpl_dir, $lang_file)
 	{
 		global $AVE_DB, $AVE_Template;
 
 		$AVE_Template->config_load($lang_file, 'showpolls');
-		$AVE_Template->assign('config_vars', $AVE_Template->get_config_vars());
 
-		$sql = $AVE_DB->Query("SELECT id FROM " . PREFIX . "_modul_poll");
-		$num = $sql->NumRows();
-//		$sql->Close();
+		$num = $AVE_DB->Query("SELECT COUNT(*) FROM " . PREFIX . "_modul_poll")->GetCell();
 
 		$limit = $this->_adminlimit;
 		$pages = ceil($num / $limit);
@@ -481,29 +544,21 @@ class poll
 		);
 		while ($row = $sql->FetchRow())
 		{
-			$id = $row->id;
-			$sql_hits = $AVE_DB->Query("
-				SELECT SUM(hits) AS sumhits
+			$row_hits = $AVE_DB->Query("
+				SELECT SUM(poll_item_hits)
 				FROM " . PREFIX . "_modul_poll_items
-				WHERE pollid = '" . $id . "'
-				GROUP BY pollid
-			");
-			$row_hits = $sql_hits->FetchRow();
-			if ($row_hits === false)
-			{
-				$row->sum_hits = 0;
-			}
-			else
-			{
-				$row->sum_hits = floor($row_hits->sumhits);
-			}
+				WHERE poll_id = '" . $row->id . "'
+				GROUP BY poll_id
+			")->GetCell();
 
-			$sql_c = $AVE_DB->Query("
-				SELECT id
+			$row->sum_hits = floor($row_hits);
+
+			$row->comments = $AVE_DB->Query("
+				SELECT COUNT(*)
 				FROM " . PREFIX . "_modul_poll_comments
-				WHERE pollid = '" . $id . "'
-			");
-			$row->comments = $sql_c->NumRows();
+				WHERE poll_id = '" . $row->id . "'
+			")->GetCell();
+
 			array_push($items, $row);
 		}
 
@@ -513,152 +568,22 @@ class poll
 			$page_nav = get_pagination($pages, 'page', $page_nav);
 			$AVE_Template->assign('page_nav', $page_nav);
 		}
+
 		$AVE_Template->assign('items', $items);
 		$AVE_Template->assign('content', $AVE_Template->fetch($tpl_dir . 'admin_forms.tpl'));
 	}
 
-	function editPolls($tpl_dir, $lang_file, $id)
-	{
-		global $AVE_DB, $AVE_Template;
-
-		$AVE_Template->config_load($lang_file, 'editpolls');
-		$AVE_Template->assign('config_vars', $AVE_Template->get_config_vars());
-
-		$items = array();
-		$sql = $AVE_DB->Query("
-			SELECT *
-			FROM " . PREFIX . "_modul_poll_items
-			WHERE pollid = '" . $id . "'
-			ORDER BY posi ASC
-		");
-		while ($row = $sql->FetchRow())
-		{
-			array_push($items, $row);
-		}
-
-		$groups = array();
-		$sql = $AVE_DB->Query("
-			SELECT
-				Benutzergruppe,
-				Name
-			FROM " . PREFIX . "_user_groups
-		");
-		while ($row = $sql->FetchRow())
-		{
-			array_push($groups, $row);
-		}
-
-		$sql = $AVE_DB->Query("
-			SELECT *
-			FROM " . PREFIX . "_modul_poll
-			WHERE id = '" . $id . "'
-		");
-		$row = $sql->FetchRow();
-
-		$AVE_Template->assign('groups', $groups);
-		$AVE_Template->assign('groups_form', explode(',', $row->group_id));
-		$AVE_Template->assign('row', $row);
-		$AVE_Template->assign('items', $items);
-		$AVE_Template->assign('tpl_dir', $tpl_dir);
-		$AVE_Template->assign('year', date('Y'));
-
-		$AVE_Template->assign('s_year', date('Y', $row->start));
-		$AVE_Template->assign('s_mon', date('m', $row->start));
-		$AVE_Template->assign('s_day', date('d', $row->start));
-		$AVE_Template->assign('s_hour', date('H', $row->start));
-		$AVE_Template->assign('s_min', date('i', $row->start));
-
-		$AVE_Template->assign('e_year', date('Y', $row->ende));
-		$AVE_Template->assign('e_mon', date('m', $row->ende));
-		$AVE_Template->assign('e_day', date('d', $row->ende));
-		$AVE_Template->assign('e_hour', date('H', $row->ende));
-		$AVE_Template->assign('e_min', date('i', $row->ende));
-
-		$AVE_Template->assign('formaction', 'index.php?do=modules&action=modedit&mod=poll&moduleaction=save&cp=' . SESSION . '&id=' . $id . '&pop=1');
-		$AVE_Template->assign('content', $AVE_Template->fetch($tpl_dir . 'admin_fields.tpl'));
-	}
-
-	function savePolls($id)
-	{
-		global $AVE_DB;
-
-		$qid = $id;
-		$start_date = mktime($_REQUEST['s_hour'], $_REQUEST['s_min'], 0, $_REQUEST['s_mon'], $_REQUEST['s_day'], $_REQUEST['s_year']);
-		$end_date   = mktime($_REQUEST['e_hour'], $_REQUEST['e_min'], 0, $_REQUEST['e_mon'], $_REQUEST['e_day'], $_REQUEST['e_year']);
-
-		$AVE_DB->Query("
-			UPDATE " . PREFIX . "_modul_poll
-			SET
-				title       = '" . $_REQUEST['poll_name'] . "',
-				active      = '" . $_REQUEST['active'] . "',
-				can_comment = '" . $_REQUEST['can_comment'] . "',
-				`start`     = '" . $start_date . "',
-				ende        = '" . $end_date . "',
-				group_id    = '" . @implode(',', $_REQUEST['groups']) . "'
-			WHERE
-				id          = '" . $qid . "'
-		");
-
-		if (!empty($_POST['del']))
-		{
-			foreach ($_POST['del'] as $id => $field)
-			{
-				$AVE_DB->Query("
-					DELETE
-					FROM " . PREFIX . "_modul_poll_items
-					WHERE id = '" . $id . "'
-				");
-			}
-		}
-
-		foreach ($_POST['question_title'] as $id => $field)
-		{
-			if (!empty($field))
-			{
-				$AVE_DB->Query("
-					UPDATE " . PREFIX . "_modul_poll_items
-					SET
-						title = '" . $field . "',
-						hits  = '" . $_POST['hits'][$id] . "',
-						color = '" . $_POST['line_color'][$id] . "',
-						posi  = '" . $_POST['position'][$id] . "'
-					WHERE
-						id    = '" . $id . "'
-				");
-			}
-		}
-		header('Location:index.php?do=modules&action=modedit&mod=poll&moduleaction=edit&id=' . $qid . '&pop=1&cp=' . SESSION);
-	}
-
-	function saveFieldsNew($id)
-	{
-		global $AVE_DB;
-
-		if (!empty($_POST['question_title']))
-		{
-			$AVE_DB->Query("
-				INSERT
-				INTO " . PREFIX . "_modul_poll_items
-				VALUES (
-					'',
-					'" . $id . "',
-					'" . $_REQUEST['question_title'] . "',
-					'" . $_REQUEST['hits'] . "',
-					'" . $_REQUEST['line_color'] . "',
-					'" . $_REQUEST['position'] . "'
-				)
-			");
-		}
-		reportLog($_SESSION['user_name'] . ' - добавил новый вопрос для опроса (' . ($_REQUEST['question_title']) . ')', 2, 2);
-		header('Location:index.php?do=modules&action=modedit&mod=poll&moduleaction=edit&id=' . $id . '&pop=1&cp=' . SESSION);
-	}
-
-	function newPolls($tpl_dir, $lang_file)
+	/**
+	 * Метод создания нового опроса
+	 *
+	 * @param string $tpl_dir	путь к папке с шаблонами модуля
+	 * @param string $lang_file	путь к языковому файлу модуля
+	 */
+	function pollNew($tpl_dir, $lang_file)
 	{
 		global $AVE_DB, $AVE_Template;
 
 		$AVE_Template->config_load($lang_file, 'newpolls');
-		$AVE_Template->assign('config_vars', $AVE_Template->get_config_vars());
 
 		switch ($_REQUEST['sub'])
 		{
@@ -666,8 +591,8 @@ class poll
 				$groups = array();
 				$sql = $AVE_DB->Query("
 					SELECT
-						Benutzergruppe,
-						Name
+						user_group,
+						user_group_name
 					FROM " . PREFIX . "_user_groups
 				");
 				while ($row = $sql->FetchRow())
@@ -693,62 +618,224 @@ class poll
 				$AVE_DB->Query("
 					INSERT
 					INTO " . PREFIX . "_modul_poll
-					VALUES (
-						'',
-						'" . $_REQUEST['poll_name'] . "',
-						'" . $_REQUEST['active'] . "',
-						'" . @implode(',', $_REQUEST['groups']) . "',
-						0,
-						0,
-						'" . $_REQUEST['can_comment'] . "',
-						'" . $start_date . "',
-						'" . $end_date . "'
-					)
+					SET
+						id               = '',
+						poll_title       = '" . $_REQUEST['poll_name'] . "',
+						poll_status      = '" . $_REQUEST['poll_status'] . "',
+						poll_groups_id   = '" . @implode(',', $_REQUEST['groups']) . "',
+						poll_users_id    = '0',
+						poll_users_ip    = '0',
+						poll_can_comment = '" . $_REQUEST['poll_can_comment'] . "',
+						poll_start       = '" . $start_date . "',
+						poll_end         = '" . $end_date . "'
 				");
 				$iid = $AVE_DB->InsertId();
+
 				reportLog($_SESSION['user_name'] . ' - добавил новый опрос (' . stripslashes($_REQUEST['poll_name']) . ')', 2, 2);
 
 				header('Location:index.php?do=modules&action=modedit&mod=poll&moduleaction=edit&id=' . $iid . '&pop=1&cp=' . SESSION);
 				exit;
-				break;
 		}
 	}
 
-	function deletePolls($id)
+	/**
+	 * Метод записи вариантов ответа нового опроса
+	 *
+	 * @param int $pid	идентификатор опроса
+	 */
+	function pollNewItemSave($pid)
+	{
+		global $AVE_DB;
+
+		if (!empty($_POST['item_title']))
+		{
+			$AVE_DB->Query("
+				INSERT
+				INTO " . PREFIX . "_modul_poll_items
+				SET
+					id                 = '',
+					poll_id            = '" . $pid . "',
+					poll_item_title    = '" . $_REQUEST['item_title'] . "',
+					poll_item_hits     = '" . $_REQUEST['poll_item_hits'] . "',
+					poll_item_color    = '" . $_REQUEST['line_color'] . "',
+					poll_item_position = '" . $_REQUEST['position'] . "'
+			");
+		}
+
+		reportLog($_SESSION['user_name'] . ' - добавил новый вариант ответа (' . ($_REQUEST['item_title']) . ') для опроса', 2, 2);
+
+		header('Location:index.php?do=modules&action=modedit&mod=poll&moduleaction=edit&id=' . $pid . '&pop=1&cp=' . SESSION);
+		exit;
+	}
+
+	/**
+	 * Метод редактирования опроса
+	 *
+	 * @param string $tpl_dir	путь к папке с шаблонами модуля
+	 * @param string $lang_file	путь к языковому файлу модуля
+	 * @param int $pid			идентификатор опроса
+	 */
+	function pollEdit($tpl_dir, $lang_file, $pid)
+	{
+		global $AVE_DB, $AVE_Template;
+
+		$AVE_Template->config_load($lang_file, 'editpolls');
+
+		$items = array();
+		$sql = $AVE_DB->Query("
+			SELECT *
+			FROM " . PREFIX . "_modul_poll_items
+			WHERE poll_id = '" . $pid . "'
+			ORDER BY poll_item_position ASC
+		");
+		while ($row = $sql->FetchRow())
+		{
+			array_push($items, $row);
+		}
+
+		$groups = array();
+		$sql = $AVE_DB->Query("
+			SELECT
+				user_group,
+				user_group_name
+			FROM " . PREFIX . "_user_groups
+		");
+		while ($row = $sql->FetchRow())
+		{
+			array_push($groups, $row);
+		}
+
+		$row = $AVE_DB->Query("
+			SELECT *
+			FROM " . PREFIX . "_modul_poll
+			WHERE id = '" . $pid . "'
+		")->FetchRow();
+
+		$AVE_Template->assign('groups', $groups);
+		$AVE_Template->assign('groups_form', explode(',', $row->poll_groups_id));
+		$AVE_Template->assign('row', $row);
+		$AVE_Template->assign('items', $items);
+		$AVE_Template->assign('tpl_dir', $tpl_dir);
+		$AVE_Template->assign('year', date('Y'));
+
+		$AVE_Template->assign('s_year', date('Y', $row->poll_start));
+		$AVE_Template->assign('s_mon', date('m', $row->poll_start));
+		$AVE_Template->assign('s_day', date('d', $row->poll_start));
+		$AVE_Template->assign('s_hour', date('H', $row->poll_start));
+		$AVE_Template->assign('s_min', date('i', $row->poll_start));
+
+		$AVE_Template->assign('e_year', date('Y', $row->poll_end));
+		$AVE_Template->assign('e_mon', date('m', $row->poll_end));
+		$AVE_Template->assign('e_day', date('d', $row->poll_end));
+		$AVE_Template->assign('e_hour', date('H', $row->poll_end));
+		$AVE_Template->assign('e_min', date('i', $row->poll_end));
+
+		$AVE_Template->assign('formaction', 'index.php?do=modules&action=modedit&mod=poll&moduleaction=save&cp=' . SESSION . '&id=' . $pid . '&pop=1');
+		$AVE_Template->assign('content', $AVE_Template->fetch($tpl_dir . 'admin_fields.tpl'));
+	}
+
+	/**
+	 * Метод записи изменений в опросе
+	 *
+	 * @param int $pid	идентификатор опроса
+	 */
+	function pollSave($pid)
+	{
+		global $AVE_DB;
+
+		$start_date = mktime($_REQUEST['s_hour'], $_REQUEST['s_min'], 0, $_REQUEST['s_mon'], $_REQUEST['s_day'], $_REQUEST['s_year']);
+		$end_date   = mktime($_REQUEST['e_hour'], $_REQUEST['e_min'], 0, $_REQUEST['e_mon'], $_REQUEST['e_day'], $_REQUEST['e_year']);
+
+		$AVE_DB->Query("
+			UPDATE " . PREFIX . "_modul_poll
+			SET
+				poll_title       = '" . $_REQUEST['poll_name'] . "',
+				poll_status      = '" . $_REQUEST['poll_status'] . "',
+				poll_can_comment = '" . $_REQUEST['poll_can_comment'] . "',
+				poll_start       = '" . $start_date . "',
+				poll_end         = '" . $end_date . "',
+				poll_groups_id   = '" . @implode(',', $_REQUEST['groups']) . "'
+			WHERE
+				id = '" . $pid . "'
+		");
+
+		if (!empty($_POST['del']))
+		{
+			foreach ($_POST['del'] as $id => $field)
+			{
+				$AVE_DB->Query("
+					DELETE
+					FROM " . PREFIX . "_modul_poll_items
+					WHERE id = '" . $id . "'
+				");
+			}
+		}
+
+		foreach ($_POST['item_title'] as $id => $field)
+		{
+			if (!empty($field))
+			{
+				$AVE_DB->Query("
+					UPDATE " . PREFIX . "_modul_poll_items
+					SET
+						poll_item_title    = '" . $field . "',
+						poll_item_hits     = '" . $_POST['poll_item_hits'][$id] . "',
+						poll_item_color    = '" . $_POST['line_color'][$id] . "',
+						poll_item_position = '" . $_POST['position'][$id] . "'
+					WHERE
+						id = '" . $id . "'
+				");
+			}
+		}
+
+		header('Location:index.php?do=modules&action=modedit&mod=poll&moduleaction=edit&id=' . $pid . '&pop=1&cp=' . SESSION);
+		exit;
+	}
+
+	/**
+	 * Метод удаления опроса
+	 *
+	 * @param int $pid	идентификатор опроса
+	 */
+	function pollDelete($pid)
 	{
 		global $AVE_DB;
 
 		$AVE_DB->Query("
 			DELETE
 			FROM " . PREFIX . "_modul_poll
-			WHERE id = '" . $id . "'
+			WHERE id = '" . $pid . "'
 		");
 		$AVE_DB->Query("
 			DELETE
 			FROM " . PREFIX . "_modul_poll_items
-			WHERE pollid = '" . $id . "'
+			WHERE poll_id = '" . $pid . "'
 		");
 		$AVE_DB->Query("
 			DELETE
 			FROM " . PREFIX . "_modul_poll_comments
-			WHERE pollid = '" . $id . "'
+			WHERE poll_id = '" . $pid . "'
 		");
 
-		reportLog($_SESSION['user_name'] . ' - удалил опрос (' . $id . ')', 2, 2);
+		reportLog($_SESSION['user_name'] . ' - удалил опрос (' . $pid . ')', 2, 2);
 
 		header('Location:index.php?do=modules&action=modedit&mod=poll&moduleaction=1&cp=' . SESSION);
 		exit;
 	}
 
-	function showComments($tpl_dir, $lang_file, $id)
+	/**
+	 * Метод управления комментариями к опросам
+	 *
+	 * @param string $tpl_dir	путь к папке с шаблонами модуля
+	 * @param string $lang_file	путь к языковому файлу модуля
+	 * @param int $pid			идентификатор опроса
+	 */
+	function pollCommentEdit($tpl_dir, $lang_file, $pid)
 	{
 		global $AVE_DB, $AVE_Template;
 
 		$AVE_Template->config_load($lang_file, 'showcomments');
-		$config_vars = $AVE_Template->get_config_vars();
-		$AVE_Template->assign('config_vars', $config_vars);
 
-		$qid = $id;
 		switch ($_REQUEST['sub'])
 		{
 			case '':
@@ -756,30 +843,15 @@ class poll
 				$sql = $AVE_DB->Query("
 					SELECT *
 					FROM " . PREFIX . "_modul_poll_comments
-					WHERE pollid = '" . $qid . "'
+					WHERE poll_id = '" . $pid . "'
 				");
 				while ($row = $sql->FetchRow())
 				{
-					if ($row->author != '0')
-					{
-						$sql_u = $AVE_DB->Query("
-							SELECT
-								Vorname,
-								Nachname
-							FROM " . PREFIX . "_users
-							WHERE Id = '" . $row->author . "'
-						");
-						$row_u = $sql_u->FetchRow();
-						$row->firstname = $row_u->Vorname;
-						$row->lastname  = $row_u->Nachname;
-					}
-					else
-					{
-						$row->firstname = $config_vars('POLL_UNKNOWN_USER');
-						$row->lastname  = '';
-					}
+					$row->poll_comment_author = get_username_by_id($row->poll_comment_author_id);
+
 					array_push($items, $row);
 				}
+
 				$AVE_Template->assign('items', $items);
 				$AVE_Template->assign('tpl_dir', $tpl_dir);
 				$AVE_Template->assign('content', $AVE_Template->fetch($tpl_dir . 'admin_comments.tpl'));
@@ -788,7 +860,7 @@ class poll
 			case 'save':
 				if (!empty($_POST['del']))
 				{
-					foreach ($_POST['del'] as $id => $comment)
+					foreach ($_POST['del'] as $id => $val)
 					{
 						$AVE_DB->Query("
 							DELETE
@@ -805,61 +877,17 @@ class poll
 						$AVE_DB->Query("
 							UPDATE " . PREFIX . "_modul_poll_comments
 							SET
-								title   = '" . $_POST['comment_title'][$id] . "',
-								comment = '" . $comment . "'
+								poll_comment_title = '" . $_POST['comment_title'][$id] . "',
+								poll_comment_text  = '" . $comment . "'
 							WHERE
-								id      = '" . $id . "'
+								id = '" . $id . "'
 						");
 					}
 				}
-				header('Location:index.php?do=modules&action=modedit&mod=poll&moduleaction=comments&id=' . $qid . '&pop=1&cp=' . SESSION);
-				break;
+
+				header('Location:index.php?do=modules&action=modedit&mod=poll&moduleaction=comments&id=' . $pid . '&pop=1&cp=' . SESSION);
+				exit;
 		}
-	}
-
-/**
- *	ВНУТРЕННИЕ МЕТОДЫ
- */
-
-	function _PL_Rewrite($string)
-	{
-		if (REWRITE_MODE) $string = PollRewrite($string);
-
-		return $string;
-	}
-
-	function _secureCode($c = 0)
-	{
-		global $AVE_DB;
-
-		$AVE_DB->Query("
-			DELETE
-			FROM " . PREFIX . "_antispam
-			WHERE Ctime < " . time() - 1200 . "
-		");
-		$code = '';
-		$chars = array(
-			'A','B','C','D','E','F','G','H','J','K','M','N','P','Q','R','S','T','U','V','W','X','Y','Z',
-			'a','b','c','d','e','f','g','h','j','k','m','n','p','q','r','s','t','u','v','w','x','y','z',
-			'2','3','4','5','6','7','8','9'
-		);
-		$ch = ($c!=0) ? $c : 7;
-		$count = count($chars) - 1;
-		srand((double)microtime() * 1000000);
-		for ($i=0; $i<$ch; $i++)
-		{
-			$code .= $chars[rand(0, $count)];
-		}
-		$AVE_DB->Query("
-			INSERT
-			INTO " . PREFIX . "_antispam
-			SET
-				id    = '',
-				Code  = '" . $code . "',
-				Ctime = '" . time() . "'
-		");
-
-		return $AVE_DB->InsertId();
 	}
 }
 

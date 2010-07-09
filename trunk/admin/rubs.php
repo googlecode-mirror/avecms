@@ -22,7 +22,7 @@ $AVE_Template->config_load(BASE_DIR . '/admin/lang/' . $_SESSION['admin_language
 switch($_REQUEST['action'])
 {
 	case '' :
-		if(check_permission('rubs'))
+		if(check_permission_acp('rubrics'))
 		{
 			switch($_REQUEST['sub'])
 			{
@@ -33,27 +33,20 @@ switch($_REQUEST['action'])
 			$AVE_Rubric->rubricList();
 			$AVE_Template->assign('templates', get_all_templates());
 		}
-		else
-		{
-			define('NOPERM', 1);
-		}
+
 		$AVE_Template->assign('content', $AVE_Template->fetch('rubs/rubs.tpl'));
 		break;
 
 	case 'new':
-		if(check_permission('rub_neu'))
+		if(check_permission_acp('rubric_new'))
 		{
 			$AVE_Rubric->rubricNew();
-		}
-		else
-		{
-			define('NOPERM', 1);
 		}
 		break;
 
 
 	case 'template':
-		if(check_permission('rub_edit'))
+		if(check_permission_acp('rubric_edit'))
 		{
 			switch($_REQUEST['sub'])
 			{
@@ -62,11 +55,11 @@ switch($_REQUEST['action'])
 					break;
 
 				case 'save':
-					$Rtemplate = $_POST['RubrikTemplate'];
+					$Rtemplate = $_POST['rubric_template'];
 					$check_code = strtolower($Rtemplate);
 					$ok = true;
 
-					if(is_php_code($check_code) && !check_permission('rub_php') )
+					if(is_php_code($check_code) && !check_permission('rubric_php') )
 					{
 						$AVE_Template->assign('php_forbidden', 1);
 						$ok = false;
@@ -78,30 +71,22 @@ switch($_REQUEST['action'])
 					}
 					else
 					{
-						$AVE_Rubric->rubricTemplateSave($_POST['RubrikTemplate']);
+						$AVE_Rubric->rubricTemplateSave($_POST['rubric_template']);
 					}
 					break;
 			}
 		}
-		else
-		{
-			define('NOPERM', 1);
-		}
 		break;
 
 	case 'delete':
-		if(check_permission('rub_loesch'))
+		if(check_permission_acp('rubric_del'))
 		{
 			$AVE_Rubric->rubricDelete();
-		}
-		else
-		{
-			define('NOPERM', 1);
 		}
 		break;
 
 	case 'multi':
-		if(check_permission('rub_multi'))
+		if(check_permission_acp('rubric_multi'))
 		{
 			switch($_REQUEST['sub'])
 			{
@@ -110,15 +95,12 @@ switch($_REQUEST['action'])
 					break;
 			}
 		}
-		else
-		{
-			define('NOPERM', 1);
-		}
+
 		$AVE_Template->assign('content', $AVE_Template->fetch('rubs/multi.tpl'));
 		break;
 
 	case 'edit':
-		if(check_permission('rub_edit'))
+		if(check_permission_acp('rubric_edit'))
 		{
 			switch($_REQUEST['sub'])
 			{
@@ -126,11 +108,11 @@ switch($_REQUEST['action'])
 					switch($_REQUEST['submit'])
 					{
 						case 'saveperms':
-							$AVE_Rubric->rubricPermissionSave();
+							$AVE_Rubric->rubricPermissionSave((int)$_REQUEST['Id']);
 							break;
 
 						case 'save':
-							$AVE_Rubric->rubricFieldSave();
+							$AVE_Rubric->rubricFieldSave((int)$_REQUEST['Id']);
 							break;
 
 						case 'next':
@@ -139,16 +121,12 @@ switch($_REQUEST['action'])
 //							break;
 
 						case 'newfield':
-							$AVE_Rubric->rubricFieldNew();
+							$AVE_Rubric->rubricFieldNew((int)$_REQUEST['Id']);
 							break;
 					}
-					$AVE_Rubric->rubricFieldShow();
+					$AVE_Rubric->rubricFieldShow((int)$_REQUEST['Id']);
 					break;
 			}
-		}
-		else
-		{
-			define('NOPERM', 1);
 		}
 		break;
 }

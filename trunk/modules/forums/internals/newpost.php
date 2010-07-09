@@ -228,7 +228,7 @@ if (isset($_GET['pid']) && !empty($_GET['pid'])) {
 }
 
 // hat user thema abonniert?
-$sql = $GLOBALS['AVE_DB']->Query("SELECT notification FROM " . PREFIX . "_modul_forum_topic WHERE id = '$_GET[toid]'");
+$sql = $GLOBALS['AVE_DB']->Query("SELECT notification FROM " . PREFIX . "_modul_forum_topic WHERE id = '" . $_GET['toid'] . "'");
 $row = $sql->FetchRow();
 $notifactions = @explode(";", $row->notification);
 

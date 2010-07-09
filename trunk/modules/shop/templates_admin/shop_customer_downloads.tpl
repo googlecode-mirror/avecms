@@ -93,7 +93,7 @@
 			<td width="180" class="first">{#DownTill#}</td>
 			<td class="second">
 				{assign var=extra value=""}
-				{html_select_date time=$row_doc->DokStart prefix="filetime" start_year="-5" end_year="+10" display_days=true month_format="%B" reverse_years=false day_size=1 field_order=DMY all_extra=$extra}
+				{html_select_date time=$row_doc->published prefix="filetime" start_year="-5" end_year="+10" display_days=true month_format="%B" reverse_years=false day_size=1 field_order=DMY all_extra=$extra}
 			</td>
 		</tr>
 	</table>

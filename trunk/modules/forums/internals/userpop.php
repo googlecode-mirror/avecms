@@ -22,9 +22,9 @@ $query  = "SELECT
 		" . PREFIX . "_users as b
 	WHERE
 		a.BenutzerId = b.Id AND
-		a.Pnempfang = 1 AND
+		a.Pnempfang = '1' AND
 		" . $searchUser . "
-		b.Status = 1
+		b.status = '1'
 	ORDER BY
 		a.BenutzerName ASC
 ";

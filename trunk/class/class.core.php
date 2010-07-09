@@ -88,7 +88,7 @@ class AVE_Core
         // просто возвращаем содержимое.
         if (defined('ONLYCONTENT') || (isset ($_REQUEST['pop']) && $_REQUEST['pop'] == 1))
 		{
-			$out = '[cp:maincontent]';
+			$out = '[tag:maincontent]';
 		}
 		else
 		{
@@ -107,9 +107,9 @@ class AVE_Core
 				else // В противном случае, если аргументы не определены, тогда проверяем
 				{
 					// Если для текущего документа в свойстве класса $this->curentdoc определен шаблон, тогда возвращаем его
-                    if (!empty ($this->curentdoc->Template))
+                    if (!empty ($this->curentdoc->template_text))
 					{
-						$out = stripslashes($this->curentdoc->Template);
+						$out = stripslashes($this->curentdoc->template_text);
 					}
 					else
 					{
@@ -121,7 +121,7 @@ class AVE_Core
 
 							// Выполняем запрос к БД на получение id рубрики на основании id документа
                             $rubrik_id = $AVE_DB->Query("
-								SELECT RubrikId
+								SELECT rubric_id
 								FROM " . PREFIX . "_documents
 								WHERE Id = '" . $_REQUEST['id'] . "'
 								LIMIT 1
@@ -133,9 +133,9 @@ class AVE_Core
 
 						// Выполняем запрос к БД на получение основного шаблона, а также шаблона рубрики
                         $tpl = $AVE_DB->Query("
-							SELECT Template
+							SELECT template_text
 							FROM " . PREFIX . "_templates AS tpl
-							LEFT JOIN " . PREFIX . "_rubrics AS rub ON tpl.Id = Vorlage
+							LEFT JOIN " . PREFIX . "_rubrics AS rub ON tpl.Id = rubric_template_id
 							WHERE rub.Id = '" . $rubrik_id . "'
 							LIMIT 1
 						")->GetCell();
@@ -173,7 +173,7 @@ class AVE_Core
             // и шаблоне, который установлен для данного модуля
             // Например, в системе есть шаблоны Template_1 и Template_2, а для модуля установлен Template_3
             $out = $AVE_DB->Query("
-				SELECT tmpl.Template
+				SELECT tmpl.template_text
 				FROM " . PREFIX . "_templates AS tmpl
 				LEFT JOIN " . PREFIX . "_module AS mdl ON tmpl.Id = mdl.Template
 				WHERE ModulPfad = '" . $_REQUEST['module'] . "'
@@ -184,7 +184,7 @@ class AVE_Core
             if (empty ($out))
 			{
 				$out = $AVE_DB->Query("
-					SELECT Template
+					SELECT template_text
 					FROM " . PREFIX . "_templates
 					WHERE Id = '1'
 					LIMIT 1
@@ -207,34 +207,40 @@ class AVE_Core
 		unset ($_SESSION[$rubrik_id . '_docread']);
 
 		// Если для документа уже получены права доступа, тогда
-        if (!empty ($this->curentdoc->Rechte))
+        if (!empty ($this->curentdoc->rubric_permission))
 		{
 			// Формируем массив с правами доступа
-            $Rechte = explode('|', $this->curentdoc->Rechte);
+            $rubric_permissions = explode('|', $this->curentdoc->rubric_permission);
 
             // Циклически обрабатываем сформированный массив и создаем в сессии соответсвующие переменные
-            foreach ($Rechte as $perm)
+            foreach ($rubric_permissions as $rubric_permission)
 			{
-				if (!empty ($perm)) $_SESSION[$rubrik_id . '_' . $perm] = 1;
+				if (!empty ($rubric_permission))
+				{
+					$_SESSION[$rubrik_id . '_' . $rubric_permission] = 1;
+				}
 			}
 		} // В противном случае
 		else
 		{
 			// Выполняем запрос к БД на получение списка прав для данного документа
             $sql = $AVE_DB->Query("
-				SELECT Rechte
-				FROM " . PREFIX . "_document_permissions
-				WHERE RubrikId = '" . $rubrik_id . "'
-				AND BenutzerGruppe = '" . UGROUP . "'
+				SELECT rubric_permission
+				FROM " . PREFIX . "_rubric_permissions
+				WHERE rubric_id = '" . $rubrik_id . "'
+				AND user_group_id = '" . UGROUP . "'
 			");
 
 			// Обрабатываем полученные данные и создаем в сессии соответсвующие переменные
             while ($row = $sql->FetchRow())
 			{
-				$row->Rechte = explode('|', $row->Rechte);
-				foreach ($row->Rechte as $perm)
+				$row->rubric_permission = explode('|', $row->rubric_permission);
+				foreach ($row->rubric_permission as $rubric_permission)
 				{
-					if (!empty ($perm)) $_SESSION[$rubrik_id . '_' . $perm] = 1;
+					if (!empty ($rubric_permission))
+					{
+						$_SESSION[$rubrik_id . '_' . $rubric_permission] = 1;
+					}
 				}
 			}
 		}
@@ -286,8 +292,6 @@ class AVE_Core
 		return md5($hash);
 	}
 
-
-
     /**
      * Метод, предназначенный для проверки существования документа в БД
      *
@@ -300,25 +304,25 @@ class AVE_Core
 		global $AVE_DB;
 
         // Выполняем составной  запрос к БД на получение информации о запрашиваемом документе
-		$this->curentdoc = $AVE_DB->Query("/*1*/
+		$this->curentdoc = $AVE_DB->Query("
 			SELECT
 				doc.*,
-				Rechte,
-				RubrikTemplate,
-				Template
+				rubric_permission,
+				rubric_template,
+				template_text
 			FROM
 				" . PREFIX . "_documents AS doc
 			JOIN
 				" . PREFIX . "_rubrics AS rub
-					ON rub.Id = doc.RubrikId
+					ON rub.Id = doc.rubric_id
 			JOIN
 				" . PREFIX . "_templates AS tpl
-					ON tpl.Id = Vorlage
+					ON tpl.Id = rubric_template_id
 			JOIN
-				" . PREFIX . "_document_permissions AS prm
-					ON doc.RubrikId = prm.RubrikId
+				" . PREFIX . "_rubric_permissions AS prm
+					ON doc.rubric_id = prm.rubric_id
 			WHERE
-				BenutzerGruppe = '" . $user_group . "'
+				user_group_id = '" . $user_group . "'
 			AND
 				doc.Id = '" . $document_id . "'
 			LIMIT 1
@@ -327,8 +331,6 @@ class AVE_Core
 		// Возвращаем 1, если документ найден, либо 0 в противном случае
         return (isset($this->curentdoc->Id) && $this->curentdoc->Id == $document_id);
 	}
-
-
 
     /**
      * Метод, предназначенный для получения содержимого страницы с 404 ошибкой
@@ -344,25 +346,25 @@ class AVE_Core
 
 		// Выполняем запрос к БД на получение полной информации о странице с 404 ошибкой, включая
         // права доступа, шаблон рубрики и основной шаблон сайта
-        $this->curentdoc = $AVE_DB->Query("/*2*/
+        $this->curentdoc = $AVE_DB->Query("
 			SELECT
 				doc.*,
-				Rechte,
-				RubrikTemplate,
-				Template
+				rubric_permission,
+				rubric_template,
+				template_text
 			FROM
 				" . PREFIX . "_documents AS doc
 			JOIN
 				" . PREFIX . "_rubrics AS rub
-					ON rub.Id = doc.RubrikId
+					ON rub.Id = doc.rubric_id
 			JOIN
 				" . PREFIX . "_templates AS tpl
-					ON tpl.Id = Vorlage
+					ON tpl.Id = rubric_template_id
 			JOIN
-				" . PREFIX . "_document_permissions AS prm
-					ON doc.RubrikId = prm.RubrikId
+				" . PREFIX . "_rubric_permissions AS prm
+					ON doc.rubric_id = prm.rubric_id
 			WHERE
-				BenutzerGruppe = '" . $user_group . "'
+				user_group_id = '" . $user_group . "'
 			AND
 				doc.Id = '" . $page_not_found_id . "'
 			LIMIT 1
@@ -370,7 +372,6 @@ class AVE_Core
 
 		return (isset($this->curentdoc->Id) && $this->curentdoc->Id == $page_not_found_id);
 	}
-
 
     /**
      * Метод, предназначенный для получения МЕТА-тегов для различных модулей.
@@ -391,9 +392,9 @@ class AVE_Core
 			// Выполняем запрос к БД на получение ОБЩИХ значений мета-тегов, установленных в настройках модуля "Магазин"
             $this->curentdoc = $AVE_DB->Query("
 				SELECT
-					a.IndexFollow,
-					b.ShopKeywords AS MetaKeywords,
-					b.ShopDescription AS MetaDescription
+					a.document_meta_robots,
+					b.ShopKeywords AS document_meta_keywords,
+					b.ShopDescription AS document_meta_description
 		        FROM
 		        	" . PREFIX . "_documents AS a,
 		        	" . PREFIX . "_modul_shop AS b
@@ -407,9 +408,9 @@ class AVE_Core
 			// Выполняем запрос к БД и получаем значения мета-тегов для конкретного товара
             $this->curentdoc = $AVE_DB->Query("
 				SELECT
-					a.IndexFollow,
-					b.ProdKeywords AS MetaKeywords,
-					b.ProdDescription AS MetaDescription
+					a.document_meta_robots,
+					b.ProdKeywords AS document_meta_keywords,
+					b.ProdDescription AS document_meta_description
 				FROM
 					" . PREFIX . "_documents AS a,
 					" . PREFIX . "_modul_shop_artikel AS b
@@ -422,10 +423,10 @@ class AVE_Core
 		{
 			$this->curentdoc = $AVE_DB->Query("
 				SELECT
-					IndexFollow,
-					MetaKeywords,
-					MetaDescription,
-					Titel
+					document_meta_robots,
+					document_meta_keywords,
+					document_meta_description,
+					document_title
 				FROM " . PREFIX . "_documents
 				WHERE Id = 1
 			")->FetchRow();
@@ -434,8 +435,6 @@ class AVE_Core
 		return (isset($this->curentdoc->Id) && $this->curentdoc->Id == 1);
 	}
 
-
-
     /**
      * Метод, предназначенный для определения статуса документа (доступен ли он к публикации).
      *
@@ -443,13 +442,13 @@ class AVE_Core
      */
     function _coreDocumentIsPublished()
 	{
-		if (!empty ($this->curentdoc)															// документ есть
-			&& $this->curentdoc->Id != PAGE_NOT_FOUND_ID										// документ не сообщение ошибки 404
-			&& ( $this->curentdoc->DokStatus != 1												// статус документа
-				|| $this->curentdoc->Geloescht == 1												// пометка удаления
-				|| ( get_settings('use_doctime')												// время публикации контролируется и ...
-					&& ($this->curentdoc->DokEnde != 0 && $this->curentdoc->DokEnde < time())	// время публикации не наступило
-					|| ($this->curentdoc->DokStart != 0 && $this->curentdoc->DokStart > time())	// время публикации истекло
+		if (!empty ($this->curentdoc)																				// документ есть
+			&& $this->curentdoc->Id != PAGE_NOT_FOUND_ID															// документ не сообщение ошибки 404
+			&& ( $this->curentdoc->document_status != 1																// статус документа
+				|| $this->curentdoc->document_deleted == 1															// пометка удаления
+				|| ( get_settings('use_doctime')																	// время публикации контролируется и ...
+					&& ($this->curentdoc->document_expire != 0 && $this->curentdoc->document_expire < time())		// время публикации не наступило
+					|| ($this->curentdoc->document_published != 0 && $this->curentdoc->document_published > time())	// время публикации истекло
 					)
 				)
 			)
@@ -558,7 +557,7 @@ class AVE_Core
 					// Проверяем, существует ли для данного модуля файл modul.php в его персональной директории
                     if (require_once(BASE_DIR . '/modules/' . $row->ModulPfad . '/modul.php'))
 					{	// Если файл модуля найден, тогда
-						if ($row->CpEngineTag)
+						if (!empty($row->CpEngineTag))
 						{
 							$pattern[] = $row->CpEngineTag;  // Получаем его системный тег
 
@@ -620,7 +619,7 @@ class AVE_Core
 			}
 
 			// Определяем права доступа к документам рубрики
-			define('RUB_ID', !empty ($rub_id) ? $rub_id : $this->curentdoc->RubrikId);
+			define('RUB_ID', !empty ($rub_id) ? $rub_id : $this->curentdoc->rubric_id);
 			$this->_coreRubricPermissionFetch(RUB_ID);
 
 			if (! ((isset ($_SESSION[RUB_ID . '_docread']) && $_SESSION[RUB_ID . '_docread'] == 1)
@@ -634,7 +633,7 @@ class AVE_Core
 				{	// увеличиваем счетчик версий для печати
 					$AVE_DB->Query("
 						UPDATE " . PREFIX . "_documents
-						SET Drucke = Drucke+1
+						SET document_count_print = document_count_print+1
 						WHERE Id = '" . $id . "'
 					");
 				}
@@ -644,7 +643,7 @@ class AVE_Core
 					{	// увеличиваем счетчик просмотров (1 раз в пределах сессии)
 						$AVE_DB->Query("
 							UPDATE " . PREFIX . "_documents
-							SET Geklickt = Geklickt+1
+							SET document_count_view = document_count_view+1
 							WHERE Id = '" . $id . "'
 						");
 						$_SESSION['doc_view[' . $id . ']'] = 1;
@@ -668,14 +667,14 @@ class AVE_Core
 
 				if (empty ($main_content))
 				{	// кэш пустой или отключен, извлекаем и компилируем шаблон
-					if (!empty ($this->curentdoc->RubrikTemplate))
+					if (!empty ($this->curentdoc->rubric_template))
 					{
-						$rubTmpl = $this->curentdoc->RubrikTemplate;
+						$rubTmpl = $this->curentdoc->rubric_template;
 					}
 					else
 					{
 						$rubTmpl = $AVE_DB->Query("
-							SELECT RubrikTemplate
+							SELECT rubric_template
 							FROM " . PREFIX . "_rubrics
 							WHERE Id = '" . RUB_ID . "'
 							LIMIT 1
@@ -689,10 +688,10 @@ class AVE_Core
 					else
 					{
 						// парсим тэги полей в шаблоне документа
-						$main_content = preg_replace_callback('/\[cprub:(\d+)\]/', 'document_get_field', $rubTmpl);
+						$main_content = preg_replace_callback('/\[tag:fld:(\d+)\]/', 'document_get_field', $rubTmpl);
 
 						// удаляем ошибочные тэги полей
-						$main_content = preg_replace('/\[cprub:\d*\]/', '', $main_content);
+						$main_content = preg_replace('/\[tag:fld:\d*\]/', '', $main_content);
 
 						if (CACHE_DOC_TPL && empty ($_POST) && !(isset ($_SESSION['user_adminmode']) && $_SESSION['user_adminmode'] == 1))
 						{	// кэширование разрешено
@@ -710,28 +709,28 @@ class AVE_Core
 					}
 				}
 			}
-			$out = str_replace('[cp:maincontent]', $main_content, $this->_coreDocumentTemplateGet(RUB_ID));
+			$out = str_replace('[tag:maincontent]', $main_content, $this->_coreDocumentTemplateGet(RUB_ID));
 		}	// /вывод документа
 
 		// Если в запросе пришел параметр print, т.е. страница для печати, парсим контент, который обрамлен
         // тегами только для печати
 		if (isset ($_REQUEST['print']) && $_REQUEST['print'] == 1)
 		{
-			$out = str_replace(array('[cp:if_print]', '[/cp:if_print]'), '', $out);
-			$out = preg_replace('/\[cp:donot_print\](.*?)\[\/cp:donot_print\]/si', '', $out);
+			$out = str_replace(array('[tag:if_print]', '[/tag:if_print]'), '', $out);
+			$out = preg_replace('/\[tag:if_notprint\](.*?)\[\/tag:if_notprint\]/si', '', $out);
 		}
 		else
 		{
 			// В противном случае наоборот, парсим только тот контент, который предназначен НЕ для печати
-            $out = preg_replace('/\[cp:if_print\](.*?)\[\/cp:if_print\]/si', '', $out);
-			$out = str_replace(array('[cp:donot_print]', '[/cp:donot_print]'), '', $out);
+            $out = preg_replace('/\[tag:if_print\](.*?)\[\/tag:if_print\]/si', '', $out);
+			$out = str_replace(array('[tag:if_notprint]', '[/tag:if_notprint]'), '', $out);
 		}
 
 		// получаем из шаблона системный тег, определяющий название темы дизайна
 		$match = '';
-		preg_match('/\[cp:theme:(\w+)]/', $out, $match);
+		preg_match('/\[tag:theme:(\w+)]/', $out, $match);
 		define('THEME_FOLDER', empty ($match[1]) ? DEFAULT_THEME_FOLDER : $match[1]);
-		$out = preg_replace('/\[cp:theme:(.*?)]/', '', $out);
+		$out = preg_replace('/\[tag:theme:(.*?)]/', '', $out);
 
 		// парсим тэги модулей
 		$out = $this->coreModuleTagParse($out);
@@ -744,21 +743,21 @@ class AVE_Core
 		}
 
 		// парсим тэги системы внутренних запросов
-		$out = preg_replace_callback('/\[cprequest:(\d+)\]/', 'request_parse', $out);
+		$out = preg_replace_callback('/\[tag:request:(\d+)\]/', 'request_parse', $out);
 
 		// парсим тэги скрытого текста
 		$out = parse_hide($out);
 
 		// парсим остальные тэги основного шаблона
 		$search = array(
-			'[cp:mediapath]',
-			'[cp:path]',
-			'[cp:sitename]',
-			'[cp:document]',
-			'[cp:home]',
-			'[cp:keywords]',
-			'[cp:description]',
-			'[cp:indexfollow]'
+			'[tag:mediapath]',
+			'[tag:path]',
+			'[tag:sitename]',
+			'[tag:document]',
+			'[tag:home]',
+			'[tag:keywords]',
+			'[tag:description]',
+			'[tag:robots]'
 		);
 
 		$replace = array(
@@ -767,32 +766,32 @@ class AVE_Core
 			htmlspecialchars(get_settings('site_name'), ENT_QUOTES),
 			get_redirect_link('print'),
 			get_home_link(),
-			(isset ($this->curentdoc->MetaKeywords) ? htmlspecialchars($this->curentdoc->MetaKeywords, ENT_QUOTES) : ''),
-			(isset ($this->curentdoc->MetaDescription) ? htmlspecialchars($this->curentdoc->MetaDescription, ENT_QUOTES) : ''),
-			(isset ($this->curentdoc->IndexFollow) ? $this->curentdoc->IndexFollow : '')
+			(isset ($this->curentdoc->document_meta_keywords) ? htmlspecialchars($this->curentdoc->document_meta_keywords, ENT_QUOTES) : ''),
+			(isset ($this->curentdoc->document_meta_description) ? htmlspecialchars($this->curentdoc->document_meta_description, ENT_QUOTES) : ''),
+			(isset ($this->curentdoc->document_meta_robots) ? $this->curentdoc->document_meta_robots : '')
 		);
 
 		if (defined('MODULE_CONTENT'))
 		{	// парсинг тэгов при выводе из модуля
-			$search[] = '[cp:maincontent]';
+			$search[] = '[tag:maincontent]';
 			$replace[] = MODULE_CONTENT;
-			$search[] = '[cp:title]';
+			$search[] = '[tag:title]';
 			$replace[] = htmlspecialchars(defined('MODULE_SITE') ? MODULE_SITE : '', ENT_QUOTES);
 		}
 		else
 		{
-			$search[] = '[cp:title]';
-			$replace[] = htmlspecialchars(pretty_chars($this->curentdoc->Titel), ENT_QUOTES);
+			$search[] = '[tag:title]';
+			$replace[] = htmlspecialchars(pretty_chars($this->curentdoc->document_title), ENT_QUOTES);
 		}
 
-		$search[] = '[cp:maincontent]';
+		$search[] = '[tag:maincontent]';
 		$replace[] = '';
-		$search[] = '[cp:printlink]';
+		$search[] = '[tag:printlink]';
 		$replace[] = get_print_link();
-		$search[] = '[cp:version]';
+		$search[] = '[tag:version]';
 		$replace[] = APP_INFO;
-		$search[] = '[views]';
-		$replace[] = isset ($this->curentdoc->Geklickt) ? $this->curentdoc->Geklickt : '';
+		$search[] = '[tag:docviews]';
+		$replace[] = isset ($this->curentdoc->document_count_view) ? $this->curentdoc->document_count_view : '';
 
 		$out = str_replace($search, $replace, $out);
 		unset ($search, $replace);
@@ -816,7 +815,6 @@ class AVE_Core
 		global $AVE_DB;
 
 		$get_url = iconv("UTF-8", "WINDOWS-1251", urldecode($get_url));
-//		list($get_url) = explode('#', $get_url);
 		$get_url = substr($get_url, strlen(ABS_PATH));
 		if (substr($get_url, - strlen(URL_SUFF)) == URL_SUFF)
 		{
@@ -870,31 +868,31 @@ class AVE_Core
 		$sql = $AVE_DB->Query("
 			SELECT
 				doc.*,
-				Rechte,
-				RubrikTemplate,
-				Template
+				rubric_permission,
+				rubric_template,
+				template_text
 			FROM
 				" . PREFIX . "_documents AS doc
 			JOIN
 				" . PREFIX . "_rubrics AS rub
-					ON rub.Id = doc.RubrikId
+					ON rub.Id = doc.rubric_id
 			JOIN
 				" . PREFIX . "_templates AS tpl
-					ON tpl.Id = Vorlage
+					ON tpl.Id = rubric_template_id
 			JOIN
-				" . PREFIX . "_document_permissions AS prm
-					ON doc.RubrikId = prm.RubrikId
+				" . PREFIX . "_rubric_permissions AS prm
+					ON doc.rubric_id = prm.rubric_id
 			WHERE
-				BenutzerGruppe = '" . UGROUP . "'
+				user_group_id = '" . UGROUP . "'
 			AND
-				" . (!empty ($get_url) ? "Url = '" . $get_url . "'" : "doc.Id = 1") . "
+				" . (!empty ($get_url) ? "document_alias = '" . $get_url . "'" : "doc.Id = 1") . "
 			LIMIT 1
 		");
 
 		if ($this->curentdoc = $sql->FetchRow())
 		{
 			$_GET['id']  = $_REQUEST['id']  = $this->curentdoc->Id;
-			$_GET['doc'] = $_REQUEST['doc'] = $this->curentdoc->Url;
+			$_GET['doc'] = $_REQUEST['doc'] = $this->curentdoc->document_alias;
 		}
 		else
 		{

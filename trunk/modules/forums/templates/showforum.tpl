@@ -109,7 +109,7 @@ Seite: <a class="forum_links_smaller" href="index.php?module=forums&amp;show=sho
     <td align="center" class="forum_info_meta" style="cursor:pointer" onclick="window.open('index.php?module=forums&amp;show=showposter&amp;tid={$topic.id}&amp;pop=1&amp;theme_folder={$theme_folder}', 'Poster', 'toolbar=no,scrollbars=yes,resizable=yes,width=400,height=400')">	{if ($topic.replies-1) == 0}
         -
     {else} <a href="javascript:;" class="forum_links_small" onclick="window.open('index.php?module=forums&amp;show=showposter&amp;tid={$topic.id}&amp;pop=1&amp;theme_folder={$theme_folder}', 'Poster', 'toolbar=no,scrollbars=yes,resizable=yes,width=400,height=400')">{$topic.replies-1}</a>{/if}</td>
-    <td align="center" class="forum_info_main"> {if $topic.Registriert < 2}
+    <td align="center" class="forum_info_main"> {if $topic.reg_time < 2}
         {#Guest#}
         {else} <a class="forum_links_small" href="{$topic.autorlink}">{$topic.autor}</a> {/if} </td>
     <td align="center" class="forum_info_meta"> {$topic.views} </td>

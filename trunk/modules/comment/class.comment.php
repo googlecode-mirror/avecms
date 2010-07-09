@@ -6,6 +6,7 @@
  *
  * @package AVE.cms
  * @subpackage module_Comment
+ * @since 1.4
  * @filesource
  */
 class Comment
@@ -147,7 +148,6 @@ class Comment
         // протяжении всего срока жизни объекта.
         static $comments = array();
 
-
         // Если в массиве не найден ключ, который соответствует запрашиваемому документу, тогда выполняем
         // запрос к БД на получение количества комментариев
         if (! isset($comments[$document_id]))
@@ -184,20 +184,20 @@ class Comment
 		global $AVE_DB, $AVE_Template;
 
 		// Проверяем, что в настройках модуля разрешено комментирование документов
-        if ($this->_commentSettingsGet('active') == 1)
+        if ($this->_commentSettingsGet('comment_active') == 1)
 		{
 			$assign['display_comments'] = 1;
 
             // Если группа пользователя, который в текущий момент просматривает документ попадает в список
             // разрешенных (в настройках модуля), тогда создаем флаг, который будет разрешать к показу
             // форму для добавления нового комментария
-            if (in_array(UGROUP, explode(',', $this->_commentSettingsGet('user_groups'))))
+            if (in_array(UGROUP, explode(',', $this->_commentSettingsGet('comment_user_groups'))))
 			{
 				$assign['cancomment'] = 1;
 			}
 
-            $assign['max_chars'] = $this->_commentSettingsGet('max_chars');
-			$assign['im'] = $this->_commentSettingsGet('spamprotect');
+            $assign['comment_max_chars'] = $this->_commentSettingsGet('comment_max_chars');
+			$assign['im'] = $this->_commentSettingsGet('comment_use_antispam');
 
 			// Выполняем запрос к БД на получение количества комментариев для текущего документа
             $comments = array();
@@ -205,8 +205,8 @@ class Comment
 				SELECT *
 				FROM " . PREFIX . "_modul_comment_info
 				WHERE document_id = '" . (int)$_REQUEST['id'] . "'
-				" . (UGROUP == 1 ? '' : 'AND status = 1') . "
-				ORDER BY published ASC
+				" . (UGROUP == 1 ? '' : "AND comment_status = '1'") . "
+				ORDER BY comment_published ASC
 			");
 
 			// Получаем формат даты, который указан в общих настройках системы и
@@ -214,13 +214,13 @@ class Comment
             $date_time_format = $AVE_Template->get_config_vars('COMMENT_DATE_TIME_FORMAT');
 			while ($row = $sql->FetchAssocArray())
 			{
-				$row['published']  = strftime($date_time_format, $row['published']);
-				$row['edited'] = strftime($date_time_format, $row['edited']);
+				$row['comment_published']  = strftime($date_time_format, $row['comment_published']);
+				$row['comment_changed'] = strftime($date_time_format, $row['comment_changed']);
 //				if ($row['parent_id'] == 0)
-//					$row['message'] = nl2br(wordwrap($row['message'], 100, "\n", true));
+//					$row['comment_text'] = nl2br(wordwrap($row['comment_text'], 100, "\n", true));
 //				else
-//					$row['message'] = nl2br(wordwrap($row['message'], 90, "\n", true));
-//				$row['message'] = nl2br($row['message']);
+//					$row['comment_text'] = nl2br(wordwrap($row['comment_text'], 90, "\n", true));
+//				$row['comment_text'] = nl2br($row['comment_text']);
 
 				$comments[$row['parent_id']][] = $row;
 			}
@@ -258,8 +258,8 @@ class Comment
 
 		// Формируем ряд переменных для использования в шаблоне
         $AVE_Template->assign('closed', $geschlossen);
-		$AVE_Template->assign('cancomment', ($this->_commentSettingsGet('active') == 1 && in_array(UGROUP, explode(',', $this->_commentSettingsGet('user_groups')))));
-		$AVE_Template->assign('max_chars', $this->_commentSettingsGet('max_chars'));
+		$AVE_Template->assign('cancomment', ($this->_commentSettingsGet('comment_active') == 1 && in_array(UGROUP, explode(',', $this->_commentSettingsGet('comment_user_groups')))));
+		$AVE_Template->assign('comment_max_chars', $this->_commentSettingsGet('comment_max_chars'));
 		$AVE_Template->assign('theme', defined('THEME_FOLDER') ? THEME_FOLDER : DEFAULT_THEME_FOLDER);
 
         // Отображаем форму для добавления комментария
@@ -286,9 +286,8 @@ class Comment
 			$link = rewrite_link(urldecode(get_redirect_link()));
 		}
 
-
         // Если в настройках модуля включено использование защитного кода, тогда
-        if ($this->_commentSettingsGet('spamprotect') == 1)
+        if ($this->_commentSettingsGet('comment_use_antispam') == 1)
 		{
             // Если введенный пользователем защитный код неверен, тогда выполняем обновление кода
             if (! (isset($_SESSION['captcha_keystring']) && isset($_POST['securecode'])
@@ -310,47 +309,46 @@ class Comment
 		}
 
 		// Определяем флаг модерации комментариев
-        $status = ($this->_commentSettingsGet('moderate') == 1) ? 0 : 1;
+        $comment_status = ($this->_commentSettingsGet('comment_need_approve') == 1) ? 0 : 1;
 
 		// Если комментарии разрешены, тогда получаем все данные, который пользователь указал в форме
-        if ($this->_commentSettingsGet('active') == 1
-			&& !empty($_POST['message'])
-			&& !empty($_POST['author_name'])
-			&& in_array(UGROUP, explode(',', $this->_commentSettingsGet('user_groups'))))
+        if ($this->_commentSettingsGet('comment_active') == 1
+			&& !empty($_POST['comment_text'])
+			&& !empty($_POST['comment_author_name'])
+			&& in_array(UGROUP, explode(',', $this->_commentSettingsGet('comment_user_groups'))))
 		{
 			$new_comment['parent_id'] = (int)$_POST['parent_id'];
 			$new_comment['document_id'] = (int)$_POST['doc_id'];
-			$new_comment['author_name'] = $_POST['author_name'];
-			$new_comment['author_id'] = empty($_SESSION['user_id']) ? '' : $_SESSION['user_id'];
-			$new_comment['author_email'] = $_POST['author_email'];
-			$new_comment['author_city'] = $_POST['author_city'];
-			$new_comment['author_website'] = $_POST['author_website'];
-			$new_comment['author_ip'] = $_SERVER['REMOTE_ADDR'];
-			$new_comment['published'] = time();
-			$new_comment['message'] = $_POST['message'];
-			$new_comment['status'] = $status;
+			$new_comment['comment_author_name'] = $_POST['comment_author_name'];
+			$new_comment['comment_author_id'] = empty($_SESSION['user_id']) ? '' : $_SESSION['user_id'];
+			$new_comment['comment_author_email'] = $_POST['comment_author_email'];
+			$new_comment['comment_author_city'] = $_POST['comment_author_city'];
+			$new_comment['comment_author_website'] = $_POST['comment_author_website'];
+			$new_comment['comment_author_ip'] = $_SERVER['REMOTE_ADDR'];
+			$new_comment['comment_published'] = time();
+			$new_comment['comment_text'] = $_POST['comment_text'];
+			$new_comment['comment_status'] = $comment_status;
 
 			// Если данные были отправлены с помощью ajax_запроса, преобразуем текстовую информацию
             // в кодировку cp1251
             if ($ajax)
 			{
-				$new_comment['author_name'] = iconv('utf-8', 'cp1251', $new_comment['author_name']);
-				$new_comment['author_email'] = iconv('utf-8', 'cp1251', $new_comment['author_email']);
-				$new_comment['author_website'] = iconv('utf-8', 'cp1251', $new_comment['author_website']);
-				$new_comment['author_city'] = iconv('utf-8', 'cp1251', $new_comment['author_city']);
-				$new_comment['message'] = iconv('utf-8', 'cp1251', $new_comment['message']);
+				$new_comment['comment_author_name'] = iconv('utf-8', 'cp1251', $new_comment['comment_author_name']);
+				$new_comment['comment_author_email'] = iconv('utf-8', 'cp1251', $new_comment['comment_author_email']);
+				$new_comment['comment_author_website'] = iconv('utf-8', 'cp1251', $new_comment['comment_author_website']);
+				$new_comment['comment_author_city'] = iconv('utf-8', 'cp1251', $new_comment['comment_author_city']);
+				$new_comment['comment_text'] = iconv('utf-8', 'cp1251', $new_comment['comment_text']);
 			}
 
 			// Определяем максимальную длину символов для комментария
-            $max_chars = $this->_commentSettingsGet('max_chars');
-			$max_chars = (!empty($max_chars) && $max_chars > 10) ? $max_chars : 200;
+            $comment_max_chars = $this->_commentSettingsGet('comment_max_chars');
+			$comment_max_chars = (!empty($comment_max_chars) && $comment_max_chars > 10) ? $comment_max_chars : 200;
 
             // Если длина комментария превышает максимально допустимую, обрезаем текст, до максимального значения
-			$new_comment['message'] = substr(stripslashes($new_comment['message']), 0, $max_chars);
-			$new_comment['message'] .= (strlen($new_comment['message']) > $max_chars) ? '…' : '';
-//			$new_comment['message'] = htmlspecialchars($new_comment['message'], ENT_QUOTES);
-			$new_comment['message'] = pretty_chars($new_comment['message']);
-
+			$new_comment['comment_text'] = substr(stripslashes($new_comment['comment_text']), 0, $comment_max_chars);
+			$new_comment['comment_text'] .= (strlen($new_comment['comment_text']) > $comment_max_chars) ? '…' : '';
+//			$new_comment['comment_text'] = htmlspecialchars($new_comment['comment_text'], ENT_QUOTES);
+			$new_comment['comment_text'] = pretty_chars($new_comment['comment_text']);
 
             // Выполняем запрос к БД на добавление комментария
             $AVE_DB->Query("
@@ -368,7 +366,7 @@ class Comment
 
 			//  Формируем текст уведомления для отправки на e-mail
             $mail_text = $AVE_Template->get_config_vars('COMMENT_MESSAGE_ADMIN');
-			$mail_text = str_replace('%COMMENT%', stripslashes($new_comment['message']), $mail_text);
+			$mail_text = str_replace('%COMMENT%', stripslashes($new_comment['comment_text']), $mail_text);
 			$mail_text = str_replace('%N%', "\n", $mail_text);
 			$mail_text = str_replace('%PAGE%', $page, $mail_text);
 			$mail_text = str_replace('&amp;', '&', $mail_text);
@@ -387,7 +385,7 @@ class Comment
             // на странице.
             if ($ajax)
 			{
-				$new_comment['published'] = strftime($AVE_Template->get_config_vars('COMMENT_DATE_TIME_FORMAT'), $new_comment['published']);
+				$new_comment['comment_published'] = strftime($AVE_Template->get_config_vars('COMMENT_DATE_TIME_FORMAT'), $new_comment['comment_published']);
 				$subcomments[] = $new_comment;
 				$AVE_Template->assign('subcomments', $subcomments);
 				$AVE_Template->assign('theme', defined('THEME_FOLDER') ? THEME_FOLDER : DEFAULT_THEME_FOLDER);
@@ -395,7 +393,7 @@ class Comment
 			}
 		}
 
-//		$JsAfter = ($status == 0) ? $AVE_Template->get_config_vars('COMMENT_AFTER_MODER') : $AVE_Template->get_config_vars('COMMENT_THANKYOU_TEXT');
+//		$JsAfter = ($comment_status == 0) ? $AVE_Template->get_config_vars('COMMENT_AFTER_MODER') : $AVE_Template->get_config_vars('COMMENT_THANKYOU_TEXT');
 //		$AVE_Template->assign('JsAfter', $JsAfter);
 //		$AVE_Template->display($tpl_dir . $this->_comment_thankyou_tpl);
 
@@ -422,83 +420,83 @@ class Comment
 			SELECT
 			--	msg.Id,
 			--	msg.document_id,
-			--	msg.author_name,
-			--	msg.author_email,
-			--	msg.author_city,
-			--	msg.author_website,
+			--	msg.comment_author_name,
+			--	msg.comment_author_email,
+			--	msg.comment_author_city,
+			--	msg.comment_author_website,
 				msg.parent_id,
-				msg.message,
-				cmnt.user_groups,
-				cmnt.max_chars,
-				cmnt.moderate
+				msg.comment_text,
+				cmnt.comment_user_groups,
+				cmnt.comment_max_chars,
+				cmnt.comment_need_approve
 			FROM
 				" . PREFIX . "_modul_comment_info AS msg,
 				" . PREFIX . "_modul_comments AS cmnt
-			WHERE active = 1
+			WHERE comment_active = '1'
 			AND msg.Id = '" . $comment_id . "'
-			" . ((UGROUP != 1) ? "AND author_id = " . $_SESSION['user_id'] : '') . "
+			" . ((UGROUP != 1) ? "AND comment_author_id = " . $_SESSION['user_id'] : '') . "
 		")->FetchAssocArray();
 
 		// Если данные получены
         if ($row !== false)
 		{
 
-            $max_chars = ($row['max_chars'] != '' && $row['max_chars'] > 10) ? $row['max_chars'] : 20;
+            $comment_max_chars = ($row['comment_max_chars'] != '' && $row['comment_max_chars'] > 10) ? $row['comment_max_chars'] : 20;
 
-			$message = iconv('utf-8', 'cp1251', $_POST['text']);
+			$comment_text = iconv('utf-8', 'cp1251', $_POST['text']);
 
 			// Преобразуем все HTML сущности к числовым аналогам
-			$message = preg_replace_callback('/&([a-zA-Z][a-zA-Z0-9]{1,7});/', 'convert_entity', $message);
+			$comment_text = preg_replace_callback('/&([a-zA-Z][a-zA-Z0-9]{1,7});/', 'convert_entity', $comment_text);
 
 			// Форматируем текст сообщения
-			$message = preg_replace('/&#x([0-9a-f]{1,7});/ei', 'chr(hexdec("\\1"))', $message);
-			$message = preg_replace('/&#([0-9]{1,7});/e', 'chr("\\1")', $message);
+			$comment_text = preg_replace('/&#x([0-9a-f]{1,7});/ei', 'chr(hexdec("\\1"))', $comment_text);
+			$comment_text = preg_replace('/&#([0-9]{1,7});/e', 'chr("\\1")', $comment_text);
 
-			$message = stripslashes($message);
-			$message = str_replace(array("<br>\n", "<br />\n", "<br/>\n"), "\n", $message);
-//			$message = strip_tags($message);
-			$message = substr($message, 0, $max_chars-1);
-			$message_length = strlen($message);
-			$message .= ($message_length > $max_chars) ? '…' : '';
-//			$message = pretty_chars(htmlspecialchars($message, ENT_QUOTES));
+			$comment_text = stripslashes($comment_text);
+			$comment_text = str_replace(array("<br>\n", "<br />\n", "<br/>\n"), "\n", $comment_text);
+//			$comment_text = strip_tags($comment_text);
+			$comment_text = substr($comment_text, 0, $comment_max_chars-1);
+			$message_length = strlen($comment_text);
+			$comment_text .= ($message_length > $comment_max_chars) ? '…' : '';
+//			$comment_text = pretty_chars(htmlspecialchars($comment_text, ENT_QUOTES));
 
 			// Если группа текущего пользователя совпадает с разрешенной группой в настройках модуля, тогда
             // выполняем запрос к БД на обновление информации.
-            if (in_array(UGROUP, explode(',', $row['user_groups'])) && $message_length > 3)
+            if (in_array(UGROUP, explode(',', $row['comment_user_groups'])) && $message_length > 3)
 			{
 				$AVE_DB->Query("
 					UPDATE " . PREFIX . "_modul_comment_info
 					SET
-					--	author_name = '" . (empty($_POST['author_name']) ? @addslashes($row['author_name']) : $_POST['author_name']) . "',
-					--	author_email = '" . (empty($_POST['author_email']) ? @addslashes($row['author_email']) : $_POST['author_email']) . "',
-					--	author_city = '" . (empty($_POST['author_city']) ? @addslashes($row['author_city']) : $_POST['author_city']) . "',
-					--	author_website = '" . (empty($_POST['author_website']) ? @addslashes($row['author_website']) : $_POST['author_website']) . "',
-						edited = '" . time() . "',
-						status = '" . intval(!(bool)$row['moderate']) . "',
-						message = '" . addslashes($message) . "'
+					--	comment_author_name = '" . (empty($_POST['comment_author_name']) ? @addslashes($row['comment_author_name']) : $_POST['comment_author_name']) . "',
+					--	comment_author_email = '" . (empty($_POST['comment_author_email']) ? @addslashes($row['comment_author_email']) : $_POST['comment_author_email']) . "',
+					--	comment_author_city = '" . (empty($_POST['comment_author_city']) ? @addslashes($row['comment_author_city']) : $_POST['comment_author_city']) . "',
+					--	comment_author_website = '" . (empty($_POST['comment_author_website']) ? @addslashes($row['comment_author_website']) : $_POST['comment_author_website']) . "',
+						comment_changed = '" . time() . "',
+						comment_status = '" . intval(!(bool)$row['comment_need_approve']) . "',
+						comment_text = '" . addslashes($comment_text) . "'
 					WHERE
 						Id = '" . $comment_id . "'
 				");
 
 //				if ($row['parent_id'] == 0)
-//					echo nl2br(wordwrap($message, 100, "\n", true));
+//					echo nl2br(wordwrap($comment_text, 100, "\n", true));
 //				else
-//					echo nl2br(wordwrap($message, 90, "\n", true));
-//				echo nl2br(htmlspecialchars($message, ENT_QUOTES));
+//					echo nl2br(wordwrap($comment_text, 90, "\n", true));
+//				echo nl2br(htmlspecialchars($comment_text, ENT_QUOTES));
 
 				// Преобразуем HTML теги в HTML сущности
-                echo htmlspecialchars($message, ENT_QUOTES);
+                echo htmlspecialchars($comment_text, ENT_QUOTES);
 				exit;
 			}
 
 //			if ($row['parent_id'] == 0)
-//				echo nl2br(wordwrap($row['message'], 100, "\n", true));
+//				echo nl2br(wordwrap($row['comment_text'], 100, "\n", true));
 //			else
-//				echo nl2br(wordwrap($row['message'], 90, "\n", true));
-//			echo nl2br(htmlspecialchars($row['message'], ENT_QUOTES));
+//				echo nl2br(wordwrap($row['comment_text'], 90, "\n", true));
+//			echo nl2br(htmlspecialchars($row['comment_text'], ENT_QUOTES));
 
 			// Преобразуем HTML теги в HTML сущности
-            echo htmlspecialchars($row['message'], ENT_QUOTES);
+            echo htmlspecialchars($row['comment_text'], ENT_QUOTES);
 		}
 		exit;
 	}
@@ -548,15 +546,15 @@ class Comment
 		")->FetchAssocArray();
 
         // Преобразуем адрес сайта к формату ссылки
-        $row['author_website'] = str_replace('http://', '', $row['author_website']);
-		$row['author_website'] = ($row['author_website'] != '') ? '<a target="_blank" href="http://' . $row['author_website'] . '">' . $row['author_website'] .'</a>' : '';
+        $row['comment_author_website'] = str_replace('http://', '', $row['comment_author_website']);
+		$row['comment_author_website'] = ($row['comment_author_website'] != '') ? '<a target="_blank" href="http://' . $row['comment_author_website'] . '">' . $row['comment_author_website'] .'</a>' : '';
 
 		// Выполняем запрос к БД на получение количества всех комментариев, оставленных данным пользователем
         $row['num'] = $AVE_DB->Query("
 			SELECT COUNT(*)
 			FROM " . PREFIX . "_modul_comment_info
-			WHERE author_id = '" . $row['author_id'] . "'
-			AND author_id != 0
+			WHERE comment_author_id = '" . $row['comment_author_id'] . "'
+			AND comment_author_id != 0
 		")->GetCell();
 
 		// Отображаем окно с информацией
@@ -568,15 +566,15 @@ class Comment
 	 * Метод, предназначенный для управления запретом или разрешением отвечать на комментарии
 	 *
 	 * @param int $comment_id - идентификатор комментария
-	 * @param string $status - {lock|unlock} признак запрета/разрешения
+	 * @param string $comment_status - {lock|unlock} признак запрета/разрешения
 	 */
-	function commentReplyStatusSet($comment_id, $status = 'lock')
+	function commentReplyStatusSet($comment_id, $comment_status = 'lock')
 	{
 		global $AVE_DB;
 
 		$AVE_DB->Query("
 			UPDATE " . PREFIX . "_modul_comment_info
-			SET status = '" . (($status == 'lock') ? 0 : 1) . "'
+			SET comment_status = '" . (($comment_status == 'lock') ? 0 : 1) . "'
 			WHERE Id = '" . $comment_id . "'
 		");
 
@@ -587,15 +585,15 @@ class Comment
 	 * Метод, предназначенный для управления запретом или разрешением комментировать документ
 	 *
 	 * @param int $document_id - идентификатор документа
-	 * @param string $status - {close|open} признак запрета/разрешения
+	 * @param string $comment_status - {close|open} признак запрета/разрешения
 	 */
-	function commentStatusSet($document_id, $status = 'open')
+	function commentStatusSet($document_id, $comment_status = 'open')
 	{
 		global $AVE_DB;
 
 		$AVE_DB->Query("
 			UPDATE " . PREFIX . "_modul_comment_info
-			SET comments_close = '" . (($status == 'open') ? 0 : 1) . "'
+			SET comments_close = '" . (($comment_status == 'open') ? 0 : 1) . "'
 			WHERE document_id = '" . $document_id . "'
 		");
 
@@ -633,48 +631,47 @@ class Comment
 		{
 			switch ($_REQUEST['sort'])
 			{
-				case 'doc_desc':
+				case 'document_desc':
 					$def_sort = 'ORDER BY CId ASC';
-					$def_nav  = '&sort=doc_desc';
+					$def_nav  = '&sort=document_desc';
 					break;
 
-				case 'doc_asc':
+				case 'document':
 					$def_sort = 'ORDER BY CId DESC';
-					$def_nav  = '&sort=doc_asc';
+					$def_nav  = '&sort=document';
 					break;
 
 				case 'comment_desc':
-					$def_sort = 'ORDER BY cmnt.message ASC';
+					$def_sort = 'ORDER BY cmnt.comment_text ASC';
 					$def_nav  = '&sort=comment_desc';
 					break;
 
-				case 'comment_asc':
-					$def_sort = 'ORDER BY cmnt.message DESC';
-					$def_nav  = '&sort=comment_asc';
+				case 'comment':
+					$def_sort = 'ORDER BY cmnt.comment_text DESC';
+					$def_nav  = '&sort=comment';
 					break;
 
 				case 'created_desc':
-					$def_sort = 'ORDER BY cmnt.published ASC';
+					$def_sort = 'ORDER BY cmnt.comment_published ASC';
 					$def_nav  = '&sort=created_desc';
 					break;
 
-				case 'created_asc':
-					$def_sort = 'ORDER BY cmnt.published DESC';
-					$def_nav  = '&sort=created_asc';
+				case 'created':
+					$def_sort = 'ORDER BY cmnt.comment_published DESC';
+					$def_nav  = '&sort=created';
 					break;
 			}
 		}
-
 
         // Выполняем запрос к БД на получение комметариев с учетом параметров сортировки и лимита.
         $sql = $AVE_DB->Query("
 			SELECT
 				doc.Id,
-				doc.Titel,
+				doc.document_title,
 				cmnt.Id AS CId,
 				cmnt.document_id,
-				cmnt.message,
-				cmnt.published
+				cmnt.comment_text,
+				cmnt.comment_published
 			FROM
                 " . PREFIX . "_modul_comment_info AS cmnt
 			JOIN
@@ -689,7 +686,6 @@ class Comment
             $row['Comments'] = $this->_commentPostCountGet($row['Id']);
 			array_push($docs, $row);
 		}
-
 
         // Если количество комментариев полученных из БД превышает допустимое на странице, тогда формируем
         // меню постраницной навигации
@@ -722,7 +718,6 @@ class Comment
 			LIMIT 1
 		")->FetchAssocArray();
 
-
         // Если в запросе содержится подзапрос на сохранение данных (пользователь уже отредактировал комментарий
         // и нажал кнопку сохранить изменения), тогда выполняем запрос к БД на обновление информации.
         if (isset($_POST['sub']) && $_POST['sub'] == 'send' && false != $row)
@@ -730,12 +725,12 @@ class Comment
             $AVE_DB->Query("
                 UPDATE " . PREFIX . "_modul_comment_info
                 SET
-                    author_name = '" . htmlspecialchars($_POST['author_name']) . "',
-                    author_email = '" . htmlspecialchars($_POST['author_email']) . "',
-                    author_city = '" . htmlspecialchars($_POST['author_city']) . "',
-                    author_website = '" . htmlspecialchars($_POST['author_website']) . "',
-                    message = '" . htmlspecialchars($_POST['message']) . "',
-                    edited = '" . time() . "'
+                    comment_author_name = '" . htmlspecialchars($_POST['comment_author_name']) . "',
+                    comment_author_email = '" . htmlspecialchars($_POST['comment_author_email']) . "',
+                    comment_author_city = '" . htmlspecialchars($_POST['comment_author_city']) . "',
+                    comment_author_website = '" . htmlspecialchars($_POST['comment_author_website']) . "',
+                    comment_text = '" . htmlspecialchars($_POST['comment_text']) . "',
+                    comment_changed = '" . time() . "'
                 WHERE
                     Id = '" . (int)$_POST['Id'] . "'
             ");
@@ -762,7 +757,7 @@ class Comment
 
 		    $AVE_Template->assign('closed', $closed);
             $AVE_Template->assign('row', $row);
-		    $AVE_Template->assign('max_chars', $this->_commentSettingsGet('max_chars'));
+		    $AVE_Template->assign('comment_max_chars', $this->_commentSettingsGet('comment_max_chars'));
         }
 
         // Отображаем шаблон
@@ -783,15 +778,15 @@ class Comment
 
 		if (isset($_REQUEST['sub']) && $_REQUEST['sub'] == 'save')
 		{
-			$_POST['max_chars'] = (empty($_POST['max_chars']) || $_POST['max_chars'] < 50) ? 50 : $_POST['max_chars'];
+			$_POST['comment_max_chars'] = (empty($_POST['comment_max_chars']) || $_POST['comment_max_chars'] < 50) ? 50 : $_POST['comment_max_chars'];
 			$AVE_DB->Query("
 				UPDATE " . PREFIX . "_modul_comments
 				SET
-					max_chars = '" . @(int)$_POST['max_chars'] . "',
-					user_groups = '" . @implode(',', $_POST['user_groups']) . "',
-					moderate = '" . @(int)$_POST['moderate'] . "',
-					active = '" . @(int)$_POST['active'] . "',
-					spamprotect = '" . @(int)$_POST['spamprotect'] . "'
+					comment_max_chars = '" . @(int)$_POST['comment_max_chars'] . "',
+					comment_user_groups = '" . @implode(',', $_POST['comment_user_groups']) . "',
+					comment_need_approve = '" . @(int)$_POST['comment_need_approve'] . "',
+					comment_active = '" . @(int)$_POST['comment_active'] . "',
+					comment_use_antispam = '" . @(int)$_POST['comment_use_antispam'] . "'
 				WHERE
 					Id = 1
 			");
@@ -799,7 +794,7 @@ class Comment
 
         // Получаем список всех настроек модуля
 		$row = $this->_commentSettingsGet();
-        $row['user_groups'] = explode(',', $row['user_groups']);
+        $row['comment_user_groups'] = explode(',', $row['comment_user_groups']);
 
 		// Передаем данные в шаблон и показываем страницу с настройками модуля
         $AVE_Template->assign($row);

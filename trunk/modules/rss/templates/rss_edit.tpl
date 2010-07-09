@@ -9,7 +9,7 @@ function check_name() {ldelim}
 {rdelim}
 
 function changeRub(select) {ldelim}
-	location.href='index.php?do=modules&action=modedit&mod=rss&moduleaction=edit&id={$channel->id}&RubrikId=' + select.options[select.selectedIndex].value + '&cp={$sess}';
+	location.href='index.php?do=modules&action=modedit&mod=rss&moduleaction=edit&id={$channel->id}&rubric_id=' + select.options[select.selectedIndex].value + '&cp={$sess}';
 {rdelim}
 </script>
 
@@ -35,7 +35,7 @@ function changeRub(select) {ldelim}
 			<td class="second">
 				<select name="rss_rubric_id" onChange="changeRub(this)" id="rss_rubric_id">
 					{foreach from=$rubriks item=rubs}
-						<option value="{$rubs->Id}" {if $channel->rss_rubric_id == $rubs->Id}selected{/if}>{$rubs->RubrikName|escape}</option>
+						<option value="{$rubs->Id}" {if $channel->rss_rubric_id == $rubs->Id}selected{/if}>{$rubs->rubric_title|escape}</option>
 					{/foreach}
 				</select>
 			</td>
@@ -64,8 +64,8 @@ function changeRub(select) {ldelim}
 			<td class="first" width="20%"><strong>{#RSS_CHANNEL_TITLE#}</strong></td>
 			<td class="second">
 				<select name="field_title">
-					{foreach from=$fields item=fids}
-						<option value="{$fids->Id}" {if $fids->Id == $channel->rss_title_id}selected{/if}>{$fids->Titel|escape}</option>
+					{foreach from=$fields item=field}
+						<option value="{$field->Id}" {if $fids->Id == $channel->rss_title_id}selected{/if}>{$field->rubric_field_title|escape}</option>
 					{/foreach}
 				</select>
 			</td>
@@ -76,8 +76,8 @@ function changeRub(select) {ldelim}
 			<td class="first" width="20%"><strong>{#RSS_CHANNEL_DESC#}</strong></td>
 			<td class="second">
 				<select name="field_descr">
-					{foreach from=$fields item=fids}
-						<option value="{$fids->Id}" {if $fids->Id == $channel->rss_description_id}selected{/if}>{$fids->Titel|escape}</option>
+					{foreach from=$fields item=field}
+						<option value="{$field->Id}"{if $fids->Id == $channel->rss_description_id} selected="selected"{/if}>{$field->rubric_field_title|escape}</option>
 					{/foreach}
 				</select>
 			</td>

@@ -8,7 +8,11 @@
  * @filesource
  */
 
-error_reporting(E_ALL);
+@error_reporting(E_ALL | E_STRICT);
+@ini_set('display_errors', true);
+@ini_set('html_errors', true);
+@ini_set('error_reporting', E_ALL | E_STRICT);
+@date_default_timezone_set('Europe/Moscow');
 
 define('START_MICROTIME', microtime());
 
@@ -32,10 +36,10 @@ if (empty($_SESSION['admin_language']))
 {
 	if (!empty($_REQUEST['feld']) &&
 		!empty($_REQUEST['Id']) &&
-		!empty($_REQUEST['RubrikId']))
+		!empty($_REQUEST['rubric_id']))
 	{
 		$_SESSION['redirectlink'] = 'index.php?do=docs&action=edit&pop=1'
-									. '&RubrikId=' . (int)$_REQUEST['RubrikId']
+									. '&rubric_id=' . (int)$_REQUEST['rubric_id']
 									. '&Id='       . (int)$_REQUEST['Id']
 									. '&feld='     . (int)$_REQUEST['feld']
 									. '#'          . (int)$_REQUEST['feld'];

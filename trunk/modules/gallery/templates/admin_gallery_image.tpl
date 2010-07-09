@@ -14,10 +14,10 @@
 	<div class="infobox">{$page_nav}</div>
 {/if}
 
-<form name="kform" method="post" action="index.php?do=modules&action=modedit&mod=gallery&moduleaction=showimages&id={$smarty.request.id}&cp={$sess}&sub=save&page={$smarty.request.page}">
+<form name="kform" method="post" action="index.php?do=modules&action=modedit&mod=gallery&moduleaction=showimages&id={$smarty.request.id|escape}&cp={$sess}&sub=save&page={$smarty.request.page|escape}">
 	<table width="100%" border="0" cellspacing="1" cellpadding="8" class="tableborder">
 		<col width="20">
-		<col width="{$thumb_width}">
+		<col width="{$gallery_thumb_width}">
 		<col width="366">
 		<tr class="tableheader">
 			<td align="center">
@@ -38,7 +38,7 @@
 
 				<td valign="top">
 					<a href="../modules/gallery/uploads/{if $gallery_folder != ''}{$gallery_folder}/{/if}{$image.image_filename|escape}" target="_blank">
-						<img src="../modules/gallery/thumb.php?file={$image.image_filename|escape}&type={$image.image_type|escape}&xwidth={$thumb_width}&folder={$gallery_folder|escape|default:''}&compile=1" alt="" border="0" />
+						<img src="../modules/gallery/thumb.php?file={$image.image_filename|escape}&type={$image.image_type|escape}&xwidth={$gallery_thumb_width}&folder={$gallery_folder|escape|default:''}&compile=1" alt="" border="0" />
 					</a>
 				</td>
 

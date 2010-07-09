@@ -40,11 +40,11 @@
 				</td>
 
 				<td>
-					<input style="width:210px" name="Titel[{$dl->Id}]" type="text" value="{$dl->Titel|escape:html|stripslashes}" />
+					<input style="width:210px" name="title[{$dl->Id}]" type="text" value="{$dl->title|escape:html|stripslashes}" />
 				</td>
 
 				<td>
-					<textarea wrap="off" title="{#ProductEsdOtherDlTimeClick#}" style="width:280px;height:50px" onclick="this.style.height='200px'" onmouseout="this.style.height='50px'" name="Beschreibung[{$dl->Id}]">{$dl->Beschreibung|escape:html|stripslashes}</textarea>
+					<textarea wrap="off" title="{#ProductEsdOtherDlTimeClick#}" style="width:280px;height:50px" onclick="this.style.height='200px'" onmouseout="this.style.height='50px'" name="description[{$dl->Id}]">{$dl->description|escape:html|stripslashes}</textarea>
 				</td>
 
 				<td>
@@ -78,11 +78,11 @@
 				</td>
 
 				<td>
-					<input style="width:210px" name="Titel[{$dl->Id}]" type="text" value="{$dl->Titel|escape:html|stripslashes}" >
+					<input style="width:210px" name="title[{$dl->Id}]" type="text" value="{$dl->title|escape:html|stripslashes}" >
 				</td>
 
 				<td>
-					<textarea wrap="off" title="{#ProductEsdOtherDlTimeClick#}" style="width:280px;height:50px" onclick="this.style.height='200px'" onmouseout="this.style.height='50px'" name="Beschreibung[{$dl->Id}]">{$dl->Beschreibung|escape:html|stripslashes}</textarea>
+					<textarea wrap="off" title="{#ProductEsdOtherDlTimeClick#}" style="width:280px;height:50px" onclick="this.style.height='200px'" onmouseout="this.style.height='50px'" name="description[{$dl->Id}]">{$dl->description|escape:html|stripslashes}</textarea>
 				</td>
 
 				<td>
@@ -116,11 +116,11 @@
 				</td>
 
 				<td>
-					<input style="width:210px" name="Titel[{$dl->Id}]" type="text" value="{$dl->Titel|escape:html|stripslashes}">
+					<input style="width:210px" name="title[{$dl->Id}]" type="text" value="{$dl->title|escape:html|stripslashes}">
 				</td>
 
 				<td>
-					<textarea wrap="off" title="{#ProductEsdOtherDlTimeClick#}" style="width:280px;height:50px" onclick="this.style.height='200px'" onmouseout="this.style.height='50px'" name="Beschreibung[{$dl->Id}]">{$dl->Beschreibung|escape:html|stripslashes}</textarea>
+					<textarea wrap="off" title="{#ProductEsdOtherDlTimeClick#}" style="width:280px;height:50px" onclick="this.style.height='200px'" onmouseout="this.style.height='50px'" name="description[{$dl->Id}]">{$dl->description|escape:html|stripslashes}</textarea>
 				</td>
 
 				<td>
@@ -154,11 +154,11 @@
 				</td>
 
 				<td>
-					<input style="width:210px" name="Titel[{$dl->Id}]" type="text" value="{$dl->Titel|escape:html|stripslashes}">
+					<input style="width:210px" name="title[{$dl->Id}]" type="text" value="{$dl->title|escape:html|stripslashes}">
 				</td>
 
 				<td>
-					<textarea wrap="off" title="{#ProductEsdOtherDlTimeClick#}" style="width:280px;height:50px" onclick="this.style.height='200px'" onmouseout="this.style.height='50px'" name="Beschreibung[{$dl->Id}]">{$dl->Beschreibung|escape:html|stripslashes}</textarea>
+					<textarea wrap="off" title="{#ProductEsdOtherDlTimeClick#}" style="width:280px;height:50px" onclick="this.style.height='200px'" onmouseout="this.style.height='50px'" name="description[{$dl->Id}]">{$dl->description|escape:html|stripslashes}</textarea>
 				</td>
 
 				<td>
@@ -203,11 +203,11 @@
 		</td>
 
 		<td>
-			<input style="width:180px" name="Titel" type="text" value="Name" />
+			<input style="width:180px" name="title" type="text" value="Name" />
 		</td>
 
 		<td>
-			<textarea wrap="off" title="{#ProductEsdOtherDlTimeClick#}" style="width:280px;height:50px" onclick="this.style.height='200px'" onmouseout="this.style.height='50px'" name="Beschreibung"></textarea>
+			<textarea wrap="off" title="{#ProductEsdOtherDlTimeClick#}" style="width:280px;height:50px" onclick="this.style.height='200px'" onmouseout="this.style.height='50px'" name="description"></textarea>
 		</td>
 
 		<td>

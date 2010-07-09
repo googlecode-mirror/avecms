@@ -18,7 +18,7 @@ if ((@$permissions[FORUM_PERMISSION_CAN_DOWNLOAD_ATTACHMENT] == 0) && (UGROUP !=
 	@ob_start();
 	$result = $GLOBALS['AVE_DB']->Query("SELECT filename, orig_name FROM " . PREFIX . "_modul_forum_attachment WHERE id = '".addslashes($_GET['file_id'])."'");
 	$file = $result->FetchRow();
-	$update = $GLOBALS['AVE_DB']->Query("UPDATE " . PREFIX . "_modul_forum_attachment set hits=hits+1 WHERE id='$_GET[file_id]'");
+	$update = $GLOBALS['AVE_DB']->Query("UPDATE " . PREFIX . "_modul_forum_attachment set hits=hits+1 WHERE id='" . $_GET['file_id'] . "'");
 	@ob_end_flush();
 	@ob_end_clean();
 	header("Cache-control: private");

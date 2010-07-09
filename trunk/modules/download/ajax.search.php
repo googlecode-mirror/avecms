@@ -7,7 +7,6 @@ $query_string = (isset($_REQUEST['ajq']))
 
 if (strlen($query_string) > 2)
 {
-//	define('ANTISPAM', 1);
 	define('BASE_DIR', str_replace("\\", "/", substr(dirname(__FILE__),0,-17)));
 
 	require(BASE_DIR . '/inc/init.php');
@@ -28,18 +27,18 @@ if (strlen($query_string) > 2)
 			" . PREFIX . "_modul_download_kat as b
 
 		WHERE
-			a.Aktiv = 1 AND
+			a.status = 1 AND
 			a.KatId = b.Id AND
 			(
-				b.Gruppen like '" . UGROUP . "|%' OR
-				b.Gruppen like '%|" . UGROUP . "' OR
-				b.Gruppen like '%|" . UGROUP . "|%' OR
-				b.Gruppen = '" . UGROUP . "'
+				b.user_group LIKE '" . UGROUP . "|%' OR
+				b.user_group LIKE '%|" . UGROUP . "' OR
+				b.user_group LIKE '%|" . UGROUP . "|%' OR
+				b.user_group = '" . UGROUP . "'
 			)
 		AND
 			(
 				Name LIKE '%" . $query_string . "%' OR
-				Beschreibung LIKE '%" . $query_string . "%'
+				description LIKE '%" . $query_string . "%'
 			)
 		" . $where_category_id . "
 	");

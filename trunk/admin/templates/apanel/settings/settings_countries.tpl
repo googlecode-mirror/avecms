@@ -32,17 +32,17 @@
 		{foreach from=$laender item=land name=l}
 			<tr style="background-color: #eff3eb;" onmouseover="this.style.backgroundColor='#dae0d8';" onmouseout="this.style.backgroundColor='#eff3eb';" id="table_rows">
 				<td width="100">
-					<input name="LandName[{$land.Id}]" type="text" id="LandName[{$land.Id}]" value="{$land.LandName}" size="35" />
+					<input name="country_name[{$land.Id}]" type="text" id="country_name[{$land.Id}]" value="{$land.country_name}" size="35" />
 				</td>
 
 				<td width="100" nowrap>
-					<input type="radio" name="Aktiv[{$land.Id}]" value="1"{if $land.Aktiv==1} checked{/if} />{#SETTINGS_YES#}&nbsp;
-					<input type="radio" name="Aktiv[{$land.Id}]" value="2"{if $land.Aktiv==2} checked{/if} />{#SETTINGS_NO#}
+					<input type="radio" name="country_status[{$land.Id}]" value="1"{if $land.country_status==1} checked{/if} />{#SETTINGS_YES#}&nbsp;
+					<input type="radio" name="country_status[{$land.Id}]" value="2"{if $land.country_status==2} checked{/if} />{#SETTINGS_NO#}
 				</td>
 
 				<td>
-					<input type="radio" name="IstEU[{$land.Id}]" value="1"{if $land.IstEU==1} checked{/if} />{#SETTINGS_YES#}&nbsp;
-					<input type="radio" name="IstEU[{$land.Id}]" value="2"{if $land.IstEU==2} checked{/if} />{#SETTINGS_NO#}
+					<input type="radio" name="country_eu[{$land.Id}]" value="1"{if $land.country_eu==1} checked{/if} />{#SETTINGS_YES#}&nbsp;
+					<input type="radio" name="country_eu[{$land.Id}]" value="2"{if $land.country_eu==2} checked{/if} />{#SETTINGS_NO#}
 				</td>
 			</tr>
 		{/foreach}

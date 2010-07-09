@@ -5,6 +5,7 @@
  *
  * @package AVE.cms
  * @subpackage module_RSS
+ * @since 2.07
  * @filesource
  */
 
@@ -15,7 +16,7 @@ if (defined('ACP'))
     $modul['ModulName'] = 'RSS потоки';
     $modul['ModulPfad'] = 'rss';
     $modul['ModulVersion'] = '1.1';
-    $modul['Beschreibung'] = 'ƒанный модуль предзназначен дл€ организации RSS потоков на вашем сайте.';
+    $modul['description'] = 'ƒанный модуль предзназначен дл€ организации RSS потоков на вашем сайте.';
     $modul['Autor'] = 'Arcanum';
     $modul['MCopyright'] = '&copy; 2007-2008 Overdoze Team';
     $modul['Status'] = 1;

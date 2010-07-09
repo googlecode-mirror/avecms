@@ -54,7 +54,7 @@
 
   <tr>
     <td width="200" class="forum_post_first"> {#PR_RMail#}</td>
-    <td width="200" class="forum_post_second"><input name="Email" type="text" id="Email" value="{$r.Email|stripslashes}" size="40"></td>
+    <td width="200" class="forum_post_second"><input name="email" type="text" id="email" value="{$r.email|stripslashes}" size="40"></td>
     <td class="forum_post_second">
       <input name="Email_show" type="checkbox" id="Email_show" value="1" {if $r.Email_show==1}checked="checked"{/if}>
     {#ShowPublic#} {#Attention#}	</td>

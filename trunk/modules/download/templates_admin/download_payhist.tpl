@@ -17,7 +17,7 @@
     {foreach from=$pay item=i}
   <tr style="background-color: #eff3eb;" onmouseover="this.style.backgroundColor='#dae0d8';" onmouseout="this.style.backgroundColor='#eff3eb';" id="table_rows">
 	<td width="180">
-	{$i->UserName}
+	{$i->user_name}
 	</td>
 	<td align="center">{$i->User_IP}
 	</td>

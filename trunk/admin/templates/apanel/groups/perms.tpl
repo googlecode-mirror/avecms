@@ -20,14 +20,14 @@
 
 {if !$no_group && !$own_group}
 
-<form method="post" action="index.php?do=groups&amp;action=grouprights&amp;cp={$sess}&amp;Id={$smarty.request.Id}&amp;sub=save">
+<form method="post" action="index.php?do=groups&amp;action=grouprights&amp;cp={$sess}&amp;Id={$smarty.request.Id|escape}&amp;sub=save">
 	<table width="100%" border="0" cellspacing="1" cellpadding="8" class="tableborder">
 		<tr>
 			<td class="tableheader">{#UGROUP_NAME#}</td>
 		</tr>
 
 		<tr>
-			<td class="first"><input name="Name" type="text" value="{$g_name|escape}" size="40" maxlength="40" /></td>
+			<td class="first"><input name="user_group_name" type="text" value="{$g_name|escape}" size="40" maxlength="40" /></td>
 		</tr>
 	</table><br />
 

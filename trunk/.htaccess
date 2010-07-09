@@ -147,7 +147,7 @@ AddDefaultCharset windows-1251
 
 	## ЧПУ для модуля опросов ##
 	RewriteRule ^poll-([0-9]+).html$ index.php?module=poll&action=result&pid=$1
-	RewriteRule ^pollcomment-([0-9]+)-([_a-zA-Z0-9]+).html$ index.php?module=poll&action=form&pid=$1&cp_theme=$2&pop=1
+	RewriteRule ^pollcomment-([0-9]+).html$ index.php?module=poll&action=form&pop=1&pid=$1
 	RewriteRule ^poll-archive.html$ index.php?module=poll&action=archive
 
 

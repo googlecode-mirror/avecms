@@ -27,7 +27,7 @@ if(!defined("SHOWFORUMS")) exit;
 							if ($_GET['id'] != "")
 							{
 								$this->setForumAsRead(escs($_GET['id']));
-								header("Location:index.php?module=forums&show=showforum&fid=$_GET[id]");
+								header("Location:index.php?module=forums&show=showforum&fid=" . $_GET['id']);
 							} else {
 								$this->setForumAsRead();
 								header("Location:index.php?module=forums");
@@ -212,7 +212,7 @@ if(!defined("SHOWFORUMS")) exit;
 										p.topic_id,
 										p.datum,
 										t.title,
-										u.Registriert
+										u.reg_time
 
 									FROM
 										" . PREFIX . "_modul_forum_forum AS Forum

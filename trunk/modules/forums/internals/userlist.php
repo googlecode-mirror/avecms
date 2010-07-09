@@ -38,14 +38,14 @@ if (!empty($_REQUEST['orderby']))
 			break;
 
 		case 'reg_asc':
-			$orderby = ' ORDER BY Registriert ASC';
+			$orderby = ' ORDER BY reg_time ASC';
 			$nav_link = '&amp;orderby=reg_asc';
 			$img_reg = '<img hspace="5" border="0" src="templates/'. THEME_FOLDER.'/modules/forums/sortasc.gif" alt="" />';
 			$AVE_Template->assign("img_reg", $img_reg);
 			break;
 
 		case 'reg_desc':
-			$orderby = ' ORDER BY Registriert DESC';
+			$orderby = ' ORDER BY reg_time DESC';
 			$nav_link = '&amp;orderby=reg_desc';
 			$img_reg = '<img hspace="5" border="0" src="templates/'. THEME_FOLDER.'/modules/forums/sortdesc.gif" alt="" />';
 			$AVE_Template->assign("img_reg", $img_reg);
@@ -111,7 +111,7 @@ while ($row = $sql->FetchRow())
 		? "<a class=\"forum_links\" href=\"index.php?module=forums&amp;show=userprofile&amp;user_id={$row->BenutzerId}\">{$row->BenutzerName}</a>"
 		: "$row->BenutzerName";
 	$row->Posts = $this->num_format($row->Beitraege);
-	if ($row->Registriert != '') array_push($user, $row);
+	if ($row->reg_time != '') array_push($user, $row);
 }
 
 $num = $AVE_DB->Query("SELECT FOUND_ROWS()")->GetCell();

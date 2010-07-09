@@ -29,7 +29,7 @@ var fluid = {
 	Toggle : function(){
 		var default_hide = {"log-in-forms": true };
 		$.each(
-			["poll", "popcommentors", "popnews", "lastcomments", "section-menu", "tables", "forms", "login-forms", "login-forms1", "accordion-block"],
+			["poll", "popcommentors", "popnews", "lastcomments", "section-menu", "tables", "forms", "login-forms", "login-forms1", "accordion-block", "shopbasket", "shop-search", "myordersbox", "shopinfobox", "shoppopprods"],
 			function() {
 				var el = $("#" + (this == 'accordon' ? 'accordion-block' : this) );
 				if (default_hide[this]) {

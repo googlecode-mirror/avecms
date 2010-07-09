@@ -120,7 +120,7 @@
 
     <td width="200" class="mod_userpage_first"> {#PR_RMail#}</td>
 
-    <td colspan="2" width="200" class="mod_userpage_second"><input name="Email" type="text" id="Email" value="{$r.Email|stripslashes}" size="40"></td>
+    <td colspan="2" width="200" class="mod_userpage_second"><input name="email" type="text" id="email" value="{$r.email|stripslashes}" size="40"></td>
 
   </tr>
 

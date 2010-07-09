@@ -244,7 +244,7 @@ if ( count($error_array) || (isset($_REQUEST['preview']) && $_REQUEST['preview']
 	{
 		$sql = $GLOBALS['AVE_DB']->Query("SELECT user_id FROM " . PREFIX . "_modul_forum_mods WHERE forum_id = '$forum_id'");
 		while($row = $sql->FetchRow()){
-			$sql2 = $GLOBALS['AVE_DB']->Query("SELECT `UserName`,Email FROM " . PREFIX . "_users WHERE Id = '$row->user_id'");
+			$sql2 = $GLOBALS['AVE_DB']->Query("SELECT user_name,email FROM " . PREFIX . "_users WHERE Id = '$row->user_id'");
 			$row2 = $sql2->FetchRow();
 
 			// link

@@ -1,5 +1,14 @@
 <?php
 
+/**
+ * AVE.cms - ћодуль Ѕыстрый переход
+ *
+ * @package AVE.cms
+ * @subpackage module_QuickFinder
+ * @since 1.4
+ * @filesource
+ */
+
 if (!defined('BASE_DIR')) exit;
 
 if (defined('ACP'))
@@ -7,10 +16,10 @@ if (defined('ACP'))
     $modul['ModulName'] = 'Ѕыстрый переход';
     $modul['ModulPfad'] = 'quickfinder';
     $modul['ModulVersion'] = '1.0';
-    $modul['Beschreibung'] = 'ƒанный модуль €вл€етс€ альтернативным способом организации меню навигации на сайте. ќн представлен в виде выпадающего списка разделов и подразделов вашего сайта. ƒл€ использовани€ модул€, разместите системный тег <strong>[mod_quickfinder:XXX]</strong> в нужном месте вашего шаблона, где XXX - идентификаторы меню навигации указанные через зап€тую.';
+    $modul['description'] = 'ƒанный модуль €вл€етс€ альтернативным способом организации меню навигации на сайте. ќн представлен в виде выпадающего списка разделов и подразделов вашего сайта. ƒл€ использовани€ модул€, разместите системный тег <strong>[mod_quickfinder:XXX]</strong> в нужном месте вашего шаблона, где XXX - идентификаторы меню навигации указанные через зап€тую.';
     $modul['Autor'] = 'Arcanum';
     $modul['MCopyright'] = '&copy; 2007 Overdoze Team';
-    $modul['Status'] = 0;
+    $modul['Status'] = 1;
     $modul['IstFunktion'] = 1;
     $modul['AdminEdit'] = 0;
     $modul['ModulFunktion'] = 'mod_quickfinder';
@@ -36,17 +45,17 @@ function mod_quickfinder($navi_ids = '')
 				$sql[] = "(
 							SELECT
 								Id,
-								Elter,
-								Titel,
-								Link,
-								Ziel,
-								Ebene,
-								Url,
+								parent_id,
+								title,
+								navi_item_link,
+								navi_item_target,
+								navi_item_level,
+								document_alias,
 								0 AS active
 							FROM " . PREFIX . "_navigation_items
-							WHERE Aktiv = '1'
-							AND Rubrik = " . $navi_id . "
-							ORDER BY Rang ASC
+							WHERE navi_item_status = '1'
+							AND navi_id = " . $navi_id . "
+							ORDER BY navi_item_position ASC
 						)";
 			}
 		}
@@ -64,7 +73,7 @@ function mod_quickfinder($navi_ids = '')
 		$navi_in = array();
 		foreach ($navigations as $navigation)
 		{
-			if (in_array(UGROUP, $navigation->Gruppen))
+			if (in_array(UGROUP, $navigation->navi_user_group))
 			{
 				array_push($navi_in, $navigation->id);
 			}
@@ -74,17 +83,17 @@ function mod_quickfinder($navi_ids = '')
 			$sql = "
 				SELECT
 					Id,
-					Elter,
-					Titel,
-					Link,
-					Ziel,
-					Ebene,
-					Url,
+					parent_id,
+					title,
+					navi_item_link,
+					navi_item_target,
+					navi_item_level,
+					document_alias,
 					0 AS active
 				FROM " . PREFIX . "_navigation_items
-				WHERE Aktiv = '1'
-				AND Rubrik IN(" . implode(',', $navi_in) . ")
-				ORDER BY Rubrik ASC, Rang ASC
+				WHERE navi_item_status = '1'
+				AND navi_id IN(" . implode(',', $navi_in) . ")
+				ORDER BY navi_id ASC, navi_item_position ASC
 			";
 		}
 		else
@@ -100,21 +109,21 @@ function mod_quickfinder($navi_ids = '')
 		if (empty($_REQUEST['module']))
 		{
 			$curent_doc_id = (isset($_GET['id']) && is_numeric($_GET['id'])) ? $_GET['id'] : 1;
-			if ($row_nav_item['Url'] == $AVE_Core->curentdoc->Url ||
-				$row_nav_item['Link'] == 'index.php?id=' . $curent_doc_id)
+			if ($row_nav_item['document_alias'] == $AVE_Core->curentdoc->document_alias ||
+				$row_nav_item['navi_item_link'] == 'index.php?id=' . $curent_doc_id)
 			{
 				$row_nav_item['active'] = 1;
 			}
 		}
 		else
 		{
-			if ($row_nav_item['Link'] == 'index.php?module=' . $_REQUEST['module'])
+			if ($row_nav_item['navi_item_link'] == 'index.php?module=' . $_REQUEST['module'])
 			{
 				$row_nav_item['active'] = 1;
 			}
 		}
 
-		$nav_items[$row_nav_item['Elter']][] = $row_nav_item;
+		$nav_items[$row_nav_item['parent_id']][] = $row_nav_item;
 	}
 
 	if (sizeof($nav_items))
@@ -130,31 +139,31 @@ function printQuickfinder(&$nav_items, &$quickfinder = '', $parent = '0')
 {
 	foreach ($nav_items[$parent] as $row)
 	{
-		if (strpos($row['Link'], 'module=') === false && start_with('index.php?', $row['Link']))
+		if (strpos($row['navi_item_link'], 'module=') === false && start_with('index.php?', $row['navi_item_link']))
 		{
-			$row['Link'] .= '&amp;doc=' . (empty($row['Url']) ? prepare_url($row['Titel']) : $row['Url']);
+			$row['navi_item_link'] .= '&amp;doc=' . (empty($row['document_alias']) ? prepare_url($row['title']) : $row['document_alias']);
 		}
 
-		if (start_with('www.', $row['Link']))
+		if (start_with('www.', $row['navi_item_link']))
 		{
-			$row['Link'] = str_replace('www.', 'http://www.', $row['Link']);
+			$row['navi_item_link'] = str_replace('www.', 'http://www.', $row['navi_item_link']);
 		}
 
-		$row['Link'] = rewrite_link($row['Link']);
+		$row['navi_item_link'] = rewrite_link($row['navi_item_link']);
 
-		if (!start_with('javascript:', $row['Link']))
+		if (!start_with('javascript:', $row['navi_item_link']))
 		{
-			if ($row['Ziel'] == '_blank')
+			if ($row['navi_item_target'] == '_blank')
 			{
-				$row['Link'] = "javascript:window.open('" . $row['Link'] . "', '', '')";
+				$row['navi_item_link'] = "javascript:window.open('" . $row['navi_item_link'] . "', '', '')";
 			}
-			else //if ($row['Ziel'] == '' || $row['Ziel'] == '_self')
+			else //if ($row['navi_item_target'] == '' || $row['navi_item_target'] == '_self')
 			{
-				$row['Link'] = "window.location.href = '" . $row['Link'] . "'";
+				$row['navi_item_link'] = "window.location.href = '" . $row['navi_item_link'] . "'";
 			}
 		}
 
-		$quickfinder .= '<option class="level_' . $row['Ebene'] . '" value="' . $row['Link'] . '"' . ($row['active'] == 1 ? ' selected="selected"' : '') . '>' . pretty_chars($row['Titel']) . '</option>';
+		$quickfinder .= '<option class="level_' . $row['navi_item_level'] . '" value="' . $row['navi_item_link'] . '"' . ($row['active'] == 1 ? ' selected="selected"' : '') . '>' . pretty_chars($row['title']) . '</option>';
 
 		if (isset($nav_items[$row['Id']]))
 		{

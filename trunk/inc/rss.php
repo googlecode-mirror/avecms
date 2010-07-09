@@ -27,7 +27,7 @@ else
 $rss_setting = $AVE_DB->Query("
 	SELECT
 		rss.*,
-		RubrikName
+		rubric_title
 	FROM
 		" . PREFIX . "_modul_rss AS rss
 	LEFT JOIN
@@ -44,17 +44,17 @@ if ($rss_setting !== false)
 	$get_doc_id = $AVE_DB->Query("
 		SELECT
 			Id,
-			Titel,
-			DokStart
+			document_title,
+			document_published
 		FROM " . PREFIX . "_documents
 		WHERE Id != 1
 		AND Id != '" . PAGE_NOT_FOUND_ID . "'
-		AND RubrikId = '" . $rss_setting->rss_rubric_id . "'
-		AND DokStatus = '1'
-		AND (DokStart < '" . time() . "' OR DokStart = 0)
-		AND (DokEnde  > '" . time() . "' OR DokEnde  = 0)
-		AND Geloescht != '1'
-		ORDER BY DokStart DESC, Id DESC
+		AND rubric_id = '" . $rss_setting->rss_rubric_id . "'
+		AND document_status = '1'
+		AND document_published <= '" . time() . "'
+		AND (document_expire  >= '" . time() . "' OR document_expire  = 0)
+		AND document_deleted != '1'
+		ORDER BY document_published DESC, Id DESC
 		LIMIT " . $rss_setting->rss_item_on_page
 	);
 
@@ -67,38 +67,38 @@ if ($rss_setting !== false)
 	{
 		$get_fields = $AVE_DB->Query("
 			SELECT
-				RubrikFeld,
-				Inhalt
+				rubric_field_id,
+				field_value
 			FROM " . PREFIX . "_document_fields
-			WHERE DokumentId = '" . $res->Id . "'
-			AND (RubrikFeld = '" . $rss_setting->rss_title_id . "'
-				OR RubrikFeld = '" . $rss_setting->rss_description_id . "')
+			WHERE document_id = '" . $res->Id . "'
+			AND (rubric_field_id = '" . $rss_setting->rss_title_id . "'
+				OR rubric_field_id = '" . $rss_setting->rss_description_id . "')
 	    ");
 		while ($f = $get_fields->FetchRow())
 		{
-			if ($f->RubrikFeld == $rss_setting->rss_title_id)
+			if ($f->rubric_field_id == $rss_setting->rss_title_id)
 			{
-				$rss_item['Title'] = $f->Inhalt;
+				$rss_item['Title'] = $f->field_value;
 			}
 
-			if ($f->RubrikFeld == $rss_setting->rss_description_id)
+			if ($f->rubric_field_id == $rss_setting->rss_description_id)
 			{
-				if (strlen($f->Inhalt) > $rss_setting->rss_description_lenght)
+				if (strlen($f->field_value) > $rss_setting->rss_description_lenght)
 				{
-					$rss_item['Description'] = substr($f->Inhalt, 0, $rss_setting->rss_description_lenght) . '...';
+					$rss_item['Description'] = substr($f->field_value, 0, $rss_setting->rss_description_lenght) . '...';
 				}
 				else
 				{
-					$rss_item['Description'] = $f->Inhalt;
+					$rss_item['Description'] = $f->field_value;
 				}
 			}
 		}
 
-		$rss_item['Url'] = rewrite_link('index.php?id=' . $res->Id . '&amp;doc=' . prepare_url($res->Titel));
+		$rss_item['document_alias'] = rewrite_link('index.php?id=' . $res->Id . '&amp;doc=' . prepare_url($res->document_title));
 
-		$rss_item['DataDoc'] = ($res->DokStart == 0)
+		$rss_item['DataDoc'] = ($res->document_published == 0)
 			? date('r', time())
-			: date('r', $res->DokStart);
+			: date('r', $res->document_published);
 
 		array_push($rss_items, $rss_item);
 	}
@@ -115,13 +115,13 @@ echo "<title>" . htmlspecialchars($rss_setting->rss_site_name, ENT_QUOTES) . "</
 echo "<link>" . $rss_setting->rss_site_url . "</link>\n";
 echo "<language>ru-ru</language>\n";
 echo "<description>" . htmlspecialchars($rss_setting->rss_site_description, ENT_QUOTES) . "</description>\n";
-echo "<category><![CDATA[" . $rss_setting->RubrikName . "]]></category>\n";
+echo "<category><![CDATA[" . $rss_setting->rubric_title . "]]></category>\n";
 echo "<generator>AVECMS 2.0</generator>\n";
 foreach ($rss_items as $rss_item) {
 	echo "\n<item>\n";
 	echo "	<title><![CDATA[" . $rss_item['Title'] . "]]></title>\n";
-	echo "	<guid isPermaLink=\"true\">" . $rss_setting->rss_site_url . ltrim($rss_item['Url'], '/') . "</guid>\n";
-	echo "	<link>" . $rss_setting->rss_site_url . ltrim($rss_item['Url'], '/') . "</link>\n";
+	echo "	<guid isPermaLink=\"true\">" . $rss_setting->rss_site_url . ltrim($rss_item['document_alias'], '/') . "</guid>\n";
+	echo "	<link>" . $rss_setting->rss_site_url . ltrim($rss_item['document_alias'], '/') . "</link>\n";
 	echo "	<description><![CDATA[" . $rss_item['Description'] . "]]></description>\n";
 	echo "	<pubDate>" . $rss_item['DataDoc'] . "</pubDate>\n";
 	echo "</item>\n";

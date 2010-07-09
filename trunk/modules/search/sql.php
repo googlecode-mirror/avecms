@@ -1,5 +1,14 @@
 <?php
 
+/**
+ * AVE.cms - Модуль Поиск
+ *
+ * @package AVE.cms
+ * @subpackage module_Search
+ * @since 1.4
+ * @filesource
+ */
+
 $modul_sql_install = array();
 $modul_sql_deinstall = array();
 $modul_sql_update = array();

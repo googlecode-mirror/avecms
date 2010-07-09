@@ -16,12 +16,12 @@ function copyQuery(page) {ldelim}
 {rdelim}
 </script>
 
-{if check_permission('abfragen_neu')}
+{if check_permission('request_new')}
 <script type="text/javascript" language="JavaScript">
 function check_name() {ldelim}
-	if (document.getElementById('QueryName').value == '') {ldelim}
+	if (document.getElementById('request_title_new').value == '') {ldelim}
 		alert("{#REQUEST_ENTER_NAME#}");
-		document.getElementById('QueryName').focus();
+		document.getElementById('request_title_new').focus();
 		return false;
 	{rdelim}
 	return true;
@@ -34,7 +34,7 @@ function check_name() {ldelim}
 		<tr>
 			<td class="second">
 				{#REQUEST_NAME3#}&nbsp;
-				<input type="text" id="QueryName" name="QueryName" value="" style="width: 250px;">&nbsp;
+				<input type="text" id="request_title_new" name="request_title_new" value="" style="width: 250px;">&nbsp;
 				<input type="submit" class="button" value="{#REQUEST_BUTTON_ADD#}" />
 			</td>
 		</tr>
@@ -59,34 +59,34 @@ function check_name() {ldelim}
 			<td width="10" class="itcen">{$item->Id}</td>
 
 			<td>
-				<a title="{$item->Beschreibung|escape|default:#REQUEST_NO_DESCRIPTION#}" href="index.php?do=request&amp;action=edit&amp;Id={$item->Id}&amp;cp={$sess}&amp;RubrikId={$item->RubrikId}">
-					<strong>{$item->Titel|escape}</strong>
+				<a title="{$item->request_description|escape|default:#REQUEST_NO_DESCRIPTION#}" href="index.php?do=request&amp;action=edit&amp;Id={$item->Id}&amp;cp={$sess}&amp;rubric_id={$item->rubric_id}">
+					<strong>{$item->request_title|escape}</strong>
 				</a>
 			</td>
 
-			<td width="2%"><input name="aiid" readonly type="text" id="aiid" value="[cprequest:{$item->Id}]"></td>
+			<td width="2%"><input name="aiid" readonly type="text" id="aiid" value="[tag:request:{$item->Id}]"></td>
 
-			<td>{$item->Autor|escape}</td>
+			<td>{$item->request_author|escape}</td>
 
 			<td class="time">
-				{$item->Erstellt|date_format:$TIME_FORMAT|pretty_date}
+				{$item->request_created|date_format:$TIME_FORMAT|pretty_date}
 			</td>
 
 			<td width="1%" align="center">
-				<a title="{#REQUEST_EDIT#}" href="index.php?do=request&amp;action=edit&amp;Id={$item->Id}&amp;cp={$sess}&amp;RubrikId={$item->RubrikId}">
+				<a title="{#REQUEST_EDIT#}" href="index.php?do=request&amp;action=edit&amp;Id={$item->Id}&amp;cp={$sess}&amp;rubric_id={$item->rubric_id}">
 					<img src="{$tpl_dir}/images/icon_edit.gif" alt="" border="0" />
 				</a>
 			</td>
 
 			<td width="1%" align="center">
-				<a title="{#REQUEST_CONDITION_EDIT#}" onclick="cp_pop('index.php?do=request&action=konditionen&RubrikId={$item->RubrikId}&Id={$item->Id}&pop=1&cp={$sess}','750','600','1')" href="javascript:void(0);">
+				<a title="{#REQUEST_CONDITION_EDIT#}" onclick="cp_pop('index.php?do=request&action=konditionen&rubric_id={$item->rubric_id}&Id={$item->Id}&pop=1&cp={$sess}','750','600','1')" href="javascript:void(0);">
 					<img src="{$tpl_dir}/images/icon_query.gif" alt="" border="0" />
 				</a>
 			</td>
 
 			<td width="1%" align="center">
-				{if check_permission('abfragen_neu')}
-					<a title="{#REQUEST_COPY#}" onClick="copyQuery('index.php?do=request&action=copy&Id={$item->Id}&cp={$sess}&RubrikId={$item->RubrikId}');" href="javascript:void(0);">
+				{if check_permission('request_new')}
+					<a title="{#REQUEST_COPY#}" onClick="copyQuery('index.php?do=request&action=copy&Id={$item->Id}&cp={$sess}&rubric_id={$item->rubric_id}');" href="javascript:void(0);">
 						<img src="{$tpl_dir}/images/icon_copy.gif" alt="" border="0" />
 					</a>
 				{else}
@@ -95,8 +95,8 @@ function check_name() {ldelim}
 			</td>
 
 			<td width="1%" align="center">
-				{if check_permission('abfragen_loesch')}
-					<a title="{#REQUEST_DELETE#}" onclick="return confirm('{#REQUEST_DELETE_CONFIRM#}');" href="index.php?do=request&action=delete_query&RubrikId={$item->RubrikId}&Id={$item->Id}&cp={$sess}">
+				{if check_permission('request_del')}
+					<a title="{#REQUEST_DELETE#}" onclick="return confirm('{#REQUEST_DELETE_CONFIRM#}');" href="index.php?do=request&action=delete_query&rubric_id={$item->rubric_id}&Id={$item->Id}&cp={$sess}">
 						<img src="{$tpl_dir}/images/icon_delete.gif" alt="" border="0" />
 					</a>
 				{else}

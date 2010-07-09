@@ -25,8 +25,8 @@
 				</td>
 
 				<td width="100">
-					<input type="radio" name="Aktiv[{$ss->Id}]" value="1" {if $ss->Aktiv=='1'}checked {/if}/>{#Yes#}&nbsp;
-					<input type="radio" name="Aktiv[{$ss->Id}]" value="0" {if $ss->Aktiv=='0'}checked {/if}/>{#No#}
+					<input type="radio" name="status[{$ss->Id}]" value="1" {if $ss->status=='1'}checked {/if}/>{#Yes#}&nbsp;
+					<input type="radio" name="status[{$ss->Id}]" value="0" {if $ss->status=='0'}checked {/if}/>{#No#}
 				</td>
 
 				<td>

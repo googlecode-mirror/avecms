@@ -6,23 +6,23 @@
 	<tr>
 		<td width="200" class="first">{#POLL_NAME#}:</td>
 		<td class="second">
-			<input name="poll_name" type="text" id="poll_name" value="{$row->title}" size="50" />
+			<input name="poll_name" type="text" id="poll_name" value="{$row->poll_title}" size="50" />
 		</td>
 	</tr>
 
 	<tr>
 		<td width="200" class="first">{#POLL_STATUS#}?</td>
 		<td class="second">
-			<input type="radio" name="active" id="active" value="1" {if $row->active==1}checked{/if} />{#POLL_YES#}
-			<input type="radio" name="active" id="active" value="0" {if $row->active!=1}checked{/if} />{#POLL_NO#}
+			<input type="radio" name="poll_status" id="poll_status" value="1" {if $row->poll_status==1}checked{/if} />{#POLL_YES#}
+			<input type="radio" name="poll_status" id="poll_status" value="0" {if $row->poll_status!=1}checked{/if} />{#POLL_NO#}
 		</td>
 	</tr>
 
 	<tr>
 		<td width="200" class="first">{#POLL_CAN_COMMENT#}</td>
 		<td class="second">
-			<input type="radio" name="can_comment" id="can_comment" value="1" {if $row->can_comment==1}checked{/if} />{#POLL_YES#}
-			<input type="radio" name="can_comment" id="can_comment" value="0" {if $row->can_comment!=1}checked{/if} />{#POLL_NO#}
+			<input type="radio" name="poll_can_comment" id="poll_can_comment" value="1" {if $row->poll_can_comment==1}checked{/if} />{#POLL_YES#}
+			<input type="radio" name="poll_can_comment" id="poll_can_comment" value="0" {if $row->poll_can_comment!=1}checked{/if} />{#POLL_NO#}
 		</td>
 	</tr>
 
@@ -107,7 +107,7 @@
 		<td class="second">
 			<select style="width:200px"  name="groups[]" size="5" multiple="multiple">
 				{foreach from=$groups item=group}
-					<option value="{$group->Benutzergruppe}" {if @in_array($group->Benutzergruppe, $groups_form) || $smarty.request.moduleaction=="new"}selected="selected"{/if}>{$group->Name}</option>
+					<option value="{$group->user_group}" {if @in_array($group->user_group, $groups_form) || $smarty.request.moduleaction=="new"}selected="selected"{/if}>{$group->user_group_name|escape}</option>
 				{/foreach}
 			</select>
 		</td>

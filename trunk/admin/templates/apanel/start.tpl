@@ -49,7 +49,7 @@ $(document).ready(function(){ldelim}
 					</td>
 
 					<td>
-						{if check_permission('rubriken') || check_permission('rubs')}
+						{if check_permission('rubriken') || check_permission('rubrics')}
 							<div id="rubsTasks">
 								<a href="index.php?do=rubs&amp;cp={$sess}">
 									<div class="taskTitle">{#MAIN_LINK_RUBRICS#}</div>
@@ -67,7 +67,7 @@ $(document).ready(function(){ldelim}
 
 				<tr>
 					<td>
-						{if check_permission('abfragen')}
+						{if check_permission('request')}
 							<div id="queryTasks">
 								<a href="index.php?do=request&amp;cp={$sess}">
 									<div class="taskTitle">{#MAIN_LINK_QUERYES#}</div>
@@ -101,7 +101,7 @@ $(document).ready(function(){ldelim}
 
 				<tr>
 					<td>
-						{if check_permission('vorlagen') || check_permission('vorlagen_multi') || check_permission('vorlagen_loesch') || check_permission('vorlagen_edit') || check_permission('vorlagen_neu')}
+						{if check_permission('template') || check_permission('template_multi') || check_permission('template_del') || check_permission('template_edit') || check_permission('template_new')}
 							<div id="templTasks">
 								<a href="index.php?do=templates&amp;cp={$sess}">
 									<div class="taskTitle">{#MAIN_LINK_TEMPLATES#}</div>

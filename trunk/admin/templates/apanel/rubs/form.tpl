@@ -4,9 +4,9 @@
 <div id="pageHeaderTitle" style="padding-top: 7px;">
 	<div class="h_rubs">&nbsp;</div>
 	{if $smarty.request.action=='new'}
-		<div class="HeaderTitle"><h2>{#RUBRIK_TEMPLATE_NEW#}<span style="color: #000;"> &gt; {$row->RubrikName}</span></h2></div>
+		<div class="HeaderTitle"><h2>{#RUBRIK_TEMPLATE_NEW#}<span style="color: #000;"> &gt; {$row->rubric_title|escape}</span></h2></div>
 	{else}
-		<div class="HeaderTitle"><h2>{#RUBRIK_TEMPLATE_EDIT#}<span style="color: #000;"> &gt; {$row->RubrikName}</span></h2></div>
+		<div class="HeaderTitle"><h2>{#RUBRIK_TEMPLATE_EDIT#}<span style="color: #000;"> &gt; {$row->rubric_title|escape}</span></h2></div>
 	{/if}
 	<div class="HeaderText">{#RUBRIK_TEMPLATE_TIP#}</div>
 </div>
@@ -41,10 +41,10 @@
 					<div class="infobox_error">{#RUBRIK_PHP_DENIDED#} </div>
 				{/if}
 
-				<textarea {$read_only} class="{if $php_forbidden==1}tpl_code_readonly{else}{/if}" wrap="off" style="width:100%; height:350px" name="RubrikTemplate" id="RubrikTemplate">{$row->RubrikTemplate|default:$prefab|escape:html}</textarea>
+				<textarea {$read_only} class="{if $php_forbidden==1}tpl_code_readonly{else}{/if}" wrap="off" style="width:100%; height:350px" name="rubric_template" id="rubric_template">{$row->rubric_template|default:$prefab|escape:html}</textarea>
 
 				<div class="infobox">
-					{assign var=js_textfeld value='RubrikTemplate'}
+					{assign var=js_textfeld value='rubric_template'}
 					{assign var=js_form value='f_tpl'}|&nbsp;
 					<a href="javascript:void(0);" onclick="editAreaLoader.insertTags('{$js_textfeld}', '<ol>', '</ol>');">OL</a>&nbsp;|&nbsp;
 					<a href="javascript:void(0);" onclick="editAreaLoader.insertTags('{$js_textfeld}', '<ul>', '</ul>');">UL</a>&nbsp;|&nbsp;
@@ -59,11 +59,11 @@
 					<a href="javascript:void(0);" onclick="editAreaLoader.insertTags('{$js_textfeld}', '<pre>', '</pre>');">PRE</a>&nbsp;|&nbsp;
 					<a href="javascript:void(0);" onclick="editAreaLoader.insertTags('{$js_textfeld}', '<br />', '');">BR</a>&nbsp;|&nbsp;
 					<a href="javascript:void(0);" onclick="editAreaLoader.insertTags('{$js_textfeld}', '\t', '');">TAB</a>&nbsp;|&nbsp;
-					<a title="{#RUBRIK_TITLE_INFO#}" href="javascript:void(0);" onclick="editAreaLoader.insertTags('{$js_textfeld}', '[cp:title]', '');">[cp:title]</a>&nbsp;|&nbsp;
-					<a title="{#RUBRIK_PATH_INFO#}" href="javascript:void(0);" onclick="editAreaLoader.insertTags('{$js_textfeld}', '[cp:path]', '');">[cp:path]</a>&nbsp;|&nbsp;
-					<a title="{#RUBRIK_MEDIAPATH_INFO#}" href="javascript:void(0);" onclick="editAreaLoader.insertTags('{$js_textfeld}', '[cp:mediapath]', '');">[cp:mediapath]</a>&nbsp;|&nbsp;
-					<a title="{#RUBRIK_VIEWS_INFO#}" href="javascript:void(0);" onclick="editAreaLoader.insertTags('{$js_textfeld}', '[views]', '');">[views]</a>&nbsp;|&nbsp;
-					<a title="{#RUBRIK_HIDE_INFO#}" href="javascript:void(0);" onclick="editAreaLoader.insertTags('{$js_textfeld}', '[hide:', ']\n\n[/hide]');">[hide:X,X][/hide]</a>&nbsp;|
+					<a title="{#RUBRIK_TITLE_INFO#}" href="javascript:void(0);" onclick="editAreaLoader.insertTags('{$js_textfeld}', '[tag:title]', '');">[tag:title]</a>&nbsp;|&nbsp;
+					<a title="{#RUBRIK_PATH_INFO#}" href="javascript:void(0);" onclick="editAreaLoader.insertTags('{$js_textfeld}', '[tag:path]', '');">[tag:path]</a>&nbsp;|&nbsp;
+					<a title="{#RUBRIK_MEDIAPATH_INFO#}" href="javascript:void(0);" onclick="editAreaLoader.insertTags('{$js_textfeld}', '[tag:mediapath]', '');">[tag:mediapath]</a>&nbsp;|&nbsp;
+					<a title="{#RUBRIK_VIEWS_INFO#}" href="javascript:void(0);" onclick="editAreaLoader.insertTags('{$js_textfeld}', '[tag:docviews]', '');">[tag:docviews]</a>&nbsp;|&nbsp;
+					<a title="{#RUBRIK_HIDE_INFO#}" href="javascript:void(0);" onclick="editAreaLoader.insertTags('{$js_textfeld}', '[tag:hide:', ']\n\n[/tag:hide]');">[tag:hide:X,X][/tag:hide]</a>&nbsp;|
 				</div>
 			</td>
 		</tr>
@@ -80,11 +80,11 @@
 
 					{foreach from=$tags item=tag}
 						<tr>
-							<td width="10%" class="first"><a title="{#RUBRIK_INSERT_HELP#}" href="javascript:void(0);" onclick="editAreaLoader.insertTags('{$js_textfeld}', '[cprub:{$tag->Id}]', '');">[cprub:{$tag->Id}]</a></td>
-							<td width="10%" class="first"><strong>{$tag->Titel}</strong></td>
+							<td width="10%" class="first"><a title="{#RUBRIK_INSERT_HELP#}" href="javascript:void(0);" onclick="editAreaLoader.insertTags('{$js_textfeld}', '[tag:fld:{$tag->Id}]', '');">[tag:fld:{$tag->Id}]</a></td>
+							<td width="10%" class="first"><strong>{$tag->rubric_field_title}</strong></td>
 							<td width="10%" class="first">
 								{section name=feld loop=$feld_array}
-									{if $tag->RubTyp == $feld_array[feld].id}{$feld_array[feld].name}{/if}
+									{if $tag->rubric_field_type == $feld_array[feld].id}{$feld_array[feld].name}{/if}
 								{/section}
 							</td>
 							<td class="first">&nbsp;</td>
@@ -96,7 +96,7 @@
 
 		<tr class="{cycle name='ta' values='first,second'}">
 			<td class="second">
-				<input type="hidden" name="Id" value="{$smarty.request.Id}">
+				<input type="hidden" name="Id" value="{$smarty.request.Id|escape}">
 				<input class="button" type="submit" value="{#RUBRIK_BUTTON_TPL#}" />
 			</td>
 		</tr>

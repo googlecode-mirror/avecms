@@ -21,7 +21,7 @@
 			<td class="second">
 				<select name="groups[]" size="5" multiple="multiple" id="select">
 					{section name=customer loop=$groups}
-						<option value="{$groups[customer].Benutzergruppe}" selected="selected">{$groups[customer].Name}</option>
+						<option value="{$groups[customer].user_group}" selected="selected">{$groups[customer].user_group_name|escape}</option>
 					{/section}
 				</select>
 			</td>
@@ -143,7 +143,7 @@
 			<td class="second">
 				<select name="groups[]" size="5" multiple="multiple" id="KatId[]" style="width:250px">
 					{foreach from=$ProductCategs item=pc}
-						<option value="{$pc->Id}" {if $pc->Elter == 0}style="font-weight:bold"{/if} selected>{$pc->visible_title}</option>
+						<option value="{$pc->Id}" {if $pc->parent_id == 0}style="font-weight:bold"{/if} selected>{$pc->visible_title}</option>
 					{/foreach}
 				</select>
 			</td>

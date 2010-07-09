@@ -5,6 +5,7 @@
  *
  * @package AVE.cms
  * @subpackage module_Banner
+ * @since 1.4
  * @filesource
  */
 
@@ -15,7 +16,7 @@ if (defined('ACP'))
     $modul['ModulName'] = 'Баннер';
     $modul['ModulPfad'] = 'media';
     $modul['ModulVersion'] = '1.3';
-    $modul['Beschreibung'] = 'Данный модуль позволяет организовать удобное управление показами рекламных баннеров на вашем сайте. Для того, чтобы отобразить рекламный баннер, разместите системный тег <strong>[mod_banner:XXX]</strong> в нужном месте вашего шаблона сайта или содержимом документа.<br>Допустимые форматы рекламных баннеров: jpg, jpeg, png, gif, swf';
+    $modul['description'] = 'Данный модуль позволяет организовать удобное управление показами рекламных баннеров на вашем сайте. Для того, чтобы отобразить рекламный баннер, разместите системный тег <strong>[mod_banner:XXX]</strong> в нужном месте вашего шаблона сайта или содержимом документа.<br>Допустимые форматы рекламных баннеров: jpg, jpeg, png, gif, swf';
     $modul['Autor'] = 'Arcanum';
     $modul['MCopyright'] = '&copy; 2007 Overdoze Team';
     $modul['Status'] = 1;

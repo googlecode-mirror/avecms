@@ -2,7 +2,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=windows-1251">
-<title>({$smarty.session.user_name})</title>
+<title>({$smarty.session.user_name|escape})</title>
 <meta name="robots" content="noindex, nofollow">
 <meta http-equiv="pragma" content="no-cache">
 <meta name="generator" content="">

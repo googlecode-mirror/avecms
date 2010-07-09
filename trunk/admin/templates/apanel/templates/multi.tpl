@@ -19,10 +19,10 @@
         </ul>
       {/foreach}
 
-      <form name="m" method="post" action="?do=templates&amp;action=multi&amp;pop=1&amp;sub=save&amp;Id={$smarty.request.Id}">
-        <input type="text" name="TplName" value="{$smarty.request.TplName|escape:html|default:"Название"}">
+      <form name="m" method="post" action="?do=templates&amp;action=multi&amp;pop=1&amp;sub=save&amp;Id={$smarty.request.Id|escape}">
+        <input type="text" name="template_title" value="{$smarty.request.template_title|escape|default:"Название"}">
         <input class="button" type="submit" value="{#TEMPLATES_BUTTON_COPY#}" onmouseover="this.style.backgroundColor='#ff7711';" onmouseout="this.style.backgroundColor='#77aa00';" />
-        <input name="oId" type="hidden" id="oId" value="{$smarty.request.Id}" />
+        <input name="oId" type="hidden" id="oId" value="{$smarty.request.Id|escape}" />
       </form>
     </td>
   </tr>

@@ -1,10 +1,10 @@
-/* _______________________ Ìîäóëü "Ôîðóì" _______________________ */ 
+/* _______________________ Ìîäóëü "Ôîðóì" _______________________ */
 #forums_pop                 {margin:5px; text-align:left}
 .forum_attachment_box       {border:1px inset #dedede; margin:10px; padding:3px}
 .forum_small                {font-size:11px}
 .toggletr                   {background:#dedede}
 
-/* ---------- Neue Forenthemen ----------*/ 
+/* ---------- Neue Forenthemen ----------*/
 .lastthreads_first          {background-color:#f1f1f1}
 .lastthreads_second         {background-color:#f0f0f0}
 
@@ -39,49 +39,52 @@ a.forum_topicheader:hover   {color:#fff; font-weight:bold; text-decoration:none}
 /* ---------- Forumbeschreibung ---------- */
 .f_info_comment             {font-size:11px}
 
-/* ---------- Linke und Rechte Zeilenfarbe Beiträge ---------- */ 
+/* ---------- Linke und Rechte Zeilenfarbe Beiträge ---------- */
 .forum_post_first           {background-color:#f1f1f1}
 .forum_post_second          {background-color:#fafafa}
 .forum_topic_topheader      {background-color:#fafafa}
 
-/* ---------- Fußbereich Beiträge  ---------- */ 
+/* ---------- Fußbereich Beiträge  ---------- */
 .forum_post_footer          {background-color:#e9e9e9}
 
-/* ---------- Kopfbereich Forumtabellen  ---------- */ 
+/* ---------- Kopfbereich Forumtabellen  ---------- */
 .forum_header               {background:#dedede; padding:5px}
 
-/* ---------- Tabellenspalte der Icons ---------- */ 
+/* ---------- Tabellenspalte der Icons ---------- */
 .forum_info_icon            {width:30px; background-color:#f1f1f1; padding:2px; text-align:center}
 
-/* ---------- Tabellenspalte Forumbeschreibung ---------- */ 
+/* ---------- Tabellenspalte Forumbeschreibung ---------- */
 .forum_info_main            {background-color:#f1f1f1; padding:8px}
 .forum_info_main:hover      {background-color:#fafafa; padding:8px}
 
-/* ---------- Tabellenspalte Themenbeschreibung, letzter Beitrag ---------- */ 
+/* ---------- Tabellenspalte Themenbeschreibung, letzter Beitrag ---------- */
 .forum_info_meta            {background-color:#fafafa; padding:8px}
 
-/* ---------- Tabellenspalte Forum anzeigen/schliessen (+ / -) ---------- */ 
+/* ---------- Tabellenspalte Forum anzeigen/schliessen (+ / -) ---------- */
 .forum_toggle               {width:20px; background-color:#dedede}
 
-/* ---------- Formatierung Tabellen Forenübersicht & Box "Profil, Passwort ändern..."  ---------- */ 
+/* ---------- Formatierung Tabellen Forenübersicht & Box "Profil, Passwort ändern..."  ---------- */
 .forum_frame                {background-color:#fff; margin-bottom:1px}
 
-/* ---------- Navigationsbaum  ---------- */ 
+/* ---------- Navigationsbaum  ---------- */
 .forum_navi                 {padding:3px}
 
-/* ---------- Tabellenkopf Forum ---------- */ 
+/* ---------- Tabellenkopf Forum ---------- */
 .forum_header_bolder        {color:#3c3a3a; background:#cdcdcd /*url(../modules/forums/forum/header_bg.gif)*/; padding:5px}
 
-/* ---------- Tabellenrahmen Forum ---------- */ 
+/* ---------- Tabellenrahmen Forum ---------- */
 .forum_tableborder          {background-color:#cdcdcd; padding:0px; border:0px solid #878373}
 
-/* ---------- Box Forenstatistiken ---------- */ 
+/* ---------- Box Forenstatistiken ---------- */
 .forum_stats_box            {font-weight:bold; color:#777; background-color:#f3f3f3}
 
-/* ---------- Benutzer-Signatur ---------- */ 
+/* ---------- Benutzer-Signatur ---------- */
 .user_sig                   {padding-top:4px}
 
-/* ---------- Linie Über Benutzer-Signatur ---------- */ 
+/* ---------- Linie Über Benutzer-Signatur ---------- */
 .user_sig_bar               {color:#ccc; padding-top:4px}
 
 .forum_pn_unread            {color:#f00; font-weight:bold; text-decoration:blink}
+
+#forums_content             {margin-top:2em;}
+#forums_content table       {border-collapse:separate; border-spacing:1px;}

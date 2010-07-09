@@ -86,7 +86,7 @@
 			<td class="second">
 				<select style="width:250px" name="KatId">
 					{foreach from=$ProductCategs item=pc}
-						<option {if $pc->Elter == 0}style="font-weight:bold"{/if} value="{$pc->Id}" {if $smarty.request.KatId==$pc->Id}selected="selected"{/if}>{$pc->visible_title}</option>
+						<option {if $pc->parent_id == 0}style="font-weight:bold"{/if} value="{$pc->Id}" {if $smarty.request.KatId==$pc->Id}selected="selected"{/if}>{$pc->visible_title}</option>
 					{/foreach}
 				</select>
 			</td>
@@ -100,7 +100,7 @@
 			<td class="second">
 				<select name="KatId_Multi[]" multiple="multiple" size="6" style="width:250px">
 					{foreach from=$ProductCategs item=pc}
-						<option {if $pc->Elter == 0}style="font-weight:bold"{/if} value="{$pc->Id}" {if $smarty.request.KatId_Multi==$pc->Id}selected="selected"{/if}>{$pc->visible_title}</option>
+						<option {if $pc->parent_id == 0}style="font-weight:bold"{/if} value="{$pc->Id}" {if $smarty.request.KatId_Multi==$pc->Id}selected="selected"{/if}>{$pc->visible_title}</option>
 					{/foreach}
 				</select>
 			</td>
@@ -231,7 +231,7 @@
 			<td class="second">
 				{assign var=ZeitStart value=$row->Erschienen}
 				{html_select_date time=$ZeitStart prefix="Ersch" end_year="+5" start_year="-10" display_days=true month_format="%B" reverse_years=false day_size=1 field_order=DMY month_extra="style='width:80px'" all_extra=""}
-				<input name="Aktiv" type="hidden" id="Aktiv" value="1" />
+				<input name="status" type="hidden" id="status" value="1" />
 			</td>
 		</tr>
 

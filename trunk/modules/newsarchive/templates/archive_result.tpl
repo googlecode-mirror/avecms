@@ -27,21 +27,21 @@
 	<table width="100%" cellpadding="0" cellspacing="2">
 		<tr class="arc_header">
 			{if $day == 0}
-				<td><a href="index.php?module=newsarchive&id={$newsarchive->id}&amp;month={$month}&amp;year={$year}&amp;sort={if $smarty.request.sort=='Title'}TitleDesc{else}Title{/if}">{#ARCHIVE_DOC_NAME#}</a></td>
-				<td><a href="index.php?module=newsarchive&id={$newsarchive->id}&amp;month={$month}&amp;year={$year}&amp;sort={if $smarty.request.sort=='Date'}DateDesc{else}Date{/if}">{#ARCHIVE_PUBLIC_DATE#}</a></td>
-				<td><a href="index.php?module=newsarchive&id={$newsarchive->id}&amp;month={$month}&amp;year={$year}&amp;sort={if $smarty.request.sort=='Rubric'}RubricDesc{else}Rubric{/if}">{#ARCHIVE_IN_RUBRIC#}</a></td>
+				<td><a href="index.php?module=newsarchive&id={$newsarchive->id}&amp;month={$month}&amp;year={$year}&amp;sort=title{if $smarty.request.sort=='title'}_desc{/if}">{#ARCHIVE_DOC_NAME#}</a></td>
+				<td><a href="index.php?module=newsarchive&id={$newsarchive->id}&amp;month={$month}&amp;year={$year}&amp;sort=date{if $smarty.request.sort=='date'}_desc{/if}">{#ARCHIVE_PUBLIC_DATE#}</a></td>
+				<td><a href="index.php?module=newsarchive&id={$newsarchive->id}&amp;month={$month}&amp;year={$year}&amp;sort=rubric{if $smarty.request.sort=='rubric'}_desc{/if}">{#ARCHIVE_IN_RUBRIC#}</a></td>
 			{else}
-				<td><a href="index.php?module=newsarchive&id={$newsarchive->id}&amp;day={$day}&amp;month={$month}&amp;year={$year}&amp;sort={if $smarty.request.sort=='Title'}TitleDesc{else}Title{/if}">{#ARCHIVE_DOC_NAME#}</a></td>
-				<td><a href="index.php?module=newsarchive&id={$newsarchive->id}&amp;day={$day}&amp;month={$month}&amp;year={$year}&amp;sort={if $smarty.request.sort=='Date'}DateDesc{else}Date{/if}">{#ARCHIVE_PUBLIC_DATE#}</a></td>
-				<td><a href="index.php?module=newsarchive&id={$newsarchive->id}&amp;day={$day}&amp;month={$month}&amp;year={$year}&amp;sort={if $smarty.request.sort=='Rubric'}RubricDesc{else}Rubric{/if}">{#ARCHIVE_IN_RUBRIC#}</a></td>
+				<td><a href="index.php?module=newsarchive&id={$newsarchive->id}&amp;day={$day}&amp;month={$month}&amp;year={$year}&amp;sort=title{if $smarty.request.sort=='title'}_desc{/if}">{#ARCHIVE_DOC_NAME#}</a></td>
+				<td><a href="index.php?module=newsarchive&id={$newsarchive->id}&amp;day={$day}&amp;month={$month}&amp;year={$year}&amp;sort=date{if $smarty.request.sort=='date'}_desc{/if}">{#ARCHIVE_PUBLIC_DATE#}</a></td>
+				<td><a href="index.php?module=newsarchive&id={$newsarchive->id}&amp;day={$day}&amp;month={$month}&amp;year={$year}&amp;sort=rubric{if $smarty.request.sort=='rubric'}_desc{/if}">{#ARCHIVE_IN_RUBRIC#}</a></td>
 			{/if}
 		</tr>
 
 		{foreach from=$documents item=document}
 			<tr>
-				<td><a href="{$document->Url}">{$document->Titel}</a></td>
-				<td>{$document->DokStart|date_format:$DATE_FORMAT|pretty_date}</td>
-				<td>{$document->RubrikName}</td>
+				<td><a href="{$document->document_alias}">{$document->document_title}</a></td>
+				<td>{$document->document_published|date_format:$DATE_FORMAT|pretty_date}</td>
+				<td>{$document->rubric_title}</td>
 			</tr>
 		{/foreach}
 	</table>

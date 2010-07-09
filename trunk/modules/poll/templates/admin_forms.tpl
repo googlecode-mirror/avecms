@@ -21,18 +21,18 @@
 	{foreach from=$items item=item}
 		<tr style="background-color: #eff3eb;" onmouseover="this.style.backgroundColor='#dae0d8';" onmouseout="this.style.backgroundColor='#eff3eb';" id="table_rows">
 			<td width="10">
-				{if $item->active != 1}
+				{if $item->poll_status != '1'}
 					<img title="{#POLL_INACTIVE#}" src="{$tpl_dir}/images/icon_lock.gif" alt="" />
 				{else}
 					<img title="{#POLL_ACTIVE#}" src="{$tpl_dir}/images/icon_unlock.gif" alt="" />
 				{/if}
 			</td>
 
-			<td><a href="javascript:void(0);" onclick="cp_pop('index.php?do=modules&action=modedit&mod=poll&moduleaction=edit&cp={$sess}&id={$item->id}&pop=1','850','750','1','modpolledit');"><strong>{$item->title}</strong></a></td>
+			<td><a href="javascript:void(0);" onclick="cp_pop('index.php?do=modules&action=modedit&mod=poll&moduleaction=edit&cp={$sess}&id={$item->id}&pop=1','850','750','1','modpolledit');"><strong>{$item->poll_title}</strong></a></td>
 
 			<td><input type="text" value="[mod_poll:{$item->id}]" size="15" readonly=""></td>
 
-			<td class="time">c {$item->start|date_format:$TIME_FORMAT|pretty_date} по {$item->ende|date_format:$TIME_FORMAT|pretty_date}</td>
+			<td class="time">c {$item->poll_start|date_format:$TIME_FORMAT|pretty_date} по {$item->poll_end|date_format:$TIME_FORMAT|pretty_date}</td>
 
 			<td>{if $item->sum_hits == ''}0{else}{$item->sum_hits}{/if} / <a href="javascript:void(0);" onclick="cp_pop('index.php?do=modules&action=modedit&mod=poll&moduleaction=comments&cp={$sess}&id={$item->id}&pop=1','850','750','1','modpolledit');">{$item->comments}</a></td>
 

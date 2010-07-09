@@ -44,19 +44,19 @@ function cAction(obj,action){
 function validate(formData,jqForm,options){
 	$('.error_message').remove();
 	var form = jqForm[0];
-	if (!form.author_name.value){
+	if (!form.comment_author_name.value){
 		alert(COMMENT_ERROR_AUTHOR);
-		$(form.author_name).focus();
+		$(form.comment_author_name).focus();
 		return false;
 	}
-	if (!form.author_email.value){
+	if (!form.comment_author_email.value){
 		alert(COMMENT_ERROR_EMAIL);
-		$(form.author_email).focus();
+		$(form.comment_author_email).focus();
 		return false;
 	}
-	if (!form.message.value){
+	if (!form.comment_text.value){
 		alert(COMMENT_ERROR_TEXT);
-		$(form.message).focus();
+		$(form.comment_text).focus();
 		return false;
 	}
 	if (IS_IM && !form.securecode.value){

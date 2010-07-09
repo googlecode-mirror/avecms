@@ -1,11 +1,11 @@
-<p><strong>{$poll->title}</strong></p>
+<p><strong>{$poll->poll_title}</strong></p>
 <p>
 	{foreach from=$items item=item}
-		<div style="padding:2px">{$item->title}</div>
+		<div style="padding:2px">{$item->poll_item_title}</div>
 		<div style="width:98%;height:5px;padding:0">
-			<div style="display:block;background-color:{$item->color};height:5px;width:{$item->sum|default:'0'}%"></div>
+			<div style="display:block;background-color:{$item->poll_item_color};height:5px;width:{$item->sum|default:'0'}%"></div>
 		</div>
-		<small style="color:{$item->color}">{#POLL_VOTES#} {$item->hits} ({$item->sum|default:'0'}%)</small>
+		<small style="color:{$item->poll_item_color}">{#POLL_VOTES#} {$item->poll_item_hits} ({$item->sum|default:'0'}%)</small>
 	{/foreach}
 </p>
 {if $poll->message != ''}<p><small>{$poll->message}</small></p>{/if}

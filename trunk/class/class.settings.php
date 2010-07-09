@@ -134,7 +134,7 @@ class AVE_Settings
 		$sql = $AVE_DB->Query("
 			SELECT SQL_CALC_FOUND_ROWS *
 			FROM " . PREFIX . "_countries
-			ORDER BY Aktiv ASC
+			ORDER BY country_status ASC, country_name ASC
 			LIMIT " . (get_current_page() * $this->_limit - $this->_limit) . "," . $this->_limit
 		);
 
@@ -165,16 +165,16 @@ class AVE_Settings
 	{
 		global $AVE_DB;
 
-		foreach ($_POST['LandName'] as $id => $LandName)
+		foreach ($_POST['country_name'] as $id => $country_name)
 		{
 			$AVE_DB->Query("
 				UPDATE " . PREFIX . "_countries
 				SET
-					LandName = '" . $LandName . "',
-					Aktiv    = '" . $_POST['Aktiv'][$id] . "',
-					IstEU    = '" . $_POST['IstEU'][$id] . "'
+					country_name   = '" . $country_name . "',
+					country_status = '" . $_POST['country_status'][$id] . "',
+					country_eu     = '" . $_POST['country_eu'][$id] . "'
 				WHERE
-					Id       = '" . $id . "'
+					Id = '" . $id . "'
 			");
 		}
 	}

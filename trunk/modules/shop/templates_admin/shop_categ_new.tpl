@@ -18,10 +18,10 @@
 		<tr>
 			<td class="first">{#ProductCategsParent#}</td>
 			<td>
-				<select style="width:250px" name="Elter">
+				<select style="width:250px" name="parent_id">
 					<option value="0">{#ProductCategsNoParent#}</option>
 					{foreach from=$ProductCategs item=pc}
-						<option value="{$pc->Id}" {if $pc->Elter == 0}style="font-weight:bold"{/if} {if $pc->Id==$smarty.request.Id}selected="selected"{/if}>{$pc->visible_title}</option>
+						<option value="{$pc->Id}" {if $pc->parent_id == 0}style="font-weight:bold"{/if} {if $pc->Id==$smarty.request.Id}selected="selected"{/if}>{$pc->visible_title}</option>
 					{/foreach}
 				</select>
 			</td>
@@ -38,7 +38,7 @@
 		<tr>
 			<td>{#Position#}</td>
 			<td>
-				<input name="Rang" type="text" value="1" size="10" maxlength="4" />
+				<input name="position" type="text" value="1" size="10" maxlength="4" />
 			</td>
 		</tr>
 

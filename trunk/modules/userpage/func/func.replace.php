@@ -114,7 +114,7 @@ function userpage_lang($id)
 //=======================================================
 // ONLINESTATUS
 //=======================================================
-function userpage_onlinestatus($UserName, $type = '')
+function userpage_onlinestatus($user_name, $type = '')
 {
 	global $AVE_DB, $AVE_Template;
 
@@ -125,7 +125,7 @@ function userpage_onlinestatus($UserName, $type = '')
 		FROM
 			" . PREFIX . "_modul_forum_useronline
 		WHERE
-			uname = '" . $UserName . "'
+			uname = '" . $user_name . "'
 		LIMIT 1
 	");
 	$num = $sql->NumRows();
@@ -187,7 +187,7 @@ function userpage_avatar($group, $avatar, $usedefault)
 		$sql = $AVE_DB->Query("
 			SELECT *
 			FROM " . PREFIX . "_modul_forum_groupavatar
-			WHERE Benutzergruppe = '" . $group . "'
+			WHERE user_group = '" . $group . "'
 		");
 		$row = $sql->FetchRow();
 		if (is_object($row) && ($row->IstStandard == 1) && ($row->StandardAvatar != ''))
@@ -384,13 +384,13 @@ function userpage_guestbook ($limit, $uid)
 			if ($row_gb->author != '0')
 			{
 				$sql_dd = $AVE_DB->Query("
-					SELECT `UserName`
+					SELECT user_name
 					FROM " . PREFIX . "_users WHERE
 					Id = '" . $row_gb->author . "'
 				");
 				$row_dd = $sql_dd->FetchRow();
 
-				$row_gb->uname = $row_dd->UserName;
+				$row_gb->uname = $row_dd->user_name;
 			}
 			else
 			{
@@ -484,7 +484,7 @@ function userpage_downloads ($limit, $uid)
 		SELECT *
 		FROM " . PREFIX . "_modul_download_files
 		WHERE Autor_Erstellt = '" . $uid . "'
-		AND Aktiv = '1'
+		AND status = '1'
 		ORDER BY id DESC
 		LIMIT " . $limit . "
 	");

@@ -29,20 +29,21 @@ class AVE_User
 	 * @var array
 	 */
 	var $_allowed_admin_permission = array(
-		'alles',
-		'adminpanel',
-		'abfragen', 'abfragen_loesch', 'abfragen_neu',
-		'dbactions',
-		'docs', 'docs_comments', 'docs_comments_del', 'docs_php',
-		'gen_settings',
-		'group', 'group_edit', 'group_new',
-		'logs',
-		'mediapool', 'mediapool_del',
-		'modules', 'modules_admin',
-		'navigation', 'navigation_edit', 'navigation_new',
-		'rubs', 'rub_edit', 'rub_loesch', 'rub_multi', 'rub_neu', 'rub_perms', 'rub_php',
-		'user', 'user_edit', 'user_loesch', 'user_new', 'user_perms',
-		'vorlagen', 'vorlagen_edit', 'vorlagen_loesch', 'vorlagen_multi', 'vorlagen_neu', 'vorlagen_php'
+		'alles',																							// все права
+		'adminpanel',																						// доступ в админку
+		'gen_settings',																						// общие настройки
+		'modules', 'modules_admin',																			// модули
+		'group', 'group_new', 'group_edit',																	// группы пользователей
+		'user', 'user_new', 'user_edit', 'user_del', 'user_perms',											// пользователи
+		'template', 'template_new', 'template_edit', 'template_del', 'template_multi', 'template_php',		// шаблоны
+		'rubrics', 'rubric_new', 'rubric_edit', 'rubric_del', 'rubric_multi', 'rubric_perms', 'rubric_php',	// рубрики
+		'documents', 'document_php',																		// документы
+		'remarks', 'remark_status', 'remark_del',															// заметки
+		'request', 'request_new', 'request_del',															// запросы
+		'navigation', 'navigation_new', 'navigation_edit',													// навигация
+		'mediapool', 'mediapool_del',																		// файловый менеджер
+		'dbactions',																						// база данных
+		'logs'																								// логи
 	);
 
 	/**
@@ -76,52 +77,52 @@ class AVE_User
 		$regex_email = '/^[\w.-]+@[a-z0-9.-]+\.(?:[a-z]{2}|com|org|net|edu|gov|mil|biz|info|mobi|name|aero|asia|jobs|museum)$/i';
 
 		// Проверка логина
-		if (empty($_POST['UserName']))
+		if (empty($_POST['user_name']))
 		{
 			$errors[] = @$AVE_Template->get_config_vars('USER_NO_USERNAME');
 		}
-		elseif (preg_match($regex_username, $_POST['UserName']))
+		elseif (preg_match($regex_username, $_POST['user_name']))
 		{
 			$errors[] = @$AVE_Template->get_config_vars('USER_ERROR_USERNAME');
 		}
 
 		// Проверка имени
-		if (empty($_POST['Vorname']))
+		if (empty($_POST['firstname']))
 		{
 			$errors[] = @$AVE_Template->get_config_vars('USER_NO_FIRSTNAME');
 		}
-		elseif (preg_match($regex, stripslashes($_POST['Vorname'])))
+		elseif (preg_match($regex, stripslashes($_POST['firstname'])))
 		{
 			$errors[] = @$AVE_Template->get_config_vars('USER_ERROR_FIRSTNAME');
 		}
 
 		// Проверка фамилии
-		if (empty($_POST['Nachname']))
+		if (empty($_POST['lastname']))
 		{
 			$errors[] = @$AVE_Template->get_config_vars('USER_NO_LASTNAME');
 		}
-		elseif (preg_match($regex, stripslashes($_POST['Nachname'])))
+		elseif (preg_match($regex, stripslashes($_POST['lastname'])))
 		{
 			$errors[] = @$AVE_Template->get_config_vars('USER_ERROR_LASTNAME');
 		}
 
 		// Проверка e-Mail
-		if (empty($_POST['Email']))
+		if (empty($_POST['email']))
 		{
 			$errors[] = @$AVE_Template->get_config_vars('USER_NO_EMAIL');
 		}
-		elseif (!preg_match($regex_email, $_POST['Email']))
+		elseif (!preg_match($regex_email, $_POST['email']))
 		{
 			$errors[] = @$AVE_Template->get_config_vars('USER_EMAIL_ERROR');
 		}
 		else
 		{
 			$email_exist = $AVE_DB->Query("
-				SELECT Email
+				SELECT 1
 				FROM " . PREFIX . "_users
-				WHERE Email != '" . $_POST['Email_Old'] . "'
-				AND Email = '" . $_POST['Email'] . "'
-				" . ($new ? "AND Email != '" . $_SESSION['user_email'] . "'" : '') . "
+				WHERE email != '" . $_POST['Email_Old'] . "'
+				AND email = '" . $_POST['email'] . "'
+				" . ($new ? "AND email != '" . $_SESSION['user_email'] . "'" : '') . "
 				LIMIT 1
 			")->NumRows();
 			if ($email_exist)
@@ -133,15 +134,15 @@ class AVE_User
 		// Проверка пароля
 		if (isset($_REQUEST['action']) && $_REQUEST['action'] != 'edit')
 		{
-			if (empty($_POST['Kennwort']))
+			if (empty($_POST['password']))
 			{
 				$errors[] = @$AVE_Template->get_config_vars('USER_NO_PASSWORD');
 			}
-			elseif (strlen($_POST['Kennwort']) < 4)
+			elseif (strlen($_POST['password']) < 4)
 			{
 				$errors[] = @$AVE_Template->get_config_vars('USER_PASSWORD_SHORT');
 			}
-			elseif (preg_match($regex_password, $_POST['Kennwort']))
+			elseif (preg_match($regex_password, $_POST['password']))
 			{
 				$errors[] = @$AVE_Template->get_config_vars('USER_PASSWORD_ERROR');
 			}
@@ -149,14 +150,14 @@ class AVE_User
 
 		// Проверка даты рождения
 		$match = '';
-		if (!empty($_POST['GebTag']) && !preg_match($regex_birthday, $_POST['GebTag'], $match))
+		if (!empty($_POST['birthday']) && !preg_match($regex_birthday, $_POST['birthday'], $match))
 		{
 			$errors[] = @$AVE_Template->get_config_vars('USER_ERROR_DATEFORMAT');
 		}
 		elseif (!empty($match))
 		{
 
-			$_POST['GebTag'] = $match[1]
+			$_POST['birthday'] = $match[1]
 			. $this->_birthday_delimetr . $match[3]
 			. $this->_birthday_delimetr . $match[4];
 		}
@@ -191,9 +192,9 @@ class AVE_User
 				" . PREFIX . "_user_groups AS grp
 			LEFT JOIN
 				" . PREFIX . "_users AS usr
-					ON usr.Benutzergruppe = grp.Benutzergruppe
-			" . (($exclude != '' && is_numeric($exclude)) ? "WHERE grp.Benutzergruppe != '" . $exclude . "'" : '') . "
-			GROUP BY grp.Benutzergruppe
+					ON usr.user_group = grp.user_group
+			" . (($exclude != '' && is_numeric($exclude)) ? "WHERE grp.user_group != '" . $exclude . "'" : '') . "
+			GROUP BY grp.user_group
 		");
 
 		while ($row = $sql->FetchRow())
@@ -224,20 +225,21 @@ class AVE_User
 	{
 		global $AVE_DB;
 
-		if (!empty($_POST['Name']))
+		if (!empty($_POST['user_group_name']))
 		{
 			$AVE_DB->Query("
 				INSERT
 				INTO " . PREFIX . "_user_groups
 				SET
-					Benutzergruppe = '',
-					Name = '" . $_POST['Name'] . "',
-					Aktiv = 1,
-					Rechte = ''
+					user_group            = '',
+					user_group_name       = '" . $_POST['user_group_name'] . "',
+					status                = '1',
+					user_group_permission = ''
 			");
 			$iid = $AVE_DB->InsertId();
 
 			reportLog($_SESSION['user_name'] . ' - Создал группу пользователей (' . $iid . ')', 2, 2);
+
 			header('Location:index.php?do=groups&action=grouprights&Id=' . $iid . '&cp=' . SESSION);
 		}
 		else
@@ -258,9 +260,9 @@ class AVE_User
 		if (is_numeric($user_group_id) && $user_group_id > 2)
 		{
 			$exist_user_in_group = $AVE_DB->Query("
-				SELECT Benutzergruppe
+				SELECT user_group
 				FROM " . PREFIX . "_users
-				WHERE Benutzergruppe = '" . $user_group_id . "'
+				WHERE user_group = '" . $user_group_id . "'
 				LIMIT 1
 			")->NumRows();
 
@@ -269,7 +271,7 @@ class AVE_User
 				$AVE_DB->Query("
 					DELETE
 					FROM " . PREFIX . "_user_groups
-					WHERE Benutzergruppe = '" . $user_group_id . "'
+					WHERE user_group = '" . $user_group_id . "'
 				");
 
 				reportLog($_SESSION['user_name'] . ' - Удалил группу пользователей (' . $user_group_id . ')', 2, 2);
@@ -298,10 +300,10 @@ class AVE_User
 			{
 				$row = $AVE_DB->Query("
 					SELECT
-						Name,
-						Rechte
+						user_group_name,
+						user_group_permission
 					FROM " . PREFIX . "_user_groups
-					WHERE Benutzergruppe = '" . $user_group_id . "'
+					WHERE user_group = '" . $user_group_id . "'
 				")->FetchRow();
 			}
 
@@ -312,8 +314,8 @@ class AVE_User
 			else
 			{
 				$AVE_Template->assign('g_all_permissions', $this->_allowed_admin_permission);
-				$AVE_Template->assign('g_group_permissions', explode('|', $row->Rechte));
-				$AVE_Template->assign('g_name', $row->Name);
+				$AVE_Template->assign('g_group_permissions', explode('|', $row->user_group_permission));
+				$AVE_Template->assign('g_name', $row->user_group_name);
 				$AVE_Template->assign('modules', $AVE_Module->moduleListGet(1));
 			}
 		}
@@ -338,9 +340,9 @@ class AVE_User
 
 			$AVE_DB->Query("
 				UPDATE " . PREFIX . "_user_groups
-				SET Rechte = '" . $perms . "'
-				" . (!empty($_POST['Name']) ? ", Name = '" . $_POST['Name'] . "'" : '') . "
-				WHERE BenutzerGruppe = '" . $user_group_id . "'
+				SET user_group_permission = '" . $perms . "'
+				" . (!empty($_POST['user_group_name']) ? ", user_group_name = '" . $_POST['user_group_name'] . "'" : '') . "
+				WHERE user_group = '" . $user_group_id . "'
 			");
 
 			reportLog($_SESSION['user_name'] . ' - Изменил права доступа для группы (' . $user_group_id . ')', 2, 2);
@@ -370,30 +372,30 @@ class AVE_User
 		$status_search = '';
 		$status_navi = '';
 
-		if (isset($_REQUEST['Benutzergruppe']) && $_REQUEST['Benutzergruppe'] != '0')
+		if (isset($_REQUEST['user_group']) && $_REQUEST['user_group'] != '0')
 		{
-			$user_group_id = ($user_group_id != '') ? $user_group_id : $_REQUEST['Benutzergruppe'];
-			$user_group_navi = '&amp;Benutzergruppe=' . $user_group_id;
-			$search_by_group = " AND Benutzergruppe = '" . $user_group_id . "' ";
+			$user_group_id = ($user_group_id != '') ? $user_group_id : $_REQUEST['user_group'];
+			$user_group_navi = '&amp;user_group=' . $user_group_id;
+			$search_by_group = " AND user_group = '" . $user_group_id . "' ";
 		}
 
 		if (!empty($_REQUEST['query']))
 		{
 			$q = urldecode($_REQUEST['query']);
 			$search_by_id_or_name = "
-				AND (Email LIKE '%" . $q . "%'
-				OR Email = '" . $q . "'
+				AND (email LIKE '%" . $q . "%'
+				OR email = '" . $q . "'
 				OR Id = '" . $q . "'
-				OR Vorname LIKE '" . $q . "%'
-				OR Nachname LIKE '" . $q . "%')
+				OR firstname LIKE '" . $q . "%'
+				OR lastname LIKE '" . $q . "%')
 			";
 			$query_navi = '&amp;query=' . urlencode($_REQUEST['query']);
 		}
 
-		if (isset($_REQUEST['Status']) && $_REQUEST['Status'] != 'all')
+		if (isset($_REQUEST['status']) && $_REQUEST['status'] != 'all')
 		{
-			$status_search = " AND Status = '" . (int)$_REQUEST['Status'] . "' ";
-			$status_navi   = '&amp;Status=' . (int)$_REQUEST['Status'];
+			$status_search = " AND status = '" . $_REQUEST['status'] . "' ";
+			$status_navi   = '&amp;status=' . $_REQUEST['status'];
 		}
 
 		$num = $AVE_DB->Query("
@@ -472,49 +474,49 @@ class AVE_User
 				else
 				{
 					$salt = make_random_string();
-					$password = md5(md5(trim($_POST['Kennwort']) . $salt));
+					$password = md5(md5(trim($_POST['password']) . $salt));
 					$AVE_DB->Query("
 						INSERT INTO " . PREFIX . "_users
 						SET
-							Id                 = '',
-							Kennwort           = '" . $password . "',
-							salt               = '" . $salt . "',
-							Email              = '" . $_POST['Email'] . "',
-							Strasse            = '" . $_POST['Strasse'] . "',
-							HausNr             = '" . $_POST['HausNr'] . "',
-							Postleitzahl       = '" . $_POST['Postleitzahl'] . "',
-							city               = '" . $_POST['city'] . "',
-							Telefon            = '" . $_POST['Telefon'] . "',
-							Telefax            = '" . $_POST['Telefax'] . "',
-							Bemerkungen        = '" . $_POST['Bemerkungen'] . "',
-							Vorname            = '" . $_POST['Vorname'] . "',
-							Nachname           = '" . $_POST['Nachname'] . "',
-							`UserName`         = '" . $_POST['UserName'] . "',
-							Benutzergruppe     = '" . $_POST['Benutzergruppe'] . "',
-							Registriert        = '" . time() . "',
-							Status             = '" . $_POST['Status'] . "',
-							ZuletztGesehen     = '" . time() . "',
-							Land               = '" . $_POST['Land'] . "',
-							GebTag             = '" . $_POST['GebTag'] . "',
-							Firma              = '" . $_POST['Firma'] . "',
-							UStPflichtig       = '" . $_POST['UStPflichtig'] . "',
-							BenutzergruppeMisc = '" . @implode(';', $_POST['BenutzergruppeMisc']) . "'
+							Id          = '',
+							password    = '" . $password . "',
+							salt        = '" . $salt . "',
+							email       = '" . $_POST['email'] . "',
+							street      = '" . $_POST['street'] . "',
+							street_nr   = '" . $_POST['street_nr'] . "',
+							zipcode     = '" . $_POST['zipcode'] . "',
+							city        = '" . $_POST['city'] . "',
+							phone       = '" . $_POST['phone'] . "',
+							telefax     = '" . $_POST['telefax'] . "',
+							description = '" . $_POST['description'] . "',
+							firstname   = '" . $_POST['firstname'] . "',
+							lastname    = '" . $_POST['lastname'] . "',
+							user_name   = '" . $_POST['user_name'] . "',
+							user_group  = '" . $_POST['user_group'] . "',
+							reg_time    = '" . time() . "',
+							status      = '" . $_POST['status'] . "',
+							last_visit  = '" . time() . "',
+							country     = '" . $_POST['country'] . "',
+							birthday    = '" . $_POST['birthday'] . "',
+							company     = '" . $_POST['company'] . "',
+							taxpay      = '" . $_POST['taxpay'] . "',
+							user_group_extra = '" . @implode(';', $_POST['user_group_extra']) . "'
 					");
 
 					$message = get_settings('mail_new_user');
-					$message = str_replace('%NAME%', $_POST['UserName'], $message);
+					$message = str_replace('%NAME%', $_POST['user_name'], $message);
 					$message = str_replace('%HOST%', substr(HOST . ABS_PATH, 0, -6), $message);
-					$message = str_replace('%KENNWORT%', $_POST['Kennwort'], $message);
-					$message = str_replace('%EMAIL%', $_POST['Email'], $message);
+					$message = str_replace('%KENNWORT%', $_POST['password'], $message);
+					$message = str_replace('%EMAIL%', $_POST['email'], $message);
 					$message = str_replace('%EMAILFUSS%', get_settings('mail_signature'), $message);
 
 					send_mail(
-						$_POST['Email'],
+						$_POST['email'],
 						$message,
 						$AVE_Template->get_config_vars('USER_MAIL_SUBJECT')
 					);
 
-					reportLog($_SESSION['user_name'] . ' - Добавил пользователя (' . stripslashes($_POST['UserName']) . ')', 2, 2);
+					reportLog($_SESSION['user_name'] . ' - Добавил пользователя (' . stripslashes($_POST['user_name']) . ')', 2, 2);
 
 					header('Location:index.php?do=user&cp=' . SESSION);
 				}
@@ -549,7 +551,7 @@ class AVE_User
 				}
 
 				$AVE_Template->assign('row', $row);
-				$AVE_Template->assign('BenutzergruppeMisc', explode(';', $row->BenutzergruppeMisc));
+				$AVE_Template->assign('user_group_extra', explode(';', $row->user_group_extra));
 
 				if ($AVE_DB->Query("SHOW TABLES LIKE '" . PREFIX . "_modul_shop'")->GetCell())
 				{
@@ -589,41 +591,41 @@ class AVE_User
 				}
 				else
 				{
-					if (!empty($_REQUEST['Kennwort']))
+					if (!empty($_REQUEST['password']))
 					{
 						$salt = make_random_string();
-						$password = md5(md5(trim($_POST['Kennwort']) . $salt));
-						$password_set = "Kennwort = '" . $password . "', salt = '" . $salt . "',";
+						$password = md5(md5(trim($_POST['password']) . $salt));
+						$password_set = "password = '" . $password . "', salt = '" . $salt . "',";
 					}
 					else
 					{
 						$password_set = '';
 					}
 
-					$user_group_id = ($_SESSION['user_id'] != $user_id) ? "Benutzergruppe = '" . $_REQUEST['Benutzergruppe'] . "'," : '';
+					$user_group_set = ($_SESSION['user_id'] != $user_id) ? "user_group = '" . $_REQUEST['user_group'] . "'," : '';
 
 					$AVE_DB->Query("
 						UPDATE " . PREFIX . "_users
 						SET
 							" . $password_set . "
-							" . $user_group_id . "
-							Email              = '" . $_REQUEST['Email'] . "',
-							Strasse            = '" . $_REQUEST['Strasse'] . "',
-							HausNr             = '" . $_REQUEST['HausNr'] . "',
-							Postleitzahl       = '" . $_REQUEST['Postleitzahl'] . "',
-							city               = '" . $_REQUEST['city'] . "',
-							Telefon            = '" . $_REQUEST['Telefon'] . "',
-							Telefax            = '" . $_REQUEST['Telefax'] . "',
-							Bemerkungen        = '" . $_REQUEST['Bemerkungen'] . "',
-							Vorname            = '" . $_REQUEST['Vorname'] . "',
-							Nachname           = '" . $_REQUEST['Nachname'] . "',
-							`UserName`         = '" . $_REQUEST['UserName'] . "',
-							Status             = '" . $_REQUEST['Status'] . "',
-							Land               = '" . $_REQUEST['Land'] . "',
-							GebTag             = '" . $_REQUEST['GebTag'] . "',
-							UStPflichtig       = '" . $_REQUEST['UStPflichtig'] . "',
-							Firma              = '" . $_REQUEST['Firma'] . "',
-							BenutzergruppeMisc = '" . @implode(';', $_REQUEST['BenutzergruppeMisc']) . "'
+							" . $user_group_set . "
+							email       = '" . $_REQUEST['email'] . "',
+							street      = '" . $_REQUEST['street'] . "',
+							street_nr   = '" . $_REQUEST['street_nr'] . "',
+							zipcode     = '" . $_REQUEST['zipcode'] . "',
+							city        = '" . $_REQUEST['city'] . "',
+							phone       = '" . $_REQUEST['phone'] . "',
+							telefax     = '" . $_REQUEST['telefax'] . "',
+							description = '" . $_REQUEST['description'] . "',
+							firstname   = '" . $_REQUEST['firstname'] . "',
+							lastname    = '" . $_REQUEST['lastname'] . "',
+							user_name   = '" . $_REQUEST['user_name'] . "',
+							status      = '" . $_REQUEST['status'] . "',
+							country     = '" . $_REQUEST['country'] . "',
+							birthday    = '" . $_REQUEST['birthday'] . "',
+							taxpay      = '" . $_REQUEST['taxpay'] . "',
+							company     = '" . $_REQUEST['company'] . "',
+							user_group_extra = '" . @implode(';', $_REQUEST['user_group_extra']) . "'
 						WHERE
 							Id = '" . $user_id . "'
 					");
@@ -633,7 +635,7 @@ class AVE_User
 						$AVE_DB->Query("
 							UPDATE " . PREFIX . "_modul_forum_userprofile
 							SET
-								GroupIdMisc  = '" . @implode(';', $_REQUEST['BenutzergruppeMisc']) . "',
+								GroupIdMisc  = '" . @implode(';', $_REQUEST['user_group_extra']) . "',
 								BenutzerName = '" . @$_REQUEST['BenutzerName_fp']. "',
 								Signatur     = '" . @$_REQUEST['Signatur_fp'] . "' ,
 								Avatar       = '" . @$_REQUEST['Avatar_fp'] . "'
@@ -642,18 +644,18 @@ class AVE_User
 						");
 					}
 
-					if ($_REQUEST['Status'] == 1 && @$_REQUEST['SendFreeMail'] == 1)
+					if ($_REQUEST['status'] == 1 && @$_REQUEST['SendFreeMail'] == 1)
 					{
 						$host        = substr(HOST . ABS_PATH, 0, -6);
 						$body_start  = $AVE_Template->get_config_vars('USER_MAIL_BODY1');
-						$body_start  = str_replace('%USER%', $_REQUEST['UserName'], $body_start);
+						$body_start  = str_replace('%USER%', $_REQUEST['user_name'], $body_start);
 						$body_start .= str_replace('%HOST%', $host, $AVE_Template->get_config_vars('USER_MAIL_BODY2'));
 						$body_start .= str_replace('%HOMEPAGENAME%', get_settings('site_name'), $AVE_Template->get_config_vars('USER_MAIL_FOOTER'));
 						$body_start  = str_replace('%N%', "\n", $body_start);
 						$body_start  = str_replace('%HOST%', $host, $body_start);
 
 						send_mail(
-							$_POST['Email'],
+							$_POST['email'],
 							$body_start,
 							$AVE_Template->get_config_vars('USER_MAIL_SUBJECT'),
 							get_settings('mail_from'),
@@ -663,19 +665,19 @@ class AVE_User
 						);
 					}
 
-					if (!empty($_REQUEST['Kennwort']) && $_REQUEST['PassChange'] == 1)
+					if (!empty($_REQUEST['password']) && $_REQUEST['PassChange'] == 1)
 					{
 						$host        = substr(HOST . ABS_PATH, 0, -6);
 						$body_start  = $AVE_Template->get_config_vars('USER_MAIL_BODY1');
-						$body_start  = str_replace('%USER%', $_REQUEST['UserName'], $body_start);
+						$body_start  = str_replace('%USER%', $_REQUEST['user_name'], $body_start);
 						$body_start .= str_replace('%HOST%', $host, $AVE_Template->get_config_vars('USER_MAIL_PASSWORD2'));
-						$body_start  = str_replace('%NEWPASS%', $_REQUEST['Kennwort'], $body_start);
+						$body_start  = str_replace('%NEWPASS%', $_REQUEST['password'], $body_start);
 						$body_start .= str_replace('%HOMEPAGENAME%', get_settings('site_name'), $AVE_Template->get_config_vars('USER_MAIL_FOOTER'));
 						$body_start  = str_replace('%N%', "\n", $body_start);
 						$body_start  = str_replace('%HOST%', $host, $body_start);
 
 						send_mail(
-							$_POST['Email'],
+							$_POST['email'],
 							$body_start,
 							$AVE_Template->get_config_vars('USER_MAIL_PASSWORD'),
 							get_settings('mail_from'),
@@ -688,7 +690,7 @@ class AVE_User
 					if ($_REQUEST['SimpleMessage'] != '')
 					{
 						send_mail(
-							$_POST['Email'],
+							$_POST['email'],
 							stripslashes($_POST['SimpleMessage']),
 							stripslashes($_POST['SubjectMessage']),
 							$_SESSION['user_email'],
@@ -698,13 +700,13 @@ class AVE_User
 						);
 					}
 
-					if (!empty($_REQUEST['Kennwort']) && $_SESSION['user_id'] == $user_id)
+					if (!empty($_REQUEST['password']) && $_SESSION['user_id'] == $user_id)
 					{
 						$_SESSION['user_pass'] = $password;
-						$_SESSION['user_email'] = $_POST['Email'];
+						$_SESSION['user_email'] = $_POST['email'];
 					}
 
-					reportLog($_SESSION['user_name'] . ' - Отредактировал параметры пользователя (' . stripslashes($_POST['UserName']) . ')', 2, 2);
+					reportLog($_SESSION['user_name'] . ' - Отредактировал параметры пользователя (' . stripslashes($_POST['user_name']) . ')', 2, 2);
 
 					header('Location:index.php?do=user&cp=' . SESSION);
 					exit;
@@ -766,14 +768,14 @@ class AVE_User
 			}
 		}
 
-		foreach ($_POST['Benutzergruppe'] as $user_id => $user_group_id)
+		foreach ($_POST['user_group'] as $user_id => $user_group_id)
 		{
 			if (is_numeric($user_id) && $user_id > 0 &&
 				is_numeric($user_group_id) && $user_group_id > 0)
 			{
 				$AVE_DB->Query("
 					UPDATE " . PREFIX . "_users
-					SET Benutzergruppe = '" . $user_group_id . "'
+					SET user_group = '" . $user_group_id . "'
 					WHERE Id = '" . $user_id . "'
 				");
 				reportLog($_SESSION['user_name'] . ' - Изменил группу для пользователя (' . $user_id . ')', 2, 2);

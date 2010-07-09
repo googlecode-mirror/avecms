@@ -2,7 +2,7 @@
 
 <script type="text/javascript" language="JavaScript">
 function ChangeRazd() {ldelim}
-	window.location.href='index.php?do=docs&action=change&Id={$smarty.request.Id}&RubrikId={$smarty.request.RubrikId}&NewRubr='+document.form1.NewRubr.value+'&pop=1&cp={$sess}';
+	window.location.href='index.php?do=docs&action=change&Id={$smarty.request.Id|escape}&rubric_id={$smarty.request.rubric_id|escape}&NewRubr='+document.form1.NewRubr.value+'&pop=1&cp={$sess}';
 {rdelim}
 </script>
 
@@ -22,7 +22,7 @@ function ChangeRazd() {ldelim}
 					<option value=""></option>
 					{foreach from=$rubrics item=rubric}
 						{if $rubric->Show==1}
-							<option value="{$rubric->Id}" {if ($smarty.request.NewRubr=='' && $smarty.request.RubrikId==$rubric->Id) || ($smarty.request.NewRubr!='' && $smarty.request.NewRubr==$rubric->Id)}selected{/if}>{$rubric->RubrikName|escape}</option>
+							<option value="{$rubric->Id}" {if ($smarty.request.NewRubr=='' && $smarty.request.rubric_id==$rubric->Id) || ($smarty.request.NewRubr!='' && $smarty.request.NewRubr==$rubric->Id)}selected{/if}>{$rubric->rubric_title|escape}</option>
 						{/if}
 					{/foreach}
 				</select>
@@ -36,7 +36,7 @@ function ChangeRazd() {ldelim}
 
 		{foreach from=$fields item=field key=Id}
 			<tr>
-				<td class="{cycle values='first,second' advance=false}">{$field.Titel}</td>
+				<td class="{cycle values='first,second' advance=false}">{$field.title}</td>
 				<td class="{cycle values='first,second'}">
 					{html_options name=$Id options=$field.Options selected=$field.Selected style="width:200px"}
 				</td>

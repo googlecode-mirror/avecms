@@ -5,6 +5,8 @@
  *
  * @package AVE.cms
  * @subpackage module_SysBlock
+ * @author Mad Den
+ * @since 2.07
  * @filesource
  */
 
@@ -15,7 +17,7 @@ if (defined('ACP'))
     $modul['ModulName'] = 'Системные блоки';
     $modul['ModulPfad'] = 'sysblock';
     $modul['ModulVersion'] = '1.1';
-    $modul['Beschreibung'] = 'Данный модуль предназначен для вывода системных блоков с произвольным содержимым в шаблоне или документе.<br /><br />Можно использовать PHP и тэги модулей<br /><br />Для вывода результатов используйте системный тег<br /><strong>[mod_sysblock:XXX]</strong>';
+    $modul['description'] = 'Данный модуль предназначен для вывода системных блоков с произвольным содержимым в шаблоне или документе.<br /><br />Можно использовать PHP и тэги модулей<br /><br />Для вывода результатов используйте системный тег<br /><strong>[mod_sysblock:XXX]</strong>';
     $modul['Autor'] = 'Mad Den';
     $modul['MCopyright'] = '&copy; 2008 Overdoze Team';
     $modul['Status'] = 1;

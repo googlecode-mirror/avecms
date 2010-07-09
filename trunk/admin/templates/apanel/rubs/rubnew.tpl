@@ -14,20 +14,20 @@
 		<col width="250" />
 		<tr>
 			<td class="first"><strong>{#RUBRIK_NAME2#}</strong></td>
-			<td class="second"><input style="width:250px" type="text" name="RubrikName" value="{$smarty.request.RubrikName|escape|stripslashes}"></td>
+			<td class="second"><input style="width:250px" type="text" name="rubric_title" value="{$smarty.request.rubric_title|escape|stripslashes}"></td>
 		</tr>
 
 		<tr>
 			<td class="first"><strong>{#RUBRIK_URL_PREFIX2#}</strong></td>
-			<td class="second"><input style="width:250px" type="text" name="UrlPrefix" value="{$smarty.request.UrlPrefix|escape|stripslashes}"></td>
+			<td class="second"><input style="width:250px" type="text" name="rubric_alias" value="{$smarty.request.rubric_alias|escape|stripslashes}"></td>
 		</tr>
 
 		<tr>
 			<td class="first"><strong>{#RUBRIK_TEMPLATE_OUT2#}</strong></td>
 			<td class="second">
-				<select style="width:250px" name="Vorlage">
+				<select style="width:250px" name="rubric_template_id">
 					{foreach from=$AlleVorlagen item=av}
-						<option value="{$av->Id}" {if $av->Id==$tpl->Vorlage}selected {/if}/>{$av->TplName}</option>
+						<option value="{$av->Id}" {if $av->Id==$tpl->rubric_template_id}selected {/if}/>{$av->template_title|escape}</option>
 					{/foreach}
 				</select>
 			</td>

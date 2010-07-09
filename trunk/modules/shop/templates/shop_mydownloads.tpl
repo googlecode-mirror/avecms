@@ -27,10 +27,10 @@
 								<tr>
 									<td width="200" valign="top" class="mod_shop_basket_row">
 										{if $df->Abgelaufen==1}
-											{$df->Titel|stripslashes}
+											{$df->title|stripslashes}
 										{else}
 											<strong>
-												<a {if $df->Beschreibung}title="{$df->Beschreibung|escape}"{/if} href="index.php?module=shop&action=mydownloads&sub=getfile&Id={$df->Id}&FileId={$dl->ArtikelId}&getId={$df->Id}">{$df->Titel|stripslashes}</a>
+												<a {if $df->description}title="{$df->description|escape}"{/if} href="index.php?module=shop&action=mydownloads&sub=getfile&Id={$df->Id}&FileId={$dl->ArtikelId}&getId={$df->Id}">{$df->title|stripslashes}</a>
 											</strong>
 										{/if}
 									</td>
@@ -51,7 +51,7 @@
 
 							{foreach from=$dl->DataFilesUpdates item=df}
 								<tr>
-									<td width="200" valign="top" class="mod_shop_basket_row"> <strong> <a {if $df->Beschreibung}title="{$df->Beschreibung|escape}"{/if} href="index.php?module=shop&action=mydownloads&sub=getfile&Id={$df->Id}&FileId={$dl->ArtikelId}&getId={$df->Id}">{$df->Titel}</a></strong></td>
+									<td width="200" valign="top" class="mod_shop_basket_row"> <strong> <a {if $df->description}title="{$df->description|escape}"{/if} href="index.php?module=shop&action=mydownloads&sub=getfile&Id={$df->Id}&FileId={$dl->ArtikelId}&getId={$df->Id}">{$df->title}</a></strong></td>
 									<td class="mod_shop_basket_row">{$dl->DownloadBis|date_format:#DateFormatEsdTill#}</td>
 									<td class="mod_shop_basket_row">{$df->size} kb</td>
 									<td align="right" class="mod_shop_basket_row"> <a href="index.php?module=shop&action=mydownloads&sub=getfile&Id={$df->Id}&FileId={$dl->ArtikelId}&getId={$df->Id}"><img src="{$shop_images}download.gif" alt="" border="0" /></a> </td>
@@ -66,7 +66,7 @@
 
 							{foreach from=$dl->DataFilesBugfixes item=df}
 								<tr>
-									<td width="200" valign="top" class="mod_shop_basket_row"> <strong> <a {if $df->Beschreibung}title="{$df->Beschreibung|escape}"{/if} href="index.php?module=shop&action=mydownloads&sub=getfile&Id={$df->Id}&FileId={$dl->ArtikelId}&getId={$df->Id}">{$df->Titel}</a></strong></td>
+									<td width="200" valign="top" class="mod_shop_basket_row"> <strong> <a {if $df->description}title="{$df->description|escape}"{/if} href="index.php?module=shop&action=mydownloads&sub=getfile&Id={$df->Id}&FileId={$dl->ArtikelId}&getId={$df->Id}">{$df->title}</a></strong></td>
 									<td class="mod_shop_basket_row">{$dl->DownloadBis|date_format:#DateFormatEsdTill#}</td>
 									<td class="mod_shop_basket_row">{$df->size} kb</td>
 									<td align="right" class="mod_shop_basket_row"> <a href="index.php?module=shop&action=mydownloads&sub=getfile&Id={$df->Id}&FileId={$dl->ArtikelId}&getId={$df->Id}"><img src="{$shop_images}download.gif" alt="" border="0" /></a> </td>
@@ -81,7 +81,7 @@
 
 							{foreach from=$dl->DataFilesOther item=df}
 								<tr>
-									<td width="200" valign="top" class="mod_shop_basket_row"> <strong> <a {if $df->Beschreibung}title="{$df->Beschreibung|escape}"{/if} href="index.php?module=shop&action=mydownloads&sub=getfile&Id={$df->Id}&FileId={$dl->ArtikelId}&getId={$df->Id}">{$df->Titel}</a></strong></td>
+									<td width="200" valign="top" class="mod_shop_basket_row"> <strong> <a {if $df->description}title="{$df->description|escape}"{/if} href="index.php?module=shop&action=mydownloads&sub=getfile&Id={$df->Id}&FileId={$dl->ArtikelId}&getId={$df->Id}">{$df->title}</a></strong></td>
 									<td class="mod_shop_basket_row">Без ограничений</td>
 									<td class="mod_shop_basket_row">{$df->size} kb</td>
 									<td align="right" class="mod_shop_basket_row"> <a href="index.php?module=shop&action=mydownloads&sub=getfile&Id={$df->Id}&FileId={$dl->ArtikelId}&getId={$df->Id}"><img src="{$shop_images}download.gif" alt="" border="0" /></a> </td>

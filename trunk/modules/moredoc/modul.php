@@ -15,7 +15,7 @@ if (defined('ACP'))
     $modul['ModulName'] = 'Ссылки по теме';
     $modul['ModulPfad'] = 'moredoc';
     $modul['ModulVersion'] = '1.0';
-    $modul['Beschreibung'] = 'Данный модуль предназначен для вывода списка похожих документов относительно текущего. Связующим элементом документов является первое слово из поля Ключевые слова. Результат вывода кешируется средствами Smarty.<BR /><BR />Для вывода списка похожих документов используйте системный тег <strong>[mod_moredoc]</strong> (можно использовать как в документах так и шаблоне рубрики).';
+    $modul['description'] = 'Данный модуль предназначен для вывода списка похожих документов относительно текущего. Связующим элементом документов является первое слово из поля Ключевые слова. Результат вывода кешируется средствами Smarty.<BR /><BR />Для вывода списка похожих документов используйте системный тег <strong>[mod_moredoc]</strong> (можно использовать как в документах так и шаблоне рубрики).';
     $modul['Autor'] = 'censored!';
     $modul['MCopyright'] = '&copy; 2008 Overdoze Team';
     $modul['Status'] = 1;
@@ -66,32 +66,33 @@ function mod_moredoc()
 		// Получаем ключевые слова, рубрику, вытаскиваем первое слово
 		$row = $AVE_DB->Query("
 			SELECT
-				RubrikId,
-				MetaKeywords
+				rubric_id,
+				document_meta_keywords
 			FROM " . PREFIX . "_documents
 			WHERE Id = '" . $document_id . "'
 			LIMIT 1
 		")->FetchRow();
 
-		$keywords = explode(',',$row->MetaKeywords);
+		$keywords = explode(',',$row->document_meta_keywords);
 		$keywords = trim($keywords[0]);
 
 		if ($keywords != '')
 		{
-			$inrubric = $flagrubric ? ("AND RubrikId = '" . $row->RubrikId . "'") : '';
-			$doctime  = get_settings('use_doctime') ? ("AND (DokEnde = 0 || DokEnde > '" . time() . "') AND DokStart < '" . time() . "'") : '';
+			$inrubric = $flagrubric ? ("AND rubric_id = '" . $row->rubric_id . "'") : '';
+			$doctime  = get_settings('use_doctime') ? ("AND (document_expire = 0 || document_expire >= '" . time() . "') AND document_published <= '" . time() . "'") : '';
 			// Ищем документы где встречается такое-же слово
 			$sql = $AVE_DB->Query("
 				SELECT
 					Id,
-					Titel,
-					MetaDescription
+					document_title,
+					document_alias,
+					document_meta_description
 				FROM " . PREFIX . "_documents
-				WHERE MetaKeywords LIKE '" . $keywords . "%'
+				WHERE document_meta_keywords LIKE '" . $keywords . "%'
 				AND Id != 1
 				AND Id != '" . PAGE_NOT_FOUND_ID . "'
-				AND DokStatus != '0'
-				AND Geloescht != '1'
+				AND document_status != '0'
+				AND document_deleted != '1'
 				AND Id != '" . $document_id . "'
 				" . $inrubric . "
 				" . $doctime . "
@@ -102,7 +103,7 @@ function mod_moredoc()
 			$moredoc = array();
 			while ($row = $sql->FetchRow())
 			{
-				$row->Url = rewrite_link('index.php?id=' . $row->Id . '&amp;doc=' . (empty($row->Url) ? prepare_url($row->Titel) : $row->curentdoc->Url));
+				$row->document_alias = rewrite_link('index.php?id=' . $row->Id . '&amp;doc=' . (empty($row->document_alias) ? prepare_url($row->document_title) : $row->curentdoc->document_alias));
 				array_push($moredoc, $row);
 			}
 			// Закрываем соединение

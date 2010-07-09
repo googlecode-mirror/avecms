@@ -7,7 +7,7 @@ $modul_sql_update = array();
 // установка (структура)
 $modul_sql_install[] = "CREATE TABLE `CPPREFIX_modul_shop` (
   `Id` smallint(2) unsigned NOT NULL auto_increment,
-  `Aktiv` tinyint(1) unsigned NOT NULL default '0',
+  `country_code` tinyint(1) unsigned NOT NULL default '0',
   `Waehrung` varchar(10) NOT NULL default 'RUR',
   `WaehrungSymbol` varchar(10) NOT NULL default 'руб.',
   `Waehrung2` varchar(10) NOT NULL default 'EUR',
@@ -71,7 +71,7 @@ $modul_sql_install[] = "CREATE TABLE `CPPREFIX_modul_shop_artikel` (
   `KatId` int(10) unsigned NOT NULL default '0',
   `KatId_Multi` text NOT NULL,
   `ArtName` varchar(255) NOT NULL,
-  `Aktiv` smallint(1) unsigned NOT NULL default '1',
+  `country_code` smallint(1) unsigned NOT NULL default '1',
   `Preis` decimal(10,2) NOT NULL default '0.00',
   `PreisListe` decimal(10,2) NOT NULL default '0.00',
   `Bild` varchar(255) NOT NULL,
@@ -128,8 +128,8 @@ $modul_sql_install[] = "CREATE TABLE `CPPREFIX_modul_shop_artikel_downloads` (
   `DateiTyp` enum('full','update','bugfix','other') NOT NULL default 'full',
   `TageNachKauf` mediumint(5) NOT NULL default '365',
   `Bild` varchar(255) NOT NULL,
-  `Titel` varchar(200) NOT NULL,
-  `Beschreibung` text NOT NULL,
+  `title` varchar(200) NOT NULL,
+  `description` text NOT NULL,
   `Position` mediumint(3) unsigned NOT NULL default '1',
   PRIMARY KEY  (`Id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=cp1251;";
@@ -139,8 +139,8 @@ $modul_sql_install[] = "CREATE TABLE `CPPREFIX_modul_shop_artikel_kommentare` (
   `ArtId` int(10) unsigned NOT NULL default '0',
   `Benutzer` int(10) unsigned NOT NULL default '0',
   `Datum` int(14) unsigned NOT NULL default '0',
-  `Titel` varchar(255) NOT NULL,
-  `Kommentar` text NOT NULL,
+  `title` varchar(255) NOT NULL,
+  `comment_text` text NOT NULL,
   `Wertung` smallint(1) unsigned NOT NULL default '0',
   `Publik` tinyint(1) unsigned NOT NULL default '0',
   PRIMARY KEY  (`Id`)
@@ -239,10 +239,10 @@ $modul_sql_install[] = "CREATE TABLE `CPPREFIX_modul_shop_hersteller` (
 
 $modul_sql_install[] = "CREATE TABLE `CPPREFIX_modul_shop_kategorie` (
   `Id` mediumint(5) unsigned NOT NULL auto_increment,
-  `Elter` mediumint(5) unsigned NOT NULL default '0',
+  `parent_id` mediumint(5) unsigned NOT NULL default '0',
   `KatName` varchar(100) default NULL,
   `KatBeschreibung` text NOT NULL,
-  `Rang` smallint(3) unsigned NOT NULL default '1',
+  `position` smallint(3) unsigned NOT NULL default '1',
   `Bild` varchar(255) NOT NULL,
   `bid` int(5) unsigned NOT NULL default '0',
   `cbid` int(5) unsigned NOT NULL default '0',
@@ -303,8 +303,8 @@ $modul_sql_install[] = "CREATE TABLE `CPPREFIX_modul_shop_varianten_kategorien` 
   `Id` int(10) unsigned NOT NULL auto_increment,
   `KatId` mediumint(5) unsigned NOT NULL default '0',
   `Name` varchar(200) NOT NULL,
-  `Beschreibung` text NOT NULL,
-  `Aktiv` tinyint(1) unsigned NOT NULL default '1',
+  `description` text NOT NULL,
+  `country_code` tinyint(1) unsigned NOT NULL default '1',
   PRIMARY KEY  (`Id`),
   KEY `KatId` (`KatId`)
 ) ENGINE=MyISAM DEFAULT CHARSET=cp1251;";
@@ -312,12 +312,12 @@ $modul_sql_install[] = "CREATE TABLE `CPPREFIX_modul_shop_varianten_kategorien` 
 $modul_sql_install[] = "CREATE TABLE `CPPREFIX_modul_shop_versandarten` (
   `Id` int(10) unsigned NOT NULL auto_increment,
   `Name` varchar(200) NOT NULL default '',
-  `Beschreibung` text NOT NULL,
+  `description` text NOT NULL,
   `Icon` varchar(255) NOT NULL default '',
   `LaenderVersand` tinytext NOT NULL,
   `Pauschalkosten` decimal(5,2) NOT NULL default '0.00',
   `KeineKosten` tinyint(1) unsigned NOT NULL default '0',
-  `Aktiv` tinyint(1) unsigned NOT NULL default '0',
+  `country_code` tinyint(1) unsigned NOT NULL default '0',
   `NurBeiGewichtNull` tinyint(1) unsigned NOT NULL default '0',
   `ErlaubteGruppen` tinytext NOT NULL,
   PRIMARY KEY  (`Id`)
@@ -326,7 +326,7 @@ $modul_sql_install[] = "CREATE TABLE `CPPREFIX_modul_shop_versandarten` (
 $modul_sql_install[] = "CREATE TABLE `CPPREFIX_modul_shop_versandkosten` (
   `Id` int(10) unsigned NOT NULL auto_increment,
   `VersandId` int(10) unsigned NOT NULL default '0',
-  `Land` char(2) NOT NULL default 'RU',
+  `country` char(2) NOT NULL default 'RU',
   `KVon` decimal(8,3) NOT NULL default '0.001',
   `KBis` decimal(8,3) NOT NULL default '10.000',
   `Betrag` decimal(7,2) NOT NULL default '0.00',
@@ -336,7 +336,7 @@ $modul_sql_install[] = "CREATE TABLE `CPPREFIX_modul_shop_versandkosten` (
 $modul_sql_install[] = "CREATE TABLE `CPPREFIX_modul_shop_versandzeit` (
   `Id` smallint(2) unsigned NOT NULL auto_increment,
   `Name` varchar(255) NOT NULL,
-  `Beschreibung` text NOT NULL,
+  `description` text NOT NULL,
   `Icon` varchar(255) NOT NULL,
   PRIMARY KEY  (`Id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=cp1251;";
@@ -344,11 +344,11 @@ $modul_sql_install[] = "CREATE TABLE `CPPREFIX_modul_shop_versandzeit` (
 $modul_sql_install[] = "CREATE TABLE `CPPREFIX_modul_shop_zahlungsmethoden` (
   `Id` mediumint(5) unsigned NOT NULL auto_increment,
   `Name` varchar(255) NOT NULL,
-  `Beschreibung` text NOT NULL,
+  `description` text NOT NULL,
   `ErlaubteVersandLaender` tinytext NOT NULL,
   `ErlaubteVersandarten` tinytext NOT NULL,
   `ErlaubteGruppen` tinytext NOT NULL,
-  `Aktiv` tinyint(1) unsigned NOT NULL default '0',
+  `country_code` tinyint(1) unsigned NOT NULL default '0',
   `Kosten` decimal(7,2) NOT NULL default '0.00',
   `KostenOperant` enum('Wert','%') NOT NULL default 'Wert',
   `InstId` varchar(100) NOT NULL,

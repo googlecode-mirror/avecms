@@ -1,0 +1,18 @@
+/*::::::::::::::::::::::::::::::::::::::::
+ Modul: gWeather
+ System name: AVE 2.08
+ Short Desc:  Google Weather
+ Version: 1.0
+ Authors: N.Popova, npop@abv.bg
+ Last update: 05.07.2010
+::::::::::::::::::::::::::::::::::::::::*/
+.gw_simple {float:right; margin:15px 18px 0 0;}
+.gw_simple .gw_current {overflow:hidden;}
+.gw_simple .gw_main_left {float:left; width:auto;}
+.gw_simple .gw_temp {font-weight: bold;}
+.gw_simple .gw_main_right {float:left; width:auto; margin:0 0 0 16px; color:#FFFFFF; line-height: 17px;}
+.gw_simple .gw_main_right h2 {font-size: 1em!important; margin: 0;}
+.gkw_main_right p {font-size: 0.9em; float: left;margin: 0 5px 0 0;}
+.gw_simple .gw_condition {}
+.gw_simple .gw_humidity {}
+.gw_simple .gw_wind {}

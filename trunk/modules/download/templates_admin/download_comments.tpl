@@ -17,15 +17,15 @@
     <td align="center"><input title="{#DlmarkDel#}"  name="Del[{$c->Id}]" type="checkbox" value="1"></td>
     <td width="200" valign="top">
 
-	<input style="width:200px; background: rgb(255, 255, 204)" name="Titel[{$c->Id}]" type="text" value="{$c->Titel|escape:html|stripslashes}"> <br />
+	<input style="width:200px; background: rgb(255, 255, 204)" name="title[{$c->Id}]" type="text" value="{$c->title|escape:html|stripslashes}"> <br />
 	{#CCommentFrom#}<br />
 	<input style="width:200px" name="Name[{$c->Id}]" type="text" value="{$c->Name|escape:html|stripslashes}"><br />
 	{#CCommentEmail#} <br />
-	<input style="width:200px" name="Email[{$c->Id}]" type="text" value="{$c->Email|escape:html|stripslashes}">
+	<input style="width:200px" name="email[{$c->Id}]" type="text" value="{$c->email|escape:html|stripslashes}">
 	</td>
     <td>
 
-	<textarea name="Kommentar[{$c->Id}]" style="width:97%; background: rgb(255, 255, 204)" rows="6">{$c->Kommentar|escape:html|stripslashes}</textarea></td>
+	<textarea name="comment_text[{$c->Id}]" style="width:97%; background: rgb(255, 255, 204)" rows="6">{$c->comment_text|escape:html|stripslashes}</textarea></td>
   </tr>
   {/foreach}
 </table>

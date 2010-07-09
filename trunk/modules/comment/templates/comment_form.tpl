@@ -25,51 +25,51 @@
 		{else}
 			<form method="post" action="index.php">
 				{if $smarty.session.user_name != ''}
-					<input name="author_name" type="hidden" value="{$smarty.session.user_name}" />
+					<input name="comment_author_name" type="hidden" value="{$smarty.session.user_name|escape}" />
 				{else}
 					<fieldset>
 						<legend><label for="in_author_name">{#COMMENT_YOUR_NAME#}</label></legend>
-						<input name="author_name" type="text" id="in_author_name" style="width:250px" value="{$smarty.session.user_name}" />
+						<input name="comment_author_name" type="text" id="in_author_name" style="width:250px" value="{$smarty.session.user_name|escape}" />
 					</fieldset>
 					<br />
 				{/if}
 
 				{if $smarty.session.user_email != ''}
-					<input name="author_email" type="hidden" value="{$smarty.session.user_email}" />
+					<input name="comment_author_email" type="hidden" value="{$smarty.session.user_email|escape}" />
 				{else}
 					<fieldset>
 						<legend><label for="in_author_email">{#COMMENT_YOUR_EMAIL#}</label></legend>
-						<input name="author_email" type="text" id="in_author_email" style="width:250px" value="" />
+						<input name="comment_author_email" type="text" id="in_author_email" style="width:250px" value="" />
 					</fieldset>
 					<br />
 				{/if}
 
 				<fieldset>
 					<legend><label for="in_author_website">{#COMMENT_YOUR_SITE#}</label></legend>
-					<input name="author_website" type="text" id="in_author_website" style="width:250px" />
+					<input name="comment_author_website" type="text" id="in_author_website" style="width:250px" />
 				</fieldset>
 				<br />
 
 				<fieldset>
 					<legend><label for="in_author_city">{#COMMENT_YOUR_FROM#}</label></legend>
-					<input name="author_city" type="text" id="in_author_city" style="width:250px" />
+					<input name="comment_author_city" type="text" id="in_author_city" style="width:250px" />
 				</fieldset>
 				<br />
 
 				<fieldset>
 					<legend><label for="in_message">{#COMMENT_YOUR_TEXT#}</label></legend>
-					<textarea onkeyup="javascript:textCounter(this.form.message,this.form.charleft,{$max_chars});" onkeydown="javascript:textCounter(this.form.message,this.form.charleft,{$max_chars});" style="width:98%; height:165px" name="message" id="in_message"></textarea>
-					<input type="text" size="6" name="charleft" value="{$max_chars}" /> {#COMMENT_CHARSET_LEFT#}
+					<textarea onkeyup="javascript:textCounter(this.form.comment_text,this.form.charleft,{$comment_max_chars});" onkeydown="javascript:textCounter(this.form.comment_text,this.form.charleft,{$comment_max_chars});" style="width:98%; height:165px" name="comment_text" id="in_message"></textarea>
+					<input type="text" size="6" name="charleft" value="{$comment_max_chars}" /> {#COMMENT_CHARSET_LEFT#}
 				</fieldset>
 
-				<input name="theme" type="hidden" id="theme" value="{$smarty.request.theme}" />
+				<input name="theme" type="hidden" id="theme" value="{$smarty.request.theme|escape}" />
 				<input name="module" type="hidden" value="comment" />
 				<input name="action" type="hidden" value="comment" />
 				<input name="pop" type="hidden" id="pop" value="1" />
 				<input name="sub" type="hidden" id="sub" value="send" />
-				<input name="page" type="hidden" value="{$smarty.request.page}" />
-				<input name="document_id" type="hidden" value="{$smarty.request.docid}" />
-				<input name="parent_id" type="hidden" value="{$smarty.request.parent|default:0}" />
+				<input name="page" type="hidden" value="{$smarty.request.page|escape}" />
+				<input name="document_id" type="hidden" value="{$smarty.request.docid|escape}" />
+				<input name="parent_id" type="hidden" value="{$smarty.request.parent|escape|default:0}" />
 
 				<p>
 					<input type="submit" class="button" value="{#COMMENT_BUTTON_ADD#}" />&nbsp;

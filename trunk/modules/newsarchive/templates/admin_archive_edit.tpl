@@ -35,7 +35,7 @@ function check_name() {ldelim}
 			<td class="second">
 				<select name="newsarchive_rubrics[]" size="8" multiple="multiple" style="width:200px">
 					{foreach from=$newsarchive_rubrics item=rubric}
-						<option value="{$rubric->Id}" {if $rubric->sel}selected="selected"{else}{/if}>{$rubric->RubrikName|escape:html}</option>
+						<option value="{$rubric->Id}" {if $rubric->sel}selected="selected"{else}{/if}>{$rubric->rubric_title|escape:html}</option>
 					{/foreach}
 				</select>
 			</td>

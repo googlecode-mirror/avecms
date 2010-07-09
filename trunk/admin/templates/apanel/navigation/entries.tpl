@@ -1,13 +1,13 @@
 <script language="javascript" type="text/javascript">
-function openLinkWindow(target,doc,alias) {ldelim}
+function openLinkWindow(target,doc,document_alias) {ldelim}
 	if (typeof width=='undefined' || width=='') var width = screen.width * 0.6;
 	if (typeof height=='undefined' || height=='') var height = screen.height * 0.6;
 	if (typeof doc=='undefined') var doc = 'Title';
 	if (typeof scrollbar=='undefined') var scrollbar=1;
-	window.open('index.php?doc='+doc+'&target='+target+'&alias='+alias+'&do=docs&action=showsimple&cp={$sess}&pop=1','pop','left=0,top=0,width='+width+',height='+height+',scrollbars='+scrollbar+',resizable=1');
+	window.open('index.php?doc='+doc+'&target='+target+'&document_alias='+document_alias+'&do=docs&action=showsimple&cp={$sess}&pop=1','pop','left=0,top=0,width='+width+',height='+height+',scrollbars='+scrollbar+',resizable=1');
 {rdelim}
 
-function openFileWindow(target,id,alias) {ldelim}
+function openFileWindow(target,id,document_alias) {ldelim}
 	if (typeof width=='undefined' || width=='') var width = screen.width * 0.6;
 	if (typeof height=='undefined' || height=='') var height = screen.height * 0.6;
 	if (typeof doc=='undefined') var doc = 'Title';
@@ -19,13 +19,13 @@ function openFileWindow(target,id,alias) {ldelim}
 <div id="pageHeaderTitle" style="padding-top:7px">
 	<div class="h_navi">&nbsp;</div>
 	<div class="HeaderTitle">
-		<h2>{#NAVI_SUB_TITLE2#}<span style="color:#000">&nbsp;&gt;&nbsp;{$NavigatonName|escape:html|stripslashes}</span></h2>
+		<h2>{#NAVI_SUB_TITLE2#}<span style="color:#000">&nbsp;&gt;&nbsp;{$NavigatonName|escape|stripslashes}</span></h2>
 	</div>
 	<div class="HeaderText">&nbsp;</div>
 </div>
 
 <h4>{#NAVI_ITEMS_TIP#}</h4>
-<form name="navquicksave" method="post" action="index.php?do=navigation&amp;action=quicksave&amp;id={$smarty.request.id}&amp;cp={$sess}">
+<form name="navquicksave" method="post" action="index.php?do=navigation&amp;action=quicksave&amp;id={$smarty.request.id|escape}&amp;cp={$sess}">
 	<table width="100%" cellpadding="8" cellspacing="1" class="tableborder">
 		<col width="50%">
 		<col width="50%">
@@ -90,20 +90,20 @@ function openFileWindow(target,id,alias) {ldelim}
 
 		{foreach from=$entries item=item}
 			<tr id="table_rows" style="background-color:#eff3eb" onmouseover="this.style.backgroundColor='#dae0d8';" onmouseout="this.style.backgroundColor='#eff3eb';">
-				<input type="hidden" name="Url[{$item->Id}]" id="Url_{$item->Id}" value="{$item->Url|stripslashes}" />
-				<td><input style="width:100%" name="Titel[{$item->Id}]" type="text" id="Titel_{$item->Id}" value="{$item->Titel|stripslashes}" /></td>
-				<td><input style="width:100%" name="Link[{$item->Id}]" type="text" id="Link_{$item->Id}" value="{$item->Link|escape:html|stripslashes}" /></td>
+				<input type="hidden" name="document_alias[{$item->Id}]" id="Url_{$item->Id}" value="{$item->document_alias|stripslashes}" />
+				<td><input style="width:100%" name="title[{$item->Id}]" type="text" id="Titel_{$item->Id}" value="{$item->title|stripslashes}" /></td>
+				<td><input style="width:100%" name="navi_item_link[{$item->Id}]" type="text" id="Link_{$item->Id}" value="{$item->navi_item_link|escape|stripslashes}" /></td>
 				<td><input title="{#NAVI_BROWSE_DOCUMENTS#}" onclick="openLinkWindow('Link_{$item->Id}','Titel_{$item->Id}','Url_{$item->Id}');" type="button" class="button" value="... " /></td>
 				<td><input title="{#NAVI_BROWSE_MEDIAPOOL#}" onclick="openFileWindow('Link_{$item->Id}','Link_{$item->Id}','Url_{$item->Id}');" type="button" class="button" value="#" /></td>
-				<td><input name="Rang[{$item->Id}]" type="text" id="Rang_{$item->Id}" value="{$item->Rang}" size="4" maxlength="3" /></td>
+				<td><input name="navi_item_position[{$item->Id}]" type="text" id="Rang_{$item->Id}" value="{$item->navi_item_position}" size="4" maxlength="3" /></td>
 				<td>
-					<select name="Ziel[{$item->Id}]" id="Ziel_{$item->Id}">
-						<option value="_self"{if $item->Ziel=='_self'} selected="selected"{/if}>{#NAVI_OPEN_IN_THIS#}</option>
-						<option value="_blank"{if $item->Ziel=='_blank'} selected="selected"{/if}>{#NAVI_OPEN_IN_NEW#}</option>
+					<select name="navi_item_target[{$item->Id}]" id="Ziel_{$item->Id}">
+						<option value="_self"{if $item->navi_item_target=='_self'} selected="selected"{/if}>{#NAVI_OPEN_IN_THIS#}</option>
+						<option value="_blank"{if $item->navi_item_target=='_blank'} selected="selected"{/if}>{#NAVI_OPEN_IN_NEW#}</option>
 					</select>
 				</td>
 				<td><input title="{#NAVI_ADD_SUBITEM#}" type="button" class="button" onclick="document.getElementById('Neu_2_{$item->Id}').style.display='';" value="{#NAVI_BUTTON_SUBITEM#}" /></td>
-				<td><input title="{#NAVI_MARK_ACTIVE#}" name="Aktiv[{$item->Id}]" type="checkbox" value="1" {if $item->Aktiv==1}checked="checked" {/if}/></td>
+				<td><input title="{#NAVI_MARK_ACTIVE#}" name="navi_item_status[{$item->Id}]" type="checkbox" value="1" {if $item->navi_item_status==1}checked="checked" {/if}/></td>
 				<td><input title="{#NAVI_MARK_DELETE#}" name="del[{$item->Id}]" type="checkbox" id="del[{$item->Id}]" value="1" /></td>
 			</tr>
 
@@ -127,39 +127,39 @@ function openFileWindow(target,id,alias) {ldelim}
 
 			{foreach from=$item->ebene_2 item=item_2}
 				<tr id="table_rows" style="background-color:#dae0d8">
-					<input type="hidden" name="Url[{$item_2->Id}]" id="Url_{$item_2->Id}" value="{$item_2->Url|stripslashes}" />
-					<td style="background-color:#dae0d8" class="level2"><input style="width:100%" name="Titel[{$item_2->Id}]" type="text" id="Titel_{$item_2->Id}" value="{$item_2->Titel|stripslashes}" /></td>
-					<td style="background-color:#dae0d8"><input style="width:100%" name="Link[{$item_2->Id}]" type="text" id="Link_{$item_2->Id}" value="{$item_2->Link|escape:html|stripslashes}" /></td>
+					<input type="hidden" name="document_alias[{$item_2->Id}]" id="Url_{$item_2->Id}" value="{$item_2->document_alias|stripslashes}" />
+					<td style="background-color:#dae0d8" class="level2"><input style="width:100%" name="title[{$item_2->Id}]" type="text" id="Titel_{$item_2->Id}" value="{$item_2->title|stripslashes}" /></td>
+					<td style="background-color:#dae0d8"><input style="width:100%" name="navi_item_link[{$item_2->Id}]" type="text" id="Link_{$item_2->Id}" value="{$item_2->navi_item_link|escape|stripslashes}" /></td>
 					<td style="background-color:#dae0d8"><input title="{#NAVI_BROWSE_DOCUMENTS#}" onclick="openLinkWindow('Link_{$item_2->Id}','Titel_{$item_2->Id}','Url_{$item_2->Id}');" type="button" class="button" value="... " /></td>
 					<td style="background-color:#dae0d8"><input title="{#NAVI_BROWSE_MEDIAPOOL#}" onclick="openFileWindow('Link_{$item_2->Id}','Link_{$item_2->Id}','Url_{$item_2->Id}');" type="button" class="button" value="#" /></td>
-					<td style="background-color:#dae0d8"><input name="Rang[{$item_2->Id}]" type="text" id="Rang_{$item_2->Id}" value="{$item_2->Rang}" size="4" maxlength="3" /></td>
+					<td style="background-color:#dae0d8"><input name="navi_item_position[{$item_2->Id}]" type="text" id="Rang_{$item_2->Id}" value="{$item_2->navi_item_position}" size="4" maxlength="3" /></td>
 					<td style="background-color:#dae0d8">
-						<select name="Ziel[{$item_2->Id}]" id="Ziel_{$item_2->Id}">
-							<option value="_self"{if $item_2->Ziel=='_self'} selected="selected"{/if}>{#NAVI_OPEN_IN_THIS#}</option>
-							<option value="_blank"{if $item_2->Ziel=='_blank'} selected="selected"{/if}>{#NAVI_OPEN_IN_NEW#}</option>
+						<select name="navi_item_target[{$item_2->Id}]" id="Ziel_{$item_2->Id}">
+							<option value="_self"{if $item_2->navi_item_target=='_self'} selected="selected"{/if}>{#NAVI_OPEN_IN_THIS#}</option>
+							<option value="_blank"{if $item_2->navi_item_target=='_blank'} selected="selected"{/if}>{#NAVI_OPEN_IN_NEW#}</option>
 						</select>
 					</td>
 					<td style="background-color:#dae0d8"><input title="{#NAVI_ADD_SUBITEM#}" type="button" class="button_lev2" onclick="document.getElementById('Neu_3_{$item_2->Id}').style.display='';" value="{#NAVI_BUTTON_SUBITEM#}" /></td>
-					<td style="background-color:#dae0d8"><input title="{#NAVI_MARK_ACTIVE#}" name="Aktiv[{$item_2->Id}]" type="checkbox" value="1" {if $item_2->Aktiv==1}checked="checked" {/if}/></td>
+					<td style="background-color:#dae0d8"><input title="{#NAVI_MARK_ACTIVE#}" name="navi_item_status[{$item_2->Id}]" type="checkbox" value="1" {if $item_2->navi_item_status==1}checked="checked" {/if}/></td>
 					<td style="background-color:#dae0d8"><input title="{#NAVI_MARK_DELETE#}" name="del[{$item_2->Id}]" type="checkbox" id="del[{$item_2->Id}]" value="1" /></td>
 				</tr>
 
 				{foreach from=$item_2->ebene_3 item=item_3}
 					<tr id="table_rows">
-						<input type="hidden" name="Url[{$item_3->Id}]" id="Url_{$item_3->Id}" value="{$item_3->Url|stripslashes}" />
-						<td style="background-color:#cdd5ca" class="level3"><input style="width:100%" name="Titel[{$item_3->Id}]" type="text" id="Titel_{$item_3->Id}" value="{$item_3->Titel|stripslashes}" /></td>
-						<td style="background-color:#cdd5ca"><input style="width:100%" name="Link[{$item_3->Id}]" type="text" id="Link_{$item_3->Id}" value="{$item_3->Link|escape:html|stripslashes}" /></td>
+						<input type="hidden" name="document_alias[{$item_3->Id}]" id="Url_{$item_3->Id}" value="{$item_3->document_alias|stripslashes}" />
+						<td style="background-color:#cdd5ca" class="level3"><input style="width:100%" name="title[{$item_3->Id}]" type="text" id="Titel_{$item_3->Id}" value="{$item_3->title|stripslashes}" /></td>
+						<td style="background-color:#cdd5ca"><input style="width:100%" name="navi_item_link[{$item_3->Id}]" type="text" id="Link_{$item_3->Id}" value="{$item_3->navi_item_link|escape|stripslashes}" /></td>
 						<td style="background-color:#cdd5ca"><input title="{#NAVI_BROWSE_DOCUMENTS#}" onclick="openLinkWindow('Link_{$item_3->Id}','Titel_{$item_3->Id}','Url_{$item_3->Id}');" type="button" class="button" value="... " /></td>
 						<td style="background-color:#cdd5ca"><input title="{#NAVI_BROWSE_MEDIAPOOL#}" onclick="openFileWindow('Link_{$item_3->Id}','Link_{$item_3->Id}','Url_{$item_3->Id}');" type="button" class="button" value="#" /></td>
-						<td style="background-color:#cdd5ca"><input name="Rang[{$item_3->Id}]" type="text" id="Rang_{$item_3->Id}" value="{$item_3->Rang}" size="4" maxlength="3" /></td>
+						<td style="background-color:#cdd5ca"><input name="navi_item_position[{$item_3->Id}]" type="text" id="Rang_{$item_3->Id}" value="{$item_3->navi_item_position}" size="4" maxlength="3" /></td>
 						<td style="background-color:#cdd5ca">
-							<select name="Ziel[{$item_3->Id}]" id="Ziel_{$item_3->Id}">
-								<option value="_self"{if $item_3->Ziel=='_self'} selected="selected"{/if}>{#NAVI_OPEN_IN_THIS#}</option>
-								<option value="_blank"{if $item_3->Ziel=='_blank'} selected="selected"{/if}>{#NAVI_OPEN_IN_NEW#}</option>
+							<select name="navi_item_target[{$item_3->Id}]" id="Ziel_{$item_3->Id}">
+								<option value="_self"{if $item_3->navi_item_target=='_self'} selected="selected"{/if}>{#NAVI_OPEN_IN_THIS#}</option>
+								<option value="_blank"{if $item_3->navi_item_target=='_blank'} selected="selected"{/if}>{#NAVI_OPEN_IN_NEW#}</option>
 							</select>
 						</td>
 						<td style="background-color:#cdd5ca">&nbsp;</td>
-						<td style="background-color:#cdd5ca"><input title="{#NAVI_MARK_ACTIVE#}" name="Aktiv[{$item_3->Id}]" type="checkbox" id="del[{$item_3->Id}]" value="1" {if $item_3->Aktiv==1}checked="checked" {/if}/></td>
+						<td style="background-color:#cdd5ca"><input title="{#NAVI_MARK_ACTIVE#}" name="navi_item_status[{$item_3->Id}]" type="checkbox" id="del[{$item_3->Id}]" value="1" {if $item_3->navi_item_status==1}checked="checked" {/if}/></td>
 						<td style="background-color:#cdd5ca"><input title="{#NAVI_MARK_DELETE#}" name="del[{$item_3->Id}]" type="checkbox" value="1" /></td>
 					</tr>
 				{/foreach}
@@ -185,6 +185,6 @@ function openFileWindow(target,id,alias) {ldelim}
 		{/foreach}
 	</table>
 
-	<input type="hidden" id="Rubrik" name="Rubrik" value="{$smarty.request.id}" /><br />
+	<input type="hidden" id="navi_id" name="navi_id" value="{$smarty.request.id|escape}" /><br />
 	<input type="submit" class="button" value="{#NAVI_BUTTON_SAVE#}" />
 </form>

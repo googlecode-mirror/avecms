@@ -5,6 +5,8 @@
  *
  * @package AVE.cms
  * @subpackage module_Newsarchive
+ * @author Arcanum
+ * @since 2.0
  * @filesource
  */
 
@@ -15,7 +17,7 @@ if (defined('ACP'))
     $modul['ModulName'] = 'јрхив документов';
     $modul['ModulPfad'] = 'newsarchive';
     $modul['ModulVersion'] = '1.1';
-    $modul['Beschreibung'] = 'ƒанный модуль предзназначен дл€ организации архива документов по выбранным рубрикам в системе. ѕараметры модул€ позвол€ют определить возможность пока пустых мес€цев и ежедневное меню навигации.';
+    $modul['description'] = 'ƒанный модуль предзназначен дл€ организации архива документов по выбранным рубрикам в системе. ѕараметры модул€ позвол€ют определить возможность пока пустых мес€цев и ежедневное меню навигации.';
     $modul['Autor'] = 'Arcanum';
     $modul['MCopyright'] = '&copy; 2007-2008 Overdoze Team';
     $modul['Status'] = 1;
@@ -42,13 +44,14 @@ function mod_newsarchive($newsarchive_id)
 	if (is_numeric($newsarchive_id) && $newsarchive_id > 0)
 	{
 		require_once(BASE_DIR . '/modules/newsarchive/class.newsarchive.php');
+		$Newsarchive = new Newsarchive;
 
 		$tpl_dir   = BASE_DIR . '/modules/newsarchive/templates/';
 		$lang_file = BASE_DIR . '/modules/newsarchive/lang/' . $_SESSION['user_language'] . '.txt';
 
 		$AVE_Template->config_load($lang_file, 'admin');
 
-		Newsarchive::newsarchiveShow($tpl_dir, $newsarchive_id);
+		$Newsarchive->newsarchiveShow($tpl_dir, $newsarchive_id);
 	}
 }
 
@@ -74,7 +77,7 @@ function show_by($newsarchive_id, $month, $year, $day = 0)
 	$AVE_Template->config_load($lang_file, 'admin');
 
 	// ќпредел€ем, пришел ли в запросе номер дн€
-	$db_day = (is_numeric($day) && $day != 0) ? "AND DAYOFMONTH(FROM_UNIXTIME(a.DokStart)) = '" . $day . "'" : '';
+	$db_day = (is_numeric($day) && $day != 0) ? "AND DAYOFMONTH(FROM_UNIXTIME(a.document_published)) = '" . $day . "'" : '';
 
 	// ¬ыбираем все параметры дл€ запроса с текущим ID
 	$newsarchive = $AVE_DB->Query("
@@ -84,42 +87,43 @@ function show_by($newsarchive_id, $month, $year, $day = 0)
 	")->FetchRow();
 
 	// ‘ормирование условий сортировки выводимых документов
-	$db_sort = 'ORDER BY a.Titel ASC';
+	$db_sort = 'ORDER BY a.document_published ASC';
 	if(isset($_REQUEST['sort']))
 	{
 		switch($_REQUEST['sort'])
 		{
-			case 'Titel':      $db_sort = 'ORDER BY a.Titel ASC';       break;
-			case 'TitleDesc':  $db_sort = 'ORDER BY a.Titel DESC';      break;
-			case 'Date':       $db_sort = 'ORDER BY a.DokStart ASC';    break;
-			case 'DateDesc':   $db_sort = 'ORDER BY a.DokStart DESC';   break;
-			case 'Rubric':     $db_sort = 'ORDER BY b.RubrikName ASC';  break;
-			case 'RubricDesc': $db_sort = 'ORDER BY b.RubrikName DESC'; break;
-			default:           $db_sort = 'ORDER BY a.Titel ASC';       break;
+			case 'title':       $db_sort = 'ORDER BY a.document_title ASC';      break;
+			case 'title_desc':  $db_sort = 'ORDER BY a.document_title DESC';     break;
+			case 'date':        $db_sort = 'ORDER BY a.document_published ASC';  break;
+			case 'date_desc':   $db_sort = 'ORDER BY a.document_published DESC'; break;
+			case 'rubric':      $db_sort = 'ORDER BY b.rubric_title ASC';        break;
+			case 'rubric_desc': $db_sort = 'ORDER BY b.rubric_title DESC';       break;
+			default:            $db_sort = 'ORDER BY a.document_published ASC';  break;
 		}
 	}
 
-	$doctime = get_settings('use_doctime') ? ("AND (DokEnde = 0 || DokEnde > '" . time() . "') AND DokStart < '" . time() . "'") : '';
+	$doctime = get_settings('use_doctime') ? ("AND (document_expire = 0 || document_expire >= '" . time() . "') AND document_published <= '" . time() . "'") : '';
 
 	// ¬ыбираем из Ѕƒ документы. которые соответствуют услови€м дл€ запроса и модул€
 	$query = $AVE_DB->Query("
 		SELECT
 		  	a.Id,
-		  	a.RubrikId,
-		  	a.Titel,
-		  	a.DokStart,
-		  	b.RubrikName
+		  	a.rubric_id,
+		  	a.document_title,
+		  	a.document_alias,
+		  	a.document_published,
+		  	b.rubric_title
 	  	FROM
 	  		" . PREFIX . "_documents as a,
 	  		" . PREFIX . "_rubrics as b
-		WHERE RubrikId IN (" . $newsarchive->newsarchive_rubrics . ")
-		AND MONTH(FROM_UNIXTIME(a.DokStart)) = '" . (int)$month . "'
-		AND YEAR(FROM_UNIXTIME(a.DokStart))= '" . (int)$year . "'
+		WHERE rubric_id IN (" . $newsarchive->newsarchive_rubrics . ")
+		AND MONTH(FROM_UNIXTIME(a.document_published)) = '" . (int)$month . "'
+		AND YEAR(FROM_UNIXTIME(a.document_published))= '" . (int)$year . "'
 		" . $db_day . "
-		AND a.RubrikId = b.Id
+		AND a.rubric_id = b.Id
 		AND a.Id != '". PAGE_NOT_FOUND_ID . "'
-  		AND Geloescht != '1'
-  		AND DokStatus != '0'
+  		AND document_deleted != '1'
+  		AND document_status != '0'
   		" . $doctime . "
 		" . $db_sort . "
 	");
@@ -128,7 +132,7 @@ function show_by($newsarchive_id, $month, $year, $day = 0)
 	$documents = array();
 	while($doc = $query->FetchRow())
 	{
-		$doc->Url = rewrite_link('index.php?id=' . $doc->Id . '&amp;doc=' . prepare_url($doc->Titel));
+		$doc->document_alias = rewrite_link('index.php?id=' . $doc->Id . '&amp;doc=' . (empty($doc->document_alias) ? prepare_url($doc->document_title) : $doc->document_alias));
 		array_push($documents, $doc);
 	}
 
@@ -159,6 +163,7 @@ if (isset($_GET['module']) && $_GET['module'] == 'newsarchive' && !empty($_GET['
 if (defined('ACP') && !empty($_REQUEST['moduleaction']))
 {
 	require_once(BASE_DIR . '/modules/newsarchive/class.newsarchive.php');
+	$Newsarchive = new Newsarchive;
 
 	$tpl_dir   = BASE_DIR . '/modules/newsarchive/templates/';
 	$lang_file = BASE_DIR . '/modules/newsarchive/lang/' . $_SESSION['user_language'] . '.txt';
@@ -167,27 +172,27 @@ if (defined('ACP') && !empty($_REQUEST['moduleaction']))
 	switch($_REQUEST['moduleaction'])
 	{
 		case '1':
-			Newsarchive::newsarchiveList($tpl_dir);
+			$Newsarchive->newsarchiveList($tpl_dir);
 			break;
 
 		case 'add':
-			Newsarchive::newsarchiveNew();
+			$Newsarchive->newsarchiveNew();
 			break;
 
 		case 'del':
-			Newsarchive::newsarchiveDelete();
+			$Newsarchive->newsarchiveDelete();
 			break;
 
 		case 'savelist':
-			Newsarchive::newsarchiveListSave();
+			$Newsarchive->newsarchiveListSave();
 			break;
 
 		case 'edit':
-			Newsarchive::newsarchiveEdit($tpl_dir);
+			$Newsarchive->newsarchiveEdit($tpl_dir);
 			break;
 
 		case 'saveedit':
-			Newsarchive::newsarchiveSave();
+			$Newsarchive->newsarchiveSave();
 			break;
 	}
 }

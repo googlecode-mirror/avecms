@@ -1,7 +1,7 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
 <head>
-<title>{#MAIN_PAGE_TITLE#} - {*#SUB_TITLE#*} ({$smarty.session.user_name})</title>
+<title>{#MAIN_PAGE_TITLE#} - {*#SUB_TITLE#*} ({$smarty.session.user_name|escape})</title>
 <meta http-equiv="Content-Type" content="text/html; charset=windows-1251" />
 <meta name="robots" content="noindex, nofollow" />
 <meta http-equiv="pragma" content="no-cache" />
@@ -28,7 +28,7 @@
 							</div>
 
 							<div id="noticeAreaProfileSection">
-								<div>{#MAIN_USER_ONLINE#} <strong style="color:#fff;">{$smarty.session.user_name}</strong></div>
+								<div>{#MAIN_USER_ONLINE#} <strong style="color:#fff;">{$smarty.session.user_name|escape}</strong></div>
 								<div><a onClick="return confirm('{#MAIN_LOGOUT_CONFIRM#}')" href="admin.php?do=logout">{#MAIN_LINK_LOGOUT#}</a></div>
 							</div>
 
@@ -38,7 +38,7 @@
 							</div>
 
 							<div class="noticeAreaHelp">
-								<a target="_blank" id="noticeHelpIcon" href="http://www.avecms.ru/index.php?help={$smarty.get.do|default:'main'}&action={$smarty.get.action|default:'no'}&mod={$smarty.get.mod|default:'no'}&moduleaction={$smarty.get.moduleaction|default:'no'}" title="Помощь по данному разделу.">&nbsp;<br />&nbsp;</a>
+								<a target="_blank" id="noticeHelpIcon" href="http://www.avecms.ru/index.php?help={$smarty.get.do|escape|default:'main'}&action={$smarty.get.action|escape|default:'no'}&mod={$smarty.get.mod|escape|default:'no'}&moduleaction={$smarty.get.moduleaction|escape|default:'no'}" title="Помощь по данному разделу.">&nbsp;<br />&nbsp;</a>
 							</div>
 						</td>
 					</tr>

@@ -14,7 +14,7 @@
 
 {$smarty.session.billing_street} {$smarty.session.billing_streetnumber}
 {$smarty.session.billing_zip} {$smarty.session.billing_town}
-{$smarty.request.Land}
+{$smarty.request.country}
 
 
 {#BillAdress#}

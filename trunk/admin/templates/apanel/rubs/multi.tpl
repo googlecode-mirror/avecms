@@ -8,7 +8,7 @@
 	<ul>{foreach from=$errors item=error}<li>{$error}</li>{/foreach}</ul>
 {/if}
 
-<form name="m" method="post" action="?do=rubs&amp;action=multi&amp;pop=1&amp;sub=save&amp;Id={$smarty.request.Id}">
+<form name="m" method="post" action="?do=rubs&amp;action=multi&amp;pop=1&amp;sub=save&amp;Id={$smarty.request.Id|escape}">
 	<table width="100%" border="0" cellpadding="8" cellspacing="1" class="tableborder">
 		<col>
 		<col width="200">
@@ -19,8 +19,8 @@
 		</tr>
 
 		<tr class="first">
-			<td><input type="text" name="RubrikName" value="{$smarty.request.RubrikName|escape}" style="width:100%"></td>
-			<td><input type="text" name="UrlPrefix" value="{$smarty.request.UrlPrefix|escape}" style="width:100%"></td>
+			<td><input type="text" name="rubric_title" value="{$smarty.request.rubric_title|escape|stripslashes}" style="width:100%"></td>
+			<td><input type="text" name="rubric_alias" value="{$smarty.request.rubric_alias|escape|stripslashes}" style="width:100%"></td>
 		</tr>
 
 		<tr>

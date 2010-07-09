@@ -31,7 +31,7 @@
   {/if}
   <tr>
     <td width="200" class="forum_post_first">{#PR_reged#}</td>
-    <td class="forum_post_second">{$user->Registriert|date_format:$TIME_FORMAT|pretty_date}&nbsp;</td>
+    <td class="forum_post_second">{$user->reg_time|date_format:$TIME_FORMAT|pretty_date}&nbsp;</td>
   </tr>
   {if $user->avatar}
   <tr>
@@ -72,7 +72,7 @@
    {if $user->Email_show==1}
   <tr>
     <td width="200" class="forum_post_first">{#PR_RMailO#}</td>
-    <td class="forum_post_second">{$user->Email|escape:html|stripslashes}</td>
+    <td class="forum_post_second">{$user->email|escape:html|stripslashes}</td>
   </tr>
   {/if}
 

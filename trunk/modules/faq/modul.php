@@ -1,13 +1,13 @@
 <?php
 
-if(!defined('BASE_DIR')) exit;
+if (!defined('BASE_DIR')) exit;
 
 if (defined('ACP'))
 {
     $modul['ModulName'] = '¬опрос/ответ';
     $modul['ModulPfad'] = 'faq';
     $modul['ModulVersion'] = '1.0';
-    $modul['Beschreibung'] = 'ћодуль создани€ раширенной справочной системы на основе тегов.';
+    $modul['description'] = 'ћодуль создани€ раширенной справочной системы на основе тегов.';
     $modul['Autor'] = 'Freeon';
     $modul['MCopyright'] = '&copy; 2007-2008 Overdoze Team';
     $modul['Status'] = 1;
@@ -20,57 +20,59 @@ if (defined('ACP'))
 }
 
 // show faq
-function mod_faq($faq_id)
+function mod_faq($id)
 {
 	require_once(BASE_DIR . '/modules/faq/class.faq.php');
+	$Faq = new Faq;
 
 	$tpl_dir   = BASE_DIR . '/modules/faq/templates/';
-	$lang_file = BASE_DIR . '/modules/faq/lang/' . $_SESSION['user_language'] . '.txt';
-	faq::ShowFaq($tpl_dir, stripslashes($faq_id));
+
+	$Faq->faqShow($tpl_dir, $id);
 }
 
 // admin edit
 if (defined('ACP') && !empty($_REQUEST['moduleaction']))
 {
 	require_once(BASE_DIR . '/modules/faq/class.faq.php');
+	$Faq = new Faq;
 
 	$tpl_dir   = BASE_DIR . '/modules/faq/templates/';
 	$lang_file = BASE_DIR . '/modules/faq/lang/' . $_SESSION['user_language'] . '.txt';
 
-	$GLOBALS['AVE_Template']->config_load($lang_file);
-	$config_vars = $GLOBALS['AVE_Template']->get_config_vars();
-	$GLOBALS['AVE_Template']->assign('config_vars', $config_vars);
+	$AVE_Template->config_load($lang_file);
 
-	switch($_REQUEST['moduleaction'])
+	switch ($_REQUEST['moduleaction'])
 	{
 		case '1':
-			faq::faqList($tpl_dir);
+			$Faq->faqList($tpl_dir);
 			break;
 
-		case 'add':
-			faq::Addfaq();
+		case 'new':
+			$Faq->faqNew();
 			break;
 
 		case 'del':
-			faq::Delfaq();
+			$Faq->faqDelete();
 			break;
 
-		case 'savelist':
-			faq::SaveList();
+		case 'save':
+			$Faq->faqListSave();
 			break;
 
-		case 'edit':
-			faq::Editfaq($tpl_dir);
+		case 'questlist':
+			$Faq->faqQuestList($tpl_dir);
 			break;
 
-		case 'saveedit':
-			faq::Savequest();
+		case 'questedit':
+			$Faq->faqQuestEdit($tpl_dir);
 			break;
-		case 'edit_quest':
-			faq::edit_quest($tpl_dir);
+
+		case 'questsave':
+			$Faq->faqQuestSave();
 			break;
-		case 'del_quest':
-			faq::del_quest();
+
+		case 'questdel':
+			$Faq->faqQuestDelete();
 			break;
 	}
 }

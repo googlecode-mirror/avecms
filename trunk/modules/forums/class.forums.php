@@ -522,10 +522,10 @@ class Forum
 		return number_format($param,'0','','.');
 	}
 
-	function getonlinestatus($UserName)
+	function getonlinestatus($user_name)
 	{
 
-		$sql = $GLOBALS['AVE_DB']->Query("SELECT uname, invisible FROM " . PREFIX . "_modul_forum_useronline WHERE uname='" . $UserName . "' LIMIT 1");
+		$sql = $GLOBALS['AVE_DB']->Query("SELECT uname, invisible FROM " . PREFIX . "_modul_forum_useronline WHERE uname='" . $user_name . "' LIMIT 1");
 		$num = $sql->NumRows();
 		$row = $sql->FetchRow();
 		if ($num == 1)
@@ -580,51 +580,32 @@ class Forum
 				$sql = $GLOBALS['AVE_DB']->Query("SELECT * FROM " . PREFIX . "_users WHERE Id  = '" . $_SESSION['user_id'] . "'");
 				$row = $sql->FetchRow();
 
-				$q = "INSERT INTO " . PREFIX . "_modul_forum_userprofile
-				(
-					Id,
-					BenutzerId,
-					BenutzerName,
-					GroupIdMisc,
-					Beitraege,
-					ZeigeProfil,
-					Signatur,
-					Icq,
-					Aim,
-					Skype,
-					Emailempfang,
-					Pnempfang,
-					Avatar,
-					AvatarStandard,
-					Webseite,
-					Unsichtbar,
-					Interessen,
-					Email,
-					Registriert,
-					GeburtsTag
-				) VALUES (
-					'',
-					'" . $row->Id . "',
-					'". (($row->UserName!='') ? $row->UserName : substr($row->Vorname,0,1) . '. ' . $row->Nachname) . "',
-					'',
-					'',
-					'1',
-					'',
-					'',
-					'',
-					'',
-					'1',
-					'1',
-					'',
-					'',
-					'',
-					'0',
-					'',
-					'" . $row->Email . "',
-					'" . $row->Registriert . "',
-					'" . $row->GebTag . "'
-				)";
-				$GLOBALS['AVE_DB']->Query($q);
+				$GLOBALS['AVE_DB']->Query("
+					INSERT
+					INTO " . PREFIX . "_modul_forum_userprofile
+					SET
+						Id = '',
+						BenutzerId = '" . $row->Id . "',
+						BenutzerName = '". (($row->user_name!='') ? $row->user_name : substr($row->firstname,0,1) . '. ' . $row->lastname) . "',
+						GroupIdMisc = '',
+						Beitraege = '',
+						ZeigeProfil = '1',
+						Signatur = '',
+						Icq = '',
+						Aim = '',
+						Skype = '',
+						Emailempfang = '1',
+						Pnempfang = '1',
+						Avatar = '',
+						AvatarStandard = '',
+						Webseite = '',
+						Unsichtbar = '0',
+						Interessen = '',
+						email = '" . $row->email . "',
+						reg_time = '" . $row->reg_time . "',
+						GeburtsTag = '" . $row->birthday . "'
+				");
+
 				header("Location:index.php?module=forums");
 			}
 
@@ -722,7 +703,7 @@ class Forum
 
 			$q = "SELECT
 					a.IgnoreId,
-					b.Email,
+					b.email,
 					b.BenutzerName
 				FROM
 					" . PREFIX . "_modul_forum_ignorelist as a,
@@ -748,7 +729,7 @@ class Forum
 				$Prefab = str_replace('%%N%%', "\n",$Prefab);
 				$Prefab = str_replace('','',$Prefab);
 				send_mail(
-					$row->Email,
+					$row->email,
 					$Prefab,
 					stripslashes($_POST['Betreff']),
 					FORUMEMAIL,
@@ -774,8 +755,8 @@ class Forum
 		$_GET['user_id'] = (isset($_GET['user_id']) and is_numeric($_GET['user_id'])) ? $_GET['user_id'] : 0;
 		$sql_user = $GLOBALS['AVE_DB']->Query("SELECT
 				u.*,
-				ug.Benutzergruppe,
-				ugn.Name as GruppenName
+				ug.user_group,
+				ugn.user_group_name as GruppenName
 			FROM
 				" . PREFIX . "_modul_forum_userprofile as u,
 				" . PREFIX . "_users as ug,
@@ -785,7 +766,7 @@ class Forum
 			AND
 				ug.Id = u.BenutzerId
 			AND
-				ugn.Benutzergruppe = ug.Benutzergruppe
+				ugn.user_group = ug.user_group
 		");
 		$row_user = $sql_user->FetchRow();
 
@@ -797,7 +778,7 @@ class Forum
 			$row_user->Interessen = $this->kcodes_comments($row_user->Interessen);
 			$row_user->Interessen = (SMILIES==1) ? $this->replaceWithSmileys($row_user->Interessen) : $row_user->Interessen;
 
-			$row_user->avatar = $this->getAvatar($row_user->Benutzergruppe,$row_user->Avatar,$row_user->AvatarStandard);
+			$row_user->avatar = $this->getAvatar($row_user->user_group,$row_user->Avatar,$row_user->AvatarStandard);
 			$row_user->OnlineStatus = @$this->getonlinestatus(@$row_user->BenutzerName);
 
 			$query = "SELECT COUNT(id) AS counts FROM " . PREFIX . "_modul_forum_post WHERE uid = '" . addslashes($_GET['user_id']) . "'";
@@ -1414,7 +1395,7 @@ class Forum
 					p.id,
 					p.uid,
 					p.datum,
-					u.Registriert AS user_regdate,
+					u.reg_time AS user_regdate,
 					us.BenutzerName
 				FROM
 					" . PREFIX . "_modul_forum_topic AS t
@@ -1768,13 +1749,13 @@ class Forum
 
 			$sql = $GLOBALS['AVE_DB']->Query("
 				SELECT
-					Benutzergruppe,
-					Rechte
+					user_group,
+					permission
 				FROM " . PREFIX . "_modul_forum_grouppermissions
 			");
 			while ($row = $sql->FetchRow())
 			{
-				$permissions[$row->Benutzergruppe] = @explode("|", $row->Rechte);
+				$permissions[$row->user_group] = @explode("|", $row->permission);
 			}
 		}
 
@@ -1863,7 +1844,7 @@ class Forum
 				}
 			}
 		} else {
-			$sql = $GLOBALS['AVE_DB']->Query("SELECT * FROM " . PREFIX . "_modul_forum_groupavatar WHERE Benutzergruppe = '" . $group . "'");
+			$sql = $GLOBALS['AVE_DB']->Query("SELECT * FROM " . PREFIX . "_modul_forum_groupavatar WHERE user_group = '" . $group . "'");
 			$row = $sql->FetchRow();
 			if (is_object($row) && ($row->IstStandard == 1) && ($row->StandardAvatar != ""))
 			{
@@ -1896,12 +1877,12 @@ class Forum
 	function checkIfUserEmail($new='',$old='')
 	{
 		$sql = $GLOBALS['AVE_DB']->Query("SELECT
-			Email
+			email
 		FROM
 			" . PREFIX . "_modul_forum_userprofile
 		WHERE
-			Email = '" . $new . "' AND
-			Email != '" . $old . "'
+			email = '" . $new . "' AND
+			email != '" . $old . "'
 			");
 
 		$rc = $sql->NumRows();
@@ -1913,9 +1894,9 @@ class Forum
 
 	function getForumUserEmail($id)
 	{
-		$sql = $GLOBALS['AVE_DB']->Query("SELECT Email FROM " . PREFIX . "_modul_forum_userprofile WHERE BenutzerId = '" . $id . "'");
+		$sql = $GLOBALS['AVE_DB']->Query("SELECT email FROM " . PREFIX . "_modul_forum_userprofile WHERE BenutzerId = '" . $id . "'");
 		$ru = $sql->FetchRow();
-		return $ru->Email;
+		return $ru->email;
 	}
 
 	//=======================================================
@@ -2176,20 +2157,20 @@ class Forum
 		$num_members = $GLOBALS['AVE_DB']->Query("
 			SELECT COUNT(*)
 			FROM " . PREFIX . "_users
-			WHERE `Status` = '1'
-			AND Benutzergruppe != '2'
+			WHERE status = '1'
+			AND user_group != '2'
 		")->GetCell();
 
 		$row_newest_member = $GLOBALS['AVE_DB']->Query("
 			SELECT
 				u.Id as UserId,
-				m.BenutzerName as `UserName`
+				m.BenutzerName as user_name
 			FROM
 				" . PREFIX . "_users as u,
 				" . PREFIX . "_modul_forum_userprofile as m
 			WHERE
-				u.`Status` = '1' AND
-				u.Benutzergruppe != '2' AND
+				u.status = '1' AND
+				u.user_group != '2' AND
 				m.BenutzerId = u.Id
 			ORDER BY
 				u.Id DESC LIMIT 1
@@ -2213,7 +2194,7 @@ class Forum
 				DISTINCT u.ip,
 				u.uname,
 				u.uid,
-				ug.Benutzergruppe,
+				ug.user_group,
 				up.ZeigeProfil
 			FROM
 				" . PREFIX . "_modul_forum_useronline as u,
@@ -2318,10 +2299,10 @@ class Forum
 	{
 		// Wenn eine Gruppe in Gruppenberechtigung noch nicht angelegt wurde, anlegen!
 		$sql = $GLOBALS['AVE_DB']->Query("
-			SELECT ug.Benutzergruppe
+			SELECT ug.user_group
 			FROM " . PREFIX . "_user_groups AS ug
 			LEFT JOIN " . PREFIX . "_modul_forum_grouppermissions
-				USING(Benutzergruppe)
+				USING(user_group)
 			WHERE Id IS NULL
 		");
 		while($row = $sql->FetchRow())
@@ -2331,8 +2312,8 @@ class Forum
 					" . PREFIX . "_modul_forum_grouppermissions
 				SET
 					Id = '',
-					Benutzergruppe = '" . $row->Benutzergruppe . "',
-					Rechte = '" . $this->_default_permission . "',
+					user_group = '" . $row->user_group . "',
+					permission = '" . $this->_default_permission . "',
 					MAX_AVATAR_BYTES = '10240',
 					MAX_AVATAR_HEIGHT = '90',
 					MAX_AVATAR_WIDTH = '90',

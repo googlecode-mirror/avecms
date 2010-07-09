@@ -7,8 +7,8 @@
 <meta http-equiv="pragma" content="no-cache">
 <meta name="generator" content="">
 <meta name="Expires" content="Mon, 06 Jan 1990 00:00:01 GMT">
-<link href="templates/{$smarty.session.admin_theme}/css/style.css" rel="stylesheet" type="text/css" />
-<link href="templates/{$smarty.session.admin_theme}/js/jquery/css/mbTooltip.css" rel="stylesheet" type="text/css" media="screen" />
+<link href="templates/{$smarty.session.admin_theme|escape}/css/style.css" rel="stylesheet" type="text/css" />
+<link href="templates/{$smarty.session.admin_theme|escape}/js/jquery/css/mbTooltip.css" rel="stylesheet" type="text/css" media="screen" />
 <script type="text/javascript" src="templates/{$smarty.session.admin_theme|escape}/js/jquery/jquery.js"></script>
 <script type="text/javascript" src="templates/{$smarty.session.admin_theme|escape}/js/jquery/plugin/jquery.timers.js"></script>
 <script type="text/javascript" src="templates/{$smarty.session.admin_theme|escape}/js/jquery/plugin/jquery.dropshadow.js"></script>

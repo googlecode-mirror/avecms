@@ -30,7 +30,7 @@
 	{else}
 	<a target="_blank" href="{$u->UserWeb}">{#UsersWeb#}</a>
 	{/if}	</td>
-    <td align="center">{$u->Registriert|date_format:'%d.%m.%Y'}</td>
+    <td align="center">{$u->reg_time|date_format:'%d.%m.%Y'}</td>
     <td align="center">
 	{if $u->Posts >= 1}
 	<a href="index.php?module=forums&amp;show=userpostings&amp;user_id={$u->BenutzerId}">{#UsersPosts#}</a>

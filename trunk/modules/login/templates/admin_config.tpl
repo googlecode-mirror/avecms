@@ -26,8 +26,8 @@
 		<tr>
 			<td width="200" class="first">{#LOGIN_USE_SCODE#}</td>
 			<td class="second">
-				<input name="login_spam_protect" type="radio" value="1" {if $login_spam_protect=='1'}checked{/if} >{#LOGIN_YES#}
-				<input name="login_spam_protect" type="radio" value="0" {if $login_spam_protect!='1'}checked{/if}>{#LOGIN_NO#}
+				<input name="login_antispam" type="radio" value="1" {if $login_antispam=='1'}checked{/if} >{#LOGIN_YES#}
+				<input name="login_antispam" type="radio" value="0" {if $login_antispam!='1'}checked{/if}>{#LOGIN_NO#}
 			</td>
 		</tr>
 

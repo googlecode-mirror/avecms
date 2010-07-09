@@ -63,7 +63,7 @@ class AVE_Rubric
 				" . PREFIX . "_rubrics AS rub
 			LEFT JOIN
 				" . PREFIX . "_documents AS doc
-					ON RubrikId = rub.Id
+					ON rubric_id = rub.Id
 			GROUP BY rub.Id
 			LIMIT " . $set_start . "," . $page_limit
 		);
@@ -93,7 +93,7 @@ class AVE_Rubric
 			case 'save':
 				$errors = array();
 
-				if (empty($_POST['RubrikName']))
+				if (empty($_POST['rubric_title']))
 				{
 					array_push($errors, $AVE_Template->get_config_vars('RUBRIK_NO_NAME'));
 				}
@@ -102,15 +102,15 @@ class AVE_Rubric
 					$name_exist = $AVE_DB->Query("
 						SELECT 1
 						FROM " . PREFIX . "_rubrics
-						WHERE RubrikName = '" . $_POST['RubrikName'] . "'
+						WHERE rubric_title = '" . $_POST['rubric_title'] . "'
 						LIMIT 1
 					")->NumRows();
 
 					if ($name_exist) array_push($errors, $AVE_Template->get_config_vars('RUBRIK_NAME_EXIST'));
 
-					if (!empty($_POST['UrlPrefix']))
+					if (!empty($_POST['rubric_alias']))
 					{
-						if (preg_match(TRANSLIT_URL ? '/[^\%HYa-z0-9\/-]+/' : '/[^\%HYa-zа-яёїєі0-9\/-]+/', $_POST['UrlPrefix']))
+						if (preg_match(TRANSLIT_URL ? '/[^\%HYa-z0-9\/-]+/' : '/[^\%HYa-zа-яёїєі0-9\/-]+/', $_POST['rubric_alias']))
 						{
 							array_push($errors, $AVE_Template->get_config_vars('RUBRIK_PREFIX_BAD_CHAR'));
 						}
@@ -119,7 +119,7 @@ class AVE_Rubric
 							$prefix_exist = $AVE_DB->Query("
 								SELECT 1
 								FROM " . PREFIX . "_rubrics
-								WHERE UrlPrefix = '" . $_POST['UrlPrefix'] . "'
+								WHERE rubric_alias = '" . $_POST['rubric_alias'] . "'
 								LIMIT 1
 							")->NumRows();
 
@@ -138,15 +138,15 @@ class AVE_Rubric
 						$AVE_DB->Query("
 							INSERT " . PREFIX . "_rubrics
 							SET
-								RubrikName = '" . $_POST['RubrikName'] . "',
-								UrlPrefix  = '" . $_POST['UrlPrefix'] . "',
-								Vorlage    = '" . intval($_POST['Vorlage']) . "',
-								RBenutzer  = '" . $_SESSION['user_id'] . "',
-								RDatum     = '" . time() . "'
+								rubric_title       = '" . $_POST['rubric_title'] . "',
+								rubric_alias       = '" . $_POST['rubric_alias'] . "',
+								rubric_template_id = '" . intval($_POST['rubric_template_id']) . "',
+								rubric_author_id   = '" . $_SESSION['user_id'] . "',
+								rubric_created     = '" . time() . "'
 						");
 						$iid = $AVE_DB->InsertId();
 
-						reportLog($_SESSION['user_name'] . ' - добавил рубрику (' . stripslashes($_POST['RubrikName']) . ')', 2, 2);
+						reportLog($_SESSION['user_name'] . ' - добавил рубрику (' . stripslashes($_POST['rubric_title']) . ')', 2, 2);
 
 						header('Location:index.php?do=rubs&action=edit&Id=' . $iid . '&cp=' . SESSION);
 						exit;
@@ -164,20 +164,20 @@ class AVE_Rubric
 	{
 		global $AVE_DB;
 
-		if (check_permission('rub_edit'))
+		if (check_permission_acp('rubric_edit'))
 		{
-			foreach ($_POST['RubrikName'] as $rubric_id => $rubric_name)
+			foreach ($_POST['rubric_title'] as $rubric_id => $rubric_title)
 			{
-				if (!empty($rubric_name))
+				if (!empty($rubric_title))
 				{
-					$set_rubric_name = '';
+					$set_rubric_title = '';
 					$new_prefix = '';
 
 					$name_exist = $AVE_DB->Query("
 						SELECT 1
 						FROM " . PREFIX . "_rubrics
 						WHERE
-							RubrikName = '" . $rubric_name . "'
+							rubric_title = '" . $rubric_title . "'
 						AND
 							Id != '" . $rubric_id . "'
 						LIMIT 1
@@ -185,18 +185,18 @@ class AVE_Rubric
 
 					if (!$name_exist)
 					{
-						$set_rubric_name = "RubrikName = '" . $rubric_name . "',";
+						$set_rubric_title = "rubric_title = '" . $rubric_title . "',";
 					}
 
-					if (!empty($_POST['UrlPrefix'][$rubric_id]))
+					if (!empty($_POST['rubric_alias'][$rubric_id]))
 					{
-						if (!(preg_match((TRANSLIT_URL ? '/[^\%HYa-z0-9\/-]+/' : '/[^\%HYa-zа-яёїєі0-9\/-]+/'), $_POST['UrlPrefix'][$rubric_id])))
+						if (!(preg_match((TRANSLIT_URL ? '/[^\%HYa-z0-9\/-]+/' : '/[^\%HYa-zа-яёїєі0-9\/-]+/'), $_POST['rubric_alias'][$rubric_id])))
 						{
 							$prefix_exist = $AVE_DB->Query("
 								SELECT 1
 								FROM " . PREFIX . "_rubrics
 								WHERE
-									UrlPrefix = '" . $_POST['UrlPrefix'][$rubric_id] . "'
+									rubric_alias = '" . $_POST['rubric_alias'][$rubric_id] . "'
 								AND
 									Id != '" . $rubric_id . "'
 								LIMIT 1
@@ -204,7 +204,7 @@ class AVE_Rubric
 
 							if (!$prefix_exist)
 							{
-								$new_prefix = "UrlPrefix = '" . $_POST['UrlPrefix'][$rubric_id] . "',";
+								$new_prefix = "rubric_alias = '" . $_POST['rubric_alias'][$rubric_id] . "',";
 							}
 						}
 					}
@@ -212,9 +212,9 @@ class AVE_Rubric
 					$AVE_DB->Query("
 						UPDATE " . PREFIX . "_rubrics
 						SET
-							" . $set_rubric_name . "
+							" . $set_rubric_title . "
 							" . $new_prefix . "
-							Vorlage = '" . $_POST['Vorlage'][$rubric_id] . "'
+							rubric_template_id = '" . $_POST['rubric_template_id'][$rubric_id] . "'
 						WHERE
 							Id = '" . $rubric_id . "'
 					");
@@ -223,10 +223,6 @@ class AVE_Rubric
 
 			$page = !empty($_REQUEST['page']) ? '&page=' . $_REQUEST['page'] : '' ;
 			header('Location:index.php?do=rubs' . $page . '&cp=' . SESSION);
-		}
-		else
-		{
-			define('NOPERM', 1);
 		}
 	}
 
@@ -242,7 +238,7 @@ class AVE_Rubric
 
 		$errors = array();
 
-		if (empty($_REQUEST['RubrikName']))
+		if (empty($_REQUEST['rubric_title']))
 		{
 			array_push($errors, $AVE_Template->get_config_vars('RUBRIK_NO_NAME'));
 		}
@@ -251,16 +247,16 @@ class AVE_Rubric
 			$name_exist = $AVE_DB->Query("
 				SELECT 1
 				FROM " . PREFIX . "_rubrics
-				WHERE RubrikName = '" . $_POST['RubrikName'] . "'
+				WHERE rubric_title = '" . $_POST['rubric_title'] . "'
 				LIMIT 1
 			")->NumRows();
 
 			if ($name_exist) array_push($errors, $AVE_Template->get_config_vars('RUBRIK_NAME_EXIST'));
 		}
 
-		if (!empty($_POST['UrlPrefix']))
+		if (!empty($_POST['rubric_alias']))
 		{
-			if (preg_match(TRANSLIT_URL ? '/[^\%HYa-z0-9\/-]+/' : '/[^\%HYa-zа-яёїєі0-9\/-]+/', $_POST['UrlPrefix']))
+			if (preg_match(TRANSLIT_URL ? '/[^\%HYa-z0-9\/-]+/' : '/[^\%HYa-zа-яёїєі0-9\/-]+/', $_POST['rubric_alias']))
 			{
 				array_push($errors, $AVE_Template->get_config_vars('RUBRIK_PREFIX_BAD_CHAR'));
 			}
@@ -269,7 +265,7 @@ class AVE_Rubric
 				$prefix_exist = $AVE_DB->Query("
 					SELECT 1
 					FROM " . PREFIX . "_rubrics
-					WHERE UrlPrefix = '" . $_POST['UrlPrefix'] . "'
+					WHERE rubric_alias = '" . $_POST['rubric_alias'] . "'
 					LIMIT 1
 				")->NumRows();
 
@@ -294,53 +290,53 @@ class AVE_Rubric
 			$AVE_DB->Query("
 				INSERT " . PREFIX . "_rubrics
 				SET
-					RubrikName     = '" . $_POST['RubrikName'] . "',
-					UrlPrefix      = '" . $_POST['UrlPrefix'] . "',
-					RubrikTemplate = '" . addslashes($row->RubrikTemplate) . "',
-					Vorlage        = '" . addslashes($row->Vorlage) . "',
-					RBenutzer      = '" . (int)$_SESSION['user_id'] . "',
-					RDatum         = '" . time() . "'
+					rubric_title       = '" . $_POST['rubric_title'] . "',
+					rubric_alias       = '" . $_POST['rubric_alias'] . "',
+					rubric_template    = '" . addslashes($row->rubric_template) . "',
+					rubric_template_id = '" . addslashes($row->rubric_template_id) . "',
+					rubric_author_id   = '" . (int)$_SESSION['user_id'] . "',
+					rubric_created     = '" . time() . "'
 			");
 			$iid = $AVE_DB->InsertId();
 
 			$sql = $AVE_DB->Query("
 				SELECT
-					BenutzerGruppe,
-					Rechte
-				FROM " . PREFIX . "_document_permissions
-				WHERE RubrikId = '" . $rubric_id . "'
+					user_group_id,
+					rubric_permission
+				FROM " . PREFIX . "_rubric_permissions
+				WHERE rubric_id = '" . $rubric_id . "'
 			");
 			while ($row = $sql->FetchRow())
 			{
 				$AVE_DB->Query("
-					INSERT " . PREFIX . "_document_permissions
+					INSERT " . PREFIX . "_rubric_permissions
 					SET
-						RubrikId       = '" . $iid . "',
-						BenutzerGruppe = '" . (int)$row->BenutzerGruppe . "',
-						Rechte         = '" . addslashes($row->Rechte) . "'
+						rubric_id = '" . $iid . "',
+						user_group_id = '" . (int)$row->user_group_id . "',
+						rubric_permission = '" . addslashes($row->rubric_permission) . "'
 				");
 			}
 
 			$sql = $AVE_DB->Query("
 				SELECT
-					Titel,
-					RubTyp,
-					rubric_position,
-					StdWert
+					rubric_field_title,
+					rubric_field_type,
+					rubric_field_position,
+					rubric_field_default
 				FROM " . PREFIX . "_rubric_fields
-				WHERE RubrikId = '" . $rubric_id . "'
-				ORDER BY rubric_position ASC
+				WHERE rubric_id = '" . $rubric_id . "'
+				ORDER BY rubric_field_position ASC
 			");
 			while ($row = $sql->FetchRow())
 			{
 				$AVE_DB->Query("
 					INSERT " . PREFIX . "_rubric_fields
 					SET
-						RubrikId        = '" . $iid . "',
-						Titel           = '" . addslashes($row->Titel) . "',
-						RubTyp          = '" . addslashes($row->RubTyp) . "',
-						rubric_position = '" . (int)$row->rubric_position . "',
-						StdWert         = '" . addslashes($row->StdWert) . "'
+						rubric_id             = '" . $iid . "',
+						rubric_field_title    = '" . addslashes($row->rubric_field_title) . "',
+						rubric_field_type     = '" . addslashes($row->rubric_field_type) . "',
+						rubric_field_position = '" . (int)$row->rubric_field_position . "',
+						rubric_field_default  = '" . addslashes($row->rubric_field_default) . "'
 				");
 			}
 
@@ -369,7 +365,7 @@ class AVE_Rubric
 		$rubric_not_empty = $AVE_DB->Query("
 			SELECT 1
 			FROM " . PREFIX . "_documents
-			WHERE RubrikId = '" . $rubric_id . "'
+			WHERE rubric_id = '" . $rubric_id . "'
 			LIMIT 1
 		")->GetCell();
 
@@ -383,12 +379,12 @@ class AVE_Rubric
 			$AVE_DB->Query("
 				DELETE
 				FROM " . PREFIX . "_rubric_fields
-				WHERE RubrikId = '" . $rubric_id . "'
+				WHERE rubric_id = '" . $rubric_id . "'
 			");
 			$AVE_DB->Query("
 				DELETE
-				FROM " . PREFIX . "_document_permissions
-				WHERE RubrikId = '" . $rubric_id . "'
+				FROM " . PREFIX . "_rubric_permissions
+				WHERE rubric_id = '" . $rubric_id . "'
 			");
 			// Очищаем кэш шаблона документов рубрики
 			$AVE_DB->Query("
@@ -407,19 +403,18 @@ class AVE_Rubric
 	/**
 	 * Вывод списка полей рубрики
 	 *
+	 * @param int $rubric_id	идентификатор рубрики
 	 */
-	function rubricFieldShow()
+	function rubricFieldShow($rubric_id = 0)
 	{
 		global $AVE_DB, $AVE_Template;
-
-		$rubric_id = (int)$_REQUEST['Id'];
 
 		$rub_fields = array();
 		$sql = $AVE_DB->Query("
 			SELECT *
 			FROM " . PREFIX . "_rubric_fields
-			WHERE RubrikId = '" . $rubric_id . "'
-			ORDER BY rubric_position ASC
+			WHERE rubric_id = '" . $rubric_id . "'
+			ORDER BY rubric_field_position ASC
 		");
 
 		while ($row = $sql->FetchRow())
@@ -434,29 +429,27 @@ class AVE_Rubric
 
 		while ($row = $sql->FetchRow())
 		{
-			$row->doall = ($row->Benutzergruppe == 1) ? ' disabled="disabled" checked="checked"' : '';
-			$row->doall_h = ($row->Benutzergruppe == 1) ? 1 : '';
+			$row->doall = ($row->user_group == 1) ? ' disabled="disabled" checked="checked"' : '';
+			$row->doall_h = ($row->user_group == 1) ? 1 : '';
 
-			$sql_doc_perm = $AVE_DB->Query("
-				SELECT *
-				FROM " . PREFIX . "_document_permissions
-				WHERE Benutzergruppe = '" . $row->Benutzergruppe . "'
-				AND RubrikId = '" . $rubric_id . "'
-			");
-			$row_doc_perm = $sql_doc_perm->FetchRow();
-			$permissions = @explode('|', $row_doc_perm->Rechte);
-			$row->permissions = $permissions;
+			$rubric_permission = $AVE_DB->Query("
+				SELECT rubric_permission
+				FROM " . PREFIX . "_rubric_permissions
+				WHERE user_group_id = '" . $row->user_group . "'
+				AND rubric_id = '" . $rubric_id . "'
+			")->GetCell();
+			$row->permissions = @explode('|', $rubric_permission);
 
 			array_push($groups,$row);
 		}
 		$sql = $AVE_DB->Query("
-			SELECT RubrikName
+			SELECT rubric_title
 			FROM " . PREFIX . "_rubrics
 			WHERE id = '" . $rubric_id . "'
 			LIMIT 1
 		");
 		$rubrikName = $sql->GetCell();
-		$AVE_Template->assign('RubrikName', $rubrikName);
+		$AVE_Template->assign('rubric_title', $rubrikName);
 		$AVE_Template->assign('groups', $groups);
 		$AVE_Template->assign('felder', get_field_type());
 		$AVE_Template->assign('content', $AVE_Template->fetch('rubs/rub_fields.tpl'));
@@ -465,32 +458,31 @@ class AVE_Rubric
 	/**
 	 * Создание нового поля рубрики
 	 *
+	 * @param int $rubric_id	идентификатор рубрики
 	 */
-	function rubricFieldNew()
+	function rubricFieldNew($rubric_id = 0)
 	{
 		global $AVE_DB;
 
-		$rubric_id = (int)$_REQUEST['Id'];
-
 		if (!empty($_POST['TitelNew']))
 		{
-			$position = (!empty($_POST['RubPositionNew'])) ? $_POST['RubPositionNew'] : 1;
+			$position = (!empty($_POST['rubric_field_position_new'])) ? $_POST['rubric_field_position_new'] : 1;
 
 			$AVE_DB->Query("
 				INSERT " . PREFIX . "_rubric_fields
 				SET
-					RubrikId        = '" . $rubric_id . "',
-					Titel           = '" . $_POST['TitelNew'] . "',
-					RubTyp          = '" . $_POST['RubTypNew'] . "',
-					rubric_position = '" . $position . "',
-					StdWert         = '" . $_POST['StdWertNew'] . "'
+					rubric_id             = '" . $rubric_id . "',
+					rubric_field_title    = '" . $_POST['TitelNew'] . "',
+					rubric_field_type     = '" . $_POST['RubTypNew'] . "',
+					rubric_field_position = '" . $position . "',
+					rubric_field_default  = '" . $_POST['StdWertNew'] . "'
 			");
 			$Update_RubrikFeld = $AVE_DB->InsertId();
 
 			$sql = $AVE_DB->Query("
 				SELECT Id
 				FROM " . PREFIX . "_documents
-				WHERE RubrikId = '" . $rubric_id . "'
+				WHERE rubric_id = '" . $rubric_id . "'
 			");
 
 			while ($row = $sql->FetchRow())
@@ -498,8 +490,8 @@ class AVE_Rubric
 				$AVE_DB->Query("
 					INSERT " . PREFIX . "_document_fields
 					SET
-						RubrikFeld = '" . $Update_RubrikFeld . "',
-						DokumentId = '" . $row->Id . "'
+						rubric_field_id = '" . $Update_RubrikFeld . "',
+						document_id = '" . $row->Id . "'
 				");
 			}
 
@@ -513,26 +505,25 @@ class AVE_Rubric
 	/**
 	 * Управление полями рубрики
 	 *
+	 * @param int $rubric_id	идентификатор рубрики
 	 */
-	function rubricFieldSave()
+	function rubricFieldSave($rubric_id = 0)
 	{
 		global $AVE_DB;
 
-		$rubric_id = (int)$_REQUEST['Id'];
-
-		foreach ($_POST['Titel'] as $id => $Titel)
+		foreach ($_POST['title'] as $id => $title)
 		{
-			if (!empty($Titel))
+			if (!empty($title))
 			{
 				$AVE_DB->Query("
 					UPDATE " . PREFIX . "_rubric_fields
 					SET
-						Titel           = '" . $Titel . "',
-						RubTyp          = '" . $_POST['RubTyp'][$id] . "',
-						rubric_position = '" . $_POST['RubPosition'][$id] . "',
-						StdWert         = '" . $_POST['StdWert'][$id] . "',
-						tpl_field       = '" . $_POST['tpl_field'][$id] . "',
-						tpl_req         = '" . $_POST['tpl_req'][$id] . "'
+						rubric_field_title            = '" . $title . "',
+						rubric_field_type             = '" . $_POST['rubric_field_type'][$id] . "',
+						rubric_field_position         = '" . $_POST['rubric_field_position'][$id] . "',
+						rubric_field_default          = '" . $_POST['rubric_field_default'][$id] . "',
+						rubric_field_template         = '" . $_POST['rubric_field_template'][$id] . "',
+						rubric_field_template_request = '" . $_POST['rubric_field_template_request'][$id] . "'
 					WHERE
 						Id = '" . $id . "'
 				");
@@ -542,7 +533,7 @@ class AVE_Rubric
 					FROM " . PREFIX . "_rubric_template_cache
 					WHERE rub_id = '" . $rubric_id . "'
 				");
-				reportLog($_SESSION['user_name'] . ' - отредактировал поле рубрики (' . stripslashes($Titel) . ')', 2, 2);
+				reportLog($_SESSION['user_name'] . ' - отредактировал поле рубрики (' . stripslashes($title) . ')', 2, 2);
 			}
 		}
 
@@ -554,12 +545,12 @@ class AVE_Rubric
 					DELETE
 					FROM " . PREFIX . "_rubric_fields
 					WHERE Id = '" . $id . "'
-					AND RubrikId = '" . $rubric_id . "'
+					AND rubric_id = '" . $rubric_id . "'
 				");
 				$AVE_DB->Query("
 					DELETE
 					FROM " . PREFIX . "_document_fields
-					WHERE RubrikFeld = '" . $id . "'
+					WHERE rubric_field_id = '" . $id . "'
 				");
 				// Очищаем кэш шаблона документов рубрики
 				$AVE_DB->Query("
@@ -568,7 +559,7 @@ class AVE_Rubric
 					WHERE rub_id = '" . $rubric_id . "'
 				");
 
-				reportLog($_SESSION['user_name'] . ' - удалил поле рубрики (' . stripslashes($_POST['Titel'][$id]) . ')', 2, 2);
+				reportLog($_SESSION['user_name'] . ' - удалил поле рубрики (' . stripslashes($_POST['title'][$id]) . ')', 2, 2);
 			}
 		}
 
@@ -588,7 +579,7 @@ class AVE_Rubric
 
 		if ($extern==1)
 		{
-			$fetchId = (isset($_REQUEST['RubrikId']) && is_numeric($_REQUEST['RubrikId'])) ? $_REQUEST['RubrikId'] : 0;
+			$fetchId = (isset($_REQUEST['rubric_id']) && is_numeric($_REQUEST['rubric_id'])) ? $_REQUEST['rubric_id'] : 0;
 		}
 		else
 		{
@@ -597,8 +588,8 @@ class AVE_Rubric
 
 		$row = $AVE_DB->Query("
 			SELECT
-				RubrikName,
-				RubrikTemplate
+				rubric_title,
+				rubric_template
 			FROM " . PREFIX . "_rubrics
 			WHERE Id = '" . $fetchId . "'
 		")
@@ -609,20 +600,20 @@ class AVE_Rubric
 		$sql = $AVE_DB->Query("
 			SELECT *
 			FROM " . PREFIX . "_rubric_fields
-			WHERE RubrikId = '" . $fetchId . "'
-			ORDER BY rubric_position ASC
+			WHERE rubric_id = '" . $fetchId . "'
+			ORDER BY rubric_field_position ASC
 		");
 
 		while ($row_rf = $sql->FetchRow())
 		{
 			array_push($tags, $row_rf);
-			if ($row_rf->RubTyp == 'dropdown') array_push($ddid, $row_rf->Id);
+			if ($row_rf->rubric_field_type == 'dropdown') array_push($ddid, $row_rf->Id);
 		}
 		$sql->Close();
 
 		$AVE_Template->assign('feld_array', get_field_type());
 
-		if ($show == 1 ) $row->RubrikTemplate = stripslashes($_POST['RubrikTemplate']);
+		if ($show == 1 ) $row->rubric_template = stripslashes($_POST['rubric_template']);
 
 		if ($extern == 1)
 		{
@@ -652,7 +643,7 @@ class AVE_Rubric
 
 		$AVE_DB->Query("
 			UPDATE " . PREFIX . "_rubrics
-			SET RubrikTemplate = '" . $data . "'
+			SET rubric_template = '" . $data . "'
 			WHERE Id = '" . $rubric_id . "'
 		");
 		// Очищаем кэш шаблона документов рубрики
@@ -669,57 +660,48 @@ class AVE_Rubric
 	/**
 	 * Управление правами доступа к документам рубрик
 	 *
+	 * @param int $rubric_id	идентификатор рубрики
 	 */
-	function rubricPermissionSave()
+	function rubricPermissionSave($rubric_id = 0)
 	{
 		global $AVE_DB;
 
-		$rubric_id = (int)$_REQUEST['Id'];
-
-		if (check_permission('rub_perms'))
+		if (check_permission_acp('rubric_perms') && is_numeric($rubric_id) && $rubric_id > 0)
 		{
-			foreach ($_POST['Benutzergruppe'] as $id => $Bg)
+			foreach ($_POST['user_group'] as $key => $user_group_id)
 			{
-				$sql = $AVE_DB->Query("
-					SELECT Id
-					FROM " . PREFIX . "_document_permissions
-					WHERE Benutzergruppe = '" . $Bg . "'
-					AND RubrikId = '" . $rubric_id . "'
-				");
-				$count = $sql->NumRows();
+				$exist = $AVE_DB->Query("
+					SELECT 1
+					FROM " . PREFIX . "_rubric_permissions
+					WHERE user_group_id = '" . $user_group_id . "'
+					AND rubric_id = '" . $rubric_id . "'
+					LIMIT 1
+				")->NumRows();
 
-				if ($count < 1)
+				$rubric_permission = @implode('|', $_POST['perm'][$key]);
+				if ($exist)
 				{
-					$rechte = @implode('|', $_POST['perm'][$id]);
 					$AVE_DB->Query("
-						INSERT " . PREFIX . "_document_permissions
-						SET
-							RubrikId       = '" . $rubric_id . "',
-							BenutzerGruppe = '" . $Bg . "',
-							Rechte         = '" . $rechte . "'
+						UPDATE " . PREFIX . "_rubric_permissions
+						SET rubric_permission = '" . $rubric_permission . "'
+						WHERE user_group_id = '" . $user_group_id . "'
+						AND rubric_id = '" . $rubric_id . "'
 					");
 				}
 				else
 				{
-					$rechte = @implode('|', $_POST['perm'][$id]);
 					$AVE_DB->Query("
-						UPDATE " . PREFIX . "_document_permissions
+						INSERT " . PREFIX . "_rubric_permissions
 						SET
-							Rechte = '" . $rechte . "'
-						WHERE
-							RubrikId = '" . $rubric_id . "'
-						AND
-							BenutzerGruppe = '" . $Bg . "'
+							rubric_id = '" . $rubric_id . "',
+							user_group_id = '" . $user_group_id . "',
+							rubric_permission = '" . $rubric_permission . "'
 					");
 				}
 			}
 
 			header('Location:index.php?do=rubs&action=edit&Id=' . $rubric_id . '&cp=' . SESSION);
 			exit;
-		}
-		else
-		{
-			define('NOPERM', 1);
 		}
 	}
 
@@ -729,7 +711,7 @@ class AVE_Rubric
 	 * @param int $rubric_id идентификатор Рубрики
 	 * @return object наименование Рубрики
 	 */
-	function rubricNameByIdGet($rubric_id)
+	function rubricNameByIdGet($rubric_id = 0)
 	{
 		global $AVE_DB;
 
@@ -739,8 +721,8 @@ class AVE_Rubric
 		{
 			$rubrics[$rubric_id] = $AVE_DB->Query("
 				SELECT
-					RubrikName,
-					UrlPrefix
+					rubric_title,
+					rubric_alias
 				FROM " . PREFIX . "_rubrics
 				WHERE Id = '" . $rubric_id . "'
 				LIMIT 1
@@ -762,7 +744,7 @@ class AVE_Rubric
 		$sql = $AVE_DB->Query("
 			SELECT
 				Id,
-				RubrikName
+				rubric_title
 			FROM " . PREFIX . "_rubrics
 		");
 		while ($row = $sql->FetchRow())

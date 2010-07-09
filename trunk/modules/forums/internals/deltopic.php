@@ -16,7 +16,7 @@ if(!isset($_REQUEST['fid']) || !isset($_REQUEST['toid']) || !is_numeric($_REQUES
 }
 $own = -1;
 
-$sql = $GLOBALS['AVE_DB']->Query("SELECT uid FROM ".PREFIX."_modul_forum_topic WHERE id='$_REQUEST[toid]'");
+$sql = $GLOBALS['AVE_DB']->Query("SELECT uid FROM ".PREFIX."_modul_forum_topic WHERE id='" . $_REQUEST['toid'] . "'");
 $row = $sql->FetchRow();
 
 if($row->uid == UID)

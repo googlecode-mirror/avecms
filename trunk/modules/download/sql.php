@@ -18,12 +18,12 @@ $modul_sql_install[] = "CREATE TABLE CPPREFIX_modul_download_comments (
   Id int(10) unsigned NOT NULL auto_increment,
   FileId int(10) unsigned NOT NULL default '0',
   Datum int(14) unsigned NOT NULL default '0',
-  Titel varchar(100) NOT NULL default '',
-  Kommentar text NOT NULL,
+  title varchar(100) NOT NULL default '',
+  comment_text text NOT NULL,
   Name varchar(100) NOT NULL default '',
-  Email varchar(100) NOT NULL default '',
+  email varchar(100) NOT NULL default '',
   Ip varchar(200) NOT NULL default '',
-  Aktiv tinyint(1) unsigned NOT NULL default '1',
+  status tinyint(1) unsigned NOT NULL default '1',
   PRIMARY KEY  (Id)
 ) TYPE=MyISAM DEFAULT CHARSET=cp1251;";
 
@@ -35,9 +35,9 @@ $modul_sql_install[] = "CREATE TABLE CPPREFIX_modul_download_files (
   Sprache varchar(255) default '1',
   KatId int(10) unsigned NOT NULL default '1',
   Name varchar(255) NOT NULL default '',
-  Beschreibung text,
+  description text,
   Limitierung text,
-  Aktiv tinyint(1) unsigned NOT NULL default '1',
+  status tinyint(1) unsigned NOT NULL default '1',
   Methode enum('ftp','http','local') NOT NULL default 'local',
   Pfad varchar(255) NOT NULL default '',
   Downloads int(10) unsigned NOT NULL default '0',
@@ -66,11 +66,11 @@ $modul_sql_install[] = "CREATE TABLE CPPREFIX_modul_download_files (
 
 $modul_sql_install[] = "CREATE TABLE CPPREFIX_modul_download_kat (
   Id int(10) unsigned NOT NULL auto_increment,
-  Elter int(10) unsigned NOT NULL default '0',
+  parent_id int(10) unsigned NOT NULL default '0',
   KatName varchar(255) NOT NULL default '',
-  Rang int(8) unsigned NOT NULL default '1',
+  position int(8) unsigned NOT NULL default '1',
   KatBeschreibung text NOT NULL,
-  Gruppen varchar(255) NOT NULL default '1|2|3|4|5|6',
+  user_group varchar(255) NOT NULL default '1|2|3|4|5|6',
   Bild varchar(200) default NULL,
   PRIMARY KEY  (Id)
 ) TYPE=MyISAM DEFAULT CHARSET=cp1251;";

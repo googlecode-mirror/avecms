@@ -18,7 +18,7 @@
 				<legend>{#LOGIN_TEXT_AUTHORIZATION#}</legend>
 				<p>
 					<label><span id="checkUsername" style="display:none"><img src="/templates/960px/img/ajax-loader.gif" border="0" /></span>{#LOGIN_YOUR_LOGIN#}</label>
-					<input name="UserName" id="username" value="{$smarty.post.UserName|escape|stripslashes}" type="text">
+					<input name="user_name" id="username" value="{$smarty.post.user_name|escape|stripslashes}" type="text">
 				</p>
 				<p>
 					<label><span id="checkEmail" style="display:none"><img src="/templates/960px/img/ajax-loader.gif" border="0" /></span>{#LOGIN_YOUR_MAIL#}</label>
@@ -47,19 +47,19 @@
 				{if $FirmName==1}
 					<p>
 						<label>{#LOGIN_YOUR_COMPANY#}</label>
-						<input name="Firma" value="{$smarty.post.Firma|escape|stripslashes}" type="text">
+						<input name="company" value="{$smarty.post.company|escape|stripslashes}" type="text">
 					</p>
 				{/if}
 				<p>
 					<label>{#LOGIN_YOUR_COUNTRY#}</label>
-					<select name="Land">
+					<select name="country">
 						{if $smarty.request.action=='register' && $smarty.request.sub == 'register'}
-							{assign var=sL value=$smarty.request.Land|lower}
+							{assign var=sL value=$smarty.request.country|lower}
 						{else}
-							{assign var=sL value=$row->Land|default:$smarty.session.user_language|lower}
+							{assign var=sL value=$row->country|default:$smarty.session.user_language|lower}
 						{/if}
 						{foreach from=$available_countries item=land}
-							<option value="{$land->LandCode}"{if $sL==$land->LandCode} selected{/if}>{$land->LandName}</option>
+							<option value="{$land->country_code}"{if $sL==$land->country_code} selected{/if}>{$land->country_name}</option>
 						{/foreach}
 					</select>
 				</p>
@@ -93,10 +93,10 @@
 	{/if}
 
 	<form method="post" action="{$ABS_PATH}index.php?module=login&action=register&sub=register">
-		<div class="formleft"><label for="UserName">{#LOGIN_YOUR_LOGIN#}</label></div>
+		<div class="formleft"><label for="user_name">{#LOGIN_YOUR_LOGIN#}</label></div>
 		<div class="formright">
 			<small><span id="h_UserName"></span></small>
-			<input name="UserName" id="l_UserName" type="text" style="width:200px" value="{$smarty.post.UserName|escape|stripslashes}" size="80" />
+			<input name="user_name" id="l_UserName" type="text" style="width:200px" value="{$smarty.post.user_name|escape|stripslashes}" size="80" />
 		</div>
 		<div class="clear"></div>
 
@@ -122,7 +122,7 @@
 			<div class="formleft"><label for="l_reg_Firma">{#LOGIN_YOUR_COMPANY#}</label></div>
 			<div class="formright">
 			<small><span id="h_Firma"></span></small>
-				<input name="Firma" type="text" id="l_Firma" style="width:200px" value="{$smarty.post.Firma|escape|stripslashes}" size="80" />
+				<input name="company" type="text" id="l_Firma" style="width:200px" value="{$smarty.post.company|escape|stripslashes}" size="80" />
 			</div>
 			<div class="clear"></div>
 		{/if}
@@ -151,14 +151,14 @@
 		<div class="formleft"><label for="l_land">{#LOGIN_YOUR_COUNTRY#}</label></div>
 		<div class="formright">
 			<small><span id="h_land"></span></small>
-			<select name="Land" id="l_land" style="width:205px">
+			<select name="country" id="l_land" style="width:205px">
 				{if $smarty.request.action=='register' && $smarty.request.sub == 'register'}
-					{assign var=sL value=$smarty.request.Land|lower}
+					{assign var=sL value=$smarty.request.country|lower}
 				{else}
-					{assign var=sL value=$row->Land|default:$smarty.session.user_language|lower}
+					{assign var=sL value=$row->country|default:$smarty.session.user_language|lower}
 				{/if}
 				{foreach from=$available_countries item=land}
-					<option value="{$land->LandCode}"{if $sL==$land->LandCode} selected{/if}>{$land->LandName}</option>
+					<option value="{$land->country_code}"{if $sL==$land->country_code} selected{/if}>{$land->country_name}</option>
 				{/foreach}
 			</select>
 		</div>

@@ -1,5 +1,5 @@
 {*
-<p><strong>{#LOGIN_WELCOME_TEXT#}, {$smarty.session.user_name}!</strong></p>
+<p><strong>{#LOGIN_WELCOME_TEXT#}, {$smarty.session.user_name|escape}!</strong></p>
 <ul>
 	<li><a href="{$ABS_PATH}index.php?module=login&amp;action=profile">{#LOGIN_CHANGE_DETAILS#}</a></li>
 	<li><a href="{$ABS_PATH}index.php?module=login&amp;action=delaccount">{#LOGIN_DELETE_LINK#}</a></li>
@@ -19,7 +19,7 @@
 *}
 <div class="block" id="login-forms">
 	<fieldset class="login">
-		<legend>{#LOGIN_WELCOME_TEXT#}, {$smarty.session.user_name}!</legend>
+		<legend>{#LOGIN_WELCOME_TEXT#}, {$smarty.session.user_name|escape}!</legend>
 		<ul>
 			<li><a href="{$ABS_PATH}index.php?module=login&amp;action=profile">{#LOGIN_CHANGE_DETAILS#}</a></li>
 			<li><a href="{$ABS_PATH}index.php?module=login&amp;action=delaccount">{#LOGIN_DELETE_LINK#}</a></li>

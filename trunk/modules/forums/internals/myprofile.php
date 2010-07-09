@@ -14,14 +14,14 @@ if(!isset($_SESSION['user_id']))
 }
 $sql = $GLOBALS['AVE_DB']->Query("SELECT
 	u.*,
-	us.Status,
-	us.Benutzergruppe
+	us.status,
+	us.user_group
 FROM
 	".PREFIX."_modul_forum_userprofile as u,
 	".PREFIX."_users as us
 WHERE
 	BenutzerId = '" . addslashes($_SESSION['user_id']) . "' AND
-	us.Status = 1 AND
+	us.status = '1' AND
 	us.Id = u.BenutzerId
 
 ");
@@ -41,7 +41,7 @@ if(!$this->fperm('changenick')) $GLOBALS['AVE_Template']->assign('changenick_onc
 
 
 
-$r['OwnAvatar'] = $this->getAvatar($r['Benutzergruppe'],$r['Avatar'],$r['AvatarStandard']);
+$r['OwnAvatar'] = $this->getAvatar($r['user_group'],$r['Avatar'],$r['AvatarStandard']);
 if(@!is_file(BASE_DIR . '/modules/forums/avatars/' . $r['Avatar'])) $r['Avatar'] = '';
 
 // avatar
@@ -94,12 +94,12 @@ if(isset($_POST['doupdate']) && $_POST['doupdate'] == 1)
 	//=======================================================
 	// E-Mail prüfen
 	//=======================================================
-	if(!empty($_POST['Email']) && $this->checkIfUserEmail($_POST['Email'], $_SESSION['forum_user_email']))
+	if(!empty($_POST['email']) && $this->checkIfUserEmail($_POST['email'], $_SESSION['forum_user_email']))
 	{
 		$errors[] = $GLOBALS['mod']['config_vars']['PE_EmailInUse'];
 	}
 
-	if(empty($_POST['Email']) || !preg_match($muster_email, $_POST['Email']))
+	if(empty($_POST['email']) || !preg_match($muster_email, $_POST['email']))
 	{
 		$errors[] = $GLOBALS['mod']['config_vars']['PE_Email'];
 	}
@@ -163,7 +163,7 @@ if(isset($_POST['doupdate']) && $_POST['doupdate'] == 1)
 //	$r['Unsichtbar'] = @$_POST['Unsichtbar'];
 //	$r['Emailempfang'] = @$_POST['Emailempfang'];
 //	$r['ZeigeProfil'] = @$_POST['ZeigeProfil'];
-//	$r['Email'] = trim(@$_POST['Email']);
+//	$r['email'] = trim(@$_POST['email']);
 //	$r['Icq'] = trim(htmlspecialchars(@$_POST['Icq']));
 //	$r['Aim'] = trim(htmlspecialchars(@$_POST['Aim']));
 //	$r['Skype'] = trim(htmlspecialchars(@$_POST['Skype']));
@@ -193,7 +193,7 @@ if(isset($_POST['doupdate']) && $_POST['doupdate'] == 1)
 	} else {
 		if(!empty($r['GeburtsTag']))
 		{
-			$GLOBALS['AVE_DB']->Query("UPDATE ".PREFIX."_users SET GebTag = '" . @$r['GeburtsTag'] . "' WHERE Id = '" . $_SESSION['user_id'] . "'");
+			$GLOBALS['AVE_DB']->Query("UPDATE ".PREFIX."_users SET birthday = '" . @$r['GeburtsTag'] . "' WHERE Id = '" . $_SESSION['user_id'] . "'");
 		}
 
 		if(isset($r['DelAvatar']) && $r['DelAvatar']==1)
@@ -236,7 +236,7 @@ if(isset($_POST['doupdate']) && $_POST['doupdate'] == 1)
 				Unsichtbar = '" . @$r['Unsichtbar'] . "',
 				Emailempfang = '" . @$r['Emailempfang'] . "',
 				ZeigeProfil = '" . @$r['ZeigeProfil'] . "',
-				Email = '" . @$r['Email'] . "',
+				email = '" . @$r['email'] . "',
 				Icq = '" . @$r['Icq'] . "',
 				Aim = '" . @$r['Aim'] . "',
 				Skype = '" . @$r['Skype'] . "',

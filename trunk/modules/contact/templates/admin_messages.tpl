@@ -31,14 +31,14 @@
 		{foreach from=$items item=item}
 			<tr style="background-color: #eff3eb;" onmouseover="this.style.backgroundColor='#dae0d8';" onmouseout="this.style.backgroundColor='#eff3eb';" id="table_rows">
 				<td><input title="{#CONTACT_MARK_DELETE#}" name="del[{$item->Id}]" type="checkbox" id="del[{$item->Id}]" value="1" /></td>
-				<td><a href="javascript:void(0);" onclick="cp_pop('index.php?do=modules&action=modedit&mod=contact&moduleaction=showmessages_new&sub=view&cp={$sess}&id={$item->Id}&pop=1','','','1','modcontactedit');"><strong>{$item->in_subject|stripslashes|escape:html|truncate:30}</strong></a></td>
-				<td><a href="mailto:{$item->in_email}">{$item->in_email}</a></td>
-				<td>{$item->in_date|date_format:$DATE_FORMAT|pretty_date}</td>
+				<td><a href="javascript:void(0);" onclick="cp_pop('index.php?do=modules&action=modedit&mod=contact&moduleaction=showmessages_new&sub=view&cp={$sess}&id={$item->Id}&pop=1','','','1','modcontactedit');"><strong>{$item->contact_form_in_subject|stripslashes|escape:html|truncate:30}</strong></a></td>
+				<td><a href="mailto:{$item->contact_form_in_email}">{$item->contact_form_in_email}</a></td>
+				<td>{$item->contact_form_in_date|date_format:$DATE_FORMAT|pretty_date}</td>
 				<td>
 					{if $smarty.request.moduleaction=='showmessages_new'}
 						-
 					{else}
-						{$item->out_date|date_format:$DATE_FORMAT|pretty_date}
+						{$item->contact_form_out_date|date_format:$DATE_FORMAT|pretty_date}
 					{/if}
 				</td>
 				<td width="1%" align="center">

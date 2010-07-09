@@ -22,20 +22,20 @@ class userpage {
 	function show($tpl_dir,$lang_file,$uid)
 	{
 
-		$sql = $GLOBALS['AVE_DB']->Query("SELECT
-			a.*,
-			c.Vorname,Nachname,Land,Benutzergruppe,`UserName`,
-			d.*
-		FROM
-			" . PREFIX . "_modul_userpage  as a,
-			" . PREFIX . "_users  as c,
-			" . PREFIX . "_modul_forum_userprofile  as d
-
-		WHERE
-			c.Id = '$uid' AND
-			d.BenutzerId = '$uid'
-
-		LIMIT 1");
+		$sql = $GLOBALS['AVE_DB']->Query("
+			SELECT
+				a.*,
+				c.firstname,lastname,country,user_group,user_name,
+				d.*
+			FROM
+				" . PREFIX . "_modul_userpage  as a,
+				" . PREFIX . "_users  as c,
+				" . PREFIX . "_modul_forum_userprofile  as d
+			WHERE
+				c.Id = '" . $uid . "' AND
+				d.BenutzerId = '" . $uid . "'
+			LIMIT 1
+		");
 
 		# LADE TEMPLATE
 		$sql_tpl = $GLOBALS['AVE_DB']->Query("SELECT tpl FROM " . PREFIX . "_modul_userpage_template WHERE id = '1'");
@@ -49,33 +49,33 @@ class userpage {
 		if($row->ZeigeProfil != '1') $this->msg($GLOBALS['AVE_Template']->get_config_vars('NoPublicProfile'),'',$tpl_dir);
 		if(!$this->fperm('userprofile')) $this->msg($GLOBALS['AVE_Template']->get_config_vars('ErrornoPerm'),'',$tpl_dir);
 
-		$sql_country = $GLOBALS['AVE_DB']->Query("SELECT LandName FROM " . PREFIX . "_countries WHERE LandCode = '".$row->Land."'");
+		$sql_country = $GLOBALS['AVE_DB']->Query("SELECT country_name FROM " . PREFIX . "_countries WHERE country_code = '".$row->country."'");
 		$row_country = $sql_country->FetchRow();
 
 
 		# ERSETZEN
 		$tpl = $row_tpl->tpl;
-		$tpl = str_replace("[cp:benutzername]", $row->UserName, $tpl);
-		$tpl = str_replace("[cp:header-1]","<?php userpage_header(\"userpanel_forums.tpl\",".$uid."); ?>", $tpl);
-		$tpl = str_replace("[cp:header-2]","<?php userpage_header(\"header_sthreads.tpl\",".$uid."); ?>", $tpl);
-		$tpl = str_replace("[cp:land]", $row_country->LandName, $tpl);
-		$tpl = str_replace("[cp:name]", $row->Vorname ." ". $row->Nachname, $tpl);
-		$tpl = str_replace("[cp:registriert]", date(date_format, $row->Registriert), $tpl);
-		$tpl = str_replace("[cp:onlinestatus]", userpage_onlinestatus($row->UserName), $tpl);
-		$tpl = str_replace("[cp:onlinestatus-1]", userpage_onlinestatus($row->UserName,1), $tpl);
-		$tpl = str_replace("[cp:avatar]",  userpage_avatar($row->Benutzergruppe,$row->Avatar,$row->AvatarStandard), $tpl);
-		$tpl = preg_replace("/\[cp\:(.*?)-([0-9]*)\]/","<?php userpage_felder(\"\\1\",\"\\2\",".$uid."); ?>", $tpl);
-		$tpl = preg_replace("/\[cp\:(.*?)\]/","<?php userpage_felder(\"\\1\",\"1\",".$uid."); ?>", $tpl);
-		$tpl = preg_replace("/\[cp_forum\:([0-9]*)\]/","<?php userpage_lastposts(\"\\1\",".$uid."); ?>", $tpl);
-		$tpl = preg_replace("/\[cp_downloads\:([0-9]*)\]/","<?php userpage_downloads(\"\\1\",".$uid."); ?>", $tpl);
-		$tpl = preg_replace("/\[cp_guestbook\:([0-9]*)\]/","<?php userpage_guestbook(\"\\1\",".$uid."); ?>", $tpl);
-		$tpl = preg_replace("/\[cp_feld\:([0-9]*)-([0-9]*)\]/","<?php userpage_getfield(\"\\1\",\"\\2\",".$uid."); ?>", $tpl);
-		$tpl = preg_replace("/\[cp_feld\:([0-9]*)\]/","<?php userpage_getfield(\"\\1\",\"1\",".$uid."); ?>", $tpl);
-		$tpl = preg_replace("[\[cp_lang:(.*?)\]]",  "<?php userpage_lang(\"\\1\"); ?>", $tpl);
+		$tpl = str_replace("[tag:benutzername]", $row->user_name, $tpl);
+		$tpl = str_replace("[tag:header-1]","<?php userpage_header(\"userpanel_forums.tpl\",".$uid."); ?>", $tpl);
+		$tpl = str_replace("[tag:header-2]","<?php userpage_header(\"header_sthreads.tpl\",".$uid."); ?>", $tpl);
+		$tpl = str_replace("[tag:land]", $row_country->country_name, $tpl);
+		$tpl = str_replace("[tag:name]", $row->firstname ." ". $row->lastname, $tpl);
+		$tpl = str_replace("[tag:registriert]", date(date_format, $row->reg_time), $tpl);
+		$tpl = str_replace("[tag:onlinestatus]", userpage_onlinestatus($row->user_name), $tpl);
+		$tpl = str_replace("[tag:onlinestatus-1]", userpage_onlinestatus($row->user_name,1), $tpl);
+		$tpl = str_replace("[tag:avatar]",  userpage_avatar($row->user_group,$row->Avatar,$row->AvatarStandard), $tpl);
+		$tpl = preg_replace("/\[tag\:(.*?)-([0-9]*)\]/","<?php userpage_felder(\"\\1\",\"\\2\",".$uid."); ?>", $tpl);
+		$tpl = preg_replace("/\[tag\:(.*?)\]/","<?php userpage_felder(\"\\1\",\"1\",".$uid."); ?>", $tpl);
+		$tpl = preg_replace("/\[tag_forum\:([0-9]*)\]/","<?php userpage_lastposts(\"\\1\",".$uid."); ?>", $tpl);
+		$tpl = preg_replace("/\[tag_downloads\:([0-9]*)\]/","<?php userpage_downloads(\"\\1\",".$uid."); ?>", $tpl);
+		$tpl = preg_replace("/\[tag_guestbook\:([0-9]*)\]/","<?php userpage_guestbook(\"\\1\",".$uid."); ?>", $tpl);
+		$tpl = preg_replace("/\[tag_feld\:([0-9]*)-([0-9]*)\]/","<?php userpage_getfield(\"\\1\",\"\\2\",".$uid."); ?>", $tpl);
+		$tpl = preg_replace("/\[tag_feld\:([0-9]*)\]/","<?php userpage_getfield(\"\\1\",\"1\",".$uid."); ?>", $tpl);
+		$tpl = preg_replace("[\[tag_lang:(.*?)\]]",  "<?php userpage_lang(\"\\1\"); ?>", $tpl);
 
 
 
-		define("MODULE_SITE", $row->UserName.$GLOBALS['AVE_Template']->get_config_vars('UPheader'));
+		define("MODULE_SITE", $row->user_name.$GLOBALS['AVE_Template']->get_config_vars('UPheader'));
 
 
 		if(!defined("MODULE_CONTENT"))
@@ -117,7 +117,7 @@ class userpage {
 			$Text = pretty_chars($Text);
 
 			$error = array();
-			if (empty($_POST['Titel'])) $error[] = $GLOBALS['AVE_Template']->get_config_vars('NoTitle');
+			if (empty($_POST['title'])) $error[] = $GLOBALS['AVE_Template']->get_config_vars('NoTitle');
 			if (empty($Text)) $error[] = $GLOBALS['AVE_Template']->get_config_vars('NoComment');
 
 
@@ -133,7 +133,7 @@ class userpage {
 			if (count($error)>0)
 			{
 				$GLOBALS['AVE_Template']->assign('errors', $error);
-				$GLOBALS['AVE_Template']->assign('titel', $_POST['Titel']);
+				$GLOBALS['AVE_Template']->assign('titel', $_POST['title']);
 				$GLOBALS['AVE_Template']->assign('text', $_POST['Text']);
 			}
 			else
@@ -156,7 +156,7 @@ class userpage {
 						'" . $uid . "',
 						'" . time() . "',
 						'" . $author . "',
-						'" . $_POST['Titel'] . "',
+						'" . $_POST['title'] . "',
 						'" . $Text . "'
 					)";
 					$GLOBALS['AVE_DB']->Query($sql);
@@ -243,14 +243,14 @@ class userpage {
 
 			$error = array();
 			$GLOBALS['AVE_Template']->assign('titel', $GLOBALS['AVE_Template']->get_config_vars('Emailc'));
-			if (empty($_POST['Titel'])) $error[] = $GLOBALS['AVE_Template']->get_config_vars('NoBetreff');
+			if (empty($_POST['title'])) $error[] = $GLOBALS['AVE_Template']->get_config_vars('NoBetreff');
 			if (empty($_POST['Text'])) $error[] = $GLOBALS['AVE_Template']->get_config_vars('NoMessage');
 
 
 			if (count($error)>0)
 			{
 				$GLOBALS['AVE_Template']->assign('errors', $error);
-				$GLOBALS['AVE_Template']->assign('titel', $_POST['Titel']);
+				$GLOBALS['AVE_Template']->assign('titel', $_POST['title']);
 				$GLOBALS['AVE_Template']->assign('text', $_POST['Text']);
 			}
 			else
@@ -261,15 +261,15 @@ class userpage {
 				$Prefab = $GLOBALS['AVE_Template']->get_config_vars('EmailBodyUser');
 				$Prefab = str_replace('%%USER%%', $row->BenutzerName, $Prefab);
 				$Prefab = str_replace('%%ABSENDER%%', $_SESSION['forum_user_name'], $Prefab);
-				$Prefab = str_replace('%%BETREFF%%', stripslashes($_POST['Titel']), $Prefab);
+				$Prefab = str_replace('%%BETREFF%%', stripslashes($_POST['title']), $Prefab);
 				$Prefab = str_replace('%%NACHRICHT%%', stripslashes($_POST['Text']), $Prefab);
 				$Prefab = str_replace('%%ID%%', $_SESSION['user_id'], $Prefab);
 				$Prefab = str_replace('%%N%%', "\n",$Prefab);
 				$Prefab = str_replace('','',$Prefab);
 				send_mail(
-					$row->Email,
+					$row->email,
 					$Prefab,
-					stripslashes($_POST['Titel']),
+					stripslashes($_POST['title']),
 					FORUMEMAIL,
 					FORUMABSENDER,
 					"text",
@@ -298,14 +298,14 @@ class userpage {
 		}
 		$sql = $GLOBALS['AVE_DB']->Query("SELECT
 				u.*,
-				us.Status,
-				us.Benutzergruppe
+				us.status,
+				us.user_group
 			FROM
 				".PREFIX."_modul_forum_userprofile as u,
 				".PREFIX."_users as us
 			WHERE
 				BenutzerId = '" . addslashes($_SESSION['user_id']) . "' AND
-				us.Status = 1 AND
+				us.status = '1' AND
 				us.Id = u.BenutzerId
 		");
 		$n = $sql->NumRows();
@@ -346,7 +346,7 @@ class userpage {
 		$sql_a = $GLOBALS['AVE_DB']->Query("SELECT * FROM " . PREFIX . "_modul_userpage_items WHERE active = '1'");
 		while($row_a = $sql_a->FetchRow())
 		{
-			if(strpos($row_tpl->tpl, "[cp_feld:".$row_a->Id) !== false)
+			if(strpos($row_tpl->tpl, "[tag_feld:".$row_a->Id) !== false)
 			{
 
 				if ($row_a->type == 'dropdown')
@@ -433,14 +433,14 @@ class userpage {
 
 		foreach($def as $i)
 		{
-			if(strpos($row_tpl->tpl, "[cp:".$i) !== false)
+			if(strpos($row_tpl->tpl, "[tag:".$i) !== false)
 			{
 				$GLOBALS['AVE_Template']->assign("show_".$i, 1);
 			}
 		}
 
 
-		$r['OwnAvatar'] = $this->getAvatar($r['Benutzergruppe'],$r['Avatar'],$r['AvatarStandard']);
+		$r['OwnAvatar'] = $this->getAvatar($r['user_group'],$r['Avatar'],$r['AvatarStandard']);
 		if(@!is_file(BASE_DIR . '/modules/forums/avatars/' . $r['Avatar'])) $r['Avatar'] = '';
 
 		// avatar
@@ -493,12 +493,12 @@ class userpage {
 			//=======================================================
 			// E-Mail prьfen
 			//=======================================================
-			if(!empty($_POST['Email']) && $this->checkIfUserEmail($_POST['Email'], $_SESSION['forum_user_email']))
+			if(!empty($_POST['email']) && $this->checkIfUserEmail($_POST['email'], $_SESSION['forum_user_email']))
 			{
 				$errors[] = $GLOBALS['AVE_Template']->get_config_vars('PE_EmailInUse');
 			}
 
-			if(empty($_POST['Email']) || !preg_match($muster_email, $_POST['Email']))
+			if(empty($_POST['email']) || !preg_match($muster_email, $_POST['email']))
 			{
 				$errors[] = $GLOBALS['AVE_Template']->get_config_vars('PE_Email');
 			}
@@ -565,7 +565,7 @@ class userpage {
 			$r['Unsichtbar'] = @$_POST['Unsichtbar'];
 			$r['Emailempfang'] = @$_POST['Emailempfang'];
 			$r['ZeigeProfil'] = @$_POST['ZeigeProfil'];
-			$r['Email'] = trim(@$_POST['Email']);
+			$r['email'] = trim(@$_POST['email']);
 			$r['Icq'] = trim(htmlspecialchars(@$_POST['Icq']));
 			$r['Aim'] = trim(htmlspecialchars(@$_POST['Aim']));
 			$r['Skype'] = trim(htmlspecialchars(@$_POST['Skype']));
@@ -592,7 +592,7 @@ class userpage {
 			} else {
 				if(!empty($_POST['GeburtsTag']))
 				{
-					$GLOBALS['AVE_DB']->Query("UPDATE ".PREFIX."_users SET GebTag = '" . @$_POST['GeburtsTag'] . "' WHERE Id = '" . $_SESSION['user_id'] . "'");
+					$GLOBALS['AVE_DB']->Query("UPDATE " . PREFIX . "_users SET birthday = '" . @$_POST['GeburtsTag'] . "' WHERE Id = '" . $_SESSION['user_id'] . "'");
 				}
 
 				if(isset($_POST['DelAvatar']) && $_POST['DelAvatar']==1)
@@ -637,7 +637,7 @@ class userpage {
 						Unsichtbar = '" . $r['Unsichtbar'] . "',
 						Emailempfang = '" . $r['Emailempfang'] . "',
 						ZeigeProfil = '" . $r['ZeigeProfil'] . "',
-						Email = '" . trim(@$_POST['Email']) . "',
+						email = '" . trim(@$_POST['email']) . "',
 						Icq = '" . trim(htmlspecialchars(@$_POST['Icq'])) . "',
 						Aim = '" . trim(htmlspecialchars(@$_POST['Aim'])) . "',
 						Skype = '" . trim(htmlspecialchars(@$_POST['Skype'])) . "',
@@ -738,7 +738,7 @@ class userpage {
 		}
 
 		$Groups = array();
-		$sql_g = $GLOBALS['AVE_DB']->Query("SELECT Benutzergruppe,Name FROM " . PREFIX . "_user_groups");
+		$sql_g = $GLOBALS['AVE_DB']->Query("SELECT user_group,user_group_name FROM " . PREFIX . "_user_groups");
 		while($row_g = $sql_g->FetchRow())
 		{
 			array_push($Groups, $row_g);
@@ -764,8 +764,8 @@ class userpage {
 
 		$GLOBALS['AVE_DB']->Query("UPDATE " . PREFIX . "_modul_userpage
 			SET
-				can_comment = '$_REQUEST[can_comment]',
-				group_id = '" . @implode(",", $_REQUEST['Gruppen']) . "'
+				can_comment = '" . $_REQUEST['can_comment'] . "',
+				group_id = '" . @implode(",", $_REQUEST['user_group']) . "'
 			WHERE
 				id = '1'");
 
@@ -794,7 +794,7 @@ class userpage {
 					value = '" . $_POST['wert'][$id] . "',
 					active = '" . $_POST['aktiv'][$id] . "'
 					WHERE id = '$id'");
-				reportLog($_SESSION['user_name'] . " - изменил поля в модуле Профиль пользователя (" . stripslashes($_POST['Titel']) . ")",'2','2');
+				reportLog($_SESSION['user_name'] . " - изменил поля в модуле Профиль пользователя (" . stripslashes($_POST['title']) . ")",'2','2');
 			}
 		}
 		header("Location:index.php?do=modules&action=modedit&mod=userpage&moduleaction=1&cp=" . SESSION);
@@ -810,10 +810,10 @@ class userpage {
 			$GLOBALS['AVE_DB']->Query("INSERT INTO " . PREFIX . "_modul_userpage_items
 			 VALUES (
 				'',
-				'$_REQUEST[titel]',
-				'$_REQUEST[type]',
-				'$_REQUEST[wert]',
-				'$_REQUEST[aktiv]'
+				'" . $_REQUEST['titel'] . "',
+				'" . $_REQUEST['type'] . "',
+				'" . $_REQUEST['wert'] . "',
+				'" . $_REQUEST['aktiv'] . "'
 			)
 			");
 
@@ -839,7 +839,7 @@ class userpage {
 				break;
 			}
 		}
-		reportLog($_SESSION['user_name'] . " - добавил поле в модуле Профиль пользователя (" . stripslashes($_REQUEST['Titel']) . ")",'2','2');
+		reportLog($_SESSION['user_name'] . " - добавил поле в модуле Профиль пользователя (" . stripslashes($_REQUEST['title']) . ")",'2','2');
 		header("Location:index.php?do=modules&action=modedit&mod=userpage&moduleaction=1&cp=" . SESSION);
 	}
 
@@ -971,9 +971,9 @@ class userpage {
 	function fperm($perm,$group='')
 	{
 		if(empty($group)) $group = UGROUP;
-		$sql = $GLOBALS['AVE_DB']->Query("SELECT Rechte FROM " . PREFIX . "_modul_forum_grouppermissions WHERE Benutzergruppe='$group'");
+		$sql = $GLOBALS['AVE_DB']->Query("SELECT permission FROM " . PREFIX . "_modul_forum_grouppermissions WHERE user_group='$group'");
 		$row = $sql->FetchRow();
-		$perms = @explode("|", $row->Rechte);
+		$perms = @explode("|", $row->permission);
 		if (in_array($perm, $perms) || UGROUP==1 ) // Admin darf alles!
 		{
 			return true;
@@ -1059,7 +1059,7 @@ class userpage {
 				}
 			}
 		} else {
-			$sql = $GLOBALS['AVE_DB']->Query("SELECT * FROM " . PREFIX."_modul_forum_groupavatar WHERE Benutzergruppe = '$group'");
+			$sql = $GLOBALS['AVE_DB']->Query("SELECT * FROM " . PREFIX."_modul_forum_groupavatar WHERE user_group = '$group'");
 			$row = $sql->FetchRow();
 			if (is_object($row) && ($row->IstStandard == 1) && ($row->StandardAvatar != ""))
 			{
@@ -1107,12 +1107,12 @@ class userpage {
 	function checkIfUserEmail($new='',$old='')
 	{
 		$sql = $GLOBALS['AVE_DB']->Query("SELECT
-			Email
+			email
 		FROM
 			" . PREFIX . "_modul_forum_userprofile
 		WHERE
-			Email = '$new' AND
-			Email != '$old'
+			email = '$new' AND
+			email != '$old'
 			");
 
 		$rc = $sql->NumRows();
@@ -1123,9 +1123,9 @@ class userpage {
 
 	function getForumUserEmail($id)
 	{
-		$sql = $GLOBALS['AVE_DB']->Query("SELECT Email FROM " . PREFIX . "_modul_forum_userprofile WHERE BenutzerId = '$id'");
+		$sql = $GLOBALS['AVE_DB']->Query("SELECT email FROM " . PREFIX . "_modul_forum_userprofile WHERE BenutzerId = '$id'");
 		$ru = $sql->FetchRow();
-		return $ru->Email;
+		return $ru->email;
 	}
 
 	//=======================================================
@@ -1165,51 +1165,32 @@ class userpage {
 				$sql = $GLOBALS['AVE_DB']->Query("SELECT * FROM " . PREFIX . "_users WHERE Id  = '".$_SESSION['user_id']."'");
 				$row = $sql->FetchRow();
 
-				$q = "INSERT INTO " . PREFIX . "_modul_forum_userprofile
-				(
-					Id,
-					BenutzerId,
-					BenutzerName,
-					GroupIdMisc,
-					Beitraege,
-					ZeigeProfil,
-					Signatur,
-					Icq,
-					Aim,
-					Skype,
-					Emailempfang,
-					Pnempfang,
-					Avatar,
-					AvatarStandard,
-					Webseite,
-					Unsichtbar,
-					Interessen,
-					Email,
-					Registriert,
-					GeburtsTag
-				) VALUES (
-					'',
-					'$row->Id',
-					'". (($row->UserName!='') ? $row->UserName : substr($row->Vorname,0,1) . '. ' . $row->Nachname) . "',
-					'',
-					'',
-					'1',
-					'',
-					'',
-					'',
-					'',
-					'1',
-					'1',
-					'',
-					'',
-					'',
-					'0',
-					'',
-					'$row->Email',
-					'$row->Registriert',
-					'$row->GebTag'
-				)";
-				$GLOBALS['AVE_DB']->Query($q);
+				$GLOBALS['AVE_DB']->Query("
+					INSERT
+					INTO " . PREFIX . "_modul_forum_userprofile
+					SET
+						Id             = '',
+						BenutzerId     = '" . $row->Id . "',
+						BenutzerName   = '" . (($row->user_name!='') ? $row->user_name : substr($row->firstname,0,1) . '. ' . $row->lastname) . "',
+						GroupIdMisc    = '',
+						Beitraege      = '',
+						ZeigeProfil    = '1',
+						Signatur       = '',
+						Icq            = '',
+						Aim            = '',
+						Skype          = '',
+						Emailempfang   = '1',
+						Pnempfang      = '1',
+						Avatar         = '',
+						AvatarStandard = '',
+						Webseite       = '',
+						Unsichtbar     = '0',
+						Interessen     = '',
+						email          = '" . $row->email . "',
+						reg_time       = '" . $row->reg_time . "',
+						GeburtsTag     = '" . $row->birthday . "'
+				");
+
 				header("Location:index.php?module=forums");
 			}
 

@@ -19,7 +19,7 @@
       <td colspan="4" class="second">
         <textarea wrap="off" style="width:100%" name="textfield" rows="30">
         {foreach from=$logs item=log}
-          {$log->Id}&nbsp;|&nbsp;{$log->IpCode}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;{$log->Zeit|date_format:$TIME_FORMAT|pretty_date}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;| {$log->Meldung}
+          {$log->Id}&nbsp;|&nbsp;{$log->log_ip}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;{$log->log_time|date_format:$TIME_FORMAT|pretty_date}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;| {$log->log_text}
          {/foreach}
         </textarea>
       </td>

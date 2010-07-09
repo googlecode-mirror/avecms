@@ -10,7 +10,7 @@
 				{foreach from=$Comments item=c}
 					<tr>
 						<td>
-							<a class="tooltip" href="javascript:void(0);" title="{$c->Kommentar}">{$c->Titel|stripslashes|truncate:50}</a>
+							<a class="tooltip" href="javascript:void(0);" title="{$c->comment_text}">{$c->title|stripslashes|truncate:50}</a>
 						</td>
 
 						<td>
@@ -47,13 +47,13 @@
 		{if $NoTitle==1}
 			<div class="mod_download_commenterror">{#NoTitle#}</div>
 		{/if}
-		<input name="Titel" type="text" id="c_title" size="40" value="{$smarty.post.Titel|stripslashes|escape:html}" /><br />
+		<input name="title" type="text" id="c_title" size="40" value="{$smarty.post.title|stripslashes|escape:html}" /><br />
 
 		<label for="c_comment">{#YourComment#}</label><br />
 		{if $NoComment==1}
 			<div class="mod_download_commenterror">{#NoComment#}</div>
 		{/if}
-		<textarea name="Kommentar" cols="45" rows="5" id="c_comment">{$smarty.post.Kommentar|stripslashes|escape:html}</textarea><br />
+		<textarea name="comment_text" cols="45" rows="5" id="c_comment">{$smarty.post.comment_text|stripslashes|escape:html}</textarea><br />
 
 		<label for="c_name">{#NameY#}</label><br />
 		{if $NoName==1}
@@ -65,7 +65,7 @@
 		{if $NoEmail==1}
 			<div class="mod_download_commenterror">{#NoMail#}</div>
 		{/if}
-		<input name="Email" type="text" id="c_email" size="40" value="{$smarty.post.Email|stripslashes|escape:html}" /><br />
+		<input name="email" type="text" id="c_email" size="40" value="{$smarty.post.email|stripslashes|escape:html}" /><br />
 
 		<input type="hidden" name="fileaction" value="comment" />
 

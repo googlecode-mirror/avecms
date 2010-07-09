@@ -48,8 +48,8 @@ function get_ave_info()
 
 	$cnts['templates'] = $AVE_DB->Query("SELECT COUNT(*) FROM " . PREFIX . "_templates")->GetCell();
 	$cnts['documents'] = $AVE_DB->Query("SELECT COUNT(*) FROM " . PREFIX . "_documents")->GetCell();
-	$cnts['request']   = $AVE_DB->Query("SELECT COUNT(*) FROM " . PREFIX . "_queries")->GetCell();
-	$cnts['rubrics']   = $AVE_DB->Query("SELECT COUNT(*) FROM " . PREFIX . "_rubrics")->GetCell();
+	$cnts['request']   = $AVE_DB->Query("SELECT COUNT(*) FROM " . PREFIX . "_request")  ->GetCell();
+	$cnts['rubrics']   = $AVE_DB->Query("SELECT COUNT(*) FROM " . PREFIX . "_rubrics")  ->GetCell();
 
 	$sql = $AVE_DB->Query("
 		SELECT
@@ -65,14 +65,14 @@ function get_ave_info()
 
 	$sql = $AVE_DB->Query("
 		SELECT
-			Status,
-			COUNT(Status) AS cntStatus
+			status,
+			COUNT(status) AS cntStatus
 		FROM " . PREFIX . "_users
-		GROUP BY `Status`
+		GROUP BY status
 	");
 	while ($row = $sql->FetchRow())
 	{
-		$cnts['users_' . $row->Status] = $row->cntStatus;
+		$cnts['users_' . $row->status] = $row->cntStatus;
 	}
 
 	$AVE_Template->assign('cnts', $cnts);
@@ -144,6 +144,7 @@ function get_ave_tags($srcfile)
 
 		while (list($key, $value) = each($vorlage))
 		{
+			$tag = new stdClass;
 			$tag->cp_tag = $key;
 			$tag->cp_desc = $value;
 			array_push($vl, $tag);
@@ -194,7 +195,7 @@ function get_all_templates()
 		$sql = $AVE_DB->Query("
 			SELECT
 				Id,
-				TplName
+				template_title
 			FROM " . PREFIX . "_templates
 		");
 
@@ -368,7 +369,7 @@ function check_permission_acp($perm)
 {
 	if (!check_permission($perm))
 	{
-		define('NOPERM', 1);
+		if (!defined('NOPERM')) define('NOPERM', 1);
 		return false;
 	}
 

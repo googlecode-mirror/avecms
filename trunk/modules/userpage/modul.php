@@ -7,7 +7,7 @@ if (defined('ACP'))
     $modul['ModulName'] = 'Профиль';
     $modul['ModulPfad'] = 'userpage';
     $modul['ModulVersion'] = '1.0';
-    $modul['Beschreibung'] = 'Расширенная пользовательская система, полностью интегрируемая в модуль форума. Пользовательский профиль дополнен личной гостевой книгой и может модифицироваться индивидуально задаваемыми полями.';
+    $modul['description'] = 'Расширенная пользовательская система, полностью интегрируемая в модуль форума. Пользовательский профиль дополнен личной гостевой книгой и может модифицироваться индивидуально задаваемыми полями.';
     $modul['Autor'] = 'Michael Ruhl';
     $modul['MCopyright'] = '&copy; 2007 ecombiz.de';
     $modul['Status'] = 1;
@@ -38,7 +38,7 @@ if (isset($_REQUEST['module']) && $_REQUEST['module'] == 'userpage' && isset($_R
 	$sql_gs = $AVE_DB->Query("
 		SELECT *
 		FROM " . PREFIX . "_modul_forum_grouppermissions
-		WHERE Benutzergruppe = '" . UGROUP . "'
+		WHERE user_group = '" . UGROUP . "'
 	");
 	$row_gs = $sql_gs->FetchRow();
 

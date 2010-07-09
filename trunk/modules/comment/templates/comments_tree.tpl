@@ -31,32 +31,32 @@
 		<fieldset>
 			<form method="post" action="{$ABS_PATH}index.php">
 				{if $smarty.session.user_group != '2'}
-					<input name="author_name" type="hidden" id="in_author_name" value="{$smarty.session.user_name|escape|stripslashes}" />
+					<input name="comment_author_name" type="hidden" id="in_author_name" value="{$smarty.session.user_name|escape|stripslashes}" />
 				{else}
 					<p>
 						<label>{#COMMENT_YOUR_NAME#}</label>
-						<input name="author_name" type="text" id="in_author_name" value="{$smarty.request.author_name|escape|stripslashes}" />&nbsp;
+						<input name="comment_author_name" type="text" id="in_author_name" value="{$smarty.request.comment_author_name|escape|stripslashes}" />&nbsp;
 					</p>
 				{/if}
 				{if $smarty.session.user_email != ''}
-					<input name="author_email" type="hidden" id="in_author_email" value="{$smarty.session.user_email|escape|stripslashes}" />
+					<input name="comment_author_email" type="hidden" id="in_author_email" value="{$smarty.session.user_email|escape|stripslashes}" />
 				{else}
 					<p>
 						<label>{#COMMENT_YOUR_EMAIL#}</label>
-						<input name="author_email" type="text" id="in_author_email" value="{$smarty.request.author_email|escape|stripslashes}" />&nbsp;
+						<input name="comment_author_email" type="text" id="in_author_email" value="{$smarty.request.comment_author_email|escape|stripslashes}" />&nbsp;
 					</p>
 				{/if}
 				<p>
 					<label>{#COMMENT_YOUR_SITE#}</label>
-					<input name="author_website" type="text" id="in_author_website" $value="{$smarty.request.author_website|escape|stripslashes}" />
+					<input name="comment_author_website" type="text" id="in_author_website" $value="{$smarty.request.comment_author_website|escape|stripslashes}" />
 				</p>
 				<p>
 					<label>{#COMMENT_YOUR_FROM#}</label>
-					<input name="author_city" type="text" id="in_author_city" $value="{$smarty.request.author_city|escape|stripslashes}" />
+					<input name="comment_author_city" type="text" id="in_author_city" $value="{$smarty.request.comment_author_city|escape|stripslashes}" />
 				</p>
 				<p>
 					<label>{#COMMENT_YOUR_TEXT#}</label>
-					<textarea rows="8" name="message" id="in_message"></textarea>
+					<textarea rows="8" name="comment_text" id="in_message"></textarea>
 				</p>
 				<p>
 					<label>&nbsp;</label>
@@ -80,7 +80,7 @@
 				<input name="module" type="hidden" value="comment" />
 				<input name="action" type="hidden" value="comment" />
 				<input name="sub" type="hidden" value="send" />
-				<input name="doc_id" type="hidden" value="{$smarty.request.id}" />
+				<input name="doc_id" type="hidden" value="{$smarty.request.id|escape}" />
 				<input name="parent_id" id="parent_id" type="hidden" value="" />
 				<input name="page" type="hidden" value="{$page}" />
 			</form>
@@ -108,7 +108,7 @@ var COMMENT_WRONG_CODE = '{#COMMENT_WRONG_CODE#}';
 var UGROUP = '{$smarty.const.UGROUP}';
 var IS_IM = '{$im}';
 var DOC_ID = '{$doc_id}';
-var MAX_CHARS = '{$max_chars}';
+var MAX_CHARS = '{$comment_max_chars}';
 </script>
  <script src="{$ABS_PATH}modules/comment/js/comment.js" type="text/javascript"></script>
 {/if}

@@ -27,7 +27,7 @@ function fetchPrefabTemplates()
 {
 	global $AVE_Template;
 
-	if (check_permission('vorlagen_neu'))
+	if (check_permission('template_new'))
 	{
 		$verzname = BASE_DIR . '/inc/data/prefabs/templates';
 		$dht = opendir($verzname);
@@ -57,7 +57,7 @@ function fetchPrefabTemplates()
 switch ($_REQUEST['action'])
 {
 	case'':
-		if (check_permission('vorlagen'))
+		if (check_permission_acp('template'))
 		{
 			$items   = array();
 			$num_tpl = $AVE_DB->Query("
@@ -90,14 +90,14 @@ switch ($_REQUEST['action'])
 						" . PREFIX . "_rubrics AS rubric,
 						" . PREFIX . "_module AS module
 					WHERE
-						rubric.Vorlage = '" . $row->Id . "' OR
+						rubric.rubric_template_id = '" . $row->Id . "' OR
 						module.Template = '" . $row->Id . "'
 					LIMIT 1
 				")->NumRows();
 
 				if (!$inuse) $row->can_deleted = 1;
 
-				$row->TBenutzer = get_username_by_id($row->TBenutzer);
+				$row->template_author = get_username_by_id($row->template_author_id);
 				array_push($items, $row);
 				unset($row);
 			}
@@ -105,15 +105,11 @@ switch ($_REQUEST['action'])
 			$AVE_Template->assign('items', $items);
 			$AVE_Template->assign('content', $AVE_Template->fetch('templates/templates.tpl'));
 		}
-		else
-		{
-			define('NOPERM', 1);
-		}
 		break;
 
 
 	case 'new':
-		if (check_permission('vorlagen_neu'))
+		if (check_permission_acp('template_new'))
 		{
 			$_REQUEST['sub'] = (isset($_REQUEST['sub'])) ? $_REQUEST['sub'] : '';
 			switch ($_REQUEST['sub'])
@@ -121,17 +117,17 @@ switch ($_REQUEST['action'])
 				case 'savenew':
 					$save = true;
 
-					$row->Template = pretty_chars($_REQUEST['Template']);
-					$row->Template = stripslashes($row->Template);
-					$row->TplName  = stripslashes($_REQUEST['TplName']);
+					$row->template_text = pretty_chars($_REQUEST['template_text']);
+					$row->template_text = stripslashes($row->template_text);
+					$row->template_title  = stripslashes($_REQUEST['template_title']);
 
-					if (empty($_REQUEST['TplName']) || empty($_REQUEST['Template']))
+					if (empty($_REQUEST['template_title']) || empty($_REQUEST['template_text']))
 					{
 						$save = false;
 					}
 
-					$check_code = strtolower($_REQUEST['Template']);
-					if (is_php_code($check_code) && check_permission('vorlagen_php') )
+					$check_code = strtolower($_REQUEST['template_text']);
+					if (is_php_code($check_code) && check_permission('template_php') )
 					{
 						$AVE_Template->assign('php_forbidden', 1);
 						$save = false;
@@ -150,14 +146,14 @@ switch ($_REQUEST['action'])
 							INSERT
 							INTO " . PREFIX . "_templates
 							SET
-								Id        = '',
-								TplName   = '" . $_REQUEST['TplName'] . "',
-								Template  = '" . pretty_chars($_REQUEST['Template']) . "',
-								TBenutzer = '" . $_SESSION['user_id'] . "',
-								TDatum    = '" . time() . "'
+								Id                 = '',
+								template_title     = '" . $_REQUEST['template_title'] . "',
+								template_text      = '" . pretty_chars($_REQUEST['template_text']) . "',
+								template_author_id = '" . $_SESSION['user_id'] . "',
+								template_created   = '" . time() . "'
 						");
 
-						reportLog($_SESSION['user_name'] . ' - создал шаблон (' . stripslashes($_REQUEST['TplName']) . ')', 2, 2);
+						reportLog($_SESSION['user_name'] . ' - создал шаблон (' . stripslashes($_REQUEST['template_title']) . ')', 2, 2);
 
 						header('Location:index.php?do=templates');
 						exit;
@@ -171,20 +167,16 @@ switch ($_REQUEST['action'])
 					break;
 			}
 		}
-		else
-		{
-			define('NOPERM', 1);
-		}
 		break;
 
 
 	case 'delete' :
-		if (check_permission('vorlagen_loesch'))
+		if (check_permission_acp('template_del'))
 		{
 			$Used = $AVE_DB->Query("
-				SELECT Vorlage
+				SELECT rubric_template_id
 				FROM " . PREFIX . "_rubrics
-				WHERE Vorlage = '" . (int)$_REQUEST['Id'] . "'
+				WHERE rubric_template_id = '" . (int)$_REQUEST['Id'] . "'
 			")->GetCell();
 
 			if ($Used >= 1 || $_REQUEST['Id'] == 1)
@@ -216,14 +208,10 @@ switch ($_REQUEST['action'])
 				exit;
 			}
 		}
-		else
-		{
-			define('NOPERM', 1);
-		}
 		break;
 
 	case 'edit':
-		if (check_permission('vorlagen_edit'))
+		if (check_permission_acp('template_edit'))
 		{
 			$_REQUEST['sub'] = (!isset($_REQUEST['sub'])) ? '' : $_REQUEST['sub'];
 			switch ($_REQUEST['sub'])
@@ -235,8 +223,8 @@ switch ($_REQUEST['action'])
 						WHERE Id = '" . $_REQUEST['Id'] . "'
 					")->FetchRow();
 
-					$check_code = strtolower($row->Template);
-					if (is_php_code($check_code) && !check_permission('vorlagen_php'))
+					$check_code = strtolower($row->template_text);
+					if (is_php_code($check_code) && !check_permission('template_php'))
 					{
 						$AVE_Template->assign('php_forbidden', 1);
 						$AVE_Template->assign('read_only', 'readonly');
@@ -244,35 +232,35 @@ switch ($_REQUEST['action'])
 
 					$AVE_Template->assign('tags', get_ave_tags(BASE_DIR . '/inc/data/vorlage.php'));
 
-					$row->Template = pretty_chars($row->Template);
-					$row->Template = stripslashes($row->Template);
+					$row->template_text = pretty_chars($row->template_text);
+					$row->template_text = stripslashes($row->template_text);
 					$AVE_Template->assign('row', $row);
 					break;
 
 				case 'save':
 					$ok = true;
-					$check_code = strtolower($_REQUEST['Template']);
-					if (is_php_code($check_code) && !check_permission('vorlagen_php') )
+					$check_code = strtolower($_REQUEST['template_text']);
+					if (is_php_code($check_code) && !check_permission('template_php') )
 					{
-						reportLog($_SESSION['user_name'] . ' - пытался использовать PHP кода в шаблоне (' . stripslashes($_REQUEST['TplName']) . ')', 2, 2);
+						reportLog($_SESSION['user_name'] . ' - пытался использовать PHP кода в шаблоне (' . stripslashes($_REQUEST['template_title']) . ')', 2, 2);
 						$AVE_Template->assign('php_forbidden', 1);
 						$ok = false;
 					}
 
 					if (!$ok)
 					{
-						$row->Template = stripslashes($_REQUEST['Template']);
+						$row->template_text = stripslashes($_REQUEST['template_text']);
 						$AVE_Template->assign('row', $row);
 						$AVE_Template->assign('tags', get_ave_tags(BASE_DIR . '/inc/data/vorlage.php'));
 					}
 					else
 					{
-						reportLog($_SESSION['user_name'] . ' - изменил шаблон (' . stripslashes($_REQUEST['TplName']) . ')', 2, 2);
+						reportLog($_SESSION['user_name'] . ' - изменил шаблон (' . stripslashes($_REQUEST['template_title']) . ')', 2, 2);
 						$AVE_DB->Query("
 							UPDATE " . PREFIX . "_templates
 							SET
-								TplName = '" . $_REQUEST['TplName'] . "',
-								Template = '" . $_REQUEST['Template'] . "'
+								template_title = '" . $_REQUEST['template_title'] . "',
+								template_text  = '" . $_REQUEST['template_text'] . "'
 							WHERE
 								Id = '" . (int)$_REQUEST['Id'] . "'
 						");
@@ -282,14 +270,10 @@ switch ($_REQUEST['action'])
 			}
 			$AVE_Template->assign('content', $AVE_Template->fetch('templates/form.tpl'));
 		}
-		else
-		{
-			define('NOPERM', 1);
-		}
 		break;
 
 	case 'multi':
-		if (check_permission('vorlagen_multi'))
+		if (check_permission_acp('template_multi'))
 		{
 			$_REQUEST['sub'] = (!isset($_REQUEST['sub'])) ? '' : $_REQUEST['sub'];
 			$errors = array();
@@ -298,19 +282,19 @@ switch ($_REQUEST['action'])
 				case 'save':
 					$ok = true;
 					$row = $AVE_DB->Query("
-						SELECT TplName
+						SELECT template_title
 						FROM " . PREFIX . "_templates
-						WHERE TplName = '" . $_REQUEST['TplName'] . "'
+						WHERE template_title = '" . $_REQUEST['template_title'] . "'
 					")->FetchRow();
 
-					if (@$row->TplName != '')
+					if (@$row->template_title != '')
 					{
 						array_push($errors, $AVE_Template->get_config_vars('TEMPLATES_EXIST'));
 						$AVE_Template->assign('errors', $errors);
 						$ok = false;
 					}
 
-					if ($_REQUEST['TplName'] == '')
+					if ($_REQUEST['template_title'] == '')
 					{
 						array_push($errors, $AVE_Template->get_config_vars('TEMPLATES_NO_NAME'));
 						$AVE_Template->assign('errors', $errors);
@@ -320,7 +304,7 @@ switch ($_REQUEST['action'])
 					if ($ok)
 					{
 						$row = $AVE_DB->Query("
-							SELECT Template
+							SELECT template_text
 							FROM " . PREFIX . "_templates
 							WHERE Id = '" . (int)$_REQUEST['Id'] . "'
 						")->FetchRow();
@@ -330,10 +314,10 @@ switch ($_REQUEST['action'])
 							INTO " . PREFIX . "_templates
 							SET
 								Id = '',
-								TplName = '" . $_REQUEST['TplName'] . "',
-								Template = '" . addslashes($row->Template) . "',
-								TBenutzer = '" . $_SESSION['user_id'] . "',
-								TDatum = '" . time() . "'
+								template_title     = '" . $_REQUEST['template_title'] . "',
+								template_text      = '" . addslashes($row->template_text) . "',
+								template_author_id = '" . $_SESSION['user_id'] . "',
+								template_created   = '" . time() . "'
 						");
 
 						reportLog($_SESSION['user_name'] . ' - создал копию шаблона (' . (int)$_REQUEST['oId'] . ')', 2, 2);
@@ -343,10 +327,7 @@ switch ($_REQUEST['action'])
 					break;
 			}
 		}
-		else
-		{
-			define('NOPERM', 1);
-		}
+
 		$AVE_Template->assign('content', $AVE_Template->fetch('templates/multi.tpl'));
 		break;
 }

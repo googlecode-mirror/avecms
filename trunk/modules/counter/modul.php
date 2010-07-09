@@ -8,6 +8,7 @@
  *
  * @package AVE.cms
  * @subpackage module_Counter
+ * @since 1.4
  * @filesource
  */
 
@@ -21,7 +22,7 @@ if (defined('ACP'))
     $modul['ModulPfad'] = 'counter';  // Название папки
     $modul['ModulVersion'] = '1.3';  // Версия
     // Краткое описание, которое будет показано в Панели управления
-    $modul['Beschreibung'] = 'Данный модуль предназначен для сбора статистики посещений страниц вашего сайта, а также дополнительных данных о посетителях. Для того, чтобы начать сбор статистики, разместите системный тег <strong>[mod_counter:XXX]</strong> на нужной вам странице или шаблоне сайта. ХХХ - это порядковый номер счетчика в системе. Для отображения статистики в публичной части, разместите системный тэг <strong>[mod_counter:show]</strong> в нужном месте Вашего шаблона.';
+    $modul['description'] = 'Данный модуль предназначен для сбора статистики посещений страниц вашего сайта, а также дополнительных данных о посетителях. Для того, чтобы начать сбор статистики, разместите системный тег <strong>[mod_counter:XXX]</strong> на нужной вам странице или шаблоне сайта. ХХХ - это порядковый номер счетчика в системе. Для отображения статистики в публичной части, разместите системный тэг <strong>[mod_counter:show]</strong> в нужном месте Вашего шаблона.';
     $modul['Autor'] = 'Arcanum';  // Автор
     $modul['MCopyright'] = '&copy; 2007 Overdoze Team';  // Копирайты
     $modul['Status'] = 1;  // Статус модуля по умолчанию (1-активен/0-неактивен)
@@ -51,7 +52,7 @@ function mod_counter($counter_id, $action = '')
 	{
 		// Подключаем основной файл с классом, создаем объект, подключаем языковые переменные
         // и обращаемся к методу counterStatisticShow() для вывода информации
-        require_once(BASE_DIR . '/modules/counter/class.browser.php');
+        require_once(BASE_DIR . '/modules/counter/class.counter.php');
 		$counter = new Counter;
 
 		$tpl_dir   = BASE_DIR . '/modules/counter/templates/';
@@ -65,7 +66,7 @@ function mod_counter($counter_id, $action = '')
 		!(isset($_COOKIE['counter_' . $counter_id]) && $_COOKIE['counter_' . $counter_id] == '1'))
 	{
 		// Подключаем основной файл с классом, создаем объект и добавляем нового пользователя в статистику
-        require_once(BASE_DIR . '/modules/counter/class.browser.php');
+        require_once(BASE_DIR . '/modules/counter/class.counter.php');
 		$counter = new Counter;
 
 		$counter->counterClientNew($counter_id);
@@ -83,7 +84,7 @@ if (defined('ACP') && !empty($_REQUEST['moduleaction']))
 	global $AVE_Template;
 
     // Подключаем файл с классом, создаем объеккт, определяем директорию с шаблонами и подключаем языковой файл
-    require_once(BASE_DIR . '/modules/counter/class.browser.php');
+    require_once(BASE_DIR . '/modules/counter/class.counter.php');
 	$counter = new Counter;
     $tpl_dir   = BASE_DIR . '/modules/counter/templates/';
 	$lang_file = BASE_DIR . '/modules/counter/lang/' . $_SESSION['admin_language'] . '.txt';

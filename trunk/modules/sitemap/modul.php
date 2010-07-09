@@ -5,6 +5,7 @@
  *
  * @package AVE.cms
  * @subpackage module_SiteMap
+ * @since 1.4
  * @filesource
  */
 
@@ -15,7 +16,7 @@ if (defined('ACP'))
     $modul['ModulName'] = 'Карта сайта';
     $modul['ModulPfad'] = 'sitemap';
     $modul['ModulVersion'] = '1.0';
-    $modul['Beschreibung'] = 'Данный модуль предназначен для построения карты вашего сайта на основании пунктов меню навигации. Для того, чтобы осуществить просмотр карты сайта, необходимо разместить системный тег <strong>[mod_sitemap:XXX]</strong> в теле какого-либо документа, где XXX - идентификаторы меню навигации указанные через запятую.';
+    $modul['description'] = 'Данный модуль предназначен для построения карты вашего сайта на основании пунктов меню навигации. Для того, чтобы осуществить просмотр карты сайта, необходимо разместить системный тег <strong>[mod_sitemap:XXX]</strong> в теле какого-либо документа, где XXX - идентификаторы меню навигации указанные через запятую.';
     $modul['Autor'] = 'Arcanum';
     $modul['MCopyright'] = '&copy; 2007 Overdoze Team';
     $modul['Status'] = 1;
@@ -53,9 +54,9 @@ function mod_sitemap($navi_ids = '')
 					"(
 						SELECT *
 						FROM " . PREFIX . "_navigation_items
-						WHERE Aktiv = '1'
-						AND Rubrik = " . $navi_id . "
-						ORDER BY Rang ASC
+						WHERE navi_item_status = '1'
+						AND navi_id = " . $navi_id . "
+						ORDER BY navi_item_position ASC
 					)"
 				);
 			}
@@ -74,7 +75,7 @@ function mod_sitemap($navi_ids = '')
 		$navi_in = array();
 		foreach ($navigations as $navigation)
 		{
-			if (in_array(UGROUP, $navigation->Gruppen))
+			if (in_array(UGROUP, $navigation->navi_user_group))
 			{
 				array_push($navi_in, $navigation->id);
 			}
@@ -84,9 +85,9 @@ function mod_sitemap($navi_ids = '')
 			$sql = "
 				SELECT *
 				FROM " . PREFIX . "_navigation_items
-				WHERE Aktiv = '1'
-				AND Rubrik IN(" . implode(',', $navi_in) . ")
-				ORDER BY Rubrik ASC, Rang ASC
+				WHERE navi_item_status = '1'
+				AND navi_id IN(" . implode(',', $navi_in) . ")
+				ORDER BY navi_id ASC, navi_item_position ASC
 			";
 		}
 		else
@@ -99,7 +100,7 @@ function mod_sitemap($navi_ids = '')
 	$sql = $AVE_DB->Query($sql);
 	while ($row_nav_item = $sql->FetchAssocArray())
 	{
-		$nav_items[$row_nav_item['Elter']][] = $row_nav_item;
+		$nav_items[$row_nav_item['parent_id']][] = $row_nav_item;
 	}
 
 	$sitemap = '';
@@ -124,20 +125,20 @@ function printSitemap(&$nav_items, &$sitemap = '', $parent = 0)
 
 	foreach ($nav_items[$parent] as $row)
 	{
-		if (strpos($row['Link'], 'module=') === false && start_with('index.php?', $row['Link']))
+		if (strpos($row['navi_item_link'], 'module=') === false && start_with('index.php?', $row['navi_item_link']))
 		{
-			$row['Link'] .= '&amp;doc=' . (empty($row['Url']) ? prepare_url($row['Titel']) : $row['Url']);
+			$row['navi_item_link'] .= '&amp;doc=' . (empty($row['document_alias']) ? prepare_url($row['title']) : $row['document_alias']);
 		}
 
-		if (start_with('www.', $row['Link']))
+		if (start_with('www.', $row['navi_item_link']))
 		{
-			$row['Link'] = str_replace('www.', 'http://www.', $row['Link']);
+			$row['navi_item_link'] = str_replace('www.', 'http://www.', $row['navi_item_link']);
 		}
 
-		$row['Link'] = rewrite_link($row['Link']);
+		$row['navi_item_link'] = rewrite_link($row['navi_item_link']);
 
-		$sitemap .= '<li><a href="' . $row['Link'] . '" target="' . $row['Ziel'] . '">';
-		$sitemap .= pretty_chars($row['Titel']) . '</a>';
+		$sitemap .= '<li><a href="' . $row['navi_item_link'] . '" target="' . $row['navi_item_target'] . '">';
+		$sitemap .= pretty_chars($row['title']) . '</a>';
 
 		if (isset($nav_items[$row['Id']]))
 		{

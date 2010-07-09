@@ -4,7 +4,7 @@
 	<div class="HeaderText">{#TEMPLATES_TIP1#}</div>
 </div>
 
-{if check_permission('vorlagen_neu')}
+{if check_permission('template_new')}
 <script type="text/javascript" language="JavaScript">
 function check_name() {ldelim}
 	if (document.getElementById('TempName').value == '') {ldelim}
@@ -41,11 +41,11 @@ function check_name() {ldelim}
 	{foreach from=$items item=tpl}
 		<tr style="background-color: #eff3eb;" onmouseover="this.style.backgroundColor='#dae0d8';" onmouseout="this.style.backgroundColor='#eff3eb';" id="table_rows">
 			<td width="10" class="itcen">{$tpl->Id}</td>
-			<td><strong>{if check_permission('vorlagen_edit')}<a title="{#TEMPLATES_EDIT#}" href="index.php?do=templates&amp;action=edit&amp;Id={$tpl->Id}&amp;cp={$sess}">{$tpl->TplName}</a>{else}{$tpl->TplName}{/if}</strong></td>
-			<td>{$tpl->TBenutzer}</td>
-			<td class="time">{$tpl->TDatum|date_format:$TIME_FORMAT|pretty_date}</td>
+			<td><strong>{if check_permission('template_edit')}<a title="{#TEMPLATES_EDIT#}" href="index.php?do=templates&amp;action=edit&amp;Id={$tpl->Id}&amp;cp={$sess}">{$tpl->template_title|escape}</a>{else}{$tpl->template_title|escape}{/if}</strong></td>
+			<td>{$tpl->template_author}</td>
+			<td class="time">{$tpl->template_created|date_format:$TIME_FORMAT|pretty_date}</td>
 			<td nowrap="nowrap" width="1%" align="center">
-				{if check_permission('vorlagen_edit')}
+				{if check_permission('template_edit')}
 					<a title="{#TEMPLATES_EDIT#}" href="index.php?do=templates&amp;action=edit&amp;Id={$tpl->Id}&amp;cp={$sess}">
 					<img src="{$tpl_dir}/images/icon_edit.gif" alt="" border="0" /></a>
 				{else}
@@ -53,7 +53,7 @@ function check_name() {ldelim}
 				{/if}
 			</td>
 			<td nowrap="nowrap" width="1%" align="center">
-				{if check_permission('vorlagen_multi')}
+				{if check_permission('template_multi')}
 					<a title="{#TEMPLATES_COPY#}" href="javascript:void(0);" onclick="window.open('?do=templates&amp;action=multi&amp;pop=1&amp;Id={$tpl->Id}&amp;cp={$sess}','pop','top=0,left=0,width=400,height=250')">
 					<img src="{$tpl_dir}/images/icon_copy.gif" alt="" border="0" />    </a>
 				{else}
@@ -65,7 +65,7 @@ function check_name() {ldelim}
 					<img src="{$tpl_dir}/images/icon_delete_no.gif" alt="" border="0" />
 				{else}
 					{if $tpl->can_deleted==1}
-						{if check_permission('vorlagen_loesch')}
+						{if check_permission('template_del')}
 							<a  title="{#TEMPLATES_DELETE#}" onclick="return (confirm('{#TEMPLATES_DELETE_CONF#}'))" href="index.php?do=templates&amp;action=delete&amp;Id={$tpl->Id}&amp;cp={$sess}">
 							<img  src="{$tpl_dir}/images/icon_delete.gif" alt="" border="0" /></a>
 						{else}

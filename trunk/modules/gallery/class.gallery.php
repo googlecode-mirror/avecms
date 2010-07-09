@@ -5,6 +5,7 @@
  *
  * @package AVE.cms
  * @subpackage module_Gallery
+ * @since 1.4
  * @filesource
  */
 class Gallery
@@ -70,14 +71,14 @@ class Gallery
 			WHERE id = '" . $gallery_id . "'
 		")->FetchRow();
 
-		$limit = ($row_gs->image_on_page > 0)
-			? $row_gs->image_on_page
+		$limit = ($row_gs->gallery_image_on_page > 0)
+			? $row_gs->gallery_image_on_page
 			: $this->_default_limit_images;
 		$limit = empty($lim) ? $limit : $lim;
 		$limit = ($ext != 1) ? $limit : 10000;
 		$start = get_current_page() * $limit - $limit;
 
-		switch ($row_gs->orderby)
+		switch ($row_gs->gallery_orderby)
 		{
 			case 'position':  $order_by = "image_position ASC"; break;
 			case 'titleasc':  $order_by = "image_title ASC";    break;
@@ -86,22 +87,28 @@ class Gallery
 			default:          $order_by = "image_date DESC";    break;
 		}
 
+		$num = $AVE_DB->Query("
+			SELECT COUNT(*)
+			FROM " . PREFIX . "_modul_gallery_images
+			WHERE gallery_id = '" . $gallery_id . "'
+		")->GetCell();
+
 		$sql = $AVE_DB->Query("
-			SELECT SQL_CALC_FOUND_ROWS *
+			SELECT *
 			FROM " . PREFIX . "_modul_gallery_images
 			WHERE gallery_id = '" . $gallery_id . "'
 			ORDER BY " . $order_by . "
 			LIMIT " . $start . "," . $limit . "
 		");
 
-		$num = $AVE_DB->Query("SELECT FOUND_ROWS()")->GetCell();
+//		$num = $AVE_DB->Query("SELECT FOUND_ROWS()")->GetCell();
 
 		$folder = rtrim('modules/gallery/uploads/' . $row_gs->gallery_folder, '/') . '/';
 
 		while($row = $sql->FetchAssocArray())
 		{
 			$row['image_type'] = $this->_galleryFileTypeGet($row['image_file_ext']);
-			$row['image_author'] = get_username_by_id($row['image_author']);
+			$row['image_author'] = get_username_by_id($row['image_author_id']);
 			$row['image_filename'] = rawurlencode($row['image_filename']);
 
 			if (file_exists(BASE_DIR . '/' . $folder . 'th__' . $row['image_filename']))
@@ -115,39 +122,39 @@ class Gallery
 					ABS_PATH,
 					$row['image_filename'],
 					$row['image_type'],
-					$row_gs->thumb_width,
+					$row_gs->gallery_thumb_width,
 					$row_gs->gallery_folder
 				);
 			}
 
-			if ($row_gs->show_size == 1)
+			if ($row_gs->gallery_image_size_show == 1)
 			{
 				$fs = filesize(BASE_DIR . '/' . $folder . $row['image_filename']);
 				$row['image_size'] = round($fs / 1024, 0);
 			}
 
-			if ($row_gs->type_out == 7)
+			if ($row_gs->gallery_type == 7)
 			{
 				$search = array(
-					'[img_id]',
-					'[img_filename]',
-					'[img_thumbnail]',
-					'[img_title]',
-					'[img_description]',
-					'[gal_id]',
-					'[gal_folder]'
+					'[tag:img:id]',
+					'[tag:img:filename]',
+					'[tag:img:thumbnail]',
+					'[tag:img:title]',
+					'[tag:img:description]',
+					'[tag:gal:id]',
+					'[tag:gal:folder]'
 				);
 				$replace = array(
 					$row['id'],
 					$row['image_filename'],
 					$row['thumbnail'],
-					htmlspecialchars($row['image_title']),
-					htmlspecialchars($row['image_description']),
+					htmlspecialchars(empty($row['image_title'])? $AVE_Template->get_config_vars('NoTitle') : $row['image_title'], ENT_QUOTES),
+					htmlspecialchars(empty($row['image_description']) ? $AVE_Template->get_config_vars('NoDescr') : $row['image_description'], ENT_QUOTES),
 					$row_gs->id,
 					ltrim($row_gs->gallery_folder . '/', '/')
 				);
-				$row['script_out'] = str_replace($search, $replace, $row_gs->script_out);
-				$row['image_tpl'] = str_replace($search, $replace, $row_gs->image_tpl);
+				$row['gallery_script'] = str_replace($search, $replace, $row_gs->gallery_script);
+				$row['gallery_image_template'] = str_replace($search, $replace, $row_gs->gallery_image_template);
 			}
 
 			array_push($images, $row);
@@ -157,7 +164,7 @@ class Gallery
 		if ($num > $limit)
 		{
 			$page_nav = ' <a class="pnav" href="index.php?id=' . $AVE_Core->curentdoc->Id
-				. '&amp;doc=' . (empty($AVE_Core->curentdoc->Url) ? prepare_url($AVE_Core->curentdoc->Titel) : $AVE_Core->curentdoc->Url)
+				. '&amp;doc=' . (empty($AVE_Core->curentdoc->document_alias) ? prepare_url($AVE_Core->curentdoc->document_title) : $AVE_Core->curentdoc->document_alias)
 				. ((isset($_REQUEST['artpage']) && is_numeric($_REQUEST['artpage'])) ? '&amp;artpage=' . $_REQUEST['artpage'] : '')
 				. ((isset($_REQUEST['apage']) && is_numeric($_REQUEST['apage'])) ? '&amp;apage=' . $_REQUEST['apage'] : '')
 				. '&amp;page={s}'
@@ -200,6 +207,7 @@ class Gallery
 		")->FetchRow();
 
 		$file_name = rtrim(BASE_DIR . '/modules/gallery/uploads/' . $row->gallery_folder, '/') . '/' . $row->image_filename;
+		$image_filename = rtrim(ABS_PATH . 'modules/gallery/uploads/' . $row->gallery_folder, '/') . '/' . $row->image_filename;
 
 		switch ($this->_galleryFileTypeGet($row->image_file_ext))
 		{
@@ -210,7 +218,7 @@ class Gallery
 				$AVE_Template->assign('w', ($width < 10 ? 10 : ($width > 800 ? 800 : $width+10)));
 				$AVE_Template->assign('h', ($height < 10 ? 10 : ($height > 600 ? 600 : $height+50)));
 				$AVE_Template->assign('scrollbars', ($width > 800 || $height > 600 ? 1 : '') );
-				$AVE_Template->assign('image_filename', $file_name);
+				$AVE_Template->assign('image_filename', $image_filename);
 				$AVE_Template->assign('image_title', $row->image_title);
 				break;
 
@@ -218,7 +226,7 @@ class Gallery
 				$AVE_Template->assign('w', 350);
 				$AVE_Template->assign('notresizable', 1);
 				$AVE_Template->assign('h', 400);
-				$AVE_Template->assign('image_filename', $file_name);
+				$AVE_Template->assign('image_filename', $image_filename);
 				$AVE_Template->assign('mediatype', $this->_galleryMediaTypeGet($row->image_file_ext));
 				break;
 		}
@@ -242,7 +250,7 @@ class Gallery
 
 		$row_gs = $AVE_DB->Query("
 			SELECT
-				thumb_width,
+				gallery_thumb_width,
 				gallery_folder
 			FROM " . PREFIX . "_modul_gallery
 			WHERE id = '" . $gallery_id . "'
@@ -307,7 +315,7 @@ class Gallery
 		while ($row = $sql->FetchAssocArray())
 		{
 			$row['image_type'] = $this->_galleryFileTypeGet($row['image_file_ext']);
-			$row['image_author'] = get_username_by_id($row['image_author']);
+			$row['image_author'] = get_username_by_id($row['image_author_id']);
 			$row['image_size'] = @filesize($folder . $row['image_filename']);
 			$row['image_size'] = @round($row['image_size'] / 1024, 2);
 			array_push($images, $row);
@@ -321,7 +329,7 @@ class Gallery
 			$AVE_Template->assign('page_nav', $page_nav);
 		}
 
-		$AVE_Template->assign('thumb_width', $row_gs->thumb_width);
+		$AVE_Template->assign('gallery_thumb_width', $row_gs->gallery_thumb_width);
 		$AVE_Template->assign('gallery_folder', $row_gs->gallery_folder);
 		$AVE_Template->assign('images', $images);
 		$AVE_Template->assign('content', $AVE_Template->fetch($tpl_dir . 'admin_gallery_image.tpl'));
@@ -339,8 +347,8 @@ class Gallery
 
 		$sql = $AVE_DB->Query("
 			SELECT
-				watermark,
-				thumb_width,
+				gallery_watermark,
+				gallery_thumb_width,
 				gallery_folder
 			FROM " . PREFIX . "_modul_gallery
 			WHERE id = '" . $gallery_id . "'
@@ -400,11 +408,11 @@ class Gallery
 
 								if ($upload_file_ext != 'video')
 								{
-									$this->_galleryImageRebuild($upload_dir, $upload_filename, $row->watermark);
+									$this->_galleryImageRebuild($upload_dir, $upload_filename, $row->gallery_watermark);
 								}
 
 								$arr[] = '<img src="../modules/gallery/thumb.php?file=' . $upload_filename
-									. '&xwidth=' . $row->thumb_width
+									. '&xwidth=' . $row->gallery_thumb_width
 									. '&type=' . $this->_galleryFileTypeGet($upload_file_ext)
 									. '&folder=' . $row->gallery_folder . '" />';
 
@@ -415,7 +423,7 @@ class Gallery
 										id = '',
 										gallery_id = '" . $gallery_id . "',
 										image_filename = '" . addslashes($upload_filename) . "',
-										image_author = '" . (int)$_SESSION['user_id'] . "',
+										image_author_id = '" . (int)$_SESSION['user_id'] . "',
 										image_title = '" . addslashes($image_title) . "',
 										image_file_ext = '" . addslashes($upload_file_ext) . "',
 										image_description = '',
@@ -451,11 +459,11 @@ class Gallery
 
 						if ($upload_file_ext != 'video')
 						{
-							$this->_galleryImageRebuild($upload_dir, $upload_filename, $row->watermark);
+							$this->_galleryImageRebuild($upload_dir, $upload_filename, $row->gallery_watermark);
 						}
 
 						$arr[] = '<img src="../modules/gallery/thumb.php?file=' . $upload_filename
-							. '&xwidth=' . $row->thumb_width
+							. '&xwidth=' . $row->gallery_thumb_width
 							. '&type=' . $this->_galleryFileTypeGet($upload_file_ext)
 							. '&folder=' . $row->gallery_folder . '" />';
 
@@ -466,7 +474,7 @@ class Gallery
 								id = '',
 								gallery_id = '" . $gallery_id . "',
 								image_filename = '" . addslashes($upload_filename) . "',
-								image_author = '" . (int)$_SESSION['user_id'] . "',
+								image_author_id = '" . (int)$_SESSION['user_id'] . "',
 								image_title = '" . (isset($_POST['image_title'][$i]) ? $_POST['image_title'][$i] : '') . "',
 								image_file_ext = '" . addslashes($upload_file_ext) . "',
 								image_description = '" . (isset($_POST['image_description'][$i]) ? $_POST['image_description'][$i] : '') . "',
@@ -522,7 +530,7 @@ class Gallery
 				" . PREFIX . "_modul_gallery_images AS img
 					ON img.gallery_id = gal.id
 			GROUP BY gal.id
-			ORDER BY gal.gallery_date DESC
+			ORDER BY gal.gallery_created DESC
 			LIMIT " . $start . "," . $limit . "
 		");
 
@@ -530,7 +538,7 @@ class Gallery
 
 		while($row = $sql->FetchAssocArray())
 		{
-			$row['username'] = get_username_by_id($row['gallery_author']);
+			$row['username'] = get_username_by_id($row['gallery_author_id']);
 			array_push($galleries, $row);
 		}
 
@@ -598,8 +606,8 @@ class Gallery
 						gallery_folder = '" . $gallery_folder . "',
 						gallery_title = '" . $_POST['gallery_title'] . "',
 						gallery_description = '" . $_POST['gallery_description'] . "',
-						gallery_author = '" . (int)$_SESSION['user_id'] . "',
-						gallery_date = '" . time() . "'
+						gallery_author_id = '" . (int)$_SESSION['user_id'] . "',
+						gallery_created = '" . time() . "'
 				");
 
 				if (!empty($gallery_folder))
@@ -636,7 +644,7 @@ class Gallery
 				$_REQUEST['gallery_title'] = $_REQUEST['gallery_title_old'];
 			}
 
-			if ($_REQUEST['thumb_width_old'] != $_REQUEST['thumb_width'])
+			if ($_REQUEST['thumb_width_old'] != $_REQUEST['gallery_thumb_width'])
 			{ // изменён размер миниатюр - удаляем миниатюры
 				$folder = rtrim(BASE_DIR . '/modules/gallery/uploads/' . $gallery_folder_old, '/') . '/';
 				$sql = $AVE_DB->Query("
@@ -660,18 +668,18 @@ class Gallery
 				SET
 					gallery_title = '" . $_REQUEST['gallery_title'] . "',
 					gallery_description = '" . $_REQUEST['gallery_description'] . "',
-					show_size = '" . ((!empty($_REQUEST['show_size']) && is_numeric($_REQUEST['show_size'])) ? $_REQUEST['show_size'] : '') . "',
-					show_description = '" . ((!empty($_REQUEST['show_description']) && is_numeric($_REQUEST['show_description'])) ? $_REQUEST['show_description'] : '') . "',
-					show_title = '" . ((!empty($_REQUEST['show_title']) && is_numeric($_REQUEST['show_title'])) ? $_REQUEST['show_title'] : '') . "',
-					thumb_width = '" . ((!empty($_REQUEST['thumb_width']) && is_numeric($_REQUEST['thumb_width'])) ? $_REQUEST['thumb_width'] : 120) . "',
-					image_on_line = '" . ((!empty($_REQUEST['image_on_line']) && is_numeric($_REQUEST['image_on_line'])) ? $_REQUEST['image_on_line'] : 4) . "',
-					image_on_page = '" . (int)$_REQUEST['image_on_page'] . "',
-					type_out = '" . (int)$_REQUEST['type_out'] . "',
-					watermark = '" . $_REQUEST['watermark'] . "',
+					gallery_image_size_show = '" . ((!empty($_REQUEST['gallery_image_size_show']) && is_numeric($_REQUEST['gallery_image_size_show'])) ? $_REQUEST['gallery_image_size_show'] : '') . "',
+					gallery_description_show = '" . ((!empty($_REQUEST['gallery_description_show']) && is_numeric($_REQUEST['gallery_description_show'])) ? $_REQUEST['gallery_description_show'] : '') . "',
+					gallery_title_show = '" . ((!empty($_REQUEST['gallery_title_show']) && is_numeric($_REQUEST['gallery_title_show'])) ? $_REQUEST['gallery_title_show'] : '') . "',
+					gallery_thumb_width = '" . ((!empty($_REQUEST['gallery_thumb_width']) && is_numeric($_REQUEST['gallery_thumb_width'])) ? $_REQUEST['gallery_thumb_width'] : 120) . "',
+					gallery_image_on_line = '" . ((!empty($_REQUEST['gallery_image_on_line']) && is_numeric($_REQUEST['gallery_image_on_line'])) ? $_REQUEST['gallery_image_on_line'] : 4) . "',
+					gallery_image_on_page = '" . (int)$_REQUEST['gallery_image_on_page'] . "',
+					gallery_type = '" . (int)$_REQUEST['gallery_type'] . "',
+					gallery_watermark = '" . $_REQUEST['gallery_watermark'] . "',
 					gallery_folder = '" . $gallery_folder . "',
-					orderby = '" . $_REQUEST['orderby'] . "',
-					script_out = '" . $_REQUEST['script_out'] . "',
-					image_tpl = '" . $_REQUEST['image_tpl'] . "'
+					gallery_orderby = '" . $_REQUEST['gallery_orderby'] . "',
+					gallery_script = '" . $_REQUEST['gallery_script'] . "',
+					gallery_image_template = '" . $_REQUEST['gallery_image_template'] . "'
 				WHERE
 					id = '" . $gallery_id . "'
 			");

@@ -38,8 +38,8 @@ function check_recommendForm()
 
 <label for="yE">{#EmailR#}</label>
 <br />
-<input id="yE" name="Email" type="text"  size="40" />
-<br /> 
+<input id="yE" name="email" type="text"  size="40" />
+<br />
 <label for="myE">{#EmailY#}</label><br />
 <input id="myE" name="myEmail" type="text"  size="40"  />
 <br />

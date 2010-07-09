@@ -1,5 +1,15 @@
 <?php
-class Search {
+
+/**
+ * AVE.cms - Ìîäóëü Ïîèñê
+ *
+ * @package AVE.cms
+ * @subpackage module_Search
+ * @since 1.4
+ * @filesource
+ */
+class Search
+{
 
 /**
  *	ÑÂÎÉÑÒÂÀ
@@ -12,8 +22,8 @@ class Search {
 	var $_disallowed_tags = '';
 	var $_search_string   = '';
 	var $_stem_words      = array();
-	var $_like = "( (Inhalt LIKE '%%%s%%') OR (Inhalt LIKE '%%%s%%') )";
-	var $_not_like = "( (Inhalt NOT LIKE '%%%s%%') OR (Inhalt NOT LIKE '%%%s%%') )";
+	var $_like = "( (field_value LIKE '%%%s%%') OR (field_value LIKE '%%%s%%') )";
+	var $_not_like = "( (field_value NOT LIKE '%%%s%%') OR (field_value NOT LIKE '%%%s%%') )";
 
 /**
  *	ÂÍÓÒÐÅÍÍÈÅ ÌÅÒÎÄÛ
@@ -139,12 +149,12 @@ class Search {
 			{
 				if (isset($_REQUEST['ts']) && 1 == $_REQUEST['ts'])
 				{
-					$type_search = "WHERE RubTyp = 'kurztext'";
+					$type_search = "WHERE rubric_field_type = 'kurztext'";
 					$type_navi = '&amp;ts=1';
 				}
 				else
 				{
-					$type_search = "WHERE RubTyp = 'langtext'";
+					$type_search = "WHERE rubric_field_type = 'langtext'";
 					$type_navi = '';
 				}
 
@@ -156,18 +166,18 @@ class Search {
 				$w_rf = array();
 				while ($row = $sql_rf->FetchRow())
 				{
-					$w_rf[] = "RubrikFeld = " . $row->Id;
+					$w_rf[] = "rubric_field_id = " . $row->Id;
 				}
 				$w_rf = ' AND (' . implode(' OR ', $w_rf) . ')';
 
 				$num = $AVE_DB->Query("
 					SELECT
-						DokumentId,
-						Inhalt
+						document_id,
+						field_value
 					FROM " . PREFIX . "_document_fields
 					" . $where . "
 					" . $w_rf . "
-					AND Suche = '1'
+					AND document_in_search = '1'
 				")->numrows();
 
 				$limit = $this->_limit;
@@ -176,12 +186,12 @@ class Search {
 
 				$query_feld = $AVE_DB->Query("
 					SELECT
-						DokumentId,
-						Inhalt
+						document_id,
+						field_value
 					FROM " . PREFIX . "_document_fields
 					" . $where . "
 					" . $w_rf . "
-					AND Suche = '1'
+					AND document_in_search = '1'
 					LIMIT " . $start . "," . $limit
 				);
 
@@ -211,24 +221,24 @@ class Search {
 				$regex_snapshot  = '/.{0,100}[^\s]*' . implode('[^\s]*.{0,100}|.{0,100}[^\s]*', $this->_stem_words) . '[^\s]*.{0,100}/is';
 				$regex_highlight = '/[^\s]*' . implode('[^\s]*|[^\s]*', $this->_stem_words) . '[^\s]*/is';
 
-				$doctime = get_settings('use_doctime') ? ("AND (DokStart <= " . time() . " AND (DokEnde = 0 OR DokEnde >= " . time() . "))") : '';
+				$doctime = get_settings('use_doctime') ? ("AND document_published <= " . time() . " AND (document_expire = 0 OR document_expire >= " . time() . ")") : '';
 
 				while ($row_feld = $query_feld->FetchRow())
 				{
 					$sql = $AVE_DB->Query("
 						SELECT
 							Id,
-							Titel,
-							Url
+							document_title,
+							document_alias
 						FROM " . PREFIX . "_documents
-						WHERE Id = '" . $row_feld->DokumentId . "'
-						AND Geloescht = '0'
-						AND DokStatus = '1'
+						WHERE Id = '" . $row_feld->document_id . "'
+						AND document_deleted = '0'
+						AND document_status = '1'
 						" . $doctime
 					);
 					while ($row = $sql->FetchRow())
 					{
-						$row->Text = $row_feld->Inhalt;
+						$row->Text = $row_feld->field_value;
 						$row->Text = strip_tags($row->Text, $this->_allowed_tags);
 
 						$fo = array();
@@ -244,7 +254,7 @@ class Search {
 						{
 							$row->Text = @preg_replace($regex_highlight, "<span class=\"mod_search_highlight\">$0</span>", $row->Text);
 						}
-						$row->Url = rewrite_link('index.php?id=' . $row->Id . '&amp;doc=' . (empty($row->Url) ? prepare_url($row->Titel) : $row->Url));
+						$row->document_alias = rewrite_link('index.php?id=' . $row->Id . '&amp;doc=' . (empty($row->document_alias) ? prepare_url($row->document_title) : $row->document_alias));
 
 						array_push($modul_search_results, $row);
 					}

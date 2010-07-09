@@ -1,4 +1,14 @@
 <?php
+
+/**
+ * Класс модуля Рекомендовать
+ *
+ * @package AVE.cms
+ * @subpackage module_Recommend
+ * @since 1.4
+ * @filesource
+ */
+
 class Recommend {
 
 /**

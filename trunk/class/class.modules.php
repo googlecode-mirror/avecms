@@ -48,12 +48,12 @@ class AVE_Module
         $sql = $AVE_DB->Query("
 			SELECT
 				Id,
-				TplName
+				template_title
 			FROM " . PREFIX . "_templates
 		");
 		while ($row = $sql->FetchRow())
 		{
-			$all_templates[$row->Id] = htmlspecialchars($row->TplName, ENT_QUOTES);
+			$all_templates[$row->Id] = htmlspecialchars($row->template_title, ENT_QUOTES);
 		}
 
 		// Получаем из БД информацию о всех установленных модулях в системе
@@ -62,7 +62,7 @@ class AVE_Module
 		// Определяем директорию, где храняться модули
         $dir = BASE_DIR . '/modules';
 		$d = dir($dir);
-		
+
         // Циклически обрабатываем директории
         while (false !== ($entry = $d->read()))
 		{
@@ -71,7 +71,8 @@ class AVE_Module
 				$entry = $dir . '/' . $entry;
 				if (is_dir($entry))
 				{
-					$modul = $mod = '';
+					$modul = '';
+					$mod = new stdClass();
 
 					// Если не удалось найти (подключить) основной файл каждого модуля modul.php
                     if (@ !include($entry . '/modul.php'))
@@ -80,26 +81,26 @@ class AVE_Module
                         $errors[] = $AVE_Template->get_config_vars('MODULES_ERROR') . $entry;
 					}
 					else
-					{ // Если файл modul.php удалось подключить
+					{	// Если файл modul.php удалось подключить
 
-                        // Получаем название модуля
+						// Получаем название модуля
                         $row = !empty($modules[$modul['ModulName']])
 							? $modules[$modul['ModulName']]
 							: false;
 
                         // Определяем рад переменных, хранящих информацию о модуле
-						$mod->permission = check_permission('mod_' . $modul['ModulPfad']);
-						$mod->adminedit  = !empty($modul['AdminEdit']);
-						$mod->path       = $modul['ModulPfad'];
-						$mod->name       = $modul['ModulName'];
-						$mod->tag        = $modul['CpEngineTagTpl'];
-						$mod->info       = $modul['Beschreibung']
-											. '<br><br><b>' . $author_title . '</b>'
-											. '<br>' . $modul['Autor']
-											. '<br><em>' . $modul['MCopyright'] . '</em>';
+						$mod->mod_permission = check_permission('mod_' . $modul['ModulPfad']);
+						$mod->adminedit      = !empty($modul['AdminEdit']);
+						$mod->path           = $modul['ModulPfad'];
+						$mod->name           = $modul['ModulName'];
+						$mod->tag            = $modul['CpEngineTagTpl'];
+						$mod->info           = $modul['description']
+							. '<br><br><b>' . $author_title . '</b>'
+							. '<br>' . $modul['Autor']
+							. '<br><em>' . $modul['MCopyright'] . '</em>';
 
-						// Если название модул получено, заносим информацию о данном модуле в общий массив с 
-                        // установленными модулями
+						// Если название модул получено, заносим информацию о данном модуле
+						// в общий массив с установленными модулями
                         if ($row)
 						{
 							$mod->status      = $row->Status;

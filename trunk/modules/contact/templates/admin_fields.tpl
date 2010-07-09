@@ -1,8 +1,8 @@
 <script type="text/javascript" language="JavaScript">
 function check_name() {ldelim}
-	if (document.getElementById('field_title').value == '') {ldelim}
+	if (document.getElementById('contact_field_title').value == '') {ldelim}
 		alert("{#CONTACT_ENTER_NAME#}");
-		document.getElementById('field_title').focus();
+		document.getElementById('contact_field_title').focus();
 		return false;
 	{rdelim}
 	return true;
@@ -41,32 +41,32 @@ function check_name() {ldelim}
 				<tr style="background-color:#eff3eb;" onmouseover="this.style.backgroundColor='#dae0d8';" onmouseout="this.style.backgroundColor='#eff3eb';" id="table_rows">
 					<td><input title="{#CONTACT_MARK_DELETE#}" name="del[{$item->Id}]" type="checkbox" id="del[{$item->Id}]" value="1" /></td>
 					<td colspan="2">
-						<input style="width:200px;" name="field_title[{$item->Id}]" type="text" id="field_title[{$item->Id}]" value="{$item->field_title|escape:html|stripslashes}" />&nbsp;
-						<select style="width:168px;" name="field_type[{$item->Id}]" id="field_type[{$item->Id}]">
-							<option value="text"{if $item->field_type == 'text'} selected{/if}>{#CONTACT_TEXT_FILED#}</option>
-							<option value="textfield"{if $item->field_type == 'textfield'} selected{/if}>{#CONTACT_MULTI_FIELD#}</option>
-							<option value="checkbox"{if $item->field_type == 'checkbox'} selected{/if}>{#CONTACT_CHECKBOX_FIELD#}</option>
-							<option value="dropdown"{if $item->field_type == 'dropdown'} selected{/if}>{#CONTACT_DROPDOWN_FIELD#}</option>
-							<option value="fileupload"{if $item->field_type == 'fileupload'} selected{/if}>{#CONTACT_UPLOAD_FIELD#}</option>
+						<input style="width:200px;" name="contact_field_title[{$item->Id}]" type="text" id="contact_field_title[{$item->Id}]" value="{$item->contact_field_title|escape|stripslashes}" />&nbsp;
+						<select style="width:168px;" name="contact_field_type[{$item->Id}]" id="contact_field_type[{$item->Id}]">
+							<option value="text"{if $item->contact_field_type == 'text'} selected{/if}>{#CONTACT_TEXT_FILED#}</option>
+							<option value="textfield"{if $item->contact_field_type == 'textfield'} selected{/if}>{#CONTACT_MULTI_FIELD#}</option>
+							<option value="checkbox"{if $item->contact_field_type == 'checkbox'} selected{/if}>{#CONTACT_CHECKBOX_FIELD#}</option>
+							<option value="dropdown"{if $item->contact_field_type == 'dropdown'} selected{/if}>{#CONTACT_DROPDOWN_FIELD#}</option>
+							<option value="fileupload"{if $item->contact_field_type == 'fileupload'} selected{/if}>{#CONTACT_UPLOAD_FIELD#}</option>
 						</select><br />
-						<input style="width:373px;" type="text" name="field_default[{$item->Id}]" value="{$item->field_default|escape:html|stripslashes}"{if $item->field_type == 'fileupload'} disabled{/if} />
+						<input style="width:373px;" type="text" name="contact_field_default[{$item->Id}]" value="{$item->contact_field_default|escape|stripslashes}"{if $item->contact_field_type == 'fileupload'} disabled{/if} />
 					</td>
 					<td colspan="2" align="center">
-						<input style="width:56px;" type="text" name="field_position[{$item->Id}]" id="field_position[{$item->Id}]" size="5" maxlength="3" value="{$item->field_position}" />&nbsp;
-						<input style="width:56px;" type="text" name="field_size[{$item->Id}]" id="field_size[{$item->Id}]" size="5" maxlength="4" value="{$item->field_size}" /><br />
-						<input type="radio" name="field_newline[{$item->Id}]" value="1"{if $item->field_newline==1} checked{/if} />{#CONTACT_YES#} <input type="radio" name="field_newline[{$item->Id}]" value="0"{if $item->field_newline!=1} checked{/if} />{#CONTACT_NO#}
+						<input style="width:56px;" type="text" name="contact_field_position[{$item->Id}]" id="contact_field_position[{$item->Id}]" size="5" maxlength="3" value="{$item->contact_field_position}" />&nbsp;
+						<input style="width:56px;" type="text" name="contact_field_size[{$item->Id}]" id="contact_field_size[{$item->Id}]" size="5" maxlength="4" value="{$item->contact_field_size}" /><br />
+						<input type="radio" name="contact_field_newline[{$item->Id}]" value="1"{if $item->contact_field_newline==1} checked{/if} />{#CONTACT_YES#} <input type="radio" name="contact_field_newline[{$item->Id}]" value="0"{if $item->contact_field_newline!=1} checked{/if} />{#CONTACT_NO#}
 					</td>
 					<td colspan="3">
-						<select style="width:100px;" name="field_datatype[{$item->Id}]" id="field_datatype[{$item->Id}]"{if $item->field_type != 'textfield' && $item->field_type != 'text'} disabled{/if}>
-							<option value="anysymbol"{if $item->field_datatype == 'anysymbol'} selected{/if}>{#CONTACT_ANY_SYMBOL#}</option>
-							<option value="onlydecimal"{if $item->field_datatype == 'onlydecimal'} selected{/if}>{#CONTACT_ONLY_DECIMAL#}</option>
-							<option value="onlychars"{if $item->field_datatype == 'onlychars'} selected{/if}>{#CONTACT_ONLY_CHARS#}</option>
+						<select style="width:100px;" name="contact_field_datatype[{$item->Id}]" id="contact_field_datatype[{$item->Id}]"{if $item->contact_field_type != 'textfield' && $item->contact_field_type != 'text'} disabled{/if}>
+							<option value="anysymbol"{if $item->contact_field_datatype == 'anysymbol'} selected{/if}>{#CONTACT_ANY_SYMBOL#}</option>
+							<option value="onlydecimal"{if $item->contact_field_datatype == 'onlydecimal'} selected{/if}>{#CONTACT_ONLY_DECIMAL#}</option>
+							<option value="onlychars"{if $item->contact_field_datatype == 'onlychars'} selected{/if}>{#CONTACT_ONLY_CHARS#}</option>
 						</select>&nbsp;
-						<input style="width:62px;" type="text" name="field_maxchars[{$item->Id}]" id="field_maxchars[{$item->Id}]" size="5" maxlength="20" value="{$item->field_maxchars}"{if $item->field_type != 'textfield' && $item->field_type != 'text'} disabled{/if} />&nbsp;
-						<input type="radio" name="field_required[{$item->Id}]" value="1"{if $item->field_required==1} checked{/if} />{#CONTACT_YES#} <input type="radio" name="field_required[{$item->Id}]" value="0"{if $item->field_required!=1} checked{/if} />{#CONTACT_NO#}<br />
-						<input style="width:264px;" type="text" name="field_message[{$item->Id}]" value="{$item->field_message|escape:html|stripslashes}"{if $item->field_type != 'textfield' && $item->field_type != 'text' && $item->field_required != 1} disabled{/if} />
+						<input style="width:62px;" type="text" name="contact_field_max_chars[{$item->Id}]" id="contact_field_max_chars[{$item->Id}]" size="5" maxlength="20" value="{$item->contact_field_max_chars}"{if $item->contact_field_type != 'textfield' && $item->contact_field_type != 'text'} disabled{/if} />&nbsp;
+						<input type="radio" name="contact_field_required[{$item->Id}]" value="1"{if $item->contact_field_required==1} checked{/if} />{#CONTACT_YES#} <input type="radio" name="contact_field_required[{$item->Id}]" value="0"{if $item->contact_field_required!=1} checked{/if} />{#CONTACT_NO#}<br />
+						<input style="width:264px;" type="text" name="contact_field_value[{$item->Id}]" value="{$item->contact_field_value|escape|stripslashes}"{if $item->contact_field_type != 'textfield' && $item->contact_field_type != 'text' && $item->contact_field_required != 1} disabled{/if} />
 					</td>
-					<td><input type="radio" name="field_status[{$item->Id}]" value="1"{if $item->field_status==1} checked{/if} />{#CONTACT_YES#} <input type="radio" name="field_status[{$item->Id}]" value="0"{if $item->field_status!=1} checked{/if} />{#CONTACT_NO#}</td>
+					<td><input type="radio" name="contact_field_status[{$item->Id}]" value="1"{if $item->contact_field_status==1} checked{/if} />{#CONTACT_YES#} <input type="radio" name="contact_field_status[{$item->Id}]" value="0"{if $item->contact_field_status!=1} checked{/if} />{#CONTACT_NO#}</td>
 				</tr>
 			{/foreach}
 		</table><br />
@@ -79,7 +79,7 @@ function check_name() {ldelim}
 {if $smarty.request.id != ''}
 	<h4>{#CONTACT_NEW_FILED_ADD#}</h4>
 
-	<form method="post" action="index.php?do=modules&action=modedit&mod=contact&moduleaction=save_new&cp={$sess}&id={$smarty.request.id}&pop=1" name="new" onSubmit='return check_name()'>
+	<form method="post" action="index.php?do=modules&action=modedit&mod=contact&moduleaction=save_new&cp={$sess}&id={$smarty.request.id|escape}&pop=1" name="new" onSubmit='return check_name()'>
 		<table width="100%" border="0" cellpadding="8" cellspacing="1" class="tableborder">
 			<tr class="tableheader">
 				<td width="20" rowspan="2" align="center">&nbsp;</td>
@@ -101,32 +101,32 @@ function check_name() {ldelim}
 			<tr style="background-color:#eff3eb;" onmouseover="this.style.backgroundColor='#dae0d8';" onmouseout="this.style.backgroundColor='#eff3eb';" id="table_rows">
 				<td width="20">&nbsp;</td>
 				<td colspan="2">
-					<input style="width:200px" name="field_title" type="text" id="field_title" value="" />&nbsp;
-					<select style="width:168px;" name="field_type" id="field_type">
+					<input style="width:200px" name="contact_field_title" type="text" id="contact_field_title" value="" />&nbsp;
+					<select style="width:168px;" name="contact_field_type" id="contact_field_type">
 						<option value="text">{#CONTACT_TEXT_FILED#}</option>
 						<option value="textfield">{#CONTACT_MULTI_FIELD#}</option>
 						<option value="checkbox">{#CONTACT_CHECKBOX_FIELD#}</option>
 						<option value="dropdown">{#CONTACT_DROPDOWN_FIELD#}</option>
 						<option value="fileupload">{#CONTACT_UPLOAD_FIELD#}</option>
 					</select><br />
-					<input style="width:373px;" type="text" name="field_default" id="field_default" value="" />
+					<input style="width:373px;" type="text" name="contact_field_default" id="contact_field_default" value="" />
 				</td>
 				<td colspan="2" align="center">
-					<input style="width:56px;" type="text" name="field_position" id="field_position" size="5" maxlength="3" value="1" />&nbsp;
-					<input style="width:56px;" type="text" name="field_size" id="field_size" size="5" maxlength="4" value="300" /><br />
-					<input type="radio" name="field_newline" value="1" checked="checked" />{#CONTACT_YES#} <input type="radio" name="field_newline" value="0" />{#CONTACT_NO#}
+					<input style="width:56px;" type="text" name="contact_field_position" id="contact_field_position" size="5" maxlength="3" value="1" />&nbsp;
+					<input style="width:56px;" type="text" name="contact_field_size" id="contact_field_size" size="5" maxlength="4" value="300" /><br />
+					<input type="radio" name="contact_field_newline" value="1" checked="checked" />{#CONTACT_YES#} <input type="radio" name="contact_field_newline" value="0" />{#CONTACT_NO#}
 				</td>
 				<td colspan="3">
-					<select style="width:100px;" name="field_datatype" id="field_datatype">
+					<select style="width:100px;" name="contact_field_datatype" id="contact_field_datatype">
 						<option value="anysymbol" selected>{#CONTACT_ANY_SYMBOL#}</option>
 						<option value="onlydecimal">{#CONTACT_ONLY_DECIMAL#}</option>
 						<option value="onlychars">{#CONTACT_ONLY_CHARS#}</option>
 					</select>&nbsp;
-					<input style="width:62px;" type="text" name="field_maxchars" id="field_maxchars" size="5" maxlength="20" value="1,25" />&nbsp;
-					<input type="radio" name="field_required" value="1" />{#CONTACT_YES#} <input type="radio" name="field_required" value="0" checked="checked" />{#CONTACT_NO#}<br />
-					<input style="width:264px;" type="text" name="field_message" id="field_message" value="{#CONTACT_DEFAULT_MESSAGE#}" />
+					<input style="width:62px;" type="text" name="contact_field_max_chars" id="contact_field_max_chars" size="5" maxlength="20" value="1,25" />&nbsp;
+					<input type="radio" name="contact_field_required" value="1" />{#CONTACT_YES#} <input type="radio" name="contact_field_required" value="0" checked="checked" />{#CONTACT_NO#}<br />
+					<input style="width:264px;" type="text" name="contact_field_value" id="contact_field_value" value="{#CONTACT_DEFAULT_MESSAGE#}" />
 				</td>
-				<td><input type="radio" name="field_status" value="1" checked="checked" />{#CONTACT_YES#} <input type="radio" name="field_status" value="0" />{#CONTACT_NO#}</td>
+				<td><input type="radio" name="contact_field_status" value="1" checked="checked" />{#CONTACT_YES#} <input type="radio" name="contact_field_status" value="0" />{#CONTACT_NO#}</td>
 			</tr>
 		</table><br />
 

@@ -14,7 +14,7 @@ $pass = $r_pass->FetchRow();
 if (is_object($pass) && isset($_POST['pass']) && md5(md5($_POST['pass'])) == $pass->password)
 {
 	$_SESSION["f_pass_id_" . addslashes($_REQUEST['fid'])] =  md5(md5($_POST['pass']));
-	header("Location:index.php?module=forums&show=showforum&fid=$_POST[fid]");
+	header("Location:index.php?module=forums&show=showforum&fid=" . $_POST['fid']);
 } else {
 	header("Location:" . $_SERVER['HTTP_REFERER']);
 	exit;

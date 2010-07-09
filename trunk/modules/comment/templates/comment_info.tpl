@@ -4,7 +4,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=windows-1251" />
 <title>{#COMMENT_INFO#}</title>
-<link href="templates/{$smarty.request.theme}/css/style.css" rel="stylesheet" type="text/css" media="screen" />
+<link href="templates/{$smarty.request.theme|escape}/css/style.css" rel="stylesheet" type="text/css" media="screen" />
 </head>
 
 <body id="body_popup">
@@ -15,30 +15,30 @@
 	<table width="100%" border="0" cellspacing="1" cellpadding="4">
 		<tr>
 			<td width="160">{#COMMENT_USER_NAME#}</td>
-			<td>{$c.author_name|stripslashes|escape}</td>
+			<td>{$c.comment_author_name|stripslashes|escape}</td>
 		</tr>
 
 		<tr>
 			<td width="160">{#COMMENT_DATE_CREATE#}</td>
-			<td>{$c.published|date_format:$TIME_FORMAT|pretty_date}</td>
+			<td>{$c.comment_published|date_format:$TIME_FORMAT|pretty_date}</td>
 		</tr>
 
 		<tr>
 			<td width="160">{#COMMENT_USER_EMAIL#}</td>
 			<td>
-				{assign var=author_email value=$c.author_email|default:''}
-				{mailto address="$author_email" encode="javascript_charcode"}
+				{assign var=comment_author_email value=$c.comment_author_email}
+				{mailto address="$comment_author_email" encode="javascript_charcode"}
 			</td>
 		</tr>
 
 		<tr>
 			<td width="160">{#COMMENT_USER_SITE#}</td>
-			<td>{$c.author_website|default:'-'}</td>
+			<td>{$c.comment_author_website|default:'-'}</td>
 		</tr>
 
 		<tr>
 			<td width="160">{#COMMENT_USER_FROM#}</td>
-			<td>{$c.author_city|stripslashes|escape|default:'-'}</td>
+			<td>{$c.comment_author_city|stripslashes|escape|default:'-'}</td>
 		</tr>
 
 		<tr>

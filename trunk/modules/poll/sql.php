@@ -10,35 +10,35 @@ $modul_sql_deinstall[] = "DROP TABLE IF EXISTS CPPREFIX_modul_poll_items;";
 
 $modul_sql_install[] = "CREATE TABLE CPPREFIX_modul_poll (
   id int(10) unsigned NOT NULL auto_increment,
-  title varchar(250) NOT NULL default '',
-  active tinyint(1) NOT NULL default '1',
-  group_id tinytext,
-  ip text NOT NULL default '',
-  uid text NOT NULL default '',
-  can_comment tinyint(1) NOT NULL default '0',
-  start int(10) unsigned NOT NULL,
-  ende int(10) unsigned NOT NULL,
+  poll_title varchar(255) NOT NULL default '',
+  poll_status enum('1','0') NOT NULL default '1',
+  poll_can_comment enum('0','1') NOT NULL default '0',
+  poll_groups_id tinytext,
+  poll_start int(10) unsigned NOT NULL default '0',
+  poll_end int(10) unsigned NOT NULL default '0',
+  poll_users_id text NOT NULL default '',
+  poll_users_ip text NOT NULL default '',
   PRIMARY KEY  (id)
 ) TYPE=MyISAM DEFAULT CHARSET=cp1251;";
 
 $modul_sql_install[] = "CREATE TABLE CPPREFIX_modul_poll_comments (
-  id int(8) unsigned NOT NULL auto_increment,
-  pollid int(8) NOT NULL,
-  ctime int(10) unsigned NOT NULL,
-  author int(10) NOT NULL,
-  title varchar(250) NOT NULL default '',
-  comment text NOT NULL default '',
-  ip text NOT NULL default '',
+  id int(10) unsigned NOT NULL auto_increment,
+  poll_id int(10) NOT NULL,
+  poll_comment_author_id int(10) NOT NULL,
+  poll_comment_author_ip text NOT NULL default '',
+  poll_comment_time int(10) unsigned NOT NULL default '0',
+  poll_comment_title varchar(250) NOT NULL default '',
+  poll_comment_text text NOT NULL default '',
   PRIMARY KEY  (id)
 ) TYPE=MyISAM DEFAULT CHARSET=cp1251;";
 
 $modul_sql_install[] = "CREATE TABLE CPPREFIX_modul_poll_items (
   id int(10) unsigned NOT NULL auto_increment,
-  pollid int(8) NOT NULL,
-  title varchar(250) NOT NULL default '',
-  hits int(10) NOT NULL default '0',
-  color varchar(10) NOT NULL default '',
-  posi int(2) NOT NULL,
+  poll_id int(10) NOT NULL,
+  poll_item_title varchar(250) NOT NULL default '',
+  poll_item_hits int(10) NOT NULL default '0',
+  poll_item_color varchar(10) NOT NULL default '',
+  poll_item_position int(2) NOT NULL,
   PRIMARY KEY  (id)
 ) TYPE=MyISAM DEFAULT CHARSET=cp1251;";
 

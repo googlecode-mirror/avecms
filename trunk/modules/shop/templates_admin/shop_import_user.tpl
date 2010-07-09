@@ -98,11 +98,11 @@
 				<tr>
 					<td width="220" class="second">{#ImportUserGroup#}</td>
 					<td colspan="2" class="second">
-						<select name="Benutzergruppe">
+						<select name="user_group">
 							<option value="FILE">{#ImportUserGroupStandard#}</option>
 							{foreach from=$Ugroups item=g}
-								{if $g->Benutzergruppe!=2}
-									<option value="{$g->Benutzergruppe}">{$g->Name|escape:html}</option>
+								{if $g->user_group!=2}
+									<option value="{$g->user_group}">{$g->user_group_name|escape}</option>
 								{/if}
 							{/foreach}
 						</select>

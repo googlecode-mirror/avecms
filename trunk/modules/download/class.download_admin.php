@@ -85,7 +85,7 @@ class Download {
 			{
 				$GLOBALS['AVE_DB']->Query("UPDATE " . PREFIX . "_modul_download_kat SET
 					KatName = '" . pretty_chars($_REQUEST['KatName'][$id]) . "',
-					Rang = '" . $_REQUEST['Rang'][$id] . "'
+					position = '" . $_REQUEST['position'][$id] . "'
 				WHERE
 					Id = '$id'");
 			}
@@ -101,17 +101,17 @@ class Download {
 	//=======================================================
 	function getCategoriesSimple($id, $prefix, &$entries, $admin=0, $dropdown=0, $itid='')
 	{
-		$query = $GLOBALS['AVE_DB']->Query("SELECT * FROM " . PREFIX . "_modul_download_kat WHERE Elter = '$id' order by Rang ASC");
+		$query = $GLOBALS['AVE_DB']->Query("SELECT * FROM " . PREFIX . "_modul_download_kat WHERE parent_id = '$id' order by position ASC");
 
    		if (!$query->NumRows()) return;
 
 		while ($item = $query->FetchRow())
 		{
-			$item->visible_title = $prefix . (($item->Elter!=0 && $admin != 1) ? '' : '') . $item->KatName;
+			$item->visible_title = $prefix . (($item->parent_id!=0 && $admin != 1) ? '' : '') . $item->KatName;
 			$item->expander = $prefix;
-			$item->sub = ($item->Elter==0) ? 0 : 1;
-//			$item->dyn_link = "index.php?module=shop&amp;categ=$item->Id&amp;parent=$item->Elter&amp;navop=" . (($item->sub==0) ? $item->Id : $this->getParentcateg($item->Elter));
-//			$sql = $GLOBALS['AVE_DB']->Query("SELECT Id,KatId FROM ".PREFIX."_modul_shop_artikel WHERE KatId = '$item->Id' AND Aktiv='1'");
+			$item->sub = ($item->parent_id==0) ? 0 : 1;
+//			$item->dyn_link = "index.php?module=shop&amp;categ=$item->Id&amp;parent=$item->parent_id&amp;navop=" . (($item->sub==0) ? $item->Id : $this->getParentcateg($item->parent_id));
+//			$sql = $GLOBALS['AVE_DB']->Query("SELECT Id,KatId FROM ".PREFIX."_modul_shop_artikel WHERE KatId = '$item->Id' AND status='1'");
 //			$item->acount = $sql->NumRows();
 
 			array_push($entries,$item);
@@ -137,10 +137,10 @@ class Download {
 		$id = 0;
 		while($parent_id != 0)
 		{
-			$sql = $AVE_DB->Query("SELECT Elter,Id FROM ".PREFIX."_modul_download_kat WHERE Id='".$parent_id."'");
+			$sql = $AVE_DB->Query("SELECT parent_id,Id FROM ".PREFIX."_modul_download_kat WHERE Id='".$parent_id."'");
 
 			$row = $sql->FetchRow();
-			@$parent_id = $row->Elter;
+			@$parent_id = $row->parent_id;
 			@$id = $row->Id;
 		}
 		return($id);
@@ -192,8 +192,8 @@ class Download {
 			SET
 				KatName = '" . pretty_chars($_POST['KatName']) . "',
 				KatBeschreibung = '" . pretty_chars(@$_POST['KatBeschreibung']) . "',
-				Rang = '" . @$_POST['Rang'] . "',
-				Gruppen = '" . implode('|', $_POST['Gruppen']) . "'
+				position = '" . @$_POST['position'] . "',
+				user_group = '" . implode('|', $_POST['user_group']) . "'
 				$DbImage
 			WHERE Id = '$id'";
 			$GLOBALS['AVE_DB']->Query($q);
@@ -207,7 +207,7 @@ class Download {
 
 		$row->Bild = ($row->Bild != "" && file_exists(BASE_DIR . "/modules/download/icons/$row->Bild")) ? $row->Bild : "";
 
-		$GLOBALS['AVE_Template']->assign('GruppenErlaubt', @explode('|', $row->Gruppen));
+		$GLOBALS['AVE_Template']->assign('GruppenErlaubt', @explode('|', $row->user_group));
 		$GLOBALS['AVE_Template']->assign('Groups', $this->UserGroups());
 		$GLOBALS['AVE_Template']->assign('Categs', $this->fetchCategs(1));
 		$GLOBALS['AVE_Template']->assign('row', $row);
@@ -251,19 +251,19 @@ class Download {
 			$GLOBALS['AVE_DB']->Query("INSERT INTO " . PREFIX . "_modul_download_kat
 			(
 				Id,
-				Elter,
+				parent_id,
 				KatName,
-				Rang,
+				position,
 				KatBeschreibung,
-				Gruppen,
+				user_group,
 				Bild
 			) VALUES (
 				'',
-				'" . $_POST['Elter'] . "',
+				'" . $_POST['parent_id'] . "',
 				'" . pretty_chars($_POST['KatName']) . "',
-				'" . $_POST['Rang'] . "',
+				'" . $_POST['position'] . "',
 				'" . pretty_chars($_POST['KatBeschreibung']) . "',
-				'" . @implode('|', $_POST['Gruppen']) . "',
+				'" . @implode('|', $_POST['user_group']) . "',
 				'" . $DbImage . "'
 			)");
 			echo '<script>window.opener.location.reload(); window.close();</script>';
@@ -300,7 +300,7 @@ class Download {
 	//=======================================================
 	function delCateg($id)
 	{
-		$query = $GLOBALS['AVE_DB']->Query("SELECT * FROM " . PREFIX . "_modul_download_kat WHERE Elter = '$id'");
+		$query = $GLOBALS['AVE_DB']->Query("SELECT * FROM " . PREFIX . "_modul_download_kat WHERE parent_id = '$id'");
 		while ($item = $query->FetchRow())
 		{
 			$sql = $GLOBALS['AVE_DB']->Query("DELETE FROM " . PREFIX . "_modul_download_kat WHERE Id = '$item->Id'");
@@ -398,10 +398,10 @@ class Download {
 		}
 
 		// Es wird angegeben, ob aktiv oder inaktiv
-		if(isset($_REQUEST['Aktiv']) && $_REQUEST['Aktiv'] != 'Alle')
+		if(isset($_REQUEST['status']) && $_REQUEST['status'] != 'Alle')
 		{
-			$aktiv_categ = " AND Aktiv = '" . (int)$_REQUEST['Aktiv'] . "' ";
-			$aktiv_categ_string = "&amp;Aktiv=" . (int)$_REQUEST['Aktiv'];
+			$aktiv_categ = " AND status = '" . (int)$_REQUEST['status'] . "' ";
+			$aktiv_categ_string = "&amp;status=" . (int)$_REQUEST['status'];
 			$GLOBALS['AVE_Template']->assign('aktiv_categ_string', $aktiv_categ_string);
 		}
 
@@ -410,7 +410,7 @@ class Download {
 		if(isset($_REQUEST['recordset']) && $_REQUEST['recordset'] != '')
 		{
 			$limit = $_REQUEST['recordset'];
-			$limit_nav = "&recordset=$_REQUEST[recordset]";
+			$limit_nav = "&recordset=" . $_REQUEST['recordset'];
 		} else {
 			$limit = $this->_file_limit;
 			$limit_nav = "";
@@ -451,10 +451,10 @@ class Download {
 
 	function getAuthor($id)
 	{
-		$sql = $GLOBALS['AVE_DB']->Query("SELECT Email,Vorname,Nachname FROM " . PREFIX . "_users WHERE Id = '{$id}'");
+		$sql = $GLOBALS['AVE_DB']->Query("SELECT email,firstname,lastname FROM " . PREFIX . "_users WHERE Id = '{$id}'");
 		$row = $sql->FetchRow();
 
-		$Author = ($row->Vorname == '') ? $row->Email : substr($row->Vorname,0,1) . '.' . $row->Nachname;
+		$Author = ($row->firstname == '') ? $row->email : substr($row->firstname,0,1) . '.' . $row->lastname;
 		return $Author;
 	}
 
@@ -466,13 +466,13 @@ class Download {
 		// Kommentare speichern
 		if(isset($_REQUEST['sub']) && $_REQUEST['sub']=='save')
 		{
-			foreach($_POST['Titel'] as $cid => $titel)
+			foreach($_POST['title'] as $cid => $titel)
 			{
 				$GLOBALS['AVE_DB']->Query("UPDATE " . PREFIX . "_modul_download_comments SET
-					Titel = '" . @$_POST['Titel'][$cid] . "',
+					title = '" . @$_POST['title'][$cid] . "',
 					Name = '" . @$_POST['Name'][$cid] . "',
-					Kommentar = '" . @$_POST['Kommentar'][$cid] . "',
-					Email = '" . @$_POST['Email'][$cid] . "'
+					comment_text = '" . @$_POST['comment_text'][$cid] . "',
+					email = '" . @$_POST['email'][$cid] . "'
 				WHERE
 						Id = '{$cid}'
 					");
@@ -556,7 +556,7 @@ class Download {
 					Name = '" . @$_POST['Name'] ."',
 					Geaendert = '" . time() . "',
 					Autor_Geandert = '" . UID . "',
-					Beschreibung = '" . $_POST['Beschreibung'] ."',
+					description = '" . $_POST['description'] ."',
 					Sprache = '" . implode(',', $_POST['Sprache']) . "',
 					Os = '" . implode(',', $_POST['Os']) . "',
 					Wertungen_ja = '" . $_POST['Wertungen_ja'] . "',
@@ -577,7 +577,7 @@ class Download {
 					Excl_Chk = '" . (strcmp($_POST['Excl_Chk'],"on")==0?"1":"0") . "',
 					Wertung = '" . @$_POST['Wertung'] . "',
 					Screenshot = '" . @$_POST['Screenshot'] . "',
-					Aktiv = '" . @$_POST['Aktiv'] . "',
+					status = '" . @$_POST['status'] . "',
 					Version = '" . @$_POST['Version'] . "',
 					KatId = '" . @$_POST['KatId'] . "'
 					$sql_extra
@@ -599,7 +599,7 @@ class Download {
 		$sql = $GLOBALS['AVE_DB']->Query("SELECT * FROM " . PREFIX . "_modul_download_files WHERE Id = '{$id}'");
 		$row = $sql->FetchRow();
 
-		$row->FCK_Beschreibung = $this->fck($row->Beschreibung,'400','Beschreibung','');
+		$row->FCK_Beschreibung = $this->fck($row->description,'400','description','');
 		$row->FCK_Limits = $this->fck($row->Limitierung,'200','Limitierung','Basic');
 
 		$GLOBALS['AVE_Template']->assign('row', $row);
@@ -665,9 +665,9 @@ class Download {
 				Sprache,
 				KatId,
 				Name,
-				Beschreibung,
+				description,
 				Limitierung,
-				Aktiv,
+				status,
 				Pfad,
 				Groesse,
 				Datum,
@@ -696,9 +696,9 @@ class Download {
 				'" . @implode(',', $_POST['Sprache']) . "',
 				'" . @$_POST['KatId'] . "',
 				'" . @$_POST['Name'] . "',
-				'" . @$_POST['Beschreibung'] . "',
+				'" . @$_POST['description'] . "',
 				'" . @$_POST['Limitierung'] . "',
-				'" . @$_POST['Aktiv'] . "',
+				'" . @$_POST['status'] . "',
 				'" . $pfad . "',
 				'" . $groesse . "',
 				'" . time() . "',
@@ -724,7 +724,7 @@ class Download {
 			echo "<script>window.opener.location.reload(); window.close();</script>";
 		}
 
-		$GLOBALS['AVE_Template']->assign('Beschreibung', $this->fck('Text','400','Beschreibung',''));
+		$GLOBALS['AVE_Template']->assign('description', $this->fck('Text','400','description',''));
 		$GLOBALS['AVE_Template']->assign('Limitierung', $this->fck('','200','Limitierung','Basic'));
 		$GLOBALS['AVE_Template']->assign('Languages', $this->getLang());
 		$GLOBALS['AVE_Template']->assign('Licenses', $this->getLicense());
@@ -855,7 +855,7 @@ class Download {
 
 	function SetModule($off_on,$id)
 	{
-		$GLOBALS['AVE_DB']->Query("UPDATE " . PREFIX . "_modul_download_files SET Aktiv = '" . ( ($off_on=='off') ? '0' : '1' ) . "' WHERE Id = '{$id}'");
+		$GLOBALS['AVE_DB']->Query("UPDATE " . PREFIX . "_modul_download_files SET status = '" . ( ($off_on=='off') ? '0' : '1' ) . "' WHERE Id = '{$id}'");
 		echo "<script>window.opener.location.reload(); window.close(); </script>";
 	}
 
@@ -944,7 +944,7 @@ class Download {
 	{
 		$pay = array();
 
-		$sql = $GLOBALS['AVE_DB']->Query("SELECT t1.PayAmount,t1.PayDate,t1.User_IP,t2.Name as FileName,CONCAT(t3.VorName,' ',t3.NachName) AS `UserName` FROM ".PREFIX."_modul_download_payhistory as t1 ".
+		$sql = $GLOBALS['AVE_DB']->Query("SELECT t1.PayAmount,t1.PayDate,t1.User_IP,t2.Name as FileName,CONCAT(t3.VorName,' ',t3.NachName) AS user_name FROM ".PREFIX."_modul_download_payhistory as t1 ".
 																 "LEFT JOIN ".PREFIX."_modul_download_files as t2 ON t1.File_id=t2.Id ".
 																 "LEFT JOIN ".PREFIX."_users as t3 ON t1.User_id=t3.Id");
 

@@ -1,16 +1,8 @@
 <?php
-/*::::::::::::::::::::::::::::::::::::::::
- System name: cpengine
- Short Desc: Full Russian Security Power Pack
- Version: 2.0 (Service Pack 2)
- Authors:  Arcanum (php@211.ru) &  Censored!
- Date: March 18, 2008
-::::::::::::::::::::::::::::::::::::::::*/
 
-if(!defined("SHOWTOPIC")) exit;
+if (!defined("SHOWTOPIC")) exit;
 
 $_REQUEST['page'] = (isset($_REQUEST['page']) && is_numeric($_REQUEST['page']) && $_REQUEST['page'] > 0) ? $_REQUEST['page'] : 1;
-
 
 $printlink = get_redirect_link('print')."&amp;print=1";
 $post_count_extra = "";
@@ -40,7 +32,6 @@ if ( isset($_GET['toid']) && $_GET['toid'] != "" )
 			t.id = '" . (int)$_GET['toid'] . "' AND
 			t.forum_id = f.id
 	";
-
 	$r_pass = $GLOBALS['AVE_DB']->Query($q_pass);
 	$pass = $r_pass->FetchRow();
 	$ForumId = $pass->id;
@@ -50,10 +41,12 @@ if ( isset($_GET['toid']) && $_GET['toid'] != "" )
 	{
 		$p1 = @$_SESSION["f_pass_id_" . addslashes($pass->id)];
 		$p2 = $pass->password;
-		if( $p1 == $p2 )
+		if ( $p1 == $p2 )
 		{
 			$pass_b = true;
-		} else {
+		}
+		else
+		{
 			$GLOBALS['AVE_Template']->assign("fid", addslashes(@$_REQUEST['fid']));
 			$GLOBALS['AVE_Template']->assign("navigation", $navigation);
 
@@ -61,7 +54,9 @@ if ( isset($_GET['toid']) && $_GET['toid'] != "" )
 			define("MODULE_CONTENT", $tpl_out);
 			define("MODULE_SITE",  strip_tags($navigation));
 		}
-	} else {
+	}
+	else
+	{
 		$pass_b = true;
 	}
 
@@ -75,20 +70,24 @@ if ( isset($_GET['toid']) && $_GET['toid'] != "" )
 		if (!@is_numeric(UID) || UGROUP == 2)
 		{
 			$group_id[] = UGROUP;
-		} else {
+		}
+		else
+		{
 			$query = "SELECT GroupIdMisc FROM " . PREFIX . "_modul_forum_userprofile WHERE BenutzerId = '" . UID . "'";
 			$result = $GLOBALS['AVE_DB']->Query($query);
 			$user = $result->FetchRow();
 
-			if($user->GroupIdMisc != ""){
+			if ($user->GroupIdMisc != "")
+			{
 				$group_id_ = UGROUP . ";" . $user->GroupIdMisc;
 				$group_id = @explode(";", $group_id_);
 
-			} else {
+			}
+			else
+			{
 				$group_id[] = UGROUP;
 			}
 		}
-
 
 		$query = "SELECT
 				c.group_id
@@ -101,7 +100,6 @@ if ( isset($_GET['toid']) && $_GET['toid'] != "" )
 		";
 
 		$result = $GLOBALS['AVE_DB']->Query($query);
-
 
 		$category = $result->FetchRow();
 		$category->group_id = @explode(",", $category->group_id);
@@ -120,7 +118,8 @@ if ( isset($_GET['toid']) && $_GET['toid'] != "" )
 
 		// ====================================================================================
 
-		if(!is_mod(@$_GET['fid'])) {
+		if(!is_mod(@$_GET['fid']))
+		{
 			$post_count_extra .= " AND opened = 1 ";
 		}
 
@@ -131,15 +130,15 @@ if ( isset($_GET['toid']) && $_GET['toid'] != "" )
 			{
 				if(isset($_REQUEST['ispost']) && $_REQUEST['ispost'] == 1)
 				{
-					$sql_p = "UPDATE " . PREFIX . "_modul_forum_post SET opened = '1' WHERE id='$_REQUEST[post_id]'";
+					$sql_p = "UPDATE " . PREFIX . "_modul_forum_post SET opened = '1' WHERE id='" . $_REQUEST['post_id'] . "'";
 					$res_p = $GLOBALS['AVE_DB']->Query($sql_p);
 
 					// mail an autor eines beitrages
-					$link = HOST . str_replace("/index.php","",$_SERVER['PHP_SELF']) . "/index.php?module=forums&show=showtopic&toid=$_REQUEST[toid]&pp=15";
-					$sql = $GLOBALS['AVE_DB']->Query("SELECT uid FROM ".PREFIX."_modul_forum_post WHERE id = '$_REQUEST[post_id]'");
+					$link = HOST . str_replace("/index.php","",$_SERVER['PHP_SELF']) . "/index.php?module=forums&show=showtopic&toid=" . $_REQUEST['toid'] . "&pp=15";
+					$sql = $GLOBALS['AVE_DB']->Query("SELECT uid FROM ".PREFIX."_modul_forum_post WHERE id = '" . $_REQUEST['post_id'] . "'");
 					$row = $sql->FetchRow();
 
-					$sql_2 = $GLOBALS['AVE_DB']->Query("SELECT BenutzerName,Email FROM ".PREFIX."_modul_forum_userprofile WHERE BenutzerId = '$row->uid'");
+					$sql_2 = $GLOBALS['AVE_DB']->Query("SELECT BenutzerName,email FROM ".PREFIX."_modul_forum_userprofile WHERE BenutzerId = '$row->uid'");
 					$row_2 = $sql_2->FetchRow();
 
 					$body = str_replace("%%USER%%", $row_2->BenutzerName, $GLOBALS['mod']['config_vars']['BodyToUserAfterMod']);
@@ -147,7 +146,7 @@ if ( isset($_GET['toid']) && $_GET['toid'] != "" )
 					$body = str_replace("%%N%%","\n", $body);
 
 					send_mail(
-						$row_2->Email,
+						$row_2->email,
 						stripslashes($body),
 						$GLOBALS['mod']['config_vars']['SubjectToUserAfterMod'],
 						FORUMEMAIL,
@@ -155,18 +154,19 @@ if ( isset($_GET['toid']) && $_GET['toid'] != "" )
 						"text",
 						""
 					);
-				} else {
-
-					$sql_t = "UPDATE " . PREFIX . "_modul_forum_topic SET opened = '1' WHERE id='$_REQUEST[toid]'";
-					$sql_p = "UPDATE " . PREFIX . "_modul_forum_post SET opened = '1' WHERE topic_id='$_REQUEST[toid]'";
+				}
+				else
+				{
+					$sql_t = "UPDATE " . PREFIX . "_modul_forum_topic SET opened = '1' WHERE id='" . $_REQUEST['toid'] . "'";
+					$sql_p = "UPDATE " . PREFIX . "_modul_forum_post SET opened = '1' WHERE topic_id='" . $_REQUEST['toid'] . "'";
 					$res_t = $GLOBALS['AVE_DB']->Query($sql_t);
 					$res_p = $GLOBALS['AVE_DB']->Query($sql_p);
 					// mail an autor eines thema
-					$link = HOST . str_replace("/index.php","",$_SERVER['PHP_SELF']) . "/index.php?module=forums&show=showtopic&toid=$_REQUEST[toid]&fid=$_REQUEST[fid]";
-					$sql = $GLOBALS['AVE_DB']->Query("SELECT uid FROM ".PREFIX."_modul_forum_topic WHERE id = '$_REQUEST[toid]'");
+					$link = HOST . str_replace("/index.php","",$_SERVER['PHP_SELF']) . "/index.php?module=forums&show=showtopic&toid=" . $_REQUEST['toid'] . "&fid=" . $_REQUEST['fid'] . "";
+					$sql = $GLOBALS['AVE_DB']->Query("SELECT uid FROM ".PREFIX."_modul_forum_topic WHERE id = '" . $_REQUEST['toid'] . "'");
 					$row = $sql->FetchRow();
 
-					$sql_2 = $GLOBALS['AVE_DB']->Query("SELECT BenutzerName,Email FROM ".PREFIX."_modul_forum_userprofile WHERE BenutzerId = '$row->uid'");
+					$sql_2 = $GLOBALS['AVE_DB']->Query("SELECT BenutzerName,email FROM ".PREFIX."_modul_forum_userprofile WHERE BenutzerId = '$row->uid'");
 					$row_2 = $sql_2->FetchRow();
 
 					$body = str_replace("%%USER%%", $row_2->BenutzerName, $GLOBALS['mod']['config_vars']['BodyToUserAfterMod']);
@@ -174,7 +174,7 @@ if ( isset($_GET['toid']) && $_GET['toid'] != "" )
 					$body = str_replace("%%N%%","\n", $body);
 
 					send_mail(
-						$row_2->Email,
+						$row_2->email,
 						stripslashes($body),
 						$GLOBALS['mod']['config_vars']['SubjectToUserAfterMod'],
 						FORUMEMAIL,
@@ -213,12 +213,12 @@ if ( isset($_GET['toid']) && $_GET['toid'] != "" )
 		$limit = (isset($_REQUEST['pp']) && is_numeric($_REQUEST['pp']) && $_REQUEST['pp'] > 0 ) ? $_REQUEST['pp'] : 15;
 		$limit = (isset($_REQUEST['print']) && $_REQUEST['print']==1) ? 10000 : $limit;
 
-		if(!isset($page)) $page = 1;
+		if (!isset($page)) $page = 1;
 		$seiten = $this->getPageNum($num, $limit);
 		$a = get_current_page() * $limit - $limit;
 		$a = (isset($_REQUEST['print']) && $_REQUEST['print']==1) ? 0 : $a;
 
-		if(!is_mod(@$_GET['fid']))
+		if (!is_mod(@$_GET['fid']))
 		{
 			$post_query_extra .= " AND opened = 1 ";
 		}
@@ -255,23 +255,22 @@ if ( isset($_GET['toid']) && $_GET['toid'] != "" )
 
 		while ($post = $post_result->FetchRow())
 		{
-
 			$Attach = array();
 			// der beitragverfasser
 			$q_user = "SELECT
 					u.Avatar,
 					u.AvatarStandard,
 					u.BenutzerName,
-					u.Email,
+					u.email,
 					u.Webseite,
-					u.Registriert,
+					u.reg_time,
 					u.Signatur,
 					u.Unsichtbar,
 					u.BenutzerId,
-					us.Vorname,
-					us.Benutzergruppe,
-					us.Nachname,
-					ug.Name,
+					us.firstname,
+					us.user_group,
+					us.lastname,
+					ug.user_group_name,
 					COUNT(p.uid) AS user_posts
 				FROM
 					" . PREFIX . "_modul_forum_userprofile AS u
@@ -280,13 +279,13 @@ if ( isset($_GET['toid']) && $_GET['toid'] != "" )
 						ON us.Id = u.BenutzerId
 				JOIN
 					" . PREFIX . "_user_groups AS ug
-						ON ug.Benutzergruppe = us.Benutzergruppe
+						ON ug.user_group = us.user_group
 				JOIN
 				    " . PREFIX . "_modul_forum_post AS p
 				    	ON p.uid = u.BenutzerId
 				WHERE
 					u.BenutzerId = " . intval($post->uid) . " AND
-					us.Status = 1
+					us.status = '1'
 				GROUP BY p.uid
 			";
 
@@ -300,8 +299,8 @@ if ( isset($_GET['toid']) && $_GET['toid'] != "" )
 			$query = "SELECT title, count FROM " . PREFIX . "_modul_forum_rank WHERE count < '" . $poster->user_posts . "' ORDER BY count DESC LIMIT 1";
 			$result = $GLOBALS['AVE_DB']->Query($query);
 			$rank = $result->FetchRow();
-			$poster->avatar = $this->getAvatar( @$poster->Benutzergruppe, @$poster->Avatar, @$poster->AvatarStandard);
-			$poster->regdate = @$poster->Registriert;
+			$poster->avatar = $this->getAvatar( @$poster->user_group, @$poster->Avatar, @$poster->AvatarStandard);
+			$poster->regdate = @$poster->reg_time;
 			$poster->user_sig = $this->kcodes(@$poster->Signatur);
 			$poster->rank = @$rank->title;
 			$poster->OnlineStatus = @$this->getonlinestatus(@$poster->BenutzerName);
@@ -311,7 +310,7 @@ if ( isset($_GET['toid']) && $_GET['toid'] != "" )
 
 			$poster->Ignored = (($this->isIgnored(addslashes(@$poster->BenutzerId))) ? $popUpRemove : $popUpInsert);
 
-			if(defined("SMILIES") && SMILIES==1) $poster->user_sig = $this->replaceWithSmileys($poster->user_sig);
+			if (defined("SMILIES") && SMILIES==1) $poster->user_sig = $this->replaceWithSmileys($poster->user_sig);
 
 			// der verfasser
 			$post->poster = $poster;
@@ -320,12 +319,15 @@ if ( isset($_GET['toid']) && $_GET['toid'] != "" )
 			if ($post->use_bbcode == 1)
 			{
 				$post->message = $this->kcodes($post->message);
-			} else {
+			}
+			else
+			{
 				$post->message = nl2br($post->message);
 			}
 
 			// sollen smilies angezeigt werden
-			if ( ($post->use_smilies == 1) && (SMILIES==1) ) {
+			if ( ($post->use_smilies == 1) && (SMILIES==1) )
+			{
 				$post->message = $this->replaceWithSmileys($post->message);
 			}
 
@@ -336,7 +338,6 @@ if ( isset($_GET['toid']) && $_GET['toid'] != "" )
 			// attachments
 			if ($post->attachment != "")
 			{
-
 				$attachments = @explode(";", $post->attachment);
 				$sub_query = @implode(" || id = ", $attachments);
 
@@ -350,7 +351,6 @@ if ( isset($_GET['toid']) && $_GET['toid'] != "" )
 				";
 
 				$r_file = $GLOBALS['AVE_DB']->Query($q_file);
-
 
 				while ($file = $r_file->FetchRow())
 				{
@@ -366,7 +366,6 @@ if ( isset($_GET['toid']) && $_GET['toid'] != "" )
 		}
 		$all_posts = $post_array;
 
-
 		$GLOBALS['AVE_Template']->assign('files', $Attach);
 
 		// anzahl der besichtigungen erhöhen
@@ -378,12 +377,14 @@ if ( isset($_GET['toid']) && $_GET['toid'] != "" )
 
 		// hat der user das thema abonniert?
 		$user_id = split(";", $topic->notification);
-		if (@in_array(UID, $user_id)) {
+		if (@in_array(UID, $user_id))
+		{
 			$GLOBALS['AVE_Template']->assign('canabo', 0);
-		} else {
+		}
+		else
+		{
 			$GLOBALS['AVE_Template']->assign('canabo', 1);
 		}
-
 
 		// hat der user schon abgestimmt?
 		$sql = $GLOBALS['AVE_DB']->Query("SELECT uid,ip FROM " . PREFIX . "_modul_forum_rating WHERE  topic_id = '".(int)$_GET['toid']."' ");
@@ -409,9 +410,7 @@ if ( isset($_GET['toid']) && $_GET['toid'] != "" )
 		$topic->next_topic = $next_topic;
 		$topic->prev_topic = $prev_topic;
 
-
 		$sname = strip_tags($navigation) . " - " . stripslashes(htmlspecialchars($topic->title)) ;
-
 
 		// navigation erzeugen
 		$navigation = $this->getNavigation((int)$_GET['toid'], "topic");
@@ -430,7 +429,7 @@ if ( isset($_GET['toid']) && $_GET['toid'] != "" )
 		}
 
 		if (UID == 1) array_fill(0, sizeof($permissions), 1);
-		if(is_mod(@$_GET['fid'])) $GLOBALS['AVE_Template']->assign('ismod', 1);
+		if (is_mod(@$_GET['fid'])) $GLOBALS['AVE_Template']->assign('ismod', 1);
 
 		$categories = array();
 		$this->getCategories(0, $categories, "");
@@ -448,16 +447,16 @@ if ( isset($_GET['toid']) && $_GET['toid'] != "" )
 		$GLOBALS['AVE_Template']->assign("referer", @$_SERVER['HTTP_REFERER']);
 		$GLOBALS['AVE_Template']->register_function('getonlinestatus', 'getonlinestatus');
 
-
 		$tpl = (isset($_REQUEST['print']) && $_REQUEST['print'] == 1) ? $this->_Print_ShowTopicTpl : $this->_ShowTopicTpl;
 		$tpl_out = $GLOBALS['AVE_Template']->fetch($GLOBALS['mod']['tpl_dir'] . $tpl);
 
 		define("MODULE_CONTENT", $tpl_out);
 		define("MODULE_SITE",  htmlspecialchars(stripslashes(strip_tags($tmp_navi))));
-
 	}
-	} else {
-		header("Location:index.php?module=forums");
-		exit;
+}
+else
+{
+	header("Location:index.php?module=forums");
+	exit;
 }
 ?>

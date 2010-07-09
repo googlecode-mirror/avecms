@@ -35,7 +35,7 @@ db_connect();
 // общая информация о магазине и валюты
 $sql = mysql_query("
 	SELECT
-		Aktiv,
+		status,
 		Waehrung,
 		site_name,
 		company_name,
@@ -115,7 +115,7 @@ $AVE_YML->ymlElementCurrencySet('UAH', 'NBU', 1);
 $sql = mysql_query("
 	SELECT
 		Id,
-		Elter,
+		parent_id,
 		KatName
 	FROM " . PREFIX . "_modul_shop_kategorie
 ");
@@ -148,7 +148,7 @@ $sql = mysql_query("
 		TextLang AS description,
 		" . ($custom ? "IF(VersandZeitId = " . $custom . ", 0, 1)" : 1) . " AS available,
 		" . ($downloadable ? "IF(VersandZeitId = " . $downloadable . ", 'true', 'false') AS downloadable," : '') . "
-		Elter
+		parent_id
 	FROM
 		" . PREFIX . "_modul_shop_artikel AS art
 	LEFT JOIN
@@ -158,7 +158,7 @@ $sql = mysql_query("
 		" . PREFIX . "_modul_shop_kategorie AS cat
 			ON cat.Id = KatId
 	WHERE
-		Aktiv = 1
+		status = 1
 	AND
 		(Lager > 0" . ($custom ? " OR VersandZeitId = " . $custom : '') . ")
 	AND
@@ -174,7 +174,7 @@ while ($row = mysql_fetch_assoc($sql))
 		. shopRewrite("index.php?module=shop&amp;action=product_detail"
 			. "&amp;product_id=" . $offer_id
 			. "&amp;categ=" . $row['categoryId']
-			. "&amp;navop=" . (0 == $row['Elter'] ? $row['categoryId'] : $row['Elter']))
+			. "&amp;navop=" . (0 == $row['parent_id'] ? $row['categoryId'] : $row['parent_id']))
 		. ($track_label ? "#ym" : ""
 	);
 
@@ -189,7 +189,7 @@ while ($row = mysql_fetch_assoc($sql))
 
 	$offer_available = $row['available'];
 
-	unset($row['available'], $row['Elter']);
+	unset($row['available'], $row['parent_id']);
 
 	$AVE_YML->ymlElementOfferSet($offer_id, $row, $offer_available);
 }

@@ -5,6 +5,7 @@
  *
  * @package AVE.cms
  * @subpackage module_Banner
+ * @since 1.4
  * @filesource
  */
 class ModulBanner {

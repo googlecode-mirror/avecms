@@ -1,15 +1,12 @@
 <?php
 
 /**
- * AVE.cms - Модуль RSS
- *
- * @filesource
- */
-/**
  * Класс работы с RSS-лентами
  *
  * @package AVE.cms
  * @subpackage module_RSS
+ * @since 2.07
+ * @filesource
  */
 class Rss
 {
@@ -85,16 +82,16 @@ class Rss
 			WHERE id = '" . (int)($_REQUEST['id']) . "'
 		")->FetchRow();
 
-		if (isset($_REQUEST['RubrikId']) && is_numeric($_REQUEST['RubrikId']))
+		if (isset($_REQUEST['rubric_id']) && is_numeric($_REQUEST['rubric_id']))
 		{
-			$result->rss_rubric_id = $_REQUEST['RubrikId'];
+			$result->rss_rubric_id = $_REQUEST['rubric_id'];
 		}
 
 		$rubriks = array();
 		$get_rubs = $AVE_DB->Query("
 			SELECT
 				Id,
-				RubrikName
+				rubric_title
 			FROM " . PREFIX . "_rubrics
 		");
 		while ($res = $get_rubs->FetchRow())
@@ -105,10 +102,10 @@ class Rss
 		$fields = array();
 		$get_fields = $AVE_DB->Query("SELECT
 				Id,
-				RubrikId,
-				Titel
+				rubric_id,
+				rubric_field_title
 			FROM " . PREFIX . "_rubric_fields
-			WHERE RubrikId = '" . $result->rss_rubric_id . "'
+			WHERE rubric_id = '" . $result->rss_rubric_id . "'
 		");
 		while ($res = $get_fields->FetchRow())
 		{

@@ -18,16 +18,16 @@
 <select style="width:300px" name="KatId">
 <option value="0">{#ProductCategsNoParent#}</option>
 {foreach from=$Categs item=pc}
-<option value="{$pc->Id}" {if $pc->Elter == 0}style="font-weight:bold"{/if} {if $pc->Id==$row->KatId}selected="selected"{/if}>{$pc->visible_title}</option>
+<option value="{$pc->Id}" {if $pc->parent_id == 0}style="font-weight:bold"{/if} {if $pc->Id==$row->KatId}selected="selected"{/if}>{$pc->visible_title}</option>
 {/foreach}
 </select>	</td>
   </tr>
   <tr>
   <td width="150" class="first">{#ActiveInactive#}</td>
   <td class="second">
-  <label><input name="Aktiv" type="radio" value="1" {if $row->Aktiv==1}checked="checked"{/if} />{#Yes#}</label>
+  <label><input name="status" type="radio" value="1" {if $row->status==1}checked="checked"{/if} />{#Yes#}</label>
 
- <label><input name="Aktiv" type="radio" value="0" {if $row->Aktiv==0}checked="checked"{/if} />{#No#}	</label>  </td>
+ <label><input name="status" type="radio" value="0" {if $row->status==0}checked="checked"{/if} />{#No#}	</label>  </td>
   </tr>
   <tr>
     <td colspan="2" class="tableheader">{#FirstM#}</td>

@@ -21,7 +21,7 @@ class Shop
 	 */
 	function checkShop()
 	{
-		if ($this->_getShopSetting('Aktiv') != 1)
+		if ($this->_getShopSetting('status') != 1)
 		{
 			$tpl_out = $GLOBALS['mod']['config_vars']['NotActive'];
 			define('MODULE_CONTENT', $tpl_out);
@@ -102,13 +102,13 @@ class Shop
 				WHERE Id = '" . (int)$_REQUEST['categ'] . "'
 			")->FetchRow();
 
-			$assign['KatBeschreibung'] = isset($row->KatBeschreibung) ? $row->KatBeschreibung : '';
-			$assign['KatName'] = isset($row->KatName) ? $row->KatName : '';
+			$AVE_Template->assign('KatBeschreibung', isset($row->KatBeschreibung) ? $row->KatBeschreibung : '');
+			$AVE_Template->assign('KatName',         isset($row->KatName) ? $row->KatName : '');
 		}
 		else
 		{
-			$assign['KatName'] = '';
-			$assign['KatBeschreibung'] = '';
+			$AVE_Template->assign('KatName',         '');
+			$AVE_Template->assign('KatBeschreibung', '');
 		}
 
 		$categ = (isset($_REQUEST['categ']) && is_numeric($_REQUEST['categ'])) ? $_REQUEST['categ'] : '';
@@ -124,42 +124,40 @@ class Shop
 
 		$this->_globalProductInfo();
 
-		$assign['theme_folder']      = defined('THEME_FOLDER') ? THEME_FOLDER : DEFAULT_THEME_FOLDER;
-		$assign['ZeigeWaehrung2']    = $this->_getShopSetting('ZeigeWaehrung2');
-		$assign['Currency2']         = $this->_getShopSetting('WaehrungSymbol2');
-		$assign['Kommentare']        = $this->_getShopSetting('Kommentare');
-		$assign['KommentareGast']    = $this->_getShopSetting('KommentareGast');
-		$assign['GastBestellung']    = $this->_getShopSetting('GastBestellung');
-		$assign['WidthThumb']        = $this->_getShopSetting('Vorschaubilder');
-		$assign['WidthTsThumb']      = $this->_getShopSetting('Topsellerbilder');
-		$assign['TemplateArtikel']   = $this->_getShopSetting('TemplateArtikel');
-		$assign['TopsellerActive']   = $this->_getShopSetting('Topseller');
-		$assign['WishListActive']    = $this->_getShopSetting('Merkliste');
-		$assign['CanOrderHere']      = $this->_getShopSetting('BestUebersicht');
-		$assign['Currency']          = $this->_getShopSetting('WaehrungSymbol');
-		$assign['KategorienStart']   = $this->_getShopSetting('KategorienStart');
-		$assign['KategorienSons']    = $this->_getShopSetting('KategorienSons');
-		$assign['ShopWillkommen']    = $this->_getShopSetting('ShopWillkommen');
-		$assign['FooterText']        = !empty($this->_setings->ShopFuss) ? $this->_shopRewrite($this->_setings->ShopFuss) : '';
-		$assign['ShopAgb']           = !empty($this->_setings->Agb) ? strip_tags($this->_setings->Agb,'<b><strong><br><p><br /><em><i>') : '';
-		$assign['RandomOfferKateg']  = $this->_getShopSetting('ZufallsAngebotKat', 0) == 1 ? $this->_randomOffer($categ) : '';
-		$assign['RandomOffer']       = $this->_getShopSetting('ZufallsAngebot', 0) == 1 ? $this->_randomOffer() : '';
-		$assign['MyIp']              = isset($_SERVER['REMOTE_ADDR']) ? $_SERVER['REMOTE_ADDR'] : '';
-		$assign['WishListLink']      = $this->_shopRewrite('index.php?module=shop&amp;action=wishlist&amp;pop=1');
-		$assign['TopSeller']         = $this->_topSeller();
-		$assign['UserPanel']         = $this->_shopLogin();
-		$assign['ShopNavi']          = $this->fetchShopNavi();
-		$assign['Basket']            = $AVE_Template->fetch($GLOBALS['mod']['tpl_dir'] . 'shop_basket_small.tpl');
-		$assign['Search']            = $AVE_Template->fetch($GLOBALS['mod']['tpl_dir'] . 'shop_smallsearch.tpl');
-		$assign['Topseller']         = $AVE_Template->fetch($GLOBALS['mod']['tpl_dir'] . 'shop_topseller.tpl');
-//		$assign['TopNav']            = $AVE_Template->fetch($GLOBALS['mod']['tpl_dir'] . 'shop_topnav.tpl');
+		$AVE_Template->assign('theme_folder',     defined('THEME_FOLDER') ? THEME_FOLDER : DEFAULT_THEME_FOLDER);
+		$AVE_Template->assign('ZeigeWaehrung2',   $this->_getShopSetting('ZeigeWaehrung2'));
+		$AVE_Template->assign('Currency2',        $this->_getShopSetting('WaehrungSymbol2'));
+		$AVE_Template->assign('Kommentare',       $this->_getShopSetting('Kommentare'));
+		$AVE_Template->assign('KommentareGast',   $this->_getShopSetting('KommentareGast'));
+		$AVE_Template->assign('GastBestellung',   $this->_getShopSetting('GastBestellung'));
+		$AVE_Template->assign('WidthThumb',       $this->_getShopSetting('Vorschaubilder'));
+		$AVE_Template->assign('WidthTsThumb',     $this->_getShopSetting('Topsellerbilder'));
+		$AVE_Template->assign('TemplateArtikel',  $this->_getShopSetting('TemplateArtikel'));
+		$AVE_Template->assign('TopsellerActive',  $this->_getShopSetting('Topseller'));
+		$AVE_Template->assign('WishListActive',   $this->_getShopSetting('Merkliste'));
+		$AVE_Template->assign('CanOrderHere',     $this->_getShopSetting('BestUebersicht'));
+		$AVE_Template->assign('Currency',         $this->_getShopSetting('WaehrungSymbol'));
+		$AVE_Template->assign('KategorienStart',  $this->_getShopSetting('KategorienStart'));
+		$AVE_Template->assign('KategorienSons',   $this->_getShopSetting('KategorienSons'));
+		$AVE_Template->assign('ShopWillkommen',   $this->_getShopSetting('ShopWillkommen'));
+		$AVE_Template->assign('FooterText',       !empty($this->_setings->ShopFuss) ? $this->_shopRewrite($this->_setings->ShopFuss) : '');
+		$AVE_Template->assign('ShopAgb',          !empty($this->_setings->Agb) ? strip_tags($this->_setings->Agb,'<b><strong><br><p><br /><em><i>') : '');
+		$AVE_Template->assign('RandomOfferKateg', $this->_getShopSetting('ZufallsAngebotKat', 0) == 1 ? $this->_randomOffer($categ) : '');
+		$AVE_Template->assign('RandomOffer',      $this->_getShopSetting('ZufallsAngebot', 0) == 1 ? $this->_randomOffer() : '');
+		$AVE_Template->assign('MyIp',             isset($_SERVER['REMOTE_ADDR']) ? $_SERVER['REMOTE_ADDR'] : '');
+		$AVE_Template->assign('WishListLink',     $this->_shopRewrite('index.php?module=shop&amp;action=wishlist&amp;pop=1'));
+		$AVE_Template->assign('TopSeller',        $this->_topSeller());
+		$AVE_Template->assign('UserPanel',        $this->_shopLogin());
+		$AVE_Template->assign('ShopNavi',         $this->fetchShopNavi());
+		$AVE_Template->assign('Basket',           $AVE_Template->fetch($GLOBALS['mod']['tpl_dir'] . 'shop_basket_small.tpl'));
+		$AVE_Template->assign('Search',           $AVE_Template->fetch($GLOBALS['mod']['tpl_dir'] . 'shop_smallsearch.tpl'));
+		$AVE_Template->assign('Topseller',        $AVE_Template->fetch($GLOBALS['mod']['tpl_dir'] . 'shop_topseller.tpl'));
+//		$AVE_Template->assign('TopNav',           $AVE_Template->fetch($GLOBALS['mod']['tpl_dir'] . 'shop_topnav.tpl'));
 
 $AVE_Template->caching = 1;
-		$assign['InfoBox']           = $this->_shopRewrite($AVE_Template->fetch($GLOBALS['mod']['tpl_dir'] . 'shop_infobox.tpl'));
-		$assign['MyOrders']          = $this->_shopRewrite($AVE_Template->fetch($GLOBALS['mod']['tpl_dir'] . 'shop_myorders.tpl'));
+		$AVE_Template->assign('InfoBox',          $this->_shopRewrite($AVE_Template->fetch($GLOBALS['mod']['tpl_dir'] . 'shop_infobox.tpl')));
+		$AVE_Template->assign('MyOrders',         $this->_shopRewrite($AVE_Template->fetch($GLOBALS['mod']['tpl_dir'] . 'shop_myorders.tpl')));
 $AVE_Template->caching = 0;
-
-		$AVE_Template->assign($assign);
 	}
 
 	/**
@@ -182,7 +180,7 @@ $AVE_Template->caching = 0;
 				AngebotBild
 			FROM " . PREFIX . "_modul_shop_artikel
 			WHERE Angebot = 1
-			AND Aktiv = 1
+			AND status = 1
 			AND Erschienen <= '" . time() . "'
 			" . ($categ != '' ? "AND KatId = '" . $categ . "'" : '') . "
 			ORDER BY rand()
@@ -259,7 +257,7 @@ $AVE_Template->caching = 0;
 				Bild,
 				Preis
 			FROM " . PREFIX . "_modul_shop_artikel
-			WHERE Aktiv = 1
+			WHERE status = 1
 			AND Erschienen <= '" . time() . "'
 			" . $db_categ . "
 			ORDER BY Bestellungen DESC
@@ -441,7 +439,7 @@ $AVE_Template->caching = 0;
 		$row = $AVE_DB->Query("
 			SELECT
 				Name,
-				Beschreibung
+				description
 			FROM " . PREFIX . "_modul_shop_zahlungsmethoden
 			WHERE Id = '" . $id . "'
 		")
@@ -655,7 +653,7 @@ $AVE_Template->caching = 0;
 						{
 							$row_df->Abgelaufen = 1;
 						}
-						$row_df->Beschreibung = str_replace('"','&quot;',$row_df->Beschreibung);
+						$row_df->description = str_replace('"','&quot;',$row_df->description);
 						$row_df->size = (file_exists(BASE_DIR . '/modules/shop/files/' . $row_df->Datei) ) ? round(@filesize(BASE_DIR . '/modules/shop/files/'.$row_df->Datei)/1024,2) : '';
 						array_push($DataFiles, $row_df);
 					}
@@ -672,7 +670,7 @@ $AVE_Template->caching = 0;
 					");
 					while ($row_df = $sql_df->FetchRow())
 					{
-						$row_df->Beschreibung = str_replace('"', '&quot;', $row_df->Beschreibung);
+						$row_df->description = str_replace('"', '&quot;', $row_df->description);
 						$row_df->size = (file_exists(BASE_DIR . '/modules/shop/files/' . $row_df->Datei) ) ? round(@filesize(BASE_DIR . '/modules/shop/files/' . $row_df->Datei)/1024, 2) : '';
 						array_push($DataFilesUpdates, $row_df);
 					}
@@ -689,7 +687,7 @@ $AVE_Template->caching = 0;
 					");
 					while ($row_df = $sql_df->FetchRow())
 					{
-						$row_df->Beschreibung = str_replace('"', '&quot;', $row_df->Beschreibung);
+						$row_df->description = str_replace('"', '&quot;', $row_df->description);
 						$row_df->size = (file_exists(BASE_DIR . '/modules/shop/files/' . $row_df->Datei) ) ? round(@filesize(BASE_DIR . '/modules/shop/files/'.$row_df->Datei)/1024,2) : '';
 						array_push($DataFilesOther, $row_df);
 					}
@@ -706,7 +704,7 @@ $AVE_Template->caching = 0;
 					");
 					while ($row_df = $sql_df->FetchRow())
 					{
-						$row_df->Beschreibung = str_replace('"','&quot;',$row_df->Beschreibung);
+						$row_df->description = str_replace('"','&quot;',$row_df->description);
 						$row_df->size = (file_exists(BASE_DIR . '/modules/shop/files/' . $row_df->Datei) ) ? round(@filesize(BASE_DIR . '/modules/shop/files/'.$row_df->Datei)/1024,2) : '';
 						array_push($DataFilesBugfixes, $row_df);
 					}
@@ -802,9 +800,9 @@ $AVE_Template->caching = 0;
 					cat.*,
 					COUNT(KatId) AS acount
 				FROM " . PREFIX . "_modul_shop_kategorie AS cat
-				LEFT JOIN " . PREFIX . "_modul_shop_artikel AS art ON KatId = cat.Id AND Aktiv = 1
+				LEFT JOIN " . PREFIX . "_modul_shop_artikel AS art ON KatId = cat.Id AND status = 1
 				GROUP BY cat.Id
-				ORDER BY Rang ASC
+				ORDER BY position ASC
 			");
 			if (!$sql->NumRows())
 			{
@@ -815,7 +813,7 @@ $AVE_Template->caching = 0;
 
 			while ($row = $sql->FetchRow())
 			{
-				$this->_categories[$row->Elter][$row->Id] = $row;
+				$this->_categories[$row->parent_id][$row->Id] = $row;
 			}
 			$sql->Close();
 		}
@@ -847,12 +845,12 @@ $AVE_Template->caching = 0;
 		{
 			$item->ntr = '';
 			$item->visible_title = $prefix . '' . $item->KatName;
-			$item->sub = ($item->Elter == 0) ? 0 : 1;
+			$item->sub = ($item->parent_id == 0) ? 0 : 1;
 
-			$item->dyn_link = 'index.php?module=shop&amp;categ=' . $item->Id . '&amp;parent=' . $item->Elter . '&amp;navop=' . (($item->sub == 0) ? $item->Id : getParentShopcateg($item->Elter));
+			$item->dyn_link = 'index.php?module=shop&amp;categ=' . $item->Id . '&amp;parent=' . $item->parent_id . '&amp;navop=' . (($item->sub == 0) ? $item->Id : getParentShopcateg($item->parent_id));
 			$item->dyn_link = $this->_shopRewrite($item->dyn_link);
 
-			if ($item->Elter == 0) $item->ntr = 1;
+			if ($item->parent_id == 0) $item->ntr = 1;
 
 			$mdl = array();
 			$this->_getCategories($item->Id, $prefix, $mdl, $extra, $sc);
@@ -877,9 +875,9 @@ $AVE_Template->caching = 0;
 					cat.*,
 					COUNT(KatId) AS acount
 				FROM " . PREFIX . "_modul_shop_kategorie AS cat
-				LEFT JOIN " . PREFIX . "_modul_shop_artikel AS art ON KatId = cat.Id AND Aktiv = 1
+				LEFT JOIN " . PREFIX . "_modul_shop_artikel AS art ON KatId = cat.Id AND status = 1
 				GROUP BY cat.Id
-				ORDER BY Rang ASC
+				ORDER BY position ASC
 			");
 			if (!$sql->NumRows())
 			{
@@ -891,7 +889,7 @@ $AVE_Template->caching = 0;
 
 			while ($row = $sql->FetchRow())
 			{
-				$this->_categories[$row->Elter][$row->Id] = $row;
+				$this->_categories[$row->parent_id][$row->Id] = $row;
 			}
 			$sql->Close();
 		}
@@ -906,10 +904,10 @@ $AVE_Template->caching = 0;
 
 		foreach ($this->_categories[$id] as $item)
 		{
-			$item->visible_title = $prefix . (($item->Elter != 0 && $admin != 1) ? '' : '') . $item->KatName;
+			$item->visible_title = $prefix . (($item->parent_id != 0 && $admin != 1) ? '' : '') . $item->KatName;
 			$item->expander = $prefix;
-			$item->sub = ($item->Elter == 0) ? 0 : 1;
-			$item->dyn_link = 'index.php?module=shop&amp;categ=' . $item->Id . '&amp;parent=' . $item->Elter . '&amp;navop=' . (($item->sub == 0) ? $item->Id : getParentShopcateg($item->Elter));
+			$item->sub = ($item->parent_id == 0) ? 0 : 1;
+			$item->dyn_link = 'index.php?module=shop&amp;categ=' . $item->Id . '&amp;parent=' . $item->parent_id . '&amp;navop=' . (($item->sub == 0) ? $item->Id : getParentShopcateg($item->parent_id));
 			$item->dyn_link = $this->_shopRewrite($item->dyn_link);
 
 			array_push($entries,$item);
@@ -942,9 +940,9 @@ $AVE_Template->caching = 0;
 					COUNT(KatId) AS acount
 				FROM " . PREFIX . "_modul_shop_kategorie AS cat
 				LEFT JOIN " . PREFIX . "_modul_shop_artikel AS art
-					ON KatId = cat.Id AND Aktiv = 1
+					ON KatId = cat.Id AND status = 1
 				GROUP BY cat.Id
-				ORDER BY Rang ASC
+				ORDER BY position ASC
 			");
 			if (!$sql->NumRows())
 			{
@@ -956,7 +954,7 @@ $AVE_Template->caching = 0;
 
 			while ($row = $sql->FetchRow())
 			{
-				$this->_categories[$row->Elter][$row->Id] = $row;
+				$this->_categories[$row->parent_id][$row->Id] = $row;
 			}
 			$sql->Close();
 		}
@@ -966,10 +964,10 @@ $AVE_Template->caching = 0;
 			foreach ($this->_categories[$id] as $item)
 			{
 				$item->dyn_link = $this->_shopRewrite("index.php?module=shop&amp;categ=" . $item->Id
-					. "&amp;parent=" . $item->Elter
-					. "&amp;navop=" . (($item->Elter == 0) ? $item->Id : getParentShopcateg($item->Elter)));
+					. "&amp;parent=" . $item->parent_id
+					. "&amp;navop=" . (($item->parent_id == 0) ? $item->Id : getParentShopcateg($item->parent_id)));
 
-				if ($item->Elter == 0) $op = $item->Id;
+				if ($item->parent_id == 0) $op = $item->Id;
 				if (!empty($_REQUEST['navop']) && $_REQUEST['navop'] == $op)
 				{
 					if (!empty($_REQUEST['categ']) && $_REQUEST['categ'] == $item->Id)
@@ -1133,7 +1131,7 @@ $AVE_Template->caching = 0;
 				COUNT(cmnt.Id) AS Anz
 			FROM " . PREFIX . "_modul_shop_artikel AS art
 			LEFT JOIN " . PREFIX . "_modul_shop_artikel_kommentare AS cmnt ON ArtId = art.Id AND Publik = 1
-			WHERE Aktiv = 1
+			WHERE status = 1
 			AND Erschienen <= '" . time() . "'"
 			. $product_categ
 			. $price_query
@@ -1338,10 +1336,10 @@ $AVE_Template->caching = 0;
 					// Preis des Artikels
 					$Einzelpreis = $this->_getNewPrice($key, $value, 0, $Einzelpreis);
 
-					// Wenn Benutzer registriert ist, muss hier geschaut werden, welches Land der
+					// Wenn Benutzer registriert ist, muss hier geschaut werden, welches country der
 					// Benutzer bei der Registrierung angegeben hat, damit der richtige Preis angezeigt wird
 					// Wenn nach dem Ansenden des Formulars (Checkout) ein anderes Versandland angegeben wird
-					// als bei der Registrierung, muss dieses Land verwendet werden um die Versandkosten zu berechnen
+					// als bei der Registrierung, muss dieses country verwendet werden um die Versandkosten zu berechnen
 					$PayUSt = $this->_checkPayVat();
 					if ($PayUSt != true)
 					{
@@ -1536,10 +1534,10 @@ $AVE_Template->caching = 0;
 				// Preis des Artikels
 				$Einzelpreis = $this->_getNewPrice($key, $value, 0, $Einzelpreis);
 
-				// Wenn Benutzer registriert ist, muss hier geschaut werden, welches Land der
+				// Wenn Benutzer registriert ist, muss hier geschaut werden, welches country der
 				// Benutzer bei der Registrierung angegeben hat, damit der richtige Preis angezeigt wird
 				// Wenn nach dem Ansenden des Formulars (Checkout) ein anderes Versandland angegeben wird
-				// als bei der Registrierung, muss dieses Land verwendet werden um die Versandkosten zu berechnen
+				// als bei der Registrierung, muss dieses country verwendet werden um die Versandkosten zu berechnen
 				$PayUSt = $this->_checkPayVat();
 				if ($PayUSt != true)
 				{
@@ -1655,7 +1653,7 @@ $AVE_Template->caching = 0;
 		global $AVE_DB;
 
 		if (!isset($_SESSION['user_country'])) $_SESSION['user_country'] = '';
-		if (isset($_POST['Land']) && $_POST['Land'] != $_SESSION['user_country']) $_SESSION['user_country'] = $_POST['Land'];
+		if (isset($_POST['country']) && $_POST['country'] != $_SESSION['user_country']) $_SESSION['user_country'] = $_POST['country'];
 		if (!empty($_SESSION['user_country']))
 		{
 			if (isset($this->_landIstEU[$_SESSION['user_country']]) && is_object($this->_landIstEU[$_SESSION['user_country']]))
@@ -1665,10 +1663,10 @@ $AVE_Template->caching = 0;
 			else
 			{
 				$row_ieu = $AVE_DB->Query("
-					SELECT IstEU
+					SELECT country_eu
 					FROM " . PREFIX . "_countries
-					WHERE Aktiv = 1
-					AND LandCode = '" . $_SESSION['user_country'] . "'
+					WHERE country_status = '1'
+					AND country_code = '" . $_SESSION['user_country'] . "'
 				")
 				->FetchRow();
 
@@ -1679,12 +1677,12 @@ $AVE_Template->caching = 0;
 		// Muss der Käufer USt. zahlen?
 		// ShipperId
 		$PayUSt = true;
-		if (isset($row_ieu) && is_object($row_ieu) && $row_ieu->IstEU == 2)
+		if (isset($row_ieu) && is_object($row_ieu) && $row_ieu->country_eu == 2)
 		{
 			// Benutzer ist angemeldet, hat Umsatzsteuerbefreiung
 			if (!empty($_SESSION['user_id']) &&
 				isset($_SESSION['GewichtSumm']) && $_SESSION['GewichtSumm'] >= '0.001' &&
-				($this->_getUserInfo(@$_SESSION['user_id'],'UStPflichtig') != 1) || $this->_getUserInfo($_SESSION['user_id'],'UStPflichtig') == 1)
+				($this->_getUserInfo(@$_SESSION['user_id'],'taxpay') != 1) || $this->_getUserInfo(@$_SESSION['user_id'],'taxpay') == 1)
 			{
 				$PayUSt = false;
 			}
@@ -1692,7 +1690,7 @@ $AVE_Template->caching = 0;
 			// Benutzer ist angemeldet, hat keine Umsatzsteuerbefreiung
 			elseif (!empty($_SESSION['user_id']) &&
 				isset($_SESSION['GewichtSumm']) && $_SESSION['GewichtSumm'] < '0.001' &&
-				($this->_getUserInfo($_SESSION['user_id'],'UStPflichtig') == 1))
+				($this->_getUserInfo($_SESSION['user_id'],'taxpay') == 1))
 			{
 				$PayUSt = true;
 				$_SESSION['ShowNoVatInfo'] = 1;
@@ -1715,7 +1713,7 @@ $AVE_Template->caching = 0;
 			}
 			else
 			{
-				if ($this->_getUserInfo($_SESSION['user_id'],'UStPflichtig') != 1)
+				if ($this->_getUserInfo(@$_SESSION['user_id'],'taxpay') != 1)
 				{
 					$PayUSt = false;
 				}
@@ -1767,7 +1765,7 @@ $AVE_Template->caching = 0;
 		$sql = $AVE_DB->Query("
 			SELECT
 				cmnt.*,
-				CONCAT(usr.Vorname, ' ', usr.Nachname) AS Autor
+				CONCAT(usr.firstname, ' ', usr.lastname) AS Autor
 			FROM " . PREFIX . "_modul_shop_artikel_kommentare AS cmnt
 			LEFT JOIN " . PREFIX . "_users AS usr ON usr.Id = cmnt.Benutzer
 			WHERE Publik = 1
@@ -1776,8 +1774,8 @@ $AVE_Template->caching = 0;
 		");
 		while ($row = $sql->FetchRow())
 		{
-			$row->Titel = htmlspecialchars($row->Titel);
-			$row->Kommentar = nl2br(htmlspecialchars($row->Kommentar));
+			$row->title = htmlspecialchars($row->title);
+			$row->comment_text = nl2br(htmlspecialchars($row->comment_text));
 			array_push($comments, $row);
 		}
 
@@ -1811,8 +1809,8 @@ $AVE_Template->caching = 0;
 						ArtId     = '" . $_REQUEST['product_id'] . "',
 						Benutzer  = '" . $_SESSION['user_id'] . "',
 						Datum     = '" . time() . "',
-						Titel     = '" . $_REQUEST['ATitel'] . "',
-						Kommentar = '" . $_REQUEST['AKommentar'] . "',
+						title     = '" . $_REQUEST['ATitel'] . "',
+						comment_text = '" . $_REQUEST['AKommentar'] . "',
 						Wertung   = '" . (((int)$_REQUEST['AWertung'] > 5 || (int)$_REQUEST['AWertung'] < 1) ? 3 : (int)$_REQUEST['AWertung'] ) . "',
 						Publik    = 0
 				");
@@ -1847,7 +1845,7 @@ $AVE_Template->caching = 0;
 		$sql = $AVE_DB->Query("
 			SELECT *
 			FROM " . PREFIX . "_modul_shop_artikel
-			WHERE Aktiv = 1
+			WHERE status = 1
 			AND Id = '" . $product_id . "'
 			AND Erschienen <= '" . time() . "'
 		");
@@ -1959,7 +1957,7 @@ $AVE_Template->caching = 0;
 				$sql = $AVE_DB->Query("
 					SELECT *
 					FROM " . PREFIX . "_modul_shop_artikel
-					WHERE Aktiv = 1
+					WHERE status = 1
 					AND Id != '" . (int)$_REQUEST['product_id'] . "'
 					AND Schlagwoerter LIKE '%" . $Match . "%'
 					ORDER BY rand()
@@ -2212,7 +2210,7 @@ $AVE_Template->caching = 0;
 			SELECT
 				Id,
 				KatName,
-				Elter
+				parent_id
 			FROM " . PREFIX . "_modul_shop_kategorie
 			WHERE Id = '" . $id . "'
 		");
@@ -2220,18 +2218,18 @@ $AVE_Template->caching = 0;
 
 		if (is_object($item))
 		{
-//			$esn = $item->Elter;
-			$result_link = $this->_shopRewrite('index.php?module=shop&amp;categ=' . $item->Id .'&amp;parent=' . $item->Elter . '&amp;navop=' . getParentShopcateg($item->Id));
-			if ($item->Elter == 0) return '<a class="mod_shop_navi" href="index.php?module=shop">'.$GLOBALS['mod']['config_vars']['PageName'].'</a>'.$GLOBALS['mod']['config_vars']['PageSep'].'<a class="mod_shop_navi" href="' . $result_link . '">' . $item->KatName . '</a>' . ($result ? $GLOBALS['mod']['config_vars']['PageSep'] : '') . $result;
+//			$esn = $item->parent_id;
+			$result_link = $this->_shopRewrite('index.php?module=shop&amp;categ=' . $item->Id .'&amp;parent=' . $item->parent_id . '&amp;navop=' . getParentShopcateg($item->Id));
+			if ($item->parent_id == 0) return '<a class="mod_shop_navi" href="index.php?module=shop">'.$GLOBALS['mod']['config_vars']['PageName'].'</a>'.$GLOBALS['mod']['config_vars']['PageSep'].'<a class="mod_shop_navi" href="' . $result_link . '">' . $item->KatName . '</a>' . ($result ? $GLOBALS['mod']['config_vars']['PageSep'] : '') . $result;
 
 			// Daten des darüberliegenden Bereiches
-//			$r_parent = $AVE_DB->Query("SELECT Id,KatName,Elter FROM " . PREFIX . "_modul_shop_kategorie WHERE Id = " . $item->Elter);
+//			$r_parent = $AVE_DB->Query("SELECT Id,KatName,parent_id FROM " . PREFIX . "_modul_shop_kategorie WHERE Id = " . $item->parent_id);
 //			$parent = $r_parent->FetchRow();
 
-//			$result_link = $this->_shopRewrite('index.php?module=shop&amp;categ=' . $item->Id . '&amp;parent=' . $item->Elter . '&amp;navop=' . getParentShopcateg($item->Id));
+//			$result_link = $this->_shopRewrite('index.php?module=shop&amp;categ=' . $item->Id . '&amp;parent=' . $item->parent_id . '&amp;navop=' . getParentShopcateg($item->Id));
 			$result = '<a class="mod_shop_navi" href="' . $result_link . '">' . $item->KatName . '</a>' . ($result ? $GLOBALS['mod']['config_vars']['PageSep'] : '') . $result ;
 
-			return $this->_getNavigationPath($item->Elter, $result, $extra, $nav_op);
+			return $this->_getNavigationPath($item->parent_id, $result, $extra, $nav_op);
 		}
 
 		return '';
@@ -2255,7 +2253,7 @@ $AVE_Template->caching = 0;
 				$sql = $AVE_DB->Query("
 					SELECT *
 					FROM " . PREFIX . "_users
-					WHERE Status = 1
+					WHERE status = '1'
 					AND Id = '" . $user . "'
 				");
 				while ($row = $sql->FetchRow())
@@ -2338,6 +2336,7 @@ $AVE_Template->caching = 0;
 		}
 		else
 		{
+			$row2 = new stdClass;
 			$row2->Wert = '0.00';
 		}
 //		$sql->Close();
@@ -2436,12 +2435,12 @@ $AVE_Template->caching = 0;
 		$sql = $AVE_DB->Query("
 			SELECT *
 			FROM " . PREFIX . "_modul_shop_varianten_kategorien
-			WHERE Aktiv = 1
+			WHERE status = 1
 			AND KatId = '" . $KatId . "'
 		");
 		while ($row = $sql->FetchRow())
 		{
-			$row->Beschreibung = str_replace('"', "'", $row->Beschreibung);
+			$row->description = str_replace('"', "'", $row->description);
 			$Variants_Items = array();
 			$sql_v = $AVE_DB->Query("
 				SELECT *
@@ -2609,10 +2608,10 @@ $AVE_Template->caching = 0;
 
 			$sql = $AVE_DB->Query("
 				SELECT
-					Benutzergruppe,
+					user_group,
 					IFNULL(Wert, '0.00') AS Wert
 				FROM " . PREFIX . "_user_groups
-				LEFT JOIN " . PREFIX . "_modul_shop_kundenrabatte ON GruppenId = Benutzergruppe
+				LEFT JOIN " . PREFIX . "_modul_shop_kundenrabatte ON GruppenId = user_group
 			");
 			while ($row = $sql->FetchRow())
 			{
@@ -2638,14 +2637,14 @@ $AVE_Template->caching = 0;
 
 			$sql = $AVE_DB->Query("
 				SELECT
-					Benutzergruppe,
+					user_group,
 					IFNULL(Wert, '0.00') AS Wert
 				FROM " . PREFIX . "_user_groups
-				LEFT JOIN " . PREFIX . "_modul_shop_kundenrabatte ON GruppenId = Benutzergruppe
+				LEFT JOIN " . PREFIX . "_modul_shop_kundenrabatte ON GruppenId = user_group
 			");
 			while ($row = $sql->FetchRow())
 			{
-				$this->_discount[$row->Benutzergruppe] = $row->Wert;
+				$this->_discount[$row->user_group] = $row->Wert;
 			}
 			$sql->Close();
 		}
@@ -2667,50 +2666,50 @@ $AVE_Template->caching = 0;
 			$row = $AVE_DB->Query("
 				SELECT
 					usr.Id,
-					usr.Benutzergruppe,
-					UserName,
-					Vorname,
-					Nachname,
-					Email,
-					Land,
-					Rechte,
-					Kennwort,
-					salt,
-					`Status`
+					usr.user_group,
+					usr.user_name,
+					usr.firstname,
+					usr.lastname,
+					usr.email,
+					usr.country,
+					usr.password,
+					usr.salt,
+					usr.status,
+					grp.user_group_permission
 				FROM
 					" . PREFIX . "_users AS usr
 				JOIN
 					" . PREFIX . "_user_groups AS grp
-						ON grp.Benutzergruppe = usr.Benutzergruppe
-				WHERE Email = '" . $_POST['shop_user_login'] . "'
-				OR `UserName` = '" . $_POST['shop_user_login'] . "'
+						ON grp.user_group = usr.user_group
+				WHERE email  = '" . $_POST['shop_user_login'] . "'
+				OR user_name = '" . $_POST['shop_user_login'] . "'
 				LIMIT 1
 			")->FetchRow();
 
-			switch (@$row->Status)
+			switch (@$row->status)
 			{
 				case 1:
 					$password = md5(md5(trim($_POST['user_pass']) . $row->salt));
 
-					if ($password == $row->Kennwort)
+					if ($password == $row->password)
 					{
 						$AVE_DB->Query("
 							UPDATE " . PREFIX . "_users
-							SET ZuletztGesehen = " . time() . "
+							SET last_visit = " . time() . "
 							WHERE Id = " . $row->Id . "
 						");
 
-						$row->Rechte = str_replace(array(' ', "\n", "\r\n"), '', $row->Rechte);
-						$permissions = explode('|', $row->Rechte);
-						foreach($permissions as $permission) $_SESSION[$permission] = 1;
+						$row->user_group_permission = str_replace(array(' ', "\n", "\r\n"), '', $row->user_group_permission);
+						$user_group_permissions = explode('|', $row->user_group_permission);
+						foreach($user_group_permissions as $user_group_permission) $_SESSION[$user_group_permission] = 1;
 
 						$_SESSION['user_id']       = $row->Id;
-						$_SESSION['user_group']    = $row->Benutzergruppe;
-						$_SESSION['user_name']     = get_username($row->UserName, $row->Vorname, $row->Nachname);
+						$_SESSION['user_group']    = $row->user_group;
+						$_SESSION['user_name']     = get_username($row->user_name, $row->firstname, $row->lastname);
 						$_SESSION['user_pass']     = $password;
-						$_SESSION['user_email']    = addslashes($row->Email);
-						$_SESSION['user_country']  = strtoupper($row->Land);
-						$_SESSION['user_language'] = strtolower($row->Land);
+						$_SESSION['user_email']    = addslashes($row->email);
+						$_SESSION['user_country']  = strtoupper($row->country);
+						$_SESSION['user_language'] = strtolower($row->country);
 						$_SESSION['user_ip']       = addslashes($_SERVER['REMOTE_ADDR']);
 
 //						$_SESSION['admin_theme'] = DEFAULT_ADMIN_THEME_FOLDER;
@@ -2760,7 +2759,7 @@ $AVE_Template->caching = 0;
 			SELECT Name
 			FROM " . PREFIX . "_modul_shop_versandarten
 			WHERE Id = '" . $id . "'
-			AND Aktiv = 1
+			AND status = 1
 		")
 		->GetCell();
 
@@ -2774,7 +2773,7 @@ $AVE_Template->caching = 0;
 		$Betrag = $AVE_DB->Query("
 			SELECT Betrag
 			FROM " . PREFIX . "_modul_shop_versandkosten
-			WHERE Land = '" . $land . "'
+			WHERE country = '" . $land . "'
 			AND VersandId = '" . $Id . "'
 			AND (" . $_SESSION['GewichtSumm'] . " BETWEEN KVon AND KBis)
 			LIMIT 1
@@ -2793,7 +2792,7 @@ $AVE_Template->caching = 0;
 		$sql = $AVE_DB->Query("
 			SELECT *
 			FROM " . PREFIX . "_modul_shop_versandarten
-			WHERE Aktiv = 1
+			WHERE status = 1
 		");
 		while ($row = $sql->FetchRow())
 		{
@@ -2824,7 +2823,7 @@ $AVE_Template->caching = 0;
 							FROM " . PREFIX . "_modul_shop_versandkosten
 							WHERE VersandId = '" . $row->Id . "'
 							" . $dbex . "
-							AND Land = '" . $land . "'
+							AND country = '" . $land . "'
 							LIMIT 1
 						");
 						$row_cost = $sql_cost->FetchRow();
@@ -2853,7 +2852,7 @@ $AVE_Template->caching = 0;
 		$Name = $AVE_DB->Query("
 			SELECT Name
 			FROM " . PREFIX . "_modul_shop_zahlungsmethoden
-			WHERE Aktiv = 1
+			WHERE status = 1
 			AND Id = '" . $id . "'
 		")
 		->GetCell();
@@ -2867,23 +2866,23 @@ $AVE_Template->caching = 0;
 
 		// unset($_SESSION['PaymentId']);
 		$PaymentMethods = array();
-		if (isset($_SESSION['ShipperId']) && isset($_POST['Land']) )
+		if (isset($_SESSION['ShipperId']) && isset($_POST['country']) )
 		{
 			$sql = $AVE_DB->Query("
 				SELECT *
 				FROM " . PREFIX . "_modul_shop_zahlungsmethoden
-				WHERE Aktiv = 1
+				WHERE status = 1
 				ORDER BY Position ASC
 			");
 			while ($row = $sql->FetchRow())
 			{
 				$Laender = explode(',', $row->ErlaubteVersandLaender);
-				$Gruppen = explode(',', $row->ErlaubteGruppen);
+				$user_group = explode(',', $row->ErlaubteGruppen);
 				$Versand = explode(',', $row->ErlaubteVersandarten);
 				$row->Kosten = $row->Kosten;
 
 				// Nur Zahlungsarten für erlaubte Benutzergruppe ausgeben
-				if (in_array($_SESSION['ShipperId'], $Versand) && in_array($_POST['Land'],$Laender) && in_array($_SESSION['user_group'], $Gruppen)) array_push($PaymentMethods, $row);
+				if (in_array($_SESSION['ShipperId'], $Versand) && in_array($_POST['country'],$Laender) && in_array($_SESSION['user_group'], $user_group)) array_push($PaymentMethods, $row);
 			}
 		}
 
@@ -2894,14 +2893,14 @@ $AVE_Template->caching = 0;
 	{
 		global $AVE_DB;
 
-		$Beschreibung = $AVE_DB->Query("
-			SELECT Beschreibung
+		$description = $AVE_DB->Query("
+			SELECT description
 			FROM " . PREFIX . "_modul_shop_zahlungsmethoden
 			WHERE Id = '" . $id . "'
 		")
 		->GetCell();
 
-		return $Beschreibung;
+		return $description;
 	}
 
 	function _getDiscount()
@@ -2944,7 +2943,7 @@ $AVE_Template->caching = 0;
 			if (empty($_POST['billing_lastname'])) array_push($errors, $GLOBALS['mod']['config_vars']['Errors_NoLastName']);
 			if (empty($_POST['billing_street'])) array_push($errors, $GLOBALS['mod']['config_vars']['Errors_NoStreet']);
 			if (empty($_POST['billing_streetnumber'])) array_push($errors, $GLOBALS['mod']['config_vars']['Errors_NoStreetNr']);
-			if (empty($_POST['billing_zip']) || (!preg_match('/^[0-9]{5}$/', $_POST['billing_zip']) && $_POST['Land'] == 'DE') ) array_push($errors, $GLOBALS['mod']['config_vars']['Errors_NoZip']);
+			if (empty($_POST['billing_zip']) || (!preg_match('/^[0-9]{5}$/', $_POST['billing_zip']) && $_POST['country'] == 'DE') ) array_push($errors, $GLOBALS['mod']['config_vars']['Errors_NoZip']);
 			if (empty($_POST['billing_town'])) array_push($errors, $GLOBALS['mod']['config_vars']['Errors_NoTown']);
 			$regex_email = '/^[\w.-]+@[a-z0-9.-]+\.(?:[a-z]{2}|com|org|net|edu|gov|mil|biz|info|mobi|name|aero|asia|jobs|museum)$/i';
 			if (empty($_POST['OrderEmail']) || !@preg_match($regex_email, chop($_POST['OrderEmail']))) array_push($errors, $GLOBALS['mod']['config_vars']['Errors_NoEmail']);
@@ -2961,7 +2960,7 @@ $AVE_Template->caching = 0;
 			if (isset($_POST['billing_streetnumber'])) $_SESSION['billing_streetnumber'] = $_POST['billing_streetnumber'];
 			if (isset($_POST['billing_zip'])) $_SESSION['billing_zip'] = $_POST['billing_zip'];
 			if (isset($_POST['billing_town'])) $_SESSION['billing_town'] = $_POST['billing_town'];
-			if (isset($_POST['Land'])) $_SESSION['billing_country'] = $_POST['Land'];
+			if (isset($_POST['country'])) $_SESSION['billing_country'] = $_POST['country'];
 
 			// Formularwerte (Rechnungsadresse)
 			if (isset($_POST['shipping_company'])) $_SESSION['shipping_company'] = $_POST['shipping_company'];
@@ -3026,9 +3025,9 @@ $AVE_Template->caching = 0;
 			//=======================================================
 			// Liefer & Versandadresse
 			//=======================================================
-			if (!empty($_POST['Land']))
+			if (!empty($_POST['country']))
 			{
-				$AVE_Template->assign('showShipper', $this->_showShipper($_POST['Land']));
+				$AVE_Template->assign('showShipper', $this->_showShipper($_POST['country']));
 				$_SESSION['IsShipper'] = 1;
 			}
 
@@ -3048,7 +3047,7 @@ $AVE_Template->caching = 0;
 				$VersFrei = $this->_getShopSetting('VersFrei');
 				$VersFreiBetrag = $this->_getShopSetting('VersFreiBetrag');
 
-				//@$_SESSION['BasketSumm'] = ($VersFrei == 1 && $_SESSION['BasketSumm'] >= $VersFreiBetrag) ? '0.00' : ($row_su->KeineKosten != 1 && $row_su->Pauschalkosten > 0) ? $_SESSION['BasketSumm'] + $row_su->Pauschalkosten : $_SESSION['BasketSumm'] = $_SESSION['BasketSumm'] + $this->_shipperSumm(@$_POST['Land'],$_SESSION['ShipperId']);
+				//@$_SESSION['BasketSumm'] = ($VersFrei == 1 && $_SESSION['BasketSumm'] >= $VersFreiBetrag) ? '0.00' : ($row_su->KeineKosten != 1 && $row_su->Pauschalkosten > 0) ? $_SESSION['BasketSumm'] + $row_su->Pauschalkosten : $_SESSION['BasketSumm'] = $_SESSION['BasketSumm'] + $this->_shipperSumm(@$_POST['country'],$_SESSION['ShipperId']);
 
 				// Endsumme
 				if ($VersFrei == 1 && $_SESSION['BasketSumm'] >= $VersFreiBetrag)
@@ -3062,7 +3061,7 @@ $AVE_Template->caching = 0;
 				}
 				else
 				{
-					@$_SESSION['BasketSumm'] += $this->_shipperSumm(@$_POST['Land'], $_SESSION['ShipperId']);
+					@$_SESSION['BasketSumm'] += $this->_shipperSumm(@$_POST['country'], $_SESSION['ShipperId']);
 				}
 
 				if ($VersFrei == 1 && $_SESSION['BasketSumm'] >= $VersFreiBetrag)
@@ -3075,7 +3074,7 @@ $AVE_Template->caching = 0;
 				}
 				else
 				{
-					@$_SESSION['ShippingSumm'] = $this->_shipperSumm(@$_POST['Land'], $_SESSION['ShipperId']);
+					@$_SESSION['ShippingSumm'] = $this->_shipperSumm(@$_POST['country'], $_SESSION['ShipperId']);
 				}
 				@$_SESSION['ShippingSummOut'] = @$_SESSION['ShippingSumm'];
 			}
@@ -3133,8 +3132,8 @@ $AVE_Template->caching = 0;
 					SELECT *
 					FROM " . PREFIX . "_users
 					WHERE Id = '" . $_SESSION['user_id'] . "'
-				")
-				->FetchRow();
+				")->FetchRow();
+
 				$AVE_Template->assign('row', $row);
 			}
 
@@ -3262,7 +3261,7 @@ $AVE_Template->caching = 0;
 							Liefer_Hnr        = '" . $_SESSION['billing_streetnumber'] . "',
 							Liefer_PLZ        = '" . $_SESSION['billing_zip'] . "',
 							Liefer_Ort        = '" . $_SESSION['billing_town'] . "',
-							Liefer_Land       = '" . (!empty($_POST['Land']) ? $_POST['Land'] : '') . "',
+							Liefer_Land       = '" . (!empty($_POST['country']) ? $_POST['country'] : '') . "',
 							Rech_Firma        = '" . (!empty($_SESSION['shipping_company']) ? $_SESSION['shipping_company'] : (!empty($_SESSION['billing_company']) ? $_SESSION['billing_company'] : '') ) . "',
 							Rech_Abteilung    = '" . (!empty($_SESSION['shipping_company_reciever']) ? $_SESSION['shipping_company_reciever'] : (!empty($_SESSION['billing_company_reciever']) ? $_SESSION['billing_company_reciever'] : '')) . "',
 							Rech_Vorname      = '" . (!empty($_SESSION['shipping_firstname']) ? $_SESSION['shipping_firstname'] : $_SESSION['billing_firstname']) . "',
@@ -3402,7 +3401,7 @@ $AVE_Template->caching = 0;
 					$row_gw = $AVE_DB->Query("
 						SELECT *
 						FROM " . PREFIX . "_modul_shop_zahlungsmethoden
-						WHERE Aktiv = 1
+						WHERE status = 1
 						AND Id = '" . $_SESSION['PaymentId'] . "'
 					")
 					->FetchRow();

@@ -21,8 +21,8 @@
 		<tr>
 			<td width="220" class="first">{#SShipperActive#} </td>
 			<td class="second">
-				<input type="radio" name="Aktiv" value="1" {if $ss->Aktiv=='1'}checked {/if}/>{#Yes#}&nbsp;
-				<input type="radio" name="Aktiv" value="0" {if $ss->Aktiv=='0'}checked {/if}/>{#No#}
+				<input type="radio" name="country_code" value="1" {if $ss->country_code=='1'}checked {/if}/>{#Yes#}&nbsp;
+				<input type="radio" name="status" value="0" {if $ss->status=='0'}checked {/if}/>{#No#}
 			</td>
 		</tr>
 
@@ -46,12 +46,12 @@
 				<select name="ErlaubteVersandLaender[]" multiple="multiple" size="8" style="width:200px">
 					{foreach from=$laender item=g}
 						{assign var='sel' value=''}
-						{if $g->LandCode}
-							{if (in_array($g->LandCode,$ss->VersandLaender))}
+						{if $g->country_code}
+							{if (in_array($g->country_code,$ss->VersandLaender))}
 									{assign var='sel' value='selected'}
 							{/if}
 						{/if}
-						<option value="{$g->LandCode}" {$sel}>{$g->LandName|escape:html}</option>
+						<option value="{$g->country_code}" {$sel}>{$g->country_name|escape:html}</option>
 					{/foreach}
 				</select>
 			</td>
@@ -66,12 +66,12 @@
 				<select name="ErlaubteGruppen[]" multiple="multiple" size="8" style="width:200px">
 					{foreach from=$gruppen item=g}
 						{assign var='sel' value=''}
-						{if $g->Benutzergruppe}
-							{if (in_array($g->Benutzergruppe,$ss->Gruppen))}
+						{if $g->user_group}
+							{if (in_array($g->user_group,$ss->user_group))}
 									{assign var='sel' value='selected'}
 							{/if}
 						{/if}
-						<option value="{$g->Benutzergruppe}" {$sel}>{$g->Name|escape:html}</option>
+						<option value="{$g->user_group}" {$sel}>{$g->user_group_name|escape:html}</option>
 					{/foreach}
 				</select>
 			</td>
