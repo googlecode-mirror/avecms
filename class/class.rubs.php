@@ -322,7 +322,9 @@ class AVE_Rubric
 					rubric_field_title,
 					rubric_field_type,
 					rubric_field_position,
-					rubric_field_default
+					rubric_field_default,
+					rubric_field_template,
+					rubric_field_template_request
 				FROM " . PREFIX . "_rubric_fields
 				WHERE rubric_id = '" . $rubric_id . "'
 				ORDER BY rubric_field_position ASC
@@ -332,11 +334,13 @@ class AVE_Rubric
 				$AVE_DB->Query("
 					INSERT " . PREFIX . "_rubric_fields
 					SET
-						rubric_id             = '" . $iid . "',
-						rubric_field_title    = '" . addslashes($row->rubric_field_title) . "',
-						rubric_field_type     = '" . addslashes($row->rubric_field_type) . "',
-						rubric_field_position = '" . (int)$row->rubric_field_position . "',
-						rubric_field_default  = '" . addslashes($row->rubric_field_default) . "'
+						rubric_id                     = '" . $iid . "',
+						rubric_field_title            = '" . addslashes($row->rubric_field_title) . "',
+						rubric_field_type             = '" . addslashes($row->rubric_field_type) . "',
+						rubric_field_position         = '" . (int)$row->rubric_field_position . "',
+						rubric_field_default          = '" . addslashes($row->rubric_field_default) . "',
+						rubric_field_template         = '" . addslashes($row->rubric_field_template) . "',
+						rubric_field_template_request = '" . addslashes($row->rubric_field_template_request) . "'
 				");
 			}
 
