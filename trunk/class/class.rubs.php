@@ -472,6 +472,17 @@ class AVE_Rubric
 		{
 			$position = (!empty($_POST['rubric_field_position_new'])) ? $_POST['rubric_field_position_new'] : 1;
 
+			if ($_POST['RubTypNew'] == 'dropdown')
+			{
+				$rubric_field_default = trim($_POST['StdWertNew']);
+				$rubric_field_default = preg_split('/\s*,\s*/', $rubric_field_default);
+				$rubric_field_default = implode(',', $rubric_field_default);
+			}
+			else
+			{
+				$rubric_field_default = $_POST['StdWertNew'];
+			}
+
 			$AVE_DB->Query("
 				INSERT " . PREFIX . "_rubric_fields
 				SET
@@ -479,7 +490,7 @@ class AVE_Rubric
 					rubric_field_title    = '" . $_POST['TitelNew'] . "',
 					rubric_field_type     = '" . $_POST['RubTypNew'] . "',
 					rubric_field_position = '" . $position . "',
-					rubric_field_default  = '" . $_POST['StdWertNew'] . "'
+					rubric_field_default  = '" . $rubric_field_default . "'
 			");
 			$Update_RubrikFeld = $AVE_DB->InsertId();
 
@@ -519,13 +530,24 @@ class AVE_Rubric
 		{
 			if (!empty($title))
 			{
+				if ($_POST['rubric_field_type'][$id] == 'dropdown')
+				{
+					$rubric_field_default = trim($_POST['rubric_field_default'][$id]);
+					$rubric_field_default = preg_split('/\s*,\s*/', $rubric_field_default);
+					$rubric_field_default = implode(',', $rubric_field_default);
+				}
+				else
+				{
+					$rubric_field_default = $_POST['rubric_field_default'][$id];
+				}
+
 				$AVE_DB->Query("
 					UPDATE " . PREFIX . "_rubric_fields
 					SET
 						rubric_field_title            = '" . $title . "',
 						rubric_field_type             = '" . $_POST['rubric_field_type'][$id] . "',
 						rubric_field_position         = '" . $_POST['rubric_field_position'][$id] . "',
-						rubric_field_default          = '" . $_POST['rubric_field_default'][$id] . "',
+						rubric_field_default          = '" . $rubric_field_default . "',
 						rubric_field_template         = '" . $_POST['rubric_field_template'][$id] . "',
 						rubric_field_template_request = '" . $_POST['rubric_field_template_request'][$id] . "'
 					WHERE
