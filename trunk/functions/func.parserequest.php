@@ -123,6 +123,7 @@ function request_get_condition_sql_string($id)
 		arsort($_REQUEST['fld']);
 		foreach ($_REQUEST['fld'] as $feld => $wert)
 		{
+			if ($wert == '') continue;
 			$where = ' WHERE 1';
 			$alias = 't' . $start;
 			$from .= ($start != 0) ? ' JOIN ' . PREFIX . '_document_fields AS ' . $alias . ' ON ' . $alias . '.document_id = t0.document_id' : '';
@@ -513,13 +514,13 @@ function request_get_dropdown($dropdown_ids, $rubric_id, $request_id)
 	while ($row = $sql->FetchRow())
 	{
 		$dropdown['titel'] = $row->rubric_field_title;
-		$dropdown['selected'] = !empty($_SESSION[$doc_request]['fld'][$row->Id]) ? $_SESSION[$doc_request]['fld'][$row->Id] : $row->condition_value;
+		$dropdown['selected'] = isset($_SESSION[$doc_request]['fld'][$row->Id]) ? $_SESSION[$doc_request]['fld'][$row->Id] : '';
 		$dropdown['options'] = explode(',', $row->rubric_field_default);
 		$control[$row->Id] = $dropdown;
 	}
 
 	$AVE_Template->assign('ctrlrequest', $control);
-	return $AVE_Template->fetch(BASE_DIR . ABS_PATH . 'templates/' . THEME_FOLDER . '/modules/request/remote.tpl');
+	return $AVE_Template->fetch(BASE_DIR . '/templates/' . THEME_FOLDER . '/modules/request/remote.tpl');
 }
 
 ?>
