@@ -1,4 +1,4 @@
-<form method="post" class="ctrlrequest" action="{$formaction}">
+<form method="post" class="ctrlrequest" action="">
 
   <table>
 
