@@ -33,43 +33,40 @@ if (defined('ACP'))
  */
 function mod_moredoc()
 {
-	global $AVE_DB, $AVE_Template;
+	global $AVE_Core, $AVE_DB, $AVE_Template;
 
 	require_once(BASE_DIR . '/functions/func.modulglobals.php');
 	set_modul_globals('moredoc');
 
-	$limit = 5; // Количество связных документов
-	$flagrubric = 1; // Учитывать или нет рубрику документа (0 - нет, 1 - да)
+	$AVE_Template->caching = true;            // Включаем кеширование
+	$AVE_Template->cache_lifetime = 60*60*24; // Время жизни кеша 1 день в секундах
+	$AVE_Template->cache_dir .= '/moredoc';   // Папка для кеша модуля
 
-	// Время жизни кэша 1 день в секундах
-	$AVE_Template->cache_lifetime = 60*60*24;
+	$tpl_dir = BASE_DIR . '/modules/moredoc/templates/'; // Указываем путь к шаблону модуля
 
-	$moredoc = '';
-	$document_id = get_current_document_id(); // Получаем ID документа
-
-	$AVE_Template->caching = true; // Устанавливаем флаг кэшировать
-
-	// Если нету в кэше, то начинаем обрабатывать
-	if (!$AVE_Template->is_cached($AVE_Template->cache_dir . 'moredoc.tpl', $document_id))
+	// Если нету в кеше, то начинаем обрабатывать
+	if (!$AVE_Template->is_cached($tpl_dir . 'moredoc.tpl', $AVE_Core->curentdoc->Id))
 	{
-		$tpl_dir = BASE_DIR . '/modules/moredoc/templates/'; // Указываем путь до шаблона
-		$AVE_Template->cache_dir = BASE_DIR . '/cache/moredoc/'; // Папка для создания кэша
+		$limit      = 5; // Количество связных документов
+		$flagrubric = 1; // Учитывать или нет рубрику документа (0 - нет, 1 - да)
 
-		// Проверяем, есть ли папка для кэша, если нет (первый раз) — создаем
-		if (!is_file(BASE_DIR . '/cache/moredoc/'))
+		$moredoc = array();
+
+		// Проверяем, есть ли папка для кеша, если нет (первый раз) — создаем
+		if (!is_dir($AVE_Template->cache_dir))
 		{
 			$oldumask = umask(0);
-			@mkdir(BASE_DIR . '/cache/moredoc/', 0777);
+			@mkdir($AVE_Template->cache_dir, 0777);
 			umask($oldumask);
 		}
 
-		// Получаем ключевые слова, рубрику, вытаскиваем первое слово
+		// Получаем ключевые слова, рубрику, извлекаем первое ключевое слово
 		$row = $AVE_DB->Query("
 			SELECT
 				rubric_id,
 				document_meta_keywords
 			FROM " . PREFIX . "_documents
-			WHERE Id = '" . $document_id . "'
+			WHERE Id = '" . $AVE_Core->curentdoc->Id . "'
 			LIMIT 1
 		")->FetchRow();
 
@@ -80,10 +77,12 @@ function mod_moredoc()
 		{
 			$inrubric = $flagrubric ? ("AND rubric_id = '" . $row->rubric_id . "'") : '';
 			$doctime  = get_settings('use_doctime') ? ("AND (document_expire = 0 || document_expire >= '" . time() . "') AND document_published <= '" . time() . "'") : '';
+
 			// Ищем документы где встречается такое-же слово
 			$sql = $AVE_DB->Query("
 				SELECT
 					Id,
+					document_expire,
 					document_title,
 					document_alias,
 					document_meta_description
@@ -91,31 +90,36 @@ function mod_moredoc()
 				WHERE document_meta_keywords LIKE '" . $keywords . "%'
 				AND Id != 1
 				AND Id != '" . PAGE_NOT_FOUND_ID . "'
+				AND Id != '" . $AVE_Core->curentdoc->Id . "'
 				AND document_status != '0'
 				AND document_deleted != '1'
-				AND Id != '" . $document_id . "'
 				" . $inrubric . "
 				" . $doctime . "
-				ORDER BY Id DESC
+				ORDER BY document_count_view DESC
 				LIMIT " . $limit
 			);
 
-			$moredoc = array();
 			while ($row = $sql->FetchRow())
 			{
-				$row->document_alias = rewrite_link('index.php?id=' . $row->Id . '&amp;doc=' . (empty($row->document_alias) ? prepare_url($row->document_title) : $row->curentdoc->document_alias));
+				if ($doctime != '' && (time() + $AVE_Template->cache_lifetime) > $row->document_expire)
+				{
+					// Изменяем время жизни кеша так что-бы оно не превышало
+					// время окончания публикации попавших в выборку документов
+					$AVE_Template->cache_lifetime = $row->document_expire - time();
+				}
+				$row->document_link = rewrite_link('index.php?id=' . $row->Id . '&amp;doc=' . (empty($row->document_alias) ? prepare_url($row->document_title) : $row->document_alias));
 				array_push($moredoc, $row);
 			}
 			// Закрываем соединение
 			$sql->Close();
 		}
-		// Назначаем переменную moreDoc для использования в шаблоне
+		// Передаём переменную moredoc в шаблон
 		$AVE_Template->assign('moredoc', $moredoc);
 	}
 	// Выводим шаблон moredoc.tpl
-	$AVE_Template->display($tpl_dir . 'moredoc.tpl', $document_id);
+	$AVE_Template->display($tpl_dir . 'moredoc.tpl', $AVE_Core->curentdoc->Id);
 
-	$AVE_Template->caching = false; // Устанавливаем флаг не кэшировать
+	$AVE_Template->caching = false; // Отключаем кеширование
 }
 
 ?>
