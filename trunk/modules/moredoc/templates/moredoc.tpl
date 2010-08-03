@@ -1,7 +1,9 @@
 {if $moredoc}
-	<strong>{#MOREDOC_NAME#}</strong><br />
+	<h3>{#MOREDOC_NAME#}</h3>
+	<ul>
 	{foreach from=$moredoc item=document}
-		<a href = "{$document->document_alias}">{$document->title|escape}</a><br />
-		{if $document->document_meta_description !=''}{$document->document_meta_description|escape}<br />{/if}
+		<li><a href = "{$document->document_link}">{$document->document_title|escape}</a><br />
+		{if $document->document_meta_description !=''}{$document->document_meta_description|escape}<br />{/if}</li>
 	{/foreach}
+	</ul>
 {/if}
