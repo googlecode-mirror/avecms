@@ -95,7 +95,7 @@ function changeRub(select) {ldelim}
 			<td class="second">
 				<select {$dis} style="width:250px" name="request_order_by" id="request_order_by">
 					<option value="document_published"{if $row->request_order_by=='document_published'} selected="selected"{/if}>{#REQUEST_BY_DATE#}</option>
-					<option value="title"{if $row->request_order_by=='title'} selected="selected"{/if}>{#REQUEST_BY_NAME#}</option>
+					<option value="document_title"{if $row->request_order_by=='document_title'} selected="selected"{/if}>{#REQUEST_BY_NAME#}</option>
 					<option value="document_author_id"{if $row->request_order_by=='document_author_id'} selected="selected"{/if}>{#REQUEST_BY_EDIT#}</option>
 					<option value="document_count_print"{if $row->request_order_by=='document_count_print'} selected="selected"{/if}>{#REQUEST_BY_PRINTED#}</option>
 					<option value="document_count_view"{if $row->request_order_by=='document_count_view'} selected="selected"{/if}>{#REQUEST_BY_VIEWS#}</option>
