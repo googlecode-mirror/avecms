@@ -313,6 +313,9 @@ div.block#poll 			{padding:10px 0;}
 /* -----------------------------
  =модуль Вопрос-ответ
 ----------------------------- */
+.mod_faq dt                     {cursor:pointer;color:#5E7C2D;text-decoration:underline}
+.mod_faq dd                     {display:block;margin:5px 0;padding:10px 10px 10px 15px;font-size:11px;color:#666;border-top:0 solid #799F3B;border-right:0 solid #799F3B;border-bottom:0 solid #799F3B;border-left:3px solid #799F3B;background:#E8E8E8}
+
 .mod_faq_quest                  {cursor:pointer;color:#5E7C2D;text-decoration:underline}
 .mod_faq_ans                    {display:block;margin:5px 0;padding:10px 10px 10px 15px;font-size:11px;color:#666;border-top:0 solid #799F3B;border-right:0 solid #799F3B;border-bottom:0 solid #799F3B;border-left:3px solid #799F3B;background:#E8E8E8}
 

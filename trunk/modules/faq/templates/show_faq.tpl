@@ -1,10 +1,20 @@
 <h3>{$faq_title}</h3>
 <p>{$faq_description}</p>
 {if $faq_arr}
-<dl>
+<dl class="mod_faq">
 {foreach from=$faq_arr item=item}
-	<dt class="mod_faq_quest" onclick="$('#answer_{$item->id}').slideToggle();">{$item->faq_quest}</dt>
-	<dd class="mod_faq_ans" id="answer_{$item->id}" style="display:none;">{$item->faq_answer}</dd>
+	<dt>{$item->faq_quest}</dt>
+	<dd>{$item->faq_answer}</dd>
 {/foreach}
 </dl>
+{literal}
+<script>
+$(document).ready(function() {
+	$(".mod_faq dd").hide();
+	$(".mod_faq dt").click(function() {
+		$(this).toggleClass("highlight").next("dd").slideToggle();
+	});
+});
+</script>
+{/literal}
 {/if}
