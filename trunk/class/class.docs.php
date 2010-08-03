@@ -665,6 +665,7 @@ class AVE_Document
 		if ($num > $limit)
 		{
 			$nav_target = !empty($_REQUEST['navi_item_target'])                               ? '&navi_item_target=' . $_REQUEST['navi_item_target'] : '';
+			$target     = !empty($_REQUEST['target'])                                         ? '&target=' . $_REQUEST['target'] : '';
 			$nav_doc    = !empty($_REQUEST['doc'])                                            ? '&doc=' . $_REQUEST['doc'] : '';
 			$nav_alias  = !empty($_REQUEST['document_alias'])                                 ? '&document_alias=' . $_REQUEST['document_alias'] : '';
 			$pop        = (isset($_REQUEST['pop']) && $_REQUEST['pop'] == 1)                  ? '&pop=1' : '';
@@ -676,7 +677,7 @@ class AVE_Document
 				. $nav_target . $nav_doc . $nav_alias . $navi_sort
 				. $navi_docstatus . $nav_titel . $nav_rub . $nav_zeit
 				. $nav_limit . $pop . $showsimple . $selurl . $idonly
-				. "&page={s}&cp=" . SESSION . "\">{t}</a> ";
+				. $target . "&page={s}&cp=" . SESSION . "\">{t}</a> ";
 			$page_nav = get_pagination($seiten, 'page', $page_nav);
 			$AVE_Template->assign('page_nav', $page_nav);
 		}
