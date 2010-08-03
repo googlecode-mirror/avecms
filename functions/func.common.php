@@ -798,54 +798,93 @@ function get_country_list($status = '')
  * @param string $to
  * @param string $text
  * @param string $subject
- * @param string $fromemail
  * @param string $from
+ * @param string $from_name
  * @param string $content_type
- * @param string $attach
+ * @param string $attachments
  * @param string $html
  */
-function send_mail($to, $text, $subject = '', $fromemail = '', $from = '', $content_type = '', $attach = '', $html = '')
+function send_mail($to, $text, $subject = '', $from = '', $from_name = '', $content_type = '', $attachments = '', $html = '')
 {
-	require_once(BASE_DIR . '/class/class.phpmailer.php');
+	if (!function_exists('version_compare') || version_compare(phpversion(), '5', '<'))
+	{
+		include_once(BASE_DIR . '/lib/PHPMailer/php4/class.phpmailer.php') ;
+	}
+	else
+	{
+		include_once(BASE_DIR . '/lib/PHPMailer/php5/class.phpmailer.php') ;
+	}
+
 	$PHPMailer = new PHPMailer;
 
-	$PHPMailer->ContentType = (get_settings('mail_content_type') == 'text/plain' || $content_type == 'text') ? 'text/plain' : 'text/html';
-	$PHPMailer->ContentType = ($html == 1) ? 'text/html' : $PHPMailer->ContentType;
-	$PHPMailer->From        = ($fromemail != '') ? $fromemail : get_settings('mail_from');
-	$PHPMailer->FromName    = ($from != '') ? $from : get_settings('mail_from_name');
-	$PHPMailer->Host        = get_settings('mail_host');
+	$PHPMailer->CharSet     = 'windows-1251';
 	$PHPMailer->Mailer      = get_settings('mail_type');
-	$PHPMailer->AddAddress($to);
+	$PHPMailer->ContentType = ($html == 1) ? 'text/html' : (get_settings('mail_content_type') == 'text/plain' || $content_type == 'text') ? 'text/plain' : 'text/html';
+	$PHPMailer->WordWrap    = get_settings('mail_word_wrap');
 	$PHPMailer->Subject     = $subject;
 	$PHPMailer->Body        = $text . "\n\n" . ($PHPMailer->ContentType == 'text/html' ? '' : get_settings('mail_signature'));
-	$PHPMailer->Sendmail    = get_settings('mail_sendmail_path');
-	$PHPMailer->WordWrap    = get_settings('mail_word_wrap');
+	$PHPMailer->From        = ($from != '') ? $from : get_settings('mail_from');
+	$PHPMailer->FromName    = ($from_name != '') ? $from_name : get_settings('mail_from_name');
+	$PHPMailer->AddAddress($to);
 
-	if (!empty($attach))
+	switch ($PHPMailer->Mailer)
 	{
-		if (is_array($attach))
+		case 'sendmail':
+			$PHPMailer->Sendmail = get_settings('mail_sendmail_path');
+			break;
+
+		case 'smtp':
+			$PHPMailer->Host       = get_settings('mail_host');
+			$PHPMailer->Port       = get_settings('mail_port');
+			$PHPMailer->Username   = get_settings('mail_smtp_login');
+			$PHPMailer->Password   = get_settings('mail_smtp_pass');
+			$PHPMailer->AddReplyTo($PHPMailer->Username, $PHPMailer->FromName);
+			$PHPMailer->SMTPAuth   = true;  // authentication enabled
+			$PHPMailer->SMTPSecure = 'ssl'; // secure transfer enabled REQUIRED for Gmail
+//			$PHPMailer->SMTPDebug  = true;  // enables SMTP debug information (for testing)
+			break;
+
+		case 'mail':
+		default:
+			break;
+	}
+
+	if (! empty($attachments))
+	{
+		if (is_array($attachments))
 		{
-			foreach ($attach as $attachment)
+			foreach ($attachments as $attachment)
 			{
 				$PHPMailer->AddAttachment(BASE_DIR . '/attachments/' . $attachment);
 			}
 		}
 		else
 		{
-			$PHPMailer->AddAttachment(BASE_DIR . '/attachments/' . $attach);
+			$PHPMailer->AddAttachment(BASE_DIR . '/attachments/' . $attachments);
 		}
 	}
 
-	$PHPMailer->Send();
-
-//	if (is_array($attach)) {
-//		foreach ($attach as $attachment) {
-//			@unlink(BASE_DIR . '/attachments/' . $attachment);
+	if ($PHPMailer->Send())
+	{
+//		if (! empty($attachments))
+//		{
+//			if (is_array($attachments))
+//			{
+//				foreach ($attachments as $attachment)
+//				{
+//					@unlink(BASE_DIR . '/attachments/' . $attachment);
+//				}
+//			}
+//			else
+//			{
+//				@unlink(BASE_DIR . '/attachments/' . $attachments);
+//			}
 //		}
-//	}
-//	else {
-//		@unlink(BASE_DIR . '/attachments/' . $attach);
-//	}
+	}
+	else
+	{
+		reportLog('PHPMailer Error: ' . $PHPMailer->ErrorInfo);
+	}
 }
 
 /**
