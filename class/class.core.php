@@ -392,6 +392,8 @@ class AVE_Core
 			// Выполняем запрос к БД на получение ОБЩИХ значений мета-тегов, установленных в настройках модуля "Магазин"
             $this->curentdoc = $AVE_DB->Query("
 				SELECT
+					1 AS Id,
+					0 AS document_published,
 					a.document_meta_robots,
 					b.ShopKeywords AS document_meta_keywords,
 					b.ShopDescription AS document_meta_description
@@ -408,6 +410,8 @@ class AVE_Core
 			// Выполняем запрос к БД и получаем значения мета-тегов для конкретного товара
             $this->curentdoc = $AVE_DB->Query("
 				SELECT
+					1 AS Id,
+					0 AS document_published,
 					a.document_meta_robots,
 					b.ProdKeywords AS document_meta_keywords,
 					b.ProdDescription AS document_meta_description
@@ -423,6 +427,8 @@ class AVE_Core
 		{
 			$this->curentdoc = $AVE_DB->Query("
 				SELECT
+					1 AS Id,
+					0 AS document_published,
 					document_meta_robots,
 					document_meta_keywords,
 					document_meta_description,
