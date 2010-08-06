@@ -102,17 +102,17 @@ class ModulBanner {
 		{
 			if (stristr($banner['banner_file_name'], '.swf') === false)
 			{
-				$output = '<a target="' . $banner['banner_target'] . '" href="index.php?module=' . BANNER_DIR . '&amp;id=' . $banner['Id'] . '"><img src="modules/' . BANNER_DIR . '/files/' . $banner['banner_file_name'] . '" alt="' . $banner['banner_name'] . ': ' . $banner['banner_alt'] . '" border="0" /></a>';
+				$output = '<a target="' . $banner['banner_target'] . '" href="' . ABS_PATH . 'index.php?module=' . BANNER_DIR . '&amp;action=go&amp;id=' . $banner['Id'] . '"><img src="' . ABS_PATH . 'modules/' . BANNER_DIR . '/files/' . $banner['banner_file_name'] . '" alt="' . $banner['banner_name'] . ': ' . $banner['banner_alt'] . '" border="0" /></a>';
 			}
 			else
 			{
-				$output  = '<div style="position:relative;border:0px;width:' . $banner['banner_width'] . 'px;height:' . $banner['banner_height'] . 'px;"><a target="' . $banner['banner_target'] . '" href="index.php?module=' . BANNER_DIR . '&amp;id=' . $banner['Id'] . '" style="position:absolute;z-index:2;width:' . $banner['banner_width'] . 'px;height:' . $banner['banner_height'] . 'px;_background:red;_filter:alpha(opacity=0);"></a>';
+				$output  = '<div style="position:relative;border:0px;width:' . $banner['banner_width'] . 'px;height:' . $banner['banner_height'] . 'px;"><a target="' . $banner['banner_target'] . '" href="' . ABS_PATH . 'index.php?module=' . BANNER_DIR . '&amp;action=go&amp;id=' . $banner['Id'] . '" style="position:absolute;z-index:2;width:' . $banner['banner_width'] . 'px;height:' . $banner['banner_height'] . 'px;_background:red;_filter:alpha(opacity=0);"></a>';
 				$output .= '	<object classid="clsid:d27cdb6e-ae6d-11cf-96b8-444553540000" codebase="http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=6,0,0,0" width="' . $banner['banner_width'] . '" height="' . $banner['banner_height'] . '" id="reklama" align="middle">';
 				$output .= '		<param name="allowScriptAccess" value="sameDomain" />';
-				$output .= '		<param name="movie" value="modules/' . BANNER_DIR . '/files/' . $banner['banner_file_name'] . '" />';
+				$output .= '		<param name="movie" value="' . ABS_PATH . 'modules/' . BANNER_DIR . '/files/' . $banner['banner_file_name'] . '" />';
 				$output .= '		<param name="quality" value="high" />';
 				$output .= '		<param name="wmode" value="opaque">';
-				$output .= '		<embed src="modules/' . BANNER_DIR . '/files/' . $banner['banner_file_name'] . '" quality="high" wmode="opaque" width="' . $banner['banner_width'] . '" height="' . $banner['banner_heightbv'] . '" name="reklama" align="middle" allowScriptAccess="sameDomain" type="application/x-shockwave-flash" pluginspage="http://www.macromedia.com/go/getflashplayer" />';
+				$output .= '		<embed src="' . ABS_PATH . 'modules/' . BANNER_DIR . '/files/' . $banner['banner_file_name'] . '" quality="high" wmode="opaque" width="' . $banner['banner_width'] . '" height="' . $banner['banner_heightbv'] . '" name="reklama" align="middle" allowScriptAccess="sameDomain" type="application/x-shockwave-flash" pluginspage="http://www.macromedia.com/go/getflashplayer" />';
 				$output .= '	</object>';
 				$output .= '</div>';
 			}
@@ -134,32 +134,30 @@ class ModulBanner {
 	{
 		global $AVE_DB;
 
-		if (!isset($_REQUEST['action'])) exit;
-
-		switch ($_REQUEST['action'])
+		if (isset($_REQUEST['action']) && $_REQUEST['action'] == 'go')
 		{
-			case '':
-			case 'addclick':
-				$banner_url = $AVE_DB->Query("
-					SELECT banner_url
-					FROM " . PREFIX . "_modul_banners
+			$banner_url = $AVE_DB->Query("
+				SELECT banner_url
+				FROM " . PREFIX . "_modul_banners
+				WHERE Id = '" . $banner_id . "'
+				LIMIT 1
+			")->GetCell();
+
+			if (!empty($banner_url))
+			{
+				$AVE_DB->Query("
+					UPDATE " . PREFIX . "_modul_banners
+					SET banner_clicks = banner_clicks + 1
 					WHERE Id = '" . $banner_id . "'
-					LIMIT 1
-				")->GetCell();
+				");
 
-				if (!empty($banner_url))
-				{
-					$AVE_DB->Query("
-						UPDATE " . PREFIX . "_modul_banners
-						SET banner_clicks = banner_clicks + 1
-						WHERE Id = '" . $banner_id . "'
-					");
-
-					header('Location:' . $banner_url);
-				}
-
+				header('Location:' . $banner_url);
 				exit;
+			}
 		}
+
+		header('Location:' . get_referer_link());
+		exit;
 	}
 
 	function bannerList($tpl_dir)
