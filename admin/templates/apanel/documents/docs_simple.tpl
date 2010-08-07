@@ -15,7 +15,9 @@ function insertLink(o) {ldelim}
 	</div>
 	<div class="HeaderText">{#DOC_INSERT_LINK_TIP#}</div>
 </div>
-<div class="upPage">&nbsp;</div><br />
+<div class="upPage">&nbsp;</div>
+
+{include file='documents/doc_search.tpl'}<br />
 
 <form enctype="multipart/form-data">
 	<table width="100%" border="0" cellpadding="6" cellspacing="1" class="tableborder">
@@ -25,10 +27,10 @@ function insertLink(o) {ldelim}
 		<col width="150" />
 		<col width="75" />
 		<tr>
-			<td class="tableheader"><a class="header" href="index.php?do=docs&amp;action=showsimple&amp;target=txtUrl&amp;pop=1&amp;sort=id{if $smarty.request.sort=='id'}_desc{/if}">{#DOC_ID#}</a></td>
+			<td class="tableheader"><a class="header" href="{$link}&sort=id{if $smarty.request.sort=='id'}_desc{/if}&page={$smarty.request.page|escape|default:'1'}&cp={$sess}">{#DOC_ID#}</a></td>
 			<td class="tableheader">&nbsp;</td>
-			<td class="tableheader"><a class="header" href="index.php?do=docs&amp;action=showsimple&amp;target=txtUrl&amp;pop=1&amp;sort=title{if $smarty.request.sort=='title'}_desc{/if}">{#DOC_TITLE#}</a></td>
-			<td class="tableheader"><a class="header" href="index.php?do=docs&amp;action=showsimple&amp;target=txtUrl&amp;pop=1&amp;sort=rubric{if $smarty.request.sort=='rubric'}_desc{/if}">{#DOC_IN_RUBRIK#}</a></td>
+			<td class="tableheader"><a class="header" href="{$link}&sort=title{if $smarty.request.sort=='title'}_desc{/if}&page={$smarty.request.page|escape|default:'1'}&cp={$sess}">{#DOC_TITLE#}</a></td>
+			<td class="tableheader"><a class="header" href="{$link}&sort=rubric{if $smarty.request.sort=='rubric'}_desc{/if}&page={$smarty.request.page|escape|default:'1'}&cp={$sess}">{#DOC_IN_RUBRIK#}</a></td>
 			<td class="tableheader">&nbsp;</td>
 		</tr>
 

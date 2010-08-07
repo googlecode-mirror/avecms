@@ -68,63 +68,7 @@ function check_name() {ldelim}
 </table>
 {/if}
 
-<h4>{#MAIN_SEARCH_DOCUMENTS#}</h4>
-<form method="get" action="index.php">
-	<input type="hidden" name="do" value="docs" />
-	<input type="hidden" name="TimeSelect" value="1" />
-	<table width="100%" border="0" cellpadding="8" cellspacing="1" class="tableborder">
-		<tr class="first">
-			<td rowspan="2" class="second"><strong>{#MAIN_TIME_PERIOD#}</strong></td>
-			<td nowrap="nowrap">
-				{html_select_date time=$sel_start|default:$DEF_DOC_START_YEAR prefix="published" start_year="-10" end_year="+10" field_order=DMY}
-			</td>
-			<td class="second"><strong>{#MAIN_TITLE_SEARCH#}</strong></td>
-			<td nowrap="nowrap">
-				<input style="width:160px" type="text" name="QueryTitel" value="{$smarty.request.QueryTitel|escape|stripslashes}" />&nbsp;
-				<input style="cursor:help" title="{#MAIN_SEARCH_HELP#}" type="button" class="button" value="?" />
-			</td>
-			<td class="second"><strong>{#MAIN_SELECT_RUBRIK#}</strong></td>
-			<td>
-				<select name="rubric_id" style="width:185px">
-					<option value="all">{#MAIN_ALL_RUBRUKS#}</option>
-					{foreach from=$rubrics item=rubric}
-						<option value="{$rubric->Id}" {if $smarty.request.rubric_id==$rubric->Id}selected{/if}>{$rubric->rubric_title|escape}</option>
-					{/foreach}
-				</select>
-			</td>
-		</tr>
-
-		<tr class="first">
-			<td nowrap="nowrap">
-				{html_select_date time=$sel_ende|default:$DEF_DOC_END_YEAR prefix="expire" start_year="-10" end_year="+10" field_order=DMY}
-			</td>
-			<td class="second"><strong>{#MAIN_ID_SEARCH#}</strong></td>
-			<td><input style="width:160px" type="text" name="doc_id" value="{$smarty.request.doc_id|escape|stripslashes}" /></td>
-			<td class="second"><strong>{#MAIN_DOCUMENT_STATUS#}</strong></td>
-			<td>
-				<select style="width:185px" name="status">
-					<option value="All">{#MAIN_ALL_DOCUMENTS#}</option>
-					<option value="Opened" {if $smarty.request.status=='Opened'}selected{/if}>{#MAIN_DOCUMENT_ACTIVE#}</option>
-					<option value="Closed" {if $smarty.request.status=='Closed'}selected{/if}>{#MAIN_DOCUMENT_INACTIVE#}</option>
-					<option value="Deleted" {if $smarty.request.status=='Deleted'}selected{/if}>{#MAIN_TEMP_DELETE_DOCS#}</option>
-				</select>
-			</td>
-		</tr>
-
-		<tr class="first">
-			<td colspan="6" class="second"><strong>{#MAIN_RESULTS_ON_PAGE#}</strong>&nbsp;
-				<select style="width:95px" name="Datalimit">
-					{section loop=150 name=dl step=15}
-						<option value="{$smarty.section.dl.index+15}" {if $smarty.request.Datalimit==$smarty.section.dl.index+15}selected{/if}>{$smarty.section.dl.index+15}</option>
-					{/section}
-				</select>
-				&nbsp;
-				<input style="width:85px" type="submit" class="button" value="{#MAIN_BUTTON_SEARCH#}" />
-			</td>
-		</tr>
-	</table>
-	<input type="hidden" name="cp" value="{$sess}" />
-</form>
+{include file='documents/doc_search.tpl'}
 
 <h4>{#MAIN_DOCUMENTS_ALL#}</h4>
 <table width="100%" border="0" cellpadding="8" cellspacing="1" class="tableborder">
@@ -142,18 +86,18 @@ function check_name() {ldelim}
 	<col width="20">
 	<col width="20">
 	<tr class="tableheader">
-		<td><a class="header" href="index.php?do=docs&cp={$sess}&sort=id{if $smarty.request.sort=='id'}_desc{/if}">{#DOC_ID#}</a></td>
+		<td><a class="header" href="{$link}&sort=id{if $smarty.request.sort=='id'}_desc{/if}&page={$smarty.request.page|escape|default:'1'}&cp={$sess}">{#DOC_ID#}</a></td>
 		<td nowrap="nowrap">
-			<a class="header" href="index.php?do=docs&cp={$sess}&sort=title{if $smarty.request.sort=='title'}_desc{/if}">{#DOC_TITLE#}</a>
+			<a class="header" href="{$link}&sort=title{if $smarty.request.sort=='title'}_desc{/if}&page={$smarty.request.page|escape|default:'1'}&cp={$sess}">{#DOC_TITLE#}</a>
 			&nbsp;|&nbsp;
-			<a class="header" href="index.php?do=docs&cp={$sess}&sort=alias{if $smarty.request.sort=='alias'}_desc{/if}">{#DOC_URL_RUB#}</a>
+			<a class="header" href="{$link}&sort=alias{if $smarty.request.sort=='alias'}_desc{/if}&page={$smarty.request.page|escape|default:'1'}&cp={$sess}">{#DOC_URL_RUB#}</a>
 		</td>
-		<td><a class="header" href="index.php?do=docs&cp={$sess}&sort=rubric{if $smarty.request.sort=='rubric'}_desc{/if}">{#DOC_IN_RUBRIK#}</a></td>
-		<td><a class="header" href="index.php?do=docs&cp={$sess}&sort=published{if $smarty.request.sort=='published'}_desc{/if}">{#DOC_CREATED#}</a></td>
-		<td><a class="header" href="index.php?do=docs&cp={$sess}&sort={if $smarty.request.sort=='changed'}changed_desc{else}changed{/if}">{#DOC_EDIT#}</a></td>
-		<td><a class="header" href="index.php?do=docs&cp={$sess}&sort=view{if $smarty.request.sort=='view'}_desc{/if}">{#DOC_CLICKS#}</a></td>
-		<td><a class="header" href="index.php?do=docs&cp={$sess}&sort=print{if $smarty.request.sort=='print'}_desc{/if}">{#DOC_PRINTED#}</a></td>
-		<td><a class="header" href="index.php?do=docs&cp={$sess}&sort=author{if $smarty.request.sort=='author'}_desc{/if}">{#DOC_AUTHOR#}</a></td>
+		<td><a class="header" href="{$link}&sort=rubric{if $smarty.request.sort=='rubric'}_desc{/if}&page={$smarty.request.page|escape|default:'1'}&cp={$sess}">{#DOC_IN_RUBRIK#}</a></td>
+		<td><a class="header" href="{$link}&sort=published{if $smarty.request.sort=='published'}_desc{/if}&page={$smarty.request.page|escape|default:'1'}&cp={$sess}">{#DOC_CREATED#}</a></td>
+		<td><a class="header" href="{$link}&sort=changed{if $smarty.request.sort=='changed' || !$smarty.request.sort}_desc{/if}&page={$smarty.request.page|escape|default:'1'}&cp={$sess}">{#DOC_EDIT#}</a></td>
+		<td><a class="header" href="{$link}&sort=view{if $smarty.request.sort=='view'}_desc{/if}&page={$smarty.request.page|escape|default:'1'}&cp={$sess}">{#DOC_CLICKS#}</a></td>
+		<td><a class="header" href="{$link}&sort=print{if $smarty.request.sort=='print'}_desc{/if}&page={$smarty.request.page|escape|default:'1'}&cp={$sess}">{#DOC_PRINTED#}</a></td>
+		<td><a class="header" href="{$link}&sort=author{if $smarty.request.sort=='author'}_desc{/if}&page={$smarty.request.page|escape|default:'1'}&cp={$sess}">{#DOC_AUTHOR#}</a></td>
 		<td colspan="5" align="center">{#DOC_ACTIONS#}</td>
 	</tr>
 
