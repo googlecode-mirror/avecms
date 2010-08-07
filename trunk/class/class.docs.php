@@ -373,7 +373,7 @@ class AVE_Document
 			$ex_rub = " AND rubric_id = '" . $_REQUEST['rubric_id'] . "'";
 
 			// формируем условия, которые будут применены в ссылках
-			$nav_rub = '&rubric_id=' . $_REQUEST['rubric_id'];
+			$nav_rub = '&rubric_id=' . (int)$_REQUEST['rubric_id'];
 		}
 
 		// Если в запросе пришел параметр на фильтрацию документов по определенному временному интервалу
@@ -384,12 +384,12 @@ class AVE_Document
 
 			// формируем условия, которые будут применены в ссылках
 			$nav_zeit = '&TimeSelect=1'
-				. '&publishedMonth=' . $_REQUEST['publishedMonth']
-				. '&publishedDay='   . $_REQUEST['publishedDay']
-				. '&publishedYear='  . $_REQUEST['publishedYear']
-				. '&expireMonth='    . $_REQUEST['expireMonth']
-				. '&expireDay='      . $_REQUEST['expireDay']
-				. '&expireYear='     . $_REQUEST['expireYear'];
+				. '&publishedMonth=' . (int)$_REQUEST['publishedMonth']
+				. '&publishedDay='   . (int)$_REQUEST['publishedDay']
+				. '&publishedYear='  . (int)$_REQUEST['publishedYear']
+				. '&expireMonth='    . (int)$_REQUEST['expireMonth']
+				. '&expireDay='      . (int)$_REQUEST['expireDay']
+				. '&expireYear='     . (int)$_REQUEST['expireYear'];
 		}
 
 		// Если в запросе пришел параметр на фильтрацию документов по статусу
@@ -660,27 +660,32 @@ class AVE_Document
 		// Передаем полученные данные в шаблон для вывода
 		$AVE_Template->assign('docs', $docs);
 
-		// Если количество полученных документов превышает лимит на одной странице, тогда формируем
-		// постраничную навигацию
+		$link  = "index.php?do=docs";
+		$link .= (isset($_REQUEST['action']) && $_REQUEST['action'] == 'showsimple') ? '&action=showsimple' : '';
+		$link .= !empty($_REQUEST['target']) ? '&target=' . urlencode($_REQUEST['target']) : '';
+		$link .= !empty($_REQUEST['doc']) ? '&doc=' . urlencode($_REQUEST['doc']) : '';
+		$link .= !empty($_REQUEST['document_alias']) ? '&document_alias=' . urlencode($_REQUEST['document_alias']) : '';
+		$link .= !empty($_REQUEST['navi_item_target']) ? '&navi_item_target=' . urlencode($_REQUEST['navi_item_target']) : '';
+		$link .= $navi_docstatus;
+		$link .= $nav_titel;
+		$link .= $nav_rub;
+		$link .= $nav_zeit;
+		$link .= $nav_limit;
+		$link .= (isset($_REQUEST['selurl']) && $_REQUEST['selurl'] == 1) ? '&selurl=1' : '';
+		$link .= (isset($_REQUEST['idonly']) && $_REQUEST['idonly'] == 1) ? '&idonly=1' : '';
+		$link .= (isset($_REQUEST['pop']) && $_REQUEST['pop'] == 1) ? '&pop=1' : '';
+
+		$AVE_Template->assign('link', $link);
+
+		// Если количество отобранных документов превышает лимит на одной странице - формируем постраничную навигацию
 		if ($num > $limit)
 		{
-			$nav_target = !empty($_REQUEST['navi_item_target'])                               ? '&navi_item_target=' . $_REQUEST['navi_item_target'] : '';
-			$target     = !empty($_REQUEST['target'])                                         ? '&target=' . $_REQUEST['target'] : '';
-			$nav_doc    = !empty($_REQUEST['doc'])                                            ? '&doc=' . $_REQUEST['doc'] : '';
-			$nav_alias  = !empty($_REQUEST['document_alias'])                                 ? '&document_alias=' . $_REQUEST['document_alias'] : '';
-			$pop        = (isset($_REQUEST['pop']) && $_REQUEST['pop'] == 1)                  ? '&pop=1' : '';
-			$showsimple = (isset($_REQUEST['action']) && $_REQUEST['action'] == 'showsimple') ? '&action=showsimple' : '';
-			$selurl     = (isset($_REQUEST['selurl']) && $_REQUEST['selurl'] == 1)            ? '&selurl=1' : '';
-			$idonly     = (isset($_REQUEST['idonly']) && $_REQUEST['idonly'] == 1)            ? '&idonly=1' : '';
-
-			$page_nav = " <a class=\"pnav\" href=\"index.php?do=docs"
-				. $nav_target . $nav_doc . $nav_alias . $navi_sort
-				. $navi_docstatus . $nav_titel . $nav_rub . $nav_zeit
-				. $nav_limit . $pop . $showsimple . $selurl . $idonly
-				. $target . "&page={s}&cp=" . SESSION . "\">{t}</a> ";
-			$page_nav = get_pagination($seiten, 'page', $page_nav);
+			$page_nav = get_pagination($seiten, 'page', ' <a class="pnav" href="' . $link . $navi_sort . '&page={s}&cp=' . SESSION . '">{t}</a> ');
 			$AVE_Template->assign('page_nav', $page_nav);
 		}
+
+		$AVE_Template->assign('DEF_DOC_START_YEAR', mktime(0, 0, 0, date("m"), date("d"), date("Y") - 10));
+		$AVE_Template->assign('DEF_DOC_END_YEAR', mktime(0, 0, 0, date("m"), date("d"), date("Y") + 10));
 	}
 
 	/**

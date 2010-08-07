@@ -43,8 +43,6 @@ switch($_REQUEST['action'])
 			}
 			$AVE_Document->documentListGet();
 		}
-		$AVE_Template->assign('DEF_DOC_START_YEAR', mktime(0, 0, 0, date("m"), date("d"), date("Y") - 10));
-		$AVE_Template->assign('DEF_DOC_END_YEAR', mktime(0, 0, 0, date("m"), date("d"), date("Y") + 10));
 		$AVE_Template->assign('content', $AVE_Template->fetch('documents/docs.tpl'));
 		break;
 
