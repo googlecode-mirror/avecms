@@ -2,41 +2,45 @@
 	<div class="h_module"></div>
 	<div class="HeaderTitle"><h2>{#FAQ_EDIT#}</h2></div>
 	<div class="HeaderText">{#FAQ_EDIT_TIP#}</div>
-</div><br>
+</div><br />
 
 <div class="infobox">
-	<a href="index.php?do=modules&action=modedit&mod=faq&moduleaction=questedit&cp={$sess}&faq_id={$faq_id}&id=">{#FAQ_ADD_QUEST#}</a>
+	<a href="index.php?do=modules&action=modedit&mod=faq&moduleaction=questedit&fid={$smarty.get.fid}&cp={$sess}">{#FAQ_ADD_QUEST#}</a>
 	&nbsp;|&nbsp;
 	<a href="index.php?do=modules&action=modedit&mod=faq&moduleaction=1&cp={$sess}">{#FAQ_BACK#}</a>
 </div><br />
 
-{if $faq_arr}
+{if !$questions}
+	<h4 class="error" style="color:#800">{#FAQ_NO_ITEMS#}</h4>
+{else}
 	<table width="100%" border="0" cellpadding="8" cellspacing="1" class="tableborder">
+		<col width="40%" />
+		<col width="50%" />
+		<col width="1%" />
+		<col width="1%" />
 		<tr class="tableheader">
-			<td width="40%">{#FAQ_QUEST#}</td>
-			<td width="50%">{#FAQ_ANSWER#}</td>
-			<td width="2%" colspan="2">{#FAQ_ACTIONS#}</td>
+			<td>{#FAQ_QUEST#}</td>
+			<td>{#FAQ_ANSWER#}</td>
+			<td colspan="2">{#FAQ_ACTIONS#}</td>
 		</tr>
-		{foreach from=$faq_arr item=item}
+		{foreach from=$questions item=question}
 			<tr style="background-color:#eff3eb" onmouseover="this.style.backgroundColor='#dae0d8';" onmouseout="this.style.backgroundColor='#eff3eb';" id="table_rows">
 				<td>
-					{$item->faq_quest|strip_tags|escape|truncate:40}
+					{$question->faq_quest|strip_tags|escape|truncate:60}
 				</td>
 
 				<td>
-					{$item->faq_answer|strip_tags|escape|truncate:60}
+					{$question->faq_answer|strip_tags|escape|truncate:80}
 				</td>
 
 				<td align="center">
-					<a title="{#FAQ_QEDIT_HINT#}" href="index.php?do=modules&action=modedit&mod=faq&moduleaction=questedit&cp={$sess}&id={$item->id}"><img src="{$tpl_dir}/images/icon_edit.gif" alt="" border="0" /></a>
+					<a title="{#FAQ_QEDIT_HINT#}" href="index.php?do=modules&action=modedit&mod=faq&moduleaction=questedit&fid={$smarty.get.fid}&id={$question->id}&cp={$sess}"><img src="{$tpl_dir}/images/icon_edit.gif" alt="" border="0" /></a>
 				</td>
 
 				<td align="center">
-					<a title="{#FAQ_QDELETE_HINT#}" href="index.php?do=modules&action=modedit&mod=faq&moduleaction=questdel&cp={$sess}&id={$item->id}"><img src="{$tpl_dir}/images/icon_del.gif" alt="" border="0" /></a>
+					<a title="{#FAQ_QDELETE_HINT#}" href="index.php?do=modules&action=modedit&mod=faq&moduleaction=questdel&fid={$smarty.get.fid}&id={$question->id}&cp={$sess}"><img src="{$tpl_dir}/images/icon_del.gif" alt="" border="0" /></a>
 				</td>
 			</tr>
 		{/foreach}
 	</table><br />
-{else}
-	<h4 class="error" style="color:#800">{#FAQ_NO_ITEMS#}</h4>
 {/if}

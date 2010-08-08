@@ -13,37 +13,44 @@ function check_title() {ldelim}
 	<div class="h_module"></div>
 	<div class="HeaderTitle"><h2>{#FAQ_LIST#}</h2></div>
 	<div class="HeaderText">{#FAQ_LIST_TIP#}</div>
-</div><br>
+</div><br />
 
-{if $faq}
+{if !$faq_arr}
+	<h4 style="color:#800">{#FAQ_NO_ITEMS#}</h4>
+{else}
 	<form method="post" action="index.php?do=modules&action=modedit&mod=faq&moduleaction=save&cp={$sess}">
 		<table width="100%" border="0" cellpadding="8" cellspacing="1" class="tableborder">
+			<col />
+			<col />
+			<col width="100" />
+			<col width="10" />
+			<col width="10" />
 			<tr class="tableheader">
 				<td>{#FAQ_NAME#}</td>
 				<td>{#FAQ_DESC#}</td>
-				<td width="100">{#FAQ_TAG#}</td>
-				<td width="1%" colspan="2">{#FAQ_ACTIONS#}</td>
+				<td>{#FAQ_TAG#}</td>
+				<td colspan="2">{#FAQ_ACTIONS#}</td>
 			</tr>
-			{foreach from=$faq item=item}
+			{foreach from=$faq_arr item=faq}
 				<tr style="background-color:#eff3eb" onmouseover="this.style.backgroundColor='#dae0d8';" onmouseout="this.style.backgroundColor='#eff3eb';" id="table_rows">
 					<td>
-						<input style="width:100%" name="faq_title[{$item->id}]" type="text" id="faq_title[{$item->id}]" value="{$item->faq_title|escape}" size="40" />
+						<input style="width:100%" name="faq_title[{$faq->id}]" type="text" id="faq_title[{$faq->id}]" value="{$faq->faq_title|escape}" size="40" />
 					</td>
 
 					<td>
-						<input style="width:100%" name="faq_description[{$item->id}]" type="text" id="faq_description[{$item->id}]" value="{$item->faq_description|escape}" size="40" />
+						<input style="width:100%" name="faq_description[{$faq->id}]" type="text" id="faq_description[{$faq->id}]" value="{$faq->faq_description|escape}" size="40" />
 					</td>
 
-					<td width="100">
-						<input style="width:100%" name="textfield" type="text" value="[mod_faq:{$item->id}]" readonly />
-					</td>
-
-					<td align="center">
-						<a title="{#FAQ_EDIT_HINT#}" href="index.php?do=modules&action=modedit&mod=faq&moduleaction=questlist&cp={$sess}&id={$item->id}"><img src="{$tpl_dir}/images/icon_edit.gif" alt="" border="0" /></a>
+					<td>
+						<input style="width:100%" name="textfield" type="text" value="[mod_faq:{$faq->id}]" readonly />
 					</td>
 
 					<td align="center">
-						<a title="{#FAQ_DELETE_HINT#}" href="index.php?do=modules&action=modedit&mod=faq&moduleaction=del&cp={$sess}&id={$item->id}"><img src="{$tpl_dir}/images/icon_del.gif" alt="" border="0" /></a>
+						<a title="{#FAQ_EDIT_HINT#}" href="index.php?do=modules&action=modedit&mod=faq&moduleaction=questlist&fid={$faq->id}&cp={$sess}"><img src="{$tpl_dir}/images/icon_edit.gif" alt="" border="0" /></a>
+					</td>
+
+					<td align="center">
+						<a title="{#FAQ_DELETE_HINT#}" href="index.php?do=modules&action=modedit&mod=faq&moduleaction=del&fid={$faq->id}&cp={$sess}"><img src="{$tpl_dir}/images/icon_del.gif" alt="" border="0" /></a>
 					</td>
 				</tr>
 			{/foreach}
@@ -52,8 +59,6 @@ function check_title() {ldelim}
 			</tr>
 		</table><br />
 	</form>
-{else}
-	<h4 style="color:#800">{#FAQ_NO_ITEMS#}</h4>
 {/if}
 
 <h4>{#FAQ_ADD#}</h4>
@@ -66,8 +71,8 @@ function check_title() {ldelim}
 		</tr>
 
 		<tr>
-			<td class="second"><input name="new_faq_title" type="text" id="new_faq_title" size="60" style="width:100%" /></td>
-			<td class="second"><input name="new_faq_desc" type="text" id="new_faq_desc" size="60" style="width:100%" /></td>
+			<td class="second"><input name="new_faq_title" type="text" id="new_faq_title" size="60" maxlength="100" style="width:100%" /></td>
+			<td class="second"><input name="new_faq_desc" type="text" id="new_faq_desc" size="60" maxlength="255" style="width:100%" /></td>
 		</tr>
 
 		<tr>

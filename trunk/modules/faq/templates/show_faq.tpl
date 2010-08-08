@@ -1,10 +1,10 @@
 <h3>{$faq_title}</h3>
 <p>{$faq_description}</p>
-{if $faq_arr}
+{if $questions}
 <dl class="mod_faq">
-{foreach from=$faq_arr item=item}
-	<dt>{$item->faq_quest}</dt>
-	<dd>{$item->faq_answer}</dd>
+{foreach from=$questions item=question}
+	<dt>{$question->faq_quest}</dt>
+	<dd>{$question->faq_answer}</dd>
 {/foreach}
 </dl>
 {literal}
