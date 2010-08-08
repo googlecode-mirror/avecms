@@ -23,18 +23,14 @@ if (defined('ACP'))
 function mod_faq($id)
 {
 	require_once(BASE_DIR . '/modules/faq/class.faq.php');
-	$Faq = new Faq;
 
-	$tpl_dir   = BASE_DIR . '/modules/faq/templates/';
-
-	$Faq->faqShow($tpl_dir, $id);
+	Faq::faqShow(BASE_DIR . '/modules/faq/templates/', $id);
 }
 
 // admin edit
 if (defined('ACP') && !empty($_REQUEST['moduleaction']))
 {
 	require_once(BASE_DIR . '/modules/faq/class.faq.php');
-	$Faq = new Faq;
 
 	$tpl_dir   = BASE_DIR . '/modules/faq/templates/';
 	$lang_file = BASE_DIR . '/modules/faq/lang/' . $_SESSION['user_language'] . '.txt';
@@ -44,35 +40,35 @@ if (defined('ACP') && !empty($_REQUEST['moduleaction']))
 	switch ($_REQUEST['moduleaction'])
 	{
 		case '1':
-			$Faq->faqList($tpl_dir);
+			Faq::faqList($tpl_dir);
 			break;
 
 		case 'new':
-			$Faq->faqNew();
+			Faq::faqNew();
 			break;
 
 		case 'del':
-			$Faq->faqDelete();
+			Faq::faqDelete();
 			break;
 
 		case 'save':
-			$Faq->faqListSave();
+			Faq::faqListSave();
 			break;
 
 		case 'questlist':
-			$Faq->faqQuestList($tpl_dir);
+			Faq::faqQuestionList($tpl_dir);
 			break;
 
 		case 'questedit':
-			$Faq->faqQuestEdit($tpl_dir);
+			Faq::faqQuestionEdit($tpl_dir);
 			break;
 
 		case 'questsave':
-			$Faq->faqQuestSave();
+			Faq::faqQuestionSave();
 			break;
 
 		case 'questdel':
-			$Faq->faqQuestDelete();
+			Faq::faqQuestionDelete();
 			break;
 	}
 }

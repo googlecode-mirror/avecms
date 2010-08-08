@@ -41,7 +41,7 @@
 		<tr>
 			<td class="first">
 				<input type="hidden" name="id" value="{$id}">
-				<input type="hidden" name="faq_id" value="{$faq_id}">
+				<input type="hidden" name="fid" value="{$faq_id}">
 				<input name="submit" type="submit" class="button" value="{#FAQ_SAVE#}" />
 			</td>
 		</tr>
