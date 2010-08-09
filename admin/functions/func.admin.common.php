@@ -126,7 +126,7 @@ function get_mysql_size()
 	global $AVE_DB;
 
 	$mysql_size = 0;
-	$sql = $AVE_DB->Query("SHOW TABLE STATUS WHERE Name LIKE '" . PREFIX . "_%'");
+	$sql = $AVE_DB->Query("SHOW TABLE STATUS LIKE '" . PREFIX . "_%'");
 	while ($row = $sql->FetchAssocArray())
 	{
 		$mysql_size += $row['Data_length'] + $row['Index_length'];
