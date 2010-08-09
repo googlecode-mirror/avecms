@@ -26,7 +26,7 @@ function mod_example()
 	$tpl_dir = BASE_DIR . '/modules/example/templates/'; // Указываем путь до шаблона
 	$AVE_Template->caching = true;
 	$AVE_Template->cache_lifetime = 86400; // Время жизни кэша (1 день)
-	$AVE_Template->cache_dir = BASE_DIR . '/cache/example'; // Папка для создания кэша
+//	$AVE_Template->cache_dir = BASE_DIR . '/cache/example'; // Папка для создания кэша
 
 	// Если нету в кэше, то выполняем запрос
 	if (!$AVE_Template->is_cached('example.tpl'))

@@ -1,5 +1,18 @@
 <?php
 
+/**
+ * AVE.cms - Модуль Вопрос-Ответ
+ *
+ * @package AVE.cms
+ * @subpackage module_FAQ
+ * @since 2.0
+ * @filesource
+ */
+
+/**
+ * mySQL-запросы для установки, обновления и удаления модуля
+ */
+
 $modul_sql_install = array();
 $modul_sql_deinstall = array();
 $modul_sql_update = array();

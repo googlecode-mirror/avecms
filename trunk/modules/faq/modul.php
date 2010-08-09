@@ -1,5 +1,13 @@
 <?php
 
+/**
+ * AVE.cms - Модуль Вопрос-Ответ
+ *
+ * @package AVE.cms
+ * @subpackage module_FAQ
+ * @since 2.0
+ * @filesource
+ */
 if (!defined('BASE_DIR')) exit;
 
 if (defined('ACP'))
@@ -19,15 +27,45 @@ if (defined('ACP'))
     $modul['CpPHPTag'] = "<?php mod_faq(''$1''); ?>";
 }
 
-// show faq
+/**
+ * Обработка тэга модуля
+ *
+ * @param int $id идентификатор рубрики вопросов и ответов
+ */
 function mod_faq($id)
 {
-	require_once(BASE_DIR . '/modules/faq/class.faq.php');
+	global $AVE_Template;
 
-	Faq::faqShow(BASE_DIR . '/modules/faq/templates/', $id);
+	$AVE_Template->caching = 1;         // Включаем кеширование
+	$AVE_Template->cache_lifetime = -1; // Неограниченное время жизни кэша
+//	$AVE_Template->cache_dir .= '/faq'; // Папка для кеша модуля
+
+	$tpl_dir = BASE_DIR . '/modules/faq/templates/'; // Путь к шаблону модуля
+
+	// Если нету в кеше, то начинаем обрабатывать
+	if (!$AVE_Template->is_cached($tpl_dir . 'show_faq.tpl', $id))
+	{
+		// Проверяем, есть ли папка для кеша, если нет (первый раз) — создаем
+		if (!is_dir($AVE_Template->cache_dir))
+		{
+			$oldumask = umask(0);
+			@mkdir($AVE_Template->cache_dir, 0777);
+			umask($oldumask);
+		}
+
+		require_once(BASE_DIR . '/modules/faq/class.faq.php');
+
+		Faq::faqShow($id);
+	}
+
+	echo rewrite_link($AVE_Template->fetch($tpl_dir . 'show_faq.tpl', $id));
+
+	$AVE_Template->caching = false; // Отключаем кеширование
 }
 
-// admin edit
+/**
+ * Администрирование
+ */
 if (defined('ACP') && !empty($_REQUEST['moduleaction']))
 {
 	require_once(BASE_DIR . '/modules/faq/class.faq.php');
@@ -48,11 +86,11 @@ if (defined('ACP') && !empty($_REQUEST['moduleaction']))
 			break;
 
 		case 'del':
-			Faq::faqDelete();
+			Faq::faqDelete($tpl_dir);
 			break;
 
 		case 'save':
-			Faq::faqListSave();
+			Faq::faqListSave($tpl_dir);
 			break;
 
 		case 'questlist':
@@ -64,11 +102,11 @@ if (defined('ACP') && !empty($_REQUEST['moduleaction']))
 			break;
 
 		case 'questsave':
-			Faq::faqQuestionSave();
+			Faq::faqQuestionSave($tpl_dir);
 			break;
 
 		case 'questdel':
-			Faq::faqQuestionDelete();
+			Faq::faqQuestionDelete($tpl_dir);
 			break;
 	}
 }

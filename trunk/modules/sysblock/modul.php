@@ -67,19 +67,19 @@ if (defined('ACP') && !empty($_REQUEST['moduleaction']))
 	switch ($_REQUEST['moduleaction'])
 	{
 		case '1':
-			sysblock::sysblockList($tpl_dir);
+			Sysblock::sysblockList($tpl_dir);
 			break;
 
 		case 'del':
-			sysblock::sysblockDelete($_REQUEST['id']);
+			Sysblock::sysblockDelete($_REQUEST['id']);
 			break;
 
 		case 'edit':
-			sysblock::sysblockEdit(isset($_REQUEST['id']) ? $_REQUEST['id'] : null, $tpl_dir);
+			Sysblock::sysblockEdit(isset($_REQUEST['id']) ? $_REQUEST['id'] : null, $tpl_dir);
 			break;
 
 		case 'saveedit':
-			sysblock::sysblockSave(isset($_REQUEST['id']) ? $_REQUEST['id'] : null);
+			Sysblock::sysblockSave(isset($_REQUEST['id']) ? $_REQUEST['id'] : null);
 			break;
 	}
 }

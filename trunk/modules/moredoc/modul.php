@@ -40,7 +40,7 @@ function mod_moredoc()
 
 	$AVE_Template->caching = true;            // Включаем кеширование
 	$AVE_Template->cache_lifetime = 60*60*24; // Время жизни кеша 1 день в секундах
-	$AVE_Template->cache_dir .= '/moredoc';   // Папка для кеша модуля
+//	$AVE_Template->cache_dir .= '/moredoc';   // Папка для кеша модуля
 
 	$tpl_dir = BASE_DIR . '/modules/moredoc/templates/'; // Указываем путь к шаблону модуля
 
