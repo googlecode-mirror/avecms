@@ -9,14 +9,14 @@
  * @since 2.07
  * @filesource
  */
-class sysblock
+class Sysblock
 {
 	/**
 	 * ¬ывод списка системных блоков
 	 *
 	 * @param string $tpl_dir - путь к папке с шаблонами модул€
 	 */
-	function sysblockList($tpl_dir)
+	public static function sysblockList($tpl_dir)
 	{
 		global $AVE_DB, $AVE_Template;
 
@@ -36,7 +36,7 @@ class sysblock
 	 *
 	 * @param int $sysblock_id идентификатор системного блока
 	 */
-	function sysblockSave($sysblock_id = null)
+	public static function sysblockSave($sysblock_id = null)
 	{
 		global $AVE_DB;
 
@@ -74,7 +74,7 @@ class sysblock
 	 *
 	 * @todo сделать отдельно методы добавлени€ и редактировани€
 	 */
-	function sysblockEdit($sysblock_id, $tpl_dir)
+	public static function sysblockEdit($sysblock_id, $tpl_dir)
 	{
 		global $AVE_DB, $AVE_Template;
 
@@ -109,7 +109,7 @@ class sysblock
 	 *
 	 * @param int $sysblock_id идентификатор системного блока
 	 */
-	function sysblockDelete($sysblock_id)
+	public static function sysblockDelete($sysblock_id)
 	{
 		global $AVE_DB;
 

@@ -46,6 +46,11 @@ define('SMARTY_COMPILE_CHECK', true);
 // {true|false} консоль отладки Smarty
 define('SMARTY_DEBUGGING', false);
 
+// {true|false} Установите это в false если ваше окружение PHP
+// не разрешает создание директорий от имени Smarty.
+// Поддиректории более эффективны, так что используйте их, если можете.
+define('SMARTY_USE_SUB_DIRS', true);
+
 // {true|false} кэширование скомпилированных шаблонов документов
 define('CACHE_DOC_TPL', false);
 
