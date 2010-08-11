@@ -23,21 +23,21 @@ function request_get_condition_sql_string($id)
 	$eq_string = '';
 	$ueb = '';
 	$start = 0;
-	$doc_request = 'doc' . $AVE_Core->curentdoc->Id . '_request' . $id;
+	$doc_label = 'doc_' . $AVE_Core->curentdoc->Id;
 
-	if (!empty($_REQUEST['fld']))
+	if (!empty($_REQUEST['req_' . $id]))
 	{
-		$_SESSION[$doc_request]['fld'] = $_REQUEST['fld'];
+		$_SESSION[$doc_label]['req_' . $id] = $_REQUEST['req_' . $id];
 	}
 	else
 	{
-		if (!empty($_SESSION[$doc_request]['fld']))
+		if (!empty($_SESSION[$doc_label]['req_' . $id]))
 		{
-			$_REQUEST['fld'] = $_SESSION[$doc_request]['fld'];
+			$_REQUEST['req_' . $id] = $_SESSION[$doc_label]['req_' . $id];
 		}
 		else
 		{
-			$_REQUEST['fld'] = array();
+			$_REQUEST['req_' . $id] = array();
 		}
 	}
 
@@ -51,10 +51,10 @@ function request_get_condition_sql_string($id)
 	{
 		$feld = $row_ak->condition_field_id;
 
-		if (!empty($_REQUEST['fld'][$feld]))
+		if (!empty($_REQUEST['req_' . $id][$feld]))
 		{
-			$wert = $_REQUEST['fld'][$feld];
-			unset($_REQUEST['fld'][$feld]);
+			$wert = $_REQUEST['req_' . $id][$feld];
+			unset($_REQUEST['req_' . $id][$feld]);
 		}
 		else
 		{
@@ -118,10 +118,10 @@ function request_get_condition_sql_string($id)
 		++$start;
 	}
 
-	if (!empty($_REQUEST['fld']) && is_array($_REQUEST['fld']))
+	if (!empty($_REQUEST['req_' . $id]) && is_array($_REQUEST['req_' . $id]))
 	{
-		arsort($_REQUEST['fld']);
-		foreach ($_REQUEST['fld'] as $feld => $wert)
+		arsort($_REQUEST['req_' . $id]);
+		foreach ($_REQUEST['req_' . $id] as $feld => $wert)
 		{
 			if ($wert == '') continue;
 			$where = ' WHERE 1';
@@ -137,7 +137,7 @@ function request_get_condition_sql_string($id)
 		$ueb = 'AND a.Id = ANY(SELECT t0.document_id FROM ' . $from . $where . $eq_string . ')';
 	}
 
-	if (empty($_SESSION[$doc_request]['fld']))
+	if (empty($_SESSION[$doc_label]['req_' . $id]))
 	{
 		$AVE_DB->Query("
 			UPDATE " . PREFIX . "_request
@@ -280,8 +280,8 @@ function request_parse($id)
 
 		$doctime = get_settings('use_doctime') ? ("AND (a.document_expire = 0 OR a.document_expire >= '" . time() . "') AND a.document_published <= '" . time() . "'") : '';
 
-		$lbl = 'doc' . $AVE_Core->curentdoc->Id . '_request' . $id;
-		$where_cond = (empty($_REQUEST['fld']) && empty($_SESSION[$lbl]['fld']))
+		$doc_label = 'doc_' . $AVE_Core->curentdoc->Id;
+		$where_cond = (empty($_REQUEST['req_' . $id]) && empty($_SESSION[$doc_label]['req_' . $id]))
 			? $row_ab->request_where_cond
 			: request_get_condition_sql_string($row_ab->Id);
 
@@ -321,6 +321,16 @@ function request_parse($id)
 			}
 
 			$seiten = ceil($num / $limit);
+			if (isset($_REQUEST['apage']) && is_numeric($_REQUEST['apage']) && $_REQUEST['apage'] > $seiten)
+			{
+				$redirect_link = rewrite_link('index.php?id=' . $AVE_Core->curentdoc->Id
+					. '&amp;doc=' . (empty($AVE_Core->curentdoc->document_alias) ? prepare_url($AVE_Core->curentdoc->document_title) : $AVE_Core->curentdoc->document_alias)
+					. ((isset($_REQUEST['artpage']) && is_numeric($_REQUEST['artpage'])) ? '&amp;artpage=' . $_REQUEST['artpage'] : '')
+					. ((isset($_REQUEST['page']) && is_numeric($_REQUEST['page'])) ? '&amp;page=' . $_REQUEST['page'] : ''));
+
+				header('Location:' . $redirect_link);
+				exit;
+			}
 			$start  = get_current_page('apage') * $limit - $limit;
 		}
 		else
@@ -498,7 +508,7 @@ function request_get_dropdown($dropdown_ids, $rubric_id, $request_id)
 	$dropdown_ids = explode(',', preg_replace('/[^,\d]/', '', $dropdown_ids));
 	$dropdown_ids[] = 0;
 	$dropdown_ids = implode(',', $dropdown_ids);
-	$doc_request = 'doc' . $AVE_Core->curentdoc->Id . '_request' . $request_id;
+	$doc_label = 'doc_' . $AVE_Core->curentdoc->Id;
 	$control = array();
 
 	$sql = $AVE_DB->Query("
@@ -514,11 +524,12 @@ function request_get_dropdown($dropdown_ids, $rubric_id, $request_id)
 	while ($row = $sql->FetchRow())
 	{
 		$dropdown['titel'] = $row->rubric_field_title;
-		$dropdown['selected'] = isset($_SESSION[$doc_request]['fld'][$row->Id]) ? $_SESSION[$doc_request]['fld'][$row->Id] : '';
+		$dropdown['selected'] = isset($_SESSION[$doc_label]['req_' . $request_id][$row->Id]) ? $_SESSION[$doc_label]['req_' . $request_id][$row->Id] : '';
 		$dropdown['options'] = explode(',', $row->rubric_field_default);
 		$control[$row->Id] = $dropdown;
 	}
 
+	$AVE_Template->assign('request_id', $request_id);
 	$AVE_Template->assign('ctrlrequest', $control);
 	return $AVE_Template->fetch(BASE_DIR . '/templates/' . THEME_FOLDER . '/modules/request/remote.tpl');
 }
