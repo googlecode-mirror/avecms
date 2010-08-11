@@ -71,44 +71,44 @@ function submitTheForm() {ldelim}
 		window.opener.document.dokument['{$smarty.request.target|escape}'].value = document.dat.dateiname.value + document.dat.fn.value;
 {else}
 {if $smarty.request.target=='filename'}
-		window.opener.document.target['f_href'].value = 'uploads' + document.dat.dateiname.value + document.dat.fn.value;
+		window.opener.document.target['f_href'].value = '{$mediapath}' + document.dat.dateiname.value + document.dat.fn.value;
 
 {elseif $smarty.request.target=='link'}
-		window.opener.document.getElementById('txtUrl').value = 'uploads' + document.dat.dateiname.value + document.dat.fn.value;
+		window.opener.document.getElementById('txtUrl').value = '{$mediapath}' + document.dat.dateiname.value + document.dat.fn.value;
 
 {elseif $smarty.request.target=='link_image'}
-		window.opener.document.getElementById('txtLnkUrl').value = '{$cppath}/uploads' + document.dat.dateiname.value + document.dat.fn.value;
+		window.opener.document.getElementById('txtLnkUrl').value = '{$cppath}/{$mediapath}' + document.dat.dateiname.value + document.dat.fn.value;
 		window.opener.UpdatePreview();
 
 {elseif $smarty.request.target=='txtUrl'}
 {if $smarty.request.nosource=='1'}
-		window.opener.document.getElementById('txtUrl').value = 'uploads' + document.dat.dateiname.value + document.dat.fn.value;
+		window.opener.document.getElementById('txtUrl').value = '{$mediapath}' + document.dat.dateiname.value + document.dat.fn.value;
 		window.opener.UpdatePreview();
 {else}
-		window.opener.document.getElementById('txtUrl').value = '{$cppath}/uploads' + document.dat.dateiname.value + document.dat.fn.value;
+		window.opener.document.getElementById('txtUrl').value = '{$cppath}/{$mediapath}' + document.dat.dateiname.value + document.dat.fn.value;
 		window.opener.UpdatePreview();
 {/if}
 
 {elseif $smarty.request.target=='navi'}
-		window.opener.document.getElementById('{$smarty.request.id|escape}').value = '{$cppath}/uploads' + document.dat.dateiname.value + document.dat.fn.value;
+		window.opener.document.getElementById('{$smarty.request.id|escape}').value = '{$cppath}/{$mediapath}' + document.dat.dateiname.value + document.dat.fn.value;
 
 {elseif $smarty.request.target=='img_feld' || $target_img=='img_feld'}
-		window.opener.document.getElementById('img_feld__{$pop_id}').value = 'uploads' + document.dat.dateiname.value + document.dat.fn.value;
+		window.opener.document.getElementById('img_feld__{$pop_id}').value = '{$mediapath}' + document.dat.dateiname.value + document.dat.fn.value;
 		window.opener.document.getElementById('span_feld__{$pop_id}').style.display = '';
-		window.opener.document.getElementById('_img_feld__{$pop_id}').src = '../index.php?thumb={$cppath}/uploads' + document.dat.dateiname.value + document.dat.fn.value;
+		window.opener.document.getElementById('_img_feld__{$pop_id}').src = '../index.php?thumb=/{$mediapath}' + document.dat.dateiname.value + document.dat.fn.value;
 
 {elseif $smarty.request.target=='f_url'}
-		window.opener.document.target['f_url'].value='{$cppath}/uploads' + document.dat.dateiname.value + document.dat.fn.value;
+		window.opener.document.target['f_url'].value='{$cppath}/{$mediapath}' + document.dat.dateiname.value + document.dat.fn.value;
 
 {elseif $smarty.request.target!='all'}
 {if $smarty.request.fillout=='dl'}
-		window.opener.document.getElementById('{$smarty.request.target|escape}').value = 'uploads' + document.dat.dateiname.value + document.dat.fn.value;
+		window.opener.document.getElementById('{$smarty.request.target|escape}').value = '{$mediapath}' + document.dat.dateiname.value + document.dat.fn.value;
 {else}
 		window.opener.updatePreview();
 {/if}
 
 {else}
-		window.opener.document.dokument['img_{$smarty.request.target|escape}'].{if $smarty.request.target=='vide'}dyn{/if}src = '{$cppath}/uploads' + document.dat.dateiname.value + document.dat.fn.value;
+		window.opener.document.dokument['img_{$smarty.request.target|escape}'].{if $smarty.request.target=='vide'}dyn{/if}src = '{$cppath}/{$mediapath}' + document.dat.dateiname.value + document.dat.fn.value;
 		window.opener.document.dokument['{$smarty.request.target|escape}'].value = document.dat.dateiname.value + document.dat.fn.value;
 {/if}
 {/if}
