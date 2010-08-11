@@ -218,7 +218,7 @@ if (!defined('ACPL') && !auth_sessions())
 $_SESSION['user_language'] = DEFAULT_LANGUAGE;
 
 // Эксперимент с кэшированием
-if (!defined('ACP') && empty($_POST) && !isset($_REQUEST['module']) && UGROUP == -2)
+if (!defined('ACP') && empty($_POST) && !isset($_REQUEST['module']) && UGROUP == 2 && CACHE_LIFETIME)
 {
 	require(BASE_DIR . '/lib/Cache/Lite/Output.php');
 

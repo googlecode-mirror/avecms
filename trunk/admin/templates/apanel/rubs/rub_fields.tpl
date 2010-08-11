@@ -101,6 +101,8 @@ $(document).ready(function(){ldelim}
 						<a href="javascript:void(0);" onclick="editAreaLoader.insertTags('rubric_field_template[{$rf->Id}]', '<br />', '');">BR</a>|
 						<a href="javascript:void(0);" onclick="editAreaLoader.insertTags('rubric_field_template[{$rf->Id}]', '[tag:parametr:', ']');">[tag:parametr:XXX]</a>|
 						<a href="javascript:void(0);" onclick="editAreaLoader.insertTags('rubric_field_template[{$rf->Id}]', '[tag:path]', '');">[tag:path]</a>|
+						<a href="javascript:void(0);" onclick="editAreaLoader.insertTags('rubric_field_template[{$rf->Id}]', '[tag:if_empty]\n', '\n[/tag:if_empty]');">[tag:if_empty]&nbsp;[/tag:if_empty]</a>|
+						<a href="javascript:void(0);" onclick="editAreaLoader.insertTags('rubric_field_template[{$rf->Id}]', '[tag:if_notempty]\n', '\n[/tag:if_notempty]');">[tag:if_notempty]&nbsp;[/tag:if_notempty]</a>|
 					</div>
 				</div>
 				<div style="width:50%; float:left">
@@ -118,6 +120,8 @@ $(document).ready(function(){ldelim}
 						<a href="javascript:void(0);" onclick="editAreaLoader.insertTags('rubric_field_template_request[{$rf->Id}]', '<br />', '');">BR</a>|
 						<a href="javascript:void(0);" onclick="editAreaLoader.insertTags('rubric_field_template_request[{$rf->Id}]', '[tag:parametr:', ']');">[tag:parametr:XXX]</a>|
 						<a href="javascript:void(0);" onclick="editAreaLoader.insertTags('rubric_field_template_request[{$rf->Id}]', '[tag:path]', '');">[tag:path]</a>|
+						<a href="javascript:void(0);" onclick="editAreaLoader.insertTags('rubric_field_template_request[{$rf->Id}]', '[tag:if_empty]\n', '\n[/tag:if_empty]');">[tag:if_empty]&nbsp;[/tag:if_empty]</a>|
+						<a href="javascript:void(0);" onclick="editAreaLoader.insertTags('rubric_field_template_request[{$rf->Id}]', '[tag:if_notempty]\n', '\n[/tag:if_notempty]');">[tag:if_notempty]&nbsp;[/tag:if_notempty]</a>|
 					</div>
 				</div>
 				</td>

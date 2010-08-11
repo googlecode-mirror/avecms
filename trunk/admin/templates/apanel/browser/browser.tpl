@@ -21,15 +21,15 @@
 <script type="text/javascript">
 function selfile(src,prv) {ldelim}
 	if (prv==1) {ldelim}
-		parent.frames['vs'].location.href = '../uploads{$dir}' + src;
+		parent.frames['vs'].location.href = '../{$mediapath}{$dir}' + src;
 	{rdelim}
 	else if (prv==3) {ldelim}
-{*		parent.frames['vs'].location.href = '../uploads{$dir}' + src;
+{*		parent.frames['vs'].location.href = '../{$mediapath}{$dir}' + src;
 		submitTheForm();
 *}	{rdelim}
 	else {ldelim}
 		parent.frames['vs'].location.href = 'about:blank';
-		parent.frames['vs'].document.write('<img dynsrc="../uploads{$dir}' + src + '" border="0">');
+		parent.frames['vs'].document.write('<img dynsrc="../{$mediapath}{$dir}' + src + '" border="0">');
 	{rdelim}
 	parent.document.dat.fn.value = src;
 {rdelim}

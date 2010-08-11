@@ -59,7 +59,7 @@ function user_login($login, $password, $attach_ip = 0, $keep_in = 0, $sleep = 0)
 	$_SESSION['user_email']    = $row->email;
 	$_SESSION['user_country']  = strtoupper($row->country);
 	$_SESSION['user_language'] = strtolower($row->country);
-	$_SESSION['user_ip']       = $_SERVER['REMOTE_ADDR'];
+	$_SESSION['user_ip']       = addslashes($_SERVER['REMOTE_ADDR']);
 
 	$user_group_permissions = explode('|', preg_replace('/\s+/', '', $row->user_group_permission));
 	foreach ($user_group_permissions as $user_group_permission) $_SESSION[$user_group_permission] = 1;
@@ -117,7 +117,7 @@ function auth_sessions()
 
 		if (!$verified) return false;
 
-		$_SESSION['user_ip'] = $_SERVER['REMOTE_ADDR'];
+		$_SESSION['user_ip'] = addslashes($_SERVER['REMOTE_ADDR']);
 	}
 
 	define('UID',    $_SESSION['user_id']);
@@ -174,7 +174,7 @@ function auth_cookie()
 	$_SESSION['user_email']    = $row->email;
 	$_SESSION['user_country']  = strtoupper($row->country);
 	$_SESSION['user_language'] = strtolower($row->country);
-	$_SESSION['user_ip']       = $_SERVER['REMOTE_ADDR'];
+	$_SESSION['user_ip']       = addslashes($_SERVER['REMOTE_ADDR']);
 
 	$user_group_permissions = explode('|', preg_replace('/\s+/', '', $row->user_group_permission));
 	foreach ($user_group_permissions as $user_group_permission) $_SESSION[$user_group_permission] = 1;
