@@ -40,9 +40,9 @@ function check_name() {ldelim}
 			{foreach from=$items item=item}
 				<tr style="background-color:#eff3eb;" onmouseover="this.style.backgroundColor='#dae0d8';" onmouseout="this.style.backgroundColor='#eff3eb';" id="table_rows">
 					<td><input title="{#CONTACT_MARK_DELETE#}" name="del[{$item->Id}]" type="checkbox" id="del[{$item->Id}]" value="1" /></td>
-					<td colspan="2">
+					<td colspan="2" nowrap="nowrap">
 						<input style="width:200px;" name="contact_field_title[{$item->Id}]" type="text" id="contact_field_title[{$item->Id}]" value="{$item->contact_field_title|escape|stripslashes}" />&nbsp;
-						<select style="width:168px;" name="contact_field_type[{$item->Id}]" id="contact_field_type[{$item->Id}]">
+						<select style="width:165px;" name="contact_field_type[{$item->Id}]" id="contact_field_type[{$item->Id}]">
 							<option value="text"{if $item->contact_field_type == 'text'} selected{/if}>{#CONTACT_TEXT_FILED#}</option>
 							<option value="textfield"{if $item->contact_field_type == 'textfield'} selected{/if}>{#CONTACT_MULTI_FIELD#}</option>
 							<option value="checkbox"{if $item->contact_field_type == 'checkbox'} selected{/if}>{#CONTACT_CHECKBOX_FIELD#}</option>
@@ -51,7 +51,7 @@ function check_name() {ldelim}
 						</select><br />
 						<input style="width:373px;" type="text" name="contact_field_default[{$item->Id}]" value="{$item->contact_field_default|escape|stripslashes}"{if $item->contact_field_type == 'fileupload'} disabled{/if} />
 					</td>
-					<td colspan="2" align="center">
+					<td colspan="2" align="center" nowrap="nowrap">
 						<input style="width:56px;" type="text" name="contact_field_position[{$item->Id}]" id="contact_field_position[{$item->Id}]" size="5" maxlength="3" value="{$item->contact_field_position}" />&nbsp;
 						<input style="width:56px;" type="text" name="contact_field_size[{$item->Id}]" id="contact_field_size[{$item->Id}]" size="5" maxlength="4" value="{$item->contact_field_size}" /><br />
 						<input type="radio" name="contact_field_newline[{$item->Id}]" value="1"{if $item->contact_field_newline==1} checked{/if} />{#CONTACT_YES#} <input type="radio" name="contact_field_newline[{$item->Id}]" value="0"{if $item->contact_field_newline!=1} checked{/if} />{#CONTACT_NO#}
@@ -100,9 +100,9 @@ function check_name() {ldelim}
 
 			<tr style="background-color:#eff3eb;" onmouseover="this.style.backgroundColor='#dae0d8';" onmouseout="this.style.backgroundColor='#eff3eb';" id="table_rows">
 				<td width="20">&nbsp;</td>
-				<td colspan="2">
+				<td colspan="2" nowrap="nowrap">
 					<input style="width:200px" name="contact_field_title" type="text" id="contact_field_title" value="" />&nbsp;
-					<select style="width:168px;" name="contact_field_type" id="contact_field_type">
+					<select style="width:165px;" name="contact_field_type" id="contact_field_type">
 						<option value="text">{#CONTACT_TEXT_FILED#}</option>
 						<option value="textfield">{#CONTACT_MULTI_FIELD#}</option>
 						<option value="checkbox">{#CONTACT_CHECKBOX_FIELD#}</option>
@@ -111,7 +111,7 @@ function check_name() {ldelim}
 					</select><br />
 					<input style="width:373px;" type="text" name="contact_field_default" id="contact_field_default" value="" />
 				</td>
-				<td colspan="2" align="center">
+				<td colspan="2" align="center" nowrap="nowrap">
 					<input style="width:56px;" type="text" name="contact_field_position" id="contact_field_position" size="5" maxlength="3" value="1" />&nbsp;
 					<input style="width:56px;" type="text" name="contact_field_size" id="contact_field_size" size="5" maxlength="4" value="300" /><br />
 					<input type="radio" name="contact_field_newline" value="1" checked="checked" />{#CONTACT_YES#} <input type="radio" name="contact_field_newline" value="0" />{#CONTACT_NO#}
