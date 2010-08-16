@@ -231,9 +231,10 @@ if (!defined('ACP') && empty($_POST) && !isset($_REQUEST['module']) && UGROUP ==
 
 	$cache = new Cache_Lite_Output($options);
 
-	if ($cache->start($_SERVER['REQUEST_URI']) && defined('PROFILING') && PROFILING)
+	if ($cache->start($_SERVER['REQUEST_URI']))
 	{
-		echo get_statistic(1,1,1,0);exit;
+		if (defined('PROFILING') && PROFILING) echo get_statistic(1,1,1,0);
+		exit;
 	}
 }
 
