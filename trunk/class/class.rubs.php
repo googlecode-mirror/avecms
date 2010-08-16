@@ -171,7 +171,7 @@ class AVE_Rubric
 				if (!empty($rubric_title))
 				{
 					$set_rubric_title = '';
-					$new_prefix = '';
+					$set_rubric_alias = '';
 
 					$name_exist = $AVE_DB->Query("
 						SELECT 1
@@ -188,9 +188,10 @@ class AVE_Rubric
 						$set_rubric_title = "rubric_title = '" . $rubric_title . "',";
 					}
 
-					if (!empty($_POST['rubric_alias'][$rubric_id]))
+					if (isset($_POST['rubric_alias'][$rubric_id]) && $_POST['rubric_alias'][$rubric_id] != '')
 					{
-						if (!(preg_match((TRANSLIT_URL ? '/[^\%HYa-z0-9\/-]+/' : '/[^\%HYa-zà-ÿ¸¿º³0-9\/-]+/'), $_POST['rubric_alias'][$rubric_id])))
+						$pattern = TRANSLIT_URL ? '/[^\%HYa-z0-9\/-]+/' : '/[^\%HYa-zà-ÿ¸¿º³0-9\/-]+/';
+						if (!(preg_match($pattern, $_POST['rubric_alias'][$rubric_id])))
 						{
 							$prefix_exist = $AVE_DB->Query("
 								SELECT 1
@@ -204,16 +205,20 @@ class AVE_Rubric
 
 							if (!$prefix_exist)
 							{
-								$new_prefix = "rubric_alias = '" . $_POST['rubric_alias'][$rubric_id] . "',";
+								$set_rubric_alias = "rubric_alias = '" . trim(preg_replace($pattern, '', $_POST['rubric_alias'][$rubric_id]), '/') . "',";
 							}
 						}
+					}
+					else
+					{
+						$set_rubric_alias = "rubric_alias = ''";
 					}
 
 					$AVE_DB->Query("
 						UPDATE " . PREFIX . "_rubrics
 						SET
 							" . $set_rubric_title . "
-							" . $new_prefix . "
+							" . $set_rubric_alias . "
 							rubric_template_id = '" . $_POST['rubric_template_id'][$rubric_id] . "'
 						WHERE
 							Id = '" . $rubric_id . "'
