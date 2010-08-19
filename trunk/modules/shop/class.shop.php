@@ -1463,6 +1463,8 @@ $AVE_Template->caching = 0;
 
 			foreach ($arr as $key => $value)
 			{
+				$item = new stdClass();
+
 				$item->Id = $key;
 				$item->Val = $value;
 				$SummVars = '';
