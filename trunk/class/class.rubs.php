@@ -211,7 +211,7 @@ class AVE_Rubric
 					}
 					else
 					{
-						$set_rubric_alias = "rubric_alias = ''";
+						$set_rubric_alias = "rubric_alias = '',";
 					}
 
 					$AVE_DB->Query("
