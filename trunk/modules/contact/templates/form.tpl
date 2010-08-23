@@ -40,15 +40,10 @@ function checkForm(obj, elems) {ldelim}
 		<div class="mod_contact_left"><label for="contact_form_in_email">{#CONTACT_FORM_EMAIL#} <span class="mod_contact_left_star">*</span></label></div>
 		<div class="mod_contact_right"><input type="text" value="{$smarty.request.contact_form_in_email|default:$smarty.session.user_email|stripslashes|escape}" name="contact_form_in_email" id="contact_form_in_email" style="width:215px;" {literal}check_pattern="^[\w-]+(\.[\w-]+)*@([\w-]+\.)+[a-zA-Z]{2,7}$"{/literal} check_message="{#CONTACT_CHECK_EMAIL#}" /></div>
 
-		{if $receiver}
+		{if $recievers}
 			<div class="mod_contact_left">{#CONTACT_FORM_RECIVER#}</div>
 			<div class="mod_contact_right">
-				<select style="width:220px" name="reciever">
-					{section name=em loop=$receiver}
-						{assign var=e_id value=$e_id+1}
-						<option value="{$e_id}">{$receiver[em]}</option>
-					{/section}
-				</select>
+				{html_options name=reciever options=$recievers style="width:220px"}
 			</div>
 		{/if}
 

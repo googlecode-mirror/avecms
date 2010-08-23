@@ -1,17 +1,15 @@
-<div class="pageHeaderTitle" style="padding-top: 7px;">
+<div class="pageHeaderTitle">
 	<div class="h_module"></div>
 	<div class="HeaderTitle">
-		<h2>
-			{#CONTACT_MODULE_NAME#}
-			{if $smarty.request.moduleaction == 'showmessages_new'}
-				<span style="color: #000;"> ({#CONTACT_TITLE_NOANSWERED#})</span>
-			{else}
-				<span style="color: #000;"> ({#CONTACT_TITLE_ANSWERED#})</span>
-			{/if}
-		</h2>
+	{if $smarty.request.moduleaction == 'showmessages_new'}
+		<h2>{#CONTACT_MODULE_NAME#} <span style="color: #000;">({#CONTACT_TITLE_NOANSWERED#})</span></h2>
+	{else}
+		<h2>{#CONTACT_MODULE_NAME#} <span style="color: #000;">({#CONTACT_TITLE_ANSWERED#})</span></h2>
+	{/if}
 	</div>
 	<div class="HeaderText">&nbsp;</div>
-</div><br />
+</div>
+<div class="upPage">&nbsp;</div>
 
 <div class="infobox">
 	<a href="index.php?do=modules&action=modedit&mod=contact&moduleaction=1&cp={$sess}">{#CONTACT_FORM_LIST#}</a>
