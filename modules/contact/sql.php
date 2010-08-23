@@ -24,8 +24,8 @@ $modul_sql_install[] = "CREATE TABLE CPPREFIX_modul_contacts (
   `Id` mediumint(5) unsigned NOT NULL auto_increment,
   `contact_form_title` varchar(100) NOT NULL,
   `contact_form_mail_max_chars` smallint(3) unsigned NOT NULL default '20000',
-  `contact_form_receiver` varchar(100) NOT NULL,
-  `contact_form_receiver_multi` varchar(255) NOT NULL,
+  `contact_form_reciever` varchar(100) NOT NULL,
+  `contact_form_reciever_multi` varchar(255) NOT NULL,
   `contact_form_antispam` enum('1','0') NOT NULL default '1',
   `contact_form_max_upload` mediumint(5) unsigned NOT NULL default '500',
   `contact_form_subject_show` enum('1','0') NOT NULL default '1',
@@ -80,5 +80,6 @@ $modul_sql_install[] = "INSERT INTO `CPPREFIX_modul_contact_fields` VALUES (5, 1
 
 
 $modul_sql_update[] = "UPDATE CPPREFIX_module SET CpEngineTag = '" . $modul['CpEngineTag'] . "', CpPHPTag = '" . $modul['CpPHPTag'] . "', Version = '" . $modul['ModulVersion'] . "' WHERE ModulPfad = '" . $modul['ModulPfad'] . "' LIMIT 1;";
+$modul_sql_update[] = "ALTER TABLE `CPPREFIX_modul_contacts` CHANGE `contact_form_receiver` `contact_form_reciever` VARCHAR(100), CHANGE `contact_form_receiver_multi` `contact_form_reciever_multi` VARCHAR(255);";
 
 ?>

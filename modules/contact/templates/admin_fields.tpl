@@ -9,14 +9,15 @@ function check_name() {ldelim}
 {rdelim}
 </script>
 
-<div class="pageHeaderTitle" style="padding-top: 7px;">
+<div class="pageHeaderTitle">
 	<div class="h_module"></div>
 	<div class="HeaderTitle"><h2>{if $smarty.request.moduleaction=='new'}{#CONTACT_CREATE_FORM2#}{else}{#CONTACT_FORM_FIELDS#}{/if}</h2></div>
 	<div class="HeaderText">{#CONTACT_FIELD_INFO#}</div>
-</div><br />
+</div>
+<div class="upPage">&nbsp;</div>
 
 <form method="post" action="{$formaction}">
-	{include file="$tpl_dir/admin_formsettings.tpl"}<br />
+	{include file="$include_path/admin_formsettings.tpl"}<br />
 
 	{if $smarty.request.id != ''}
 		<table width="100%" border="0" cellpadding="8" cellspacing="1" class="tableborder">

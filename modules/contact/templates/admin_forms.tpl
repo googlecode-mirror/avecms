@@ -1,8 +1,9 @@
-<div class="pageHeaderTitle" style="padding-top: 7px;">
+<div class="pageHeaderTitle">
 	<div class="h_module"></div>
 	<div class="HeaderTitle"><h2>{#CONTACT_MODULE_NAME#}</h2></div>
 	<div class="HeaderText">{#CONTACT_MODULE_INFO#}</div>
-</div><br />
+</div>
+<div class="upPage">&nbsp;</div>
 
 <div class="infobox">
 	<a href="javascript:void(0);" onclick="cp_pop('index.php?do=modules&action=modedit&mod=contact&moduleaction=new&cp={$sess}&pop=1','1000','850','1','modcontactnew');">{#CONTACT_CREATE_FORM#}</a>

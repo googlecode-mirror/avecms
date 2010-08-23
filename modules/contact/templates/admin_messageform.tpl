@@ -1,4 +1,4 @@
-<div class="pageHeaderTitle" style="padding-top: 7px;">
+<div class="pageHeaderTitle">
 	<div class="h_module"></div>
 	<div class="HeaderTitle"><h2>{#CONTACT_SHOW_ANSWER2#}</h2></div>
 	{if $smarty.request.reply=='no'}
@@ -6,7 +6,8 @@
 	{else}
 		<div class="HeaderText">{#CONTACT_MODULE_TIP#}</div>
 	{/if}
-</div><br />
+</div>
+<div class="upPage">&nbsp;</div>
 
 <form name="replay" enctype="multipart/form-data" method="post" action="index.php?do=modules&action=modedit&mod=contact&moduleaction=reply&cp={$sess}&id={$smarty.request.id|escape}&pop=1">
 	<table width="100%" border="0" cellspacing="1" cellpadding="8" class="tableborder">

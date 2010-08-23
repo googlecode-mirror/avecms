@@ -10,21 +10,21 @@
 	</tr>
 
 	<tr>
-		<td width="1%" class="first"><a title="{#CONTACT_MAX_CHARS#}" href="#"><img src="{$tpl_dir}/images/icon_help.gif" alt="" border="0" /></a></td>
-		<td width="200" class="first">{#CONTACT_MAX_CHARS_FIELD#}</td>
+		<td width="1%" class="first"><a title="{#CONTACT_MAX_CHARS_EMAIL_TIP#}" href="#"><img src="{$tpl_dir}/images/icon_help.gif" alt="" border="0" /></a></td>
+		<td width="200" class="first">{#CONTACT_MAX_CHARS_EMAIL#}</td>
 		<td class="second"><input name="contact_form_mail_max_chars" type="text" id="contact_form_mail_max_chars" value="{$row->contact_form_mail_max_chars|default:20000}" size="10" maxlength="10" /></td>
 	</tr>
 
 	<tr>
 		<td width="1%" class="first"><a title="{#CONTACT_DEFAULT_EMAIL#}" href="#"><img src="{$tpl_dir}/images/icon_help.gif" alt="" border="0" /></a></td>
 		<td width="200" class="first">{#CONTACT_DEFAULT_RECIVER#}</td>
-		<td class="second"><input name="contact_form_receiver" type="text" id="contact_form_receiver" value="{$row->contact_form_receiver}" size="50" /></td>
+		<td class="second"><input name="contact_form_reciever" type="text" id="contact_form_reciever" value="{$row->contact_form_reciever}" size="50" /></td>
 	</tr>
 
 	<tr>
 		<td width="1%" class="first"><a title="{#CONTACT_MULTI_LIST#}" href="#"><img src="{$tpl_dir}/images/icon_help.gif" alt="" border="0" /></a></td>
 		<td width="200" class="first">{#CONTACT_MULTI_LIST_FIELD#}</td>
-		<td class="second"><input name="contact_form_receiver_multi" type="text" id="contact_form_receiver_multi" value="{$row->contact_form_receiver_multi}" style="width:90%" /></td>
+		<td class="second"><input name="contact_form_reciever_multi" type="text" id="contact_form_reciever_multi" value="{$row->contact_form_reciever_multi}" style="width:90%" /></td>
 	</tr>
 
 	<tr>
