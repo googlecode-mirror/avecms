@@ -23,7 +23,7 @@ $(document).ready(function(){ldelim}
 	</div>
 	<div class="HeaderText">{#MAIN_WELCOME_INFO#}</div>
 </div>
-<div class="upPage">&nbsp;</div><br />
+<div class="upPage">&nbsp;</div>
 
 <table width="100%" border="0" cellpadding="0" cellspacing="0">
 	<tr>
@@ -33,7 +33,7 @@ $(document).ready(function(){ldelim}
 				<col width="50%">
 				<tr>
 					<td>
-						{if check_permission('docs')}
+						{if check_permission('documents')}
 							<div id="docsTasks">
 								<a href="index.php?do=docs&amp;cp={$sess}">
 									<div class="taskTitle">{#MAIN_LINK_DOCUMENT#}</div>
@@ -49,7 +49,7 @@ $(document).ready(function(){ldelim}
 					</td>
 
 					<td>
-						{if check_permission('rubriken') || check_permission('rubrics')}
+						{if check_permission('rubrics')}
 							<div id="rubsTasks">
 								<a href="index.php?do=rubs&amp;cp={$sess}">
 									<div class="taskTitle">{#MAIN_LINK_RUBRICS#}</div>
@@ -101,7 +101,7 @@ $(document).ready(function(){ldelim}
 
 				<tr>
 					<td>
-						{if check_permission('template') || check_permission('template_multi') || check_permission('template_del') || check_permission('template_edit') || check_permission('template_new')}
+						{if check_permission('template')}
 							<div id="templTasks">
 								<a href="index.php?do=templates&amp;cp={$sess}">
 									<div class="taskTitle">{#MAIN_LINK_TEMPLATES#}</div>
