@@ -1,4 +1,4 @@
-{if check_permission('docs')}
+{if check_permission('documents')}
 
 <script type="text/javascript" language="JavaScript">
 function ChangeRazd() {ldelim}

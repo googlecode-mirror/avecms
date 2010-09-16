@@ -488,7 +488,7 @@ class AVE_Core
 	 */
 	function coreModuleTagParse($template)
 	{
-		global $AVE_DB;
+		global $AVE_DB, $AVE_Template;
 
 		$pattern = array();  // Массив системных тегов
 		$replace = array();  // Массив функций, на которые будут заменены системные теги
@@ -502,7 +502,7 @@ class AVE_Core
 				// Если в запросе пришел вызов модуля или у модуля есть функция вызываемая тэгом,
                 // который присутствует в шаблоне
                 if ((isset($_REQUEST['module']) && $_REQUEST['module'] == $row->ModulPfad) ||
-					(1 == $row->IstFunktion && 1 == preg_match($row->CpEngineTag, $template)))
+					(1 == $row->IstFunktion && !empty($row->CpEngineTag) && 1 == preg_match($row->CpEngineTag, $template)))
 				{
 					// Проверяем, существует ли для данного модуля функция. Если да,
                     // получаем php код функции.
@@ -514,7 +514,8 @@ class AVE_Core
 					else // В противном случае
 					{
 						// Проверяем, существует ли для данного модуля файл modul.php в его персональной директории
-                        if (require_once(BASE_DIR . '/modules/' . $row->ModulPfad . '/modul.php'))
+						$mod_file = BASE_DIR . '/modules/' . $row->ModulPfad . '/modul.php';
+                        if (is_file($mod_file) && include_once($mod_file))
 						{
 							// Если файл модуля найден, тогда
                             if ($row->CpEngineTag)
@@ -558,10 +559,11 @@ class AVE_Core
 				// Если в запросе пришел параметр module и для данного названия модуля существует
                 // директория или данный модуль имеет функцию и его системный тег указан в каком-либо шаблоне, тогда
                 if ((isset($_REQUEST['module']) && $_REQUEST['module'] == $row->ModulPfad) ||
-					(1 == $row->IstFunktion && 1 == preg_match($row->CpEngineTag, $template)))
+					(1 == $row->IstFunktion && !empty($row->CpEngineTag) && 1 == preg_match($row->CpEngineTag, $template)))
 				{
 					// Проверяем, существует ли для данного модуля файл modul.php в его персональной директории
-                    if (require_once(BASE_DIR . '/modules/' . $row->ModulPfad . '/modul.php'))
+					$mod_file = BASE_DIR . '/modules/' . $row->ModulPfad . '/modul.php';
+                    if (is_file($mod_file) && include_once($mod_file))
 					{	// Если файл модуля найден, тогда
 						if (!empty($row->CpEngineTag))
 						{
@@ -763,7 +765,8 @@ class AVE_Core
 			'[tag:home]',
 			'[tag:keywords]',
 			'[tag:description]',
-			'[tag:robots]'
+			'[tag:robots]',
+			'[tag:docid]'
 		);
 
 		$replace = array(
@@ -774,7 +777,8 @@ class AVE_Core
 			get_home_link(),
 			(isset ($this->curentdoc->document_meta_keywords) ? htmlspecialchars($this->curentdoc->document_meta_keywords, ENT_QUOTES) : ''),
 			(isset ($this->curentdoc->document_meta_description) ? htmlspecialchars($this->curentdoc->document_meta_description, ENT_QUOTES) : ''),
-			(isset ($this->curentdoc->document_meta_robots) ? $this->curentdoc->document_meta_robots : '')
+			(isset ($this->curentdoc->document_meta_robots) ? $this->curentdoc->document_meta_robots : ''),
+			(isset ($this->curentdoc->Id) ? $this->curentdoc->Id : '')
 		);
 
 		if (defined('MODULE_CONTENT'))
@@ -820,7 +824,7 @@ class AVE_Core
 	{
 		global $AVE_DB;
 
-		$get_url = iconv("UTF-8", "WINDOWS-1251", urldecode($get_url));
+		$get_url = iconv("UTF-8", "WINDOWS-1251//IGNORE", rawurldecode($get_url));
 		$get_url = substr($get_url, strlen(ABS_PATH));
 		if (substr($get_url, - strlen(URL_SUFF)) == URL_SUFF)
 		{
@@ -846,7 +850,6 @@ class AVE_Core
         // Определяем, используется ли у нас разделение документа по страницам
 		$pages = preg_grep('/^(a|art)?page-\d+$/i', $get_url);
 
-        //
         if (!empty ($pages))
 		{
 			$get_url = implode('/', array_diff($get_url, $pages));

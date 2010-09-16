@@ -82,8 +82,6 @@ function mod_contact($contact_id)
  */
 if (defined('ACP') && !empty($_REQUEST['moduleaction']))
 {
-	global $AVE_Template;
-
 	// Подключаем файл с классом, определяем директорию с шаблонами,
     // подключаем языковой файл и создаем объект класса.
     require_once(BASE_DIR . '/modules/contact/class.contact.php');

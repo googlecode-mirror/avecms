@@ -102,7 +102,8 @@ function show_by($newsarchive_id, $month, $year, $day = 0)
 		}
 	}
 
-	$doctime = get_settings('use_doctime') ? ("AND (document_expire = 0 || document_expire >= '" . time() . "') AND document_published <= '" . time() . "'") : '';
+	$doctime = get_settings('use_doctime')
+		? ("AND document_published <= " . time() . " AND (document_expire = 0 OR document_expire >= " . time() . ")") : '';
 
 	// Выбираем из БД документы. которые соответствуют условиям для запроса и модуля
 	$query = $AVE_DB->Query("

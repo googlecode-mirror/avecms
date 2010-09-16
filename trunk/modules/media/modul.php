@@ -56,8 +56,6 @@ if (isset($_REQUEST['module']) && $_REQUEST['module'] == BANNER_DIR)
 
 if (defined('ACP') && !empty($_REQUEST['moduleaction']))
 {
-	global $AVE_Template;
-
 	require_once(BASE_DIR . '/modules/' . BANNER_DIR . '/class.banner.php');
 	$banner = new ModulBanner;
 

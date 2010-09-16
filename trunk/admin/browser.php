@@ -16,7 +16,7 @@
 
 ob_start();
 
-define('BASE_DIR', str_replace("\\", "/", substr(dirname(__FILE__), 0, -6)));
+define('BASE_DIR', str_replace("\\", "/", dirname(dirname(__FILE__))));
 
 $mediapath = 'uploads';
 $max_size  = 128; // максимальный размер миниатюры

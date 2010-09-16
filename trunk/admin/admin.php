@@ -16,7 +16,7 @@
 
 define('ACP', 1);
 define('ACPL', 1);
-define('BASE_DIR', str_replace("\\", "/", substr(dirname(__FILE__), 0, -6)));
+define('BASE_DIR', str_replace("\\", "/", dirname(dirname(__FILE__))));
 
 if (! @filesize(BASE_DIR . '/inc/db.config.php')) { header('Location:../install.php'); exit; }
 

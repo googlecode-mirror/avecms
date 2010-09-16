@@ -1,4 +1,4 @@
-<script language="Javascript" type="text/javascript" src="editarea/edit_area_full.js"></script>
+<script language="Javascript" type="text/javascript" src="editarea/edit_area_compressor.php"></script>
 
 <script language="Javascript" type="text/javascript">
 $(document).ready(function(){ldelim}

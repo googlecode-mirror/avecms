@@ -7,7 +7,7 @@ $query_string = (isset($_REQUEST['ajq']))
 
 if (strlen($query_string) > 2)
 {
-	define('BASE_DIR', str_replace("\\", "/", substr(dirname(__FILE__),0,-17)));
+	define('BASE_DIR', str_replace("\\", "/", dirname(dirname(dirname(__FILE__)))));
 
 	require(BASE_DIR . '/inc/init.php');
 

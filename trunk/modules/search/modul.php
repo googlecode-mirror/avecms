@@ -54,9 +54,8 @@ if (isset($_REQUEST['module']) && $_REQUEST['module'] == 'search')
 
 if (defined('ACP') && !empty($_REQUEST['moduleaction']))
 {
-	global $AVE_Template;
-
-	if (! @require_once(BASE_DIR . '/modules/search/class.search.php')) module_error();
+	if (! (is_file(BASE_DIR . '/modules/search/class.search.php') &&
+		@require_once(BASE_DIR . '/modules/search/class.search.php'))) module_error();
 
 	$tpl_dir   = BASE_DIR .'/modules/search/templates/';
 	$lang_file = BASE_DIR .'/modules/search/lang/' . $_SESSION['admin_language'] . '.txt';

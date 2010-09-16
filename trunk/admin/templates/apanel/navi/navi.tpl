@@ -1,8 +1,8 @@
-{if check_permission('docs')}
+{if check_permission('documents')}
 	{include file='documents/nav.tpl'}
 {/if}
 
-{if check_permission('rubriken') || check_permission('rubrics')}
+{if check_permission('rubrics')}
 	{include file='rubs/nav.tpl'}
 {/if}
 
@@ -14,7 +14,7 @@
 	{include file='navigation/nav.tpl'}
 {/if}
 
-{if check_permission('template') || check_permission('template_multi') || check_permission('template_del') || check_permission('template_edit') || check_permission('template_new')}
+{if check_permission('template')}
 	{include file='templates/nav.tpl'}
 {/if}
 

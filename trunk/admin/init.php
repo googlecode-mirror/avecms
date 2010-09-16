@@ -25,7 +25,7 @@ if (! isset($_SESSION['admin_language']))
 }
 
 $AVE_Template = new AVE_Template(BASE_DIR . '/admin/templates/' . $_SESSION['admin_theme']);
-$AVE_Template->assign('tpl_dir', ABS_PATH . 'templates/' . $_SESSION['admin_theme']);
+$AVE_Template->assign('tpl_dir', ABS_PATH . 'admin/templates/' . $_SESSION['admin_theme']);
 $AVE_Template->config_load(BASE_DIR . '/admin/lang/' . $_SESSION['admin_language'] . '/main.txt');
 
 define('SESSION', session_id());

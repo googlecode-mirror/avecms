@@ -22,8 +22,6 @@ if (defined('ACP'))
 
 if( (isset($_REQUEST['module']) && $_REQUEST['module'] == 'forums') || (isset($_REQUEST['mod']) && $_REQUEST['mod'] == 'forums') )
 {
-	global $AVE_DB, $AVE_Template;
-
 	define ('GET_NO_DOC', 1);
 	define ('FORUM_STATUS_OPEN', 0);
 	define ('FORUM_STATUS_CLOSED', 1);

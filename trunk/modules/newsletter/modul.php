@@ -35,8 +35,6 @@ if (defined('ACP')
 	&& ! (isset($_REQUEST['action']) && $_REQUEST['action'] == 'delete')
 	&& (isset($_REQUEST['mod']) && $_REQUEST['mod'] == 'newsletter') )
 {
-	global $AVE_Template;
-
 	include_once(BASE_DIR . '/modules/newsletter/class.newsletter.php');
 	$newsletter = new Newsletter;
 

@@ -525,7 +525,7 @@ function reportLog($meldung, $typ = 0, $rub = 0)
 
 function get_document_fields($document_id)
 {
-	global $AVE_DB;
+	global $AVE_DB, $request_documents;
 
 	static $document_fields = array();
 
@@ -533,11 +533,26 @@ function get_document_fields($document_id)
 
 	if (!isset ($document_fields[$document_id]))
 	{
-		$fields = false;
+		if (!empty($request_documents) && is_array($request_documents))
+		{
+			$documents = array_combine($request_documents, $request_documents);
+			$documents = array_diff_key($documents, $document_fields);
+
+			foreach ($documents as $id) $document_fields[$id] = false;
+
+			$where = "WHERE doc_field.document_id IN(" . implode(',', $documents) . ")";
+		}
+		else
+		{
+			$document_fields[$document_id] = false;
+
+			$where = "WHERE doc_field.document_id = '" . $document_id . "'";
+		}
 
 		$sql = $AVE_DB->Query("
 			SELECT
 				doc_field.Id,
+				document_id,
 				rubric_field_id,
 				rubric_field_type,
 				field_value,
@@ -552,9 +567,8 @@ function get_document_fields($document_id)
 			JOIN
 				" . PREFIX . "_documents AS doc
 					ON doc.Id = doc_field.document_id
-			WHERE
-				doc_field.document_id = '" . $document_id . "'
-		");
+			" . $where
+		);
 
 		while ($row = $sql->FetchAssocArray())
 		{
@@ -578,10 +592,8 @@ function get_document_fields($document_id)
 				$row['rubric_field_template'] = trim(str_replace(array('[tag:if_notempty]','[/tag:if_notempty]'), '', $row['rubric_field_template']));
 			}
 
-			$fields[$row['rubric_field_id']] = $row;
+			$document_fields[$row['document_id']][$row['rubric_field_id']] = $row;
 		}
-
-		$document_fields[$document_id] = $fields;
 	}
 
 	return $document_fields[$document_id];
@@ -748,7 +760,7 @@ function get_statistic($t=0, $m=0, $q=0, $l=0)
 	if ($t) $s .= "\n<br>Время генерации: " . number_format(microtime_diff(START_MICROTIME, microtime()), 3, ',', ' ') . ' сек.';
 	if ($m && function_exists('memory_get_peak_usage')) $s .= "\n<br>Пиковое значение " . number_format(memory_get_peak_usage()/1024, 0, ',', ' ') . 'Kb';
 //	if ($q) $s .= "\n<br>Количество запросов: " . $AVE_DB->DBStatisticGet('count') . ' шт. за ' . number_format($AVE_DB->DBStatisticGet('time')*1000, 3, ',', '.') . ' мксек.';
-//	if ($l) $s .= style=\"text-align:left;padding-left:30px\"><small><ol>" . $AVE_DB->DBStatisticGet('list') . '</ol></small></div>';
+//	if ($l) $s .= "\n<br><div style=\"text-align:left;padding-left:30px\"><small><ol>" . $AVE_DB->DBStatisticGet('list') . '</ol></small></div>';
 	if ($q) $s .= "\n<br>Количество запросов: " . $AVE_DB->DBProfilesGet('count') . ' шт. за ' . $AVE_DB->DBProfilesGet('time') . ' сек.';
 	if ($l) $s .= $AVE_DB->DBProfilesGet('list');
 
@@ -819,7 +831,7 @@ function send_mail($to, $text, $subject = '', $from = '', $from_name = '', $cont
 
 	$PHPMailer->CharSet     = 'windows-1251';
 	$PHPMailer->Mailer      = get_settings('mail_type');
-	$PHPMailer->ContentType = ($html == 1) ? 'text/html' : (get_settings('mail_content_type') == 'text/plain' || $content_type == 'text') ? 'text/plain' : 'text/html';
+	$PHPMailer->ContentType = ($html == 1) ? 'text/html' : ((get_settings('mail_content_type') == 'text/plain' || $content_type == 'text') ? 'text/plain' : 'text/html');
 	$PHPMailer->WordWrap    = get_settings('mail_word_wrap');
 	$PHPMailer->Subject     = $subject;
 	$PHPMailer->Body        = $text . "\n\n" . ($PHPMailer->ContentType == 'text/html' ? '' : get_settings('mail_signature'));

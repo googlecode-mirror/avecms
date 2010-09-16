@@ -1,4 +1,4 @@
-<script language="Javascript" type="text/javascript" src="editarea/edit_area_full.js"></script>
+<script language="Javascript" type="text/javascript" src="editarea/edit_area_compressor.php"></script>
 <script language="Javascript" type="text/javascript" src="editarea/request.js"></script>
 <script language="JavaScript" type="text/javascript">
 /*<![CDATA[*/
@@ -49,7 +49,7 @@ function changeRub(select) {ldelim}
 	<input name="pop" type="hidden" id="pop" value="{$smarty.request.pop|escape}" /><br />
 	{assign var=js_form value='f_tpl'}
 	<table width="100%" border="0" cellpadding="8" cellspacing="1" class="tableborder">
-		<col width="238"></col>
+		<col width="238">
 		<tr>
 			<td colspan="2" class="tableheader">{#REQUEST_SETTINGS#}</td>
 		</tr>
@@ -99,6 +99,7 @@ function changeRub(select) {ldelim}
 					<option value="document_author_id"{if $row->request_order_by=='document_author_id'} selected="selected"{/if}>{#REQUEST_BY_EDIT#}</option>
 					<option value="document_count_print"{if $row->request_order_by=='document_count_print'} selected="selected"{/if}>{#REQUEST_BY_PRINTED#}</option>
 					<option value="document_count_view"{if $row->request_order_by=='document_count_view'} selected="selected"{/if}>{#REQUEST_BY_VIEWS#}</option>
+					<option value="RAND()"{if $row->request_order_by=='RAND()'} selected="selected"{/if}>{#REQUEST_BY_RAND#}</option>
 				</select>
 			</td>
 		</tr>
@@ -137,7 +138,7 @@ function changeRub(select) {ldelim}
 			<td colspan="2" class="second">
 				<table width="100%" border="0" cellspacing="1" cellpadding="4">
 					{assign var=js_textfeld value='request_template_main'}
-					<col width="230"></col>
+					<col width="230">
 					<tr>
 						<td scope="row" class="first">
 							<strong><a href="javascript:void(0);" onclick="editAreaLoader.insertTags('{$js_textfeld}', '[tag:content]', '');">[tag:content]</a></strong>
@@ -255,7 +256,7 @@ function changeRub(select) {ldelim}
 			<td colspan="2" class="second">{#REQUEST_TEMPLATE_INFO#}<br /><br />
 				<table width="100%" border="0" cellspacing="1" cellpadding="4">
 					{assign var=js_textfeld value='request_template_item'}
-					<col width="230"></col>
+					<col width="230">
 					<tr>
 						<td scope="row" class="first">
 							<strong><a href="javascript:void(0);" onclick="alert('{#REQUEST_SELECT_IN_LIST#}');">[tag:rfld:ID][XXX]</a></strong>
@@ -334,7 +335,7 @@ function changeRub(select) {ldelim}
 					<a href="javascript:void(0);" onclick="editAreaLoader.insertTags('{$js_textfeld}', '\t', '');">TAB</a>&nbsp;|
 				</div>
 				<table width="100%" border="0" cellspacing="1" cellpadding="4">
-					<col width="230"></col>
+					<col width="230">
 					<tr class="tableheader">
 						<td>{#REQUEST_RUBRIK_FIELD#}</td>
 						<td>{#REQUEST_FIELD_NAME#}</td>

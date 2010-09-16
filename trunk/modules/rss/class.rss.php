@@ -15,7 +15,7 @@ class Rss
 	 *
 	 * @param string $tpl_dir путь к папке с шаблонами
 	 */
-	function rssList($tpl_dir, $lang_file)
+	public static function rssList($tpl_dir, $lang_file)
 	{
 		global $AVE_DB, $AVE_Template;
 
@@ -23,13 +23,13 @@ class Rss
 
 		$channels = array();
 		$sql = $AVE_DB->Query("SELECT * FROM " . PREFIX . "_modul_rss");
-		while ($result = $sql->FetchRow())
+		while ($channel = $sql->FetchRow())
 		{
-			$result->tag = '[mod_rss:' . $result->id . ']';
-			array_push($channels, $result);
+			$channel->tag = '[mod_rss:' . $channel->id . ']';
+			array_push($channels, $channel);
 		}
 
-		$AVE_Template->assign('channel', $channels);
+		$AVE_Template->assign('channels', $channels);
 		$AVE_Template->assign('content', $AVE_Template->fetch($tpl_dir . 'rss_list.tpl'));
 	}
 
@@ -37,11 +37,9 @@ class Rss
 	 * Создание RSS - ленты
 	 *
 	 */
-	function rssNew()
+	public static function rssNew()
 	{
 		global $AVE_DB;
-
-		$home = addslashes(substr(get_home_link(), 0, -6));
 
 		$AVE_DB->Query("
 			INSERT
@@ -50,7 +48,7 @@ class Rss
 				id                     = '',
 				rss_site_name          = '" . $_POST['new_rss'] . "',
 				rss_site_description   = '',
-				rss_site_url           = '" . $home . "',
+				rss_site_url           = '" . addslashes(get_home_link()) . "',
 				rss_rubric_id          = 1,
 				rss_title_id           = 0,
 				rss_description_id     = 0,
@@ -70,13 +68,13 @@ class Rss
 	 * @param string $tpl_dir	путь к папке с шаблонами
 	 * @param string $lang_file	путь к языковому файлу
 	 */
-	function rssEdit($tpl_dir, $lang_file)
+	public static function rssEdit($tpl_dir, $lang_file)
 	{
 		global $AVE_DB, $AVE_Template;
 
 		$AVE_Template->config_load($lang_file);
 
-		$result = $AVE_DB->Query("
+		$channel = $AVE_DB->Query("
 			SELECT *
 			FROM " . PREFIX . "_modul_rss
 			WHERE id = '" . (int)($_REQUEST['id']) . "'
@@ -84,36 +82,36 @@ class Rss
 
 		if (isset($_REQUEST['rubric_id']) && is_numeric($_REQUEST['rubric_id']))
 		{
-			$result->rss_rubric_id = $_REQUEST['rubric_id'];
+			$channel->rss_rubric_id = $_REQUEST['rubric_id'];
 		}
 
-		$rubriks = array();
-		$get_rubs = $AVE_DB->Query("
+		$rubrics = array();
+		$sql_rubrics = $AVE_DB->Query("
 			SELECT
 				Id,
 				rubric_title
 			FROM " . PREFIX . "_rubrics
 		");
-		while ($res = $get_rubs->FetchRow())
+		while ($res = $sql_rubrics->FetchRow())
 		{
-			array_push($rubriks, $res);
+			array_push($rubrics, $res);
 		}
 
 		$fields = array();
-		$get_fields = $AVE_DB->Query("SELECT
+		$sql_fields = $AVE_DB->Query("SELECT
 				Id,
 				rubric_id,
 				rubric_field_title
 			FROM " . PREFIX . "_rubric_fields
-			WHERE rubric_id = '" . $result->rss_rubric_id . "'
+			WHERE rubric_id = '" . $channel->rss_rubric_id . "'
 		");
-		while ($res = $get_fields->FetchRow())
+		while ($res = $sql_fields->FetchRow())
 		{
 			array_push($fields,$res);
 		}
 
-		$AVE_Template->assign('channel', $result);
-		$AVE_Template->assign('rubriks', $rubriks);
+		$AVE_Template->assign('channel', $channel);
+		$AVE_Template->assign('rubrics', $rubrics);
 		$AVE_Template->assign('fields', $fields);
 		$AVE_Template->assign('content', $AVE_Template->fetch($tpl_dir . 'rss_edit.tpl'));
 	}
@@ -122,7 +120,7 @@ class Rss
 	 * Запись настроек
 	 *
 	 */
-	function rssSave()
+	public static function rssSave()
 	{
 		global $AVE_DB;
 
@@ -149,7 +147,7 @@ class Rss
 	 * Удаление RSS - ленты
 	 *
 	 */
-	function rssDelete()
+	public static function rssDelete()
 	{
 		global $AVE_DB;
 

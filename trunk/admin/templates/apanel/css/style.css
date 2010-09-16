@@ -1,3 +1,7 @@
+html,
+body {
+	height:100%;
+}
 body,
 div,
 td,
@@ -10,7 +14,7 @@ th,
 select,
 input,
 textarea {
-	font:10px verdana,'trebuchet ms',verdana;
+	font:10px verdana,'trebuchet ms';
 }
 
 form {
@@ -163,7 +167,7 @@ input.query {
 .url {
 	color:#7e7e7e;
 /*	padding-top:10px;
-*/	font-size:10px;
+	font-size:10px;*/
 	line-height:1.5em;
 	font-weight:normal;
 }
@@ -193,12 +197,13 @@ input.query {
 #tableheader_main {
 	background:#484848;
 	text-align:left !important;
-	font-size:9px !important;
+/*	font-size:9px !important;*/
 	font-style:normal !important;
 	line-height:11px !important;
 	letter-spacing:normal !important;
 	color:#F2F2F2 !important;
 	width:100%;
+	height:40px
 }
 #tableheader_main a:link,
 #tableheader_main a:visited {
@@ -222,8 +227,9 @@ h1.mediapool {
 	text-align:right !important;
 	color:#fff;
 	background:#484848;
-	padding:5px;
+	padding:0 5px;
 	width:100%;
+	height:22px;
 }
 #tablebottom a:link,
 #tablebottom a:visited {
@@ -245,8 +251,8 @@ a.header:hover {
 
 
 #content {
-	font-size:8pt;
-	font-family:Tahoma, Arial, Helvetica, Geneva, sans-serif;
+/*	font-size:8pt;
+	font-family:Tahoma, Arial, Helvetica, Geneva, sans-serif;*/
 	padding:20px;
 	background-color:#fff;
 }
@@ -425,12 +431,12 @@ a.header:hover {
 #content a:visited {
 	text-decoration:none;
 	font-weight:bold;
-	font-size:10px;
+/*	font-size:10px;*/
 }
 #content ul a:hover {
 	text-decoration:underline;
 	font-weight:bold;
-	font-size:10px;
+/*	font-size:10px;*/
 }
 
 /*-------------------- Main Links -------------------------*/
@@ -439,13 +445,13 @@ a:visited {
 	color:#516E48;
 	text-decoration:none;
 	font-weight:bold;
-	/*font:10px;*/
+/*	font:10px;*/
 }
 a:hover {
 	color:#869F7F;
 	text-decoration:underline;
 	font-weight:bold;
-	/*font:10px;*/
+/*	font:10px;*/
 }
 
 .error {
@@ -507,13 +513,13 @@ a:hover {
 	color:#869F7F;
 	text-decoration:none;
 	font-weight:bold;
-	/*font:10px;*/
+/*	font:10px;*/
 }
 .overlib_body a:hover {
 	color:#FFF;
 	text-decoration:underline;
 	font-weight:bold;
-	/*font:10px;*/
+/*	font:10px;*/
 }
 
 
@@ -601,7 +607,7 @@ em {
 }
 .iconHelpSegmentBox {
 	background:#eff3eb url(../images/util/box_bottom_left.gif) no-repeat bottom left;
-	color:#fff;
+/*	color:#fff;*/
 	width:300px;
 	float:right;
 }
@@ -1146,6 +1152,14 @@ em {
 	margin-left:4px;
 }
 
+#noticeAreaReturnToSite {
+	padding:8px 11px 11px 46px;
+	float:left;
+	background:transparent url(../images/util/user-website.jpg) no-repeat 2px 0px;
+	margin-left:4px;
+	display:block;
+}
+
 .noticeAreaHelp a {
 	padding:8px 11px 11px 28px;
 	float:right;
@@ -1157,13 +1171,6 @@ em {
 	padding:8px 11px 11px 28px;
 	float: right;
 	background:transparent url(../images/util/help.jpg) no-repeat 2px -37px;
-	margin-left:4px;
-	display:block;
-}
-#noticeAreaReturnToSite {
-	padding:8px 11px 11px 46px;
-	float:left;
-	background:transparent url(../images/util/user-website.jpg) no-repeat 2px 0px;
 	margin-left:4px;
 	display:block;
 }
@@ -1373,7 +1380,7 @@ a img {
 	border:0;
 }
 .mb_kb {
-	font-size:10px;
+/*	font-size:10px;*/
 	padding:2px;
 	font-weight:bold;
 	font-family:Tahoma,Verdana,Arial,Geneva;
@@ -1473,7 +1480,7 @@ ul#doclinks a:hover {
 	-moz-border-radius-bottomright:7px;
 	-moz-border-radius-topleft:0;
 	-moz-border-radius-topright:7px;
-	/*opacity:.85;*/
+/*	opacity:.85;*/
 	max-width:30em;
 }
 #tooltip h3, #tooltip div {

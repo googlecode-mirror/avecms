@@ -221,7 +221,8 @@ class Search
 				$regex_snapshot  = '/.{0,100}[^\s]*' . implode('[^\s]*.{0,100}|.{0,100}[^\s]*', $this->_stem_words) . '[^\s]*.{0,100}/is';
 				$regex_highlight = '/[^\s]*' . implode('[^\s]*|[^\s]*', $this->_stem_words) . '[^\s]*/is';
 
-				$doctime = get_settings('use_doctime') ? ("AND document_published <= " . time() . " AND (document_expire = 0 OR document_expire >= " . time() . ")") : '';
+				$doctime = get_settings('use_doctime')
+					? ("AND document_published <= " . time() . " AND (document_expire = 0 OR document_expire >= " . time() . ")") : '';
 
 				while ($row_feld = $query_feld->FetchRow())
 				{

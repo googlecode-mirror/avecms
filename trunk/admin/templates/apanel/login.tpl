@@ -1,4 +1,4 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=windows-1251">
@@ -11,13 +11,13 @@
 </head>
 
 <body>
-<table width="100%" height="100%" cellspacing="0" cellpadding="0" border="0">
-	<tr>
-		<td width="100%" height="100%" align="center">
-			<form method="post" action="admin.php">
-				<input type="hidden" name="action" value="login">
-				<input type="hidden" name="lang" value="ru" id="f_lang">
-				<input type="hidden" name="theme" value="apanel" id="f_theme">
+<form method="post" action="admin.php">
+	<input type="hidden" name="action" value="login">
+	<input type="hidden" name="lang" value="ru" id="f_lang">
+	<input type="hidden" name="theme" value="apanel" id="f_theme">
+	<table width="100%" height="100%" cellspacing="0" cellpadding="0" border="0">
+		<tr>
+			<td width="100%" height="100%" align="center">
 				<table cellspacing="0" cellpadding="0" border="0">
 					<tr>
 						<td valign="top"><img src="{$tpl_dir}/images/login_left.jpg" alt="" border="0" /></td>
@@ -37,9 +37,9 @@
 						</td>
 					</tr>
 				</table>
-			</form>
-		</td>
-	</tr>
-</table>
+			</td>
+		</tr>
+	</table>
+</form>
 </body>
 </html>

@@ -1,4 +1,4 @@
-<script language="Javascript" type="text/javascript" src="editarea/edit_area_full.js"></script>
+<script language="Javascript" type="text/javascript" src="editarea/edit_area_compressor.php"></script>
 <script language="Javascript" type="text/javascript" src="editarea/rubrics.js"></script>
 
 <div id="pageHeaderTitle" style="padding-top: 7px;">
@@ -59,6 +59,7 @@
 					<a href="javascript:void(0);" onclick="editAreaLoader.insertTags('{$js_textfeld}', '<pre>', '</pre>');">PRE</a>&nbsp;|&nbsp;
 					<a href="javascript:void(0);" onclick="editAreaLoader.insertTags('{$js_textfeld}', '<br />', '');">BR</a>&nbsp;|&nbsp;
 					<a href="javascript:void(0);" onclick="editAreaLoader.insertTags('{$js_textfeld}', '\t', '');">TAB</a>&nbsp;|&nbsp;
+					<a title="{#RUBRIK_DOCID_INFO#}" href="javascript:void(0);" onclick="editAreaLoader.insertTags('{$js_textfeld}', '[tag:docid]', '');">[tag:docid]</a>&nbsp;|&nbsp;
 					<a title="{#RUBRIK_TITLE_INFO#}" href="javascript:void(0);" onclick="editAreaLoader.insertTags('{$js_textfeld}', '[tag:title]', '');">[tag:title]</a>&nbsp;|&nbsp;
 					<a title="{#RUBRIK_PATH_INFO#}" href="javascript:void(0);" onclick="editAreaLoader.insertTags('{$js_textfeld}', '[tag:path]', '');">[tag:path]</a>&nbsp;|&nbsp;
 					<a title="{#RUBRIK_MEDIAPATH_INFO#}" href="javascript:void(0);" onclick="editAreaLoader.insertTags('{$js_textfeld}', '[tag:mediapath]', '');">[tag:mediapath]</a>&nbsp;|&nbsp;

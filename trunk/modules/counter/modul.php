@@ -81,8 +81,6 @@ function mod_counter($counter_id, $action = '')
  */
 if (defined('ACP') && !empty($_REQUEST['moduleaction']))
 {
-	global $AVE_Template;
-
     // Подключаем файл с классом, создаем объеккт, определяем директорию с шаблонами и подключаем языковой файл
     require_once(BASE_DIR . '/modules/counter/class.counter.php');
 	$counter = new Counter;

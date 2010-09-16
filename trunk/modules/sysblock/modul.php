@@ -57,7 +57,8 @@ function mod_sysblock($sysblock_id)
  */
 if (defined('ACP') && !empty($_REQUEST['moduleaction']))
 {
-	if (! @require_once(BASE_DIR . '/modules/sysblock/class.sysblock.php')) module_error();
+	if (! (is_file(BASE_DIR . '/modules/sysblock/class.sysblock.php') &&
+		@require_once(BASE_DIR . '/modules/sysblock/class.sysblock.php'))) module_error();
 
 	$tpl_dir   = BASE_DIR . '/modules/sysblock/templates/';
 	$lang_file = BASE_DIR . '/modules/sysblock/lang/' . $_SESSION['user_language'] . '.txt';

@@ -708,11 +708,10 @@ class AVE_Document
 			// Определяем вид действия, переданный в параметре sub
 			switch ($_REQUEST['sub'])
 			{
-				// Сохранение документа в БД
-				case 'save':
-					$innavi = 1;
-					$start = $this->_documentStart(); // Дата/время начала публикации документа
-					$ende = $this->_documentEnd();    // Дата/время окончания публикации документа
+				case 'save': // Сохранение документа в БД
+					$start  = $this->_documentStart(); // Дата/время начала публикации документа
+					$ende   = $this->_documentEnd();   // Дата/время окончания публикации документа
+					$innavi = check_permission_acp('navigation_new') ? '&innavi=1' : '';
 
 					// Определяем статус документа
 					$document_status = !empty($_REQUEST['document_status']) ? (int)$_REQUEST['document_status'] : '';
@@ -720,12 +719,12 @@ class AVE_Document
 					// Если статус документа не определен
 					if (empty($document_status))
 					{
-						$innavi = 0;
+						$innavi = '';
 						@reset($_POST);
 						$newtext = "\n\n";
 
-						// Формируем текст сообщения, в котором хранятся те данные, которые пользователь
-						// ввел в поля документа
+						// Формируем текст сообщения, состоящий из данных,
+						// которые пользователь ввел в поля документа
 						foreach ($_POST['feld'] as $val)
 						{
 							if (!empty($val))
@@ -736,11 +735,11 @@ class AVE_Document
 						}
 						$text = strip_tags($newtext);
 
-						// Получаем e-mail адрес из Общих настроек системы
+						// Получаем e-mail адрес из общих настроек системы
 						$system_mail = get_settings('mail_from');
 						$system_mail_name = get_settings('mail_from_name');
 
-						// И высылаем письмо администартору с информацией, что необходимо проверить документ
+						// Отправляем администартору уведомление, о том что необходимо проверить документ
 						$body_to_admin = $AVE_Template->get_config_vars('DOC_MAIL_BODY_CHECK');
 						$body_to_admin = str_replace('%N%', "\n", $body_to_admin);
 						$body_to_admin = str_replace('%TITLE%', stripslashes($_POST['doc_title']), $body_to_admin);
@@ -755,7 +754,7 @@ class AVE_Document
 							''
 						);
 
-						// Формируем и отправляем письмо автору, что документ находится на проверке
+						// Отправляем уведомление автору, о том что документ находится на проверке
 						$body_to_author = str_replace('%N%', "\n", $AVE_Template->get_config_vars('DOC_MAIL_BODY_USER'));
 						$body_to_author = str_replace('%TITLE%', stripslashes($_POST['doc_title']), $body_to_author);
 						$body_to_author = str_replace('%USER%', "'" . $_SESSION['user_name'] . "'", $body_to_author);
@@ -855,78 +854,19 @@ class AVE_Document
 								document_in_search = '" . $suche . "'
 						");
 					}
-					// Фромируем рд перемены, которые передаем в шаблон (для последующих операций)
-					$AVE_Template->assign('name_empty', $AVE_Template->get_config_vars('DOC_TOP_MENU_ITEM'));
-					$AVE_Template->assign('Id', $iid);
-					$AVE_Template->assign('innavi', $innavi);
-					$AVE_Template->assign('rubric_id', $rubric_id);
-					// Отображаем страницу
-					$AVE_Template->assign('content', $AVE_Template->fetch('documents/form_after.tpl'));
-					break;
 
-				// Привязка документа к уже существующему пункту навигации
-				case 'savenavi':
-					// Получаем id пункта меню из запроса
-					$elter_pre = ($_REQUEST['parent_id']=='0') ? 0 : explode('____', $_REQUEST['parent_id']);
-					$elter = is_array($elter_pre) ? $elter_pre[0] : 0;
-					$ebene = is_array($elter_pre) ? $elter_pre[1] : 1;
+					header('Location:index.php?do=docs&action=after&document_id=' . $iid . '&rubric_id=' . $rubric_id . '&cp=' . SESSION . $innavi);
+					exit;
 
-					// Если id не равен нулю, т.е. пункт не родительский, а какой-либо дочерний
-					if ($elter != '0')
-					{
-						// Выполняем запрос к БД на получение id меню навигации
-						$rubrik = $AVE_DB->Query("
-							SELECT navi_id
-							FROM " . PREFIX . "_navigation_items
-							WHERE Id = '" . $elter . "'
-						")->GetCell();
-					}
-					else
-					{
-						$rubrik = $_REQUEST['NaviRubric'];
-					}
-
-					// Выполняем запрос к БД на добавление информации о новой связке Документ<->Пункт меню,
-					// в таблицу БД с навигацией
-					$AVE_DB->Query("
-						INSERT
-						INTO " . PREFIX . "_navigation_items
-						SET
-							title              = '" . clean_no_print_char($_REQUEST['doc_title']) . "',
-							parent_id          = '" . $elter . "',
-							navi_item_link     = 'index.php?id=" . (int)$_REQUEST['Id'] . "',
-							navi_item_target   = '" . (empty($_REQUEST['navi_item_target']) ? '_self' : $_REQUEST['navi_item_target']) . "',
-							navi_item_level    = '" . $ebene . "',
-							navi_item_position = '" . empty($_REQUEST['navi_item_position']) ? 1 : (int)$_REQUEST['navi_item_position'] . "',
-							navi_id            = '" . (int)$rubrik . "',
-							document_alias     = '" . prepare_url(empty($_REQUEST['document_alias']) ? $_REQUEST['doc_title'] : $_REQUEST['document_alias']) . "'
-					");
-
-					// Если у нас было вызвано отдельное окно, закрываем его и обновляем страницу
-//					if (isset($_REQUEST['pop']) && $_REQUEST['pop'] == 1)
-//					{
-//						echo '<script>window.opener.location.reload(); window.close();</script>';
-//					}
-//					else
-//					{
-//						// В противном случае просто обновляем страницу
-//						echo '<script>window.opener.location.reload();</script>';
-//					}
-
-					$AVE_Template->assign('innavi', 0);
-					$AVE_Template->assign('Id', (int)$_REQUEST['Id']);
-					$AVE_Template->assign('rubric_id', (int)$_REQUEST['rubric_id']);
-					$AVE_Template->assign('content', $AVE_Template->fetch('documents/form_after.tpl'));
-					break;
-
-				// Действия по умолчанию, если не задано
-				case '':
+				case '': // Действия по умолчанию, если не задано
 					$document = new stdClass();
+
 					// Получаем список прав доступа на добавление документов в определенную рубрику
 					$this->documentPermissionFetch($rubric_id);
 
 					// Определяем флаг, который будет активировать или запрещать смену статуса у документа
 					if ( (defined('UGROUP') && UGROUP == 1)
+						|| (isset($_SESSION[$rubric_id . '_alles']) && $_SESSION[$rubric_id . '_alles'] == 1)
 						|| (isset($_SESSION[$rubric_id . '_newnow']) && $_SESSION[$rubric_id . '_newnow'] == 1) )
 					{
 						$document->dontChangeStatus = 0;
@@ -964,9 +904,8 @@ class AVE_Document
 					break;
 			}
 		}
-		// В противном случае, если пользователь не имеет прав на создание документа, формируем сообщение с ошибкой
 		else
-		{
+		{	// Пользователь не имеет прав на создание документа, формируем сообщение с ошибкой
 			$AVE_Template->assign('content', $AVE_Template->get_config_vars('DOC_NO_PERMISSION_RUB'));
 		}
 	}
@@ -1128,22 +1067,8 @@ class AVE_Document
 					reportLog($_SESSION['user_name'] . ' - отредактировал документ (' . $document_id . ')', 2, 2);
 				}
 
-				// Закрываем окно и обновляем страницу
-//				if (isset($_REQUEST['closeafter']) && $_REQUEST['closeafter']==1)
-//				{
-//					echo '<script>window.opener.location.reload(); window.close();</script>';
-//					exit;
-//				}
-//
-//				echo '<script>window.opener.location.reload();</script>';
-
-				// Формируем ряд переменных, передаем в шаблон и отображаем страницу со списком дальнейших действий
-				$AVE_Template->assign('name_empty', $AVE_Template->get_config_vars('DOC_TOP_MENU_ITEM'));
-				$AVE_Template->assign('innavi', 0);
-				$AVE_Template->assign('Id', $document_id);
-				$AVE_Template->assign('rubric_id', $row->rubric_id);
-				$AVE_Template->assign('content', $AVE_Template->fetch('documents/form_after.tpl'));
-				break;
+				header('Location:index.php?do=docs&action=after&document_id=' . $document_id . '&rubric_id=' . $row->rubric_id . '&cp=' . SESSION);
+				exit;
 
 			// Если пользователь не выполнял никаких действий, а просто открыл документ для редактирования
 			case '':
@@ -1971,6 +1896,117 @@ class AVE_Document
 			header('Location:index.php?do=docs&action=remark_reply&Id=' . $document_id . '&pop=1&cp=' . SESSION);
 			exit;
 		}
+	}
+
+	/**
+	 * Добавить в навигацию пункт ссылающийся на документ
+	 *
+	 */
+	function documentInNavi()
+	{
+		global $AVE_DB;
+
+		$document_id = isset($_REQUEST['document_id']) ? (int)$_REQUEST['document_id'] : 0;
+		$rubric_id = isset($_REQUEST['rubric_id']) ? (int)$_REQUEST['rubric_id'] : 0;
+		$title  = isset($_REQUEST['navi_title']) ? clean_no_print_char($_REQUEST['navi_title']) : '';
+
+		if ($document_id > 0 && $rubric_id > 0 && $title != '' && check_permission_acp('navigation_new'))
+		{
+			$document_alias = $AVE_DB->Query("
+				SELECT document_alias
+				FROM " . PREFIX . "_documents
+				WHERE Id = '" . $document_id . "'
+				AND rubric_id = '" . $rubric_id . "'
+				LIMIT 1
+			")->GetCell();
+		}
+
+		if (isset($document_alias) && $document_alias !== false)
+		{
+			// Получаем id пункта меню из запроса
+			$parent_id = isset($_REQUEST['parent_id']) ? (int)$_REQUEST['parent_id'] : 0;
+
+			// Если пункт не родительский, а какой-либо дочерний
+			if ($parent_id > 0)
+			{
+				// Выполняем запрос к БД на получение id меню навигации и уровня
+				list($navi_id, $status, $level) = $AVE_DB->Query("
+					SELECT
+						navi_id,
+						navi_item_status,
+						navi_item_level+1
+					FROM " . PREFIX . "_navigation_items
+					WHERE Id = '" . $parent_id . "'
+					LIMIT 1
+				")->FetchArray();
+			}
+			else
+			{
+				$navi_id = (isset($_REQUEST['navi_id']) && (int)$_REQUEST['navi_id'] > 0) ? (int)$_REQUEST['navi_id'] : 1;
+				$status  = 1;
+				$level   = 1;
+			}
+
+			$target = (isset($_REQUEST['navi_item_target']) && $_REQUEST['navi_item_target'] == '_blank') ? '_blank' : '_self';
+
+			$position = empty($_REQUEST['navi_item_position']) ? 1 : (int)$_REQUEST['navi_item_position'];
+
+			// Добавляем информации о новой связке Документ<->Пункт меню
+			$AVE_DB->Query("
+				INSERT
+				INTO " . PREFIX . "_navigation_items
+				SET
+					title              = '" . $title . "',
+					document_alias     = '" . $document_alias . "',
+					parent_id          = '" . $parent_id . "',
+					navi_id            = '" . $navi_id . "',
+					navi_item_level    = '" . $level . "',
+					navi_item_target   = '" . $target . "',
+					navi_item_position = '" . $position . "',
+					navi_item_status   = '" . $status . "',
+					navi_item_link     = 'index.php?id=" . $document_id . "'
+			");
+		}
+
+		header('Location:index.php?do=docs&action=after&document_id=' . $document_id . '&rubric_id=' . $rubric_id . '&cp=' . SESSION);
+		exit;
+	}
+
+	/**
+	 * Вывод формы дополнительных действий с новым или отредактированным документом
+	 *
+	 */
+	function documentFormAfter()
+	{
+		global $AVE_DB, $AVE_Template;
+
+		$document_id = isset($_REQUEST['document_id']) ? (int)$_REQUEST['document_id'] : 0;
+		$rubric_id = isset($_REQUEST['rubric_id']) ? (int)$_REQUEST['rubric_id'] : 0;
+		$innavi = (isset($_REQUEST['innavi']) && check_permission_acp('navigation_new')) ? 1 : 0;
+
+		if ($document_id > 0 && $rubric_id > 0)
+		{
+			$document = $AVE_DB->Query("
+				SELECT
+					Id AS document_id,
+					rubric_id,
+					document_title AS document_title,
+					'" . $innavi . "' AS innavi
+				FROM " . PREFIX . "_documents
+				WHERE Id = '" . $document_id . "'
+				AND rubric_id = '" . $rubric_id . "'
+				LIMIT 1
+			")->FetchAssocArray();
+		}
+
+		if (empty($document))
+		{
+			header('Location:index.php?do=docs&cp=' . SESSION);
+			exit;
+		}
+
+		$AVE_Template->assign($document);
+		$AVE_Template->assign('content', $AVE_Template->fetch('documents/form_after.tpl'));
 	}
 }
 

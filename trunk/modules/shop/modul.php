@@ -23,8 +23,6 @@ if (defined('ACP'))
 //if ((isset($_REQUEST['module']) && $_REQUEST['module'] == 'shop'  && UGROUP != '2') || (isset($_REQUEST['mod']) && $_REQUEST['mod'] == 'shop'))
 if ((isset($_REQUEST['module']) && $_REQUEST['module'] == 'shop') || (isset($_REQUEST['mod']) && $_REQUEST['mod'] == 'shop'))
 {
-	global $AVE_Template;
-
 	if (defined('SSLMODE') && SSLMODE == 1 && $_SERVER['SERVER_PORT'] == '80') header('Location:'.get_redirect_link());
 	if (defined('SSLMODE') && SSLMODE != 1 && $_SERVER['SERVER_PORT'] == '443') header('Location:'.get_redirect_link());
 

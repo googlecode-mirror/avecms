@@ -36,9 +36,9 @@ function mod_recommend() {
 //	set_modul_globals('recommend');
 //	$recommend = new Recommend;
 //	$recommend->displayLink();
-	echo "<a href=\"javascript:void(0);\" onclick=\"popup('", ABS_PATH,
-		"index.php?module=recommend&amp;action=form&amp;pop=1&amp;theme_folder=ave&amp;page=",
-		base64_encode(get_redirect_link()), "','recommend','500','380','1')\">Рекомендовать сайт</a>";
+?>
+<a href="javascript:void(0);" onclick="popup('<?php echo ABS_PATH; ?>index.php?module=recommend&amp;action=form&amp;pop=1&amp;theme_folder=ave&amp;page=<?php echo base64_encode(get_redirect_link()); ?>','recommend','500','380','1')\">Рекомендовать сайт</a>
+<?php
 }
 
 if (isset($_REQUEST['module']) && $_REQUEST['module'] == 'recommend' && isset($_REQUEST['action']))

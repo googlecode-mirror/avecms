@@ -252,7 +252,7 @@ function request_get_document_field($rubric_id, $document_id, $maxlength = '')
  */
 function request_parse($id)
 {
-	global $AVE_Core, $AVE_DB;
+	global $AVE_Core, $AVE_DB, $request_documents;
 
 	$return = '';
 
@@ -278,7 +278,8 @@ function request_parse($id)
 		$request_order_by = $row_ab->request_order_by;
 		$request_asc_desc = $row_ab->request_asc_desc;
 
-		$doctime = get_settings('use_doctime') ? ("AND (a.document_expire = 0 OR a.document_expire >= '" . time() . "') AND a.document_published <= '" . time() . "'") : '';
+		$doctime = get_settings('use_doctime')
+			? ("AND a.document_published <= " . time() . " AND (a.document_expire = 0 OR a.document_expire >= " . time() . ")") : '';
 
 		$doc_label = 'doc_' . $AVE_Core->curentdoc->Id;
 		$where_cond = (empty($_REQUEST['req_' . $id]) && empty($_SESSION[$doc_label]['req_' . $id]))
@@ -363,7 +364,7 @@ function request_parse($id)
 				" . $where_cond . "
 				" . $doctime . "
 				GROUP BY a.Id
-				ORDER BY a." . $request_order_by . " " . $request_asc_desc . "
+				ORDER BY " . $request_order_by . " " . $request_asc_desc . "
 				LIMIT " . $start . "," . $limit
 			);
 		}
@@ -387,7 +388,7 @@ function request_parse($id)
 				AND a.document_status != '0'
 				" . $where_cond . "
 				" . $doctime . "
-				ORDER BY a." . $request_order_by . " " . $request_asc_desc . "
+				ORDER BY " . $request_order_by . " " . $request_asc_desc . "
 				LIMIT " . $start . "," . $limit
 			);
 		}
@@ -416,8 +417,15 @@ function request_parse($id)
 			$page_nav = rewrite_link($page_nav);
 		}
 
-		$items = '';
+		$rows = array();
+		$request_documents = array();
 		while ($row = $q->FetchRow())
+		{
+			array_push($request_documents, $row->Id);
+			array_push($rows, $row);
+		}
+		$items = '';
+		foreach ($rows as $row)
 		{
 			$link = rewrite_link('index.php?id=' . $row->Id . '&amp;doc=' . (empty($row->document_alias) ? prepare_url($row->document_title) : $row->document_alias));
 			$items .= preg_replace('/\[tag:rfld:(\d+)]\[(more|[0-9-]+)]/e', "request_get_document_field(\"$1\", $row->Id, \"$2\")", $item_template);

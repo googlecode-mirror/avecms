@@ -1,4 +1,4 @@
-<script language="Javascript" type="text/javascript" src="editarea/edit_area_full.js"></script>
+<script language="Javascript" type="text/javascript" src="editarea/edit_area_compressor.php"></script>
 <script language="Javascript" type="text/javascript" src="editarea/templates.js"></script>
 
 <div id="pageHeaderTitle" style="padding-top:7px;">
@@ -13,28 +13,27 @@
 </div>
 <div class="upPage">&nbsp;</div><br />
 
-<table width="100%" border="0" cellpadding="8" cellspacing="1" class="tableborder">
-	{if $smarty.request.action=='new'}
-		<tr>
-			<td class="tableheader">{#TEMPLATES_LOAD_INFO#}</td>
-		</tr>
+<form name="f_tpl" id="f_tpl" method="post" action="{$formaction}">
+	<table width="100%" border="0" cellpadding="8" cellspacing="1" class="tableborder">
+		{if $smarty.request.action=='new'}
+			<tr>
+				<td class="tableheader">{#TEMPLATES_LOAD_INFO#}</td>
+			</tr>
 
-		<tr>
-			<td class="first">
-				<form action="index.php?do=templates&action=new" method="post">
-					<select name="theme_pref">
-						<option></option>
-						{$sel_theme}
-					</select>
-					<input type="hidden" name="TempName" value="{$smarty.request.TempName|escape:html}">
-					<input type="submit" class="button" value="{#TEMPLATES_BUTTON_LOAD#}">
-				</form>
-			</td>
-		</tr>
-	{/if}
+			<tr>
+				<td class="first">
+					<form action="index.php?do=templates&action=new" method="post">
+						<select name="theme_pref">
+							<option></option>
+							{$sel_theme}
+						</select>
+						<input type="hidden" name="TempName" value="{$smarty.request.TempName|escape}">
+						<input type="submit" class="button" value="{#TEMPLATES_BUTTON_LOAD#}">
+					</form>
+				</td>
+			</tr>
+		{/if}
 
-	<form name="f_tpl" id="f_tpl" method="post" action="{$formaction}">
-		{assign var=js_form value='f_tpl'}
 		<tr>
 			<td class="tableheader">{#TEMPLATES_NAME#}</td>
 		</tr>
@@ -83,7 +82,7 @@
 		<tr>
 			<td class="second">
 				<table width="100%" border="0" cellspacing="1" cellpadding="4">
-					<col width="250"></col>
+					<col width="250">
 					<tr class="tableheader">
 						<td class="first">{#TEMPLATES_TAGS#}</td>
 						<td class="first">{#TEMPLATES_TAG_DESC#}</td>
@@ -223,9 +222,9 @@
 
 		<tr class="{cycle name='ta' values='first,second'}">
 			<td class="second">
-				<input type="hidden" name="Id" value="{$smarty.request.Id}">
+				<input type="hidden" name="Id" value="{$smarty.request.Id|escape}">
 				<input class="button" type="submit" value="{if $smarty.request.action=='new'}{#TEMPLATES_BUTTON_ADD#}{else}{#TEMPLATES_BUTTON_SAVE#}{/if}" />
 			</td>
 		</tr>
-	</form>
-</table>
+	</table>
+</form>

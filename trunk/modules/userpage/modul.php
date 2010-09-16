@@ -22,8 +22,6 @@ if (defined('ACP'))
 
 if (isset($_REQUEST['module']) && $_REQUEST['module'] == 'userpage' && isset($_REQUEST['action']))
 {
-	global $AVE_DB, $AVE_Template;
-
 	require_once(BASE_DIR . '/modules/userpage/class.userpage.php');
 	require_once(BASE_DIR . '/modules/userpage/func/func.replace.php');
 
@@ -93,8 +91,6 @@ if (isset($_REQUEST['module']) && $_REQUEST['module'] == 'userpage' && isset($_R
 //=======================================================
 if (defined('ACP') && !empty($_REQUEST['moduleaction']))
 {
-	global $AVE_Template;
-
 	require_once(BASE_DIR . '/modules/userpage/class.userpage.php');
 	require_once(BASE_DIR . '/modules/userpage/func/func.replace.php');
 

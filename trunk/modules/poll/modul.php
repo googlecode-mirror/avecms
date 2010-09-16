@@ -71,8 +71,6 @@ if (!defined('ACP')
 
 if (defined('ACP') && !empty($_REQUEST['moduleaction']))
 {
-	global $AVE_Template;
-
 	require_once(BASE_DIR . '/modules/poll/class.poll.php');
 	require_once(BASE_DIR . '/modules/poll/funcs/func.rewrite.php');
 

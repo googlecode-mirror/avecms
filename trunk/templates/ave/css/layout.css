@@ -347,3 +347,32 @@ div.block#poll 			{padding:10px 0;}
 .editable_text                  {background-image:url(../../../inc/stdimage/edit.gif);background-repeat:no-repeat;background-position:99% 5px;}
 .editable, textarea.editable    {background:#ffffd3 url(../../../inc/stdimage/edit.gif) no-repeat 99% 5px;font-family:Arial, Verdana, Helvetica, sans-serif;font-size:12px;}
 textarea.editable               {width:99%;}
+
+
+/* -----------------------------
+ =модуль Basket
+----------------------------- */
+#basket ul                      {list-style-type:none;list-style-position:outside;margin:0;padding:0;}
+#basket li                      {background-image:none;background-color:#fff;margin:5px 0;padding:0;}
+#basket li a                    {vertical-align:middle;}
+#basket p                       {text-align:right;}
+#basket p a                     {float:left;}
+#basket small                   {display:inline;}
+
+#basket-order					{margin-top:10px;}
+#basket-order p label			{float:left;margin-right:3%;text-align:right;width:32%;}
+#basket-order p input			{width:35%;}
+#basket-order p textarea		{width:50%;}
+#basket-order input.button		{margin-left:35%;}
+#basket-order th input.button	{margin-left:0;}
+
+#product                        {float:left;width:300px;margin:0 1em 1em 0;padding:0;text-align:center;border:0;}
+#product p                      {text-align:justify;}
+
+.product                        {float:left;width:200px;margin:5px;padding:10px;text-align:center;border:1px #ebebeb solid;}
+.product-price                  {padding:5px;font-weight:bold;}
+
+table.progress td				{color:#aaa;}
+table.progress td.active		{color:#333;}
+table.progress th				{font-size:24px;background-color:#d4d4d4;color:#fff;padding:0;width:38px;}
+table.progress th.active		{background-color:#bbb;}
