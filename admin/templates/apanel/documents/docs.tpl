@@ -7,7 +7,7 @@
 </div><br />
 <br />
 
-{if check_permission('docs')}
+{if check_permission('documents')}
 <script type="text/javascript" language="JavaScript">
 function check_name() {ldelim}
 	if (document.getElementById('DocName').value == '') {ldelim}

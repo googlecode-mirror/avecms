@@ -20,7 +20,7 @@ if (defined('ACP'))
     $modul['CpPHPTag'] = null;
 }
 
-if (isset($_REQUEST['module']) && $_REQUEST['module'] != '' && $_REQUEST['module'] == 'roadmap')
+if (!defined('ACP') && isset($_REQUEST['module']) && $_REQUEST['module'] == 'roadmap')
 {
 	require_once(BASE_DIR . '/modules/roadmap/class.roadmap.php');
 
@@ -30,8 +30,6 @@ if (isset($_REQUEST['module']) && $_REQUEST['module'] != '' && $_REQUEST['module
 	$lang_file = BASE_DIR . '/modules/roadmap/lang/' . $_SESSION['user_language'] . '.txt';
 
 	$AVE_Template->config_load($lang_file);
-//	$config_vars = $AVE_Template->get_config_vars();
-//	$AVE_Template->assign('config_vars', $config_vars);
 
 	switch ($_REQUEST['action'])
 	{
@@ -52,14 +50,12 @@ if (defined('ACP') && !empty($_REQUEST['moduleaction']))
 {
 	require_once(BASE_DIR . '/modules/roadmap/class.roadmap.php');
 
+	$roadmap = new Roadmap;
+
 	$tpl_dir   = BASE_DIR . '/modules/roadmap/templates/';
 	$lang_file = BASE_DIR . '/modules/roadmap/lang/' . $_SESSION['user_language'] . '.txt';
 
-	$roadmap = new Roadmap;
-
 	$AVE_Template->config_load($lang_file);
-//	$config_vars = $AVE_Template->get_config_vars();
-//	$AVE_Template->assign('config_vars', $config_vars);
 
 	switch($_REQUEST['moduleaction'])
 	{

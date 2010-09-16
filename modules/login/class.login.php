@@ -271,7 +271,15 @@ class Login
 	{
 		user_logout();
 
-		header('Location:' . get_referer_link());
+		$referer_link = get_referer_link();
+		if (false === strstr($referer_link, 'module=login'))
+		{
+			header('Location:' . $referer_link);
+		}
+		else
+		{
+			header('Location:' . get_home_link());
+		}
 		exit;
 	}
 
@@ -293,19 +301,27 @@ class Login
 			);
 			if ($result)
 			{
-				header('Location:' . get_referer_link());
+				$referer_link = get_referer_link();
+				if (false === strstr($referer_link, 'module=login'))
+				{
+					header('Location:' . $referer_link);
+				}
+				else
+				{
+					header('Location:' . get_home_link());
+				}
 				exit;
 			}
 			else
 			{
 				unset($_SESSION['user_id'], $_SESSION['user_pass']);
 
-				$AVE_Template->assign('login', 'false');
+				$AVE_Template->assign('login', false);
 			}
 		}
 		else
 		{
-			$AVE_Template->assign('login', 'false');
+			$AVE_Template->assign('login', false);
 		}
 
 		if ($this->_loginSettingsGet('login_status') == 1) $AVE_Template->assign('active', 1);
@@ -652,7 +668,7 @@ class Login
 
 		if (isset($_SESSION['user_id']))
 		{
-			header('Location:index.php');
+			header('Location:' . get_home_link());
 			exit;
 		}
 
@@ -680,7 +696,7 @@ class Login
 					UPDATE " . PREFIX . "_users
 					SET
 						password = '" . addslashes($row_remind->new_pass) . "',
-						salt     = '" . addArray($row_remind->new_salt) . "'
+						salt     = '" . addslashes($row_remind->new_salt) . "'
 					WHERE email  = '" . $_REQUEST['email'] . "'
 					AND new_pass = '" . $_REQUEST['code'] . "'
 				");
@@ -696,6 +712,7 @@ class Login
 				$row_remind = $AVE_DB->Query("
 					SELECT
 						email,
+						user_name,
 						firstname,
 						lastname
 					FROM " . PREFIX . "_users
@@ -725,7 +742,11 @@ class Login
 					");
 
 					$body = $AVE_Template->get_config_vars('LOGIN_MESSAGE_6');
-					$body = str_replace("%NAME%", $row_remind->user_name, $body);
+					$body = str_replace("%NAME%",
+										get_username($row_remind->user_name,
+													 $row_remind->firstname,
+													 $row_remind->lastname, 0),
+										$body);
 					$body = str_replace("%PASS%", $newpass, $body);
 					$body = str_replace("%HOST%", get_home_link(), $body);
 					$body = str_replace("%LINK%",

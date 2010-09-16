@@ -1,5 +1,5 @@
 <select name="document_linked_navi_id" id="document_linked_navi_id">
-	<option value="0">{$name_empty}</option>
+	<option value="0">&nbsp;</option>
 	{foreach from=$navis item=navi}
 		<optgroup label="({$navi->id}) {$navi->navi_titel|escape}"></optgroup>
 		{foreach name=e from=$navi_items item=item_1}

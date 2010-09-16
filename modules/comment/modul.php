@@ -35,8 +35,6 @@ if (defined('ACP'))
     $modul['CpPHPTag'] = '<?php mod_comment(); ?>';  // PHP-код, который будет вызван вместо системного тега, при парсинге шаблона
 }
 
-global $AVE_Template;
-
 /**
  * Функция, предназначенная для вывода списка комментариев к данному документу.
  * Она будет выполнена при парсинге шаблона вместо системного тега [mod_comment].
@@ -135,8 +133,6 @@ if (!defined('ACP') && isset($_REQUEST['module']) && $_REQUEST['module'] == 'com
  */
 if (defined('ACP') && !empty($_REQUEST['moduleaction']))
 {
-	global $AVE_User;
-
     // Подключаем основной класс и создаем объект
     require_once(BASE_DIR . '/modules/comment/class.comment.php');
 	$comment = new Comment;

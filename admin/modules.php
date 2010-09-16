@@ -28,7 +28,11 @@ if (!empty($_REQUEST['moduleaction']))
 	}
 }
 
-if (!empty($_REQUEST['module'])) define('MODULE_PATH', $_REQUEST['module']);
+if (!empty($_REQUEST['module']))
+{
+	$module_path = preg_replace('/[^\w]/', '', $_REQUEST['module']);
+	if (!empty($module_path)) define('MODULE_PATH', $module_path);
+}
 
 switch($_REQUEST['action'])
 {
@@ -84,7 +88,9 @@ switch($_REQUEST['action'])
 	case 'modedit':
 		if (check_permission_acp('modules'))
 		{
-			include(BASE_DIR . '/modules/' . $_REQUEST['mod'] . '/modul.php');
+			$mod_path = preg_replace('/[^\w]/', '', $_REQUEST['mod']);
+			$mod_path = BASE_DIR . '/modules/' . $mod_path . '/modul.php';
+			if (is_file($mod_path)) include($mod_path);
 		}
 		break;
 }

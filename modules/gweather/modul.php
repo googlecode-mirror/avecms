@@ -31,7 +31,7 @@ if (defined('ACP'))
 
 function mod_weather()
 {
-	global $AVE_DB, $AVE_Template;
+	global $AVE_Template;
 
 	require(BASE_DIR . "/modules/gweather/class.gweather.php");
 
@@ -57,8 +57,6 @@ function mod_weather()
 
 if (defined('ACP') && ! empty($_REQUEST['moduleaction']))
 {
-	global $AVE_Template;
-
 	include_once(BASE_DIR . "/modules/gweather/class.gweather.php");
 
 	$tpl_dir   = BASE_DIR . '/modules/gweather/templates/';

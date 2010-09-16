@@ -113,8 +113,9 @@ function set_host()
 	$port = ($_SERVER['SERVER_PORT'] == '80' || $_SERVER['SERVER_PORT'] == '443' || $ssl) ? '' : ':' . $_SERVER['SERVER_PORT'];
 	define('HOST', $shema . $host . $port);
 
-	$script_name = (!strstr($_SERVER['PHP_SELF'], $_SERVER['SCRIPT_NAME']) && (@php_sapi_name() == 'cgi')) ? $_SERVER['PHP_SELF'] : $_SERVER['SCRIPT_NAME'];
-	define('ABS_PATH', rtrim(str_replace("\\", "/", dirname($script_name)), '/') . '/');
+	$abs_path = str_replace("\\", "/", dirname((!strstr($_SERVER['PHP_SELF'], $_SERVER['SCRIPT_NAME']) && (@php_sapi_name() == 'cgi')) ? $_SERVER['PHP_SELF'] : $_SERVER['SCRIPT_NAME']));
+	if (defined('ACP')) $abs_path = dirname($abs_path);
+	define('ABS_PATH', rtrim($abs_path, '/') . '/');
 }
 set_host();
 
@@ -141,6 +142,8 @@ if (!defined('ACP'))
 
 function set_cookie_domain($cookie_domain = '')
 {
+	global $cookie_domain;
+
 	if ($cookie_domain == '' && defined('COOKIE_DOMAIN') && COOKIE_DOMAIN != '')
 	{
 		$cookie_domain = COOKIE_DOMAIN;

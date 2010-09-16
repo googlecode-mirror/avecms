@@ -107,7 +107,10 @@ function check_name() {ldelim}
 	{/foreach}
 
 </table><br />
-<br />
+
+{if $page_nav}
+	<div class="infobox">{$page_nav}</div><br />
+{/if}
 
 <div class="iconHelpSegmentBox">
 	<div class="segmentBoxHeader">
@@ -121,9 +124,4 @@ function check_name() {ldelim}
 		<img class="absmiddle" src="{$tpl_dir}/images/icon_copy.gif" alt="" border="0" /> - {#REQUEST_COPY#}<br />
 		<img class="absmiddle" src="{$tpl_dir}/images/icon_delete.gif" alt="" border="0" /> - {#REQUEST_DELETE#}
 	</div>
-</div><br />
-
-{if $page_nav}
-	<div class="infobox">{$page_nav}</div>
-	<br />
-{/if}
+</div>

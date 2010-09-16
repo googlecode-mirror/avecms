@@ -20,7 +20,7 @@ ob_start();
 
 define('ACP', 1);
 
-define('BASE_DIR', str_replace("\\", "/", substr(dirname(__FILE__), 0, -6)));
+define('BASE_DIR', str_replace("\\", "/", dirname(dirname(__FILE__))));
 
 if (! @filesize(BASE_DIR . '/inc/db.config.php')) { header('Location:../install.php'); exit; }
 
@@ -34,15 +34,13 @@ if (!defined('UID') || !check_permission('adminpanel'))
 
 if (empty($_SESSION['admin_language']))
 {
-	if (!empty($_REQUEST['feld']) &&
-		!empty($_REQUEST['Id']) &&
-		!empty($_REQUEST['rubric_id']))
+	if (!empty($_REQUEST['feld']) && !empty($_REQUEST['Id']) && !empty($_REQUEST['rubric_id']))
 	{
 		$_SESSION['redirectlink'] = 'index.php?do=docs&action=edit&pop=1'
 									. '&rubric_id=' . (int)$_REQUEST['rubric_id']
-									. '&Id='       . (int)$_REQUEST['Id']
-									. '&feld='     . (int)$_REQUEST['feld']
-									. '#'          . (int)$_REQUEST['feld'];
+									. '&Id='        . (int)$_REQUEST['Id']
+									. '&feld='      . (int)$_REQUEST['feld']
+									. '#'           . (int)$_REQUEST['feld'];
 	}
 	else
 	{
@@ -53,24 +51,19 @@ if (empty($_SESSION['admin_language']))
 	exit;
 }
 
-$_REQUEST['do']     = (!isset($_REQUEST['do']))     ? '' : $_REQUEST['do'];
-$_REQUEST['action'] = (!isset($_REQUEST['action'])) ? '' : $_REQUEST['action'];
-$_REQUEST['sub']    = (!isset($_REQUEST['sub']))    ? '' : $_REQUEST['sub'];
-$_REQUEST['submit'] = (!isset($_REQUEST['submit'])) ? '' : $_REQUEST['submit'];
+if (!isset($_REQUEST['do']))     $_REQUEST['do']     = '';
+if (!isset($_REQUEST['action'])) $_REQUEST['action'] = '';
+if (!isset($_REQUEST['sub']))    $_REQUEST['sub']    = '';
+if (!isset($_REQUEST['submit'])) $_REQUEST['submit'] = '';
 
 $AVE_Template->assign('navi', $AVE_Template->fetch('navi/navi.tpl'));
 
-$allowed = array('index', 'start', 'templates', 'rubs', 'user', 'groups', 'docs', 'navigation', 'logs', 'request', 'modules', 'settings', 'dbsettings');
-$do = (!empty($_REQUEST['do'])) ? $_REQUEST['do'] : 'start';
-if (in_array($do, $allowed))
-{
-	define('DO_FILE', BASE_DIR . '/admin/' . $do . '.php');
-}
-else
-{
-	define('DO_FILE', BASE_DIR . '/admin/start.php');
-}
-include(DO_FILE);
+$allowed = array('index',   'start',    'templates',  'rubs', 'user',
+				 'groups',  'docs',     'navigation', 'logs', 'request',
+				 'modules', 'settings', 'dbsettings'
+);
+$do = (!empty($_REQUEST['do']) && in_array($_REQUEST['do'], $allowed)) ? $_REQUEST['do'] : 'start';
+include(BASE_DIR . '/admin/' . $do . '.php');
 
 if (defined('NOPERM')) $AVE_Template->assign('content', $config_vars['MAIN_NO_PERMISSION']);
 

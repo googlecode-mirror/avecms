@@ -16,7 +16,7 @@ function check_name() {ldelim}
 </div><br />
 <br />
 
-{if $channel}
+{if $channels}
 	<table width="100%" border="0" cellpadding="8" cellspacing="1" class="tableborder">
 		<tr class="tableheader">
 			<td width="1%">{#RSS_ID#}</td>
@@ -28,20 +28,20 @@ function check_name() {ldelim}
 			<td width="5%" colspan="2" align="center">{#RSS_ACTIONS#}</td>
 		</tr>
 
-		{foreach from=$channel item=items}
+		{foreach from=$channels item=channel}
 			<tr style="background-color: #eff3eb;" onmouseover="this.style.backgroundColor='#dae0d8';" onmouseout="this.style.backgroundColor='#eff3eb';" id="table_rows">
-				<td class="itcen">{$items->id}</td>
-				<td><a title="{#RSS_EDIT_HINT#}" href="index.php?do=modules&action=modedit&mod=rss&moduleaction=edit&cp={$sess}&id={$items->id}">{$items->rss_site_name|escape}</a></td>
-				<td>{$items->rss_item_on_page}</td>
-				<td>{$items->rss_description_lenght} {#RSS_SYMBOLS#}</td>
-				<td>{if $items->rss_site_url == ''}{#RSS_SITE_NAME_NO#}{else}{$items->rss_site_url}{/if}</td>
-				<td><input name="textfield" type="text" value="{$items->tag}" readonly /></td>
+				<td class="itcen">{$channel->id}</td>
+				<td><a title="{#RSS_EDIT_HINT#}" href="index.php?do=modules&action=modedit&mod=rss&moduleaction=edit&cp={$sess}&id={$channel->id}">{$channel->rss_site_name|escape}</a></td>
+				<td>{$channel->rss_item_on_page}</td>
+				<td>{$channel->rss_description_lenght} {#RSS_SYMBOLS#}</td>
+				<td>{if $channel->rss_site_url == ''}{#RSS_SITE_NAME_NO#}{else}{$channel->rss_site_url}{/if}</td>
+				<td><input name="textfield" type="text" value="{$channel->tag}" readonly /></td>
 				<td align="center">
-					<a title="{#RSS_EDIT_HINT#}" href="index.php?do=modules&action=modedit&mod=rss&moduleaction=edit&cp={$sess}&id={$items->id}">
+					<a title="{#RSS_EDIT_HINT#}" href="index.php?do=modules&action=modedit&mod=rss&moduleaction=edit&cp={$sess}&id={$channel->id}">
 					<img src="{$tpl_dir}/images/icon_edit.gif" alt="" border="0" /></a>
 				</td>
 				<td align="center">
-					<a title="{#RSS_DELETE_HINT#}" href="index.php?do=modules&action=modedit&mod=rss&moduleaction=del&cp={$sess}&id={$items->id}">
+					<a title="{#RSS_DELETE_HINT#}" href="index.php?do=modules&action=modedit&mod=rss&moduleaction=del&cp={$sess}&id={$channel->id}">
 					<img src="{$tpl_dir}/images/icon_del.gif" alt="" border="0" />
 				</td>
 			</tr>

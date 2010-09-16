@@ -112,7 +112,7 @@ class ModulBanner {
 				$output .= '		<param name="movie" value="' . ABS_PATH . 'modules/' . BANNER_DIR . '/files/' . $banner['banner_file_name'] . '" />';
 				$output .= '		<param name="quality" value="high" />';
 				$output .= '		<param name="wmode" value="opaque">';
-				$output .= '		<embed src="' . ABS_PATH . 'modules/' . BANNER_DIR . '/files/' . $banner['banner_file_name'] . '" quality="high" wmode="opaque" width="' . $banner['banner_width'] . '" height="' . $banner['banner_heightbv'] . '" name="reklama" align="middle" allowScriptAccess="sameDomain" type="application/x-shockwave-flash" pluginspage="http://www.macromedia.com/go/getflashplayer" />';
+				$output .= '		<embed src="' . ABS_PATH . 'modules/' . BANNER_DIR . '/files/' . $banner['banner_file_name'] . '" quality="high" wmode="opaque" width="' . $banner['banner_width'] . '" height="' . $banner['banner_height'] . '" name="reklama" align="middle" allowScriptAccess="sameDomain" type="application/x-shockwave-flash" pluginspage="http://www.macromedia.com/go/getflashplayer" />';
 				$output .= '	</object>';
 				$output .= '</div>';
 			}

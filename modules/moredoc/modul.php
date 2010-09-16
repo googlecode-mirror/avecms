@@ -76,7 +76,8 @@ function mod_moredoc()
 		if ($keywords != '')
 		{
 			$inrubric = $flagrubric ? ("AND rubric_id = '" . $row->rubric_id . "'") : '';
-			$doctime  = get_settings('use_doctime') ? ("AND (document_expire = 0 || document_expire >= '" . time() . "') AND document_published <= '" . time() . "'") : '';
+			$doctime  = get_settings('use_doctime')
+				? ("AND document_published <= " . time() . " AND (document_expire = 0 OR document_expire >= " . time() . ")") : '';
 
 			// »щем документы где встречаетс€ такое-же слово
 			$sql = $AVE_DB->Query("

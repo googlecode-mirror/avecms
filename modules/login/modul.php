@@ -82,7 +82,7 @@ if (!defined('ACP') &&
 		case 'wys':
 			if (isset($_REQUEST['sub']) && $_REQUEST['sub'] == 'on')
 			{
-				if (check_permission('docs')) $_SESSION['user_adminmode'] = 1;
+				if (check_permission('documents')) $_SESSION['user_adminmode'] = 1;
 			}
 			else
 			{
@@ -95,7 +95,7 @@ if (!defined('ACP') &&
 		case 'wys_adm':
 			if (isset($_REQUEST['sub']) && $_REQUEST['sub'] == 'on')
 			{
-				if (check_permission('docs')) $_SESSION['user_adminmode'] = 1;
+				if (check_permission('documents')) $_SESSION['user_adminmode'] = 1;
 			}
 			else
 			{
@@ -146,7 +146,7 @@ if (!defined('ACP') &&
 
 if (defined('ACP') && !empty($_REQUEST['moduleaction']))
 {
-	global $login, $AVE_Template;
+	global $login;
 
 	$tpl_dir   = BASE_DIR . '/modules/login/templates/';
 	$lang_file = BASE_DIR . '/modules/login/lang/' . $_SESSION['admin_language'] . '.txt';

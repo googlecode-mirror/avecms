@@ -52,9 +52,7 @@ if (isset($_REQUEST['module']) && $_REQUEST['module'] == 'rss'
 
 if (defined('ACP') && !empty($_REQUEST['moduleaction']))
 {
-	global $AVE_Template;
-
-	require_once(BASE_DIR . '/modules/rss/class.rss.php');
+	require(BASE_DIR . '/modules/rss/class.rss.php');
 
 	switch ($_REQUEST['moduleaction'])
 	{

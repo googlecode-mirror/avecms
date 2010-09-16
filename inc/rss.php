@@ -8,23 +8,14 @@
  * @filesource
  */
 
-$base_dir = explode('/inc', str_replace("\\", "/", dirname(__FILE__)));
-define('BASE_DIR', $base_dir[0]);
+define('BASE_DIR', str_replace("\\", "/", dirname(dirname(__FILE__))));
 
-require('./init.php');
+require(BASE_DIR . '/inc/init.php');
 
-// Получаем входной id канала
-if (isset($_GET['id']) && is_numeric($_GET['id']) && $AVE_DB)
-{
-	$id = $_GET['id'];
-}
-else
-{
-	exit;
-}
+if (!(isset($_GET['id']) && is_numeric($_GET['id']))) exit;
 
 // Выполняем запрос к БД и выгребаем все параметры для данного канала
-$rss_setting = $AVE_DB->Query("
+$rss_settings = $AVE_DB->Query("
 	SELECT
 		rss.*,
 		rubric_title
@@ -34,28 +25,34 @@ $rss_setting = $AVE_DB->Query("
 		" . PREFIX . "_rubrics AS rub
 			ON rub.Id = rss.rss_rubric_id
 	WHERE
-		rss.id = '" . $id . "'
+		rss.id = '" . $_GET['id'] . "'
 ")->FetchRow();
 
-if ($rss_setting !== false)
+if ($rss_settings !== false)
 {
-	// Выполняем запрос к БД и выгребаем ID, URL  и Дату публикации для документов, которые соответсвуют нашей рубрики
+	$rss_settings->rss_site_name = htmlspecialchars($rss_settings->rss_site_name, ENT_QUOTES);
+	$rss_settings->rss_site_description = htmlspecialchars($rss_settings->rss_site_description, ENT_QUOTES);
+
+	$doctime = get_settings('use_doctime')
+		? ("AND document_published <= " . time() . " AND (document_expire = 0 OR document_expire >= " . time() . ")") : '';
+
+	// Получаем ID, URL и Дату публикации для документов, которые соответсвуют нашей рубрики
 	// Количество выборки ограничиваем значением установленным для канала
-	$get_doc_id = $AVE_DB->Query("
+	$sql_doc = $AVE_DB->Query("
 		SELECT
 			Id,
 			document_title,
+			document_alias,
 			document_published
 		FROM " . PREFIX . "_documents
 		WHERE Id != 1
 		AND Id != '" . PAGE_NOT_FOUND_ID . "'
-		AND rubric_id = '" . $rss_setting->rss_rubric_id . "'
+		AND rubric_id = '" . $rss_settings->rss_rubric_id . "'
 		AND document_status = '1'
-		AND document_published <= '" . time() . "'
-		AND (document_expire  >= '" . time() . "' OR document_expire  = 0)
 		AND document_deleted != '1'
+		" . $doctime . "
 		ORDER BY document_published DESC, Id DESC
-		LIMIT " . $rss_setting->rss_item_on_page
+		LIMIT " . $rss_settings->rss_item_on_page
 	);
 
 	// Формируем массивы, которые будут хранить инфу
@@ -63,42 +60,50 @@ if ($rss_setting !== false)
 	$rss_items = array();
 
 	// Выполянем обработку полученных из БД данных
-	while ($res = $get_doc_id->FetchRow())
+	while ($row_doc = $sql_doc->FetchRow())
 	{
-		$get_fields = $AVE_DB->Query("
+		$sql_fields = $AVE_DB->Query("
 			SELECT
 				rubric_field_id,
 				field_value
 			FROM " . PREFIX . "_document_fields
-			WHERE document_id = '" . $res->Id . "'
-			AND (rubric_field_id = '" . $rss_setting->rss_title_id . "'
-				OR rubric_field_id = '" . $rss_setting->rss_description_id . "')
+			WHERE document_id = '" . $row_doc->Id . "'
+			AND (rubric_field_id = '" . $rss_settings->rss_title_id . "'
+				OR rubric_field_id = '" . $rss_settings->rss_description_id . "')
 	    ");
-		while ($f = $get_fields->FetchRow())
+		while ($row_fields = $sql_fields->FetchRow())
 		{
-			if ($f->rubric_field_id == $rss_setting->rss_title_id)
+			if ($row_fields->rubric_field_id == $rss_settings->rss_title_id)
 			{
-				$rss_item['Title'] = $f->field_value;
+				$rss_item['Title'] = $row_fields->field_value;
 			}
 
-			if ($f->rubric_field_id == $rss_setting->rss_description_id)
+			if ($row_fields->rubric_field_id == $rss_settings->rss_description_id)
 			{
-				if (strlen($f->field_value) > $rss_setting->rss_description_lenght)
+				if ($rss_settings->rss_description_lenght == 0)
 				{
-					$rss_item['Description'] = substr($f->field_value, 0, $rss_setting->rss_description_lenght) . '...';
+					$teaser = explode('<a name="more"></a>', $row_fields->field_value);
+					$rss_item['description'] = $teaser[0];
 				}
 				else
 				{
-					$rss_item['Description'] = $f->field_value;
+					if (strlen($row_fields->field_value) > $rss_settings->rss_description_lenght)
+					{
+						$rss_item['description'] = substr($row_fields->field_value, 0, $rss_settings->rss_description_lenght) . '…';
+					}
+					else
+					{
+						$rss_item['description'] = $row_fields->field_value;
+					}
 				}
 			}
 		}
 
-		$rss_item['document_alias'] = rewrite_link('index.php?id=' . $res->Id . '&amp;doc=' . prepare_url($res->document_title));
+		$link_doc = !empty($row_doc->document_alias) ? $row_doc->document_alias : prepare_url($row_doc->document_title);
+		$link = rewrite_link('index.php?id=' . $row_doc->Id . '&amp;doc=' . $link_doc);
+		$rss_item['link'] = $rss_settings->rss_site_url . substr($link, strlen(ABS_PATH));
 
-		$rss_item['DataDoc'] = ($res->document_published == 0)
-			? date('r', time())
-			: date('r', $res->document_published);
+		$rss_item['pubDate'] = $row_doc->document_published ? date('r', $row_doc->document_published) : date('r', time());
 
 		array_push($rss_items, $rss_item);
 	}
@@ -108,25 +113,25 @@ if ($rss_setting !== false)
 header("Content-Type: application/xml");
 header("Cache-Control: no-cache");
 header("Pragma: no-cache");
-echo "<?xml version=\"1.0\" encoding=\"windows-1251\"?>\n";
-echo "<rss version=\"2.0\" xmlns:dc=\"http://purl.org/dc/elements/1.1/\">\n";
-echo "<channel>\n";
-echo "<title>" . htmlspecialchars($rss_setting->rss_site_name, ENT_QUOTES) . "</title>\n";
-echo "<link>" . $rss_setting->rss_site_url . "</link>\n";
-echo "<language>ru-ru</language>\n";
-echo "<description>" . htmlspecialchars($rss_setting->rss_site_description, ENT_QUOTES) . "</description>\n";
-echo "<category><![CDATA[" . $rss_setting->rubric_title . "]]></category>\n";
-echo "<generator>AVECMS 2.0</generator>\n";
-foreach ($rss_items as $rss_item) {
-	echo "\n<item>\n";
-	echo "	<title><![CDATA[" . $rss_item['Title'] . "]]></title>\n";
-	echo "	<guid isPermaLink=\"true\">" . $rss_setting->rss_site_url . ltrim($rss_item['document_alias'], '/') . "</guid>\n";
-	echo "	<link>" . $rss_setting->rss_site_url . ltrim($rss_item['document_alias'], '/') . "</link>\n";
-	echo "	<description><![CDATA[" . $rss_item['Description'] . "]]></description>\n";
-	echo "	<pubDate>" . $rss_item['DataDoc'] . "</pubDate>\n";
-	echo "</item>\n";
-}
-echo "\n</channel>\n";
-echo "</rss>";
-
+echo '<?xml version="1.0" encoding="windows-1251"?>';
 ?>
+
+<rss version="2.0" xmlns:dc="http://purl.org/dc/elements/1.1/">
+<channel>
+<title><?php echo $rss_settings->rss_site_name; ?></title>
+<link><?php echo $rss_settings->rss_site_url; ?></link>
+<language>ru-ru</language>
+<description><?php echo $rss_settings->rss_site_description; ?></description>
+<category><![CDATA[<?php echo $rss_settings->rubric_title; ?>]]></category>
+<generator>AVE.cms</generator>
+<?php foreach($rss_items as $rss_item):?>
+<item>
+	<title><![CDATA[<?php echo $rss_item['Title']; ?>]]></title>
+	<guid isPermaLink="true"><?php echo $rss_item['link']; ?></guid>
+	<link><?php echo $rss_item['link']; ?></link>
+	<description><![CDATA[<?php echo $rss_item['description']; ?>]]></description>
+	<pubDate><?php echo $rss_item['pubDate']; ?></pubDate>
+</item>
+<?php endforeach; ?>
+</channel>
+</rss>

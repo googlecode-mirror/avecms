@@ -220,7 +220,7 @@ class AVE_DB_Service
 					. $AVE_Template->get_config_vars('MAIN_TABLE_SUCC')
 					. '<span style="color:green">' . $m_ok . '</span><br/> '
 					. $AVE_Template->get_config_vars('MAIN_TABLE_ERROR')
-					. ' <span style="color:red">' . $m_fail . '</span><br />';
+					. '<span style="color:red">' . $m_fail . '</span><br />';
 				$AVE_Template->assign('msg', $msg);
 			}
 			else // В противном случае, если файл не найден, формируем сообщение с ошибкой

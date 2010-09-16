@@ -34,8 +34,8 @@ function changeRub(select) {ldelim}
 			<td class="first" width="15%"><strong>{#RSS_RUBS_NAME#}</strong></td>
 			<td class="second">
 				<select name="rss_rubric_id" onChange="changeRub(this)" id="rss_rubric_id">
-					{foreach from=$rubriks item=rubs}
-						<option value="{$rubs->Id}" {if $channel->rss_rubric_id == $rubs->Id}selected{/if}>{$rubs->rubric_title|escape}</option>
+					{foreach from=$rubrics item=rubric}
+						<option value="{$rubric->Id}" {if $channel->rss_rubric_id == $rubric->Id}selected{/if}>{$rubric->rubric_title|escape}</option>
 					{/foreach}
 				</select>
 			</td>
@@ -65,7 +65,7 @@ function changeRub(select) {ldelim}
 			<td class="second">
 				<select name="field_title">
 					{foreach from=$fields item=field}
-						<option value="{$field->Id}" {if $fids->Id == $channel->rss_title_id}selected{/if}>{$field->rubric_field_title|escape}</option>
+						<option value="{$field->Id}"{if $field->Id == $channel->rss_title_id} selected="selected"{/if}>{$field->rubric_field_title|escape}</option>
 					{/foreach}
 				</select>
 			</td>
@@ -77,7 +77,7 @@ function changeRub(select) {ldelim}
 			<td class="second">
 				<select name="field_descr">
 					{foreach from=$fields item=field}
-						<option value="{$field->Id}"{if $fids->Id == $channel->rss_description_id} selected="selected"{/if}>{$field->rubric_field_title|escape}</option>
+						<option value="{$field->Id}"{if $field->Id == $channel->rss_description_id} selected="selected"{/if}>{$field->rubric_field_title|escape}</option>
 					{/foreach}
 				</select>
 			</td>

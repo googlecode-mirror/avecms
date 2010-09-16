@@ -35,7 +35,7 @@ define('SESSION_LIFETIME', 60*24*60);
 define('COOKIE_LIFETIME', 60*60*24*14);
 
 // {true|false} вывод статистики и списка выполненых запросов
-define('PROFILING', true);
+define('PROFILING', false);
 
 // {true|false} отправка писем с ошибками MySQL
 define('SEND_SQL_ERROR', false);
@@ -54,8 +54,8 @@ define('SMARTY_USE_SUB_DIRS', true);
 // {true|false} кэширование скомпилированных шаблонов документов
 define('CACHE_DOC_TPL', false);
 
-// время жизни кэша (60*60*24 - 1 сутки)
-define('CACHE_LIFETIME', 60*60*24);
+// время жизни кэша (60*60*24 = 1 сутки)
+define('CACHE_LIFETIME', 60*60*24*0);
 
 // имя домена используемое для cookie
 //define('COOKIE_DOMAIN', '.ave209.ru');

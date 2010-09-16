@@ -72,6 +72,21 @@ switch($_REQUEST['action'])
 		}
 		break;
 
+	case 'innavi':
+		if (check_permission_acp('documents') && check_permission_acp('navigation_new'))
+		{
+			$AVE_Document->documentInNavi();
+		}
+		break;
+
+	case 'after':
+		if (check_permission_acp('documents'))
+		{
+			$AVE_Navigation->navigationAllItemList();
+			$AVE_Document->documentFormAfter();
+		}
+		break;
+
 	case 'open':
 		if (check_permission_acp('documents'))
 		{

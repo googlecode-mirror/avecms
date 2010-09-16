@@ -31,17 +31,17 @@ if (defined('ACP'))
 
 function mod_online()
 {
-	echo '
-	<link rel="stylesheet" type="text/css" href="' . ABS_PATH . 'modules/whoisonline/css/styles.css" />
-	<!-- <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.1/jquery.min.js"></script> -->
-	<script type="text/javascript" src="' . ABS_PATH . 'modules/whoisonline/js/widget.js"></script>
-	<div class="onlineWidget">
-		<div class="panel"><img class="preloader" src="' . ABS_PATH . 'modules/whoisonline/images/preloader.gif" alt="Loading.." width="22" height="22" /></div>
-		<div class="count"></div>
-	    <div class="label">онлайн</div>
-	    <div class="arrow"></div>
-	</div>
-	';
+?>
+<link rel="stylesheet" type="text/css" href="<?php echo ABS_PATH; ?>modules/whoisonline/css/styles.css" />
+<!-- <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.1/jquery.min.js"></script> -->
+<script type="text/javascript" src="<?php echo ABS_PATH; ?>modules/whoisonline/js/widget.js"></script>
+<div class="onlineWidget">
+	<div class="panel"><img class="preloader" src="<?php echo ABS_PATH; ?>modules/whoisonline/images/preloader.gif" alt="Loading.." width="22" height="22" /></div>
+	<div class="count"></div>
+    <div class="label">онлайн</div>
+    <div class="arrow"></div>
+</div>
+<?php
 }
 
 if (!defined('ACP') && isset($_REQUEST['module']) && $_REQUEST['module'] == 'whoisonline')
@@ -96,7 +96,7 @@ if (!defined('ACP') && isset($_REQUEST['module']) && $_REQUEST['module'] == 'who
 				// This user is not in the database, so we must fetch
 				// the geoip data and insert it into the online table:
 
-				if ($_COOKIE['geoData'])
+				if (!empty($_COOKIE['geoData']))
 				{
 					// A "geoData" cookie has been previously set by the script, so we will use it
 

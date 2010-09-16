@@ -95,8 +95,7 @@ class Newsarchive
 		$mid = array('','01','02','03','04','05','06','07','08','09','10','11','12');
 		$dd = array();
 		$doctime = get_settings('use_doctime')
-			? ("AND (document_expire = 0 || document_expire >= '" . time() . "') AND document_published <= '" . time() . "'")
-			: '';
+			? ("AND document_published <= " . time() . " AND (document_expire = 0 OR document_expire >= " . time() . ")") : '';
 
 		$row = $AVE_DB->Query("
 			SELECT

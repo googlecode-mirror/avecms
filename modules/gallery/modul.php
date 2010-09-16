@@ -55,8 +55,6 @@ function mod_gallery($gallery_id)
 
 if (!defined('ACP') && isset($_REQUEST['module']) && $_REQUEST['module'] == 'gallery')
 {
-	global $AVE_Template;
-
 	require_once(BASE_DIR . '/modules/gallery/class.gallery.php');
 	$gallery = new Gallery;
 
@@ -84,8 +82,6 @@ if (!defined('ACP') && isset($_REQUEST['module']) && $_REQUEST['module'] == 'gal
 //=======================================================
 if (defined('ACP') && !empty($_REQUEST['moduleaction']))
 {
-	global $AVE_Template;
-
 	require_once(BASE_DIR . '/modules/gallery/class.gallery.php');
 	$gallery = new Gallery;
 

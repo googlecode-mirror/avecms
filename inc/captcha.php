@@ -1,7 +1,6 @@
 <?php
 
-$base_dir = explode('/inc', str_replace("\\", "/", dirname(__FILE__)));
-define('BASE_DIR', $base_dir[0]);
+define('BASE_DIR', str_replace("\\", "/", dirname(dirname(__FILE__))));
 
 require(BASE_DIR . '/inc/config.php');
 require(BASE_DIR . '/inc/db.config.php');
