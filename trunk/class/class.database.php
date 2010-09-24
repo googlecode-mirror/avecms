@@ -65,7 +65,7 @@ class AVE_DB_Result
 	 */
 	function FetchAssocArray()
 	{
-		return @mysql_fetch_array($this->_result, MYSQL_ASSOC);
+		return @mysql_fetch_assoc($this->_result);
 	}
 
 	/**
