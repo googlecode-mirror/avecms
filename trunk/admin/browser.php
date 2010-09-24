@@ -18,11 +18,11 @@ ob_start();
 
 define('BASE_DIR', str_replace("\\", "/", dirname(dirname(__FILE__))));
 
-$mediapath = 'uploads';
-$max_size  = 128; // максимальный размер миниатюры
-$th_pref   = 'thumbnail/th_' . $max_size . '_'; // префикс миниатюр
+define('MEDIAPATH', 'uploads');
+$max_size = 128; // максимальный размер миниатюры
+define('TH_PREF', 'thumbnail/th_' . $max_size . '_'); // префикс миниатюр
 
-define('UPDIR', BASE_DIR . '/' . $mediapath);
+define('UPDIR', BASE_DIR . '/' . MEDIAPATH);
 
 if (isset($_REQUEST['thumb']) && $_REQUEST['thumb']==1)
 {
@@ -48,9 +48,9 @@ if (isset($_REQUEST['thumb']) && $_REQUEST['thumb']==1)
 		umask($oldumask);
 	}
 
-	$img->save(UPDIR . $img_dir . $th_pref . $img_name);
+	$img->save(UPDIR . $img_dir . TH_PREF . $img_name);
     $oldumask = umask(0);
-	chmod(UPDIR . $img_dir . $th_pref . $img_name, 0644);
+	chmod(UPDIR . $img_dir . TH_PREF . $img_name, 0644);
     umask($oldumask);
 
     exit;
@@ -183,7 +183,7 @@ if ($_REQUEST['action']=='delfile')
 {
 	if (check_permission('mediapool_del'))
 	{
-		@copy(UPDIR . $_REQUEST['file'], BASE_DIR . '/' . $mediapath . '/recycled/' . $_REQUEST['df'] );
+		@copy(UPDIR . $_REQUEST['file'], BASE_DIR . '/' . MEDIAPATH . '/recycled/' . $_REQUEST['df'] );
 		if (@unlink(UPDIR . $_REQUEST['file']))
 		{
 			$error = 0;
@@ -205,7 +205,7 @@ if ($_REQUEST['action']=='delfile')
 				$img_name = substr($img_path, 1);
 				$img_dir  = '/';
 			}
-			@unlink(UPDIR . $img_dir . $th_pref . $img_name);
+			@unlink(UPDIR . $img_dir . TH_PREF . $img_name);
 
 			$_REQUEST['file'] = '';
 			$_REQUEST['action'] = '';
@@ -282,9 +282,9 @@ if ($_REQUEST['action']=='list' || $_REQUEST['done']==1)
 //		if (in_array(substr($file_name, -4), $allowed_images) && function_exists('getimagesize') && function_exists('imagecreatetruecolor'))
 		if (in_array(substr($file_name, -4), $allowed_images))
 		{
-			if (file_exists($current_dir . $th_pref . $file_name))
+			if (file_exists($current_dir . TH_PREF . $file_name))
 			{
-				$row->bild = "<img border=\"0\" src=\"../" . $mediapath . $dir . $th_pref . $file_name . "\">";
+				$row->bild = "<img border=\"0\" src=\"../" . MEDIAPATH . $dir . TH_PREF . $file_name . "\">";
 			}
 			else
 			{
@@ -306,7 +306,7 @@ if ($_REQUEST['action']=='list' || $_REQUEST['done']==1)
 	$AVE_Template->assign('bfiles', $bfiles);
 	$AVE_Template->assign('dir', $dir);
 	$AVE_Template->assign('dirup', ($dir != '/') ? 1 : 0);
-	$AVE_Template->assign('mediapath', $mediapath);
+	$AVE_Template->assign('mediapath', MEDIAPATH);
 
 	$AVE_Template->display('browser.tpl');
 
@@ -319,7 +319,7 @@ if (is_array($sub_target)) $sub = @$sub_target[1];
 $AVE_Template->assign('target_img', $sub_target[0]);
 $AVE_Template->assign('pop_id', $sub);
 $AVE_Template->assign('cppath', substr($_SERVER['PHP_SELF'], 0, -18));
-$AVE_Template->assign('mediapath', $mediapath);
+$AVE_Template->assign('mediapath', MEDIAPATH);
 
 $AVE_Template->display('browser_2frames.tpl');
 
