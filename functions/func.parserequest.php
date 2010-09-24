@@ -182,7 +182,7 @@ function request_get_document_field($rubric_id, $document_id, $maxlength = '')
 			$field_param[1] = isset($field_param[1]) ? $field_param[1] : '';
 			if ($document_fields[$rubric_id]['tpl_req_empty'])
 			{
-				$field_value = '<img src="' . $field_param[0] . '" alt="' . $field_param[1] . '" border="0" />';
+				$field_value = '<img src="' . ABS_PATH . $field_param[0] . '" alt="' . $field_param[1] . '" border="0" />';
 			}
 			else
 			{
@@ -197,13 +197,17 @@ function request_get_document_field($rubric_id, $document_id, $maxlength = '')
 			if (empty($field_param[1])) $field_param[1] = $field_param[0];
 			if ($document_fields[$rubric_id]['tpl_req_empty'])
 			{
-				$field_value = " <a target=\"_self\" href=\"" . $field_param[0] . "\">" . $field_param[1] . "</a>";
+				$field_value = " <a target=\"_self\" href=\"" . ABS_PATH . $field_param[0] . "\">" . $field_param[1] . "</a>";
 			}
 			else
 			{
 				$field_value = preg_replace('/\[tag:parametr:(\d+)\]/ie', '@$field_param[\\1]', $document_fields[$rubric_id]['rubric_field_template_request']);
 			}
 			$maxlength = '';
+			break;
+
+		case 'langtext' :
+		case 'smalltext' :
 			break;
 
 		default:
