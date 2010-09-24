@@ -113,9 +113,9 @@ function set_host()
 	$port = ($_SERVER['SERVER_PORT'] == '80' || $_SERVER['SERVER_PORT'] == '443' || $ssl) ? '' : ':' . $_SERVER['SERVER_PORT'];
 	define('HOST', $shema . $host . $port);
 
-	$abs_path = str_replace("\\", "/", dirname((!strstr($_SERVER['PHP_SELF'], $_SERVER['SCRIPT_NAME']) && (@php_sapi_name() == 'cgi')) ? $_SERVER['PHP_SELF'] : $_SERVER['SCRIPT_NAME']));
+	$abs_path = dirname((!strstr($_SERVER['PHP_SELF'], $_SERVER['SCRIPT_NAME']) && (@php_sapi_name() == 'cgi')) ? $_SERVER['PHP_SELF'] : $_SERVER['SCRIPT_NAME']);
 	if (defined('ACP')) $abs_path = dirname($abs_path);
-	define('ABS_PATH', rtrim($abs_path, '/') . '/');
+	define('ABS_PATH', rtrim(str_replace("\\", "/", $abs_path), '/') . '/');
 }
 set_host();
 
