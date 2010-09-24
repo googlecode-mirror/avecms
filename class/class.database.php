@@ -46,7 +46,7 @@ class AVE_DB_Result
 
 	/**
 	 * Метод, предназначенный для обработки результата запроса.
-     * Возвращает как ассоциативный, так и численный массив.
+	 * Возвращает как ассоциативный, так и численный массив.
 	 *
 	 * @return array
 	 * @access public
@@ -58,7 +58,7 @@ class AVE_DB_Result
 
 	/**
 	 *  Метод, предназначенный для обработки результата запроса.
-     *  Возвращает только ассоциативный массив.
+	 *  Возвращает только ассоциативный массив.
 	 *
 	 * @return array
 	 * @access public
@@ -95,7 +95,7 @@ class AVE_DB_Result
 	}
 
 
-    /**
+	/**
 	 * Метод, предназначенный для перемещения внутреннего указателя в результате запроса
 	 *
 	 * @param int $id - номер ряда результатов запроса
@@ -119,7 +119,7 @@ class AVE_DB_Result
 	}
 
 
-    /**
+	/**
 	 * Метод, преднязначенный для получения количества полей результата запроса
 	 *
 	 * @return int
@@ -204,21 +204,21 @@ class AVE_DB
 	function AVE_DB($host, $user, $pass, $db)
 	{
 		// Пытаемся установить соединение с БД
-        if (! $this->_handle = @mysql_connect($host, $user, $pass))
+		if (! $this->_handle = @mysql_connect($host, $user, $pass))
 		{
 			$this->_error('connect');
 			return false;
 		}
 
 		// Пытаемся выбрать БД
-        if (! @mysql_select_db($db, $this->_handle))
+ 		if (! @mysql_select_db($db, $this->_handle))
 		{
 			$this->_error('select');
 			return false;
 		}
 
 		// Устанавливаем кодировку
-        if (function_exists('mysql_set_charset'))
+		if (function_exists('mysql_set_charset'))
 		{
 			mysql_set_charset('cp1251', $this->_handle);
 		}
@@ -228,12 +228,18 @@ class AVE_DB
 		}
 
 		// Определяем профилирование
-        if (defined('PROFILING') && PROFILING)
+		if (defined('PROFILING') && PROFILING)
 		{
 //			mysql_query("QUERY_CACHE_TYPE = OFF");
 //			mysql_query("FLUSH TABLES");
-			mysql_query("SET PROFILING_HISTORY_SIZE = 100");
-			mysql_query("SET PROFILING = 1");
+			if (mysql_query("SET PROFILING_HISTORY_SIZE = 100"))
+			{
+				mysql_query("SET PROFILING = 1");
+			}
+			else
+			{
+				define('SQL_PROFILING_DISABLE', 1);
+			}
 		}
 
 		return true;
@@ -371,7 +377,7 @@ class AVE_DB
 
 	/**
 	 * Метод, предназначенный для формирования статистики выполнения SQL-запросов.
-     *
+	 *
 	 *
 	 * @param string $type - тип запрашиваемой статистики
 	 * <pre>
@@ -450,14 +456,14 @@ class AVE_DB
 	{
 		static $result, $list, $time, $count;
 
-		if (!(defined('PROFILING') && PROFILING)) return false;
+		if (!(defined('PROFILING') && PROFILING) || defined('SQL_PROFILING_DISABLE')) return false;
 
 		if (!$result)
 		{
 			$list = "<table width=\"100%\">"
 				. "\n\t<col width=\"20\">\n\t<col width=\"70\">";
 			$result = mysql_query("SHOW PROFILES");
-			while (list($qid, $qtime, $qstring) = mysql_fetch_row($result))
+			while (list($qid, $qtime, $qstring) = @mysql_fetch_row($result))
 			{
 				$time += $qtime;
 			    $list .= "\n\t<tr>\n\t\t<td><strong>"
@@ -472,7 +478,7 @@ class AVE_DB
 			    	FROM INFORMATION_SCHEMA.PROFILING
 			    	WHERE QUERY_ID = " . $qid
 			    );
-				while (list($state, $duration) = mysql_fetch_row($res))
+				while (list($state, $duration) = @mysql_fetch_row($res))
 				{
 				    $list .= "\n\t<tr>\n\t\t<td>&nbsp;</td><td>"
 				    	. number_format($duration * 1, 6, ',', '')
@@ -481,7 +487,7 @@ class AVE_DB
 			}
 			$time = number_format($time * 1, 6, ',', '');
 			$list .= "\n</table>";
-			$count = mysql_num_rows($result);
+			$count = @mysql_num_rows($result);
 		}
 
 		switch ($type)
@@ -513,16 +519,16 @@ global $AVE_DB;
 if (! isset($AVE_DB))
 {
 	// Подключаем конфигурационный файл с параметрами подключения
-    require(BASE_DIR . '/inc/db.config.php');
+	require(BASE_DIR . '/inc/db.config.php');
 
 	// Если параметры не указаны, прерываем работу
-    if (! isset($config)) exit;
+	if (! isset($config)) exit;
 
 	// Если константа префикса таблиц не задана, принудительно определяем ее на основании параметров в файле db.config.php
-    if (! defined('PREFIX')) define('PREFIX', $config['dbpref']);
+	if (! defined('PREFIX')) define('PREFIX', $config['dbpref']);
 
 	// Создаем объект для работы с БД
-    $AVE_DB = new AVE_DB($config['dbhost'], $config['dbuser'], $config['dbpass'], $config['dbname']);
+	$AVE_DB = new AVE_DB($config['dbhost'], $config['dbuser'], $config['dbpass'], $config['dbname']);
 
 	unset($config);
 }
