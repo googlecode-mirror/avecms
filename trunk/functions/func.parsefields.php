@@ -17,7 +17,10 @@ function document_pagination($text)
 {
 	global $AVE_Core;
 
-	$pages = explode('<div style="page-break-after: always;"><span style="display: none;">&nbsp;</span></div>', $text);
+// IE8                    <div style="page-break-after: always"><span style="display: none">&nbsp;</span></div>
+// Chrome                 <div style="page-break-after: always; "><span style="DISPLAY:none">&nbsp;</span></div>
+// FF                     <div style="page-break-after: always;"><span style="display: none;">&nbsp;</span></div>
+	$pages = preg_split('#<div style="page-break-after: always[; ]*"><span style="display:[ ]*none[;]*">&nbsp;</span></div>#i', $text);
 	$total_page = @sizeof($pages);
 
 	if ($total_page > 1)
@@ -106,7 +109,7 @@ function document_get_field($field_id)
 			if ($tpl_field_empty)
 			{
 				$field_value = '<img alt="' . (isset($field_param[1]) ? $field_param[1] : '')
-					. '" src="' . $field_param[0] . '" border="0" />';
+					. '" src="' . ABS_PATH . $field_param[0] . '" border="0" />';
 			}
 			else
 			{
@@ -120,7 +123,7 @@ function document_get_field($field_id)
 			if ($tpl_field_empty)
 			{
 				$field_value = (!empty($field_param[1]) ? $field_param[1] . '<br />' : '')
-					. '<form method="get" target="_blank" action="' . $field_param[0]
+					. '<form method="get" target="_blank" action="' . ABS_PATH . $field_param[0]
 					. '"><input class="button" type="submit" value="Скачать" /></form>';
 			}
 			else
@@ -135,7 +138,7 @@ function document_get_field($field_id)
 			$field_param[1] = empty($field_param[1]) ? $field_param[0] : $field_param[1];
 			if ($tpl_field_empty)
 			{
-				$field_value = ' <a target="_self" href="' . $field_param[0] . '">' . $field_param[1] . '</a>';
+				$field_value = ' <a target="_self" href="' . ABS_PATH . $field_param[0] . '">' . $field_param[1] . '</a>';
 			}
 			else
 			{
@@ -157,10 +160,10 @@ function document_get_field($field_id)
 						. $field_param[2] . '" width="' . $field_param[1] . '">'
 					. '<param name="animationatStart" value="false">'
 					. '<param name="autostart" value="false">'
-					. '<param name="url" value="' . $field_param[0] . '">'
+					. '<param name="url" value="' . ABS_PATH . $field_param[0] . '">'
 					. '<param name="volume" value="-200">'
 					. '<embed type="application/x-mplayer2" pluginspage="http://www.microsoft.com/Windows/MediaPlayer/" name="MediaPlayer" src="'
-						. $field_param[0] . '" autostart="0" displaysize="0" showcontrols="1" showdisplay="0" showtracker="1" showstatusbar="1" height="'
+						. ABS_PATH . $field_param[0] . '" autostart="0" displaysize="0" showcontrols="1" showdisplay="0" showtracker="1" showstatusbar="1" height="'
 						. $field_param[2] . '" width="' . $field_param[1] . '">'
 					. '</object>';
 			}
@@ -179,12 +182,12 @@ function document_get_field($field_id)
 			{
 				$field_value = '<object classid="clsid:02BF25D5-8C17-4B23-BC80-D3488ABDDC6B" width="' . $field_param[1]
 						. '" height="' . $field_param[2] . '" codebase="http://www.apple.com/qtactivex/qtplugin.cab">'
-					. '<param name="src" value="' . $field_param[0] . '">'
+					. '<param name="src" value="' . ABS_PATH . $field_param[0] . '">'
 					. '<param name="autoplay" value="false">'
 					. '<param name="controller" value="true">'
 					. '<param name="target" value="myself">'
 					. '<param name="type" value="video/quicktime">'
-					. '<embed target="myself" src="' . $field_param[0] . '" width="' . $field_param[1] . '" height="' . $field_param[2]
+					. '<embed target="myself" src="' . ABS_PATH . $field_param[0] . '" width="' . $field_param[1] . '" height="' . $field_param[2]
 						. '" autoplay="false" controller="true" type="video/quicktime" pluginspage="http://www.apple.com/quicktime/download/">'
 					. '</embed>'
 					. '</object>';
@@ -204,7 +207,7 @@ function document_get_field($field_id)
 			{
 				$field_value = '<embed scale="exactfit" width="' . $field_param[1] . '" height="' . $field_param[2]
 					. '" type="application/x-shockwave-flash" pluginspage="http://www.macromedia.com/go/getflashplayer" src="'
-					. $field_param[0] . '" play="true" loop="true" menu="true"></embed>';
+					. ABS_PATH . $field_param[0] . '" play="true" loop="true" menu="true"></embed>';
 			}
 			else
 			{
