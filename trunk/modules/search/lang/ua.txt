@@ -1,7 +1,7 @@
 SEARCH_BUTTON             = "Пошук"
 SEARCH_IN_DESCRIPTION     = "В тексті"
 SEARCH_IN_TITLE           = "В заголовках"
-SEARCH_HELP               = "<strong>Використання пошуку</strong><br><br>Використовуйте знак &quot;<strong>+</strong>&quot; для строгого включення слова в пошук.<br>Використовуйте знак &quot;<strong>-</strong>&quot; для виключення слова з пошуку<br><br>Обов'язково використовуйте пробіл перед знаками &quot;<strong>+</strong>&quot; і &quot;<strong>-</strong>&quot;. "
+SEARCH_HELP               = "<strong>Використання пошуку</strong><br><br>Використовуйте знак &quot;<strong>+</strong>&quot; для строгого включення слова в пошук.<br>Використовуйте знак &quot;<strong>-</strong>&quot; для виключення слова з пошуку<br><br>Обов’язково використовуйте пробіл перед знаками &quot;<strong>+</strong>&quot; і &quot;<strong>-</strong>&quot;. "
 SEARCH_USE_AND            = "Використовуючи "І""
 SEARCH_USE_OR             = "Використовуючи "АБО""
 SEARCH_RESULTS            = "Результати пошуку"

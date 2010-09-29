@@ -40,7 +40,7 @@ TEMPLATES_ALL          = "Список шаблонів"
 
 TEMPLATES_TAGS         = "Тег"
 TEMPLATES_TAG_DESC     = "Опис тегу"
-TEMPLATES_THEME_FOLDER = "Назва шаблону (Ім'я папки з файлами для даного шаблону)"
+TEMPLATES_THEME_FOLDER = "Назва шаблону (Ім’я папки з файлами для даного шаблону)"
 TEMPLATES_PAGENAME     = "Назва сайту"
 TEMPLATES_TITLE        = "Назва сторінки"
 TEMPLATES_KEYWORDS     = "Ключові слова (Meta - Keywords)"

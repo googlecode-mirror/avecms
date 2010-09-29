@@ -202,7 +202,7 @@ PR_SysAvatar = "Выбрать аватар"
 Yes = "Да"
 No = "Нет"
 
-EmailBodyUser = "Hallo %%USER%%,%%N%%%%ABSENDER%% sendet Ihnen folgende Nachricht:%%N%%-------------%%N%%%%BETREFF%%%%N%%%%NACHRICHT%%%%N%%-------------%%N%%Sollten Sie von diesemm Mitglied keine E-Mail-Nachricht mehr erhalten wollen, loggen Sie sich bitte ein und wechseln unter 'Forum' zu Ihrer Ignorier-Liste und tragen dort die ID: %%ID%% ein.%%N%%%%N%%Bitte haben Sie Verstдndnis dafьr, dass wir fьr den Inhalt dieser E-Mail nicht verantwortlich gemacht werden kцnnen, da wir aus Datenschutzrechtlichen Grьnden niemals den Inhalt prьfen dьrfen."
+EmailBodyUser = "Hallo %%USER%%,%%N%%%%ABSENDER%% sendet Ihnen folgende Nachricht:%%N%%-------------%%N%%%%BETREFF%%%%N%%%%NACHRICHT%%%%N%%-------------%%N%%Sollten Sie von diesemm Mitglied keine E-Mail-Nachricht mehr erhalten wollen, loggen Sie sich bitte ein und wechseln unter &quot;Forum&quot; zu Ihrer Ignorier-Liste und tragen dort die ID: %%ID%% ein.%%N%%%%N%%Bitte haben Sie Verstдndnis dafьr, dass wir fьr den Inhalt dieser E-Mail nicht verantwortlich gemacht werden kцnnen, da wir aus Datenschutzrechtlichen Grьnden niemals den Inhalt prьfen dьrfen."
 MessageAfterEmail = "<strong>Отправка E-Mail сообщения</strong><br /><br />Сообщение успешно отправлено.<br />"
 MessageNoEmail = "<strong>Ошибка</strong><br /><br />Невозможно послать E-mail сообщение этому пользователю !<br /><br />Сейчас вы будете автоматически перемещены, ждите...<br /><br /><a href='%%GoTo%%'>Нажмите здесь, если вы не были перемещены.</a>"
 
