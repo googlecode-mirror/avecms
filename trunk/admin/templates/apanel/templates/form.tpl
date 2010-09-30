@@ -206,16 +206,6 @@
 						</td>
 						<td class="first">{#TEMPLATES_QUICKFINDER#}</td>
 					</tr>
-{*
-					{foreach from=$tags item=tag}
-						<tr>
-							<td class="first">
-								<a title="{#TEMPLATES_TAG_INSERT#}" href="javascript:void(0);" onclick="editAreaLoader.insertTags('{$js_textfeld}', '{$tag->cp_tag}','');">{$tag->cp_tag}</a>
-							</td>
-							<td class="first">{$tag->cp_desc}</td>
-						</tr>
-					{/foreach}
-*}
 				</table>
 			</td>
 		</tr>

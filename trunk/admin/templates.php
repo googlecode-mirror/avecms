@@ -137,7 +137,6 @@ switch ($_REQUEST['action'])
 					{
 						fetchPrefabTemplates();
 						$AVE_Template->assign('row', $row);
-						$AVE_Template->assign('tags', get_ave_tags(BASE_DIR . '/inc/data/vorlage.php'));
 						$AVE_Template->assign('content', $AVE_Template->fetch('templates/form.tpl'));
 					}
 					else
@@ -162,7 +161,6 @@ switch ($_REQUEST['action'])
 
 				case '':
 					fetchPrefabTemplates();
-					$AVE_Template->assign('tags', get_ave_tags(BASE_DIR . '/inc/data/vorlage.php'));
 					$AVE_Template->assign('content', $AVE_Template->fetch('templates/form.tpl'));
 					break;
 			}
@@ -230,8 +228,6 @@ switch ($_REQUEST['action'])
 						$AVE_Template->assign('read_only', 'readonly');
 					}
 
-					$AVE_Template->assign('tags', get_ave_tags(BASE_DIR . '/inc/data/vorlage.php'));
-
 					$row->template_text = pretty_chars($row->template_text);
 					$row->template_text = stripslashes($row->template_text);
 					$AVE_Template->assign('row', $row);
@@ -251,7 +247,6 @@ switch ($_REQUEST['action'])
 					{
 						$row->template_text = stripslashes($_REQUEST['template_text']);
 						$AVE_Template->assign('row', $row);
-						$AVE_Template->assign('tags', get_ave_tags(BASE_DIR . '/inc/data/vorlage.php'));
 					}
 					else
 					{
