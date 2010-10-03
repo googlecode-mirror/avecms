@@ -214,6 +214,7 @@ function request_get_document_field($rubric_id, $document_id, $maxlength = '')
 			$field_value = clean_php($field_value);
 			$field_param = explode('|', $field_value);
 			$field_value = $field_param[0];
+			$field_value = str_replace('"', '&quot;', $field_value);
 			break;
 	}
 
@@ -350,6 +351,7 @@ function request_parse($id)
 					a.Id,
 					a.document_title,
 					a.document_alias,
+					a.document_author_id,
 					a.document_count_view,
 					a.document_published,
 					COUNT(b.document_id) AS nums
@@ -379,6 +381,7 @@ function request_parse($id)
 					a.Id,
 					a.document_title,
 					a.document_alias,
+					a.document_author_id,
 					a.document_count_view,
 					a.document_published
 				FROM
@@ -435,14 +438,18 @@ function request_parse($id)
 			$items .= preg_replace('/\[tag:rfld:(\d+)]\[(more|[0-9-]+)]/e', "request_get_document_field(\"$1\", $row->Id, \"$2\")", $item_template);
 			$items = str_replace('[tag:link]', $link, $items);
 			$items = str_replace('[tag:docid]', $row->Id, $items);
-			$items = str_replace('[tag:docdate]', pretty_date(strftime(TIME_FORMAT, $row->document_published)), $items);
+			$items = str_replace('[tag:docdate]', pretty_date(strftime(DATE_FORMAT, $row->document_published)), $items);
+			$items = str_replace('[tag:doctime]', pretty_date(strftime(TIME_FORMAT, $row->document_published)), $items);
+			$items = str_replace('[tag:docauthor]', get_username_by_id($row->document_author_id), $items);
 			$items = str_replace('[tag:docviews]', $row->document_count_view, $items);
 			$items = str_replace('[tag:doccomments]', isset($row->nums) ? $row->nums : '', $items);
 		}
 
 		$main_template = str_replace('[tag:pages]', $page_nav, $main_template);
 		$main_template = str_replace('[tag:docid]', $AVE_Core->curentdoc->Id, $main_template);
-		$main_template = str_replace('[tag:docdate]', $AVE_Core->curentdoc->document_published, $main_template);
+		$main_template = str_replace('[tag:docdate]', pretty_date(strftime(DATE_FORMAT, $AVE_Core->curentdoc->document_published)), $main_template);
+		$main_template = str_replace('[tag:doctime]', pretty_date(strftime(TIME_FORMAT, $AVE_Core->curentdoc->document_published)), $main_template);
+		$main_template = str_replace('[tag:docauthor]', get_username_by_id($AVE_Core->curentdoc->document_author_id), $main_template);
 		$main_template = preg_replace('/\[tag:dropdown:([,0-9]+)\]/e', "request_get_dropdown(\"$1\", " . $row_ab->rubric_id . ", " . $row_ab->Id . ");", $main_template);
 
 		$return = str_replace('[tag:content]', $items, $main_template);
