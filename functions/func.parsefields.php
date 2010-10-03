@@ -76,6 +76,7 @@ function document_get_field($field_id)
 			$field_value = htmlspecialchars($field_value, ENT_QUOTES);
 			$field_value = pretty_chars($field_value);
 			$field_value = clean_php($field_value);
+			$field_value = str_replace('"', '&quot;', $field_value);
 			if (!$tpl_field_empty)
 			{
 				$field_param = explode('|', $field_value);

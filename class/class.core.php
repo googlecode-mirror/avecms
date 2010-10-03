@@ -716,6 +716,9 @@ class AVE_Core
 						}
 					}
 				}
+				$main_content = str_replace('[tag:docdate]', pretty_date(strftime(DATE_FORMAT, $this->curentdoc->document_published)), $main_content);
+				$main_content = str_replace('[tag:doctime]', pretty_date(strftime(TIME_FORMAT, $this->curentdoc->document_published)), $main_content);
+				$main_content = str_replace('[tag:docauthor]', get_username_by_id($this->curentdoc->document_author_id), $main_content);
 			}
 			$out = str_replace('[tag:maincontent]', $main_content, $this->_coreDocumentTemplateGet(RUB_ID));
 		}	// /вывод документа

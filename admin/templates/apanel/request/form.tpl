@@ -157,14 +157,28 @@ function changeRub(select) {ldelim}
 						<td scope="row" class="first">
 							<strong><a href="javascript:void(0);" onclick="editAreaLoader.insertTags('{$js_textfeld}', '[tag:docid]', '');">[tag:docid]</a></strong>
 						</td>
-						<td class="first">{#REQUEST_DCOCID_INFO#}</td>
+						<td class="first">{#REQUEST_CDOCID_INFO#}</td>
 					</tr>
 
 					<tr>
 						<td scope="row" class="first">
 							<strong><a href="javascript:void(0);" onclick="editAreaLoader.insertTags('{$js_textfeld}', '[tag:docdate]', '');">[tag:docdate]</a></strong>
 						</td>
-						<td class="first">{#REQUEST_CDATEDOC_INFO#}</td>
+						<td class="first">{#REQUEST_CDOCDATE_INFO#}</td>
+					</tr>
+
+					<tr>
+						<td scope="row" class="first">
+							<strong><a href="javascript:void(0);" onclick="editAreaLoader.insertTags('{$js_textfeld}', '[tag:doctime]', '');">[tag:doctime]</a></strong>
+						</td>
+						<td class="first">{#REQUEST_CDOCTIME_INFO#}</td>
+					</tr>
+
+					<tr>
+						<td scope="row" class="first">
+							<strong><a href="javascript:void(0);" onclick="editAreaLoader.insertTags('{$js_textfeld}', '[tag:docauthor]', '');">[tag:docauthor]</a></strong>
+						</td>
+						<td class="first">{#REQUEST_CDOCAUTHOR_INFO#}</td>
 					</tr>
 
 					<tr>
@@ -282,7 +296,21 @@ function changeRub(select) {ldelim}
 						<td scope="row" class="first">
 							<strong><a href="javascript:void(0);" onclick="editAreaLoader.insertTags('{$js_textfeld}', '[tag:docdate]', '');">[tag:docdate]</a></strong>
 						</td>
-						<td class="first">{#REQUEST_DATEDOC_INFO#}</td>
+						<td class="first">{#REQUEST_DOCDATE_INFO#}</td>
+					</tr>
+
+					<tr>
+						<td scope="row" class="first">
+							<strong><a href="javascript:void(0);" onclick="editAreaLoader.insertTags('{$js_textfeld}', '[tag:doctime]', '');">[tag:doctime]</a></strong>
+						</td>
+						<td class="first">{#REQUEST_DOCTIME_INFO#}</td>
+					</tr>
+
+					<tr>
+						<td scope="row" class="first">
+							<strong><a href="javascript:void(0);" onclick="editAreaLoader.insertTags('{$js_textfeld}', '[tag:docauthor]', '');">[tag:docauthor]</a></strong>
+						</td>
+						<td class="first">{#REQUEST_DOCAUTHOR_INFO#}</td>
 					</tr>
 
 					<tr>
