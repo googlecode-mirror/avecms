@@ -102,10 +102,79 @@ class AVE_Template extends Smarty
  *	ВНУТРЕННИЕ МЕТОДЫ
  */
 
+	/**
+	 * Проверка наличия одноименного шаблона в директории темы дизайна.
+	 * При наличии шаблона в директории темы дизайна используется этот шаблон.
+	 *
+	 * @param string $tpl	путь к шаблону
+	 * @return string
+	 */
+	function _redefine_template($tpl)
+	{
+		if (!defined('THEME_FOLDER')) return $tpl;
+
+		$r_tpl = str_replace(BASE_DIR, BASE_DIR . '/templates/' . THEME_FOLDER, $tpl);
+
+		return (file_exists($r_tpl) && is_file($r_tpl)) ? $r_tpl : $tpl;
+	}
 
 /**
  *	ВНЕШНИЕ МЕТОДЫ
  */
+
+	/**
+	 * Переопределение одноименного метода Smarty
+	 * для конфигурационных файлов созданных в теме дизайна.
+	 *
+	 * @param string $file
+	 * @param string $section
+	 * @param string $scope
+	 */
+	function config_load($file, $section = null, $scope = 'global')
+	{
+		Smarty::config_load($this->_redefine_template($file), $section, $scope);
+	}
+
+	/**
+	 * Переопределение одноименного метода Smarty
+	 * для пользовательских шаблонов созданных в теме дизайна.
+	 *
+	 * @param string $tpl_file name of template file
+	 * @param string $cache_id
+	 * @param string $compile_id
+	 * @return string|false results of {@link _read_cache_file()}
+	 */
+    function is_cached($tpl_file, $cache_id = null, $compile_id = null)
+    {
+    	return Smarty::is_cached($this->_redefine_template($tpl_file), $cache_id, $compile_id);
+    }
+
+	/**
+	 * Переопределение одноименного метода Smarty
+	 * для пользовательских шаблонов созданных в теме дизайна.
+	 *
+	 * @param string $resource_name
+	 * @param string $cache_id
+	 * @param string $compile_id
+	 * @param boolean $display
+	 */
+	function fetch($resource_name, $cache_id = null, $compile_id = null, $display = false)
+	{
+		return Smarty::fetch($this->_redefine_template($resource_name), $cache_id, $compile_id, $display);
+	}
+
+	/**
+	 * Переопределение одноименного метода Smarty
+	 * для пользовательских шаблонов созданных в теме дизайна.
+	 *
+	 * @param string $resource_name
+	 * @param string $cache_id
+	 * @param string $compile_id
+	 */
+	function display($resource_name, $cache_id = null, $compile_id = null)
+	{
+		$this->fetch($resource_name, $cache_id, $compile_id, true);
+	}
 
 	/**
 	 * Метод очистки кэша
