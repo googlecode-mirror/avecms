@@ -29,7 +29,7 @@
 // Thanks to Arialdo Martini, Mustafa Dindar for feedbacks.
 // ----------------------------------------------------------------------------
 
-if (!defined("EMOTICONS_DIR")) define ("EMOTICONS_DIR", "lib/markitup/emoticons/");
+if (!defined("EMOTICONS_DIR")) define ("EMOTICONS_DIR", "lib/markitup/sets/bbcode/images/");
 
 function BBCode2Html($text) {
 	$text = trim($text);
