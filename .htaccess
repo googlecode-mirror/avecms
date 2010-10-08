@@ -100,9 +100,9 @@ AddDefaultCharset windows-1251
 #	RewriteRule ^(.*)$ http://www.%{HTTP_HOST}/$1 [QSA,L]
 
 
-	RewriteRule ^(shop|forums|download)-([0-9]+).html$ index.php?module=$1&page=$2 [QSA,L]
-	RewriteRule ^(shop|forums|download)-print.html$ index.php?module=$1&print=1 [QSA,L]
-	RewriteRule ^(shop|forums|download).html$ index.php?module=$1 [QSA,L]
+	RewriteRule ^(shop|forums|download|guestbook|roadmap)-([0-9]+).html$ index.php?module=$1&page=$2 [QSA,L]
+	RewriteRule ^(shop|forums|download|guestbook|roadmap)-print.html$ index.php?module=$1&print=1 [QSA,L]
+	RewriteRule ^(shop|forums|download|guestbook|roadmap).html$ index.php?module=$1 [QSA,L]
 
 
 	## ЧПУ для модуля Downloads

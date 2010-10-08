@@ -497,7 +497,7 @@ function rewrite_link($s)
 	$s = preg_replace($doc_regex.'/',                                     ABS_PATH.'$1'.URL_SUFF, $s);
 	$s = preg_replace('/'.preg_quote(URL_SUFF, '/').'[?|&](?:amp;)*print=1/', '/print'.URL_SUFF, $s);
 
-	$mod_regex = '/index.php(?:\?)module=(shop|forums|download)';
+	$mod_regex = '/index.php(?:\?)module=(shop|forums|download|guestbook|roadmap)';
 
 	$s = preg_replace($mod_regex.'&(?:amp;)*page=([{s}]|\d+)/', ABS_PATH.'$1-$2.html', $s);
 	$s = preg_replace($mod_regex.'&(?:amp;)*print=1/',          ABS_PATH.'$1-print.html', $s);
