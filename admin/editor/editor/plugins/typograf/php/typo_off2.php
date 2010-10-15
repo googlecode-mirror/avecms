@@ -1,7 +1,7 @@
 <?php
 header('Content-Type: text/html; charset=utf-8');
 
-set_include_path(get_include_path() . PATH_SEPARATOR . dirname(__FILE__) . '\library');
+set_include_path(get_include_path() . PATH_SEPARATOR . dirname(__FILE__) . DIRECTORY_SEPARATOR . 'library');
 
 
 if (empty($_POST['text']))
