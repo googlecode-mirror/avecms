@@ -117,7 +117,7 @@ class Shop
 		define('GastBestellung',       $this->_getShopSetting('GastBestellung', ''));
 		define('Kommentare',           $this->_getShopSetting('Kommentare', ''));
 		define('WidthThumbs',          $this->_getShopSetting('Vorschaubilder', ''));
-		define('WidthThumbsTopseller', $this->_getShopSetting('Topsellerbilder', ''));
+		define('WidthThumbsTopseller', WidthTsThumb);
 		define('Waehrung2',            $this->_getShopSetting('Waehrung2', ''));
 		define('WaehrungSymbol2',      $this->_getShopSetting('WaehrungSymbol2', ''));
 		define('Waehrung2Multi',       $this->_getShopSetting('Waehrung2Multi', ''));
@@ -126,12 +126,12 @@ class Shop
 
 		$AVE_Template->assign('theme_folder',     defined('THEME_FOLDER') ? THEME_FOLDER : DEFAULT_THEME_FOLDER);
 		$AVE_Template->assign('ZeigeWaehrung2',   $this->_getShopSetting('ZeigeWaehrung2'));
-		$AVE_Template->assign('Currency2',        $this->_getShopSetting('WaehrungSymbol2'));
-		$AVE_Template->assign('Kommentare',       $this->_getShopSetting('Kommentare'));
-		$AVE_Template->assign('KommentareGast',   $this->_getShopSetting('KommentareGast'));
-		$AVE_Template->assign('GastBestellung',   $this->_getShopSetting('GastBestellung'));
-		$AVE_Template->assign('WidthThumb',       $this->_getShopSetting('Vorschaubilder'));
-		$AVE_Template->assign('WidthTsThumb',     $this->_getShopSetting('Topsellerbilder'));
+		$AVE_Template->assign('Currency2',        WaehrungSymbol2);
+		$AVE_Template->assign('Kommentare',       Kommentare);
+//		$AVE_Template->assign('KommentareGast',   $this->_getShopSetting('KommentareGast'));
+		$AVE_Template->assign('GastBestellung',   GastBestellung);
+		$AVE_Template->assign('WidthThumb',       WidthThumbs);
+		$AVE_Template->assign('WidthTsThumb',     WidthTsThumb);
 		$AVE_Template->assign('TemplateArtikel',  $this->_getShopSetting('TemplateArtikel'));
 		$AVE_Template->assign('TopsellerActive',  $this->_getShopSetting('Topseller'));
 		$AVE_Template->assign('WishListActive',   $this->_getShopSetting('Merkliste'));
@@ -1793,23 +1793,40 @@ $AVE_Template->caching = 0;
 	{
 		global $AVE_DB, $AVE_Template;
 
-		if (Kommentare == 1 && isset($_REQUEST['sendcomment']) && $_REQUEST['sendcomment'] == 1 && isset($_SESSION['user_id']))
-		{
-			$sql = $AVE_DB->Query("
-				SELECT Benutzer
-				FROM " . PREFIX . "_modul_shop_artikel_kommentare
-				WHERE Benutzer = '" . $_SESSION['user_id'] . "'
-				AND ArtId = '" . $_REQUEST['product_id'] . "'
-			");
-			$num = $sql->NumRows();
+		if (!is_numeric($product_id)) exit;
 
-			if ($num < 1)
+		$link = $this->_shopRewrite('index.php?module=shop&action=product_detail&product_id=' . $product_id
+			. '&categ=' . (int)$_REQUEST['categ'] . '&navop=' . (int)$_REQUEST['navop']);
+
+		if (Kommentare == 1 && isset($_REQUEST['sendcomment']) && $_REQUEST['sendcomment'] == 1
+			&& (isset($_SESSION['user_id']) || $this->_getShopSetting('KommentareGast')))
+		{
+			if (!isset($_SESSION['user_id']) && isset($_COOKIE['shoppid_' . $product_id]))
 			{
+				header('Location:' . $link);
+				exit;
+			}
+
+			$num = 0;
+			if (isset($_SESSION['user_id']))
+			{
+				$num = $AVE_DB->Query("
+					SELECT 1
+					FROM " . PREFIX . "_modul_shop_artikel_kommentare
+					WHERE Benutzer = '" . $_SESSION['user_id'] . "'
+					AND ArtId = '" . $product_id . "'
+				")->NumRows();
+			}
+
+			if (!$num)
+			{
+				setcookie('shoppid_' . $product_id, '1', time() + 3600 * 3600);
+
 				$AVE_DB->Query("
 					INSERT INTO " . PREFIX . "_modul_shop_artikel_kommentare
 					SET
-						ArtId     = '" . $_REQUEST['product_id'] . "',
-						Benutzer  = '" . $_SESSION['user_id'] . "',
+						ArtId     = '" . $product_id . "',
+						Benutzer  = '" . (isset($_SESSION['user_id']) ? $_SESSION['user_id'] : 0) . "',
 						Datum     = '" . time() . "',
 						title     = '" . $_REQUEST['ATitel'] . "',
 						comment_text = '" . $_REQUEST['AKommentar'] . "',
@@ -1820,12 +1837,11 @@ $AVE_Template->caching = 0;
 				$SystemMail = get_settings('mail_from');
 				$SystemMailName = get_settings('mail_from_name');
 
-				$URLAdmin = explode('?', $_SERVER['HTTP_REFERER']);
-				$URLAdmin = str_replace('index.php', '', $URLAdmin[0]) . 'admin/index.php?do=modules&action=modedit&mod=shop&moduleaction=edit_comments&pop=1&Id=' . $_REQUEST['product_id'];
+				$URLAdmin = get_home_link() . 'admin/index.php?do=modules&action=modedit&mod=shop&moduleaction=edit_comments&pop=1&Id=' . $product_id;
 
 				$Text = $GLOBALS['mod']['config_vars']['CommentATextMail'];
 				$Text = str_replace('%N%', "\n", $Text);
-				$Text = str_replace('%URL%', $_SERVER['HTTP_REFERER'], $Text);
+				$Text = str_replace('%URL%', $link, $Text);
 				$Text = str_replace('%URLADMIN%', $URLAdmin, $Text);
 
 				send_mail(
@@ -1834,24 +1850,21 @@ $AVE_Template->caching = 0;
 					$GLOBALS['mod']['config_vars']['CommentASubject'],
 					$SystemMail,
 					$SystemMailName,
-					'text',
-					''
+					'text'
 				);
 			}
 
-			header('Location:index.php?module=shop&action=product_detail&product_id='.$_REQUEST['product_id'].'&categ='.$_REQUEST['categ'].'&navop='.$_REQUEST['navop']);
+			header('Location:' . $link);
 			exit;
 		}
 
-		$product_id = (int)$product_id;
-		$sql = $AVE_DB->Query("
+		$row = $AVE_DB->Query("
 			SELECT *
 			FROM " . PREFIX . "_modul_shop_artikel
 			WHERE status = 1
 			AND Id = '" . $product_id . "'
 			AND Erschienen <= '" . time() . "'
-		");
-		$row = $sql->FetchRow();
+		")->FetchRow();
 
 		$the_nav = $this->_getNavigationPath((int)$_REQUEST['categ'], '', 1, (int)$_REQUEST['navop']);
 		$AVE_Template->assign('topnav', $the_nav);
@@ -1910,7 +1923,7 @@ $AVE_Template->caching = 0;
 					COUNT(*) AS Anz
 				FROM " . PREFIX . "_modul_shop_artikel_kommentare
 				WHERE Publik = 1
-				AND ArtId = '" . (int)$_REQUEST['product_id'] . "'
+				AND ArtId = '" . $product_id . "'
 			");
 			$row_w = $sql_w->FetchRow();
 
@@ -1918,7 +1931,7 @@ $AVE_Template->caching = 0;
 //				SELECT Id
 //				FROM " . PREFIX . "_modul_shop_artikel_kommentare
 //				WHERE Publik = 1
-//				AND ArtId = '" . (int)$_REQUEST['product_id'] . "'
+//				AND ArtId = '" . $product_id . "'
 //			");
 //			$num_a = $sql_a->NumRows();
 //
@@ -1928,11 +1941,10 @@ $AVE_Template->caching = 0;
 			$AVE_Template->assign('rez', $row_w);
 			$AVE_Template->assign('AllowComments', 1);
 			$AVE_Template->assign('Comments', $this->_fetchArticleComments());
-		}
-		if (Kommentare == 1 && isset($_SESSION['user_id']))
-		{
-			$AVE_Template->assign('CanComment', 1);
-//			$AVE_Template->assign('Comments', $this->_fetchArticleComments());
+			if (isset($_SESSION['user_id']) || $this->_getShopSetting('KommentareGast'))
+			{
+				$AVE_Template->assign('CanComment', 1);
+			}
 		}
 
 		$tpl_out = $AVE_Template->fetch($GLOBALS['mod']['tpl_dir'] . $this->_shop_product_detailpage);
@@ -2208,28 +2220,38 @@ $AVE_Template->caching = 0;
 		global $AVE_DB;
 
 		// daten des aktuellen bereichs
-		$r_item = $AVE_DB->Query("
+		$item = $AVE_DB->Query("
 			SELECT
 				Id,
 				KatName,
 				parent_id
 			FROM " . PREFIX . "_modul_shop_kategorie
 			WHERE Id = '" . $id . "'
-		");
-		$item = $r_item->FetchRow();
+		")->FetchRow();
 
 		if (is_object($item))
 		{
-//			$esn = $item->parent_id;
-			$result_link = $this->_shopRewrite('index.php?module=shop&amp;categ=' . $item->Id .'&amp;parent=' . $item->parent_id . '&amp;navop=' . getParentShopcateg($item->Id));
-			if ($item->parent_id == 0) return '<a class="mod_shop_navi" href="index.php?module=shop">'.$GLOBALS['mod']['config_vars']['PageName'].'</a>'.$GLOBALS['mod']['config_vars']['PageSep'].'<a class="mod_shop_navi" href="' . $result_link . '">' . $item->KatName . '</a>' . ($result ? $GLOBALS['mod']['config_vars']['PageSep'] : '') . $result;
+			$link = $this->_shopRewrite('index.php?module=shop&amp;categ=' . $item->Id
+				.'&amp;parent=' . $item->parent_id
+				. '&amp;navop=' . getParentShopcateg($item->Id));
 
-			// Daten des darüberliegenden Bereiches
-//			$r_parent = $AVE_DB->Query("SELECT Id,KatName,parent_id FROM " . PREFIX . "_modul_shop_kategorie WHERE Id = " . $item->parent_id);
-//			$parent = $r_parent->FetchRow();
+			if ($item->parent_id == 0)
+			{
+				$retval = '<a class="mod_shop_navi" href="index.php?module=shop">'
+					. $GLOBALS['mod']['config_vars']['PageName'] . '</a>'
+					. $GLOBALS['mod']['config_vars']['PageSep']
+					. '<a class="mod_shop_navi" href="' . $link . '">'
+					. $item->KatName . '</a>'
+					. ($result ? $GLOBALS['mod']['config_vars']['PageSep'] : '')
+					. $result;
 
-//			$result_link = $this->_shopRewrite('index.php?module=shop&amp;categ=' . $item->Id . '&amp;parent=' . $item->parent_id . '&amp;navop=' . getParentShopcateg($item->Id));
-			$result = '<a class="mod_shop_navi" href="' . $result_link . '">' . $item->KatName . '</a>' . ($result ? $GLOBALS['mod']['config_vars']['PageSep'] : '') . $result ;
+				return $retval;
+			}
+
+			$result = '<a class="mod_shop_navi" href="' . $link . '">'
+				. $item->KatName . '</a>'
+				. ($result ? $GLOBALS['mod']['config_vars']['PageSep'] : '')
+				. $result ;
 
 			return $this->_getNavigationPath($item->parent_id, $result, $extra, $nav_op);
 		}
