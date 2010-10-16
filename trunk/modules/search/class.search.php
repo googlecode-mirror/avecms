@@ -31,7 +31,9 @@ class Search
 
 	function _searchSpecialchars($string)
 	{
+		$string = stripslashes($string);
 		$string = str_replace ( '"', '&quot;', $string );
+		$string = addslashes($string);
 		$string = urldecode($string);
 
 		return $string;
@@ -83,38 +85,9 @@ class Search
 
 		if (strlen($this->_search_string) > 2)
 		{
-			$sw  = addslashes(strtolower($this->_search_string));
-			$exist = $AVE_DB->Query("
-				SELECT 1
-				FROM " . PREFIX . "_modul_search
-				WHERE search_query = '" . $sw . "'
-				LIMIT 1
-			")->NumRows();
-
-			if ($exist)
-			{
-				$AVE_DB->Query("
-					UPDATE " . PREFIX . "_modul_search
-					SET search_count = search_count+1
-					WHERE search_query = '" . $sw . "'
-				");
-			}
-			else
-			{
-				$AVE_DB->Query("
-					INSERT
-					INTO " . PREFIX . "_modul_search
-					SET
-						Id = '',
-						search_query = '" . $sw . "',
-						search_count = 1
-				");
-			}
-
 			// экранирование для LIKE
 			$tmp = str_replace('\\', '\\\\', $this->_search_string);
 			$tmp = addcslashes(addslashes($tmp), '%_');
-
 //			$tmp = preg_replace('/  +/', ' ', $tmp);
 			$tmp = preg_split('/\s+/', $tmp);
 
@@ -138,7 +111,7 @@ class Search
 						$where .= ' AND ' . implode(' AND ', array_merge($__tmp, $___tmp));
 					}
 				}
-				else
+				elseif (!empty($__tmp))
 				{
 					$where = 'WHERE ' . implode(' AND ', array_merge($__tmp, $___tmp));
 				}
@@ -147,68 +120,66 @@ class Search
 			$num = 0;
 			if ($where != '')
 			{
-				if (isset($_REQUEST['ts']) && 1 == $_REQUEST['ts'])
-				{
-					$type_search = "WHERE rubric_field_type = 'kurztext'";
-					$type_navi = '&amp;ts=1';
-				}
-				else
-				{
-					$type_search = "WHERE rubric_field_type = 'langtext'";
-					$type_navi = '';
-				}
-
-				$sql_rf = $AVE_DB->Query("
-					SELECT Id
-					FROM " . PREFIX . "_rubric_fields
-					" . $type_search
-				);
-				$w_rf = array();
-				while ($row = $sql_rf->FetchRow())
-				{
-					$w_rf[] = "rubric_field_id = " . $row->Id;
-				}
-				$w_rf = ' AND (' . implode(' OR ', $w_rf) . ')';
-
-				$num = $AVE_DB->Query("
-					SELECT
-						document_id,
-						field_value
-					FROM " . PREFIX . "_document_fields
-					" . $where . "
-					" . $w_rf . "
-					AND document_in_search = '1'
-				")->numrows();
+				$type_search = (isset($_REQUEST['ts']) && 1 == $_REQUEST['ts']);
 
 				$limit = $this->_limit;
-				$seiten = ceil($num / $limit);
 				$start = get_current_page() * $limit - $limit;
 
 				$query_feld = $AVE_DB->Query("
-					SELECT
+					SELECT SQL_CALC_FOUND_ROWS
 						document_id,
 						field_value
 					FROM " . PREFIX . "_document_fields
+					LEFT JOIN " . PREFIX . "_rubric_fields AS rub
+						ON rubric_field_id = rub.Id
 					" . $where . "
-					" . $w_rf . "
+					AND rubric_field_type = '" . ($type_search ? 'kurztext' : 'langtext') . "'
 					AND document_in_search = '1'
 					LIMIT " . $start . "," . $limit
 				);
 
-				$AVE_DB->Query("
-					UPDATE " . PREFIX . "_modul_search
-					SET search_found = '" . $num . "'
+				$num = $AVE_DB->Query("SELECT FOUND_ROWS()")->GetCell();
+
+				$sw  = addslashes(strtolower($this->_search_string));
+
+				$exist = $AVE_DB->Query("
+					SELECT 1
+					FROM " . PREFIX . "_modul_search
 					WHERE search_query = '" . $sw . "'
-				");
+					LIMIT 1
+				")->NumRows();
+
+				if ($exist)
+				{
+					$AVE_DB->Query("
+						UPDATE " . PREFIX . "_modul_search
+						SET
+							search_found = '" . (int)$num . "',
+							search_count = search_count+1
+						WHERE search_query = '" . $sw . "'
+					");
+				}
+				else
+				{
+					$AVE_DB->Query("
+						INSERT
+						INTO " . PREFIX . "_modul_search
+						SET
+							Id = '',
+							search_found = '" . (int)$num . "',
+							search_query = '" . $sw . "',
+							search_count = 1
+					");
+				}
 
 				if ($num > $limit)
 				{
 					$page_nav = " <a class=\"pnav\" href=\"index.php?module=search&amp;query="
 						. urlencode($this->_search_string)
-						. $type_navi
+						. ($type_search ? '&amp;ts=1' : '')
 						. ((isset($_REQUEST['or']) && 1 == $_REQUEST['or']) ? "&amp;or=1" : "")
 						. "&amp;page={s}\">{t}</a> ";
-					$page_nav = get_pagination($seiten, 'page', $page_nav, trim(get_settings('navi_box')));
+					$page_nav = get_pagination(ceil($num / $limit), 'page', $page_nav, trim(get_settings('navi_box')));
 					$AVE_Template->assign('q_navi', $page_nav);
 				}
 			}
@@ -245,10 +216,10 @@ class Search
 						$fo = array();
 						preg_match($regex_snapshot, $row->Text, $fo);
 
-						$row->Text = ' ... ';
+						$row->Text = $type_search ? '' : ' ... ';
 						while (list($key, $val) = @each($fo))
 						{
-							$row->Text .= $val . ' ... ';
+							$row->Text .= $val . ($type_search ? '' : ' ... ');
 						}
 
 						if (1 == $this->_highlight && !empty($this->_stem_words))
