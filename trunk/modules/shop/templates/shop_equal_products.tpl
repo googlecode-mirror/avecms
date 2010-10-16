@@ -8,7 +8,7 @@
 {if $i->BildFehler==1}
 <img  src="{$shop_images}no_productimage.gif" alt="{$i->ArtName|truncate:175|stripslashes|escape:html}" />
 {else}
-<img  src="{if $i->ImgSrc=='FALSE'}modules/shop/thumb.php?file={$i->Bild}&amp;type={$i->Bild_Typ}&amp;x_width={$WidthThumb}{else}{$i->ImgSrc}{/if}" border="0" alt="{$i->ArtName|truncate:175|stripslashes|escape:html}" />
+<img  src="{if $i->ImgSrc=='FALSE'}modules/shop/thumb.php?file={$i->Bild}&amp;type={$i->Bild_Typ}&amp;xwidth={$WidthThumb}{else}{$i->ImgSrc}{/if}" border="0" alt="{$i->ArtName|truncate:175|stripslashes|escape:html}" />
 {/if}
 </a>
 </div>

@@ -1529,7 +1529,7 @@ CREATE TABLE `cp_modul_shop_artikel_downloads` (
   `DateiTyp` enum('full','update','bugfix','other') NOT NULL default 'full',
   `TageNachKauf` mediumint(5) NOT NULL default '365',
   `Bild` varchar(255) NOT NULL,
-  `Titel` varchar(200) NOT NULL,
+  `title` varchar(200) NOT NULL,
   `description` text NOT NULL,
   `Position` mediumint(3) unsigned NOT NULL default '1',
   PRIMARY KEY  (`Id`)
@@ -1540,7 +1540,7 @@ CREATE TABLE `cp_modul_shop_artikel_kommentare` (
   `ArtId` int(10) unsigned NOT NULL default '0',
   `Benutzer` int(10) unsigned NOT NULL default '0',
   `Datum` int(14) unsigned NOT NULL default '0',
-  `Titel` varchar(255) NOT NULL,
+  `title` varchar(255) NOT NULL,
   `comment_text` text NOT NULL,
   `Wertung` smallint(1) unsigned NOT NULL default '0',
   `Publik` tinyint(1) unsigned NOT NULL default '0',
