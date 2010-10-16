@@ -1,7 +1,7 @@
 {oBasket->getBasket assign='basket'}
 
 <div id="basket" class="box">
-	<h2>{#BASKET_TITLE#} <span class="ajax-loader" style="display:none;"><img src="{$ABS_PATH}templates/{$smarty.const.THEME_FOLDER}/images/loader-12.gif"></span></h2>
+	<h2>{#BASKET_TITLE#} <span class="ajax-loader" style="display:none;"><img src="{$ABS_PATH}templates/{$smarty.const.THEME_FOLDER}/images/loader-12.gif" alt="load..."></span></h2>
 	{if $basket.products}
 	<div>
 		<ul>
@@ -15,6 +15,7 @@
 </div>
 {literal}
 <script type="text/javascript">
+<!--
 $(document).ready(function() {
 	$("#basket li img").click(function() {
 		$("#basket .ajax-loader").show();
@@ -59,5 +60,6 @@ $(document).ready(function() {
 		return false;
 	});
 });
+-->
 </script>
 {/literal}

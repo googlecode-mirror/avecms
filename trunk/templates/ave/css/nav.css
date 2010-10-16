@@ -2,7 +2,7 @@
 ----------------------------------------------- */
 ul.nav,
 ul.nav * { margin:0; padding:0; background-image: none;;}
-ul.nav { position:relative; max-width:10 0%; height: 40px; background: url(../images/menu_hor_btns.png) repeat-x left -40px; }
+ul.nav { position:relative; max-width:100%; height: 40px; background: url(../images/menu_hor_btns.png) repeat-x left -40px; }
 ul.nav li { cursor:pointer; float:left; text-align:center; list-style-type:none; font-weight:normal; font-size: 14px; position:relative; top:0; left:0; border-right: 1px solid #DBDBDB; }
 ul.nav li ul { cursor:default; width:100%; max-width:100%; position:absolute; height:auto; top: 40px; background-position:0 0 !important; left:-9000px; }
 ul.nav li ul li { padding:0; border:none; width:auto; max-width:none; }
