@@ -156,7 +156,7 @@ class AVE_Document
 		global $AVE_Template;
 
 		// Определяем пустое изображение
-		$img_pixel = ABS_PATH . 'templates/' . $_SESSION['admin_theme'] . '/images/blanc.gif';
+		$img_pixel = 'templates/' . $_SESSION['admin_theme'] . '/images/blanc.gif';
 		$field = '';
 
 		switch ($field_type)
