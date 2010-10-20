@@ -1,27 +1,15 @@
 <html>
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=windows-1251" />
-<title>{$CompanyHeadHtml}</title>
-</head>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=windows-1251" />
+		<title>{$CompanyHeadHtml}</title>
+	</head>
 {literal}
 <style type="text/css">
-html, body, td, div, th {
-	font:11px Verdana,Arial,Helvetica,sans-serif;
-}
-.articlesborder {
-	background-color:#ccc;
-}
-.articlesrow {
-	background-color:#fff;
-}
-.articlesheader {
-	background-color:#eee;
-}
-.overall {
-	background-color:#eee;
-	font-size:14px;
-	border-top:1px solid #ccc;
-}
+html, body, td, div, th {font:11px Verdana,Arial,Helvetica,sans-serif;}
+.articlesborder {background-color:#ccc;}
+.articlesrow {background-color:#fff;}
+.articlesheader {background-color:#eee;}
+.overall {background-color:#eee;font-size:14px;border-top:1px solid #ccc;}
 </style>
 {/literal}
 <body>

@@ -1,3 +1,4 @@
+
 <script language="javascript">
 function print_container(id,act) {ldelim}
 	var html=document.getElementById(id).innerHTML;
@@ -20,9 +21,8 @@ function request(id) {ldelim}
 {rdelim}
 </script>
 
-<div id="content">
+<div class="grid_12">
 	<h2 id="page-heading">{#MyOrders#}</h2>
-
 
 	{if $orderRequestOk==1}
 		{#OrderOverviewActionRequestOk#}<br />
@@ -82,15 +82,49 @@ function request(id) {ldelim}
 </div>
 
 {if $smarty.request.print!=1}
-	<div class="leftnavi" >
-		{$ShopNavi}
-		<div style="clear:both"></div>
-		{$Search}
-		{$Basket}
-		{$UserPanel}
-		{$MyOrders}
-		{$Topseller}
-		{$InfoBox}
+	<div class="grid_4">
+		<!-- Правое меню -->
+		<div class="box menu">
+			<h2><a href="#" id="toggle-section-menu">{#ProductOverview#}</a></h2>
+			<div class="block" id="section-menu">{$ShopNavi}</div>
+		</div>
+
+		<!-- Блок авторизации -->
+		<div class="box">
+			<h2> <a href="#" id="toggle-login-forms">{#UserPanel#}</a> </h2>
+			<div class="block" id="login-forms">{$UserPanel}</div>
+		</div>
+
+		<!-- Блок поиска по магазину -->
+		<div class="box">
+			<h2><a href="#" id="toggle-shop-search">{#ProductSearch#}</a></h2>
+			<div class="block" id="shop-search">{$Search}</div>
+		</div>
+
+		<!-- Блок корзины -->
+		<div class="box">
+			<h2><a href="#" id="toggle-shopbasket">{#ShopBasket#}</a></h2>
+			<div class="block" id="shopbasket">{$Basket}</div>
+		</div>
+
+		{if $smarty.session.user_id}
+			<!-- Блок обработанных заказов -->
+			<div class="box">
+				<h2><a href="#" id="toggle-myordersbox">{#MyOrders#}</a></h2>
+				<div class="block" id="myordersbox">{$MyOrders}</div>
+			</div>
+		{/if}
+
+		<!-- Блок информации -->
+		<div class="box">
+			<h2><a href="#" id="toggle-shopinfobox">{#Infopage#}</a></h2>
+			<div class="block" id="shopinfobox">{$InfoBox}</div>
+		</div>
+
+		<!-- Блок популярных товаров -->
+		<div class="box">
+			<h2><a href="#" id="toggle-shoppopprods">{#Topseller#}</a></h2>
+			<div class="block" id="shoppopprods">{$Topseller}</div>
+		</div>
 	</div>
 {/if}
-<div style="clear:both"></div>

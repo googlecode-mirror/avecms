@@ -1,3 +1,4 @@
+
 {if $TopsellerActive==1}
 	{foreach from=$TopSeller item=ts name=tsitems}
 		<table width="100%" style="margin:0">

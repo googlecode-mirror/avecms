@@ -1756,7 +1756,7 @@ CREATE TABLE `cp_modul_shop_versandarten` (
   `LaenderVersand` tinytext NOT NULL,
   `Pauschalkosten` decimal(5,2) NOT NULL default '0.00',
   `KeineKosten` tinyint(1) unsigned NOT NULL default '0',
-  `Aktiv` tinyint(1) unsigned NOT NULL default '0',
+  `status` tinyint(1) unsigned NOT NULL default '0',
   `NurBeiGewichtNull` tinyint(1) unsigned NOT NULL default '0',
   `ErlaubteGruppen` tinytext NOT NULL,
   PRIMARY KEY  (`Id`)
@@ -1799,7 +1799,7 @@ CREATE TABLE `cp_modul_shop_zahlungsmethoden` (
   `ErlaubteVersandLaender` tinytext NOT NULL,
   `ErlaubteVersandarten` tinytext NOT NULL,
   `ErlaubteGruppen` tinytext NOT NULL,
-  `Aktiv` tinyint(1) unsigned NOT NULL default '0',
+  `status` tinyint(1) unsigned NOT NULL default '0',
   `Kosten` decimal(7,2) NOT NULL default '0.00',
   `KostenOperant` enum('Wert','%') NOT NULL default 'Wert',
   `InstId` varchar(100) NOT NULL,
@@ -1849,7 +1849,7 @@ INSERT INTO `cp_modul_sysblock` VALUES
 
 CREATE TABLE `cp_modul_who_is_online` (
   `id` int(10) unsigned NOT NULL auto_increment,
-  `ip` int(11) NOT NULL default '0',
+  `ip` int(11) unsigned NOT NULL default '0',
   `country` char(64) NOT NULL default '',
   `countrycode` char(2) NOT NULL default '',
   `city` char(64) NOT NULL default '',

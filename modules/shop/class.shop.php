@@ -2,18 +2,54 @@
 
 class Shop
 {
-
-	var $_product_detail = 'index.php?module=shop&amp;action=product_detail&amp;product_id=';
-	var $_delete_item = 'index.php?module=shop&amp;action=delitem&amp;product_id=';
-	var $_add_item = 'index.php?add=1&amp;module=shop&amp;action=addtobasket&amp;product_id=';
-	var $_add_item_wishlist = 'index.php?add=1&amp;module=shop&amp;action=addtowishlist&amp;product_id=';
-	var $_link_manufaturer = 'index.php?module=shop&amp;manufacturer=';
-	var $_expander = '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;';
-	var $_shop_navi_tpl = 'shop_navi.tpl';
-	var $_shop_navi_sub_tpl = 'shop_navi_sub.tpl';
-	var $_shop_start_tpl = 'shop_start.tpl';
-	var $_shop_product_detailpage = 'shop_product_detail.tpl';
 	var $_limit_shoparticles = 1;
+
+	var $_expander_short = '&nbsp;&nbsp;';
+	var $_expander_long  = '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;';
+
+	var $_link_delete_item       = 'index.php?module=shop&amp;action=delitem&amp;product_id=';
+	var $_link_add_item          = 'index.php?module=shop&amp;action=addtobasket&amp;add=1&amp;product_id=';
+	var $_link_add_item_wishlist = 'index.php?module=shop&amp;action=addtowishlist&amp;add=1&amp;product_id=';
+	var $_link_create_account    = 'index.php?module=shop&amp;action=checkout&amp;create_account=';
+	var $_link_manufaturer       = 'index.php?module=shop&amp;manufacturer=';
+	var $_link_category          = 'index.php?module=shop&amp;categ=%u&amp;parent=%u&amp;navop=%u';
+	var $_link_product_detail    = 'index.php?module=shop&action=product_detail&product_id=%u&categ=%u&navop=%u';
+	var $_link_file_link         = 'index.php?module=shop&action=mydownloads&sub=getfile&Id=%u&FileId=%u&getId=%u';
+
+	var $_link_start       = 'index.php?module=shop';
+	var $_link_wishlist    = 'index.php?module=shop&amp;action=wishlist&amp;pop=1';
+	var $_link_basket      = 'index.php?module=shop&amp;action=showbasket';
+	var $_link_checkout    = 'index.php?module=shop&amp;action=checkout';
+	var $_link_myorders    = 'index.php?module=shop&amp;action=myorders';
+	var $_link_mydownloads = 'index.php?module=shop&amp;action=mydownloads';
+	var $_link_datainf     = 'index.php?module=shop&amp;action=infopage&amp;page=datainf';
+	var $_link_shippinginf = 'index.php?module=shop&amp;action=infopage&amp;page=shippinginf';
+	var $_link_imprint     = 'index.php?module=shop&amp;action=infopage&amp;page=imprint';
+	var $_link_agb         = 'index.php?module=shop&amp;action=infopage&amp;page=agb';
+
+	var $_shop_navi_tpl              = 'shop_navi.tpl';
+	var $_shop_navi_sub_tpl          = 'shop_navi_sub.tpl';
+	var $_shop_start_tpl             = 'shop_start.tpl';
+	var $_shop_product_detail_tpl    = 'shop_product_detail.tpl';
+	var $_shop_basket_tpl            = 'shop_basket.tpl';
+	var	$_shop_basket_small_tpl      = 'shop_basket_small.tpl';
+	var	$_shop_smallsearch_tpl       = 'shop_smallsearch.tpl';
+	var	$_shop_topseller_tpl         = 'shop_topseller.tpl';
+	var $_shop_infobox_tpl           = 'shop_infobox.tpl';
+	var $_shop_myorders_tpl          = 'shop_myorders.tpl';
+	var $_shop_infopage_tpl          = 'shop_infopage.tpl';
+	var $_shop_wishlist_tpl          = 'shop_wishlist.tpl';
+	var $_shop_paymentinfo_tpl       = 'shop_paymentinfo.tpl';
+	var $_shop_mydownloads_tpl       = 'shop_mydownloads.tpl';
+	var $_shop_orders_tpl            = 'shop_orders.tpl';
+	var $_shop_checkout_tpl          = 'shop_checkout.tpl';
+	var $_shop_orderconfirm_html_tpl = 'shop_orderconfirm_html.tpl';
+	var $_shop_orderconfirm_text_tpl = 'shop_orderconfirm_text.tpl';
+	var $_shop_confirm_thankyou_tpl  = 'shop_confirm_thankyou.tpl';
+	var $_shop_checkoutinfo_tpl      = 'shop_checkoutinfo.tpl';
+	var $_shop_billing_tpl           = 'shop_billing.tpl';
+	var $_login_loginform_tpl        = 'loginform.tpl';
+	var $_login_userpanel_tpl        = 'userpanel.tpl';
 
 	/**
 	 * Ïðîâåðêà ñòàòóñà Ìàãàçèíà
@@ -37,11 +73,9 @@ class Shop
 	function _transId($c = 0)
 	{
 		$transid = '';
-		$chars = array('1', '2', '3', '4', '5', '6', '7', '8', '9', '0',
-			'a', 'A', 'b', 'B', 'c', 'C', 'd', 'D', 'e', 'E', 'f', 'F', 'g', 'G', 'h', 'H', 'i', 'I', 'j', 'J',
-			'k', 'K', 'l', 'L', 'm', 'M', 'n', 'N', 'o', 'O', 'p', 'P', 'q', 'Q', 'r', 'R', 's', 'S', 't', 'T',
-			'u', 'U', 'v', 'V', 'w', 'W', 'x', 'X', 'y', 'Y', 'z', 'Z');
-		$ch = ($c != 0) ? $c : 7;
+		$chars = array_merge(range('A', 'Z'), range('a', 'z'), range('0', '9'));
+		shuffle($chars);
+		$ch = (is_numeric($c) && $c > 0) ? $c : 7;
 		$count = count($chars) - 1;
 		srand((double)microtime() * 1000000);
 		for ($i = 0; $i < $ch; $i++)
@@ -145,18 +179,16 @@ class Shop
 		$AVE_Template->assign('RandomOfferKateg', $this->_getShopSetting('ZufallsAngebotKat', 0) == 1 ? $this->_randomOffer($categ) : '');
 		$AVE_Template->assign('RandomOffer',      $this->_getShopSetting('ZufallsAngebot', 0) == 1 ? $this->_randomOffer() : '');
 		$AVE_Template->assign('MyIp',             isset($_SERVER['REMOTE_ADDR']) ? $_SERVER['REMOTE_ADDR'] : '');
-		$AVE_Template->assign('WishListLink',     $this->_shopRewrite('index.php?module=shop&amp;action=wishlist&amp;pop=1'));
 		$AVE_Template->assign('TopSeller',        $this->_topSeller());
 		$AVE_Template->assign('UserPanel',        $this->_shopLogin());
 		$AVE_Template->assign('ShopNavi',         $this->fetchShopNavi());
-		$AVE_Template->assign('Basket',           $AVE_Template->fetch($GLOBALS['mod']['tpl_dir'] . 'shop_basket_small.tpl'));
-		$AVE_Template->assign('Search',           $AVE_Template->fetch($GLOBALS['mod']['tpl_dir'] . 'shop_smallsearch.tpl'));
-		$AVE_Template->assign('Topseller',        $AVE_Template->fetch($GLOBALS['mod']['tpl_dir'] . 'shop_topseller.tpl'));
-//		$AVE_Template->assign('TopNav',           $AVE_Template->fetch($GLOBALS['mod']['tpl_dir'] . 'shop_topnav.tpl'));
+		$AVE_Template->assign('Basket',           $AVE_Template->fetch($GLOBALS['mod']['tpl_dir'] . $this->_shop_basket_small_tpl));
+		$AVE_Template->assign('Search',           $AVE_Template->fetch($GLOBALS['mod']['tpl_dir'] . $this->_shop_smallsearch_tpl));
+		$AVE_Template->assign('Topseller',        $AVE_Template->fetch($GLOBALS['mod']['tpl_dir'] . $this->_shop_topseller_tpl));
 
 $AVE_Template->caching = 1;
-		$AVE_Template->assign('InfoBox',          $this->_shopRewrite($AVE_Template->fetch($GLOBALS['mod']['tpl_dir'] . 'shop_infobox.tpl')));
-		$AVE_Template->assign('MyOrders',         $this->_shopRewrite($AVE_Template->fetch($GLOBALS['mod']['tpl_dir'] . 'shop_myorders.tpl')));
+		$AVE_Template->assign('InfoBox',          $this->_shopRewrite($AVE_Template->fetch($GLOBALS['mod']['tpl_dir'] . $this->_shop_infobox_tpl)));
+		$AVE_Template->assign('MyOrders',         $this->_shopRewrite($AVE_Template->fetch($GLOBALS['mod']['tpl_dir'] . $this->_shop_myorders_tpl)));
 $AVE_Template->caching = 0;
 	}
 
@@ -179,8 +211,8 @@ $AVE_Template->caching = 0;
 				Angebot,
 				AngebotBild
 			FROM " . PREFIX . "_modul_shop_artikel
-			WHERE Angebot = 1
-			AND status = 1
+			WHERE Angebot = '1'
+			AND status = '1'
 			AND Erschienen <= '" . time() . "'
 			" . ($categ != '' ? "AND KatId = '" . $categ . "'" : '') . "
 			ORDER BY rand()
@@ -190,7 +222,7 @@ $AVE_Template->caching = 0;
 
 		if ($row)
 		{
-			$row->Detaillink = $this->_shopRewrite($this->_product_detail . $row->Id . '&amp;categ=' . $row->KatId . '&amp;navop=' . getParentShopcateg($row->KatId));
+			$row->Detaillink = $this->_shopRewrite(sprintf($this->_link_product_detail, $row->Id, $row->KatId, getParentShopcateg($row->KatId)));
 			$img = (file_exists(BASE_DIR . '/' . $row->AngebotBild)) ? '<!-- START OFFER --><a title="' . $row->ArtName . '" href="' . $row->Detaillink . '"><img src="' . ABS_PATH . $row->AngebotBild . '" alt="' . $row->ArtName . '" border=""></a><br /><br /><!-- END OFFER -->' : '';
 		}
 		else
@@ -257,7 +289,7 @@ $AVE_Template->caching = 0;
 				Bild,
 				Preis
 			FROM " . PREFIX . "_modul_shop_artikel
-			WHERE status = 1
+			WHERE status = '1'
 			AND Erschienen <= '" . time() . "'
 			" . $db_categ . "
 			ORDER BY Bestellungen DESC
@@ -283,7 +315,11 @@ $AVE_Template->caching = 0;
 				$row->Img = '<img src="modules/shop/thumb.php?file=' . $row->Bild . '&amp;type=' . $type . '&amp;xwidth=' . WidthTsThumb . '" alt="" border="" />';
 			}
 			$row->TextKurz = $row->Img . substr(strip_tags($row->TextKurz,'<b>,<strong>,<em>,<i>'), 0, 250) . '...';
-			$row->Detaillink = $this->_shopRewrite($this->_product_detail . $row->Id . '&amp;categ=' . $row->KatId . '&amp;navop=' . getParentShopcateg($row->KatId));
+			$row->Detaillink = $this->_shopRewrite(sprintf($this->_link_product_detail,
+				$row->Id,
+				$row->KatId,
+				getParentShopcateg($row->KatId)
+			));
 			array_push($topSeller, $row);
 		}
 
@@ -338,7 +374,7 @@ $AVE_Template->caching = 0;
 		}
 
 		$AVE_Template->assign('Inf', $Inf);
-		$tpl_out = $AVE_Template->fetch($GLOBALS['mod']['tpl_dir'] . 'shop_infopage.tpl');
+		$tpl_out = $AVE_Template->fetch($GLOBALS['mod']['tpl_dir'] . $this->_shop_infopage_tpl);
 		define('MODULE_CONTENT', $tpl_out);
 		define('MODULE_SITE', $InfName);
 	}
@@ -352,7 +388,7 @@ $AVE_Template->caching = 0;
 		global $AVE_Template;
 
 		$AVE_Template->assign('MyWishlist', $this->_showWishlist());
-		$tpl_out = $AVE_Template->fetch($GLOBALS['mod']['tpl_dir'] . 'shop_wishlist.tpl');
+		$tpl_out = $AVE_Template->fetch($GLOBALS['mod']['tpl_dir'] . $this->_shop_wishlist_tpl);
 		define('MODULE_CONTENT', $tpl_out);
 		define('MODULE_SITE', $GLOBALS['mod']['config_vars']['Wishlist']);
 	}
@@ -389,17 +425,17 @@ $AVE_Template->caching = 0;
 	{
 		global $AVE_Template;
 
-$AVE_Template->caching = 1;
-if (!$AVE_Template->is_cached($tpl_dir . 'loginform.tpl'))
-{
+		$AVE_Template->caching = 1;
 
-		$AVE_Template->config_load($lang_file, 'displayloginform');
-//		$config_vars = $AVE_Template->get_config_vars();
-//		$AVE_Template->assign('config_vars', $config_vars);
-		$AVE_Template->assign('active', 1);
-}
-		$output = $AVE_Template->fetch($tpl_dir . 'loginform.tpl');
-$AVE_Template->caching = 0;
+		if (!$AVE_Template->is_cached($tpl_dir . $this->_login_loginform_tpl))
+		{
+			$AVE_Template->config_load($lang_file, 'displayloginform');
+			$AVE_Template->assign('active', 1);
+		}
+
+		$output = $AVE_Template->fetch($tpl_dir . $this->_login_loginform_tpl);
+
+		$AVE_Template->caching = 0;
 
 		return $output;
 	}
@@ -415,16 +451,16 @@ $AVE_Template->caching = 0;
 	{
 		global $AVE_Template;
 
-$AVE_Template->caching = 1;
-if (!$AVE_Template->is_cached($tpl_dir . 'userpanel.tpl'))
-{
+		$AVE_Template->caching = 1;
 
-		$AVE_Template->config_load($lang_file, 'displaypanel');
-//		$config_vars = $AVE_Template->get_config_vars();
-//		$AVE_Template->assign('config_vars', $config_vars);
-}
-		$output = $AVE_Template->fetch($tpl_dir . 'userpanel.tpl');
-$AVE_Template->caching = 0;
+		if (!$AVE_Template->is_cached($tpl_dir . $this->_login_userpanel_tpl))
+		{
+			$AVE_Template->config_load($lang_file, 'displaypanel');
+		}
+
+		$output = $AVE_Template->fetch($tpl_dir . $this->_login_userpanel_tpl);
+
+		$AVE_Template->caching = 0;
 
 		return $output;
 	}
@@ -447,7 +483,7 @@ $AVE_Template->caching = 0;
 		//$AVE_Template->assign('config_vars', $config_vars);
 		$AVE_Template->assign('theme_folder', $theme_folder);
 		$AVE_Template->assign('row', $row);
-		$AVE_Template->display($GLOBALS['mod']['tpl_dir'] . 'shop_paymentinfo.tpl');
+		$AVE_Template->display($GLOBALS['mod']['tpl_dir'] . $this->_shop_paymentinfo_tpl);
 	}
 
 	/**
@@ -649,11 +685,9 @@ $AVE_Template->caching = 0;
 					");
 					while ($row_df = $sql_df->FetchRow())
 					{
-						if ($row->DownloadBis < time())
-						{
-							$row_df->Abgelaufen = 1;
-						}
-						$row_df->description = str_replace('"','&quot;',$row_df->description);
+						if ($row->DownloadBis < time()) $row_df->Abgelaufen = 1;
+						$row_df->link = sprintf($this->_link_file_link, $row_df->Id, $row_df->ArtikelId, $row_df->Id);
+						$row_df->description = str_replace('"', '&quot;',$row_df->description);
 						$row_df->size = (file_exists(BASE_DIR . '/modules/shop/files/' . $row_df->Datei) ) ? round(@filesize(BASE_DIR . '/modules/shop/files/'.$row_df->Datei)/1024,2) : '';
 						array_push($DataFiles, $row_df);
 					}
@@ -670,6 +704,7 @@ $AVE_Template->caching = 0;
 					");
 					while ($row_df = $sql_df->FetchRow())
 					{
+						$row_df->link = sprintf($this->_link_file_link, $row_df->Id, $row_df->ArtikelId, $row_df->Id);
 						$row_df->description = str_replace('"', '&quot;', $row_df->description);
 						$row_df->size = (file_exists(BASE_DIR . '/modules/shop/files/' . $row_df->Datei) ) ? round(@filesize(BASE_DIR . '/modules/shop/files/' . $row_df->Datei)/1024, 2) : '';
 						array_push($DataFilesUpdates, $row_df);
@@ -687,6 +722,7 @@ $AVE_Template->caching = 0;
 					");
 					while ($row_df = $sql_df->FetchRow())
 					{
+						$row_df->link = sprintf($this->_link_file_link, $row_df->Id, $row_df->ArtikelId, $row_df->Id);
 						$row_df->description = str_replace('"', '&quot;', $row_df->description);
 						$row_df->size = (file_exists(BASE_DIR . '/modules/shop/files/' . $row_df->Datei) ) ? round(@filesize(BASE_DIR . '/modules/shop/files/'.$row_df->Datei)/1024,2) : '';
 						array_push($DataFilesOther, $row_df);
@@ -704,7 +740,8 @@ $AVE_Template->caching = 0;
 					");
 					while ($row_df = $sql_df->FetchRow())
 					{
-						$row_df->description = str_replace('"','&quot;',$row_df->description);
+						$row_df->link = sprintf($this->_link_file_link, $row_df->Id, $row_df->ArtikelId, $row_df->Id);
+						$row_df->description = str_replace('"', '&quot;',$row_df->description);
 						$row_df->size = (file_exists(BASE_DIR . '/modules/shop/files/' . $row_df->Datei) ) ? round(@filesize(BASE_DIR . '/modules/shop/files/'.$row_df->Datei)/1024,2) : '';
 						array_push($DataFilesBugfixes, $row_df);
 					}
@@ -715,7 +752,7 @@ $AVE_Template->caching = 0;
 			}
 
 			$AVE_Template->assign('downloads', $downloads);
-			$tpl_out = $AVE_Template->fetch($GLOBALS['mod']['tpl_dir'] . 'shop_mydownloads.tpl');
+			$tpl_out = $AVE_Template->fetch($GLOBALS['mod']['tpl_dir'] . $this->_shop_mydownloads_tpl);
 			$tpl_out = $this->_shopRewrite($tpl_out);
 
 			define('MODULE_CONTENT', $tpl_out);
@@ -725,7 +762,7 @@ $AVE_Template->caching = 0;
 		else
 		{
 			$AVE_Template->assign('Inf', $GLOBALS['mod']['config_vars']['NoLoggedIn']);
-			$tpl_out = $AVE_Template->fetch($GLOBALS['mod']['tpl_dir'] . 'shop_infopage.tpl');
+			$tpl_out = $AVE_Template->fetch($GLOBALS['mod']['tpl_dir'] . $this->_shop_infopage_tpl);
 			define('MODULE_CONTENT', $tpl_out);
 			define('MODULE_SITE', $GLOBALS['mod']['config_vars']['PageName'] . $GLOBALS['mod']['config_vars']['PageSep'] . $GLOBALS['mod']['config_vars']['DownloadsOverviewShowLink']);
 		}
@@ -771,7 +808,7 @@ $AVE_Template->caching = 0;
 
 			$AVE_Template->assign('my_orders', $my_orders);
 
-			$tpl_out = $AVE_Template->fetch($GLOBALS['mod']['tpl_dir'] . 'shop_orders.tpl');
+			$tpl_out = $AVE_Template->fetch($GLOBALS['mod']['tpl_dir'] . $this->_shop_orders_tpl);
 			$tpl_out = $this->_shopRewrite($tpl_out);
 
 			define('MODULE_CONTENT', $tpl_out);
@@ -780,7 +817,7 @@ $AVE_Template->caching = 0;
 		else
 		{
 			$AVE_Template->assign('Inf', $GLOBALS['mod']['config_vars']['NoLoggedIn']);
-			$tpl_out = $AVE_Template->fetch($GLOBALS['mod']['tpl_dir'] . 'shop_infopage.tpl');
+			$tpl_out = $AVE_Template->fetch($GLOBALS['mod']['tpl_dir'] . $this->_shop_infopage_tpl);
 			define('MODULE_CONTENT', $tpl_out);
 			define('MODULE_SITE', $GLOBALS['mod']['config_vars']['PageName'] . $GLOBALS['mod']['config_vars']['PageSep'] . $GLOBALS['mod']['config_vars']['OrderOverviewShowLink']);
 		}
@@ -800,7 +837,8 @@ $AVE_Template->caching = 0;
 					cat.*,
 					COUNT(KatId) AS acount
 				FROM " . PREFIX . "_modul_shop_kategorie AS cat
-				LEFT JOIN " . PREFIX . "_modul_shop_artikel AS art ON KatId = cat.Id AND status = 1
+				LEFT JOIN " . PREFIX . "_modul_shop_artikel AS art
+					ON KatId = cat.Id AND status = '1'
 				GROUP BY cat.Id
 				ORDER BY position ASC
 			");
@@ -843,14 +881,12 @@ $AVE_Template->caching = 0;
 
 		foreach ($Items as $item)
 		{
-			$item->ntr = '';
-			$item->visible_title = $prefix . '' . $item->KatName;
-			$item->sub = ($item->parent_id == 0) ? 0 : 1;
-
-			$item->dyn_link = 'index.php?module=shop&amp;categ=' . $item->Id . '&amp;parent=' . $item->parent_id . '&amp;navop=' . (($item->sub == 0) ? $item->Id : getParentShopcateg($item->parent_id));
-			$item->dyn_link = $this->_shopRewrite($item->dyn_link);
-
-			if ($item->parent_id == 0) $item->ntr = 1;
+			$item->visible_title = $prefix . $item->KatName;
+			$item->dyn_link = $this->_shopRewrite(sprintf($this->_link_category,
+				$item->Id,
+				$item->parent_id,
+				($item->parent_id == 0) ? $item->Id : getParentShopcateg($item->parent_id)
+			));
 
 			$mdl = array();
 			$this->_getCategories($item->Id, $prefix, $mdl, $extra, $sc);
@@ -875,7 +911,8 @@ $AVE_Template->caching = 0;
 					cat.*,
 					COUNT(KatId) AS acount
 				FROM " . PREFIX . "_modul_shop_kategorie AS cat
-				LEFT JOIN " . PREFIX . "_modul_shop_artikel AS art ON KatId = cat.Id AND status = 1
+				LEFT JOIN " . PREFIX . "_modul_shop_artikel AS art
+					ON KatId = cat.Id AND status = '1'
 				GROUP BY cat.Id
 				ORDER BY position ASC
 			");
@@ -906,19 +943,21 @@ $AVE_Template->caching = 0;
 		{
 			$item->visible_title = $prefix . (($item->parent_id != 0 && $admin != 1) ? '' : '') . $item->KatName;
 			$item->expander = $prefix;
-			$item->sub = ($item->parent_id == 0) ? 0 : 1;
-			$item->dyn_link = 'index.php?module=shop&amp;categ=' . $item->Id . '&amp;parent=' . $item->parent_id . '&amp;navop=' . (($item->sub == 0) ? $item->Id : getParentShopcateg($item->parent_id));
-			$item->dyn_link = $this->_shopRewrite($item->dyn_link);
+			$item->dyn_link = $this->_shopRewrite(sprintf($this->_link_category,
+				$item->Id,
+				$item->parent_id,
+				($item->parent_id == 0) ? $item->Id : getParentShopcateg($item->parent_id)
+			));
 
 			array_push($entries,$item);
 
 			if ($admin == 1)
 			{
-				$this->_getCategoriesSimple($item->Id, $prefix . '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;', $entries, $admin, $dropdown);
+				$this->_getCategoriesSimple($item->Id, $prefix . $this->_expander_long, $entries, $admin, $dropdown);
 			}
 			else
 			{
-				$this->_getCategoriesSimple($item->Id, $prefix . (($dropdown == 1) ? '&nbsp;&nbsp;' : $this->_expander), $entries, $dropdown);
+				$this->_getCategoriesSimple($item->Id, $prefix . (($dropdown == 1) ? $this->_expander_short : $this->_expander_long), $entries, $dropdown);
 			}
 		}
 
@@ -940,7 +979,7 @@ $AVE_Template->caching = 0;
 					COUNT(KatId) AS acount
 				FROM " . PREFIX . "_modul_shop_kategorie AS cat
 				LEFT JOIN " . PREFIX . "_modul_shop_artikel AS art
-					ON KatId = cat.Id AND status = 1
+					ON KatId = cat.Id AND status = '1'
 				GROUP BY cat.Id
 				ORDER BY position ASC
 			");
@@ -963,9 +1002,11 @@ $AVE_Template->caching = 0;
 		{
 			foreach ($this->_categories[$id] as $item)
 			{
-				$item->dyn_link = $this->_shopRewrite("index.php?module=shop&amp;categ=" . $item->Id
-					. "&amp;parent=" . $item->parent_id
-					. "&amp;navop=" . (($item->parent_id == 0) ? $item->Id : getParentShopcateg($item->parent_id)));
+				$item->dyn_link = $this->_shopRewrite(sprintf($this->_link_category,
+					$item->Id,
+					$item->parent_id,
+					($item->parent_id == 0) ? $item->Id : getParentShopcateg($item->parent_id)
+				));
 
 				if ($item->parent_id == 0) $op = $item->Id;
 				if (!empty($_REQUEST['navop']) && $_REQUEST['navop'] == $op)
@@ -1013,7 +1054,7 @@ $AVE_Template->caching = 0;
 
 		if ($noprint != 1)
 		{
-			$AVE_Template->assign('shopStart', $this->_shopRewrite('index.php?module=shop'));
+			$AVE_Template->assign('shopStart', $this->_shopRewrite($this->_link_start));
 			$AVE_Template->assign('shopnavi', $this->_getCategoriesNavi());
 			$AVE_Template->assign('subtpl', $mod['tpl_dir'] . $this->_shop_navi_sub_tpl);
 
@@ -1130,8 +1171,9 @@ $AVE_Template->caching = 0;
 				ROUND(AVG(Wertung)) AS Prozwertung,
 				COUNT(cmnt.Id) AS Anz
 			FROM " . PREFIX . "_modul_shop_artikel AS art
-			LEFT JOIN " . PREFIX . "_modul_shop_artikel_kommentare AS cmnt ON ArtId = art.Id AND Publik = 1
-			WHERE status = 1
+			LEFT JOIN " . PREFIX . "_modul_shop_artikel_kommentare AS cmnt
+				ON ArtId = art.Id AND Publik = '1'
+			WHERE status = '1'
 			AND Erschienen <= '" . time() . "'"
 			. $product_categ
 			. $price_query
@@ -1173,8 +1215,9 @@ $AVE_Template->caching = 0;
 		$AVE_Template->assign('PageNumbers', $seiten);
 		if ($seiten > 1)
 		{
-			$page_nav = " <a class=\"pnav\" href=\"index.php?module=shop" . $recordset_n . $product_categ_n
-				. $price_query_n . $product_query_n . $dbextra_n . $manufacturer_n
+			$page_nav = " <a class=\"pnav\" href=\"" . $this->_link_start
+				. $recordset_n . $product_categ_n . $price_query_n
+				. $product_query_n . $dbextra_n . $manufacturer_n
 				. $nav_sort . $nav_parent . $nop . "&amp;page={s}\">{t}</a> ";
 			$page_nav = get_pagination($seiten, 'page', $page_nav, get_settings('navi_box'));
 			$AVE_Template->assign('page_nav', $this->_shopRewrite($page_nav));
@@ -1226,7 +1269,7 @@ $AVE_Template->caching = 0;
 					WHERE Benutzer = '" . @$_SESSION['user_id'] . "'
 				");
 
-				header('Location:' . $_SERVER['HTTP_REFERER']);
+				header('Location:' . get_referer_link());
 				exit;
 			}
 
@@ -1242,7 +1285,7 @@ $AVE_Template->caching = 0;
 					WHERE Benutzer = '" . @$_SESSION['user_id'] . "'
 				");
 
-				header('Location:' . $_SERVER['HTTP_REFERER']);
+				header('Location:' . get_referer_link());
 				exit;
 			}
 		}
@@ -1355,11 +1398,15 @@ $AVE_Template->caching = 0;
 					// Name des Artikels
 					$item->ArtName = $row->ArtName;
 
-					$item->ProdLink = $this->_shopRewrite(($this->_product_detail . $row->Id .'&amp;categ=' . $row->KatId . '&amp;navop=' . getParentShopcateg($row->KatId)));
+					$item->ProdLink = $this->_shopRewrite(sprintf($this->_link_product_detail,
+						$row->Id,
+						$row->KatId,
+						getParentShopcateg($row->KatId)
+					));
 					$item->Hersteller_Name = $this->_fetchManufacturer($row->Hersteller, 'Name');
 					$item->Hersteller_Home = $this->_fetchManufacturer($row->Hersteller, 'Link');
 					$item->Hersteller_Logo = $this->_fetchManufacturer($row->Hersteller, 'Logo');
-					$item->DelLink = $this->_delete_item . $row->Id;
+					$item->DelLink = $this->_link_delete_item . $row->Id;
 
 					// Einzelpreis unter Berücksichtigung von Kundengruppe und Varianten
 					// Summe unter Berücksichtung der Anzahl
@@ -1555,11 +1602,15 @@ $AVE_Template->caching = 0;
 				// Name des Artikels
 				$item->ArtName = $row->ArtName;
 
-				$item->ProdLink = $this->_shopRewrite(($this->_product_detail . $row->Id .'&amp;categ=' . $row->KatId . '&amp;navop=' . getParentShopcateg($row->KatId)));
+				$item->ProdLink = $this->_shopRewrite(sprintf($this->_link_product_detail,
+					$row->Id,
+					$row->KatId,
+					getParentShopcateg($row->KatId)
+				));
 				$item->Hersteller_Name = $this->_fetchManufacturer($row->Hersteller, 'Name');
 				$item->Hersteller_Home = $this->_fetchManufacturer($row->Hersteller, 'Link');
 				$item->Hersteller_Logo = $this->_fetchManufacturer($row->Hersteller, 'Logo');
-				$item->DelLink = $this->_delete_item . $row->Id;
+				$item->DelLink = $this->_link_delete_item . $row->Id;
 
 				// Einzelpreis unter Berücksichtigung von Kundengruppe und Varianten
 				// Summe unter Berücksichtung der Anzahl
@@ -1795,8 +1846,11 @@ $AVE_Template->caching = 0;
 
 		if (!is_numeric($product_id)) exit;
 
-		$link = $this->_shopRewrite('index.php?module=shop&action=product_detail&product_id=' . $product_id
-			. '&categ=' . (int)$_REQUEST['categ'] . '&navop=' . (int)$_REQUEST['navop']);
+		$link = $this->_shopRewrite(sprintf($this->_link_product_detail,
+			$product_id,
+			(int)$_REQUEST['categ'],
+			(int)$_REQUEST['navop']
+		));
 
 		if (Kommentare == 1 && isset($_REQUEST['sendcomment']) && $_REQUEST['sendcomment'] == 1
 			&& (isset($_SESSION['user_id']) || $this->_getShopSetting('KommentareGast')))
@@ -1861,7 +1915,7 @@ $AVE_Template->caching = 0;
 		$row = $AVE_DB->Query("
 			SELECT *
 			FROM " . PREFIX . "_modul_shop_artikel
-			WHERE status = 1
+			WHERE status = '1'
 			AND Id = '" . $product_id . "'
 			AND Erschienen <= '" . time() . "'
 		")->FetchRow();
@@ -1947,7 +2001,7 @@ $AVE_Template->caching = 0;
 			}
 		}
 
-		$tpl_out = $AVE_Template->fetch($GLOBALS['mod']['tpl_dir'] . $this->_shop_product_detailpage);
+		$tpl_out = $AVE_Template->fetch($GLOBALS['mod']['tpl_dir'] . $this->_shop_product_detail_tpl);
 		$tpl_out = $this->_shopRewrite($tpl_out);
 
 		define('MODULE_CONTENT', $tpl_out);
@@ -1971,7 +2025,7 @@ $AVE_Template->caching = 0;
 				$sql = $AVE_DB->Query("
 					SELECT *
 					FROM " . PREFIX . "_modul_shop_artikel
-					WHERE status = 1
+					WHERE status = '1'
 					AND Id != '" . (int)$_REQUEST['product_id'] . "'
 					AND Schlagwoerter LIKE '%" . $Match . "%'
 					ORDER BY rand()
@@ -2039,7 +2093,7 @@ $AVE_Template->caching = 0;
 					$sql = $AVE_DB->Query("
 						SELECT *
 						FROM " . PREFIX . "_modul_shop_merkliste
-						WHERE Benutzer = '".$_SESSION['user_id']."'
+						WHERE Benutzer = '" . $_SESSION['user_id'] . "'
 					");
 					$row = $sql->FetchRow();
 					if (is_object($row) && $row->Id != '')
@@ -2056,10 +2110,10 @@ $AVE_Template->caching = 0;
 							UPDATE
 								" . PREFIX . "_modul_shop_merkliste
 							SET
-								Inhalt = '".serialize($_SESSION['Product_Wishlist'])."',
-								Inhalt_Vars = '".serialize($_SESSION['Product_Wishlist_Vars'])."'
+								Inhalt = '" . serialize($_SESSION['Product_Wishlist']) . "',
+								Inhalt_Vars = '" . serialize($_SESSION['Product_Wishlist_Vars']) . "'
 							WHERE
-								Benutzer = '".$_SESSION['user_id']."'
+								Benutzer = '" . $_SESSION['user_id'] . "'
 						");
 					}
 					else
@@ -2088,7 +2142,7 @@ $AVE_Template->caching = 0;
 			}
 		}
 
-		header('Location:' . $_SERVER['HTTP_REFERER']);
+		header('Location:' . get_referer_link());
 		exit;
 	}
 
@@ -2105,7 +2159,7 @@ $AVE_Template->caching = 0;
 		unset($_SESSION['GewichtSumm']);
 		unset($_SESSION['PaymentId']);
 
-		header('Location:' . $_SERVER['HTTP_REFERER']);
+		header('Location:' . get_referer_link());
 		exit;
 	}
 
@@ -2131,12 +2185,15 @@ $AVE_Template->caching = 0;
 			$row->Preis_Netto     = $row->Preis / $multiplier;
 			$row->Preis_Netto_Out = $row->Preis / $multiplier;
 			$row->Preis_USt       = $row->Preis - $row->Preis_Netto;
-//			$row->Preis           = $row->Preis;
 			$row->NettoAnzeigen   = ($PayUSt == true) ? 1 : 0;
-			$row->AddToLink       = $this->_shopRewrite($this->_add_item . $row->Id);
-			$row->AddToWishlist   = $this->_shopRewrite($this->_add_item_wishlist . $row->Id);
-			$row->Detaillink      = $this->_shopRewrite($this->_product_detail . $row->Id . '&amp;categ=' . $row->KatId . '&amp;navop=' . getParentShopcateg($row->KatId));
+			$row->AddToLink       = $this->_shopRewrite($this->_link_add_item . $row->Id);
+			$row->AddToWishlist   = $this->_shopRewrite($this->_link_add_item_wishlist . $row->Id);
 			$row->StPrices        = $this->_getStPrices($row->Id);
+			$row->Detaillink      = $this->_shopRewrite(sprintf($this->_link_product_detail,
+				$row->Id,
+				$row->KatId,
+				getParentShopcateg($row->KatId)
+			));
 
 			if ($row->Hersteller)
 			{
@@ -2203,11 +2260,11 @@ $AVE_Template->caching = 0;
 		$AVE_Template->assign('KaufLagerNull',    $this->_setings->KaufLagerNull);
 		$AVE_Template->assign('ProductCategs',    $this->fetchShopNavi(1));
 		$AVE_Template->assign('Manufacturer',     $this->_displayManufacturer());
-		$AVE_Template->assign('ShopStartLink',    $this->_shopRewrite('index.php?module=shop'));
-		$AVE_Template->assign('ShowWishlistLink', $this->_shopRewrite('index.php?module=shop&amp;action=wishlist&amp;pop=1'));
-		$AVE_Template->assign('ShowBasketLink',   $this->_shopRewrite('index.php?module=shop&amp;action=showbasket'));
-		$AVE_Template->assign('ShowPaymentLink',  $this->_shopRewrite('index.php?module=shop&amp;action=checkout'));
-		$AVE_Template->assign('CheckoutLink',     $this->_shopRewrite('index.php?module=shop&amp;action=checkout'));
+
+		$AVE_Template->assign('ShopStartLink',    $this->_shopRewrite($this->_link_start));
+		$AVE_Template->assign('ShopWishlistLink', $this->_shopRewrite($this->_link_wishlist));
+		$AVE_Template->assign('ShopBasketLink',   $this->_shopRewrite($this->_link_basket));
+		$AVE_Template->assign('ShopCheckoutLink', $this->_shopRewrite($this->_link_checkout));
 
 		return $row;
 	}
@@ -2231,13 +2288,15 @@ $AVE_Template->caching = 0;
 
 		if (is_object($item))
 		{
-			$link = $this->_shopRewrite('index.php?module=shop&amp;categ=' . $item->Id
-				.'&amp;parent=' . $item->parent_id
-				. '&amp;navop=' . getParentShopcateg($item->Id));
+			$link = $this->_shopRewrite(sprintf($this->_link_category,
+				$item->Id,
+				$item->parent_id,
+				getParentShopcateg($item->Id)
+			));
 
 			if ($item->parent_id == 0)
 			{
-				$retval = '<a class="mod_shop_navi" href="index.php?module=shop">'
+				$retval = '<a class="mod_shop_navi" href="' . $this->_link_start . '">'
 					. $GLOBALS['mod']['config_vars']['PageName'] . '</a>'
 					. $GLOBALS['mod']['config_vars']['PageSep']
 					. '<a class="mod_shop_navi" href="' . $link . '">'
@@ -2251,7 +2310,7 @@ $AVE_Template->caching = 0;
 			$result = '<a class="mod_shop_navi" href="' . $link . '">'
 				. $item->KatName . '</a>'
 				. ($result ? $GLOBALS['mod']['config_vars']['PageSep'] : '')
-				. $result ;
+				. $result;
 
 			return $this->_getNavigationPath($item->parent_id, $result, $extra, $nav_op);
 		}
@@ -2459,12 +2518,12 @@ $AVE_Template->caching = 0;
 		$sql = $AVE_DB->Query("
 			SELECT *
 			FROM " . PREFIX . "_modul_shop_varianten_kategorien
-			WHERE status = 1
+			WHERE status = '1'
 			AND KatId = '" . $KatId . "'
 		");
 		while ($row = $sql->FetchRow())
 		{
-			$row->description = str_replace('"', "'", $row->description);
+			$row->description = str_replace('"', "&quot;", $row->description);
 			$Variants_Items = array();
 			$sql_v = $AVE_DB->Query("
 				SELECT *
@@ -2595,7 +2654,7 @@ $AVE_Template->caching = 0;
 					unset($_SESSION['Product'][$id]);
 				}
 
-				header('Location:' . $_SERVER['HTTP_REFERER']);
+				header('Location:' . get_referer_link());
 				exit;
 			}
 
@@ -2606,7 +2665,7 @@ $AVE_Template->caching = 0;
 					if ($Artikel >= 1) $_SESSION['Product'][$id] = $Artikel;
 				}
 
-				header('Location:' . $_SERVER['HTTP_REFERER']);
+				header('Location:' . get_referer_link());
 				exit;
 			}
 		}
@@ -2614,7 +2673,7 @@ $AVE_Template->caching = 0;
 		$this->_globalProductInfo();
 
 		$AVE_Template->assign('VatZones', $this->_showVatZones());
-		$tpl_out = $AVE_Template->fetch($GLOBALS['mod']['tpl_dir'] . 'shop_basket.tpl');
+		$tpl_out = $AVE_Template->fetch($GLOBALS['mod']['tpl_dir'] . $this->_shop_basket_tpl);
 		define('MODULE_CONTENT', $tpl_out);
 		define('MODULE_SITE', $GLOBALS['mod']['config_vars']['PageName'] . $GLOBALS['mod']['config_vars']['PageSep'] . $GLOBALS['mod']['config_vars']['ShopBasket']);
 	}
@@ -2635,7 +2694,8 @@ $AVE_Template->caching = 0;
 					user_group,
 					IFNULL(Wert, '0.00') AS Wert
 				FROM " . PREFIX . "_user_groups
-				LEFT JOIN " . PREFIX . "_modul_shop_kundenrabatte ON GruppenId = user_group
+				LEFT JOIN " . PREFIX . "_modul_shop_kundenrabatte
+					ON GruppenId = user_group
 			");
 			while ($row = $sql->FetchRow())
 			{
@@ -2664,7 +2724,8 @@ $AVE_Template->caching = 0;
 					user_group,
 					IFNULL(Wert, '0.00') AS Wert
 				FROM " . PREFIX . "_user_groups
-				LEFT JOIN " . PREFIX . "_modul_shop_kundenrabatte ON GruppenId = user_group
+				LEFT JOIN " . PREFIX . "_modul_shop_kundenrabatte
+					ON GruppenId = user_group
 			");
 			while ($row = $sql->FetchRow())
 			{
@@ -2746,7 +2807,7 @@ $AVE_Template->caching = 0;
 							@setcookie('auth_hash', $password, $expire);
 						}
 
-						header('Location:index.php?module=shop&action=checkout');
+						header('Location:' . $this->_shopRewrite($this->_link_checkout));
 						exit;
 					}
 					else
@@ -2783,7 +2844,7 @@ $AVE_Template->caching = 0;
 			SELECT Name
 			FROM " . PREFIX . "_modul_shop_versandarten
 			WHERE Id = '" . $id . "'
-			AND status = 1
+			AND status = '1'
 		")
 		->GetCell();
 
@@ -2816,7 +2877,7 @@ $AVE_Template->caching = 0;
 		$sql = $AVE_DB->Query("
 			SELECT *
 			FROM " . PREFIX . "_modul_shop_versandarten
-			WHERE status = 1
+			WHERE status = '1'
 		");
 		while ($row = $sql->FetchRow())
 		{
@@ -2876,7 +2937,7 @@ $AVE_Template->caching = 0;
 		$Name = $AVE_DB->Query("
 			SELECT Name
 			FROM " . PREFIX . "_modul_shop_zahlungsmethoden
-			WHERE status = 1
+			WHERE status = '1'
 			AND Id = '" . $id . "'
 		")
 		->GetCell();
@@ -2895,7 +2956,7 @@ $AVE_Template->caching = 0;
 			$sql = $AVE_DB->Query("
 				SELECT *
 				FROM " . PREFIX . "_modul_shop_zahlungsmethoden
-				WHERE status = 1
+				WHERE status = '1'
 				ORDER BY Position ASC
 			");
 			while ($row = $sql->FetchRow())
@@ -2952,7 +3013,7 @@ $AVE_Template->caching = 0;
 
 		if (!isset($_SESSION['Product']) || count($_SESSION['Product']) < 1)
 		{
-			header('Location:index.php?module=shop&action=showbasket');
+			header('Location:' . $this->_shopRewrite($this->_link_start));
 			exit;
 		}
 
@@ -3000,7 +3061,7 @@ $AVE_Template->caching = 0;
 			if (count($errors) > 0)
 			{
 				$errors = str_replace('+','_',urlencode(base64_encode(serialize($errors))));
-				header('Location:index.php?module=shop&action=checkout&create_account=' . $_REQUEST['create_account'] . '&errors=' . $errors);
+				header('Location:' . $this->_link_create_account . $_REQUEST['create_account'] . '&errors=' . $errors);
 				exit;
 			}
 		}
@@ -3008,7 +3069,7 @@ $AVE_Template->caching = 0;
 		// Wenn kein Artikel im Warenkorb liegt, zum Shop weiterleiten
 		if (!isset($_SESSION['Product']))
 		{
-			header('Location:index.php?module=shop');
+			header('Location:' . $this->_shopRewrite($this->_link_start));
 			exit;
 		}
 
@@ -3022,7 +3083,7 @@ $AVE_Template->caching = 0;
 			}
 			else
 			{
-				header('Location:index.php?module=shop');
+				header('Location:' . $this->_shopRewrite($this->_link_start));
 				exit;
 			}
 		}
@@ -3039,7 +3100,7 @@ $AVE_Template->caching = 0;
 				$this->_loginProcess();
 			}
 
-			$tpl_out = $AVE_Template->fetch($GLOBALS['mod']['tpl_dir'] . 'shop_checkout.tpl');
+			$tpl_out = $AVE_Template->fetch($GLOBALS['mod']['tpl_dir'] . $this->_shop_checkout_tpl);
 			$tpl_out = $this->_shopRewrite($tpl_out);
 			define('MODULE_CONTENT', $tpl_out);
 			define('MODULE_SITE', $GLOBALS['mod']['config_vars']['PageName'] . $GLOBALS['mod']['config_vars']['PageSep'] . $GLOBALS['mod']['config_vars']['ShopPaySite']);
@@ -3235,7 +3296,7 @@ $AVE_Template->caching = 0;
 					$ProductsOrder = (!empty($_SESSION['Product'])) ? serialize($_SESSION['Product']) : '';
 					$ProductsOrderVars = (!empty($_SESSION['ProductVar'])) ? serialize($_SESSION['ProductVar']) : '';
 					// $transId = 'CPE_' . $this->_transId(12) . '_' . date('dmy');
-					$transId = '' . $this->_transId(7) . '' . date('dmy');
+					$transId = $this->_transId() . date('dmy');
 					$_SESSION['TransId'] = $transId;
 
 					//echo $_REQUEST['create_account'];
@@ -3353,8 +3414,8 @@ $AVE_Template->caching = 0;
 					$AVE_Template->assign('VatZones', $this->_showVatZones());
 
 					// HTML- & Text E-Mail Template laden
-					$mail_html = $AVE_Template->fetch($GLOBALS['mod']['tpl_dir'] . 'shop_orderconfirm_html.tpl');
-					$mail_text = $AVE_Template->fetch($GLOBALS['mod']['tpl_dir'] . 'shop_orderconfirm_text.tpl');
+					$mail_html = $AVE_Template->fetch($GLOBALS['mod']['tpl_dir'] . $this->_shop_orderconfirm_html_tpl);
+					$mail_text = $AVE_Template->fetch($GLOBALS['mod']['tpl_dir'] . $this->_shop_orderconfirm_text_tpl);
 					$mail_text = $this->_textReplace($mail_text);
 
 					// E-Mail mit Bestellbestätigung an Käufer senden
@@ -3425,7 +3486,7 @@ $AVE_Template->caching = 0;
 					$row_gw = $AVE_DB->Query("
 						SELECT *
 						FROM " . PREFIX . "_modul_shop_zahlungsmethoden
-						WHERE status = 1
+						WHERE status = '1'
 						AND Id = '" . $_SESSION['PaymentId'] . "'
 					")
 					->FetchRow();
@@ -3463,7 +3524,7 @@ $AVE_Template->caching = 0;
 					unset($_SESSION['KostenZahlungOut']);
 
 					$AVE_Template->assign('step', 3);
-					$tpl_out = $AVE_Template->fetch($GLOBALS['mod']['tpl_dir'] . 'shop_confirm_thankyou.tpl');
+					$tpl_out = $AVE_Template->fetch($GLOBALS['mod']['tpl_dir'] . $this->_shop_confirm_thankyou_tpl);
 					$tpl_out = $this->_shopRewrite($tpl_out);
 					define('MODULE_CONTENT', $tpl_out);
 					define('MODULE_SITE', $GLOBALS['mod']['config_vars']['PageName'] . $GLOBALS['mod']['config_vars']['PageSep'] . $GLOBALS['mod']['config_vars']['ShopPaySite']);
@@ -3473,13 +3534,13 @@ $AVE_Template->caching = 0;
 				{
 					if (empty($_SESSION['ShipperId']))
 					{
-						header('Location:index.php?module=shop&action=checkout&create_account=no');
+						header('Location:' . $this->_link_create_account . 'no');
 						exit;
 					}
 
 					if ($this->_getShopSetting('GutscheinCodes') == 1) $AVE_Template->assign('couponcodes', 1);
 					$AVE_Template->assign('VatZones', $this->_showVatZones());
-					$tpl_out = $AVE_Template->fetch($GLOBALS['mod']['tpl_dir'] . 'shop_checkoutinfo.tpl');
+					$tpl_out = $AVE_Template->fetch($GLOBALS['mod']['tpl_dir'] . $this->_shop_checkoutinfo_tpl);
 					$tpl_out = $this->_shopRewrite($tpl_out);
 					define('MODULE_CONTENT', $tpl_out);
 					define('MODULE_SITE', $GLOBALS['mod']['config_vars']['PageName'] . $GLOBALS['mod']['config_vars']['PageSep'] . $GLOBALS['mod']['config_vars']['ShopPaySite']);
@@ -3489,12 +3550,12 @@ $AVE_Template->caching = 0;
 			{
 				if (!isset($_SESSION['user_id']) && GastBestellung != 1)
 				{
-					header('Location:index.php?module=shop&action=checkout');
+					header('Location:' . $this->_shopRewrite($this->_link_checkout));
 					exit;
 				}
 
 				$AVE_Template->assign('step', 1);
-				$tpl_out = $AVE_Template->fetch($GLOBALS['mod']['tpl_dir'] . 'shop_billing.tpl');
+				$tpl_out = $AVE_Template->fetch($GLOBALS['mod']['tpl_dir'] . $this->_shop_billing_tpl);
 				$tpl_out = $this->_shopRewrite($tpl_out);
 				define('MODULE_CONTENT', $tpl_out);
 				define('MODULE_SITE', $GLOBALS['mod']['config_vars']['PageName'] . $GLOBALS['mod']['config_vars']['PageSep'] . $GLOBALS['mod']['config_vars']['ShopPaySite']);
