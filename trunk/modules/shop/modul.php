@@ -37,19 +37,10 @@ if ((isset($_REQUEST['module']) && $_REQUEST['module'] == 'shop') || (isset($_RE
 	{
 		require_once(BASE_DIR . '/modules/shop/class.shop.php');
 	}
-//	require_once(BASE_DIR . '/functions/func.modulglobals.php');
 	require_once(BASE_DIR . '/modules/shop/funcs/func.parent_categ.php');
 	require_once(BASE_DIR . '/modules/shop/funcs/func.rewrite.php');
 
 	if (defined('THEME_FOLDER')) $AVE_Template->assign('shop_images', 'templates/' . THEME_FOLDER . '/modules/shop/');
-
-	function cpShopNavi()
-	{
-		require_once(BASE_DIR . '/functions/func.modulglobals.php');
-		set_modul_globals('shop');
-		$shop = new Shop;
-		$shop->fetchShopNavi();
-	}
 
 	if (defined('THEME_FOLDER')) $AVE_Template->assign('theme_folder', THEME_FOLDER);
 

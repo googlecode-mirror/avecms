@@ -1,3 +1,4 @@
+
 {if !$ShopArticles}
 	<br />
 	<div class="alert">{#ErrorNoProductsHere#}</div><br />
@@ -76,7 +77,7 @@
 								<input name="amount" type="hidden" size="2" maxlength="2" value="1" {if $i->Lager < 1 && $KaufLagerNull != '1'}disabled="disabled"{/if} />
 								<input name="product_id" type="hidden" value="{$i->Id}" />
 								<input   {if $i->InBasket==1} onclick="alert('{#AllreadyInBasket#}'); return false;"{/if} name="insertinto" type="image" src="{$shop_images}inbasket.gif" /><br />
-								<input   onclick="{if $smarty.session.cp_benutzerid<1}alert('{#ToWishlistError#}');return false;{else}document.getElementById('to_wishlist_{$i->Id}').value='1';{/if}" name="insertwishlist" type="image" src="{$shop_images}compare.gif" />
+								<input   onclick="{if $smarty.session.user_id<1}alert('{#ToWishlistError#}');return false;{else}document.getElementById('to_wishlist_{$i->Id}').value='1';{/if}" name="insertwishlist" type="image" src="{$shop_images}compare.gif" />
 								<input type="hidden" name="wishlist_{$i->Id}" id="to_wishlist_{$i->Id}"  value="" />
 							</form>
 						{/if}

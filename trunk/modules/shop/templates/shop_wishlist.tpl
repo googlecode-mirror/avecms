@@ -1,3 +1,4 @@
+
 <link href="templates/{$theme_folder}/css/style.css" rel="stylesheet" type="text/css" />
 {if $WishListActive==1}
 	<div style="padding: 20px">

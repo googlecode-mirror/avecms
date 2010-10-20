@@ -1,3 +1,4 @@
+
 {if !$ShopArticles}
 	{#ErrorNoProductsHere#}
 {else}

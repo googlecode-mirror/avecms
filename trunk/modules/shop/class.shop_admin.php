@@ -151,7 +151,7 @@ class Shop
 				Bestellungen
 			FROM
 				" . PREFIX . "_modul_shop_artikel
-			WHERE status = 1
+			WHERE status = '1'
 			AND Erschienen <= '" . time() . "'
 			" . $db_categ . "
 			ORDER BY Bestellungen " . $asc_desc . "
@@ -1773,17 +1773,15 @@ class Shop
 		{
 			$item->visible_title = $prefix . (($item->parent_id != 0 && $admin != 1) ? '' : '') . $item->KatName;
 			$item->expander = $prefix;
-			$item->sub = ($item->parent_id == 0) ? 0 : 1;
-			$item->dyn_link = "index.php?module=shop&amp;categ=" . $item->Id . "&amp;parent=" . $item->parent_id . "&amp;navop=" . (($item->sub == 0) ? $item->Id : getParentShopcateg($item->parent_id));
-			$sql = $AVE_DB->Query("
+			$item->dyn_link = "index.php?module=shop&amp;categ=" . $item->Id . "&amp;parent=" . $item->parent_id . "&amp;navop=" . (($item->parent_id == 0) ? $item->Id : getParentShopcateg($item->parent_id));
+			$item->acount = $AVE_DB->Query("
 				SELECT
 					Id,
 					KatId
 				FROM " . PREFIX . "_modul_shop_artikel
 				WHERE KatId = '" . $item->Id . "'
-				AND status = 1
-			");
-			$item->acount = $sql->NumRows();
+				AND status = '1'
+			")->NumRows();
 
 			array_push($entries,$item);
 			if ($admin == 1)
@@ -2167,7 +2165,7 @@ class Shop
 			$AVE_DB->Query("
 				UPDATE " . PREFIX . "_modul_shop
 				SET
-					status             = '" . (empty($_POST['status'])             ? '0'   : (int)$_POST['status']) . "',
+					status            = '" . (empty($_POST['status'])            ? '0'   : (int)$_POST['status']) . "',
 					Waehrung          = '" . (empty($_POST['Waehrung'])          ? 'RUR' : htmlspecialchars(trim($_POST['Waehrung']))) . "',
 					WaehrungSymbol    = '" . (empty($_POST['WaehrungSymbol'])    ? ''    : $_POST['WaehrungSymbol']) . "',
 					Waehrung2         = '" . (empty($_POST['Waehrung2'])         ? ''    : $_POST['Waehrung2']) . "',
@@ -2422,7 +2420,7 @@ class Shop
 						UPDATE " . PREFIX . "_modul_shop_zahlungsmethoden
 						SET
 							Name     = '" . $Name . "',
-							status    = '" . $_POST['status'][$id] . "',
+							status   = '" . $_POST['status'][$id] . "',
 							Position = '" . $_POST['Position'][$id] . "'
 						WHERE
 							Id = '" . $id . "'
@@ -2447,11 +2445,11 @@ class Shop
 				UPDATE " . PREFIX . "_modul_shop_zahlungsmethoden
 				SET
 					Name                   = '" . $_POST['Name'] . "',
-					description           = '" . $_POST['description'] . "',
+					description            = '" . $_POST['description'] . "',
 					ErlaubteVersandLaender = '" . ((isset($_POST['ErlaubteVersandLaender']) && is_array($_POST['ErlaubteVersandLaender'])) ? implode(',', $_POST['ErlaubteVersandLaender']) : '') . "',
 					ErlaubteVersandarten   = '" . ((isset($_POST['ErlaubteVersandarten']) && is_array($_POST['ErlaubteVersandarten'])) ? implode(',', $_POST['ErlaubteVersandarten']) : '') . "',
 					ErlaubteGruppen        = '" . ((isset($_POST['ErlaubteGruppen']) && is_array($_POST['ErlaubteGruppen'])) ? implode(',', $_POST['ErlaubteGruppen']) : '') . "',
-					status                  = '" . $_POST['status'] . "',
+					status                 = '" . $_POST['status'] . "',
 					Kosten                 = '" . $this->kReplace($_POST['Kosten']) . "',
 					KostenOperant          = '" . $_POST['KostenOperant'] . "',
 					InstId                 = '" . (!empty($_POST['InstId']) ? chop($_POST['InstId']) : '') . "',
@@ -3090,7 +3088,7 @@ class Shop
 					ArtNr           = '" . (empty($_POST['ArtNr']) ? '' : chop($_POST['ArtNr'])) . "',
 					" . $DbNewImage . "
 					Artname         = '" . chop($_POST['ArtName']) . "',
-					status           = '" . (empty($_POST['status']) ? '0' : (int)$_POST['status']) . "',
+					status          = '" . (empty($_POST['status']) ? '0' : (int)$_POST['status']) . "',
 					KatId           = '" . (empty($_POST['KatId']) ? '0' : (int)$_POST['KatId']) . "',
 					KatId_Multi     = '" . (empty($_POST['KatId_Multi']) ? '' : implode(',', $_POST['KatId_Multi'])) . "',
 					TextKurz        = '" . chop($_POST['TextKurz']) . "',
@@ -3338,7 +3336,7 @@ class Shop
 						KatId           = '" . $_POST['KatId'] . "',
 						KatId_Multi     = '" . implode(',', $_POST['KatId_Multi']) . ",',
 						Artname         = '" . chop($_POST['ArtName']) . "',
-						status           = 1,
+						status          = '1',
 						Preis           = '" . $this->kReplace(chop($_POST['Preis'])) . "',
 						PreisListe      = '" . $this->kReplace(chop($_POST['PreisListe'])) . "',
 						Bild            = '" . $DbImage . "',

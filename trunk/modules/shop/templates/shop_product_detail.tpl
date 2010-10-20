@@ -1,3 +1,4 @@
+
 <div class="grid_12">
 	<!-- SHOP - ITEMS -->
 	{if !$row}
@@ -124,7 +125,7 @@
 									<input name="product_id" type="hidden" value="{$row->Id}" />
 									<input {if $row->InBasket==1} onclick="alert('{#AllreadyInBasket#}'); return false;"{/if} class="absmiddle" name="insertinto" type="image" src="{$shop_images}inbasket.gif" />
 									{if $WishListActive==1}
-										<input onclick="{if $smarty.session.cp_benutzerid<1}alert('{#ToWishlistError#}');return false;{else}document.getElementById('to_wishlist_{$row->Id}').value='1';{/if}" name="insertwishlist" class="absmiddle" type="image" src="{$shop_images}compare.gif" />
+										<input onclick="{if $smarty.session.user_id<1}alert('{#ToWishlistError#}');return false;{else}document.getElementById('to_wishlist_{$row->Id}').value='1';{/if}" name="insertwishlist" class="absmiddle" type="image" src="{$shop_images}compare.gif" />
 										<input type="hidden" name="wishlist_{$row->Id}" id="to_wishlist_{$row->Id}" value="" />
 									{/if}
 {*
@@ -363,38 +364,46 @@
 	<div class="grid_4">
 		<!-- Правое меню -->
 		<div class="box menu">
-			<h2><a href="#" id="toggle-section-menu">Каталог товаров</a></h2>
+			<h2><a href="#" id="toggle-section-menu">{#ProductOverview#}</a></h2>
 			<div class="block" id="section-menu">{$ShopNavi}</div>
 		</div>
 
 		<!-- Блок авторизации -->
 		<div class="box">
-			<h2> <a href="#" id="toggle-login-forms">Авторизация</a> </h2>
+			<h2> <a href="#" id="toggle-login-forms">{#UserPanel#}</a> </h2>
 			<div class="block" id="login-forms">{$UserPanel}</div>
 		</div>
 
 		<!-- Блок поиска по магазину -->
 		<div class="box">
-			<h2><a href="#" id="toggle-shop-search">Поиск товаров</a></h2>
+			<h2><a href="#" id="toggle-shop-search">{#ProductSearch#}</a></h2>
 			<div class="block" id="shop-search">{$Search}</div>
 		</div>
 
 		<!-- Блок корзины -->
 		<div class="box">
-			<h2><a href="#" id="toggle-shopbasket">Корзина</a></h2>
+			<h2><a href="#" id="toggle-shopbasket">{#ShopBasket#}</a></h2>
 			<div class="block" id="shopbasket">{$Basket}</div>
 		</div>
 
-		<!-- Блок обработанных заказов -->
-		<div class="box">
-			<h2><a href="#" id="toggle-shopbasket">Мои заказы</a></h2>
-			<div class="block" id="shopbasket">{$MyOrders}</div>
-		</div>
+		{if $smarty.session.user_id}
+			<!-- Блок обработанных заказов -->
+			<div class="box">
+				<h2><a href="#" id="toggle-myordersbox">{#MyOrders#}</a></h2>
+				<div class="block" id="myordersbox">{$MyOrders}</div>
+			</div>
+		{/if}
 
 		<!-- Блок информации -->
 		<div class="box">
-			<h2><a href="#" id="toggle-popcommentors">Информация</a></h2>
-			<div class="block" id="popcommentors">{$InfoBox}</div>
+			<h2><a href="#" id="toggle-shopinfobox">{#Infopage#}</a></h2>
+			<div class="block" id="shopinfobox">{$InfoBox}</div>
 		</div>
-	</div><!-- end grid_4 -->
+
+		<!-- Блок популярных товаров -->
+		<div class="box">
+			<h2><a href="#" id="toggle-shoppopprods">{#Topseller#}</a></h2>
+			<div class="block" id="shoppopprods">{$Topseller}</div>
+		</div>
+	</div>
 {/if}
