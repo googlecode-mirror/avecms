@@ -96,6 +96,7 @@ if ($rss_settings !== false)
 						$rss_item['description'] = $row_fields->field_value;
 					}
 				}
+				$rss_item['description'] = parse_hide($rss_item['description']);
 			}
 		}
 
