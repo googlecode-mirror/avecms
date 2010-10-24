@@ -14,10 +14,9 @@ CREATE TABLE `cp_countries` (
   `country_status` enum('1','2') NOT NULL default '2',
   `country_eu` enum('1','2') NOT NULL default '2',
   PRIMARY KEY  (`Id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=cp1251;
+) ENGINE=MyISAM AUTO_INCREMENT=238 DEFAULT CHARSET=cp1251;
 
-INSERT INTO `cp_countries` VALUES
-(1, 'AF', 'Афганистан', '2', '2'),
+INSERT INTO `cp_countries` VALUES (1, 'AF', 'Афганистан', '2', '2'),
 (2, 'AL', 'Албания', '2', '2'),
 (3, 'DZ', 'Алжир', '2', '2'),
 (4, 'AS', 'Американское Самоа', '2', '2'),
@@ -255,61 +254,6 @@ INSERT INTO `cp_countries` VALUES
 (236, 'ZM', 'Замбия', '2', '2'),
 (237, 'ZW', 'Зимбабве', '2', '2');
 
-CREATE TABLE `cp_documents` (
-  `Id` int(10) unsigned NOT NULL auto_increment,
-  `rubric_id` mediumint(5) unsigned NOT NULL default '0',
-  `document_alias` varchar(255) NOT NULL,
-  `document_title` varchar(255) NOT NULL,
-  `document_published` int(10) unsigned NOT NULL default '0',
-  `document_expire` int(10) unsigned NOT NULL default '0',
-  `document_changed` int(10) unsigned NOT NULL default '0',
-  `document_author_id` mediumint(5) unsigned NOT NULL default '1',
-  `document_in_search` enum('1','0') NOT NULL default '1',
-  `document_meta_keywords` tinytext NOT NULL,
-  `document_meta_description` tinytext NOT NULL,
-  `document_meta_robots` enum('index,follow','index,nofollow','noindex,nofollow') NOT NULL default 'index,follow',
-  `document_status` enum('1','0') NOT NULL default '1',
-  `document_deleted` enum('0','1') NOT NULL default '0',
-  `document_count_print` int(10) unsigned NOT NULL default '0',
-  `document_count_view` int(10) unsigned NOT NULL default '0',
-  `document_linked_navi_id` mediumint(5) unsigned NOT NULL default '0',
-  PRIMARY KEY  (`Id`),
-  UNIQUE KEY `document_alias` (`document_alias`),
-  KEY `rubric_id` (`rubric_id`),
-  KEY `document_status` (`document_status`),
-  KEY `document_published` (`document_published`),
-  KEY `document_expire` (`document_expire`)
-) ENGINE=MyISAM  DEFAULT CHARSET=cp1251 PACK_KEYS=0;
-
-INSERT INTO `cp_documents` VALUES
-(1, 1, 'главная', 'Главная', 0, 0, 1284323091, 1, '0', '', '', 'index,follow', '1', '0', 10, 1164, 0),
-(2, 1, '404-not-found', '404 - Документ не найден', 0, 0, 1258259536, 1, '0', '', '', 'noindex,nofollow', '1', '0', 5, 351, 1),
-(3, 1, 'о-компании', 'О компании', 1250047140, 1597202340, 1280781668, 1, '0', '', '', 'index,follow', '1', '0', 0, 171, 0),
-(4, 1, 'условия-сделки', 'Условия сделки', 1250986260, 1598141460, 1284323274, 1, '1', '', '', 'index,follow', '1', '0', 1, 95, 0),
-(5, 1, 'kontakty', 'Контакты', 1251677460, 1882829460, 1276370714, 1, '1', '', '', 'index,follow', '1', '0', 0, 165, 0),
-(6, 2, 'новости/2009-08-07/первая-тестовая-новость', 'Первая тестовая новость', 1249258200, 1596413400, 1280837869, 1, '1', 'Новость,Близкий болид', 'Декретное время дает астероид, тем не менее, Дон Еманс включил в список всего 82-е Великие Кометы', 'index,follow', '1', '0', 1, 220, 0),
-(7, 1, 'новости', 'Архив новостей', 1251331860, 1882483860, 1278066151, 1, '1', 'Архив новостей', '', 'index,follow', '1', '0', 1, 182, 0),
-(8, 2, 'новости/2009-08-15/вторая-тестовая-новость', 'Вторая тестовая новость', 1250035860, 1597191060, 1280837890, 1, '1', 'Новость,Летучая Рыба', 'Лимб, по определению, ищет перигелий (датировка приведена по Петавиусу, Цеху, Хайсу)', 'index,follow', '1', '0', 0, 128, 0),
-(9, 1, 'primer-galerei', 'Пример галереи', 1250986260, 1882138260, 1275883042, 1, '1', 'Галерея,картинки,изображения', '', 'index,follow', '1', '0', 2, 154, 0),
-(10, 1, 'faq', 'FAQ', 1249085460, 1880237460, 1275882529, 1, '1', 'вопрос-ответ', 'работа модуля вопрос-ответ', 'index,follow', '1', '0', 0, 93, 0),
-(11, 1, 'sitemap', 'Карта сайта', 1258400700, 1889552700, 1275822225, 1, '0', '', '', 'index,follow', '1', '0', 1, 41, 1),
-(12, 1, 'kopiya-mordy', 'Копия морды', 1258427100, 1889579100, 1273609180, 1, '1', '', '', 'index,follow', '1', '0', 0, 9, 0),
-(13, 1, 'google-maps', 'Google Maps', 1264240740, 1895392740, 1275822247, 1, '1', '', '', 'index,follow', '1', '0', 0, 12, 0),
-(14, 2, 'новости/демонстрация-тэга-more', 'Демонстрация тэга more', 1263292140, 1596461340, 1280873832, 1, '1', 'Новость,Резкий звукосниматель', 'Фузз, согласно традиционным представлениям, образует фьюжн, не говоря уже о том, что рок-н-ролл мертв', 'index,follow', '1', '0', 0, 14, 5),
-(15, 2, 'новости/диссонансный-ритм-актуальная-национальная-задача', 'Диссонансный ритм — актуальная национальная задача', 1263302280, 1578835080, 1280837905, 2, '1', 'Новость,Диссонансный ритм', 'Синекдоха, без использования формальных признаков поэзии, аллитерирует конструктивный мифопоэтический хронотоп', 'index,follow', '1', '0', 0, 16, 5),
-(16, 1, 'osobennosti-shablona', 'Особенности шаблона', 1263322080, 1894474080, 1272800885, 2, '1', 'Особенности шаблона', 'Особенности шаблона', 'index,follow', '1', '0', 0, 28, 0),
-(17, 3, 'tipografika', 'Типографика', 1263322320, 1578855120, 1280781641, 2, '1', 'Типографика', 'Типографика', 'index,follow', '1', '0', 0, 26, 0),
-(18, 3, '960px-grid-system', '960px grid system', 1265461800, 1580994600, 1280781583, 2, '0', '', '', 'index,follow', '1', '0', 0, 35, 0),
-(19, 4, 'german-shepherd-dog', 'Немецкая овчарка', 1281988920, 1597608120, 1284656993, 1, '1', 'собаки', '', 'index,follow', '1', '0', 0, 3, 19),
-(20, 4, 'товар-2', 'Шарпей', 1283535240, 1599154440, 1284656971, 1, '1', 'собаки', '', 'index,follow', '1', '0', 0, 3, 19),
-(21, 4, 'chow-chow', 'Чау-чау', 1284368340, 1284368340, 1284656953, 1, '0', 'собаки', '', 'index,follow', '1', '0', 0, 4, 19),
-(22, 4, 'british-shorthair-cat', 'Британская короткошёрстная', 1283549160, 1599168360, 1284656933, 1, '1', 'коты', '', 'index,follow', '1', '0', 0, 1, 18),
-(23, 4, 'siberian-cat', 'Сибирская кошка', 1283549940, 1599169140, 1284656917, 1, '1', 'коты', '', 'index,follow', '1', '0', 0, 3, 18),
-(24, 4, 'persian-cat', 'Персидская кошка', 1283550180, 1599169380, 1284656890, 1, '1', 'коты', '', 'index,follow', '1', '0', 0, 4, 18),
-(25, 1, 'коты-и-собаки', 'Коты и собаки', 1284323280, 1599942480, 1284656864, 1, '1', '', '', 'index,follow', '1', '0', 0, 3, 0),
-(26, 1, 'собаки', 'Собаки', 1284656460, 1600275660, 1284656829, 1, '1', '', '', 'index,follow', '1', '0', 0, 2, 0),
-(27, 1, 'коты', 'Коты', 1284656580, 1600275780, 1284656619, 1, '1', '', '', 'index,follow', '1', '0', 0, 2, 0);
-
 CREATE TABLE `cp_document_fields` (
   `Id` int(10) unsigned NOT NULL auto_increment,
   `rubric_field_id` mediumint(5) unsigned NOT NULL default '0',
@@ -318,11 +262,10 @@ CREATE TABLE `cp_document_fields` (
   `document_in_search` enum('1','0') NOT NULL default '1',
   PRIMARY KEY  (`Id`),
   KEY `document_id` (`document_id`),
-  KEY `rubric_field_id` (`rubric_field_id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=cp1251 PACK_KEYS=0;
+  KEY `rubric_field_id` (`rubric_field_id`,`document_in_search`)
+) ENGINE=MyISAM AUTO_INCREMENT=100 DEFAULT CHARSET=cp1251 PACK_KEYS=0;
 
-INSERT INTO `cp_document_fields` VALUES
-(1, 1, 1, '<p>Установка системы прошла успешно!</p>\r\n<p>Теперь Вы можете начать заполнять Ваши страницы информацией и создавать новые. Как вы могли заметить, мы создали для Вас несколько страниц - примеров.</p>\r\n<p>Если Вы авторизовались и владеете необходимыми правами, нажмите на левой стороне на &bdquo;Включить редактор&ldquo;, затем, нажав на значок редактирования, отредактируйте нужную страницу.</p>\r\n<br class="clear" />\r\n[mod_banner:1]', '0'),
+INSERT INTO `cp_document_fields` VALUES (1, 1, 1, '<p>Установка системы прошла успешно!</p>\r\n<p>Теперь Вы можете начать заполнять Ваши страницы информацией и создавать новые. Как вы могли заметить, мы создали для Вас несколько страниц - примеров.</p>\r\n<p>Если Вы авторизовались и владеете необходимыми правами, нажмите на левой стороне на &bdquo;Включить редактор&ldquo;, затем, нажав на значок редактирования, отредактируйте нужную страницу.</p>\r\n<br class="clear" />\r\n[mod_banner:1]', '0'),
 (2, 2, 1, 'uploads/images/start.jpg', '0'),
 (3, 4, 1, 'Поздравляем!', '0'),
 (4, 1, 2, 'Извините, запрошенный Вами документ не найден.', '0'),
@@ -347,9 +290,9 @@ INSERT INTO `cp_document_fields` VALUES
 (23, 5, 8, '<p>Элонгация, по&nbsp;определению, отражает нулевой меридиан, а&nbsp;оценить проницательную способность вашего телескопа поможет следующая формула: Mпр.= 2,5lg Dмм + 2,5lg Гкрат + 4. Соединение меняет лимб, и&nbsp;в&nbsp;этом вопросе достигнута такая точность расчетов, что, начиная с&nbsp;того дня, как мы&nbsp;видим, указанного Эннием и&nbsp;записанного в&nbsp;&laquo;Больших анналах&raquo;, было вычислено время предшествовавших затмений солнца, начиная с&nbsp;того, которое в&nbsp;квинктильские ноны произошло в&nbsp;царствование Ромула.</p>\r\n<p><a name="more"></a></p>\r\n<p>В&nbsp;связи с&nbsp;этим нужно подчеркнуть, что реликтовый ледник гасит астероидный ионный хвост&nbsp;&mdash; это солнечное затмение предсказал ионянам Фалес Милетский. Маятник Фуко притягивает Юпитер, хотя для имеющих <nobr>глаза-телескопы</nobr> туманность Андромеды показалась&nbsp;бы на&nbsp;небе величиной с&nbsp;треть ковша Большой Медведицы. Бесспорно, аномальная джетовая активность традиционно выслеживает эллиптический <nobr>дип-скай</nobr> объект, тем не&nbsp;менее, Дон Еманс включил в&nbsp;список всего <nobr>82-е</nobr> Великие Кометы. По&nbsp;космогонической гипотезе Джеймса Джинса, полнолуние вызывает азимут, выслеживая яркие, броские образования.</p>\r\n<p>Лимб, по&nbsp;определению, ищет перигелий (датировка приведена по&nbsp;Петавиусу, Цеху, Хайсу). Это можно записать следующим образом: V&nbsp;= 29.8 * sqrt (2/r&nbsp;&mdash; 1/a) км/сек, где кульминация выслеживает натуральный логарифм, но&nbsp;кольца видны только при 40&ndash;50. Метеорит меняет первоначальный ионный хвост, но&nbsp;кольца видны только при 40&ndash;50. Газопылевое облако ненаблюдаемо. Как мы&nbsp;уже знаем, прямое восхождение ничтожно решает спектральный класс, однако большинство спутников движутся вокруг своих планет в&nbsp;ту&nbsp;же сторону, в&nbsp;какую вращаются планеты.</p>\r\n<p>Это можно записать следующим образом: V&nbsp;= 29.8 * sqrt (2/r&nbsp;&mdash; 1/a) км/сек, где Большая Медведица меняет экваториальный эффективный диаметp, и&nbsp;в&nbsp;этом вопросе достигнута такая точность расчетов, что, начиная с&nbsp;того дня, как мы&nbsp;видим, указанного Эннием и&nbsp;записанного в&nbsp;&laquo;Больших анналах&raquo;, было вычислено время предшествовавших затмений солнца, начиная с&nbsp;того, которое в&nbsp;квинктильские ноны произошло в&nbsp;царствование Ромула. Каллисто оценивает близкий астероид, об&nbsp;этом в&nbsp;минувшую субботу сообщил заместитель администратора NASA. Аргумент перигелия, на&nbsp;первый взгляд, пространственно решает космический лимб&nbsp;&mdash; это солнечное затмение предсказал ионянам Фалес Милетский. В&nbsp;связи с&nbsp;этим нужно подчеркнуть, что тропический год притягивает космический мусор&nbsp;&mdash; это скорее индикатор, чем примета.</p>\r\n<h3>Пример вывода кода</h3>\r\n<pre class="brush: php;highlight: [10,17,18]; " title="code">\r\n/**\r\n * Метод вывода комментариев в публичной части\r\n *\r\n * @param string $tpl_dir - путь к шаблонам модуля\r\n */\r\nfunction displayComments($tpl_dir)\r\n{\r\n	global $AVE_DB, $AVE_Template;\r\n\r\n	if ($this-&gt;_getSettings(''active'') == 1)\r\n	{\r\n		$assign[''display_comments''] = 1;\r\n		if (in_array(UGROUP, explode('','', $this-&gt;_getSettings(''user_groups''))))\r\n		{\r\n			$assign[''cancomment''] = 1;\r\n		}\r\n		$assign[''max_chars''] = $this-&gt;_getSettings(''max_chars'');\r\n		$assign[''im''] = $this-&gt;_getSettings(''spamprotect'');\r\n\r\n		$comments = array();\r\n		$sql = $AVE_DB-&gt;Query(&quot;\r\n			SELECT *\r\n			FROM &quot; . PREFIX . &quot;_modul_comment_info\r\n			WHERE document_id = ''&quot; . (int)$_REQUEST[''id''] . &quot;''\r\n			&quot; . (UGROUP == 1 ? '''' : ''AND status = 1'') . &quot;\r\n			ORDER BY published ASC\r\n		&quot;);\r\n\r\n		$date_time_format = $AVE_Template-&gt;get_config_vars(''COMMENT_DATE_TIME_FORMAT'');\r\n		while ($row = $sql-&gt;FetchAssocArray())\r\n		{\r\n			$row[''published'']  = strftime($date_time_format, $row[''published'']);\r\n			$row[''edited''] = strftime($date_time_format, $row[''edited'']);\r\n//			if ($row[''parent_id''] == 0)\r\n//				$row[''message''] = nl2br(wordwrap($row[''message''], 100, &quot;\\n&quot;, true));\r\n//			else\r\n//				$row[''message''] = nl2br(wordwrap($row[''message''], 90, &quot;\\n&quot;, true));\r\n			$row[''message''] = nl2br($row[''message'']);\r\n\r\n			$comments[$row[''parent_id'']][] = $row;\r\n		}\r\n\r\n		$assign[''closed''] = @$comments[0][0][''comments_close''];\r\n		$assign[''comments''] = $comments;\r\n		$assign[''theme''] = defined(''THEME_FOLDER'') ? THEME_FOLDER : DEFAULT_THEME_FOLDER;\r\n		$assign[''doc_id''] = (int)$_REQUEST[''id''];\r\n		$assign[''page''] = base64_encode(redirectLink());\r\n		$assign[''subtpl''] = $tpl_dir . $this-&gt;_comments_tree_sub_tpl;\r\n\r\n		$AVE_Template-&gt;assign($assign);\r\n		$AVE_Template-&gt;display($tpl_dir . $this-&gt;_comments_tree_tpl);\r\n	}\r\n}\r\n</pre>', '1'),
 (24, 6, 8, 'uploads/news/fish.jpg|Летучая Рыба как орбита', '1'),
 (25, 10, 8, 'Летучая Рыба как орбита', '1'),
-(27, 1, 9, '<p>[mod_gallery:1]</p>', '1'),
-(28, 2, 9, '', '1'),
-(29, 4, 9, 'Пример галереи', '1'),
+(27, 39, 9, '<p>[mod_gallery:1]</p>', '1'),
+(28, 40, 9, '', '1'),
+(29, 38, 9, 'Пример галереи', '1'),
 (30, 1, 10, '<p>[mod_faq:1]</p>', '1'),
 (31, 2, 10, '', '1'),
 (32, 4, 10, 'FAQ', '1'),
@@ -370,8 +313,7 @@ INSERT INTO `cp_document_fields` VALUES
 (48, 10, 15, '«Диссонансный ритм — <акту\\аль/ная> "национальная" зад''ача»-4', '1'),
 (50, 1, 16, 'тут расскажем о 960 пиксельной системе. <br />\r\n[tag:request:4]<br />', '1'),
 (51, 2, 16, 'uploads/images/h1.gif', '1'),
-(52, 4, 16, 'Особенности шаблона', '1');
-INSERT INTO `cp_document_fields` VALUES
+(52, 4, 16, 'Особенности шаблона', '1'),
 (53, 30, 17, '<p>Обыкновенный параграф.</p>\r\n<h4>Пример отображения цитаты</h4>\r\n<blockquote>\r\n<p>Я не очень был взволнован тем, что ночевал на ранчо у Буша. Он должен был сам думать, что будет, если он пустил к себе бывшего сотрудника разведки.</p>\r\n<p class="cite"><cite>Владимир Путин</cite></p>\r\n</blockquote>\r\n<div class="tablebox">\r\n<table>\r\n    <tbody>\r\n        <tr>\r\n            <th>Lorem ipsum</th>\r\n            <td>Dolor sit</td>\r\n            <td class="currency">$125.00</td>\r\n        </tr>\r\n        <tr>\r\n            <th>Dolor sit</th>\r\n            <td>Nostrud exerci</td>\r\n            <td class="currency">$75.00</td>\r\n        </tr>\r\n        <tr>\r\n            <th>Nostrud exerci</th>\r\n            <td>Lorem ipsum</td>\r\n            <td class="currency">$200.00</td>\r\n        </tr>\r\n        <tr>\r\n            <th>Lorem ipsum</th>\r\n            <td>Dolor sit</td>\r\n            <td class="currency">$64.00</td>\r\n        </tr>\r\n        <tr>\r\n            <th>Dolor sit</th>\r\n            <td>Nostrud exerci</td>\r\n            <td class="currency">$36.00</td>\r\n        </tr>\r\n    </tbody>\r\n</table>\r\n<table summary="This table includes examples of as many table elements as possible">\r\n    <caption>         An example table         </caption>         <colgroup><col class="colA" /><col class="colB" /><col class="colC" /></colgroup>\r\n    <thead>\r\n        <tr>\r\n            <th class="table-head" colspan="3">Table heading</th>\r\n        </tr>\r\n        <tr>\r\n            <th>Column 1</th>\r\n            <th>Column 2</th>\r\n            <th class="currency">Column 3</th>\r\n        </tr>\r\n    </thead>\r\n    <tfoot>\r\n    <tr>\r\n        <th>Subtotal</th>\r\n        <td></td>\r\n        <th class="currency">$500.00</th>\r\n    </tr>\r\n    <tr class="total">\r\n        <th>Total</th>\r\n        <td></td>\r\n        <th class="currency">$500.00</th>\r\n    </tr>\r\n    </tfoot>\r\n    <tbody>\r\n        <tr class="odd">\r\n            <th>Lorem ipsum</th>\r\n            <td>Dolor sit</td>\r\n            <td class="currency">$125.00</td>\r\n        </tr>\r\n        <tr>\r\n            <th>Dolor sit</th>\r\n            <td>Nostrud exerci</td>\r\n            <td class="currency">$75.00</td>\r\n        </tr>\r\n        <tr class="odd">\r\n            <th>Nostrud exerci</th>\r\n            <td>Lorem ipsum</td>\r\n            <td class="currency">$200.00</td>\r\n        </tr>\r\n        <tr>\r\n            <th>Lorem ipsum</th>\r\n            <td>Dolor sit</td>\r\n            <td class="currency">$64.00</td>\r\n        </tr>\r\n        <tr class="odd">\r\n            <th>Dolor sit</th>\r\n            <td>Nostrud exerci</td>\r\n            <td class="currency">$36.00</td>\r\n        </tr>\r\n    </tbody>\r\n</table>\r\n</div>\r\n<div class="clearfix"></div>\r\n<div class="grid_4 alpha">\r\n<div class="box">\r\n<h2>Design Process</h2>\r\n<div class="block">\r\n<p>Design is based on the inspiration of past accomplishments. On that foundation, we can build upon those achievements to shape the future. Design is about life &mdash; past, present and future &mdash; and the learning process that happens between birth and death. It is about community and shared knowledge and experience. It is the passion to build on what we''ve learned to create something better.</p>\r\n</div>\r\n</div>\r\n</div>\r\n<div class="grid_4">\r\n<div class="box">\r\n<h2>Design Process</h2>\r\n<div class="block">\r\n<p>Design is based on the inspiration of past accomplishments. On that foundation, we can build upon those achievements to shape the future. Design is about life &mdash; past, present and future &mdash; and the learning process that happens between birth and death. It is about community and shared knowledge and experience. It is the passion to build on what we''ve learned to create something better.</p>\r\n</div>\r\n</div>\r\n</div>\r\n<div class="grid_4 omega">\r\n<div class="box">\r\n<h2>Design Process</h2>\r\n<div class="block">\r\n<p>Design is based on the inspiration of past accomplishments. On that foundation, we can build upon those achievements to shape the future. Design is about life &mdash; past, present and future &mdash; and the learning process that happens between birth and death. It is about community and shared knowledge and experience. It is the passion to build on what we''ve learned to create something better.</p>\r\n</div>\r\n</div>\r\n</div>\r\n<div class="clearfix"></div>\r\n<div class="grid_12 alpha omega">\r\n<div id="kwick-box" class="box">\r\n<h2>Новинки каталога</h2>\r\n<div id="kwick">\r\n<ul class="kwicks">\r\n    <li><a href="#" class="kwick"> <img height="100" width="100" src="/uploads/manufacturer/hp151111.jpg" alt="photo" />\r\n    <p>HP Compaq 530 FH524AA<strong>25.003 руб</strong></p>\r\n    </a></li>\r\n    <li><a href="#" class="kwick"> <img height="100" width="100" src="/uploads/manufacturer/hp151111.jpg" alt="photo" />\r\n    <p>HP Compaq 530 FH524AA<strong>25.003 руб</strong></p>\r\n    </a></li>\r\n    <li><a href="#" class="kwick"> <img height="100" width="100" src="/uploads/manufacturer/hp151111.jpg" alt="photo" />\r\n    <p>HP Compaq 530 FH524AA<strong>25.003 руб</strong></p>\r\n    </a></li>\r\n    <li><a href="#" class="kwick"> <img height="100" width="100" src="/uploads/manufacturer/hp151111.jpg" alt="photo" />\r\n    <p>HP Compaq 530 FH524AA<strong>25.003 руб</strong></p>\r\n    </a></li>\r\n    <li><a href="#" class="kwick"> <img height="100" width="100" src="/uploads/manufacturer/hp151111.jpg" alt="photo" />\r\n    <p>HP Compaq 530 FH524AA<strong>25.003 руб</strong></p>\r\n    </a></li>\r\n</ul>\r\n</div>\r\n</div>\r\n</div>\r\n<div class="clearfix"></div>\r\n<div class="box">\r\n<h2><a href="#" id="toggle-accordion-block">Аккордеон</a></h2>\r\n<div id="accordion-block" class="block">\r\n<div id="accordion">\r\n<h3 class="toggler atStart">Модуль &quot;Магазин&quot;</h3>\r\n<div class="element atStart">\r\n<ul>\r\n    <li><strong>Настройка. </strong>Позволяет за считанные минуты создать интернет-магазин в котором можно разместить тысячи товаров.</li>\r\n    <li><strong>Авторизация. </strong>Магазин позволяет оформлять покупки как авторизованным пользователям, так и неавторизованным. Авторизованные пользователи могут сравнивать понравившееся им товары товары и пользоваться гибкой системой скидочных купонов.</li>\r\n    <li><strong>SEO.</strong> Модуль обладает отличными SEO-показателями и позволяет оперировать необходимыми meta-тегами: <em>keyword, description</em>.</li>\r\n</ul>\r\n</div>\r\n<h3 class="toggler atStart">Модуль &quot;Магазин&quot;</h3>\r\n<div class="element atStart">\r\n<p>Позволяет за считанные минуты создать интернет-магазин в котором можно разместить тысячи товаров. Магазин позволяет оформлять покупки как авторизованным пользователям, так и неавторизованным. Авторизованные пользователи могут сравнивать понравившееся им товары товары. Также для авторизованных пользователей предусмотрена лидкая система скидок и купонов. Модуль обладает отличными SEO-показателями и позволяет оперировать всеми необходимыми meta-тегами.</p>\r\n</div>\r\n<h3 class="toggler atStart">Модуль &quot;Магазин&quot;</h3>\r\n<div class="element atStart">\r\n<p>Позволяет за считанные минуты создать интернет-магазин в котором можно разместить тысячи товаров. Магазин позволяет оформлять покупки как авторизованным пользователям, так и неавторизованным. Авторизованные пользователи могут сравнивать понравившееся им товары товары. Также для авторизованных пользователей предусмотрена лидкая система скидок и купонов. Модуль обладает отличными SEO-показателями и позволяет оперировать всеми необходимыми meta-тегами.</p>\r\n</div>\r\n<h3 class="toggler atStart">Модуль &quot;Магазин&quot;</h3>\r\n<div class="element atStart">\r\n<p>Позволяет за считанные минуты создать интернет-магазин в котором можно разместить тысячи товаров. Магазин позволяет оформлять покупки как авторизованным пользователям, так и неавторизованным. Авторизованные пользователи могут сравнивать понравившееся им товары товары. Также для авторизованных пользователей предусмотрена лидкая система скидок и купонов. Модуль обладает отличными SEO-показателями и позволяет оперировать всеми необходимыми meta-тегами.</p>\r\n</div>\r\n</div>\r\n</div>\r\n</div>', '1'),
 (54, 31, 17, '', '1'),
 (55, 29, 17, 'Типографика', '1'),
@@ -432,6 +374,60 @@ CREATE TABLE `cp_document_remarks` (
   PRIMARY KEY  (`Id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=cp1251 PACK_KEYS=0;
 
+CREATE TABLE `cp_documents` (
+  `Id` int(10) unsigned NOT NULL auto_increment,
+  `rubric_id` mediumint(5) unsigned NOT NULL default '0',
+  `document_alias` varchar(255) NOT NULL,
+  `document_title` varchar(255) NOT NULL,
+  `document_published` int(10) unsigned NOT NULL default '0',
+  `document_expire` int(10) unsigned NOT NULL default '0',
+  `document_changed` int(10) unsigned NOT NULL default '0',
+  `document_author_id` mediumint(5) unsigned NOT NULL default '1',
+  `document_in_search` enum('1','0') NOT NULL default '1',
+  `document_meta_keywords` tinytext NOT NULL,
+  `document_meta_description` tinytext NOT NULL,
+  `document_meta_robots` enum('index,follow','index,nofollow','noindex,nofollow') NOT NULL default 'index,follow',
+  `document_status` enum('1','0') NOT NULL default '1',
+  `document_deleted` enum('0','1') NOT NULL default '0',
+  `document_count_print` int(10) unsigned NOT NULL default '0',
+  `document_count_view` int(10) unsigned NOT NULL default '0',
+  `document_linked_navi_id` mediumint(5) unsigned NOT NULL default '0',
+  PRIMARY KEY  (`Id`),
+  UNIQUE KEY `document_alias` (`document_alias`),
+  KEY `rubric_id` (`rubric_id`),
+  KEY `document_status` (`document_status`),
+  KEY `document_published` (`document_published`),
+  KEY `document_expire` (`document_expire`)
+) ENGINE=MyISAM AUTO_INCREMENT=28 DEFAULT CHARSET=cp1251 PACK_KEYS=0;
+
+INSERT INTO `cp_documents` VALUES (1, 1, 'главная', 'Главная', 0, 0, 1284323091, 1, '0', '', '', 'index,follow', '1', '0', 10, 1166, 0),
+(2, 1, '404-not-found', '404 - Документ не найден', 0, 0, 1258259536, 1, '0', '', '', 'noindex,nofollow', '1', '0', 5, 352, 1),
+(3, 1, 'о-компании', 'О компании', 1250047140, 1597202340, 1280781668, 1, '0', '', '', 'index,follow', '1', '0', 0, 171, 0),
+(4, 1, 'условия-сделки', 'Условия сделки', 1250986260, 1598141460, 1284323274, 1, '1', '', '', 'index,follow', '1', '0', 1, 95, 0),
+(5, 1, 'kontakty', 'Контакты', 1251677460, 1882829460, 1276370714, 1, '1', '', '', 'index,follow', '1', '0', 0, 166, 0),
+(6, 2, 'новости/2009-08-07/первая-тестовая-новость', 'Первая тестовая новость', 1249258200, 1596413400, 1280837869, 1, '1', 'Новость,Близкий болид', 'Декретное время дает астероид, тем не менее, Дон Еманс включил в список всего 82-е Великие Кометы', 'index,follow', '1', '0', 1, 221, 0),
+(7, 1, 'новости', 'Архив новостей', 1251331860, 1882483860, 1278066151, 1, '1', 'Архив новостей', '', 'index,follow', '1', '0', 1, 183, 0),
+(8, 2, 'новости/2009-08-15/вторая-тестовая-новость', 'Вторая тестовая новость', 1250035860, 1597191060, 1280837890, 1, '1', 'Новость,Летучая Рыба', 'Лимб, по определению, ищет перигелий (датировка приведена по Петавиусу, Цеху, Хайсу)', 'index,follow', '1', '0', 0, 129, 0),
+(9, 5, 'primer-galerei', 'Пример галереи', 1250986260, 1882138260, 1275883042, 1, '1', 'Галерея,картинки,изображения', '', 'index,follow', '1', '0', 2, 155, 0),
+(10, 1, 'faq', 'FAQ', 1249085460, 1880237460, 1275882529, 1, '1', 'вопрос-ответ', 'работа модуля вопрос-ответ', 'index,follow', '1', '0', 0, 94, 0),
+(11, 1, 'sitemap', 'Карта сайта', 1258400700, 1889552700, 1275822225, 1, '0', '', '', 'index,follow', '1', '0', 1, 41, 1),
+(12, 1, 'kopiya-mordy', 'Копия морды', 1258427100, 1889579100, 1273609180, 1, '1', '', '', 'index,follow', '1', '0', 0, 9, 0),
+(13, 1, 'google-maps', 'Google Maps', 1264240740, 1895392740, 1275822247, 1, '1', '', '', 'index,follow', '1', '0', 0, 12, 0),
+(14, 2, 'новости/демонстрация-тэга-more', 'Демонстрация тэга more', 1263292140, 1596461340, 1280873832, 1, '1', 'Новость,Резкий звукосниматель', 'Фузз, согласно традиционным представлениям, образует фьюжн, не говоря уже о том, что рок-н-ролл мертв', 'index,follow', '1', '0', 0, 14, 5),
+(15, 2, 'новости/диссонансный-ритм-актуальная-национальная-задача', 'Диссонансный ритм — актуальная национальная задача', 1263302280, 1578835080, 1280837905, 2, '1', 'Новость,Диссонансный ритм', 'Синекдоха, без использования формальных признаков поэзии, аллитерирует конструктивный мифопоэтический хронотоп', 'index,follow', '1', '0', 0, 16, 5),
+(16, 1, 'osobennosti-shablona', 'Особенности шаблона', 1263322080, 1894474080, 1272800885, 2, '1', 'Особенности шаблона', 'Особенности шаблона', 'index,follow', '1', '0', 0, 29, 0),
+(17, 3, 'tipografika', 'Типографика', 1263322320, 1578855120, 1280781641, 2, '1', 'Типографика', 'Типографика', 'index,follow', '1', '0', 0, 27, 0),
+(18, 3, '960px-grid-system', '960px grid system', 1265461800, 1580994600, 1280781583, 2, '0', '', '', 'index,follow', '1', '0', 0, 36, 0),
+(19, 4, 'german-shepherd-dog', 'Немецкая овчарка', 1281988920, 1597608120, 1284656993, 1, '1', 'собаки', '', 'index,follow', '1', '0', 0, 4, 19),
+(20, 4, 'товар-2', 'Шарпей', 1283535240, 1599154440, 1284656971, 1, '1', 'собаки', '', 'index,follow', '1', '0', 0, 4, 19),
+(21, 4, 'chow-chow', 'Чау-чау', 1284368340, 1284368340, 1284656953, 1, '0', 'собаки', '', 'index,follow', '1', '0', 0, 5, 19),
+(22, 4, 'british-shorthair-cat', 'Британская короткошёрстная', 1283549160, 1599168360, 1284656933, 1, '1', 'коты', '', 'index,follow', '1', '0', 0, 2, 18),
+(23, 4, 'siberian-cat', 'Сибирская кошка', 1283549940, 1599169140, 1284656917, 1, '1', 'коты', '', 'index,follow', '1', '0', 0, 4, 18),
+(24, 4, 'persian-cat', 'Персидская кошка', 1283550180, 1599169380, 1284656890, 1, '1', 'коты', '', 'index,follow', '1', '0', 0, 5, 18),
+(25, 1, 'коты-и-собаки', 'Коты и собаки', 1284323280, 1599942480, 1284656864, 1, '1', '', '', 'index,follow', '1', '0', 0, 4, 0),
+(26, 1, 'собаки', 'Собаки', 1284656460, 1600275660, 1284656829, 1, '1', '', '', 'index,follow', '1', '0', 0, 3, 0),
+(27, 1, 'коты', 'Коты', 1284656580, 1600275780, 1284656619, 1, '1', '', '', 'index,follow', '1', '0', 0, 3, 0);
+
 CREATE TABLE `cp_log` (
   `Id` int(10) unsigned NOT NULL auto_increment,
   `log_time` int(10) NOT NULL default '0',
@@ -443,44 +439,14 @@ CREATE TABLE `cp_log` (
   PRIMARY KEY  (`Id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=cp1251 PACK_KEYS=0;
 
-CREATE TABLE `cp_module` (
+CREATE TABLE `cp_modul_banner_categories` (
   `Id` smallint(3) unsigned NOT NULL auto_increment,
-  `ModulName` char(50) NOT NULL,
-  `Status` enum('1','0') NOT NULL default '1',
-  `CpEngineTag` char(255) NOT NULL,
-  `CpPHPTag` char(255) NOT NULL,
-  `ModulFunktion` char(255) NOT NULL,
-  `IstFunktion` enum('1','0') NOT NULL default '1',
-  `ModulPfad` char(50) NOT NULL,
-  `Version` char(20) NOT NULL default '1.0',
-  `Template` smallint(3) unsigned NOT NULL default '1',
-  `AdminEdit` enum('0','1') NOT NULL default '0',
-  PRIMARY KEY  (`Id`),
-  UNIQUE KEY `ModulName` (`ModulName`)
-) ENGINE=MyISAM  DEFAULT CHARSET=cp1251 PACK_KEYS=0;
+  `banner_category_name` char(100) NOT NULL default '',
+  PRIMARY KEY  (`Id`)
+) ENGINE=MyISAM AUTO_INCREMENT=3 DEFAULT CHARSET=cp1251;
 
-INSERT INTO `cp_module` VALUES
-(1, 'Download', '1', '', '', '', '0', 'download', '2.0', 1, '1'),
-(2, 'Who is online', '1', '#\\[mod_online]#', '<?php mod_online(); ?>', 'mod_online', '1', 'whoisonline', '1.0', 0, '0'),
-(3, 'Авторизация', '1', '#\\[mod_login]#', '<?php mod_login(); ?>', 'mod_login', '1', 'login', '2.2', 1, '1'),
-(4, 'Архив документов', '1', '#\\[mod_newsarchive:(\\d+)]#', '<?php mod_newsarchive(''$1''); ?>', 'mod_newsarchive', '1', 'newsarchive', '1.1', 1, '1'),
-(5, 'Баннер', '1', '#\\[mod_banner:(\\d+)]#', '<?php mod_banner(''$1''); ?>', 'mod_banner', '1', 'media', '1.3', 0, '1'),
-(6, 'Вопрос/ответ', '1', '#\\[mod_faq:(\\d+)]#', '<?php mod_faq(''$1''); ?>', 'mod_faq', '1', 'faq', '1.0', 0, '1'),
-(7, 'Галерея', '1', '#\\[mod_gallery:([\\d-]+)]#', '<?php mod_gallery(''$1''); ?>', 'mod_gallery', '1', 'gallery', '2.2', 0, '1'),
-(8, 'Карта сайта', '1', '#\\[mod_sitemap:([\\d,]*)]#', '<?php mod_sitemap(''$1''); ?>', 'mod_sitemap', '1', 'sitemap', '1.0', 0, '0'),
-(9, 'Комментарии', '1', '#\\[mod_comment]#', '<?php mod_comment(); ?>', 'mod_comment', '1', 'comment', '1.2', 0, '1'),
-(10, 'Контакты', '1', '#\\[mod_contact:(\\d+)]#', '<?php mod_contact(''$1''); ?>', 'mod_contact', '1', 'contact', '2.4', 0, '1'),
-(11, 'Магазин', '1', '', '', '', '0', 'shop', '1.4', 2, '1'),
-(12, 'Навигация', '1', '#\\[mod_navigation:(\\d+)]#', '<?php mod_navigation(''$1''); ?>', 'mod_navigation', '1', 'navigation', '1.2', 0, '0'),
-(13, 'Опросы', '1', '#\\[mod_poll:(\\d+)]#', '<?php mod_poll(''$1''); ?>', 'mod_poll', '1', 'poll', '1.0', 1, '1'),
-(14, 'Поиск', '1', '#\\[mod_search]#', '<?php mod_search(); ?>', 'mod_search', '1', 'search', '2.0', 1, '1'),
-(15, 'Рекомендовать', '1', '#\\[mod_recommend]#', '<?php mod_recommend(); ?>', 'mod_recommend', '1', 'recommend', '1.0', 0, '0'),
-(16, 'Системные блоки', '1', '#\\[mod_sysblock:(\\d+)]#', '<?php mod_sysblock(''$1''); ?>', 'mod_sysblock', '1', 'sysblock', '1.1', 0, '1'),
-(17, 'Форумы', '1', '', '', '', '0', 'forums', '1.2', 3, '1'),
-(18, 'Внутренняя рассылка', '', '', '', '', '0', 'newsletter', '1.0', 0, '1'),
-(19, 'Ссылки по теме', '1', '#\\[mod_moredoc]#', '<?php mod_moredoc(); ?>', 'mod_moredoc', '1', 'moredoc', '1.0', 0, '0'),
-(22, 'Гостевая книга', '1', '', '', '', '0', 'guestbook', '1.0', 1, '1'),
-(21, 'Корзина', '1', '#\\[mod_basket]#', '<?php mod_basket(); ?>', 'mod_basket', '1', 'basket', '1.0', 0, '0');
+INSERT INTO `cp_modul_banner_categories` VALUES (1, 'Катагория 1'),
+(2, 'Категория 2');
 
 CREATE TABLE `cp_modul_banners` (
   `Id` mediumint(5) unsigned NOT NULL auto_increment,
@@ -502,21 +468,10 @@ CREATE TABLE `cp_modul_banners` (
   `banner_height` smallint(3) unsigned NOT NULL default '0',
   PRIMARY KEY  (`Id`),
   KEY `banner_category_id` (`banner_category_id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=cp1251;
+) ENGINE=MyISAM AUTO_INCREMENT=3 DEFAULT CHARSET=cp1251;
 
-INSERT INTO `cp_modul_banners` VALUES
-(1, 1, 'banner.jpg', 'http://www.overdoze.ru', '1', 'Overdoze-Banner', 313, 3, 'Скрипты CMS, бесплатные шаблоны, форум и поддержка разработчиков', 0, 0, 0, 0, '1', '_self', 0, 0),
-(2, 1, 'banner2.gif', 'http://www.google.de', '1', 'Google-Banner', 335, 1, 'Посетите сайт Google', 0, 0, 0, 0, '1', '_blank', 0, 0);
-
-CREATE TABLE `cp_modul_banner_categories` (
-  `Id` smallint(3) unsigned NOT NULL auto_increment,
-  `banner_category_name` char(100) NOT NULL default '',
-  PRIMARY KEY  (`Id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=cp1251;
-
-INSERT INTO `cp_modul_banner_categories` VALUES
-(1, 'Катагория 1'),
-(2, 'Категория 2');
+INSERT INTO `cp_modul_banners` VALUES (1, 1, 'banner.jpg', 'http://www.overdoze.ru', '1', 'Overdoze-Banner', 323, 3, 'Скрипты CMS, бесплатные шаблоны, форум и поддержка разработчиков', 0, 0, 0, 0, '1', '_self', 0, 0),
+(2, 1, 'banner2.gif', 'http://www.google.de', '1', 'Google-Banner', 350, 1, 'Посетите сайт Google', 0, 0, 0, 0, '1', '_blank', 0, 0);
 
 CREATE TABLE `cp_modul_basket` (
   `id` int(11) NOT NULL auto_increment,
@@ -528,19 +483,6 @@ CREATE TABLE `cp_modul_basket` (
   `basket_product_amount` float(10,2) default NULL,
   PRIMARY KEY  (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=cp1251 PACK_KEYS=0;
-
-CREATE TABLE `cp_modul_comments` (
-  `Id` tinyint(1) unsigned NOT NULL auto_increment,
-  `comment_max_chars` smallint(3) unsigned NOT NULL default '1000',
-  `comment_user_groups` char(255) NOT NULL,
-  `comment_need_approve` enum('0','1') NOT NULL default '0',
-  `comment_active` enum('1','0') NOT NULL default '1',
-  `comment_use_antispam` enum('1','0') NOT NULL default '1',
-  PRIMARY KEY  (`Id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=cp1251;
-
-INSERT INTO `cp_modul_comments` VALUES
-(1, 1500, '1,2,3,4', '0', '1', '1');
 
 CREATE TABLE `cp_modul_comment_info` (
   `Id` int(10) unsigned NOT NULL auto_increment,
@@ -561,10 +503,9 @@ CREATE TABLE `cp_modul_comment_info` (
   KEY `document_id` (`document_id`),
   KEY `parent_id` (`parent_id`),
   KEY `status` (`comment_status`)
-) ENGINE=MyISAM  DEFAULT CHARSET=cp1251 PACK_KEYS=0;
+) ENGINE=MyISAM AUTO_INCREMENT=20 DEFAULT CHARSET=cp1251 PACK_KEYS=0;
 
-INSERT INTO `cp_modul_comment_info` VALUES
-(1, 0, 6, 'Д. Д''артаньяновский', 2, 'admin@ave.ru', '', '', '127.0.0.1', 1269959742, 0, 'Можно предположить, что вероятностная логика создает язык образов, при этом буквы А, В, I, О символизируют соответственно общеутвердительное, общеотрицательное, частноутвердительное и частноотрицательное суждения. Локаята осмысленно принимает во внимание интеллект, хотя в официозе принято обратное. Гений ментально контролирует из ряда вон выходящий бабувизм, при этом буквы А, В, I, О символизируют соответственно общеутвердительное, общеотрицательное, частноутвердительное и частноотрицательное суждения. Сомнение принимает во внимание субъективный гравитационный парадокс, не учитывая мнения авторитетов. ', 1, 0),
+INSERT INTO `cp_modul_comment_info` VALUES (1, 0, 6, 'Д. Д''артаньяновский', 2, 'admin@ave.ru', '', '', '127.0.0.1', 1269959742, 0, 'Можно предположить, что вероятностная логика создает язык образов, при этом буквы А, В, I, О символизируют соответственно общеутвердительное, общеотрицательное, частноутвердительное и частноотрицательное суждения. Локаята осмысленно принимает во внимание интеллект, хотя в официозе принято обратное. Гений ментально контролирует из ряда вон выходящий бабувизм, при этом буквы А, В, I, О символизируют соответственно общеутвердительное, общеотрицательное, частноутвердительное и частноотрицательное суждения. Сомнение принимает во внимание субъективный гравитационный парадокс, не учитывая мнения авторитетов. ', 1, 0),
 (2, 0, 6, 'Admin', 1, 'admin@ave.ru', '', '', '127.0.0.1', 1269959769, 0, 'Интеллект транспонирует примитивный здравый смысл, хотя в официозе принято обратное. Априори, гегельянство подрывает бабувизм, однако Зигварт считал критерием истинности необходимость и общезначимость, для которых нет никакой опоры в объективном мире. Освобождение, конечно, непредсказуемо. По своим философским взглядам Дезами был материалистом и атеистом, последователем Гельвеция, однако даосизм рефлектирует гравитационный парадокс, изменяя привычную реальность. Гедонизм решительно контролирует трагический гравитационный парадокс, учитывая опасность, которую представляли собой писания Дюринга для не окрепшего еще немецкого рабочего движения. ', 1, 0),
 (3, 1, 6, 'Admin', 1, 'admin@ave.ru', '', '', '127.0.0.1', 1269959796, 1269974114, 'Свобода, следовательно, рассматривается данный гений, изменяя привычную реальность. Язык образов осмысляет мир, tertium nоn datur. Априори, надстройка создает сложный гений, открывая новые горизонты. Суждение, конечно, преобразует смысл жизни, не учитывая мнения авторитетов. Философия порождает и обеспечивает примитивный здравый смысл, отрицая очевидное. ', 1, 0),
 (4, 3, 6, 'Д. Д''артаньяновский', 2, 'admin@ave.ru', '', '', '127.0.0.1', 1269959821, 0, 'Заблуждение поразительно. Гносеология естественно рефлектирует дуализм, не учитывая мнения авторитетов. Согласно предыдущему, бабувизм подрывает гравитационный парадокс, открывая новые горизонты. Созерцание нетривиально. Эклектика рефлектирует напряженный позитивизм, однако Зигварт считал критерием истинности необходимость и общезначимость, для которых нет никакой опоры в объективном мире. Смысл жизни индуктивно творит естественный мир, открывая новые горизонты. ', 1, 0),
@@ -581,21 +522,17 @@ INSERT INTO `cp_modul_comment_info` VALUES
 (18, 17, 8, 'Д. А''дмин', 0, 'admin@ave.ru', '', '', '127.0.0.1', 1275694601, 0, 'В связи с этим нужно подчеркнуть, что реликтовый ледник гасит астероидный ионный хвост — это солнечное затмение предсказал ионянам Фалес Милетский. Маятник Фуко притягивает Юпитер, хотя для имеющих глаза-телескопы\nВ связи с этим нужно подчеркнуть, что реликтовый ледник гасит астероидный ионный хвост — это солнечное затмение предсказал ионянам Фалес Милетский. Маятник Фуко притягивает Юпитер, хотя для имеющих глаза-телескопы', 1, 0),
 (19, 18, 8, 'Д. А''дмин', 1, 'admin@ave.ru', '', '', '127.0.0.1', 1281430823, 0, 'Ответ на коммент', 1, 0);
 
-CREATE TABLE `cp_modul_contacts` (
-  `Id` mediumint(5) unsigned NOT NULL auto_increment,
-  `contact_form_title` varchar(100) NOT NULL,
-  `contact_form_mail_max_chars` smallint(3) unsigned NOT NULL default '20000',
-  `contact_form_reciever` varchar(100) default NULL,
-  `contact_form_reciever_multi` varchar(255) default NULL,
-  `contact_form_antispam` enum('1','0') NOT NULL default '1',
-  `contact_form_max_upload` mediumint(5) unsigned NOT NULL default '500',
-  `contact_form_subject_show` enum('1','0') NOT NULL default '1',
-  `contact_form_subject_default` varchar(255) NOT NULL default 'Сообщение',
-  `contact_form_allow_group` varchar(255) NOT NULL default '1,2,3,4',
-  `contact_form_send_copy` enum('1','0') NOT NULL default '1',
-  `contact_form_message_noaccess` text NOT NULL,
+CREATE TABLE `cp_modul_comments` (
+  `Id` tinyint(1) unsigned NOT NULL auto_increment,
+  `comment_max_chars` smallint(3) unsigned NOT NULL default '1000',
+  `comment_user_groups` char(255) NOT NULL,
+  `comment_need_approve` enum('0','1') NOT NULL default '0',
+  `comment_active` enum('1','0') NOT NULL default '1',
+  `comment_use_antispam` enum('1','0') NOT NULL default '1',
   PRIMARY KEY  (`Id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=cp1251;
+) ENGINE=MyISAM AUTO_INCREMENT=2 DEFAULT CHARSET=cp1251;
+
+INSERT INTO `cp_modul_comments` VALUES (1, 1500, '1,2,3,4', '0', '1', '1');
 
 CREATE TABLE `cp_modul_contact_fields` (
   `Id` int(10) unsigned NOT NULL auto_increment,
@@ -612,10 +549,9 @@ CREATE TABLE `cp_modul_contact_fields` (
   `contact_field_max_chars` varchar(20) NOT NULL,
   `contact_field_value` varchar(255) NOT NULL,
   PRIMARY KEY  (`Id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=cp1251;
+) ENGINE=MyISAM AUTO_INCREMENT=6 DEFAULT CHARSET=cp1251;
 
-INSERT INTO `cp_modul_contact_fields` VALUES
-(1, 1, 'textfield', 5, 'Сообщение', '1', '', '1', 698, '1', 'anysymbol', '', ''),
+INSERT INTO `cp_modul_contact_fields` VALUES (1, 1, 'textfield', 5, 'Сообщение', '1', '', '1', 698, '1', 'anysymbol', '', ''),
 (2, 1, 'dropdown', 50, 'Как Вы оцените наш сайт?', '0', 'Плохо,Средне,Супер,Очень мега круто', '1', 200, '1', 'anysymbol', '', ''),
 (3, 1, 'fileupload', 50, 'Прикрепить файл', '1', '', '1', 600, '1', 'anysymbol', '', ''),
 (4, 1, 'fileupload', 50, 'Прикрепить файл', '0', '', '1', 600, '1', 'anysymbol', '', ''),
@@ -636,7 +572,25 @@ CREATE TABLE `cp_modul_contact_info` (
   `contact_form_out_message` longtext NOT NULL,
   `contact_form_out_attachment` tinytext NOT NULL,
   PRIMARY KEY  (`Id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=cp1251;
+) ENGINE=MyISAM DEFAULT CHARSET=cp1251;
+
+CREATE TABLE `cp_modul_contacts` (
+  `Id` mediumint(5) unsigned NOT NULL auto_increment,
+  `contact_form_title` varchar(100) NOT NULL,
+  `contact_form_mail_max_chars` smallint(3) unsigned NOT NULL default '20000',
+  `contact_form_reciever` varchar(100) default NULL,
+  `contact_form_reciever_multi` varchar(255) default NULL,
+  `contact_form_antispam` enum('1','0') NOT NULL default '1',
+  `contact_form_max_upload` mediumint(5) unsigned NOT NULL default '500',
+  `contact_form_subject_show` enum('1','0') NOT NULL default '1',
+  `contact_form_subject_default` varchar(255) NOT NULL default 'Сообщение',
+  `contact_form_allow_group` varchar(255) NOT NULL default '1,2,3,4',
+  `contact_form_send_copy` enum('1','0') NOT NULL default '1',
+  `contact_form_message_noaccess` text NOT NULL,
+  PRIMARY KEY  (`Id`)
+) ENGINE=MyISAM AUTO_INCREMENT=2 DEFAULT CHARSET=cp1251;
+
+INSERT INTO `cp_modul_contacts` VALUES (1, 'Обратная Связь', 5000, 'formsg@mail.ru', 'Вася,asgfa@qaweqw.ru;Петя,sdaksd@jhasgdha.ru;trtrwe@eyteyt.rr', '1', 120, '0', '', '1,2,3,4', '0', 'У Вас недостаточно прав для использования этой формы.');
 
 CREATE TABLE `cp_modul_download_comments` (
   `Id` int(10) unsigned NOT NULL auto_increment,
@@ -690,10 +644,9 @@ CREATE TABLE `cp_modul_download_files` (
   `Excl_Pay` tinyint(1) unsigned NOT NULL default '0',
   `Excl_Chk` tinyint(1) unsigned NOT NULL default '0',
   PRIMARY KEY  (`Id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=cp1251;
+) ENGINE=MyISAM AUTO_INCREMENT=13 DEFAULT CHARSET=cp1251;
 
-INSERT INTO `cp_modul_download_files` VALUES
-(8, 'Overdoze', '', '5.0', '1', 31, 'Мегахомяк', '<p>Хомяк (Cricetus), род грызунов, сем. мышиных; толстое, неуклюж. тело, коротк. хвост и ноги; большие защечные мешки; выкапывает норы со сложн. системой ходов; пит. семенами, вреден; самка приносит дважды в год от 6 до 12 детенышей. Обыкновенный (C. vulgaris) в восточной Европе; песочный (C. arenarius) в песчан. местн. по Волге, Уралу и Иртышу; зюнгарский (C. songarus), главным образом, по бер. Иртыша.</p>', 'Нет ограницений', 1, 'local', 'Changelog.pdf', 450, 0, 'kb', 1164046575, 1232403514, '8', 3, '5', 32, 5, '', 1, 'Нету', '\r\nhttp://www.domain.ru', '/uploads/downloads/hamster1.jpg', 1, 1, 1, 5, '45', 1, 0, 1, 0, 0),
+INSERT INTO `cp_modul_download_files` VALUES (8, 'Overdoze', '', '5.0', '1', 31, 'Мегахомяк', '<p>Хомяк (Cricetus), род грызунов, сем. мышиных; толстое, неуклюж. тело, коротк. хвост и ноги; большие защечные мешки; выкапывает норы со сложн. системой ходов; пит. семенами, вреден; самка приносит дважды в год от 6 до 12 детенышей. Обыкновенный (C. vulgaris) в восточной Европе; песочный (C. arenarius) в песчан. местн. по Волге, Уралу и Иртышу; зюнгарский (C. songarus), главным образом, по бер. Иртыша.</p>', 'Нет ограницений', 1, 'local', 'Changelog.pdf', 450, 0, 'kb', 1164046575, 1232403514, '8', 3, '5', 32, 5, '', 1, 'Нету', '\r\nhttp://www.domain.ru', '/uploads/downloads/hamster1.jpg', 1, 1, 1, 5, '45', 1, 0, 1, 0, 0),
 (11, '', '', '12', '1', 30, 'Суперхомяк', 'Хомяк (Cricetus), род грызунов, сем. мышиных; толстое, неуклюж. тело, коротк. хвост и ноги; большие защечные мешки; выкапывает норы со сложн. системой ходов; пит. семенами, вреден; самка приносит дважды в год от 6 до 12 детенышей. Обыкновенный (C. vulgaris) в восточной Европе; песочный (C. arenarius) в песчан. местн. по Волге, Уралу и Иртышу; зюнгарский (C. songarus), главным образом, по бер. Иртыша.', '&nbsp;', 1, 'local', 'HandbuchKoobi5.pdf', 69, 0, 'kb', 1164047584, 1232403523, '9', 3, '5', 20, 3, '', 1, '', '', '/uploads/downloads/hamster5.jpg', 1, 1, 1, 0, '12', 1, 0, 1, 0, 0),
 (12, '', 'www.bitmap.ru', '1', '1', 28, 'Охуе-хомяк', 'Хомяк (Cricetus), род грызунов, сем. мышиных; толстое, неуклюж. тело, коротк. хвост и ноги; большие защечные мешки; выкапывает норы со сложн. системой ходов; пит. семенами, вреден; самка приносит дважды в год от 6 до 12 детенышей. Обыкновенный (C. vulgaris) в восточной Европе; песочный (C. arenarius) в песчан. местн. по Волге, Уралу и Иртышу; зюнгарский (C. songarus), главным образом, по бер. Иртыша.', '&nbsp;', 1, 'local', 'Changelog.pdf', 0, 0, 'kb', 1232403638, NULL, '3', 1, '2', 0, 0, '', 1, '', '', '/uploads/downloads/hamster4.jpg', 1, 1, 1, 0, '4', 1, 0, 1, 0, 0);
 
@@ -706,10 +659,9 @@ CREATE TABLE `cp_modul_download_kat` (
   `user_group` varchar(255) NOT NULL default '1|2|3|4|5|6',
   `Bild` varchar(200) default NULL,
   PRIMARY KEY  (`Id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=cp1251;
+) ENGINE=MyISAM AUTO_INCREMENT=32 DEFAULT CHARSET=cp1251;
 
-INSERT INTO `cp_modul_download_kat` VALUES
-(24, 0, 'Боевые хомяки', 1, '', '1|12|6|2|8|7|4|5|11|3', 'koobi.gif'),
+INSERT INTO `cp_modul_download_kat` VALUES (24, 0, 'Боевые хомяки', 1, '', '1|12|6|2|8|7|4|5|11|3', 'koobi.gif'),
 (25, 24, 'Самки', 1, 'Здесь собраны фотографии самок хомяков', '1|2|4|3', ''),
 (26, 24, 'Самцы', 2, 'Здесь представлены самцы этого грозного жывотнаго', '1|2|4|3', ''),
 (27, 0, 'Рабочие хомяки', 1, 'Здесь собраны все возможные хомяки трутни', '1|2|4|3', ''),
@@ -722,10 +674,9 @@ CREATE TABLE `cp_modul_download_lizenzen` (
   `Id` smallint(2) unsigned NOT NULL auto_increment,
   `Name` char(255) NOT NULL,
   PRIMARY KEY  (`Id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=cp1251;
+) ENGINE=MyISAM AUTO_INCREMENT=7 DEFAULT CHARSET=cp1251;
 
-INSERT INTO `cp_modul_download_lizenzen` VALUES
-(1, 'Freeware'),
+INSERT INTO `cp_modul_download_lizenzen` VALUES (1, 'Freeware'),
 (2, 'Shareware'),
 (3, 'Без лицензии'),
 (4, 'GNU LGPL'),
@@ -744,10 +695,9 @@ CREATE TABLE `cp_modul_download_os` (
   `Id` int(10) unsigned NOT NULL auto_increment,
   `Name` char(200) NOT NULL,
   PRIMARY KEY  (`Id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=cp1251;
+) ENGINE=MyISAM AUTO_INCREMENT=18 DEFAULT CHARSET=cp1251;
 
-INSERT INTO `cp_modul_download_os` VALUES
-(1, 'Windows 95'),
+INSERT INTO `cp_modul_download_os` VALUES (1, 'Windows 95'),
 (2, 'Windows 98'),
 (3, 'Windows ME'),
 (4, 'Windows 2000'),
@@ -782,17 +732,15 @@ CREATE TABLE `cp_modul_download_settings` (
   `Kommentare` tinyint(1) unsigned NOT NULL default '1'
 ) ENGINE=MyISAM DEFAULT CHARSET=cp1251;
 
-INSERT INTO `cp_modul_download_settings` VALUES
-(1, 1, 'viagra\r\ncialis\r\ncasino\r\ngamble\r\npoker\r\nholdem\r\nbackgammon\r\nbackjack\r\nblack Jack\r\nRoulette\r\nV-I-A-G-R-A\r\nsex\r\ninsurance\r\n!!!\r\n???\r\nxxx', 1);
+INSERT INTO `cp_modul_download_settings` VALUES (1, 1, 'viagra\r\ncialis\r\ncasino\r\ngamble\r\npoker\r\nholdem\r\nbackgammon\r\nbackjack\r\nblack Jack\r\nRoulette\r\nV-I-A-G-R-A\r\nsex\r\ninsurance\r\n!!!\r\n???\r\nxxx', 1);
 
 CREATE TABLE `cp_modul_download_sprachen` (
   `Id` int(10) unsigned NOT NULL auto_increment,
   `Name` char(200) NOT NULL,
   PRIMARY KEY  (`Id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=cp1251;
+) ENGINE=MyISAM AUTO_INCREMENT=6 DEFAULT CHARSET=cp1251;
 
-INSERT INTO `cp_modul_download_sprachen` VALUES
-(1, 'Русский'),
+INSERT INTO `cp_modul_download_sprachen` VALUES (1, 'Русский'),
 (2, 'Английский'),
 (3, 'Немецкий'),
 (4, 'Французский'),
@@ -803,10 +751,9 @@ CREATE TABLE `cp_modul_faq` (
   `faq_title` char(100) NOT NULL,
   `faq_description` char(255) NOT NULL,
   PRIMARY KEY  (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=cp1251 PACK_KEYS=0;
+) ENGINE=MyISAM AUTO_INCREMENT=2 DEFAULT CHARSET=cp1251 PACK_KEYS=0;
 
-INSERT INTO `cp_modul_faq` VALUES
-(1, 'Название рубрики вопросов и ответов', 'Описание рубрики вопросов и ответов');
+INSERT INTO `cp_modul_faq` VALUES (1, 'Название рубрики вопросов и ответов', 'Описание рубрики вопросов и ответов');
 
 CREATE TABLE `cp_modul_faq_quest` (
   `id` mediumint(5) unsigned NOT NULL auto_increment,
@@ -814,10 +761,9 @@ CREATE TABLE `cp_modul_faq_quest` (
   `faq_answer` text NOT NULL,
   `faq_id` mediumint(5) unsigned NOT NULL default '1',
   PRIMARY KEY  (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=cp1251 PACK_KEYS=0;
+) ENGINE=MyISAM AUTO_INCREMENT=4 DEFAULT CHARSET=cp1251 PACK_KEYS=0;
 
-INSERT INTO `cp_modul_faq_quest` VALUES
-(1, '<p>Где расположены шаблоны?</p>', '<p>Шаблоны расположены в административной части в разделе шаблоны.</p>\r\n<p><img src="/uploads/faq/shab01.png" alt="" /></p>', 1),
+INSERT INTO `cp_modul_faq_quest` VALUES (1, '<p>Где расположены шаблоны?</p>', '<p>Шаблоны расположены в административной части в разделе шаблоны.</p>\r\n<p><img src="/uploads/faq/shab01.png" alt="" /></p>', 1),
 (3, '<p>Почему предсказуем доиндустриальный тип политической культуры?</p>', '<p>Кризис легитимности, согласно традиционным представлениям, отражает онтологический коллапс Советского Союза (приводится по работе Д. Белла &quot;Грядущее постиндустриальное общество&quot;). Доиндустриальный тип политической культуры неоднозначен. Разновидность тоталитаризма, согласно традиционным представлениям, теоретически иллюстрирует субъект политического процесса, хотя на первый взгляд, российские власти тут ни при чем. Кризис легитимности верифицирует кризис легитимности, указывает в своем исследовании К. Поппер.</p>\r\n<p>Постиндустриализм, с другой стороны, теоретически возможен. Капиталистическое мировое общество, несмотря на внешние воздействия, ограничивает институциональный тоталитарный тип политической культуры, о чем писали такие авторы, как Ю. Хабермас и Т. Парсонс. Один из основоположников теории социализации Г. Тард писал, что политическое учение Августина определяет бихевиоризм, такого мнения придерживаются многие депутаты Государственной Думы. Идеология доказывает тоталитарный тип политической культуры, впрочем, не все политологи разделяют это мнение. Понятие политического участия самопроизвольно.</p>', 1),
 (2, '<p>Современный тоталитарный тип политической культуры: предпосылки и развитие?</p>', '<p>Политическое манипулирование неизбежно. Феномен толпы, короче говоря, определяет классический марксизм, хотя на первый взгляд, российские власти тут ни при чем. Конфедерация однозначно представляет собой институциональный христианско-демократический национализм, о чем будет подробнее сказано ниже. Политическое учение Локка формирует англо-американский тип политической культуры, такого мнения придерживаются многие депутаты Государственной Думы.</p>\r\n<p>Постиндустриализм практически формирует коллапс Советского Союза, отмечает Г.Алмонд. Коллапс Советского Союза, как правило, доказывает бихевиоризм, что получило отражение в трудах Михельса. Управление политическими конфликтами определяет системный элемент политического процесса, впрочем, это несколько расходится с концепцией Истона.</p>\r\n<p>Теологическая парадигма, на первый взгляд, вызывает прагматический политический процесс в современной России, последнее особенно ярко выражено в ранних работах В.И. Ленина. Правовое государство, с другой стороны, категорически иллюстрирует идеологический либерализм, что было отмечено П. Лазарсфельдом. Субъект власти формирует теоретический элемент политического процесса, такого мнения придерживаются многие депутаты Государственной Думы.</p>', 1);
 
@@ -826,10 +772,9 @@ CREATE TABLE `cp_modul_forum_allowed_files` (
   `filetype` char(200) NOT NULL,
   `filesize` int(10) unsigned NOT NULL default '0',
   PRIMARY KEY  (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=cp1251;
+) ENGINE=MyISAM AUTO_INCREMENT=11 DEFAULT CHARSET=cp1251;
 
-INSERT INTO `cp_modul_forum_allowed_files` VALUES
-(1, 'text/html', 250),
+INSERT INTO `cp_modul_forum_allowed_files` VALUES (1, 'text/html', 250),
 (2, 'text/plain', 500),
 (3, 'image/jpeg', 500),
 (4, 'image/gif', 500),
@@ -861,10 +806,9 @@ CREATE TABLE `cp_modul_forum_category` (
   KEY `title` (`title`),
   KEY `position` (`position`),
   KEY `parent_id` (`parent_id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=cp1251;
+) ENGINE=MyISAM AUTO_INCREMENT=2 DEFAULT CHARSET=cp1251;
 
-INSERT INTO `cp_modul_forum_category` VALUES
-(1, 'Демонстрационная категория', 1, 0, 'Категория для демонстрации работы форумов', '1,2,3,4,5,6,7,8,9');
+INSERT INTO `cp_modul_forum_category` VALUES (1, 'Демонстрационная категория', 1, 0, 'Категория для демонстрации работы форумов', '1,2,3,4,5,6,7,8,9');
 
 CREATE TABLE `cp_modul_forum_forum` (
   `id` int(11) unsigned NOT NULL auto_increment,
@@ -891,10 +835,9 @@ CREATE TABLE `cp_modul_forum_forum` (
   KEY `group_id` (`group_id`),
   KEY `status` (`status`),
   KEY `category_id` (`category_id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=cp1251;
+) ENGINE=MyISAM AUTO_INCREMENT=3 DEFAULT CHARSET=cp1251;
 
-INSERT INTO `cp_modul_forum_forum` VALUES
-(1, 'Общий форум', 1, NULL, 'Здесь можно говорить обо всем', 0, '2010-03-26 04:16:56', 11, '1,2,3,4', 1, '', '', NULL, 1, 0, 0, '', ''),
+INSERT INTO `cp_modul_forum_forum` VALUES (1, 'Общий форум', 1, NULL, 'Здесь можно говорить обо всем', 0, '2010-03-26 04:16:56', 11, '1,2,3,4', 1, '', '', NULL, 1, 0, 0, '', ''),
 (2, 'Мир вокруг нас', 1, NULL, 'Форум о событиях на планете земля.', 0, '2009-01-09 12:08:28', 4, '1,2,3,4,5,6,7,8,9', 1, '', '', NULL, 2, 0, 0, '', '');
 
 CREATE TABLE `cp_modul_forum_groupavatar` (
@@ -903,10 +846,9 @@ CREATE TABLE `cp_modul_forum_groupavatar` (
   `IstStandard` tinyint(1) unsigned NOT NULL default '1',
   `StandardAvatar` char(255) NOT NULL,
   PRIMARY KEY  (`Id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=cp1251;
+) ENGINE=MyISAM AUTO_INCREMENT=5 DEFAULT CHARSET=cp1251;
 
-INSERT INTO `cp_modul_forum_groupavatar` VALUES
-(1, 1, 1, ''),
+INSERT INTO `cp_modul_forum_groupavatar` VALUES (1, 1, 1, ''),
 (2, 2, 1, ''),
 (3, 3, 1, ''),
 (4, 4, 1, '');
@@ -926,10 +868,9 @@ CREATE TABLE `cp_modul_forum_grouppermissions` (
   `MAX_EDIT_PERIOD` smallint(4) unsigned NOT NULL default '672',
   PRIMARY KEY  (`Id`),
   UNIQUE KEY `Benutzergruppe` (`user_group`)
-) ENGINE=MyISAM  DEFAULT CHARSET=cp1251 PACK_KEYS=0;
+) ENGINE=MyISAM AUTO_INCREMENT=5 DEFAULT CHARSET=cp1251 PACK_KEYS=0;
 
-INSERT INTO `cp_modul_forum_grouppermissions` VALUES
-(1, 1, 'own_avatar|canpn|accessforums|cansearch|last24|userprofile|changenick', 45056, 120, 120, 1, 100, 50000, 10000, 10, 1440),
+INSERT INTO `cp_modul_forum_grouppermissions` VALUES (1, 1, 'own_avatar|canpn|accessforums|cansearch|last24|userprofile|changenick', 45056, 120, 120, 1, 100, 50000, 10000, 10, 1440),
 (2, 2, 'accessforums|cansearch|last24|userprofile', 0, 0, 0, 1, 0, 0, 5000, 3, 0),
 (3, 3, 'own_avatar|canpn|accessforums|cansearch|last24|userprofile', 10240, 90, 90, 1, 50, 5000, 10000, 5, 672),
 (4, 4, 'own_avatar|canpn|accessforums|cansearch|last24|userprofile', 10240, 90, 90, 1, 50, 5000, 10000, 5, 672);
@@ -948,8 +889,7 @@ CREATE TABLE `cp_modul_forum_mods` (
   `user_id` int(11) NOT NULL default '0'
 ) ENGINE=MyISAM DEFAULT CHARSET=cp1251;
 
-INSERT INTO `cp_modul_forum_mods` VALUES
-(2, 2);
+INSERT INTO `cp_modul_forum_mods` VALUES (2, 2);
 
 CREATE TABLE `cp_modul_forum_permissions` (
   `forum_id` int(11) NOT NULL default '0',
@@ -958,8 +898,7 @@ CREATE TABLE `cp_modul_forum_permissions` (
   PRIMARY KEY  (`forum_id`,`group_id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=cp1251;
 
-INSERT INTO `cp_modul_forum_permissions` VALUES
-(1, 1, '1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1'),
+INSERT INTO `cp_modul_forum_permissions` VALUES (1, 1, '1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1'),
 (1, 2, '1,1,1,1,0,0,0,0,,,,,,,,,,,,,,'),
 (1, 3, '1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,0,0,0,0,0,0,0'),
 (1, 4, '1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,1,1,1,1,1'),
@@ -1003,10 +942,9 @@ CREATE TABLE `cp_modul_forum_post` (
   KEY `uid` (`uid`),
   KEY `topic_id` (`topic_id`),
   KEY `datum` (`datum`)
-) ENGINE=MyISAM  DEFAULT CHARSET=cp1251;
+) ENGINE=MyISAM AUTO_INCREMENT=12 DEFAULT CHARSET=cp1251;
 
-INSERT INTO `cp_modul_forum_post` VALUES
-(1, '', 1, '2009-01-08 12:51:13', 1, 1, 1, 1, 'Мы приветствуем Вас в наших форумах!\r\nОбщайтесь в удовольствие.', '', 1),
+INSERT INTO `cp_modul_forum_post` VALUES (1, '', 1, '2009-01-08 12:51:13', 1, 1, 1, 1, 'Мы приветствуем Вас в наших форумах!\r\nОбщайтесь в удовольствие.', '', 1),
 (2, 'Юрский замок складки: русло или антиклиналь?', 2, '2009-01-09 11:59:20', 1, 1, 1, 1, 'Габбро поднято. Водопонижение и обезвоживание грунтов вызывают базис эрозии маловероятен. Флексура восстановлена. Ложе достаточно хорошо разогревает сейсмический шток, что в общем свидетельствует о преобладании тектонических опусканий в это время.', '', 1),
 (3, 'Хлоридно-гидрокарбонатный плюмаж: предпосылки и развитие', 2, '2009-01-09 12:03:06', 1, 1, 1, 1, 'Текстура имеет тенденцию останцовый рифт, но приводит к загрязнению окружающей среды. Вулканическое стекло сезонно. Напряженность магнитного поля Земли, которая в настоящее время находится ниже уровня моря, прекращает алмаз, что связано с мощностью вскрыши и полезного ископаемого. Межледниковье стягивает недонасыщенный разлом, в соответствии с изменениями в суммарной минерализации. Дельта ортогонально несет в себе каустобиолит, что лишь подтверждает то, что породные отвалы располагаются на склонах. \r\n\r\nЭвапорит, но если принять для простоты некоторые докущения, залегает в цокольный неоцен, в соответствии с изменениями в суммарной минерализации. Другим примером региональной компенсации может служить этажное залегание изменяет авгит, что в общем свидетельствует о преобладании тектонических опусканий в это время. Руда, так же, как и в других регионах, однослойна. Друмлин, так же, как и в других регионах, высвобождает кварц, но приводит к загрязнению окружающей среды. При рассмотрении возможности поступления загрязнений в подземные воды эксплуатируемых участков кварцит прекращает глетчерный калиево-натриевый полевой шпат, что обусловлено не только первичными неровностями эрозионно-тектонического рельефа поверхности кристаллических пород, но и проявлениями долее поздней блоковой тектоники. Калиево-натриевый полевой шпат разогревает кайнозой, что, однако, не уничтожило доледниковую переуглубленную гидросеть древних долин.', '', 1),
 (4, 'Близкий математический горизонт: гипотеза и теории', 3, '2009-01-09 12:08:28', 1, 1, 1, 1, 'Перигей притягивает спектральный класс, учитывая, что в одном парсеке 3,26 световых года. Уравнение времени дает ионный хвост, хотя это явно видно на фотогpафической пластинке, полученной с помощью 1.2-метpового телескопа. Как было показано выше, нулевой меридиан отражает космический мусор, хотя галактику в созвездии Дракона можно назвать карликовой. Вселенная достаточно огромна, чтобы Юпитер последовательно дает космический реликтовый ледник, таким образом, атмосферы этих планет плавно переходят в жидкую мантию. Отвесная линия прочно притягивает межпланетный перигелий, но кольца видны только при 40–50. \r\n\r\nВ отличие от давно известных астрономам планет земной группы, Лисичка доступна. Перигелий, следуя пионерской работе Эдвина Хаббла, перечеркивает параметр, хотя для имеющих глаза-телескопы туманность Андромеды показалась бы на небе величиной с треть ковша Большой Медведицы. Популяционный индекс колеблет первоначальный поперечник – у таких объектов рукава столь фрагментарны и обрывочны, что их уже нельзя назвать спиральными. Соединение, следуя пионерской работе Эдвина Хаббла, выслеживает экваториальный Млечный Путь (датировка приведена по Петавиусу, Цеху, Хайсу).', '', 1),
@@ -1021,10 +959,9 @@ CREATE TABLE `cp_modul_forum_posticons` (
   `active` tinyint(1) NOT NULL default '1',
   `path` char(55) NOT NULL,
   PRIMARY KEY  (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=cp1251;
+) ENGINE=MyISAM AUTO_INCREMENT=15 DEFAULT CHARSET=cp1251;
 
-INSERT INTO `cp_modul_forum_posticons` VALUES
-(1, 1, 1, 'icon1.gif'),
+INSERT INTO `cp_modul_forum_posticons` VALUES (1, 1, 1, 'icon1.gif'),
 (2, 2, 1, 'icon2.gif'),
 (3, 14, 1, 'icon3.gif'),
 (4, 3, 1, 'icon4.gif'),
@@ -1044,10 +981,9 @@ CREATE TABLE `cp_modul_forum_rank` (
   `title` char(100) NOT NULL,
   `count` int(11) NOT NULL default '0',
   PRIMARY KEY  (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=cp1251;
+) ENGINE=MyISAM AUTO_INCREMENT=7 DEFAULT CHARSET=cp1251;
 
-INSERT INTO `cp_modul_forum_rank` VALUES
-(1, 'Новичок', 1),
+INSERT INTO `cp_modul_forum_rank` VALUES (1, 'Новичок', 1),
 (2, 'Иногда пишет', 100),
 (3, 'Советник', 600),
 (4, 'Эксперт', 1000),
@@ -1062,8 +998,7 @@ CREATE TABLE `cp_modul_forum_rating` (
   PRIMARY KEY  (`topic_id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=cp1251;
 
-INSERT INTO `cp_modul_forum_rating` VALUES
-(1, '', '', ''),
+INSERT INTO `cp_modul_forum_rating` VALUES (1, '', '', ''),
 (2, '', '', ''),
 (3, '', '', '');
 
@@ -1087,8 +1022,7 @@ CREATE TABLE `cp_modul_forum_settings` (
   UNIQUE KEY `maxlines` (`maxlines`)
 ) ENGINE=MyISAM DEFAULT CHARSET=cp1251;
 
-INSERT INTO `cp_modul_forum_settings` VALUES
-(300, 300, 50, 150, 'Arschloch,Ficken,Drecksau', '***', '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">\r\n<html xmlns="http://www.w3.org/1999/xhtml">\r\n<head>\r\n<meta http-equiv="Content-Type" content="text/html; charset=windows-1251" />', 'formsg@mail.ru', 'Admin', 1, 1, 1, 1);
+INSERT INTO `cp_modul_forum_settings` VALUES (300, 300, 50, 150, 'Arschloch,Ficken,Drecksau', '***', '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">\r\n<html xmlns="http://www.w3.org/1999/xhtml">\r\n<head>\r\n<meta http-equiv="Content-Type" content="text/html; charset=windows-1251" />', 'formsg@mail.ru', 'Admin', 1, 1, 1, 1);
 
 CREATE TABLE `cp_modul_forum_smileys` (
   `id` int(11) NOT NULL auto_increment,
@@ -1097,10 +1031,9 @@ CREATE TABLE `cp_modul_forum_smileys` (
   `code` char(15) NOT NULL,
   `path` char(55) NOT NULL,
   PRIMARY KEY  (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=cp1251;
+) ENGINE=MyISAM AUTO_INCREMENT=14 DEFAULT CHARSET=cp1251;
 
-INSERT INTO `cp_modul_forum_smileys` VALUES
-(1, 14, '1', ';)', 'wink.gif'),
+INSERT INTO `cp_modul_forum_smileys` VALUES (1, 14, '1', ';)', 'wink.gif'),
 (2, 13, '1', ':eek:', 'eek.gif'),
 (3, 15, '1', ':(', 'mad.gif'),
 (4, 12, '1', ':D', 'biggrin.gif'),
@@ -1137,10 +1070,9 @@ CREATE TABLE `cp_modul_forum_topic` (
   KEY `opened` (`opened`),
   KEY `uid` (`uid`),
   KEY `title` (`title`)
-) ENGINE=MyISAM  DEFAULT CHARSET=cp1251;
+) ENGINE=MyISAM AUTO_INCREMENT=4 DEFAULT CHARSET=cp1251;
 
-INSERT INTO `cp_modul_forum_topic` VALUES
-(1, 'Добро пожаловать!', 0, 57, NULL, 1, NULL, 0, '2008-05-10 11:45:16', 5, 1, '', 0, '2010-03-26 04:16:56', NULL, 1, 1269566216),
+INSERT INTO `cp_modul_forum_topic` VALUES (1, 'Добро пожаловать!', 0, 57, NULL, 1, NULL, 0, '2008-05-10 11:45:16', 5, 1, '', 0, '2010-03-26 04:16:56', NULL, 1, 1269566216),
 (2, 'Геология', 0, 134, NULL, 2, NULL, 0, '2009-01-09 11:59:20', 2, 1, '', 0, '2009-01-09 12:03:06', NULL, 1, 1231491786),
 (3, 'Астрономия', 0, 3, NULL, 2, NULL, 0, '2009-01-09 12:08:28', 1, 1, '', 1, '2009-01-09 12:08:28', NULL, 1, 1231492108);
 
@@ -1151,8 +1083,7 @@ CREATE TABLE `cp_modul_forum_topic_read` (
   PRIMARY KEY  (`Usr`,`Topic`)
 ) ENGINE=MyISAM DEFAULT CHARSET=cp1251;
 
-INSERT INTO `cp_modul_forum_topic_read` VALUES
-(1, 2, '2010-05-03 05:39:32'),
+INSERT INTO `cp_modul_forum_topic_read` VALUES (1, 2, '2010-05-03 05:39:32'),
 (1, 1, '2010-06-23 13:49:08'),
 (1, 3, '2010-05-02 22:52:49'),
 (0, 1, '2010-01-11 04:38:16'),
@@ -1168,6 +1099,8 @@ CREATE TABLE `cp_modul_forum_useronline` (
   UNIQUE KEY `ip` (`ip`),
   KEY `expire` (`expire`)
 ) ENGINE=MyISAM DEFAULT CHARSET=cp1251;
+
+INSERT INTO `cp_modul_forum_useronline` VALUES ('127.0.0.1', 1, 1287793530, 'Admin', '0');
 
 CREATE TABLE `cp_modul_forum_userprofile` (
   `Id` int(14) unsigned NOT NULL auto_increment,
@@ -1202,10 +1135,9 @@ CREATE TABLE `cp_modul_forum_userprofile` (
   `Geschlecht` enum('male','female') NOT NULL default 'male',
   PRIMARY KEY  (`Id`),
   UNIQUE KEY `BenutzerId` (`BenutzerId`)
-) ENGINE=MyISAM  DEFAULT CHARSET=cp1251 PACK_KEYS=0;
+) ENGINE=MyISAM AUTO_INCREMENT=2 DEFAULT CHARSET=cp1251 PACK_KEYS=0;
 
-INSERT INTO `cp_modul_forum_userprofile` VALUES
-(1, 1, 'Admin', 0, '', 8, 1, '', '', '', '', 1, 1, '', 0, '', 0, '', 'formsg@mail.ru', 1250295071, '', 0, 1, 1, 1, 1, 1, 1, 1, 'male');
+INSERT INTO `cp_modul_forum_userprofile` VALUES (1, 1, 'Admin', 0, '', 8, 1, '', '', '', '', 1, 1, '', 0, '', 0, '', 'formsg@mail.ru', 1250295071, '', 0, 1, 1, 1, 1, 1, 1, 1, 'male');
 
 CREATE TABLE `cp_modul_gallery` (
   `id` int(10) unsigned NOT NULL auto_increment,
@@ -1226,10 +1158,9 @@ CREATE TABLE `cp_modul_gallery` (
   `gallery_script` text NOT NULL,
   `gallery_image_template` text NOT NULL,
   PRIMARY KEY  (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=cp1251 PACK_KEYS=0;
+) ENGINE=MyISAM AUTO_INCREMENT=2 DEFAULT CHARSET=cp1251 PACK_KEYS=0;
 
-INSERT INTO `cp_modul_gallery` VALUES
-(1, 'Демонстрационная галерея', 'Эта галерея создана для ознакомления с возможностями модуля', 1, 1250295071, 120, 4, '1', '1', '', 7, 12, 'watermark.gif', '', 'position', '<script src="/modules/gallery/templates/js/clearbox.js?lng=ru&dir=/modules/gallery/templates/js/clearbox" type="text/javascript"></script>', '<a href="/modules/gallery/uploads/[tag:gal:folder][tag:img:filename]" rel="clearbox[gallery=Демонстрационная галерея,,comment=[tag:img:description]]" title="[tag:img:title]"><img src="[tag:img:thumbnail]" /></a>');
+INSERT INTO `cp_modul_gallery` VALUES (1, 'Демонстрационная галерея', 'Эта галерея создана для ознакомления с возможностями модуля', 1, 1250295071, 120, 4, '1', '1', '', 7, 12, 'watermark.gif', '', 'position', '', '<a href="/modules/gallery/uploads/[tag:gal:folder][tag:img:filename]" rel="clearbox[gallery=Демонстрационная галерея,,comment=[tag:img:description]]" title="[tag:img:title]"><img src="[tag:img:thumbnail]" /></a>');
 
 CREATE TABLE `cp_modul_gallery_images` (
   `id` int(10) unsigned NOT NULL auto_increment,
@@ -1246,10 +1177,9 @@ CREATE TABLE `cp_modul_gallery_images` (
   KEY `image_date` (`image_date`),
   KEY `gallery_id` (`gallery_id`),
   KEY `image_title` (`image_title`)
-) ENGINE=MyISAM  DEFAULT CHARSET=cp1251 PACK_KEYS=0;
+) ENGINE=MyISAM AUTO_INCREMENT=9 DEFAULT CHARSET=cp1251 PACK_KEYS=0;
 
-INSERT INTO `cp_modul_gallery_images` VALUES
-(1, 1, 'crocodile.jpg', 1, 'Крокодил', '', '.jpg', 1250295071, 1),
+INSERT INTO `cp_modul_gallery_images` VALUES (1, 1, 'crocodile.jpg', 1, 'Крокодил', '', '.jpg', 1250295071, 1),
 (2, 1, 'dolphin.jpg', 1, 'Дельфин', '', '.jpg', 1250295071, 1),
 (3, 1, 'duck.jpg', 1, 'Утка', '', '.jpg', 1250295071, 1),
 (4, 1, 'eagle.jpg', 1, 'Орел', '', '.jpg', 1250295071, 7),
@@ -1257,34 +1187,6 @@ INSERT INTO `cp_modul_gallery_images` VALUES
 (6, 1, 'killer_whale.jpg', 1, 'Касатка', '', '.jpg', 1250295071, 6),
 (7, 1, 'leaf.jpg', 1, 'Лист', '', '.jpg', 1250295071, 1),
 (8, 1, 'spider.jpg', 1, 'Паук', '', '.jpg', 1250295071, 5);
-
-CREATE TABLE `cp_modul_guestbook` (
-  `id` tinyint(1) unsigned NOT NULL auto_increment,
-  `guestbook_antispam` enum('1','0') NOT NULL default '1',
-  `guestbook_antispam_time` mediumint(5) NOT NULL default '1',
-  `guestbook_send_copy` enum('1','0') NOT NULL default '1',
-  `guestbook_email_copy` char(100) NOT NULL default 'info@domain.tld',
-  `guestbook_post_max_length` mediumint(5) NOT NULL default '1500',
-  `guestbook_need_approve` enum('1','0') NOT NULL default '1',
-  `guestbook_use_bbcode` enum('1','0') NOT NULL default '1',
-  PRIMARY KEY  (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=cp1251;
-
-INSERT INTO `cp_modul_guestbook` VALUES
-(1, '1', 0, '1', 'info@domain.tld', 1500, '1', '1');
-
-CREATE TABLE `cp_modul_guestbook_post` (
-  `id` int(10) unsigned NOT NULL auto_increment,
-  `guestbook_post_author_name` varchar(25) NOT NULL default '',
-  `guestbook_post_author_email` varchar(100) NOT NULL default '',
-  `guestbook_post_author_web` varchar(100) NOT NULL default '',
-  `guestbook_post_author_ip` varchar(15) NOT NULL default '',
-  `guestbook_post_author_sity` varchar(100) NOT NULL default '',
-  `guestbook_post_text` text NOT NULL,
-  `guestbook_post_approve` enum('0','1') NOT NULL default '0',
-  `guestbook_post_created` int(10) unsigned NOT NULL default '0',
-  PRIMARY KEY  (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=cp1251 PACK_KEYS=0;
 
 CREATE TABLE `cp_modul_login` (
   `Id` tinyint(1) unsigned NOT NULL auto_increment,
@@ -1297,10 +1199,9 @@ CREATE TABLE `cp_modul_login` (
   `login_require_firstname` enum('0','1') NOT NULL default '0',
   `login_require_lastname` enum('0','1') NOT NULL default '0',
   PRIMARY KEY  (`Id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=cp1251;
+) ENGINE=MyISAM AUTO_INCREMENT=2 DEFAULT CHARSET=cp1251;
 
-INSERT INTO `cp_modul_login` VALUES
-(1, 'email', '0', '1', 'domain.ru', 'name@domain.ru', '0', '0', '0');
+INSERT INTO `cp_modul_login` VALUES (1, 'email', '0', '1', 'domain.ru', 'name@domain.ru', '0', '0', '0');
 
 CREATE TABLE `cp_modul_newsarchive` (
   `id` mediumint(5) unsigned NOT NULL auto_increment,
@@ -1309,22 +1210,9 @@ CREATE TABLE `cp_modul_newsarchive` (
   `newsarchive_show_days` enum('1','0') NOT NULL default '1',
   `newsarchive_show_empty` enum('1','0') NOT NULL default '1',
   PRIMARY KEY  (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=cp1251 PACK_KEYS=0;
+) ENGINE=MyISAM AUTO_INCREMENT=2 DEFAULT CHARSET=cp1251 PACK_KEYS=0;
 
-INSERT INTO `cp_modul_newsarchive` VALUES
-(1, 'Первый архив', '1,2,3', '1', '1');
-
-CREATE TABLE `cp_modul_newsletter` (
-  `id` int(10) unsigned NOT NULL auto_increment,
-  `newsletter_sender` varchar(255) NOT NULL default '',
-  `newsletter_send_date` int(10) unsigned default NULL,
-  `newsletter_format` enum('text','html') NOT NULL default 'text',
-  `newsletter_title` varchar(255) NOT NULL default '',
-  `newsletter_message` text NOT NULL,
-  `newsletter_groups` text NOT NULL,
-  `newsletter_attach` tinytext NOT NULL,
-  PRIMARY KEY  (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=cp1251;
+INSERT INTO `cp_modul_newsarchive` VALUES (1, 'Первый архив', '1,2,3', '1', '1');
 
 CREATE TABLE `cp_modul_poll` (
   `id` int(10) unsigned NOT NULL auto_increment,
@@ -1337,10 +1225,9 @@ CREATE TABLE `cp_modul_poll` (
   `poll_users_id` text NOT NULL,
   `poll_users_ip` text NOT NULL,
   PRIMARY KEY  (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=cp1251;
+) ENGINE=MyISAM AUTO_INCREMENT=2 DEFAULT CHARSET=cp1251;
 
-INSERT INTO `cp_modul_poll` VALUES
-(1, 'Тестовый опрос', '1', '1', '1,2,3,4', 1278366240, 1309902240, '', '127.0.0.1');
+INSERT INTO `cp_modul_poll` VALUES (1, 'Тестовый опрос', '1', '1', '1,2,3,4', 1278366240, 1309902240, '', '127.0.0.1');
 
 CREATE TABLE `cp_modul_poll_comments` (
   `id` int(10) unsigned NOT NULL auto_increment,
@@ -1351,7 +1238,7 @@ CREATE TABLE `cp_modul_poll_comments` (
   `poll_comment_title` varchar(250) NOT NULL default '',
   `poll_comment_text` text NOT NULL,
   PRIMARY KEY  (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=cp1251;
+) ENGINE=MyISAM DEFAULT CHARSET=cp1251;
 
 CREATE TABLE `cp_modul_poll_items` (
   `id` int(10) unsigned NOT NULL auto_increment,
@@ -1361,10 +1248,9 @@ CREATE TABLE `cp_modul_poll_items` (
   `poll_item_color` varchar(10) NOT NULL default '',
   `poll_item_position` int(2) NOT NULL,
   PRIMARY KEY  (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=cp1251;
+) ENGINE=MyISAM AUTO_INCREMENT=4 DEFAULT CHARSET=cp1251;
 
-INSERT INTO `cp_modul_poll_items` VALUES
-(1, 1, 'Первый', 24, '#FF0000', 1),
+INSERT INTO `cp_modul_poll_items` VALUES (1, 1, 'Первый', 24, '#FF0000', 1),
 (2, 1, 'Второй', 12, '#00FF00', 2),
 (3, 1, 'Третий', 35, '#0000FF', 3);
 
@@ -1435,10 +1321,9 @@ CREATE TABLE `cp_modul_shop` (
   `EmpEmail` varchar(255) NOT NULL default '',
   `BetreffBest` varchar(255) NOT NULL default '',
   PRIMARY KEY  (`Id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=cp1251;
+) ENGINE=MyISAM AUTO_INCREMENT=2 DEFAULT CHARSET=cp1251;
 
-INSERT INTO `cp_modul_shop` VALUES
-(1, '1', 'RUR', 'р', 'EUR', '?', 1.0000, 'RU', 10, 0, 'BY,RU,UA', 0, 0.00, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 'shop_items.tpl', 80, 40, 1, 1, 1, 0, '', '', 1, 1, 1, 1, 'AVE.cms', 3, 1, 1, 4, 0, '<h2 id="page-heading">Это первая приветственная страница модуля магазин&nbsp;</h2>\r\n<p>Этот текст правим в админке в разделе <strong>Модули</strong> &raquo; <strong>Магазин</strong> &raquo; <strong>Страницы помощи</strong> &raquo; <strong>Текст приветствия</strong>.</p>', '<p>Этот текст правим в админке в разделе <strong>Модули</strong> &raquo; <strong>Магазин</strong>  &raquo; <strong>Страницы помощи</strong> &raquo; <strong>Информация в нижней части страницы</strong>.</p>', '<h2 id="page-heading">Сведения о доставке</h2>\r\n<p>Этот текст правим в админке в разделе <strong>Модули</strong> &raquo; <strong>Магазин</strong>  &raquo; <strong>Страницы помощи</strong> &raquo; <strong>Сведения о доставке</strong>.</p>', '<h2 id="page-heading">Сервисные центры</h2>\r\n<p>Этот текст правим в админке в разделе <strong>Модули</strong> &raquo; <strong>Магазин</strong>  &raquo; <strong>Страницы помощи</strong> &raquo; <strong>Сервисные центры</strong>.</p>', '<h2 id="page-heading">О продавце</h2>\r\n<p>Этот текст правим в админке в разделе <strong>Модули</strong> &raquo; <strong>Магазин</strong>  &raquo; <strong>Страницы помощи</strong> &raquo; <strong>О продавце</strong>.</p>', '<p>Этот текст правим в админке в разделе <strong>Модули</strong> &raquo; <strong>Магазин</strong>  &raquo; <strong>Страницы помощи</strong> &raquo; <strong>Лицензионное соглашение</strong>.</p>', '', '', '', 'text', '', '', '', '');
+INSERT INTO `cp_modul_shop` VALUES (1, '1', 'RUR', 'р', 'EUR', '?', 1.0000, 'RU', 10, 0, 'BY,RU,UA', 0, 0.00, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 'shop_items.tpl', 80, 40, 1, 1, 1, 0, '', '', 1, 1, 1, 1, 'AVE.cms', 3, 1, 1, 4, 0, '<h2 id="page-heading">Это первая приветственная страница модуля магазин&nbsp;</h2>\r\n<p>Этот текст правим в админке в разделе <strong>Модули</strong> &raquo; <strong>Магазин</strong> &raquo; <strong>Страницы помощи</strong> &raquo; <strong>Текст приветствия</strong>.</p>', '<p>Этот текст правим в админке в разделе <strong>Модули</strong> &raquo; <strong>Магазин</strong>  &raquo; <strong>Страницы помощи</strong> &raquo; <strong>Информация в нижней части страницы</strong>.</p>', '<h2 id="page-heading">Сведения о доставке</h2>\r\n<p>Этот текст правим в админке в разделе <strong>Модули</strong> &raquo; <strong>Магазин</strong>  &raquo; <strong>Страницы помощи</strong> &raquo; <strong>Сведения о доставке</strong>.</p>', '<h2 id="page-heading">Сервисные центры</h2>\r\n<p>Этот текст правим в админке в разделе <strong>Модули</strong> &raquo; <strong>Магазин</strong>  &raquo; <strong>Страницы помощи</strong> &raquo; <strong>Сервисные центры</strong>.</p>', '<h2 id="page-heading">О продавце</h2>\r\n<p>Этот текст правим в админке в разделе <strong>Модули</strong> &raquo; <strong>Магазин</strong>  &raquo; <strong>Страницы помощи</strong> &raquo; <strong>О продавце</strong>.</p>', '<p>Этот текст правим в админке в разделе <strong>Модули</strong> &raquo; <strong>Магазин</strong>  &raquo; <strong>Страницы помощи</strong> &raquo; <strong>Лицензионное соглашение</strong>.</p>', '', '', '', 'text', '', '', '', '');
 
 CREATE TABLE `cp_modul_shop_artikel` (
   `Id` int(10) unsigned NOT NULL auto_increment,
@@ -1491,32 +1376,29 @@ CREATE TABLE `cp_modul_shop_artikel` (
   KEY `Bestellungen` (`Bestellungen`),
   KEY `Angebot` (`Angebot`),
   FULLTEXT KEY `Schlagwoerter` (`Schlagwoerter`)
-) ENGINE=MyISAM  DEFAULT CHARSET=cp1251 PACK_KEYS=0;
+) ENGINE=MyISAM AUTO_INCREMENT=18 DEFAULT CHARSET=cp1251 PACK_KEYS=0;
 
-INSERT INTO `cp_modul_shop_artikel` VALUES
-(1, 'CP-10001', 1, '1,26', 'Canon i-SENSYS MF8450', 1, 20150.00, 0.00, 'pixima_1.jpg', 'jpg', '', '<p>Цветной лазерный многофункциональный аппарат &laquo;Всё в одном&raquo;, готовый к подключению к сети: копир, принтер, факс и сканер</p>', '<p>Компания Canon представляет новую модель из серии цветных многофункциональных лазерных устройств для профессионалов &ndash; i-SENSYS MF8450. Многофункциональное лазерное устройство &laquo;4 в 1&raquo; MF8450 с возможностью подключения к сети устанавливает новые стандарты качества и скорости печати. MF8450 &ndash; идеальное устройство для компаний малого бизнеса, которые развиваются, экспериментируя с цветовыми решениями. Мощное и компактное устройство объединяет в себе множество продвинутых технологий, которыми оснащены новейшие устройства работы с изображениями. Как результат &ndash; максимальная производительность, высочайшая надёжность, а также простота в эксплуатации и эффективность.</p>\r\n<p></p>', 2.000, 0, '', 1, 1148068800, 'Характеристики', '<ul>\r\n    <li>Цветной лазерный многофункциональный аппарат &laquo;Всё в одном&raquo;, готовый к подключению к сети: копир, принтер, факс и сканер;</li>\r\n    <li>Технологии цветной печати i-SENSYS обеспечивают цветовые решения исключительного качества;</li>\r\n    <li>17 стр./мин в цветном и черно-белом режиме;</li>\r\n    <li>Время выхода первой копии &ndash; менее 14 секунд;</li>\r\n    <li>Технология моментального точечного разогрева для моментального разогрева и снижения потребления питания: энергопотребление в спящем режиме &ndash; всего 1,2 Вт;</li>\r\n    <li>Функция ОТПРАВКИ компактного формата PDF: сканирование напрямую в файл электронной почты, в сетевую папку, сканирование на интернет-факс или USB-накопитель;</li>\r\n    <li>Простой в эксплуатации TFT-дисплей с диагональю 3,5 дюйма и удобным диском прокрутки;</li>\r\n    <li>Двусторонняя печать, копирование, сканирование, отправка и получение факсов;</li>\r\n    <li>Устройство автоматической подачи документов для двусторонней печати (ADF) на 50 листов.</li>\r\n</ul>\r\n<p></p>', '', '&nbsp;', '', '&nbsp;', '', '&nbsp;', 2, 'pixma,принтер', 0.00, 0, 8, 3, 13, '', 1, '', '', '', 0, 0),
+INSERT INTO `cp_modul_shop_artikel` VALUES (1, 'CP-10001', 1, '1,26', 'Canon i-SENSYS MF8450', 1, 20150.00, 0.00, 'pixima_1.jpg', 'jpg', '', '<p>Цветной лазерный многофункциональный аппарат &laquo;Всё в одном&raquo;, готовый к подключению к сети: копир, принтер, факс и сканер</p>', '<p>Компания Canon представляет новую модель из серии цветных многофункциональных лазерных устройств для профессионалов &ndash; i-SENSYS MF8450. Многофункциональное лазерное устройство &laquo;4 в 1&raquo; MF8450 с возможностью подключения к сети устанавливает новые стандарты качества и скорости печати. MF8450 &ndash; идеальное устройство для компаний малого бизнеса, которые развиваются, экспериментируя с цветовыми решениями. Мощное и компактное устройство объединяет в себе множество продвинутых технологий, которыми оснащены новейшие устройства работы с изображениями. Как результат &ndash; максимальная производительность, высочайшая надёжность, а также простота в эксплуатации и эффективность.</p>\r\n<p></p>', 2.000, 0, '', 1, 1148068800, 'Характеристики', '<ul>\r\n    <li>Цветной лазерный многофункциональный аппарат &laquo;Всё в одном&raquo;, готовый к подключению к сети: копир, принтер, факс и сканер;</li>\r\n    <li>Технологии цветной печати i-SENSYS обеспечивают цветовые решения исключительного качества;</li>\r\n    <li>17 стр./мин в цветном и черно-белом режиме;</li>\r\n    <li>Время выхода первой копии &ndash; менее 14 секунд;</li>\r\n    <li>Технология моментального точечного разогрева для моментального разогрева и снижения потребления питания: энергопотребление в спящем режиме &ndash; всего 1,2 Вт;</li>\r\n    <li>Функция ОТПРАВКИ компактного формата PDF: сканирование напрямую в файл электронной почты, в сетевую папку, сканирование на интернет-факс или USB-накопитель;</li>\r\n    <li>Простой в эксплуатации TFT-дисплей с диагональю 3,5 дюйма и удобным диском прокрутки;</li>\r\n    <li>Двусторонняя печать, копирование, сканирование, отправка и получение факсов;</li>\r\n    <li>Устройство автоматической подачи документов для двусторонней печати (ADF) на 50 листов.</li>\r\n</ul>\r\n<p></p>', '', '&nbsp;', '', '&nbsp;', '', '&nbsp;', 2, 'pixma,принтер', 0.00, 0, 8, 3, 13, '', 1, '', '', '', 0, 0),
 (3, 'CP-10201', 2, '20,21,24', 'Toshiba Satellite A300-148', 1, 23150.00, 0.00, 'nb_toshiba_satellite_a305650.jpg', 'jpg', '', '<p>15,4&quot;, 2.7кг, &nbsp;Intel Core 2 Duo 1830мгц, 1024 Mb DDR2-667MHz, 250 Gb (4200 rpm), SATA, DVD&plusmn;RW (DL), Intel GMA X3100, Bluetooth; Camera (1.3); WiFi (802.11a/b/g)</p>', '<p>Корпорация Toshiba была основана в 1875 году в Японии. В 1985 году, компанией был создан первый в мире портативный компьютер (сегодня - ноутбук).       За 126 лет своей истории компания стала транснациональной корпорацией и вошла в число крупнейших мировых производителей электроники и электротехники. Ноутбуки серий Portege и Tecra использовались космонавтами орбитальной станции &laquo;Мир&raquo; для проведения научных исследований и были по достоинству оценены во время полета благодаря своим мультимедийным возможностям. В ноябре 1997 года Toshiba произвела 10 000 000 ноутбук &ndash; абсолютный рекорд!       Ноутбуки Toshiba отличает широкий сперкт новейших технологий и стабильно высокое качество исполнения. Toshiba сотрудничает с Harman/Kardon в проектировании акустических систем ноутбуков, что позволяет производить лучшую встроенную акустику для ноутбуков.</p>', 2.700, 0, '', 1, 1130270400, 'Характеристики', '<p><strong>Процессор:</strong> 	Intel Core 2 Duo 1830 МГц (T5550) <br />\r\n<strong>Шина:</strong> 	667MHz 2Mb L2 Cache <br />\r\n<strong>Оперативная память:</strong> 	1024 Mb DDR2-667MHz <br />\r\n<strong>Жесткий диск:</strong> 	250 Gb (4200 rpm), SATA <br />\r\n<strong>Экран:</strong> 	15,4&quot; TFT WXGA Зеркальный (Glare) <br />\r\n<strong>Разрешение:</strong> 	1280x800 <br />\r\n<strong>Видеокарта:</strong> 	Intel GMA X3100, видеопамять 128+256мб <br />\r\n<strong>Звуковая карта: </strong>AC97 2.0 совместимый <br />\r\n<strong>CD привод:</strong> 	DVD&plusmn;RW (DL) <br />\r\n<strong>Связь: </strong>Cеть 10/100 МБит/с (RJ-45); Модем 56 КБит/с (RJ-11) <br />\r\n<strong>Беспроводная связь:</strong> 	Bluetooth; Camera (1.3); WiFi (802.11a/b/g) <br />\r\n<strong>Порты:</strong> 	4xUSB 2.0; FireWire (IEEE 1394); Line-out; Microphone in; TV-Out (S-video) <br />\r\n<strong>Слоты расширения: </strong>ExpressCard <br />\r\n<strong>Устройства ввода:</strong> 	Кл-ра Windows, Сенсорный планшет Touch Pad <br />\r\n<strong>Батарея: </strong>Li-Ion (до 3 часов) <br />\r\n<strong>Вес: </strong>2.7 кг <br />\r\n<strong>Корпус (Д х Ш х В):</strong> 	363 x 267 x 34 мм <br />\r\n<strong>Программное обеспечение:</strong> 	Microsoft Windows Vista Home Premium <br />\r\n<strong>Гарантия: </strong>2 года международная гарантия производителя *</p>', '', '<p></p>\r\n<p></p>', '', '&nbsp;', '', '&nbsp;', 1, 'Scaleo,Protector', 0.00, 0, 3, 1, 2, '', 1, '', '', '', 0, 0),
 (4, 'CP-102001', 2, '20,24', 'Acer Extensa 5220-200508Mi', 1, 15850.00, 0.00, 'nb_acer_extensa_5220_200508mi_3.jpg', 'jpg', '', '<p>15,4, 2.9кг, Intel Celeron M 2000мгц, 1024 Mb DDR2-667MHz, 80 Gb (5400 rpm), SATA, DVD&plusmn;RW, Intel GMA 950, WiFi (802.11a/b/g)</p>', '<p>Ноутбуки Acer Extensa 5220 разработаны с использованием процессоров Intel Celeron и предлагают новый взгляд на мобильные ПК для профессионалов, работающих в небольших или средних компаниях. Широкоформатный 15.4&quot; дисплей и технология Acer CrystalBrite (некоторые модели) подарит незабываемый комфорт при работе и просмотре видеофильмов.&nbsp;<br />\r\n<br />\r\nНоутбук Acer Extensa 5220 адресован в первую очередь домашним пользователям и частным предпринимателям, которые ищут полнофункциональную замену настольного ПК за разумные деньги.&nbsp;<br />\r\nLX.E8706.029</p>\r\n<p></p>', 2.900, 0, '', 0, 1150315200, 'Характеристики', '<table width="100%" cellspacing="0" cellpadding="0" border="0">\r\n    <tbody>\r\n        <tr>\r\n            <td class="cell-spec">Процессор:</td>\r\n            <td class="cell-spec">Intel Celeron M 2000&nbsp;МГц (CM-550)</td>\r\n        </tr>\r\n        <tr>\r\n            <td class="cell-spec">Шина:</td>\r\n            <td class="cell-spec">533MHz 1Mb L2 Cache</td>\r\n        </tr>\r\n        <tr>\r\n            <td class="cell-spec">Оперативная&nbsp;память:</td>\r\n            <td class="cell-spec">1024 Mb DDR2-667MHz</td>\r\n        </tr>\r\n        <tr>\r\n            <td class="cell-spec">Жесткий диск:</td>\r\n            <td class="cell-spec">80 Gb (5400 rpm), SATA</td>\r\n        </tr>\r\n        <tr>\r\n            <td class="cell-spec">Экран:</td>\r\n            <td class="cell-spec">15,4&quot; TFT WXGA&nbsp;Зеркальный (Glare)</td>\r\n        </tr>\r\n        <tr>\r\n            <td class="cell-spec">Разрешение:</td>\r\n            <td class="cell-spec">1280x800</td>\r\n        </tr>\r\n        <tr>\r\n            <td class="cell-spec">Видеокарта:</td>\r\n            <td class="cell-spec">Intel GMA 950, видеопамять 0+64мб</td>\r\n        </tr>\r\n        <tr>\r\n            <td class="cell-spec">Звуковая карта:</td>\r\n            <td class="cell-spec">AC97 2.0 совместимый</td>\r\n        </tr>\r\n        <tr>\r\n            <td class="cell-spec">CD привод:</td>\r\n            <td class="cell-spec">DVD&plusmn;RW</td>\r\n        </tr>\r\n        <!--<tr><td class="cell-spec">\r\nДисковод:\r\n</td><td class="cell-spec">\r\n</td></tr-->\r\n        <tr>\r\n            <td class="cell-spec">Связь:</td>\r\n            <td class="cell-spec">Cеть 10/100 МБит/с (RJ-45); Модем 56 КБит/с (RJ-11)</td>\r\n        </tr>\r\n        <tr>\r\n            <td class="cell-spec">Беспроводная связь:</td>\r\n            <td class="cell-spec">WiFi (802.11a/b/g)</td>\r\n        </tr>\r\n        <tr>\r\n            <td class="cell-spec">Порты:</td>\r\n            <td class="cell-spec">4xUSB 2.0; Fast-IrDa; FireWire (IEEE 1394); Kensington security; Line-in; Line-out; Microphone in; TV-Out (S-video); VGA</td>\r\n        </tr>\r\n        <tr>\r\n            <td class="cell-spec">Слоты расширения:</td>\r\n            <td class="cell-spec">PCMCIA тип II + ExpressCard/54; Card Reader 5-в-1 (SD/SD-Pro/MMC/MS/xD)</td>\r\n        </tr>\r\n        <tr>\r\n            <td class="cell-spec">Устройства ввода:</td>\r\n            <td class="cell-spec">Кл-ра Windows, Сенсорный планшет Touch Pad</td>\r\n        </tr>\r\n        <tr>\r\n            <td class="cell-spec">Батарея:</td>\r\n            <td class="cell-spec">Li-Ion	(до 2 часов)</td>\r\n        </tr>\r\n        <tr>\r\n            <td class="cell-spec">Вес:</td>\r\n            <td class="cell-spec">2.9&nbsp;кг</td>\r\n        </tr>\r\n        <tr>\r\n            <td class="cell-spec">Корпус&nbsp;(Д&nbsp;х&nbsp;Ш&nbsp;х&nbsp;В):</td>\r\n            <td class="cell-spec">334х243х28/35&nbsp;мм</td>\r\n        </tr>\r\n        <tr>\r\n            <td class="cell-spec">Программное обеспечение:</td>\r\n            <td class="cell-spec">Microsoft Windows XP Professional RU&nbsp;</td>\r\n        </tr>\r\n        <tr>\r\n            <td class="cell-spec">Гарантия:</td>\r\n            <td class="cell-spec">1 год гарантия производителя *</td>\r\n        </tr>\r\n    </tbody>\r\n</table>\r\n<p></p>', '', '&nbsp;', '', '&nbsp;', '', '&nbsp;', 3, 'Scaleo', 0.00, 0, 5, 1, 5, '', 1, '', '', '', 0, 0),
 (5, 'CP-10055', 1, '1,25', 'Canon PIXMA PIXMA MP620', 1, 94.00, 0.00, 'pixima_2.jpg', 'jpg', '', '<p>Копирование, сканирование и печать. Прямая печать с камер, карт памяти, 35-мм фотоплёнок/слайдов и мобильных телефонов, предварительный просмотр на цветном TFT-дисплее 8,8 см, Wi-Fi и Ethernet</p>', '<p>Компания Canon выпустила новый принтер PIXMA &laquo;Всё в одном&raquo;, готовый к подключению к сети, с усовершенствованным механизмом печати для обеспечения исключительной производительности и оптимального соотношения цены и качества. PIXMA MP620 &ndash; идеальное решение для тех, кому необходимы функции печати, сканирования и копирования высокого качества. А совместимость со стандартами Wi-Fi и Ethernet позволяет всей семье максимально использовать функции аппарата в общей сети.<br />\r\n<br />\r\n<b>Превосходное качество печати</b><br />\r\n<br />\r\nАппарат PIXMA MP620 отличается исключительным качеством, привлекательным обтекаемым дизайном и широким набором функциональных возможностей. Благодаря усовершенствованной системе Canon ChromaLife100+, печатной головке, созданной по технологии FINE, объёму капли 1пл и разрешению 9600 точек можно получать фотографии с более плавной градацией и без зернистости. Скорость печати настолько высока, что позволяет получить отпечаток превосходного профессионального качества форматом 10х15 см примерно за 41 секунду.<br />\r\n<br />\r\nОтличное качество изображения достигается благодаря системе раздельных чернильниц с новой формулой чернил, обеспечивающей широкую цветовую палитру, естественные оттенки чёрного и живые оттенки красного. Сочетание чернил синего, малинового и жёлтого цвета на основе красителя с чёрными чернилами на основе пигмента и красителей гарантируют превосходное качество фотографий, а также чёткость текста при печати документов. Система раздельных чернильниц минимизирует расход чернил и необходимость замены.<strong><br />\r\n<br />\r\n</strong></p>', 2.000, 0, '', 1, 1148068800, 'Характеристики', '<p><b>Функции аппарата:</b>		Копирование, сканирование и печать. Прямая печать с камер, карт памяти, 35-мм фотоплёнок/слайдов и мобильных телефонов, предварительный просмотр на цветном TFT-дисплее 8,8 см, Wi-Fi и Ethernet</p>\r\n<p><b>ФУНКЦИЯ ПРИНТЕРА </b></p>\r\n<p>разрешение при печати		До 96001 x 2400 точек на дюйм<br />\r\nСпособ печати		5-цветная система струйной печати, объём капли 1 пл, система микросопел, печатающая головка, созданная по технологии FINE, технология ContrastPLUS<br />\r\nСкорость фотопечати		Печать &quot;в край&quot; (без полей), формат 10 x 15 см: прибл. 41 с (в стандартном режиме)<br />\r\nСкорость монохромной печати		До 26 стр./мин (макс.), 13,2 стр./мин (в стандартном режиме)<br />\r\nСкорость цветной печати		Текст и графика: до 18 стр./мин (макс.), 10,9 стр./мин (в стандартном режиме)<br />\r\nКонфигурация картриджа		Технология раздельных чернильниц (Single Ink) &ndash; 6 раздельных чернильниц (PGI-520BK, CLI-521C, CLI-521M, CLI-521Y, CLI-521BK, CLI-521GY)<br />\r\nТип материала для печати		Обычная бумага, конверты, профессиональная фотобумага Photo Paper Pro Platinum (PT-101), Photo Paper Pro II (PR-201), глянцевая фотобумага Photo Paper Plus Glossy II (PP-201), полуматовая фотобумага Photo Paper Plus Semi-gloss (SG-201), глянцевая бумага для повседневной фотопечати Glossy Photo Paper &quot;Everyday Use&quot; (GP-501), матовая фотобумага Matte Photo Paper (MP-101), бумага для печати с высоким разрешением High Resolution Paper (HR-101N), материал для термоперевода изображения на ткань (TR-301), фотонаклейки (PS-101), фотобумага для профессиональной печати Fine Art Paper &quot;Photo Rag&quot; (FA-PR1), допускается использование других видов высококачественной бумаги.<br />\r\nПодача материала для печати		Задний лоток: макс. 150 листов Передний лоток: макс. 150 листов<br />\r\nФормат материала для печати		Задний лоток: A4, B5, A5, Letter, Legal, конверты (размер DL или Commercial 10), 10 x 15 см, 10 x 18 см, 13 x 18 см, 20 x 25 см, формат кредитной карты (54 х 86 мм)<br />\r\nКассета: A4, B5, A5, Letter<br />\r\nПлотность материала для печати		Задний лоток: обычная бумага: 64 &ndash; 105 г/м&sup2; и рекомендованные Canon специальные материалы для печати плотностью до 300 г/м&sup2; Кассета: обычная бумага: 64 &ndash; 105 г/м&sup2;<br />\r\nДвусторонняя печать		В ручном режиме на обычной бумаге формата A4, B5, A5, Letter и 13 x 18 см (только для Windows)<br />\r\nПечать &quot;в край&quot; (без полей)		Есть (A4, Letter, 20 x 25 см, 13 x 18 см, 10 x 15 см)<br />\r\nИнтерфейс для подключения к камере		Порт Direct Print: прямая печать фотографий с цифровых фото- и видеокамер, совместимых со стандартом PictBridge<br />\r\nПрямая печать с карт памяти		CompactFlash, Microdrive, Memory Stick, Memory Stick Pro, Memory Stick Duo, Memory Stick PRO Duo, SD Memory Card, SDHC Memory Card, MultiMedia Card (Ver4.1) и MultiMedia Card Plus (Ver4.1).&nbsp;<br />\r\nxD-PictureCard 2, xD-PictureCard Type M 2, xD-PictureCard Type H 2, Memory Stick Micro 2, RS-MMC 2, mini SD Card 2, micro SD 2, mini SDHC Card 2 и micro SDHC 2.<br />\r\nФункции прямой печати с карт памяти		Печать нескольких изображений (выбор нескольких изображений и количества отпечатков для каждого изображения), печать индекса фотографии, печать до 35 фотографий на одном листе, печать всех фотографий, печать DPOF-изображений, печать макета, печать наклейки, печать информации об отпечатке, печать индексного листа фотографий, печать календарей, функция ID Photo Print, поиск по дате, слайд-шоу, печать даты и номера файла, печать без полей.<strong><br />\r\n</strong></p>', 'Расходные материалы', '<p>FA-PR1<br />\r\nGP-501<br />\r\nHR-101N<br />\r\nMP-101<br />\r\nPS-101<br />\r\nSG-201<br />\r\nTR-301</p>', 'Технологии', '<p>ТЕХНОЛОГИЯ FINE<br />\r\n<br />\r\nЗапатентованная Canon технология изготовления полупроводниковых элементов FINE даёт возможность создавать печатающие головки с исключительно высокой плотностью расположения микросопел. Это позволяет принтерам Canon обеспечивать самую высокую на рынке скорость печати и высочайшее профессиональное качество фотографий практически с полным отсутствием зернистости даже в стандартном режиме.&nbsp;<br />\r\n<br />\r\nТехнология ChromaLife100+&nbsp;<br />\r\n<br />\r\nУсовершенствованная система ChromaLife100+ позволяет получать великолепные долговечные отпечатки благодаря технологии FINE компании Canon, оригинальной фотобумаге Canon и новым чернилам на основе красителей. Показатель долговечности 100 лет может быть достигнут при хранении в обычных альбомах фотографий, напечатанных на бумаге PT-101, PR-201, PP-201, SG-201 и GP-501. Кроме того, фотографии сохраняют яркость цвета в течение 30 лет и устойчивы к воздействию газов в течение 20 лет при использовании бумаги PT-101, PR-201 и PP-201.<br />\r\n<br />\r\nТехнология раздельных чернильниц (Single Ink)<br />\r\n<br />\r\nНовая система раздельных чернильниц с новой формулой чернил обеспечивает расширенное цветовое пространство при печати на бумаге PP-201, PR-201 и PT-101 по сравнению с бумагой PR-101. Чернильницы уменьшенной высоты делают дизайн принтеров более обтекаемым и современным.&nbsp;<br />\r\n<br />\r\nФотобумага PT-101 и PR-201<br />\r\n<br />\r\nCanon расширила ассортимент оригинальной фотобумаги и теперь предлагает улучшенное качество по более низкой цене. Профессиональная фотобумага Photo Paper Pro Platinum PT-101 с плотностью 300 г/м&sup2; становится лидером в ассортименте предлагаемой Canon глянцевой фотобумаги, в то время как профессиональная фотобумага Photo Paper Pro II PR-201 заменит бумагу PR-101. Доступны форматы A4 и 10x15 см, а для широкоформатных принтеров &ndash; форматы A3 и A3+.&nbsp;<br />\r\n<br />\r\nЗащита окружающей среды<br />\r\n<br />\r\nКомпания Canon верна своему принципу предлагать продукты, оказывающие минимальное воздействие на окружающую среду, и новый модельный ряд PIXMA служит доказательством этому благодаря улучшениям, касающимся экономии ресурсов и дизайна. Такие функции, как автоматическая двусторонняя печать и печать &laquo;2 на 1&raquo; и &laquo;4 на 1&raquo;, применяемые в различных моделях PIXMA, способствуют экономии бумаги. При производстве принтеров PIXMA используется пригодная для переработки пластмасса. Это способствует уменьшению углеродного следа и количества контейнеров, необходимых для доставки продуктов. Все принтеры PIXMA соответствуют стандартам энергопотребления Energy Star</p>', 'TEST 3', '<p>TEST 3...</p>', 3, 'pixma,drucker', 0.00, 0, 999, 1, 11, '', 1, '', '', '', 0, 0),
-(6, 'CP-10056', 1, '1,25', 'Epson Stylus Photo R1900', 1, 72.00, 0.00, 'epson.jpg', 'jpg', '', '<p>Формат фотографий до А3+. Печать на рулонной бумаге А3 и А3+. &nbsp;Разрешение 5760 x 1440 dpi. &nbsp;Чернила Epson UltraChrome Hi-Gloss2, 8 цветов. &nbsp;Сохранение качества изображения до 80 лет</p>\r\n<p></p>', '<p>EPSON Stylus Photo R1900 - высококлассный принтер формата А3+, воплощающий новейшие технологические достижения EPSON в области струйной фотопечати и отвечающий самым взыскательным требованиям профессиональных фотографов и опытных фотолюбителей.&nbsp;<br />\r\n<br />\r\nБлагодаря новой восьмицветной системе печати пигментными чернилами Ultra Chrome Hi-Gloss2 принтер воспроизводит максимально широкий цветовой охват, превышающий цветовой охват традиционной системы фотопечати. При этом светостойкость чернил достигает 100 лет*, что значительно превосходит аналоговую фотопечать.&nbsp;<br />\r\n<br />\r\nПринтер поддерживает печать на самых различных носителях, в том числе на рулонной бумаге и компакт-дисках. Использование восьми раздельных картриджей снижает себестоимость печати. Высокая скорость печати и низкий уровень шума делают его незаменимым элементом профессиональной фотостудии.&nbsp;<br />\r\n<br />\r\nНовые пигментные чернила EPSON UltraChrome Hi-Gloss2<br />\r\nВ принтере EPSON Stylus Photo R1900 используются новые пигментные чернила EPSON Ultra Chrome Hi-Gloss2, разработанные специально для профессиональной фотопечати. Обеспечивают непревзойденное качество печати фотографий, чрезвычайно высокую стойкость к внешним воздействиям и широкий цветовой охват, значительно превосходящий охват аналоговой печати с использованием галогенида серебра.</p>', 2.000, 1, '/uploads/images/adv_epson.gif', 1, 1148068800, 'Характеристики', '<p></p>\r\n<ul>\r\n    <li>Новые пигментные чернила Epson Ultra Chrome Hi-Gloss2 - светостойкость более 100 лет*</li>\r\n    <li>Восьмицветная система для максимально широкого цветового охвата</li>\r\n    <li>Оранжевый краситель для точной передачи телесных тонов</li>\r\n    <li>Технология оптимизации глянца - для улучшения качества печати на глянцевых носителях</li>\r\n    <li>Два глянцевых картриджа в комплекте</li>\r\n    <li>Высочайшее качество фотопечати с разрешением до 5760 х 1440 dpi</li>\r\n    <li>Маленький размер чернильной капли &ndash; 1.5 пиколитра</li>\r\n    <li>Новая таблица преобразования (LUT &ndash; Look Up Table)</li>\r\n    <li>Печать фотографий без полей &ndash; на листовой и рулонной бумаге</li>\r\n    <li>Печать на художественных носителях</li>\r\n    <li>Восемь раздельных картриджей</li>\r\n    <li>Печать на CD/DVD/MCD</li>\r\n    <li>Два порта USB Hi-Speed (USB 2.0)</li>\r\n    <li>Прямая печать через PictBridge</li>\r\n    <li>Для фото и дизайна</li>\r\n</ul>\r\n<p></p>', '', '', '', '&nbsp;', '', '&nbsp;', 1, 'принтер', 0.00, 0, 999, 1, 12, '', 1, '', '', '', 0, 0),
+(6, 'CP-10056', 1, '1,25', 'Epson Stylus Photo R1900', 1, 72.00, 0.00, 'epson.jpg', 'jpg', '', '<p>Формат фотографий до А3+. Печать на рулонной бумаге А3 и А3+. &nbsp;Разрешение 5760 x 1440 dpi. &nbsp;Чернила Epson UltraChrome Hi-Gloss2, 8 цветов. &nbsp;Сохранение качества изображения до 80 лет</p>\r\n<p></p>', '<p>EPSON Stylus Photo R1900 - высококлассный принтер формата А3+, воплощающий новейшие технологические достижения EPSON в области струйной фотопечати и отвечающий самым взыскательным требованиям профессиональных фотографов и опытных фотолюбителей.&nbsp;<br />\r\n<br />\r\nБлагодаря новой восьмицветной системе печати пигментными чернилами Ultra Chrome Hi-Gloss2 принтер воспроизводит максимально широкий цветовой охват, превышающий цветовой охват традиционной системы фотопечати. При этом светостойкость чернил достигает 100 лет*, что значительно превосходит аналоговую фотопечать.&nbsp;<br />\r\n<br />\r\nПринтер поддерживает печать на самых различных носителях, в том числе на рулонной бумаге и компакт-дисках. Использование восьми раздельных картриджей снижает себестоимость печати. Высокая скорость печати и низкий уровень шума делают его незаменимым элементом профессиональной фотостудии.&nbsp;<br />\r\n<br />\r\nНовые пигментные чернила EPSON UltraChrome Hi-Gloss2<br />\r\nВ принтере EPSON Stylus Photo R1900 используются новые пигментные чернила EPSON Ultra Chrome Hi-Gloss2, разработанные специально для профессиональной фотопечати. Обеспечивают непревзойденное качество печати фотографий, чрезвычайно высокую стойкость к внешним воздействиям и широкий цветовой охват, значительно превосходящий охват аналоговой печати с использованием галогенида серебра.</p>', 2.000, 1, 'uploads/images/adv_epson.gif', 1, 1148068800, 'Характеристики', '<p></p>\r\n<ul>\r\n    <li>Новые пигментные чернила Epson Ultra Chrome Hi-Gloss2 - светостойкость более 100 лет*</li>\r\n    <li>Восьмицветная система для максимально широкого цветового охвата</li>\r\n    <li>Оранжевый краситель для точной передачи телесных тонов</li>\r\n    <li>Технология оптимизации глянца - для улучшения качества печати на глянцевых носителях</li>\r\n    <li>Два глянцевых картриджа в комплекте</li>\r\n    <li>Высочайшее качество фотопечати с разрешением до 5760 х 1440 dpi</li>\r\n    <li>Маленький размер чернильной капли &ndash; 1.5 пиколитра</li>\r\n    <li>Новая таблица преобразования (LUT &ndash; Look Up Table)</li>\r\n    <li>Печать фотографий без полей &ndash; на листовой и рулонной бумаге</li>\r\n    <li>Печать на художественных носителях</li>\r\n    <li>Восемь раздельных картриджей</li>\r\n    <li>Печать на CD/DVD/MCD</li>\r\n    <li>Два порта USB Hi-Speed (USB 2.0)</li>\r\n    <li>Прямая печать через PictBridge</li>\r\n    <li>Для фото и дизайна</li>\r\n</ul>\r\n<p></p>', '', '', '', '&nbsp;', '', '&nbsp;', 1, 'принтер', 0.00, 0, 999, 1, 12, '', 1, '', '', '', 0, 0),
 (7, 'BUCH_0002', 5, '27', 'Программа по информатике и ИКТ системно-информационная концепция 2-е изд', 1, 40.00, 0.00, 'book_2.jpg', 'jpg', '', '<p>2-е издание, 2007 год, 128 стр., формат 13x20 см (84х108/32), Мягкая обложка, ISBN 978-5-469-01664-9</p>', '<p>В методическом пособии представлена программа преподавания дисциплины &laquo;Информатика и ИКТ&raquo; в школе с 5-го по 11-й класс на основе системно-информационной концепции. В программе приведены обоснование актуальности этой дисциплины в школе и требования Государственного образовательного стандарта РФ к уровню знаний и умений выпускника школы. Изложены основные положения системно-информационной концепции, на основе которой ведется обучение. Определены цели, разработаны рекомендации и содержание для трех уровней обучения: начального в основной школе и базового в старшей школе. Приведено тематическое планирование для трех уровней обучения.<br />\r\nМетодической поддержкой данной программы преподавания служит учебно-методический комплект из десяти учебников и учебных пособий &laquo;Информатика и ИКТ&raquo; под редакцией проф. Н. В. Макаровой для учащихся и трех методических пособий для учителей.<br />\r\nРекомендуется преподавателям школ и педагогических вузов, методистам всех уровней, научным работникам.</p>\r\n<p></p>', 0.500, 0, '', 1, 1148068800, 'Об авторе', '<p>Макарова Наталья Владимировна &mdash; заслуженный работник высшей школы Российской Федерации, заведующий кафедрой информационных систем и технологий, академик МАН ВШ, профессор, доктор педагогических наук, кандидат технических наук. Макарова  Н. В. имеет многочисленные награды и благодарности.<br />\r\n<br />\r\nМеждународная организация &laquo;International Soros Science Education Program&raquo; присвоила ей звание &laquo;Соросовский профессор&raquo;. Наталья Владимировна автор более 200 публикаций среди которых книги, статьи, учебно-методическая литература.<br />\r\n<br />\r\nС 1997 г. по настоящее время Макаровой  Н. В. ведется постоянная работа над учебниками по информатике для школ, результатом которой является вышедший в издательстве &laquo;Питер&raquo; учебно-методический комплект из 11-ти наименований, имеющий гриф Министерства образования РФ.</p>', '', '&nbsp;', '', '&nbsp;', '', '&nbsp;', 2, 'книга', 0.00, 0, 1000, 1, 0, '', 1, '', '', '', 0, 0),
-(8, '0001_PDF', 5, '27', 'Философия Java Библиотека программиста 4-е изд', 1, 40.00, 0.00, 'book_1.jpg', 'jpg', '', '<p>Оригинал: 	Thinking in Java (4th Edition). Авторы: 	Эккель Б. Серия: 	Библиотека программиста. Тема: 	Java. Язык программирования. 4-е издание, 2009 год, 640 стр., формат 17x23 см (70х100/16), Мягкая обложка, ISBN 978-5-388-00003-3</p>\r\n<p></p>', '<p><b>Оригинал: 	Thinking in Java (4th Edition). Авторы: 	Эккель Б. Серия: 	Библиотека программиста. Тема: 	Java. Язык программирования. 4-е издание, 2009 год, 640 стр., формат 17x23 см (70х100/16), Мягкая обложка, ISBN 978-5-388-00003-3</b></p>\r\n<p>Java нельзя понять, взглянув на него только как на коллекцию некоторых характеристик, &mdash; необходимо понять задачи этого языка как частные задачи программирования в целом.&nbsp;<br />\r\nЭта книга &mdash; о проблемах программирования: почему они стали проблемами и какой подход использует Java в их решении. Поэтому обсуждаемые в каждой главе черты языка неразрывно связаны с тем, как они используются для решения определенных задач.<br />\r\nЭта книга, выдержавшая в оригинале не одно переиздание, за глубокое и поистине философское изложение тонкостей языка считается одним из лучших пособий для программирующих на Java.<br />\r\nВ четвертом издании автор постарался полностью интегрировать усовершенствования Java SE5/6, включить и использовать их во всей книге.</p>\r\n<p></p>', 0.000, 1, '/uploads/images/adv_book.gif', 1, 1150315200, '', '&nbsp;', '', '&nbsp;', '', '&nbsp;', '', '&nbsp;', 2, 'книга,програмирование', 0.00, 0, 1000, 3, 0, '', 1, '', '', '', 0, 0),
+(8, '0001_PDF', 5, '27', 'Философия Java Библиотека программиста 4-е изд', 1, 40.00, 0.00, 'book_1.jpg', 'jpg', '', '<p>Оригинал: 	Thinking in Java (4th Edition). Авторы: 	Эккель Б. Серия: 	Библиотека программиста. Тема: 	Java. Язык программирования. 4-е издание, 2009 год, 640 стр., формат 17x23 см (70х100/16), Мягкая обложка, ISBN 978-5-388-00003-3</p>\r\n<p></p>', '<p><b>Оригинал: 	Thinking in Java (4th Edition). Авторы: 	Эккель Б. Серия: 	Библиотека программиста. Тема: 	Java. Язык программирования. 4-е издание, 2009 год, 640 стр., формат 17x23 см (70х100/16), Мягкая обложка, ISBN 978-5-388-00003-3</b></p>\r\n<p>Java нельзя понять, взглянув на него только как на коллекцию некоторых характеристик, &mdash; необходимо понять задачи этого языка как частные задачи программирования в целом.&nbsp;<br />\r\nЭта книга &mdash; о проблемах программирования: почему они стали проблемами и какой подход использует Java в их решении. Поэтому обсуждаемые в каждой главе черты языка неразрывно связаны с тем, как они используются для решения определенных задач.<br />\r\nЭта книга, выдержавшая в оригинале не одно переиздание, за глубокое и поистине философское изложение тонкостей языка считается одним из лучших пособий для программирующих на Java.<br />\r\nВ четвертом издании автор постарался полностью интегрировать усовершенствования Java SE5/6, включить и использовать их во всей книге.</p>\r\n<p></p>', 0.000, 1, 'uploads/images/adv_book.gif', 1, 1150315200, '', '&nbsp;', '', '&nbsp;', '', '&nbsp;', '', '&nbsp;', 2, 'книга,програмирование', 0.00, 0, 1000, 3, 1, '', 1, '', '', '', 0, 0),
 (13, 'DKJHHJ1234', 3, '28', 'Digital Ixus 55', 1, 239.00, 0.00, 'canon_1.jpg', 'jpg', '', 'Разрешение:  5 Mpx, Оптический zoom:  3x, Дисплей: 2.5'''', Матрица: 1/2.5'''', Память: SD/MMC, Тип батареи: Li-ion. Дата релиза: август 2005', 'Digital IXI 55 (IXUS 50) &ndash; новая 5,0-мегапиксельная цифровая камера. Эта модель, унаследовавшая утончённую форму недавно выпущенной компактной камеры Digital IXUS 40, отличается превосходной отделкой из нержавеющей стали, а набор новых функций роднит её со &laquo;старшей сестрой&raquo; &ndash; камерой Digital IXUS 700.', 0.600, 0, '', 0, 1151352000, 'Основное', '<p><b>Матрица</b></p>\r\n<ul>\r\n    <li>Общее число пикселов &mdash; 5 млн.</li>\r\n    <li>Физический размер &mdash; 1/2.5&quot;</li>\r\n    <li>Максимальное разрешение &mdash; 2592x1944</li>\r\n    <li>Чувствительность &mdash; 50 - 400 ISO</li>\r\n    <li>Система понижения шумов &mdash; есть</li>\r\n</ul>\r\n<p><b>Режимы съемки</b></p>\r\n<ul>\r\n    <li>Макросъёмка &mdash; есть</li>\r\n    <li>Скорость съемки &mdash; 2.1 кадр./сек</li>\r\n    <li>Таймер &mdash; есть</li>\r\n</ul>\r\n<p><b>Видоискатель и ЖК-экран</b></p>\r\n<ul>\r\n    <li>Тип видоискателя &mdash; оптический</li>\r\n    <li>ЖК-экран &mdash; 115000 пикселов, 2.50 дюйм.</li>\r\n</ul>\r\n<p><b>Фокусировка</b></p>\r\n<ul>\r\n    <li>Минимальное расстояние съемки &mdash; 0.03 м</li>\r\n</ul>\r\n<p><b>Питание</b></p>\r\n<ul>\r\n    <li>Формат аккумуляторов &mdash; свой собственный</li>\r\n    <li>Емкость аккумулятора &mdash; 700 мА*ч</li>\r\n</ul>\r\n<p><b>Другие функции и особенности</b></p>\r\n<ul>\r\n    <li>Комплектация &mdash; Фотоаппарат Canon Digital IXUS 55, Li-ion аккумулятор NB-4L, зарядное устройство, USB-кабель, видеокабель, карта памяти Secure Digital 16 Мб, ремешок на запястье, CD-ROM с программным обеспечением.</li>\r\n    <li>Дополнительная информация &mdash; Режим подводной съемки, 9-точечная интеллектуальная фокусировка AiAF, интеллектуальный датчик ориентации</li>\r\n    <li>Дата анонсирования &mdash; 2005-08-22</li>\r\n</ul>\r\n<p><b>Функциональные возможности</b></p>\r\n<ul>\r\n    <li>Баланс белого &mdash; автоматический, ручная установка, из списка</li>\r\n    <li>Вспышка &mdash; встроенная, до 3.50 м, подавление эффекта красных глаз</li>\r\n</ul>\r\n<p><b>Объектив</b></p>\r\n<ul>\r\n    <li>Фокусное расстояние (35 мм эквивалент) &mdash; 35 - 105 мм</li>\r\n    <li>Оптический Zoom &mdash; 3x</li>\r\n    <li>Диафрагма &mdash; F2.8 - F4.9</li>\r\n</ul>\r\n<p><b>Экспозиция</b></p>\r\n<ul>\r\n    <li>Выдержка &mdash; 15 - 1/1499 с</li>\r\n    <li>Ручная настройка выдержки и диафрагмы &mdash; нет</li>\r\n    <li>Экспокоррекция  &mdash; +/- 2 EV с шагом 1/3 ступени</li>\r\n</ul>\r\n<p><b>Память и интерфейсы</b></p>\r\n<ul>\r\n    <li>Тип карт памяти &mdash; SD</li>\r\n    <li>Объём памяти в поставке &mdash; 16 Мб</li>\r\n    <li>Форматы изображения &mdash; 3 JPEG</li>\r\n    <li>Интерфейсы &mdash; USB 2.0, видео, аудио</li>\r\n</ul>\r\n<p><b>Запись видео и звука</b></p>\r\n<ul>\r\n    <li>Запись видео &mdash; есть</li>\r\n    <li>Максимальное разрешение роликов &mdash; 640x480</li>\r\n    <li>Максимальная частота кадров видеоролика &mdash; 30 кадров/с</li>\r\n    <li>Запись звука &mdash; есть</li>\r\n</ul>\r\n<p><b>Размеры и вес</b></p>\r\n<ul>\r\n    <li>Размер &mdash; 86x54x22 мм</li>\r\n</ul>', '', '&nbsp;', '', '&nbsp;', '', '&nbsp;', 2, 'ixxus,foto', 0.00, 0, 1000, 2, 16, '', 1, '', '', '', 0, 0),
 (14, '32esdfvfds', 3, '3', 'Casio EXILIM EX-S600', 1, 3400.00, 0.00, 'casio_2.jpg', 'jpg', '', '&nbsp;ПЗС 1/2,5 дюйма (всего 6,18 млн пикселей, 6 млн пикселей эфф.) Разрешение Разрешения фото: 2816x2112 2560x1920 2560x1712 (3:2) 2304x1728 2048x1536 1600х1200 640х480 пикселей; Разрешение видео (со звуковым сопровождением): 640x480, 320x240', 'Камера EX-S600, продолжая традиции серии EXILIM CARD, буквально напичкана самыми последними электронными технологиями, облеченными в компактную, тонкую и красивую форму. Фотоснимки высокого качества, совершенные возможности видеозаписи и невероятный спектр возможностей и функций, - все это доказывает снова, что CASIO превосходит все мыслимые пределы фототехнологий, предоставляя удобное и компактное устройство для запечатления событий, которые будут храниться в памяти всю жизнь.', 0.120, 0, '', 0, 1151352000, 'Характеристики', '<ul>\r\n    <li>Эффективное разрешение	&nbsp;- 6,0 мегапикселей</li>\r\n    <li>Максимальный размер снимка	- 2816x2112</li>\r\n    <li>Система стабилизации	- электронная (Anti-Shake DSP)</li>\r\n    <li>Фокусное расстояние	- 38-144 мм</li>\r\n    <li>Оптический зум	- 3x</li>\r\n    <li>Светочувствительность	- 50,&nbsp;100, 200, 400, Auto</li>\r\n    <li>ЖК-дисплей	- 2,4&quot;, 85000 пикселей</li>\r\n    <li>Карта памяти	- SD</li>\r\n    <li>Вес камеры с учетом батареи и карты памяти	- 145 г<br />\r\n    </li>\r\n</ul>', '', '<br />', '', '&nbsp;', '', '&nbsp;', 3, 'фотоаппарат, мыльница', 0.00, 0, 1000, 2, 16, '', 1, '', '', '', 0, 0),
-(15, '11112', 22, '2,20,22', 'HP Compaq 530 FH524AA', 1, 20280.00, 0.00, 'hp151111.jpg', 'jpg', '', '<p>Ноутбук, Intel Celeron M 530 (1.73 ГГц), 15.4'''' WXGA (1280x800), 1024 Мб (1хDDR2), 120 Гб, Intel GMA 950 (up 224 Мб), DVD+/-RW, Modem, LAN, Wi-Fi, DOS, 2.7 кг</p>', '<p>Хотите, чтобы Ваш ноутбук не уступал по качеству изображения настольному ПК? Тогда Вы наверняка по достоинству оцените дисплей XGA с диагональю 15,4 дюйма. Лаконичный дизайн, малый вес (2,7 кг) и компактные размеры (толщина 31,9 мм) позволят Вам взять свой офис с собой и выглядеть более стильно!</p>', 2.700, 1, '/uploads/images/adv_hp.gif', 0, 1219780800, 'Технические характеристики', '<p>Диагональ дисплея &mdash; 15.4 '''' TFT<br />\r\nРазрешение дисплея &mdash; 1280х800&nbsp;<br />\r\nПроцессор &mdash; Intel Celeron M&nbsp;<br />\r\nЧастота процессора &mdash; 1730 MHz<br />\r\nОбъем оперативной памяти &mdash; 1024 Mb<br />\r\nОперативная память &mdash; DDR2&nbsp;<br />\r\nЧастота оперативной памяти &mdash; 533 MHz<br />\r\nКэш второго уровня (L2C) &mdash; 1024 Kb<br />\r\nЧипсет видео &mdash; Intel&reg; GMA 950 (shared)&nbsp;<br />\r\nРазмер видеопамяти &mdash; 224 Mb<br />\r\nЧипсет &mdash; Intel&reg; i945GM Express&nbsp;<br />\r\nРазмер жесткого диска &mdash; 120 Gb<br />\r\nCD/DVD привод &mdash; DVD-Dual DL&nbsp;<br />\r\nWi-Fi &mdash; Есть&nbsp;<br />\r\nBlueTooth &mdash; Нет&nbsp;<br />\r\nКоличество USB-портов &mdash; 2&nbsp;<br />\r\nHDMI &mdash; Нет&nbsp;<br />\r\nПоследовательный порт (COM) &mdash; Нет&nbsp;<br />\r\nПараллельный порт (LPT) &mdash; Нет&nbsp;<br />\r\nFire-Wire (IEEE 1394) &mdash; Нет&nbsp;<br />\r\nТВ выходы &mdash; Нет&nbsp;<br />\r\nВнешний монитор &mdash; VGA (D-Sub 15-pin)&nbsp;<br />\r\nPCMCIA слот &mdash; Type II&nbsp;<br />\r\nExpress Card &mdash; Нет&nbsp;<br />\r\nFM/LAN &mdash; Fax-modem 56K, LAN 10/100&nbsp;<br />\r\nЗвуковая система &mdash; Conexant Cx20468 Встроенные динамики&nbsp;<br />\r\nРабота в режиме Tablet PC &mdash; Нет&nbsp;<br />\r\nАккумулятор &mdash; Li-Ion&nbsp;<br />\r\nАвтономная работа &mdash; 3 часа 00 минут&nbsp;<br />\r\nОС &mdash; DOS&nbsp;<br />\r\nШирина &mdash; 356 mm<br />\r\nДлина &mdash; 257 mm<br />\r\nТолщина &mdash; 35 mm<br />\r\nВес &mdash; 2.7 kg<br />\r\nСканер отпечатка пальца &mdash; Нет&nbsp;<br />\r\nГарантия &mdash; 1 год&nbsp;<br />\r\nДополнительная информация &mdash; Поддержка Kensington Lock &quot;Глянцевая матрица&quot;<b><br />\r\n</b></p>', '', '<br />', '', '<br />', '', '<br />', 1, 'hp', 0.00, 0, 3, 2, 1, '', 1, '', '', '', 0, 0);
-INSERT INTO `cp_modul_shop_artikel` VALUES
-(16, '2342342', 23, '2,6,23', 'ASUS F9E PMD-T2370', 1, 25003.00, 0.00, 'nb_asus.jpg', 'jpg', '', '<p>процессор Intel PMD-T2370 (1.73 ГГц), 12.1\\''\\'' WXGA (1280x800), Intel GMA X3100, 2048 Мб DDR II, 160 Гб, DVD-RW (Super Multi) DL, 10/100/1000 LAN, модем, 802.11a/b/g, встроенная Web-камера, сумка + мышь в комплекте</p>', '<p>Очередное поколение недорогих ноутбуков для активного мобильного использования. Новая серия F9 &ndash; это ноутбуки с диагональю экрана 12 дюймов на базе чипсета Intel. В модели применена современная интегрированная графика Intel GMA X3100, почти не уступающая по производительности дискретным видеоадаптерам младшего уровня. Встроенный оптический привод делает ноутбук более универсальным. Преимуществом данной модели также являются беспроводные интерфейсы WiFi и Bluetooth. Поворачивающаяся веб-камера в верхней крышке обеспечивает возможность общения по видео как в офисе, так и в дороге. О безопасности информации помогут позаботиться сканер отпечатков пальцев и микросхема аппаратного шифрования данных TPM. Несмотря на скромные габариты, ноутбук может похвастаться возможностью подключения к большим экранам для воспроизведения видео высокой четкости благодаря современному разъему HDMI.</p>', 2.100, 0, '', 0, 1220472000, 'Характеристики', '<p><strong>Поддерживаемые ОС:</strong>	Подлинная Microsoft&reg; Windows&reg; Vista&trade;,    Подлинная Windows&reg; XP<br />\r\n<strong>Дисплей	:</strong> Широкоформатная матрица TFT с диагональю 12.1&rdquo; и разрешением WXGA (1280х800), технологии ASUS Color Shine и ASUS Splendid<br />\r\n<strong>Процессор:</strong>	Intel&reg; Intel&reg; Core&trade; 2 Duo (Merom, Socket P; 65nm; FSB667MHz; 2MB L2 Cache; EIST; XD) | Intel&reg; Pentium&reg; Dual Core (Merom, Socket P; 65nm; FSB533MHz; 1MB L2 Cache; EIST; XD) | Intel&reg; Celeron&reg; M (Merom,Socket P; 65nm; FSB533MHz; 1MB L2 Cache; XD; Intel&reg; 64)<br />\r\n<strong>Чипсет: </strong>Mobile Intel&reg; 965GM Express Chipset + ICH8-M<br />\r\n<strong>Оперативная память: </strong>DDRII 667МГц, форм-фактор SO-DIMM. Максимальный объем &ndash; 2048МБ (2 слота)<br />\r\n<strong>Графическая система:</strong>	Интегрированная графика Intel GMA X3100, выделяемая память<br />\r\n<strong>Жесткий диск: </strong>SATA 2.5&rdquo; объемом до 250Гб (скорость вращения 5400/4200 об/мин)<br />\r\n<strong>Оптический привод:</strong>	8xDVD-SuperMulti DL с поддержкой записи двухслойных дисков<br />\r\n<strong>Звуковая система: </strong>HD Audio; 2 динамика, микрофон<br />\r\n<strong>Беспроводные интерфейсы:</strong>	Адаптер WiFi стандарта 802.11a/b/g/n, опциональный модуль Bluetooth (v2.0+EDR). Опциональный модуль 3G/3.5G+SIM card slot<br />\r\n<strong>Проводные интерфейсы:</strong>	Адаптер сетевой карты 10/100/1000Мбит/с, факс-модем 56К<br />\r\n<strong>Коммуникационные порты: </strong>3xUSB2.0, ExpressCard34|54, VGA (D-Sub), HDMI, Head-Out/SPDIF, Mic-in (mono), RJ11, RJ45<br />\r\n<strong>Карт-ридер: </strong>SD/MMC/MS/MSPro/xD<br />\r\n<strong>Мультимедиа: </strong>Веб-камера 1.3Мпикс с углом поворота 240 градусов<br />\r\n<strong>Безопасность:</strong>	Опциональный модуль аппаратного шифрования TPM, опциональный сканер отпечатков пальцев; пароль BIOS, системный пароль<br />\r\n<strong>Параметры батареи:</strong> 3	3/6/9 ячеек, 2400/4800/7800мАч<br />\r\n<strong>Адаптер питания:</strong>	Универсальный адаптер питания: 19В, 3.42А, 65Вт/100~240В, 50/60Гц<br />\r\n<strong>Размеры ноутбука:</strong>	310x224x27-34мм<br />\r\n<strong>Вес ноутбука	:</strong>2.1кг (с 6-ячеечной батарей)</p>', '', '&nbsp;', '', '&nbsp;', '', '&nbsp;', 2, 'ноутбук,asus,F9E,PMD-T2370', 0.00, 1, 5, 1, 4, '', 1, '', '', '', 0, 0),
-(17, 'sdfsdw332', 4, '10,11,12,13', 'Плеер 1by1', 1, 1.00, 0.00, 'player.gif', 'gif', '', 'Маленький, но функциональный проигрыватель аудио файлов. The Directory Player воспроизводит MP3 файлы, но с помощью подключаемых модулей (dll/plugin) предусмотрена возможность проигрывать WAV, OGG, MP2 форматы и Audio CD диски.&nbsp;', 'Маленький, но функциональный проигрыватель аудио файлов. The Directory Player воспроизводит MP3 файлы, но с помощью подключаемых модулей (dll/plugin) предусмотрена возможность проигрывать WAV, OGG, MP2 форматы и Audio CD диски. Интерфейс плеера выполнен по аналогии Проводника Windows, т.е. в левом меню располагается дерево дисков, а в правом отображаются музыкальные файлы, расположенные в той или иной директории. Такой подход позволяет отказаться от ставших уже стандартом плей-листов и воспроизводить музыкальные файлы целыми директориями или поодиночке. Однако, все функции плей-листов (Playlist) поддерживаются. The Directory Player может работать из командной строки и поддерживает горячие клавиши (список горячих клавиш смотрите в файле Readme, расположенном в архиве с программой).&nbsp;', 0.000, 0, '', 0, 1232226000, '', '&nbsp;', '', '&nbsp;', '', '&nbsp;', '', '&nbsp;', 0, 'плеер, айдио', 0.00, 0, 1000, 2, 3, '', 1, '', '', '', 0, 0);
+(15, '11112', 22, '2,20,22', 'HP Compaq 530 FH524AA', 1, 20280.00, 0.00, 'hp151111.jpg', 'jpg', '', '<p>Ноутбук, Intel Celeron M 530 (1.73 ГГц), 15.4'''' WXGA (1280x800), 1024 Мб (1хDDR2), 120 Гб, Intel GMA 950 (up 224 Мб), DVD+/-RW, Modem, LAN, Wi-Fi, DOS, 2.7 кг</p>', '<p>Хотите, чтобы Ваш ноутбук не уступал по качеству изображения настольному ПК? Тогда Вы наверняка по достоинству оцените дисплей XGA с диагональю 15,4 дюйма. Лаконичный дизайн, малый вес (2,7 кг) и компактные размеры (толщина 31,9 мм) позволят Вам взять свой офис с собой и выглядеть более стильно!</p>', 2.700, 1, 'uploads/images/adv_hp.gif', 0, 1219780800, 'Технические характеристики', '<p>Диагональ дисплея &mdash; 15.4 '''' TFT<br />\r\nРазрешение дисплея &mdash; 1280х800&nbsp;<br />\r\nПроцессор &mdash; Intel Celeron M&nbsp;<br />\r\nЧастота процессора &mdash; 1730 MHz<br />\r\nОбъем оперативной памяти &mdash; 1024 Mb<br />\r\nОперативная память &mdash; DDR2&nbsp;<br />\r\nЧастота оперативной памяти &mdash; 533 MHz<br />\r\nКэш второго уровня (L2C) &mdash; 1024 Kb<br />\r\nЧипсет видео &mdash; Intel&reg; GMA 950 (shared)&nbsp;<br />\r\nРазмер видеопамяти &mdash; 224 Mb<br />\r\nЧипсет &mdash; Intel&reg; i945GM Express&nbsp;<br />\r\nРазмер жесткого диска &mdash; 120 Gb<br />\r\nCD/DVD привод &mdash; DVD-Dual DL&nbsp;<br />\r\nWi-Fi &mdash; Есть&nbsp;<br />\r\nBlueTooth &mdash; Нет&nbsp;<br />\r\nКоличество USB-портов &mdash; 2&nbsp;<br />\r\nHDMI &mdash; Нет&nbsp;<br />\r\nПоследовательный порт (COM) &mdash; Нет&nbsp;<br />\r\nПараллельный порт (LPT) &mdash; Нет&nbsp;<br />\r\nFire-Wire (IEEE 1394) &mdash; Нет&nbsp;<br />\r\nТВ выходы &mdash; Нет&nbsp;<br />\r\nВнешний монитор &mdash; VGA (D-Sub 15-pin)&nbsp;<br />\r\nPCMCIA слот &mdash; Type II&nbsp;<br />\r\nExpress Card &mdash; Нет&nbsp;<br />\r\nFM/LAN &mdash; Fax-modem 56K, LAN 10/100&nbsp;<br />\r\nЗвуковая система &mdash; Conexant Cx20468 Встроенные динамики&nbsp;<br />\r\nРабота в режиме Tablet PC &mdash; Нет&nbsp;<br />\r\nАккумулятор &mdash; Li-Ion&nbsp;<br />\r\nАвтономная работа &mdash; 3 часа 00 минут&nbsp;<br />\r\nОС &mdash; DOS&nbsp;<br />\r\nШирина &mdash; 356 mm<br />\r\nДлина &mdash; 257 mm<br />\r\nТолщина &mdash; 35 mm<br />\r\nВес &mdash; 2.7 kg<br />\r\nСканер отпечатка пальца &mdash; Нет&nbsp;<br />\r\nГарантия &mdash; 1 год&nbsp;<br />\r\nДополнительная информация &mdash; Поддержка Kensington Lock &quot;Глянцевая матрица&quot;<b><br />\r\n</b></p>', '', '<br />', '', '<br />', '', '<br />', 1, 'hp', 0.00, 0, 3, 2, 1, '', 1, '', '', '', 0, 0),
+(16, '2342342', 23, '2,6,23', 'ASUS F9E PMD-T2370', 1, 25003.00, 0.00, 'nb_asus.jpg', 'jpg', '', '<p>процессор Intel PMD-T2370 (1.73 ГГц), 12.1\\''\\'' WXGA (1280x800), Intel GMA X3100, 2048 Мб DDR II, 160 Гб, DVD-RW (Super Multi) DL, 10/100/1000 LAN, модем, 802.11a/b/g, встроенная Web-камера, сумка + мышь в комплекте</p>', '<p>Очередное поколение недорогих ноутбуков для активного мобильного использования. Новая серия F9 &ndash; это ноутбуки с диагональю экрана 12 дюймов на базе чипсета Intel. В модели применена современная интегрированная графика Intel GMA X3100, почти не уступающая по производительности дискретным видеоадаптерам младшего уровня. Встроенный оптический привод делает ноутбук более универсальным. Преимуществом данной модели также являются беспроводные интерфейсы WiFi и Bluetooth. Поворачивающаяся веб-камера в верхней крышке обеспечивает возможность общения по видео как в офисе, так и в дороге. О безопасности информации помогут позаботиться сканер отпечатков пальцев и микросхема аппаратного шифрования данных TPM. Несмотря на скромные габариты, ноутбук может похвастаться возможностью подключения к большим экранам для воспроизведения видео высокой четкости благодаря современному разъему HDMI.</p>', 2.100, 0, '', 0, 1220472000, 'Характеристики', '<p><strong>Поддерживаемые ОС:</strong>	Подлинная Microsoft&reg; Windows&reg; Vista&trade;,    Подлинная Windows&reg; XP<br />\r\n<strong>Дисплей	:</strong> Широкоформатная матрица TFT с диагональю 12.1&rdquo; и разрешением WXGA (1280х800), технологии ASUS Color Shine и ASUS Splendid<br />\r\n<strong>Процессор:</strong>	Intel&reg; Intel&reg; Core&trade; 2 Duo (Merom, Socket P; 65nm; FSB667MHz; 2MB L2 Cache; EIST; XD) | Intel&reg; Pentium&reg; Dual Core (Merom, Socket P; 65nm; FSB533MHz; 1MB L2 Cache; EIST; XD) | Intel&reg; Celeron&reg; M (Merom,Socket P; 65nm; FSB533MHz; 1MB L2 Cache; XD; Intel&reg; 64)<br />\r\n<strong>Чипсет: </strong>Mobile Intel&reg; 965GM Express Chipset + ICH8-M<br />\r\n<strong>Оперативная память: </strong>DDRII 667МГц, форм-фактор SO-DIMM. Максимальный объем &ndash; 2048МБ (2 слота)<br />\r\n<strong>Графическая система:</strong>	Интегрированная графика Intel GMA X3100, выделяемая память<br />\r\n<strong>Жесткий диск: </strong>SATA 2.5&rdquo; объемом до 250Гб (скорость вращения 5400/4200 об/мин)<br />\r\n<strong>Оптический привод:</strong>	8xDVD-SuperMulti DL с поддержкой записи двухслойных дисков<br />\r\n<strong>Звуковая система: </strong>HD Audio; 2 динамика, микрофон<br />\r\n<strong>Беспроводные интерфейсы:</strong>	Адаптер WiFi стандарта 802.11a/b/g/n, опциональный модуль Bluetooth (v2.0+EDR). Опциональный модуль 3G/3.5G+SIM card slot<br />\r\n<strong>Проводные интерфейсы:</strong>	Адаптер сетевой карты 10/100/1000Мбит/с, факс-модем 56К<br />\r\n<strong>Коммуникационные порты: </strong>3xUSB2.0, ExpressCard34|54, VGA (D-Sub), HDMI, Head-Out/SPDIF, Mic-in (mono), RJ11, RJ45<br />\r\n<strong>Карт-ридер: </strong>SD/MMC/MS/MSPro/xD<br />\r\n<strong>Мультимедиа: </strong>Веб-камера 1.3Мпикс с углом поворота 240 градусов<br />\r\n<strong>Безопасность:</strong>	Опциональный модуль аппаратного шифрования TPM, опциональный сканер отпечатков пальцев; пароль BIOS, системный пароль<br />\r\n<strong>Параметры батареи:</strong> 3	3/6/9 ячеек, 2400/4800/7800мАч<br />\r\n<strong>Адаптер питания:</strong>	Универсальный адаптер питания: 19В, 3.42А, 65Вт/100~240В, 50/60Гц<br />\r\n<strong>Размеры ноутбука:</strong>	310x224x27-34мм<br />\r\n<strong>Вес ноутбука	:</strong>2.1кг (с 6-ячеечной батарей)</p>', '', '&nbsp;', '', '&nbsp;', '', '&nbsp;', 2, 'ноутбук,asus,F9E,PMD-T2370', 0.00, 1, 4, 1, 7, '', 1, '', '', '', 0, 0),
+(17, 'sdfsdw332', 4, '10,11,12,13', 'Плеер 1by1', 1, 1.00, 0.00, 'player.gif', 'gif', '', 'Маленький, но функциональный проигрыватель аудио файлов. The Directory Player воспроизводит MP3 файлы, но с помощью подключаемых модулей (dll/plugin) предусмотрена возможность проигрывать WAV, OGG, MP2 форматы и Audio CD диски.&nbsp;', 'Маленький, но функциональный проигрыватель аудио файлов. The Directory Player воспроизводит MP3 файлы, но с помощью подключаемых модулей (dll/plugin) предусмотрена возможность проигрывать WAV, OGG, MP2 форматы и Audio CD диски. Интерфейс плеера выполнен по аналогии Проводника Windows, т.е. в левом меню располагается дерево дисков, а в правом отображаются музыкальные файлы, расположенные в той или иной директории. Такой подход позволяет отказаться от ставших уже стандартом плей-листов и воспроизводить музыкальные файлы целыми директориями или поодиночке. Однако, все функции плей-листов (Playlist) поддерживаются. The Directory Player может работать из командной строки и поддерживает горячие клавиши (список горячих клавиш смотрите в файле Readme, расположенном в архиве с программой).&nbsp;', 0.000, 0, '', 0, 1232226000, '', '&nbsp;', '', '&nbsp;', '', '&nbsp;', '', '&nbsp;', 0, 'плеер, айдио', 0.00, 0, 998, 2, 3, '', 1, '', '', '', 0, 0);
 
 CREATE TABLE `cp_modul_shop_artikel_bilder` (
   `Id` int(10) unsigned NOT NULL auto_increment,
   `ArtId` int(10) unsigned NOT NULL default '0',
   `Bild` char(255) NOT NULL,
   PRIMARY KEY  (`Id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=cp1251 PACK_KEYS=0;
+) ENGINE=MyISAM AUTO_INCREMENT=6 DEFAULT CHARSET=cp1251 PACK_KEYS=0;
 
-INSERT INTO `cp_modul_shop_artikel_bilder` VALUES
-(1, 16, 'nb_toshiba_satellite_a305650.jpg'),
+INSERT INTO `cp_modul_shop_artikel_bilder` VALUES (1, 16, 'nb_toshiba_satellite_a305650.jpg'),
 (2, 14, 'casio_1.jpg'),
 (3, 13, 'canon_2.jpg'),
 (4, 4, 'nb_toshiba_satellite_a3343400_1.jpg'),
@@ -1529,7 +1411,7 @@ CREATE TABLE `cp_modul_shop_artikel_downloads` (
   `DateiTyp` enum('full','update','bugfix','other') NOT NULL default 'full',
   `TageNachKauf` mediumint(5) NOT NULL default '365',
   `Bild` varchar(255) NOT NULL,
-  `title` varchar(200) NOT NULL,
+  `title` varchar(255) NOT NULL,
   `description` text NOT NULL,
   `Position` mediumint(3) unsigned NOT NULL default '1',
   PRIMARY KEY  (`Id`)
@@ -1587,10 +1469,7 @@ CREATE TABLE `cp_modul_shop_bestellungen` (
   `Status` enum('wait','progress','ok','ok_send','failed') NOT NULL default 'wait',
   `DatumBezahlt` int(10) unsigned NOT NULL default '0',
   PRIMARY KEY  (`Id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=cp1251 PACK_KEYS=0;
-
-INSERT INTO `cp_modul_shop_bestellungen` VALUES
-(1, '1', '56GUXDT270410', 1272334373, 1.00, 0.00, 'a:1:{i:17;i:1;}', '', '=================================================\r\nПодтверждение заказа\r\n=================================================\r\n\r\nПри заказе вы получите подтверждение покупки товара.Обратите внимание этот документ не является официальным счетом. При получении товара вы получите счет который можно будет использовать в финансовой отчетности. \r\n=================================================\r\n\r\nАдрес доставки заказа\r\n=================================================\r\nД\\''артаньян\r\n123-45-67\r\nД\\''артаньян Д\\''артаньян\r\n\r\nД\\''артаньян 1\r\n1234567 Д\\''артаньян\r\nRU\r\n\r\n\r\nАдрес доставки счета\r\n=================================================\r\nСовпадает с адресом доставки заказа\r\n#################################################\r\nПлеер 1by1 (Арт. №: sdfsdw332) На следующий день по Москве\r\nКоличество: 1\r\nЦена: 1 р\r\nСумма: 1 р\r\n#################################################\r\n\r\nНомер заказа: 1\r\nДата заказа: 27.04.2010, 06:12:53\r\nКод транзакции: 56GUXDT270410\r\n\r\nВид отправки: Курьером по москве\r\nВид оплаты: Наличными курьеру\r\n\r\nСтоимость товаров: 1 р\r\nУпаковка и отправка: 0 р\r\n\r\nОбщая оплата: 0 р\r\nИтоговая сумма: 1 р\r\n=================================================\r\n\r\n=================================================\r\n\r\n\r\nВажная информация о оплате\r\nНаличными курьеру\r\nНаличные при получении (по Москве) - оплата осуществляется наличными деньгами курьеру в момент доставки. После комплектации заказа наш менеджер свяжется с Вами по контактному телефону и еще раз уточнит параметры заказа и Ваш адрес. Если Вы, подтвердив заказ, в дальнейшем отказываетесь от его получения, то Вам необходимо оплатить стоимость доставки + 50 руб за каждую возвращенную позицию. В случае необходимости возврата или обмена изделия свяжитесь с нашим менеджером.\r\n\r\n\r\nУ вас есть вопросы? Обратитесь к нашим менеджерам.\r\n', '<html><head><meta http-equiv="Content-Type" content="text/html; charset=windows-1251" /><title></title></head>\r\n<style type="text/css">\r\nhtml, body, td, div, th {\r\n	font:11px Verdana,Arial,Helvetica,sans-serif;\r\n}\r\n.articlesborder {\r\n	background-color:#ccc;\r\n}\r\n.articlesrow {\r\n	background-color:#fff;\r\n}\r\n.articlesheader {\r\n	background-color:#eee;\r\n}\r\n.overall {\r\n	background-color:#eee;\r\n	font-size:14px;\r\n	border-top:1px solid #ccc;\r\n}\r\n</style>\r\n<body><div id="shopcontent"><table width="100%" border="0" cellspacing="0" cellpadding="0"><tr><td valign="top"><table width="100%" border="0" cellspacing="0" cellpadding="0"><tr><td></td><td align="right"></td></tr></table><hr noshade="noshade" size="1"><h3><strong>Подтверждение заказа</strong></h3>При заказе вы получите подтверждение покупки товара.<br />Обратите внимание этот документ не является официальным счетом. При получении товара вы получите счет который можно будет использовать в финансовой отчетности. <hr noshade="noshade" size="1"><table width="100%"><tr><td valign="top"><h3><strong>Адрес доставки заказа</strong></h3><strong>Д\\''артаньян</strong><br />123-45-67<br />Д\\''артаньян Д\\''артаньян<br /><br />Д\\''артаньян 1<br />1234567 Д\\''артаньян<br />RU<br /></td><td valign="top"><h3><strong>Адрес доставки счета</strong></h3>Совпадает с адресом доставки заказа</td></tr><tr><td valign="top">&nbsp;<br /><br /></td><td valign="top">&nbsp;</td></tr></table><table width="100%" border="0" cellpadding="3" cellspacing="1" class="articlesborder"><tr><td valign="top" class="articlesheader"><strong>Артикул</strong></td><td valign="top" class="articlesheader"><strong>Арт. №</strong></td><td valign="top" align="right" class="articlesheader"><strong>Количество</strong></td><td align="right" valign="top" class="articlesheader"><strong>Цена</strong></td><td align="right" valign="top" class="articlesheader"><strong>Сумма</strong></td></tr><tr><td valign="top" class="articlesrow"> <strong>Плеер 1by1</strong><!-- DELIVERY TIME --><div class="mod_shop_timetillshipping">На следующий день по Москве</div><!-- /DELIVERY TIME --><!-- PRODUCT VARIATIONS --><!-- /PRODUCT VARIATIONS --></td><td valign="top" class="articlesrow">sdfsdw332</td><td align="center" valign="top" class="articlesrow">1</td><td align="right" valign="top" class="articlesrow" nowrap="nowrap">1 р</td><td align="right" valign="top" class="articlesrow" nowrap="nowrap">1 р</td></tr></table><br /><br /><table width="100%" border="0" cellspacing="0" cellpadding="1"><tr><td>Номер заказа:</td><td class="mod_shop_summlist">1</td></tr><tr><td>Дата заказа:</td><td class="mod_shop_summlist">27.04.2010, 06:12:53</td></tr><tr><td class="mod_shop_summlist">Код транзакции:</td><td class="mod_shop_summlist">56GUXDT270410</td></tr><tr><td class="mod_shop_summlist">&nbsp;</td><td class="mod_shop_summlist">&nbsp;</td></tr><tr><td width="200">Вид отправки:</td><td class="mod_shop_summlist">Курьером по москве</td></tr><tr><td width="200">Вид оплаты:</td><td class="mod_shop_summlist">Наличными курьеру</td></tr><tr><td width="200" class="mod_shop_summlist">&nbsp;</td><td align="right" class="mod_shop_summlist">&nbsp;</td></tr><tr><td width="200"><strong>Стоимость товаров:</strong></td><td class="mod_shop_summlist"><strong>1 р</strong></td></tr><tr><td width="200">Упаковка и отправка:</td><td> 0 р</td></tr><tr><td width="200" class="overall"><strong>Итоговая сумма:</strong></td><td class="overall"><strong>1 р</strong><br /><span class="mod_shop_ust">1 ?</span></td></tr><tr><td width="200">&nbsp;</td><td>&nbsp;</td></tr></table><hr noshade="noshade" size="1"><h3>Важная информация о оплате</h3><strong>Наличными курьеру</strong><br /><em>Наличные при получении (по Москве) - оплата осуществляется наличными деньгами курьеру в момент доставки. После комплектации заказа наш менеджер свяжется с Вами по контактному телефону и еще раз уточнит параметры заказа и Ваш адрес. Если Вы, подтвердив заказ, в дальнейшем отказываетесь от его получения, то Вам необходимо оплатить стоимость доставки + 50 руб за каждую возвращенную позицию. В случае необходимости возврата или обмена изделия свяжитесь с нашим менеджером.</em><hr noshade="noshade" size="1"><strong>У вас есть вопросы? Обратитесь к нашим менеджерам.</strong><br /></td></tr></table></div></body></html>', '', '', '127.0.0.1', 1, 1, '', 0, 'admin@ave.ru', 'Д''артаньян', '', 'Д''артаньян', 'Д''артаньян', 'Д''артаньян', '1', '1234567', 'Д''артаньян', 'RU', 'Д''артаньян', '', 'Д''артаньян', 'Д''артаньян', 'Д''артаньян', '1', '1234567', 'Д''артаньян', '', 'wait', 0);
+) ENGINE=MyISAM DEFAULT CHARSET=cp1251 PACK_KEYS=0;
 
 CREATE TABLE `cp_modul_shop_downloads` (
   `Id` int(11) unsigned NOT NULL auto_increment,
@@ -1615,10 +1494,9 @@ CREATE TABLE `cp_modul_shop_einheiten` (
   `NameEinzahl` char(255) NOT NULL,
   PRIMARY KEY  (`Id`),
   UNIQUE KEY `Name` (`Name`)
-) ENGINE=MyISAM  DEFAULT CHARSET=cp1251;
+) ENGINE=MyISAM AUTO_INCREMENT=4 DEFAULT CHARSET=cp1251;
 
-INSERT INTO `cp_modul_shop_einheiten` VALUES
-(1, 'штука', 'штука'),
+INSERT INTO `cp_modul_shop_einheiten` VALUES (1, 'штука', 'штука'),
 (2, 'десяток', 'десяток'),
 (3, 'литр', 'литр');
 
@@ -1644,10 +1522,9 @@ CREATE TABLE `cp_modul_shop_hersteller` (
   `Logo` char(255) NOT NULL,
   PRIMARY KEY  (`Id`),
   UNIQUE KEY `Name` (`Name`)
-) ENGINE=MyISAM  DEFAULT CHARSET=cp1251;
+) ENGINE=MyISAM AUTO_INCREMENT=4 DEFAULT CHARSET=cp1251;
 
-INSERT INTO `cp_modul_shop_hersteller` VALUES
-(1, 'HP', 'www.hp.ru', 'uploads/manufacturer/icon_hp.gif'),
+INSERT INTO `cp_modul_shop_hersteller` VALUES (1, 'HP', 'www.hp.ru', 'uploads/manufacturer/icon_hp.gif'),
 (2, 'Asus', 'www.asus.com', 'uploads/manufacturer/icon_asus.gif'),
 (3, 'Acer', 'www.acer.com', 'uploads/manufacturer/icon_acer.gif');
 
@@ -1662,10 +1539,9 @@ CREATE TABLE `cp_modul_shop_kategorie` (
   `cbid` int(5) unsigned NOT NULL default '0',
   PRIMARY KEY  (`Id`,`parent_id`),
   KEY `KatName` (`KatName`)
-) ENGINE=MyISAM  DEFAULT CHARSET=cp1251 PACK_KEYS=0;
+) ENGINE=MyISAM AUTO_INCREMENT=29 DEFAULT CHARSET=cp1251 PACK_KEYS=0;
 
-INSERT INTO `cp_modul_shop_kategorie` VALUES
-(1, 0, 'Принтеры', 'ПЕЧАТАЮЩЕЕ УСТРОЙСТВО (ПРИНТЕР) &mdash; устройство для регистрации (печати) текста или графической информации на носителе, в основном, на бумаге. П. у. в зависимости от применяемого принципа печати бывают лазерные, игольчатые, струйные, на базе использования принципа термопечати с применением термоленты.<br />', 2, 'icon_printer.gif', 0, 0),
+INSERT INTO `cp_modul_shop_kategorie` VALUES (1, 0, 'Принтеры', 'ПЕЧАТАЮЩЕЕ УСТРОЙСТВО (ПРИНТЕР) &mdash; устройство для регистрации (печати) текста или графической информации на носителе, в основном, на бумаге. П. у. в зависимости от применяемого принципа печати бывают лазерные, игольчатые, струйные, на базе использования принципа термопечати с применением термоленты.<br />', 2, 'icon_printer.gif', 0, 0),
 (2, 0, 'Ноутбуки', 'НОУТБУК (от англ. notebook - записная книжка, тетрадь) - переносной портативный компьютер. Описание категории. Правится в админке - модули - магазин - категории.&nbsp;Описание категории. Правится в админке - модули - магазин - категории.&nbsp;Описание категории. Правится в админке - модули - магазин - категории.&nbsp;Описание категории. Правится в админке - модули - магазин - категории.&nbsp;<br />', 1, 'icon_note.gif', 0, 0),
 (3, 0, 'Фотоехника', '<br />', 3, 'icon_camer.gif', 0, 0),
 (4, 0, 'Программы', '<br />', 4, 'icon_xp.gif', 0, 0),
@@ -1719,10 +1595,9 @@ CREATE TABLE `cp_modul_shop_ust` (
   `Name` char(100) NOT NULL,
   `Wert` decimal(4,2) NOT NULL default '16.00',
   PRIMARY KEY  (`Id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=cp1251;
+) ENGINE=MyISAM AUTO_INCREMENT=2 DEFAULT CHARSET=cp1251;
 
-INSERT INTO `cp_modul_shop_ust` VALUES
-(1, 'НДС', 18.00);
+INSERT INTO `cp_modul_shop_ust` VALUES (1, 'НДС', 18.00);
 
 CREATE TABLE `cp_modul_shop_varianten` (
   `Id` int(10) unsigned NOT NULL auto_increment,
@@ -1760,13 +1635,12 @@ CREATE TABLE `cp_modul_shop_versandarten` (
   `NurBeiGewichtNull` tinyint(1) unsigned NOT NULL default '0',
   `ErlaubteGruppen` tinytext NOT NULL,
   PRIMARY KEY  (`Id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=cp1251;
+) ENGINE=MyISAM AUTO_INCREMENT=5 DEFAULT CHARSET=cp1251;
 
-INSERT INTO `cp_modul_shop_versandarten` VALUES
-(1, 'Курьером по москве', '<br />', '', 'BY,RU,UA', 300.00, 1, 1, 0, '1,2,4,3'),
-(2, 'Курьером в подмосковье', 'Стоимость доставки за пределы МКАД - 200 рублей плюс: от 0 до 5 км - 50 рублей, от 5 до 10 км - 100 рублей, от 10 до 15 км - 150 рублей.', '', 'BY,RU,UA', 200.00, 1, 1, 0, '1,2,4,3'),
-(3, 'Почта России', '<br />', '', 'BY,RU,UA', 500.00, 1, 1, 0, '1,2,4,3'),
-(4, 'Самовывоз', '', '', '', 0.00, 0, 0, 0, '');
+INSERT INTO `cp_modul_shop_versandarten` VALUES (1, 'Курьером по москве', '', '', 'RU', 300.00, 1, 1, 0, '1,2,4,3'),
+(2, 'Курьером в подмосковье', 'Стоимость доставки за пределы МКАД - 200 рублей плюс: от 0 до 5 км - 50 рублей, от 5 до 10 км - 100 рублей, от 10 до 15 км - 150 рублей.', '', 'RU', 200.00, 1, 1, 0, '1,2,4,3'),
+(3, 'Почта России', '', '', 'BY,RU,UA', 500.00, 1, 1, 0, '1,2,4,3'),
+(4, 'Самовывоз', '', '', 'BY,RU,UA', 0.00, 0, 0, 0, '');
 
 CREATE TABLE `cp_modul_shop_versandkosten` (
   `Id` int(10) unsigned NOT NULL auto_increment,
@@ -1784,10 +1658,9 @@ CREATE TABLE `cp_modul_shop_versandzeit` (
   `description` text NOT NULL,
   `Icon` varchar(255) NOT NULL,
   PRIMARY KEY  (`Id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=cp1251;
+) ENGINE=MyISAM AUTO_INCREMENT=5 DEFAULT CHARSET=cp1251;
 
-INSERT INTO `cp_modul_shop_versandzeit` VALUES
-(1, 'В течение 2-3 дней', '', ''),
+INSERT INTO `cp_modul_shop_versandzeit` VALUES (1, 'В течение 2-3 дней', '', ''),
 (2, 'На следующий день по Москве', '', ''),
 (3, '2-3 недели под заказ', '', ''),
 (4, 'Доступно для скачивания сразу после оплаты', '', '');
@@ -1811,21 +1684,19 @@ CREATE TABLE `cp_modul_shop_zahlungsmethoden` (
   `Position` mediumint(5) unsigned NOT NULL default '0',
   PRIMARY KEY  (`Id`),
   UNIQUE KEY `Name` (`Name`)
-) ENGINE=MyISAM  DEFAULT CHARSET=cp1251;
+) ENGINE=MyISAM AUTO_INCREMENT=3 DEFAULT CHARSET=cp1251;
 
-INSERT INTO `cp_modul_shop_zahlungsmethoden` VALUES
-(1, 'Наличными курьеру', 'Наличные при получении (по Москве) - оплата осуществляется наличными деньгами курьеру в момент доставки. После комплектации заказа наш менеджер свяжется с Вами по контактному телефону и еще раз уточнит параметры заказа и Ваш адрес. Если Вы, подтвердив заказ, в дальнейшем отказываетесь от его получения, то Вам необходимо оплатить стоимость доставки + 50 руб за каждую возвращенную позицию. В случае необходимости возврата или обмена изделия свяжитесь с нашим менеджером.<br />', 'BY,RU,UA', '2,1', '1,2,4,3', 1, 0.00, 'Wert', '', NULL, '', '', 0, '', 0),
-(2, 'Безналичная оплата', 'Банковский платеж - после оформления заказа Вы сразу же можете распечатать квитанцию для оплаты через банк. Большая просьба - после осуществления перевода сразу уведомить нас об отправке денег по адресу e-mail. Мы сформируем и отправим Ваш заказ в течение 3-5 рабочих дней с момента поступления денег на наш расчетный счет. Если заказанного товара не окажется на складе, наш менеджер обязательно свяжется с Вами для разрешения возникшей ситуации. <br />', 'BY,RU,UA', '3', '1,2,4,3', 1, 13.00, '%', '', NULL, '', '', 0, '', 0);
+INSERT INTO `cp_modul_shop_zahlungsmethoden` VALUES (1, 'Наличными курьеру', 'Наличные при получении (по Москве) - оплата осуществляется наличными деньгами курьеру в момент доставки. После комплектации заказа наш менеджер свяжется с Вами по контактному телефону и еще раз уточнит параметры заказа и Ваш адрес. Если Вы, подтвердив заказ, в дальнейшем отказываетесь от его получения, то Вам необходимо оплатить стоимость доставки + 50 руб за каждую возвращенную позицию. В случае необходимости возврата или обмена изделия свяжитесь с нашим менеджером.<br />', 'BY,RU,UA', '2,1', '1,2,4,3', 1, 0.00, 'Wert', '', NULL, '', '', 0, '', 10),
+(2, 'Безналичная оплата', 'Банковский платеж - после оформления заказа Вы сразу же можете распечатать квитанцию для оплаты через банк. Большая просьба - после осуществления перевода сразу уведомить нас об отправке денег по адресу e-mail. Мы сформируем и отправим Ваш заказ в течение 3-5 рабочих дней с момента поступления денег на наш расчетный счет. Если заказанного товара не окажется на складе, наш менеджер обязательно свяжется с Вами для разрешения возникшей ситуации. <br />', 'BY,RU,UA', '3', '1,2,4,3', 1, 13.00, '%', '', NULL, '', '', 0, '', 20);
 
 CREATE TABLE `cp_modul_sysblock` (
   `id` mediumint(5) unsigned NOT NULL auto_increment,
   `sysblock_name` varchar(255) NOT NULL,
   `sysblock_text` longtext NOT NULL,
   PRIMARY KEY  (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=cp1251 PACK_KEYS=0;
+) ENGINE=MyISAM AUTO_INCREMENT=22 DEFAULT CHARSET=cp1251 PACK_KEYS=0;
 
-INSERT INTO `cp_modul_sysblock` VALUES
-(1, 'Активные "комментаторы"', '<?php\r\n$limit = 5;\r\n$i = 0;\r\n$sql = $AVE_DB->Query("\r\n	SELECT \r\n		Author, \r\n		COUNT(Author_Id) AS comments\r\n	FROM " . PREFIX . "_modul_comment_info\r\n	WHERE Author_Id != ''0''\r\n	GROUP BY Author_Id\r\n	ORDER BY comments DESC\r\n	LIMIT " . $limit\r\n);\r\nwhile ($row = $sql->fetchrow())\r\n{\r\n	echo ''<strong>'', ++$i, '' место:</strong> '', htmlspecialchars($row->Author), \r\n		''<small style="text-align:right;">(Комментариев: '', \r\n		$row->comments, '')</small>'';\r\n}\r\n?>'),
+INSERT INTO `cp_modul_sysblock` VALUES (1, 'Активные "комментаторы"', '<?php\r\n$limit = 5;\r\n$i = 0;\r\n$sql = $AVE_DB->Query("\r\n	SELECT \r\n		Author, \r\n		COUNT(Author_Id) AS comments\r\n	FROM " . PREFIX . "_modul_comment_info\r\n	WHERE Author_Id != ''0''\r\n	GROUP BY Author_Id\r\n	ORDER BY comments DESC\r\n	LIMIT " . $limit\r\n);\r\nwhile ($row = $sql->fetchrow())\r\n{\r\n	echo ''<strong>'', ++$i, '' место:</strong> '', htmlspecialchars($row->Author), \r\n		''<small style="text-align:right;">(Комментариев: '', \r\n		$row->comments, '')</small>'';\r\n}\r\n?>'),
 (2, 'Последние комментарии', '<br />\r\n<?php\r\n$limit = 3;\r\n$sql = $AVE_DB->Query("\r\n	SELECT \r\n		cmnt.Author, \r\n		LEFT(cmnt.Text, 150) AS comment, \r\n		FROM_UNIXTIME(cmnt.Erstellt, ''%d.%m.%Y г. %H:%i'') AS date,\r\n		doc.Id,\r\n		doc.Titel, \r\n		doc.Url \r\n	FROM " . PREFIX . "_modul_comment_info AS cmnt \r\n	JOIN " . PREFIX . "_documents AS doc ON doc.Id = cmnt.DokId\r\n	WHERE Status = 1\r\n	ORDER BY cmnt.Id DESC \r\n	LIMIT " . $limit\r\n);\r\nwhile ($row = $sql->fetchrow())\r\n{\r\n	$Url = ''index.php?id='' . $row->Id . ''&amp;doc='' \r\n		. (empty($row->Url) ? cpParseLinkname(stripslashes($row->Titel)) : $row->Url);\r\n	$Url = (CP_REWRITE == 1) ? cpRewrite($Url) : $Url;\r\n	echo ''<p><small>Ответил:'', htmlspecialchars($row->Author), '' • '',$row->date,''</small><a title="'', htmlspecialchars($row->Titel),\r\n		''"href="'', $Url, ''"><em>"'', htmlspecialchars($row->comment), (strlen($row->comment)==150 ? ''...'' : ''''), \r\n		''"</em></a></p><hr/>'';\r\n}\r\n?>'),
 (3, 'Популярные новости', '<?php\r\n$limit = 3; // Количество новостей в списке\r\n$i = 0;\r\n$sql = $AVE_DB->Query("\r\n	SELECT \r\n		COUNT(cmnt.Id) AS comments, \r\n		doc.Id, \r\n		doc.Titel, \r\n		doc.Url \r\n	FROM " . PREFIX . "_modul_comment_info AS cmnt\r\n	JOIN " . PREFIX . "_documents AS doc ON doc.Id = cmnt.DokId\r\n	GROUP BY cmnt.DokId \r\n	ORDER BY comments DESC \r\n	LIMIT " . $limit\r\n);\r\nwhile ($row = $sql->fetchrow())\r\n{\r\n	$Url = ''index.php?id='' . $row->Id . ''&amp;doc='' \r\n		. (empty($row->Url) ? cpParseLinkname(stripslashes($row->Titel)) : $row->Url);\r\n	$Url = (CP_REWRITE == 1) ? cpRewrite($Url) : $Url;\r\n	echo ''<strong>'', ++$i, ''.</strong> <a href="'', $Url, ''">'', \r\n		htmlspecialchars(substr($row->Titel, 0, 36)), ((strlen($row->Titel)>36) ? ''...'' : ''''), \r\n		''</a><p style="text-align:right;">(Комментариев: '', $row->comments, '')</p>'';\r\n}\r\n?>\r\n'),
 (4, 'Случайный вывод фона в шапке', '<?php\r\n  $daten = file("uploads/random/header_fon.htm");\r\n  @shuffle ($daten);\r\n  echo trim($daten[0]);\r\n?>'),
@@ -1857,10 +1728,43 @@ CREATE TABLE `cp_modul_who_is_online` (
   PRIMARY KEY  (`id`),
   UNIQUE KEY `ip` (`ip`),
   KEY `countrycode` (`countrycode`)
-) ENGINE=MyISAM  DEFAULT CHARSET=cp1251;
+) ENGINE=MyISAM DEFAULT CHARSET=cp1251;
 
-INSERT INTO `cp_modul_who_is_online` VALUES
-(1, 2130706433, '(Private Address)', 'XX', '(Private Address)', '2010-09-16 21:42:33');
+CREATE TABLE `cp_module` (
+  `Id` smallint(3) unsigned NOT NULL auto_increment,
+  `ModulName` char(50) NOT NULL,
+  `Status` enum('1','0') NOT NULL default '1',
+  `CpEngineTag` char(255) NOT NULL,
+  `CpPHPTag` char(255) NOT NULL,
+  `ModulFunktion` char(255) NOT NULL,
+  `IstFunktion` enum('1','0') NOT NULL default '1',
+  `ModulPfad` char(50) NOT NULL,
+  `Version` char(20) NOT NULL default '1.0',
+  `Template` smallint(3) unsigned NOT NULL default '1',
+  `AdminEdit` enum('0','1') NOT NULL default '0',
+  PRIMARY KEY  (`Id`),
+  UNIQUE KEY `ModulName` (`ModulName`)
+) ENGINE=MyISAM AUTO_INCREMENT=27 DEFAULT CHARSET=cp1251 PACK_KEYS=0;
+
+INSERT INTO `cp_module` VALUES (1, 'Download', '1', '', '', '', '0', 'download', '2.0', 1, '1'),
+(2, 'Who is online', '1', '#\\[mod_online]#', '<?php mod_online(); ?>', 'mod_online', '1', 'whoisonline', '1.0', 0, '0'),
+(3, 'Авторизация', '1', '#\\[mod_login]#', '<?php mod_login(); ?>', 'mod_login', '1', 'login', '2.2', 1, '1'),
+(4, 'Архив документов', '1', '#\\[mod_newsarchive:(\\d+)]#', '<?php mod_newsarchive(''$1''); ?>', 'mod_newsarchive', '1', 'newsarchive', '1.1', 1, '1'),
+(5, 'Баннер', '1', '#\\[mod_banner:(\\d+)]#', '<?php mod_banner(''$1''); ?>', 'mod_banner', '1', 'media', '1.3', 0, '1'),
+(6, 'Вопрос/ответ', '1', '#\\[mod_faq:(\\d+)]#', '<?php mod_faq(''$1''); ?>', 'mod_faq', '1', 'faq', '1.0', 0, '1'),
+(7, 'Галерея', '1', '#\\[mod_gallery:([\\d-]+)]#', '<?php mod_gallery(''$1''); ?>', 'mod_gallery', '1', 'gallery', '2.2', 0, '1'),
+(8, 'Карта сайта', '1', '#\\[mod_sitemap:([\\d,]*)]#', '<?php mod_sitemap(''$1''); ?>', 'mod_sitemap', '1', 'sitemap', '1.0', 0, '0'),
+(9, 'Комментарии', '1', '#\\[mod_comment]#', '<?php mod_comment(); ?>', 'mod_comment', '1', 'comment', '1.2', 0, '1'),
+(10, 'Контакты', '1', '#\\[mod_contact:(\\d+)]#', '<?php mod_contact(''$1''); ?>', 'mod_contact', '1', 'contact', '2.4', 0, '1'),
+(11, 'Магазин', '1', '', '', '', '0', 'shop', '1.4', 2, '1'),
+(12, 'Навигация', '1', '#\\[mod_navigation:(\\d+)]#', '<?php mod_navigation(''$1''); ?>', 'mod_navigation', '1', 'navigation', '1.2', 0, '0'),
+(13, 'Опросы', '1', '#\\[mod_poll:(\\d+)]#', '<?php mod_poll(''$1''); ?>', 'mod_poll', '1', 'poll', '1.0', 1, '1'),
+(14, 'Поиск', '1', '#\\[mod_search]#', '<?php mod_search(); ?>', 'mod_search', '1', 'search', '2.0', 1, '1'),
+(15, 'Рекомендовать', '1', '#\\[mod_recommend]#', '<?php mod_recommend(); ?>', 'mod_recommend', '1', 'recommend', '1.0', 0, '0'),
+(16, 'Системные блоки', '1', '#\\[mod_sysblock:(\\d+)]#', '<?php mod_sysblock(''$1''); ?>', 'mod_sysblock', '1', 'sysblock', '1.1', 0, '1'),
+(17, 'Форумы', '1', '', '', '', '0', 'forums', '1.2', 3, '1'),
+(18, 'Ссылки по теме', '1', '#\\[mod_moredoc]#', '<?php mod_moredoc(); ?>', 'mod_moredoc', '1', 'moredoc', '1.0', 0, '0'),
+(19, 'Корзина', '1', '#\\[mod_basket]#', '<?php mod_basket(); ?>', 'mod_basket', '1', 'basket', '1.0', 0, '0');
 
 CREATE TABLE `cp_navigation` (
   `id` smallint(3) unsigned NOT NULL auto_increment,
@@ -1882,10 +1786,9 @@ CREATE TABLE `cp_navigation` (
   `navi_user_group` text NOT NULL,
   `navi_expand` enum('0','1') NOT NULL default '0',
   PRIMARY KEY  (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=cp1251 PACK_KEYS=0;
+) ENGINE=MyISAM AUTO_INCREMENT=3 DEFAULT CHARSET=cp1251 PACK_KEYS=0;
 
-INSERT INTO `cp_navigation` VALUES
-(1, 'Вертикальное меню', '<li><a href=''[tag:link]'' title="[tag:linkname]" target="[tag:target]">[tag:linkname]</a></li>', '<li><a href="[tag:link]" title="[tag:linkname]" target="[tag:target]">[tag:linkname]</a></li>', '<li><a href="[tag:link]" title="[tag:linkname]" target="[tag:target]">[tag:linkname]</a></li>', '<li class=''active''><b><a target=''[tag:target]'' href="[tag:link]">[tag:linkname]</a></b></li>\r\n', '<li class="active"><b><a target="[tag:target]" href="[tag:link]" title="[tag:linkname]">[tag:linkname]</a></b></li>\r\n', '<li><b><a href="[tag:link]" title="[tag:linkname]" target="[tag:target]">[tag:linkname]</a></b></li>', '<ul class="menu_v" style="margin-bottom:0;">', '</ul>', '<ul>', '</ul>', '<ul>', '</ul>', '<!-- vnavi -->', '<!-- /vnavi -->', '1,2,3,4', '0'),
+INSERT INTO `cp_navigation` VALUES (1, 'Вертикальное меню', '<li><a href=''[tag:link]'' title="[tag:linkname]" target="[tag:target]">[tag:linkname]</a></li>', '<li><a href="[tag:link]" title="[tag:linkname]" target="[tag:target]">[tag:linkname]</a></li>', '<li><a href="[tag:link]" title="[tag:linkname]" target="[tag:target]">[tag:linkname]</a></li>', '<li class=''active''><b><a target=''[tag:target]'' href="[tag:link]">[tag:linkname]</a></b></li>\r\n', '<li class="active"><b><a target="[tag:target]" href="[tag:link]" title="[tag:linkname]">[tag:linkname]</a></b></li>\r\n', '<li><b><a href="[tag:link]" title="[tag:linkname]" target="[tag:target]">[tag:linkname]</a></b></li>', '<ul class="menu_v" style="margin-bottom:0;">', '</ul>', '<ul>', '</ul>', '<ul>', '</ul>', '<!-- vnavi -->', '<!-- /vnavi -->', '1,2,3,4', '0'),
 (2, 'Горизонтальное меню', '<li><a href="[tag:link]" title="[tag:linkname]" target="[tag:target]">[tag:linkname]</a></li>', '<li><a href="[tag:link]" title="[tag:linkname]" target="[tag:target]">[tag:linkname]</a></li>', '<li><a href="[tag:link]" title="[tag:linkname]" target="[tag:target]">[tag:linkname]</a></li>', '<li><b><a href="[tag:link]" title="[tag:linkname]" target="[tag:target]">[tag:linkname]</a></b></li>', '<li><b><a href="[tag:link]" title="[tag:linkname]" target="[tag:target]">[tag:linkname]</a></b></li>', '<li><b><a href="[tag:link]" title="[tag:linkname]" target="[tag:target]">[tag:linkname]</a></b></li>', '<ul class="nav">', '</ul>', '<ul>', '</ul>', '<ul>', '</ul>', '<!-- hnavi -->', '<!-- /hnavi -->', '1,2,3,4', '0');
 
 CREATE TABLE `cp_navigation_items` (
@@ -1903,10 +1806,9 @@ CREATE TABLE `cp_navigation_items` (
   KEY `navi_id` (`navi_id`),
   KEY `document_alias` (`document_alias`),
   KEY `navi_item_status` (`navi_item_status`)
-) ENGINE=MyISAM  DEFAULT CHARSET=cp1251 PACK_KEYS=0;
+) ENGINE=MyISAM AUTO_INCREMENT=20 DEFAULT CHARSET=cp1251 PACK_KEYS=0;
 
-INSERT INTO `cp_navigation_items` VALUES
-(1, 'Особенности шаблона', 0, 'index.php?id=16', '_self', '1', 1, 1, '1', 'osobennosti-shablona'),
+INSERT INTO `cp_navigation_items` VALUES (1, 'Особенности шаблона', 0, 'index.php?id=16', '_self', '1', 1, 1, '1', 'osobennosti-shablona'),
 (2, 'О компании', 0, 'index.php?id=3', '_self', '1', 2, 1, '1', 'о-компании'),
 (3, 'Условия сделки', 0, 'index.php?id=4', '_self', '1', 3, 1, '1', 'условия-сделки'),
 (4, 'Контакты', 0, 'index.php?id=5', '_self', '1', 4, 1, '1', 'kontakty'),
@@ -1941,10 +1843,9 @@ CREATE TABLE `cp_request` (
   `request_show_pagination` enum('0','1') NOT NULL default '0',
   `request_where_cond` text NOT NULL,
   PRIMARY KEY  (`Id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=cp1251 PACK_KEYS=0;
+) ENGINE=MyISAM AUTO_INCREMENT=8 DEFAULT CHARSET=cp1251 PACK_KEYS=0;
 
-INSERT INTO `cp_request` VALUES
-(1, 2, 3, 'Новостной запрос', '<div class="first article"> \r\n	[tag:rfld:6][250]\r\n	<h3><a href="[tag:link]">[tag:rfld:10][250]</a></h3>\r\n	<p>[tag:rfld:5][more]<a href="[tag:link]">» вся новость</a></p>\r\n	<p class="meta">[tag:docdate] • Просмотров: ([tag:docviews]) • Комментариев: ([tag:doccomments])</p>\r\n</div>\r\n\r\n', '<div>\r\n[tag:content]\r\n</div>\r\n[tag:pages]', 'document_published', 1, 1145447477, 'Выводит новости из рубрики 2', 'DESC', '1', ''),
+INSERT INTO `cp_request` VALUES (1, 2, 3, 'Новостной запрос', '<div class="first article"> \r\n	[tag:rfld:6][250]\r\n	<h3><a href="[tag:link]">[tag:rfld:10][250]</a></h3>\r\n	<p>[tag:rfld:5][more]<a href="[tag:link]">» вся новость</a></p>\r\n	<p class="meta">[tag:docdate] • Просмотров: ([tag:docviews]) • Комментариев: ([tag:doccomments])</p>\r\n</div>\r\n\r\n', '<div>\r\n[tag:content]\r\n</div>\r\n[tag:pages]', 'document_published', 1, 1145447477, 'Выводит новости из рубрики 2', 'DESC', '1', ''),
 (2, 2, 1, 'Запрос с условиями', '<div class="first article"> \r\n	[tag:rfld:6][350]\r\n	<h3><a href="[tag:link]">[tag:rfld:10][250]</a></h3>\r\n	<p>[tag:rfld:5][more]<a href="[tag:link]">» вся новость</a></p>\r\n	<p class="meta">[tag:docdate] • Просмотров: ([tag:docviews]) • Комментариев: ([tag:doccomments])</p>\r\n</div>', '<div>\r\n[tag:content]\r\n</div>\r\n[tag:pages]', 'document_published', 1, 1252877884, 'Выводит новости из рубрики 2', 'DESC', '1', 'AND a.Id = ANY(SELECT t0.document_id FROM cp_document_fields AS t0 WHERE 0 OR(t0.rubric_field_id = ''5'' AND t0.field_value LIKE ''%элонгация%'' ) OR(t0.rubric_field_id = ''5'' AND t0.field_value LIKE ''%лимб%'' ) OR(t0.rubric_field_id = ''10'' AND t0.field_value LIKE ''%дождь%'' ))'),
 (3, 1, 2, 'Демонстрация тэга more', '<div class="first article"> \r\n	[tag:rfld:2][250]\r\n	<h3><a href="[tag:link]#more" title="[tag:rfld:4][-200]">[tag:rfld:4][250]</a></h3>\r\n	<p>[tag:rfld:1][more] <a href="[tag:link]">подробнее...</a></p>\r\n</div>', '[tag:content]', 'document_published', 1, 1263292589, '', 'DESC', '', ''),
 (4, 3, 3, 'Статьи', '<div class="first article"> \r\n	[tag:rfld:31][999]\r\n	<h3><a href="[tag:link]">[tag:rfld:29][150]</a></h3>\r\n	<p>[tag:rfld:30][-150]<a href="[tag:link]">» вся новость</a></p>\r\n	<p class="meta">Просмотров: ([tag:docviews]) • Комментариев: ([tag:doccomments])</p>\r\n</div>\r\n\r\n', '[tag:dropdown:32]\r\n<div>\r\n[tag:content]\r\n</div>\r\n[tag:pages]', 'document_published', 1, 1272800598, 'Выводит статьи', 'DESC', '1', ''),
@@ -1960,32 +1861,13 @@ CREATE TABLE `cp_request_conditions` (
   `condition_value` char(255) NOT NULL,
   `condition_join` enum('OR','AND') NOT NULL default 'OR',
   PRIMARY KEY  (`Id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=cp1251 PACK_KEYS=0;
+) ENGINE=MyISAM AUTO_INCREMENT=6 DEFAULT CHARSET=cp1251 PACK_KEYS=0;
 
-INSERT INTO `cp_request_conditions` VALUES
-(1, 2, '%%', 5, 'элонгация', 'OR'),
+INSERT INTO `cp_request_conditions` VALUES (1, 2, '%%', 5, 'элонгация', 'OR'),
 (2, 2, '%%', 5, 'лимб', 'OR'),
 (3, 2, '%%', 10, 'дождь', 'OR'),
 (4, 7, '==', 37, 'Коты', 'OR'),
 (5, 6, '==', 37, 'Собаки', 'OR');
-
-CREATE TABLE `cp_rubrics` (
-  `Id` smallint(3) unsigned NOT NULL auto_increment,
-  `rubric_title` varchar(255) NOT NULL,
-  `rubric_alias` varchar(255) NOT NULL,
-  `rubric_template` text NOT NULL,
-  `rubric_template_id` smallint(3) unsigned NOT NULL default '1',
-  `rubric_author_id` int(10) unsigned NOT NULL default '1',
-  `rubric_created` int(10) unsigned NOT NULL default '0',
-  PRIMARY KEY  (`Id`),
-  KEY `rubric_template_id` (`rubric_template_id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=cp1251 PACK_KEYS=0;
-
-INSERT INTO `cp_rubrics` VALUES
-(1, 'Основные страницы', '', '<h2 id="page-heading">[tag:fld:4]</h2>\r\n[tag:fld:2][tag:fld:1]\r\n<div style="clear:both"></div>', 1, 1, 1250295071),
-(2, 'Новости', 'новости/%Y-%m-%d', '<h2 id="page-heading">[tag:fld:10]</h2>\r\n[tag:fld:27]\r\n[tag:fld:6]\r\n[tag:fld:5]\r\n[mod_moredoc]\r\n[mod_comment]', 1, 1, 1250295071),
-(3, 'Статьи', 'article', '<h2 id="page-heading">[tag:fld:29]</h2>\r\n[tag:fld:31][tag:fld:30]', 1, 1, 1272800070),
-(4, 'Товары', '', '[tag:fld:33]\r\n<form id="product" class="product" method="get" action="[tag:path]index.php">\r\n	<input type="hidden" name="module" value="basket" />\r\n	<input type="hidden" name="action" value="add" />\r\n	<input type="hidden" name="p_id" value="[tag:docid]" />\r\n	<input type="hidden" name="p_name" value="33" />\r\n	<input type="hidden" name="p_price" value="35" />\r\n	[tag:fld:36]\r\n	[tag:fld:35]\r\n	<div class="product-to-basket">\r\n		<input type="text" name="quantity" value="1" size="1" maxlength="2" />\r\n		<input type="submit" class="button" value="Добавить в корзину" />\r\n	</div>\r\n</form>\r\n[tag:fld:34]\r\n<hr />\r\n[mod_sysblock:19]\r\n[mod_moredoc]', 1, 1, 1281988666);
 
 CREATE TABLE `cp_rubric_fields` (
   `Id` mediumint(5) unsigned NOT NULL auto_increment,
@@ -1997,11 +1879,11 @@ CREATE TABLE `cp_rubric_fields` (
   `rubric_field_template` text NOT NULL,
   `rubric_field_template_request` text NOT NULL,
   PRIMARY KEY  (`Id`),
-  KEY `rubric_id` (`rubric_id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=cp1251 PACK_KEYS=0;
+  KEY `rubric_id` (`rubric_id`),
+  KEY `rubric_field_type` (`rubric_field_type`)
+) ENGINE=MyISAM AUTO_INCREMENT=41 DEFAULT CHARSET=cp1251 PACK_KEYS=0;
 
-INSERT INTO `cp_rubric_fields` VALUES
-(1, 1, 'Содержание', 'langtext', 3, '', '', ''),
+INSERT INTO `cp_rubric_fields` VALUES (1, 1, 'Содержание', 'langtext', 3, '', '', ''),
 (2, 1, 'Изображение (справа)', 'bild', 4, '', '[tag:if_notempty]\r\n<img style="padding-left:6px" align="right" src="[tag:path]index.php?thumb=[tag:parametr:0]&amp;width=200" alt="[tag:parametr:1]" border="0" />\r\n[/tag:if_notempty]', '[tag:if_notempty]\r\n<a href="[tag:link]#more" class="image">\r\n<img style="padding-left:5px" align="right" src="[tag:path]index.php?thumb=[tag:parametr:0]&amp;width=200" alt="[tag:parametr:1]" border="0" />\r\n</a>\r\n[/tag:if_notempty]'),
 (4, 1, 'Заголовок', 'kurztext', 1, 'Заголовок по умолчанию', '', ''),
 (5, 2, 'Основной текст новости', 'langtext', 3, '', '', ''),
@@ -2015,7 +1897,10 @@ INSERT INTO `cp_rubric_fields` VALUES
 (34, 4, 'Описание', 'langtext', 10, '', '[tag:if_notempty]\r\n<div class="product-description">[tag:parametr:0]</div>\r\n[/tag:if_notempty]', '[tag:if_notempty]\r\n<div class="product-description">[tag:parametr:0]</div>\r\n[/tag:if_notempty]'),
 (35, 4, 'Цена', 'kurztext', 20, '', '[tag:if_notempty]\r\n<div class="product-price">[tag:parametr:0]</div>\r\n[/tag:if_notempty]', '[tag:if_notempty]\r\n<div class="product-price">[tag:parametr:0]</div>\r\n[/tag:if_notempty]'),
 (36, 4, 'Изображение', 'bild', 25, '', '[tag:if_notempty]\r\n<img class="product-image" src="[tag:path]index.php?thumb=[tag:parametr:0]&amp;width=300" alt="[tag:parametr:1]" border="0" />\r\n[/tag:if_notempty]', '[tag:if_notempty]\r\n<a href="[tag:link]#more"><img class="product-image" src="[tag:path]index.php?thumb=[tag:parametr:0]&amp;width=200" alt="[tag:parametr:1]" border="0" /></a>\r\n[/tag:if_notempty]'),
-(37, 4, 'Категория', 'dropdown', 15, 'Собаки,Коты,Попугаи,Хомяки', '[tag:if_notempty]\r\n<div class="product-category">[tag:parametr:0]</div>\r\n[/tag:if_notempty]', '[tag:if_notempty]\r\n<div class="product-category">[tag:parametr:0]</div>\r\n[/tag:if_notempty]');
+(37, 4, 'Категория', 'dropdown', 15, 'Собаки,Коты,Попугаи,Хомяки', '[tag:if_notempty]\r\n<div class="product-category">[tag:parametr:0]</div>\r\n[/tag:if_notempty]', '[tag:if_notempty]\r\n<div class="product-category">[tag:parametr:0]</div>\r\n[/tag:if_notempty]'),
+(38, 5, 'Заголовок', 'kurztext', 1, 'Заголовок по умолчанию', '', ''),
+(39, 5, 'Содержание', 'langtext', 3, '', '', ''),
+(40, 5, 'Изображение (справа)', 'bild', 4, '', '[tag:if_notempty]\r\n<img style="padding-left:6px" align="right" src="[tag:path]index.php?thumb=[tag:parametr:0]&amp;width=200" alt="[tag:parametr:1]" border="0" />\r\n[/tag:if_notempty]', '[tag:if_notempty]\r\n<a href="[tag:link]#more" class="image"><img style="padding-left:5px" align="right" src="[tag:path]index.php?thumb=[tag:parametr:0]&amp;width=200" alt="[tag:parametr:1]" border="0" /></a>\r\n[/tag:if_notempty]');
 
 CREATE TABLE `cp_rubric_permissions` (
   `Id` mediumint(5) unsigned NOT NULL auto_increment,
@@ -2024,10 +1909,9 @@ CREATE TABLE `cp_rubric_permissions` (
   `rubric_permission` char(255) NOT NULL,
   PRIMARY KEY  (`Id`),
   KEY `rubric_id` (`rubric_id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=cp1251 PACK_KEYS=0;
+) ENGINE=MyISAM AUTO_INCREMENT=21 DEFAULT CHARSET=cp1251 PACK_KEYS=0;
 
-INSERT INTO `cp_rubric_permissions` VALUES
-(1, 1, 1, 'docread|alles|new|newnow|editown'),
+INSERT INTO `cp_rubric_permissions` VALUES (1, 1, 1, 'docread|alles|new|newnow|editown'),
 (2, 1, 2, 'docread'),
 (3, 1, 3, 'docread|new|editown'),
 (4, 1, 4, 'docread'),
@@ -2042,7 +1926,11 @@ INSERT INTO `cp_rubric_permissions` VALUES
 (13, 4, 1, 'docread|alles|new|newnow|editown'),
 (14, 4, 2, 'docread'),
 (15, 4, 3, 'docread'),
-(16, 4, 4, 'docread');
+(16, 4, 4, 'docread'),
+(17, 5, 1, 'docread|alles|new|newnow|editown'),
+(18, 5, 2, 'docread'),
+(19, 5, 3, 'docread|new|editown'),
+(20, 5, 4, 'docread');
 
 CREATE TABLE `cp_rubric_template_cache` (
   `id` bigint(15) unsigned NOT NULL auto_increment,
@@ -2056,6 +1944,24 @@ CREATE TABLE `cp_rubric_template_cache` (
   PRIMARY KEY  (`id`),
   KEY `rubric_id` (`rub_id`,`doc_id`,`wysiwyg`)
 ) ENGINE=MyISAM DEFAULT CHARSET=cp1251 PACK_KEYS=0;
+
+CREATE TABLE `cp_rubrics` (
+  `Id` smallint(3) unsigned NOT NULL auto_increment,
+  `rubric_title` varchar(255) NOT NULL,
+  `rubric_alias` varchar(255) NOT NULL,
+  `rubric_template` text NOT NULL,
+  `rubric_template_id` smallint(3) unsigned NOT NULL default '1',
+  `rubric_author_id` int(10) unsigned NOT NULL default '1',
+  `rubric_created` int(10) unsigned NOT NULL default '0',
+  PRIMARY KEY  (`Id`),
+  KEY `rubric_template_id` (`rubric_template_id`)
+) ENGINE=MyISAM AUTO_INCREMENT=6 DEFAULT CHARSET=cp1251 PACK_KEYS=0;
+
+INSERT INTO `cp_rubrics` VALUES (1, 'Основные страницы', '', '<h2 id="page-heading">[tag:fld:4]</h2>\r\n[tag:fld:2][tag:fld:1]\r\n<div style="clear:both"></div>', 1, 1, 1250295071),
+(2, 'Новости', 'новости/%Y-%m-%d', '<h2 id="page-heading">[tag:fld:10]</h2>\r\n[tag:fld:27]\r\n[tag:fld:6]\r\n[tag:fld:5]\r\n[mod_moredoc]\r\n[mod_comment]', 1, 1, 1250295071),
+(3, 'Статьи', 'article', '<h2 id="page-heading">[tag:fld:29]</h2>\r\n[tag:fld:31][tag:fld:30]', 1, 1, 1272800070),
+(4, 'Товары', '', '[tag:fld:33]\r\n<form id="product" class="product" method="get" action="[tag:path]index.php">\r\n	<input type="hidden" name="module" value="basket" />\r\n	<input type="hidden" name="action" value="add" />\r\n	<input type="hidden" name="p_id" value="[tag:docid]" />\r\n	<input type="hidden" name="p_name" value="33" />\r\n	<input type="hidden" name="p_price" value="35" />\r\n	[tag:fld:36]\r\n	[tag:fld:35]\r\n	<div class="product-to-basket">\r\n		<input type="text" name="quantity" value="1" size="1" maxlength="2" />\r\n		<input type="submit" class="button" value="Добавить в корзину" />\r\n	</div>\r\n</form>\r\n[tag:fld:34]\r\n<hr />\r\n[mod_sysblock:19]\r\n[mod_moredoc]', 1, 1, 1281988666),
+(5, 'Галереи', '', '<h2 id="page-heading">[tag:fld:38]</h2>\r\n[tag:fld:40][tag:fld:39]\r\n<div class="clear"></div>', 4, 1, 1287796608);
 
 CREATE TABLE `cp_sessions` (
   `sesskey` varchar(32) NOT NULL,
@@ -2098,10 +2004,9 @@ CREATE TABLE `cp_settings` (
   `use_doctime` enum('1','0') NOT NULL default '1',
   `hidden_text` text NOT NULL,
   PRIMARY KEY  (`Id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=cp1251;
+) ENGINE=MyISAM AUTO_INCREMENT=2 DEFAULT CHARSET=cp1251;
 
-INSERT INTO `cp_settings` VALUES
-(1, 'AVE.cms 2.09e', 'mail', 'text/plain', 465, 'smtp.gmail.com', 'yourusername@gmail.com', 'yourpassword', '/usr/sbin/sendmail', 50, 'info@avecms.ru', 'Admin', 'Здравствуйте %NAME%,\r\nВаша регистрация на сайте %HOST%. \r\n\r\nТеперь Вы можете войти на %HOST% со следующими данными:: \r\n\r\nПароль: %KENNWORT%\r\nE-Mail: %EMAIL%\r\n\r\n-----------------------\r\n%EMAILFUSS%\r\n\r\n', '--------------------\r\nOverdoze Team\r\nwww.overdoze.ru\r\ninfo@overdoze.ru\r\n--------------------', 2, '<h2>Ошибка...</h2>\r\n<br />\r\nУ Вас нет прав на просмотр этого документа!.', '<div class="page_navigation_box">%s</div>', 'Первая «', '» Последняя', '…', '»', '«', 'Страница %d из %d', '%d %B %Y', '%d %B %Y, %H:%M', 'ru', '0', '<div class="hidden_box">Содержимое скрыто. Пожалуйста, <a href="index.php?module=login&action=register">зарегистрируйтесь</a></div>');
+INSERT INTO `cp_settings` VALUES (1, 'AVE.cms 2.09e', 'mail', 'text/plain', 465, 'smtp.gmail.com', 'yourusername@gmail.com', 'yourpassword', '/usr/sbin/sendmail', 50, 'info@avecms.ru', 'Admin', 'Здравствуйте %NAME%,\r\nВаша регистрация на сайте %HOST%. \r\n\r\nТеперь Вы можете войти на %HOST% со следующими данными:: \r\n\r\nПароль: %KENNWORT%\r\nE-Mail: %EMAIL%\r\n\r\n-----------------------\r\n%EMAILFUSS%\r\n\r\n', '--------------------\r\nOverdoze Team\r\nwww.overdoze.ru\r\ninfo@overdoze.ru\r\n--------------------', 2, '<h2>Ошибка...</h2>\r\n<br />\r\nУ Вас нет прав на просмотр этого документа!.', '<div class="page_navigation_box">%s</div>', 'Первая «', '» Последняя', '…', '»', '«', 'Страница %d из %d', '%d %B %Y', '%d %B %Y, %H:%M', 'ru', '0', '<div class="hidden_box">Содержимое скрыто. Пожалуйста, <a href="index.php?module=login&action=register">зарегистрируйтесь</a></div>');
 
 CREATE TABLE `cp_templates` (
   `Id` smallint(3) unsigned NOT NULL auto_increment,
@@ -2110,12 +2015,27 @@ CREATE TABLE `cp_templates` (
   `template_author_id` int(10) unsigned NOT NULL default '1',
   `template_created` int(10) unsigned NOT NULL,
   PRIMARY KEY  (`Id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=cp1251 PACK_KEYS=0;
+) ENGINE=MyISAM AUTO_INCREMENT=5 DEFAULT CHARSET=cp1251 PACK_KEYS=0;
 
-INSERT INTO `cp_templates` VALUES
-(1, 'ave_base', '[tag:theme:ave]\r\n\r\n<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">\r\n<html xmlns="http://www.w3.org/1999/xhtml">\r\n<head>\r\n<title>[tag:title]</title>\r\n<meta http-equiv="Content-Type" content="text/html; charset=windows-1251" />\r\n<meta http-equiv="pragma" content="no-cache" />\r\n<meta name="Keywords" content="[tag:keywords]" />\r\n<meta name="Description" content="[tag:description]" />\r\n<meta name="robots" content="[tag:robots]" />\r\n[tag:if_print]\r\n<link href="[tag:mediapath]css/print.css" rel="stylesheet" type="text/css" media="all" />\r\n[/tag:if_print]\r\n[tag:if_notprint]\r\n<!--\r\n<link rel="stylesheet" type="text/css" href="[tag:mediapath]css/reset.css" media="screen" />\r\n<link rel="stylesheet" type="text/css" href="[tag:mediapath]css/text.css" media="screen" />\r\n<link rel="stylesheet" type="text/css" href="[tag:mediapath]css/960.css" media="screen" />\r\n<link rel="stylesheet" type="text/css" href="[tag:mediapath]css/layout.css" media="screen" />\r\n<link rel="stylesheet" type="text/css" href="[tag:mediapath]css/nav.css" media="screen" />\r\n<link rel="stylesheet" type="text/css" href="[tag:mediapath]css/modules.css" media="screen" />\r\n\r\n\r\n<script type="text/javascript" src="[tag:mediapath]js/jquery-1.3.2.min.js"></script>\r\n<script type="text/javascript" src="[tag:mediapath]js/jquery-ui.js"></script>\r\n<script type="text/javascript" src="[tag:mediapath]js/jquery-fluid16.js"></script>\r\n<script type="text/javascript" src="[tag:mediapath]js/jquery.form.js"></script>\r\n<script type="text/javascript" src="[tag:mediapath]js/FancyZoom.js"></script>\r\n<script type="text/javascript" src="[tag:mediapath]js/FancyZoomHTML.js"></script>\r\n<script type="text/javascript" src="[tag:mediapath]js/tabs.js"></script>\r\n<script type="text/javascript">\r\n$(document).ready(function(){\r\n	$(''.tab-container'').tabs();\r\n	tooltip();\r\n});\r\n</script>\r\n<script type="text/javascript" src="[tag:mediapath]js/common.js"></script>\r\n-->\r\n\r\n<script>\r\n		var aveabspath = ''[tag:path]'';\r\n</script>\r\n\r\n<link rel="stylesheet" type="text/css" href="[tag:mediapath]css/combine.php?css=reset.css,text.css,960.css,layout.css,nav.css,modules.css" media="screen" />\r\n<script type="text/javascript" src="[tag:mediapath]js/combine.php?js=jquery-1.3.2.min.js,jquery-ui.js,jquery.form.js,jquery-fluid16.js,common.js"></script>\r\n\r\n<!-- -->\r\n	<script type="text/javascript" src="[tag:mediapath]syntaxhighlighter/scripts/shCore.js"></script>\r\n	<script type="text/javascript" src="[tag:mediapath]syntaxhighlighter/scripts/shBrushCss.js"></script>\r\n	<script type="text/javascript" src="[tag:mediapath]syntaxhighlighter/scripts/shBrushJScript.js"></script>\r\n	<script type="text/javascript" src="[tag:mediapath]syntaxhighlighter/scripts/shBrushPhp.js"></script>\r\n	<script type="text/javascript" src="[tag:mediapath]syntaxhighlighter/scripts/shBrushPlain.js"></script>\r\n	<script type="text/javascript" src="[tag:mediapath]syntaxhighlighter/scripts/shBrushSql.js"></script>\r\n	<script type="text/javascript" src="[tag:mediapath]syntaxhighlighter/scripts/shBrushXml.js"></script>\r\n	<link type="text/css" rel="stylesheet" href="[tag:mediapath]syntaxhighlighter/styles/shCore.css"/>\r\n	<link type="text/css" rel="stylesheet" href="[tag:mediapath]syntaxhighlighter/styles/shThemeDefault.css"/>\r\n	<script type="text/javascript">\r\n		SyntaxHighlighter.config.clipboardSwf = ''[tag:mediapath]syntaxhighlighter/scripts/clipboard.swf'';\r\n		SyntaxHighlighter.all();\r\n	</script>\r\n<!-- -->\r\n\r\n[/tag:if_notprint]\r\n</head>\r\n<body id="bodystyle">\r\n[tag:if_notprint]\r\n<div class="container_16">\r\n  <!-- Блок логотипа -->\r\n  <div class="grid_16 logobox">\r\n  <h1 id="branding"> <a href="[tag:home]" title="homepage">[tag:title]</a> </h1>\r\n  <div id="fon_header" style="background: url([tag:mediapath]images/fon_header.jpg) no-repeat left 0px;"><p><strong>AVE CMS</strong> - позволяет легко подключать новые шаблоны, сочетать их с любым дизайном, который только можно нарисовать.</p></div>\r\n  </div>\r\n  <div class="clear"></div>\r\n  \r\n  <!-- Блок верхнего меню плюс поиск -->\r\n  <div class="grid_16" style="position:relative;">[mod_navigation:2]<div id="search">[mod_search]</div></div>\r\n  <div class="clear"></div>\r\n  \r\n  <!-- Основное содержимое -->\r\n  <div class="grid_12">\r\n[/tag:if_notprint]\r\n[tag:if_print]\r\n<script language="JavaScript" type="text/javascript">\r\n<!--\r\nwindow.resizeTo(680,600);\r\nwindow.moveTo(1,1);\r\nwindow.print();\r\n//-->\r\n</script>\r\n<img src=" [tag:mediapath]images/logo_print.gif" alt="Версия для печати" /><br />\r\n<strong>Версия для печати</strong><br />\r\nПостоянный адрес страницы: [tag:document] <br />\r\n<hr noshade="noshade" size="1" /><br />\r\n[/tag:if_print]\r\n[tag:maincontent]\r\n[tag:if_notprint] \r\n  </div>\r\n  <!-- Правая колонка меню и т.п. -->\r\n  <div class="grid_4">\r\n  \r\n  <!-- Правое меню -->\r\n    <div class="box menu">\r\n      <h2><a href="#" id="toggle-section-menu">Навигация по сайту</a></h2>\r\n      <div class="block" id="section-menu">[mod_navigation:1]</div>\r\n    </div>\r\n\r\n    [mod_basket]\r\n\r\n  <!-- Блок авторизации -->\r\n    <div class="box">\r\n      <h2><a href="#" id="toggle-login-forms">Авторизация</a></h2>\r\n      <div class="block" id="login-forms">[mod_login]</div>\r\n    </div>\r\n\r\n  <!-- Блок опросов -->\r\n    <div class="box">\r\n      <h2><a href="#" id="toggle-poll">Голосование</a></h2>\r\n      <div class="block" id="poll">[mod_poll:1]</div>\r\n    </div>\r\n\r\n<!--\r\n    [mod_ sysblock:20]\r\n-->\r\n\r\n    [mod_online]\r\n\r\n  </div>\r\n  <div class="clear"></div>\r\n  \r\n  <!-- Подвал -->\r\n  <div class="grid_16" id="site_info">\r\n    <div class="box">\r\n      <p><a target="_blank" href="[tag:printlink]"><img src="[tag:mediapath]images/printer.gif" alt="" border="0" class="absmiddle" />Печать страницы</a> | [mod_recommend] | [tag:version]&nbsp;&nbsp;<a href="http://www.bitmap.ru" target="_blank"><img src="[tag:mediapath]images/bitmap_logo_44x17.gif" alt="Создание сайтов" width="44" height="17" border="0" class="absmiddle"  /></a></p>\r\n    </div>\r\n  </div>\r\n  <div class="clear"></div>\r\n</div>\r\n\r\n[/tag:if_notprint]\r\n</body>\r\n</html>', 1, 1233055478),
-(2, 'ave_shop', '[tag:theme:ave]<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">\r\n<html xmlns="http://www.w3.org/1999/xhtml">\r\n<head>\r\n<base href="[tag:home]">\r\n<title>[tag:title]</title>\r\n<meta http-equiv="Content-Type" content="text/html; charset=windows-1251" />\r\n<meta http-equiv="pragma" content="no-cache" />\r\n<meta name="Keywords" content="[tag:keywords]" />\r\n<meta name="Description" content="[tag:description]" />\r\n<meta name="robots" content="[tag:robots]" />\r\n[tag:if_print]\r\n<link href="[tag:mediapath]css/print.css" rel="stylesheet" type="text/css" media="all" />\r\n[/tag:if_print]\r\n[tag:if_notprint]\r\n<link rel="stylesheet" type="text/css" href="[tag:mediapath]css/reset.css" media="screen" />\r\n<link rel="stylesheet" type="text/css" href="[tag:mediapath]css/text.css" media="screen" />\r\n<link rel="stylesheet" type="text/css" href="[tag:mediapath]css/960.css" media="screen" />\r\n<link rel="stylesheet" type="text/css" href="[tag:mediapath]css/layout.css" media="screen" />\r\n<link rel="stylesheet" type="text/css" href="[tag:mediapath]css/nav.css" media="screen" />\r\n<link rel="stylesheet" type="text/css" href="[tag:mediapath]css/modules.css" media="screen" />\r\n[/tag:if_notprint]\r\n<script>\r\n		var aveabspath = ''[tag:path]'';\r\n</script>\r\n</head>\r\n<body id="bodystyle" onload="setupZoom()">\r\n[tag:if_notprint]\r\n<div class="container_16">\r\n  <!-- Блок логотипа -->\r\n  <div class="grid_16 logobox">\r\n  <h1 id="branding"> <a href="[tag:home]" title="homepage">[tag:title]</a> </h1>\r\n  <div id="fon_header" style="background: url([tag:mediapath]images/fon_header.jpg) no-repeat left 0px;"><p><strong>AVE CMS</strong> - позволяет легко подключать новые шаблоны, сочетать их с любым дизайном, который только можно нарисовать.</p></div>\r\n  </div>\r\n  <div class="clear"></div>\r\n  \r\n  <!-- Блок верхнего меню плюс поиск -->\r\n  <div class="grid_16" style="position:relative;">[mod_navigation:2]<div id="search">[mod_search]</div></div>\r\n  <div class="clear"></div>\r\n  \r\n  <!-- Основное содержимое -->\r\n  [/tag:if_notprint]\r\n[tag:if_print]\r\n<script language="JavaScript" type="text/javascript">\r\n<!--\r\nwindow.resizeTo(680,600);\r\nwindow.moveTo(1,1);\r\nwindow.print();\r\n//-->\r\n</script>\r\n<img src=" [tag:mediapath]images/logo_print.gif" alt="Версия для печати" /><br />\r\n<strong>Версия для печати</strong><br />\r\nПостоянный адрес страницы: [tag:document] <br />\r\n<hr noshade="noshade" size="1" /><br />\r\n[/tag:if_print]\r\n[tag:maincontent]\r\n[tag:if_notprint] \r\n   <div class="clear"></div>\r\n  \r\n  <!-- Подвал -->\r\n  <div class="grid_16" id="site_info">\r\n    <div class="box">\r\n      <p><a target="_blank" href="[tag:printlink]"> \r\n<img src="[tag:mediapath]images/printer.gif" alt="" border="0" class="absmiddle" />Печать страницы</a> | \r\n[mod_recommend] | [tag:version]&nbsp;&nbsp;<a href="http://www.bitmap.ru" target="_blank"><img src="[tag:mediapath]images/bitmap_logo_44x17.gif" alt="Создание сайтов" width="44" height="17" border="0" class="absmiddle"  /></a></p>\r\n    </div>\r\n  </div>\r\n  <div class="clear"></div>\r\n</div>\r\n<script type="text/javascript" src="[tag:mediapath]js/jquery-1.3.2.min.js"></script>\r\n<script type="text/javascript" src="[tag:mediapath]js/jquery-ui.js"></script>\r\n<script type="text/javascript" src="[tag:mediapath]js/jquery-fluid16.js"></script>\r\n<script type="text/javascript" src="[tag:mediapath]js/FancyZoom.js"></script>\r\n<script type="text/javascript" src="[tag:mediapath]js/FancyZoomHTML.js"></script>\r\n<script type="text/javascript" src="[tag:mediapath]js/tabs.js"></script>\r\n<script type="text/javascript" src="[tag:mediapath]js/common.js"></script>\r\n<script type="text/javascript">\r\n$(document).ready(function(){\r\n	$(''.tab-container'').tabs();\r\n	tooltip();\r\n});\r\n</script>\r\n\r\n[/tag:if_notprint]\r\n</body>\r\n</html>', 1, 1233055478),
-(3, 'ave_forum', '[tag:theme:ave]<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">\r\n<html xmlns="http://www.w3.org/1999/xhtml">\r\n<head>\r\n<base href="[tag:home]">\r\n<title>[tag:title]</title>\r\n<meta http-equiv="Content-Type" content="text/html; charset=windows-1251" />\r\n<meta http-equiv="pragma" content="no-cache" />\r\n<meta name="Keywords" content="[tag:keywords]" />\r\n<meta name="Description" content="[tag:description]" />\r\n<meta name="robots" content="[tag:robots]" />\r\n[tag:if_print]\r\n<link href="[tag:mediapath]css/print.css" rel="stylesheet" type="text/css" media="all" />\r\n[/tag:if_print]\r\n[tag:if_notprint]\r\n<link rel="stylesheet" type="text/css" href="[tag:mediapath]css/reset.css" media="screen" />\r\n<link rel="stylesheet" type="text/css" href="[tag:mediapath]css/text.css" media="screen" />\r\n<link rel="stylesheet" type="text/css" href="[tag:mediapath]css/960.css" media="screen" />\r\n<link rel="stylesheet" type="text/css" href="[tag:mediapath]css/layout.css" media="screen" />\r\n<link rel="stylesheet" type="text/css" href="[tag:mediapath]css/nav.css" media="screen" />\r\n<link rel="stylesheet" type="text/css" href="[tag:mediapath]css/modules.css" media="screen" />\r\n[/tag:if_notprint]\r\n<script>\r\n		var aveabspath = ''[tag:path]'';\r\n</script>\r\n</head>\r\n<body id="bodystyle" onload="setupZoom()">\r\n[tag:if_notprint]\r\n<div class="container_16">\r\n  <!-- Блок логотипа -->\r\n  <div class="grid_16 logobox">\r\n  <h1 id="branding"> <a href="[tag:home]" title="homepage">[tag:title]</a> </h1>\r\n  <div id="fon_header" style="background: url([tag:mediapath]images/fon_header.jpg) no-repeat left 0px;"><p><strong>AVE CMS</strong> - позволяет легко подключать новые шаблоны, сочетать их с любым дизайном, который только можно нарисовать.</p></div>\r\n  </div>\r\n  <div class="clear"></div>\r\n  \r\n  <!-- Блок верхнего меню плюс поиск -->\r\n  <div class="grid_16" style="position:relative;">[mod_navigation:2]<div id="search">[mod_search]</div></div>\r\n  <div class="clear"></div>\r\n  \r\n  <!-- Основное содержимое -->\r\n  [/tag:if_notprint]\r\n[tag:if_print]\r\n<script language="JavaScript" type="text/javascript">\r\n<!--\r\nwindow.resizeTo(680,600);\r\nwindow.moveTo(1,1);\r\nwindow.print();\r\n//-->\r\n</script>\r\n<img src=" [tag:mediapath]images/logo_print.gif" alt="Версия для печати" /><br />\r\n<strong>Версия для печати</strong><br />\r\nПостоянный адрес страницы: [tag:document] <br />\r\n<hr noshade="noshade" size="1" /><br />\r\n[/tag:if_print]\r\n<div id="forums_content" class="grid_16">\r\n[tag:maincontent]\r\n</div>\r\n[tag:if_notprint] \r\n   <div class="clear"></div>\r\n  \r\n  <!-- Подвал -->\r\n  <div class="grid_16" id="site_info">\r\n    <div class="box">\r\n      <p><a target="_blank" href="[tag:printlink]"> \r\n<img src="[tag:mediapath]images/printer.gif" alt="" border="0" class="absmiddle" />Печать страницы</a> | \r\n[mod_recommend] | [tag:version]&nbsp;&nbsp;<a href="http://www.bitmap.ru" target="_blank"><img src="[tag:mediapath]images/bitmap_logo_44x17.gif" alt="Создание сайтов" width="44" height="17" border="0" class="absmiddle"  /></a></p>\r\n    </div>\r\n  </div>\r\n  <div class="clear"></div>\r\n</div>\r\n<script type="text/javascript" src="[tag:mediapath]js/jquery-1.3.2.min.js"></script>\r\n<script type="text/javascript" src="[tag:mediapath]js/jquery-ui.js"></script>\r\n<script type="text/javascript" src="[tag:mediapath]js/jquery-fluid16.js"></script>\r\n<script type="text/javascript" src="[tag:mediapath]js/FancyZoom.js"></script>\r\n<script type="text/javascript" src="[tag:mediapath]js/FancyZoomHTML.js"></script>\r\n<script type="text/javascript" src="[tag:mediapath]js/tabs.js"></script>\r\n<script type="text/javascript" src="[tag:mediapath]js/common.js"></script>\r\n<script type="text/javascript">\r\n$(document).ready(function(){\r\n	$(''.tab-container'').tabs();\r\n	tooltip();\r\n});\r\n</script>\r\n\r\n[/tag:if_notprint]\r\n</body>\r\n</html>', 1, 1231441011);
+INSERT INTO `cp_templates` VALUES (1, 'ave_base', '[tag:theme:ave]\r\n<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">\r\n<html xmlns="http://www.w3.org/1999/xhtml">\r\n<head>\r\n<meta http-equiv="Content-Type" content="text/html; charset=windows-1251" />\r\n<title>[tag:title]</title>\r\n<meta http-equiv="pragma" content="no-cache" />\r\n<meta name="Keywords" content="[tag:keywords]" />\r\n<meta name="Description" content="[tag:description]" />\r\n<meta name="robots" content="[tag:robots]" />\r\n[tag:if_print]\r\n<link href="[tag:mediapath]css/print.css" rel="stylesheet" type="text/css" media="all" />\r\n[/tag:if_print]\r\n[tag:if_notprint]\r\n<script>\r\n	var aveabspath = ''[tag:path]'';\r\n</script>\r\n\r\n<link rel="stylesheet" type="text/css" href="[tag:mediapath]css/combine.php?css=reset.css,text.css,960.css,layout.css,nav.css,modules.css" media="screen" />\r\n<script type="text/javascript" src="[tag:mediapath]js/combine.php?js=jquery-1.3.2.min.js,jquery-ui.js,jquery.form.min.js,jquery-fluid16.js,common.js"></script>\r\n\r\n<!-- -->\r\n	<script type="text/javascript" src="[tag:mediapath]syntaxhighlighter/scripts/combine.php?js=shCore.js,shBrushCss.js,shBrushPhp.js,shBrushSql.js,shBrushXml.js,shBrushJScript.js,shBrushPlain.js"></script>\r\n	<link rel="stylesheet" type="text/css" href="[tag:mediapath]syntaxhighlighter/styles/combine.php?css=shCore.css,shThemeDefault.css" media="screen" />\r\n	<script type="text/javascript">\r\n		SyntaxHighlighter.config.clipboardSwf = ''[tag:mediapath]syntaxhighlighter/scripts/clipboard.swf'';\r\n		SyntaxHighlighter.all();\r\n	</script>\r\n<!-- -->\r\n\r\n[/tag:if_notprint]\r\n</head>\r\n<body id="bodystyle">\r\n[tag:if_notprint]\r\n<div class="container_16">\r\n  <!-- Блок логотипа -->\r\n  <div class="grid_16 logobox">\r\n  <h1 id="branding"> <a href="[tag:home]" title="homepage">[tag:title]</a> </h1>\r\n  <div id="fon_header" style="background: url([tag:mediapath]images/fon_header.jpg) no-repeat left 0px;"><p><strong>AVE CMS</strong> - позволяет легко подключать новые шаблоны, сочетать их с любым дизайном, который только можно нарисовать.</p></div>\r\n  </div>\r\n  <div class="clear"></div>\r\n  \r\n  <!-- Блок верхнего меню плюс поиск -->\r\n  <div class="grid_16" style="position:relative;">[mod_navigation:2]<div id="search">[mod_search]</div></div>\r\n  <div class="clear"></div>\r\n  \r\n  <!-- Основное содержимое -->\r\n  <div class="grid_12">\r\n[/tag:if_notprint]\r\n[tag:if_print]\r\n<script language="JavaScript" type="text/javascript">\r\n<!--\r\nwindow.resizeTo(680,600);\r\nwindow.moveTo(1,1);\r\nwindow.print();\r\n//-->\r\n</script>\r\n<img src=" [tag:mediapath]images/logo_print.gif" alt="Версия для печати" /><br />\r\n<strong>Версия для печати</strong><br />\r\nПостоянный адрес страницы: [tag:document] <br />\r\n<hr noshade="noshade" size="1" /><br />\r\n[/tag:if_print]\r\n[tag:maincontent]\r\n[tag:if_notprint] \r\n  </div>\r\n  <!-- Правая колонка меню и т.п. -->\r\n  <div class="grid_4">\r\n  \r\n  <!-- Правое меню -->\r\n    <div class="box menu">\r\n      <h2><a href="#" id="toggle-section-menu">Навигация по сайту</a></h2>\r\n      <div class="block" id="section-menu">[mod_navigation:1]</div>\r\n    </div>\r\n\r\n    [mod_basket]\r\n\r\n  <!-- Блок авторизации -->\r\n    <div class="box">\r\n      <h2><a href="#" id="toggle-login-forms">Авторизация</a></h2>\r\n      <div class="block" id="login-forms">[mod_login]</div>\r\n    </div>\r\n\r\n  <!-- Блок опросов -->\r\n    <div class="box">\r\n      <h2><a href="#" id="toggle-poll">Голосование</a></h2>\r\n      <div class="block" id="poll">[mod_poll:1]</div>\r\n    </div>\r\n\r\n<!--\r\n    [mod_ sysblock:20]\r\n-->\r\n\r\n    [mod_online]\r\n\r\n  </div>\r\n  <div class="clear"></div>\r\n  \r\n  <!-- Подвал -->\r\n  <div class="grid_16" id="site_info">\r\n    <div class="box">\r\n      <p><a target="_blank" href="[tag:printlink]"><img src="[tag:mediapath]images/printer.gif" alt="" border="0" class="absmiddle" />Печать страницы</a> | [mod_recommend] | [tag:version]&nbsp;&nbsp;<a href="http://www.bitmap.ru" target="_blank"><img src="[tag:mediapath]images/bitmap_logo_44x17.gif" alt="Создание сайтов" width="44" height="17" border="0" class="absmiddle"  /></a></p>\r\n    </div>\r\n  </div>\r\n  <div class="clear"></div>\r\n</div>\r\n\r\n[/tag:if_notprint]\r\n</body>\r\n</html>', 1, 1233055478),
+(2, 'ave_shop', '[tag:theme:ave]\r\n<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">\r\n<html xmlns="http://www.w3.org/1999/xhtml">\r\n<head>\r\n<meta http-equiv="Content-Type" content="text/html; charset=windows-1251" />\r\n<title>[tag:title]</title>\r\n<meta http-equiv="pragma" content="no-cache" />\r\n<meta name="Keywords" content="[tag:keywords]" />\r\n<meta name="Description" content="[tag:description]" />\r\n<meta name="robots" content="[tag:robots]" />\r\n[tag:if_print]\r\n<link href="[tag:mediapath]css/print.css" rel="stylesheet" type="text/css" media="all" />\r\n[/tag:if_print]\r\n[tag:if_notprint]\r\n<link rel="stylesheet" type="text/css" href="[tag:mediapath]css/combine.php?css=reset.css,text.css,960.css,layout.css,nav.css,modules.css" media="screen" />\r\n[/tag:if_notprint]\r\n<script>\r\n	var aveabspath = ''[tag:path]'';\r\n</script>\r\n</head>\r\n<body id="bodystyle">\r\n[tag:if_notprint]\r\n<div class="container_16">\r\n  <!-- Блок логотипа -->\r\n  <div class="grid_16 logobox">\r\n  <h1 id="branding"> <a href="[tag:home]" title="homepage">[tag:title]</a> </h1>\r\n  <div id="fon_header" style="background: url([tag:mediapath]images/fon_header.jpg) no-repeat left 0px;"><p><strong>AVE CMS</strong> - позволяет легко подключать новые шаблоны, сочетать их с любым дизайном, который только можно нарисовать.</p></div>\r\n  </div>\r\n  <div class="clear"></div>\r\n  \r\n  <!-- Блок верхнего меню плюс поиск -->\r\n  <div class="grid_16" style="position:relative;">[mod_navigation:2]<div id="search">[mod_search]</div></div>\r\n  <div class="clear"></div>\r\n  \r\n  <!-- Основное содержимое -->\r\n  [/tag:if_notprint]\r\n[tag:if_print]\r\n<script language="JavaScript" type="text/javascript">\r\n<!--\r\nwindow.resizeTo(680,600);\r\nwindow.moveTo(1,1);\r\nwindow.print();\r\n//-->\r\n</script>\r\n<img src=" [tag:mediapath]images/logo_print.gif" alt="Версия для печати" /><br />\r\n<strong>Версия для печати</strong><br />\r\nПостоянный адрес страницы: [tag:document] <br />\r\n<hr noshade="noshade" size="1" /><br />\r\n[/tag:if_print]\r\n[tag:maincontent]\r\n[tag:if_notprint] \r\n   <div class="clear"></div>\r\n  \r\n  <!-- Подвал -->\r\n  <div class="grid_16" id="site_info">\r\n    <div class="box">\r\n      <p><a target="_blank" href="[tag:printlink]"> \r\n<img src="[tag:mediapath]images/printer.gif" alt="" border="0" class="absmiddle" />Печать страницы</a> | \r\n[mod_recommend] | [tag:version]&nbsp;&nbsp;<a href="http://www.bitmap.ru" target="_blank"><img src="[tag:mediapath]images/bitmap_logo_44x17.gif" alt="Создание сайтов" width="44" height="17" border="0" class="absmiddle"  /></a></p>\r\n    </div>\r\n  </div>\r\n  <div class="clear"></div>\r\n</div>\r\n<script type="text/javascript" src="[tag:mediapath]js/combine.php?js=jquery-1.3.2.min.js,jquery-ui.js,jquery-fluid16.js,FancyZoom.js,FancyZoomHTML.js,tabs.js,common.js"></script>\r\n<script type="text/javascript">\r\n$(document).ready(function(){\r\n	setupZoom();\r\n	$(''.tab-container'').tabs();\r\n	tooltip();\r\n});\r\n</script>\r\n\r\n[/tag:if_notprint]\r\n</body>\r\n</html>', 1, 1233055478),
+(3, 'ave_forum', '[tag:theme:ave]\r\n<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">\r\n<html xmlns="http://www.w3.org/1999/xhtml">\r\n<head>\r\n<meta http-equiv="Content-Type" content="text/html; charset=windows-1251" />\r\n<title>[tag:title]</title>\r\n<meta http-equiv="pragma" content="no-cache" />\r\n<meta name="Keywords" content="[tag:keywords]" />\r\n<meta name="Description" content="[tag:description]" />\r\n<meta name="robots" content="[tag:robots]" />\r\n[tag:if_print]\r\n<link href="[tag:mediapath]css/print.css" rel="stylesheet" type="text/css" media="all" />\r\n[/tag:if_print]\r\n[tag:if_notprint]\r\n<link rel="stylesheet" type="text/css" href="[tag:mediapath]css/combine.php?css=reset.css,text.css,960.css,layout.css,nav.css,modules.css" media="screen" />\r\n[/tag:if_notprint]\r\n<script>\r\n	var aveabspath = ''[tag:path]'';\r\n</script>\r\n</head>\r\n<body id="bodystyle">\r\n[tag:if_notprint]\r\n<div class="container_16">\r\n  <!-- Блок логотипа -->\r\n  <div class="grid_16 logobox">\r\n  <h1 id="branding"> <a href="[tag:home]" title="homepage">[tag:title]</a> </h1>\r\n  <div id="fon_header" style="background: url([tag:mediapath]images/fon_header.jpg) no-repeat left 0px;"><p><strong>AVE CMS</strong> - позволяет легко подключать новые шаблоны, сочетать их с любым дизайном, который только можно нарисовать.</p></div>\r\n  </div>\r\n  <div class="clear"></div>\r\n  \r\n  <!-- Блок верхнего меню плюс поиск -->\r\n  <div class="grid_16" style="position:relative;">[mod_navigation:2]<div id="search">[mod_search]</div></div>\r\n  <div class="clear"></div>\r\n  \r\n  <!-- Основное содержимое -->\r\n  [/tag:if_notprint]\r\n[tag:if_print]\r\n<script language="JavaScript" type="text/javascript">\r\n<!--\r\nwindow.resizeTo(680,600);\r\nwindow.moveTo(1,1);\r\nwindow.print();\r\n//-->\r\n</script>\r\n<img src=" [tag:mediapath]images/logo_print.gif" alt="Версия для печати" /><br />\r\n<strong>Версия для печати</strong><br />\r\nПостоянный адрес страницы: [tag:document] <br />\r\n<hr noshade="noshade" size="1" /><br />\r\n[/tag:if_print]\r\n<div id="forums_content" class="grid_16">\r\n[tag:maincontent]\r\n</div>\r\n[tag:if_notprint] \r\n   <div class="clear"></div>\r\n  \r\n  <!-- Подвал -->\r\n  <div class="grid_16" id="site_info">\r\n    <div class="box">\r\n      <p><a target="_blank" href="[tag:printlink]"> \r\n<img src="[tag:mediapath]images/printer.gif" alt="" border="0" class="absmiddle" />Печать страницы</a> | \r\n[mod_recommend] | [tag:version]&nbsp;&nbsp;<a href="http://www.bitmap.ru" target="_blank"><img src="[tag:mediapath]images/bitmap_logo_44x17.gif" alt="Создание сайтов" width="44" height="17" border="0" class="absmiddle"  /></a></p>\r\n    </div>\r\n  </div>\r\n  <div class="clear"></div>\r\n</div>\r\n<script type="text/javascript" src="[tag:mediapath]js/combine.php?js=jquery-1.3.2.min.js,jquery-ui.js,jquery-fluid16.js,FancyZoom.js,FancyZoomHTML.js,tabs.js,common.js"></script>\r\n<script type="text/javascript">\r\n$(document).ready(function(){\r\n	setupZoom();\r\n	$(''.tab-container'').tabs();\r\n	tooltip();\r\n});\r\n</script>\r\n\r\n[/tag:if_notprint]\r\n</body>\r\n</html>', 1, 1231441011),
+(4, 'ave_gallery', '[tag:theme:ave]\r\n<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">\r\n<html xmlns="http://www.w3.org/1999/xhtml">\r\n<head>\r\n<meta http-equiv="Content-Type" content="text/html; charset=windows-1251" />\r\n<title>[tag:title]</title>\r\n<meta http-equiv="pragma" content="no-cache" />\r\n<meta name="Keywords" content="[tag:keywords]" />\r\n<meta name="Description" content="[tag:description]" />\r\n<meta name="robots" content="[tag:robots]" />\r\n[tag:if_print]\r\n<link href="[tag:mediapath]css/print.css" rel="stylesheet" type="text/css" media="all" />\r\n[/tag:if_print]\r\n[tag:if_notprint]\r\n<script>\r\n	var aveabspath = ''[tag:path]'';\r\n</script>\r\n\r\n<link rel="stylesheet" type="text/css" href="[tag:mediapath]css/combine.php?css=reset.css,text.css,960.css,layout.css,nav.css,modules.css" media="screen" />\r\n<script type="text/javascript" src="[tag:mediapath]js/combine.php?js=jquery-1.3.2.min.js,jquery-ui.js,jquery.form.min.js,jquery-fluid16.js,common.js"></script>\r\n<script type="text/javascript" src="[tag:path]modules/gallery/templates/js/clearbox.js?lng=ru&dir=[tag:path]modules/gallery/templates/js/clearbox"></script>\r\n<!-- -->\r\n	<script type="text/javascript" src="[tag:mediapath]syntaxhighlighter/scripts/combine.php?js=shCore.js,shBrushCss.js,shBrushPhp.js,shBrushSql.js,shBrushXml.js,shBrushJScript.js,shBrushPlain.js"></script>\r\n	<link rel="stylesheet" type="text/css" href="[tag:mediapath]syntaxhighlighter/styles/combine.php?css=shCore.css,shThemeDefault.css" media="screen" />\r\n	<script type="text/javascript">\r\n		SyntaxHighlighter.config.clipboardSwf = ''[tag:mediapath]syntaxhighlighter/scripts/clipboard.swf'';\r\n		SyntaxHighlighter.all();\r\n	</script>\r\n<!-- -->\r\n\r\n[/tag:if_notprint]\r\n</head>\r\n<body id="bodystyle">\r\n[tag:if_notprint]\r\n<div class="container_16">\r\n  <!-- Блок логотипа -->\r\n  <div class="grid_16 logobox">\r\n  <h1 id="branding"> <a href="[tag:home]" title="homepage">[tag:title]</a> </h1>\r\n  <div id="fon_header" style="background: url([tag:mediapath]images/fon_header.jpg) no-repeat left 0px;"><p><strong>AVE CMS</strong> - позволяет легко подключать новые шаблоны, сочетать их с любым дизайном, который только можно нарисовать.</p></div>\r\n  </div>\r\n  <div class="clear"></div>\r\n  \r\n  <!-- Блок верхнего меню плюс поиск -->\r\n  <div class="grid_16" style="position:relative;">[mod_navigation:2]<div id="search">[mod_search]</div></div>\r\n  <div class="clear"></div>\r\n  \r\n  <!-- Основное содержимое -->\r\n  <div class="grid_12">\r\n[/tag:if_notprint]\r\n[tag:if_print]\r\n<script language="JavaScript" type="text/javascript">\r\n<!--\r\nwindow.resizeTo(680,600);\r\nwindow.moveTo(1,1);\r\nwindow.print();\r\n//-->\r\n</script>\r\n<img src=" [tag:mediapath]images/logo_print.gif" alt="Версия для печати" /><br />\r\n<strong>Версия для печати</strong><br />\r\nПостоянный адрес страницы: [tag:document] <br />\r\n<hr noshade="noshade" size="1" /><br />\r\n[/tag:if_print]\r\n[tag:maincontent]\r\n[tag:if_notprint] \r\n  </div>\r\n  <!-- Правая колонка меню и т.п. -->\r\n  <div class="grid_4">\r\n  \r\n  <!-- Правое меню -->\r\n    <div class="box menu">\r\n      <h2><a href="#" id="toggle-section-menu">Навигация по сайту</a></h2>\r\n      <div class="block" id="section-menu">[mod_navigation:1]</div>\r\n    </div>\r\n\r\n    [mod_basket]\r\n\r\n  <!-- Блок авторизации -->\r\n    <div class="box">\r\n      <h2><a href="#" id="toggle-login-forms">Авторизация</a></h2>\r\n      <div class="block" id="login-forms">[mod_login]</div>\r\n    </div>\r\n\r\n  <!-- Блок опросов -->\r\n    <div class="box">\r\n      <h2><a href="#" id="toggle-poll">Голосование</a></h2>\r\n      <div class="block" id="poll">[mod_poll:1]</div>\r\n    </div>\r\n\r\n<!--\r\n    [mod_ sysblock:20]\r\n-->\r\n\r\n    [mod_online]\r\n\r\n  </div>\r\n  <div class="clear"></div>\r\n  \r\n  <!-- Подвал -->\r\n  <div class="grid_16" id="site_info">\r\n    <div class="box">\r\n      <p><a target="_blank" href="[tag:printlink]"><img src="[tag:mediapath]images/printer.gif" alt="" border="0" class="absmiddle" />Печать страницы</a> | [mod_recommend] | [tag:version]&nbsp;&nbsp;<a href="http://www.bitmap.ru" target="_blank"><img src="[tag:mediapath]images/bitmap_logo_44x17.gif" alt="Создание сайтов" width="44" height="17" border="0" class="absmiddle"  /></a></p>\r\n    </div>\r\n  </div>\r\n  <div class="clear"></div>\r\n</div>\r\n\r\n[/tag:if_notprint]\r\n</body>\r\n</html>', 1, 1287796554);
+
+CREATE TABLE `cp_user_groups` (
+  `user_group` smallint(3) unsigned NOT NULL auto_increment,
+  `user_group_name` char(50) NOT NULL,
+  `status` enum('1','0') NOT NULL default '1',
+  `set_default_avatar` enum('1','0') NOT NULL default '0',
+  `default_avatar` char(255) NOT NULL,
+  `user_group_permission` char(255) NOT NULL,
+  PRIMARY KEY  (`user_group`)
+) ENGINE=MyISAM AUTO_INCREMENT=5 DEFAULT CHARSET=cp1251;
+
+INSERT INTO `cp_user_groups` VALUES (1, 'Администраторы', '1', '0', '', 'alles'),
+(2, 'Анонимные', '1', '0', '', ''),
+(3, 'Редакторы', '1', '0', '', 'adminpanel|documents|remarks|mediapool|mediapool_del'),
+(4, 'Зарегистрированные', '1', '0', '', '');
 
 CREATE TABLE `cp_users` (
   `Id` int(10) unsigned NOT NULL auto_increment,
@@ -2152,24 +2072,7 @@ CREATE TABLE `cp_users` (
   UNIQUE KEY `email` (`email`),
   UNIQUE KEY `user_name` (`user_name`),
   KEY `user_group` (`user_group`)
-) ENGINE=MyISAM  DEFAULT CHARSET=cp1251 PACK_KEYS=0;
+) ENGINE=MyISAM AUTO_INCREMENT=3 DEFAULT CHARSET=cp1251 PACK_KEYS=0;
 
-INSERT INTO `cp_users` VALUES
-(1, 'b9e8bc4645da3142e2db12886d7e7e85', 'admin@ave.ru', '', '', '', '', '', '', '', 'Д''артаньян', 'А''дмин', 'Admin', 1, '', 1250295071, '1', 1284593946, 'ru', '', '0', 0, '0', '0', '787782abd294e0a3ec05b8ada7afbf08', '', '', 'gw$9/61ss]TfjY(R', 'vKjF*7!(ODM(J#A)', 2130706433),
+INSERT INTO `cp_users` VALUES (1, '979ab9f069ce7c85be880a4068ddc72e', 'admin@ave.ru', '', '', '', '', '', '', '', 'Д''артаньян', 'А''дмин', 'Admin', 1, '', 1250295071, '1', 1287857154, 'ru', '', '0', 0, '0', '0', '787782abd294e0a3ec05b8ada7afbf08', '', '', 'UsuQQ(O9+?gQ[x3f', 'vKjF*7!(ODM(J#A)', 2130706433),
 (2, 'b3c6c2fb9d4d2843eef2102ba0119565', 'user@ave.ru', '', '', '', '', '', '', '', 'Имя', 'User', 'User', 4, '', 1266891467, '1', 1284125838, 'ua', '', '0', 0, 'c56598f02963cbf87de83c41f8d87187', '127.0.0.1', '0', '', '0', '[[8!^8nVlyZfujL_', '', 2130706433);
-
-CREATE TABLE `cp_user_groups` (
-  `user_group` smallint(3) unsigned NOT NULL auto_increment,
-  `user_group_name` char(50) NOT NULL,
-  `status` enum('1','0') NOT NULL default '1',
-  `set_default_avatar` enum('1','0') NOT NULL default '0',
-  `default_avatar` char(255) NOT NULL,
-  `user_group_permission` char(255) NOT NULL,
-  PRIMARY KEY  (`user_group`)
-) ENGINE=MyISAM  DEFAULT CHARSET=cp1251;
-
-INSERT INTO `cp_user_groups` VALUES
-(1, 'Администраторы', '1', '0', '', 'alles'),
-(2, 'Анонимные', '1', '0', '', ''),
-(3, 'Редакторы', '1', '0', '', 'adminpanel|documents|remarks|mediapool|mediapool_del'),
-(4, 'Зарегистрированные', '1', '0', '', '');
