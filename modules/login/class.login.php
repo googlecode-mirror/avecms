@@ -580,8 +580,7 @@ class Login
 								$AVE_Template->get_config_vars('LOGIN_SUBJECT_ADMIN'),
 								$SystemMail,
 								$SystemMailName,
-								'text',
-								''
+								'text'
 							);
 							send_mail(
 								$_POST['reg_email'],
@@ -589,8 +588,7 @@ class Login
 								$AVE_Template->get_config_vars('LOGIN_SUBJECT_USER'),
 								$SystemMail,
 								$SystemMailName,
-								'text',
-								''
+								'text'
 							);
 							header('Location:' . $link);
 							exit;
@@ -764,8 +762,7 @@ class Login
 						$AVE_Template->get_config_vars('LOGIN_SUBJECT_REMINDER'),
 						$SystemMail,
 						$SystemMailName,
-						'text',
-						''
+						'text'
 					);
 				}
 			}

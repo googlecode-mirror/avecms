@@ -151,8 +151,7 @@ if ( isset($_GET['toid']) && $_GET['toid'] != "" )
 						$GLOBALS['mod']['config_vars']['SubjectToUserAfterMod'],
 						FORUMEMAIL,
 						FORUMABSENDER,
-						"text",
-						""
+						"text"
 					);
 				}
 				else
@@ -179,8 +178,7 @@ if ( isset($_GET['toid']) && $_GET['toid'] != "" )
 						$GLOBALS['mod']['config_vars']['SubjectToUserAfterMod'],
 						FORUMEMAIL,
 						FORUMABSENDER,
-						"text",
-						""
+						"text"
 					);
 				}
 			}

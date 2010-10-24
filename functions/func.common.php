@@ -814,10 +814,11 @@ function get_country_list($status = '')
  * @param string $from_name
  * @param string $content_type
  * @param string $attachments
- * @param string $html
  */
-function send_mail($to, $text, $subject = '', $from = '', $from_name = '', $content_type = '', $attachments = '', $html = '')
+function send_mail($to, $text, $subject = '', $from = '', $from_name = '', $content_type = '', $attachments = '')
 {
+	ob_start();
+
 	if (!function_exists('version_compare') || version_compare(phpversion(), '5', '<'))
 	{
 		include_once(BASE_DIR . '/lib/PHPMailer/php4/class.phpmailer.php') ;
@@ -831,7 +832,7 @@ function send_mail($to, $text, $subject = '', $from = '', $from_name = '', $cont
 
 	$PHPMailer->CharSet     = 'windows-1251';
 	$PHPMailer->Mailer      = get_settings('mail_type');
-	$PHPMailer->ContentType = ($html == 1) ? 'text/html' : ((get_settings('mail_content_type') == 'text/plain' || $content_type == 'text') ? 'text/plain' : 'text/html');
+	$PHPMailer->ContentType = ($content_type == 'html') ? 'text/html' : (($content_type == 'text' || get_settings('mail_content_type') == 'text/plain') ? 'text/plain' : 'text/html');
 	$PHPMailer->WordWrap    = get_settings('mail_word_wrap');
 	$PHPMailer->Subject     = $subject;
 	$PHPMailer->Body        = $text . "\n\n" . ($PHPMailer->ContentType == 'text/html' ? '' : get_settings('mail_signature'));
@@ -897,6 +898,8 @@ function send_mail($to, $text, $subject = '', $from = '', $from_name = '', $cont
 	{
 		reportLog('PHPMailer Error: ' . $PHPMailer->ErrorInfo);
 	}
+
+	ob_end_clean();
 }
 
 /**

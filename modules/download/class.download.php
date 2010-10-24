@@ -540,8 +540,7 @@ class Download {
 					$GLOBALS['mod']['config_vars']['Recommend_Subject'],
 					$SystemMail,
 					$SystemMailName,
-					'text',
-					''
+					'text'
 				);
 				$_REQUEST['recommenOK'] = 1;
 

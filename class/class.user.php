@@ -660,8 +660,7 @@ class AVE_User
 							$AVE_Template->get_config_vars('USER_MAIL_SUBJECT'),
 							get_settings('mail_from'),
 							get_settings('mail_from_name') . ' (' . get_settings('site_name') . ')',
-							'text',
-							''
+							'text'
 						);
 					}
 
@@ -682,8 +681,7 @@ class AVE_User
 							$AVE_Template->get_config_vars('USER_MAIL_PASSWORD'),
 							get_settings('mail_from'),
 							get_settings('mail_from_name') . ' (' . get_settings('site_name') . ')',
-							'text',
-							''
+							'text'
 						);
 					}
 
@@ -695,8 +693,7 @@ class AVE_User
 							stripslashes($_POST['SubjectMessage']),
 							$_SESSION['user_email'],
 							$_SESSION['user_name'],
-							'text',
-							''
+							'text'
 						);
 					}
 

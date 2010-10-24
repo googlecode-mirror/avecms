@@ -247,8 +247,7 @@ class Guest
 				$mod['config_vars']['GUEST_NEW_MAIL'],
 				$this->_guestbookSettingsGet('guestbook_email_copy'),
 				$mod['config_vars']['GUEST_PUB_NAME'],
-				'text',
-				''
+				'text'
 			);
 		}
 

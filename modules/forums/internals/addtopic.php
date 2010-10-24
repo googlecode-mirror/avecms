@@ -264,8 +264,7 @@ if ( count($error_array) || (isset($_REQUEST['preview']) && $_REQUEST['preview']
 				$GLOBALS['mod']['config_vars']['SubjectNewThreadEmail'] . $exsubject,
 				FORUMEMAIL,
 				FORUMABSENDER,
-				"text",
-				""
+				"text"
 			);
 		}
 	}
@@ -354,8 +353,7 @@ if ( count($error_array) || (isset($_REQUEST['preview']) && $_REQUEST['preview']
 				$GLOBALS['mod']['config_vars']['SubjectNewThreadEmail'] . $exsubject,
 				FORUMEMAIL,
 				FORUMABSENDER,
-				"text",
-				""
+				"text"
 			);
 		}
 	}

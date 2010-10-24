@@ -750,8 +750,7 @@ class AVE_Document
 							$AVE_Template->get_config_vars('DOC_MAIL_SUBJECT_CHECK'),
 							$system_mail,
 							$system_mail_name,
-							'text',
-							''
+							'text'
 						);
 
 						// Отправляем уведомление автору, о том что документ находится на проверке
@@ -764,8 +763,7 @@ class AVE_Document
 							$AVE_Template->get_config_vars('DOC_MAIL_SUBJECT_USER'),
 							$system_mail,
 							$system_mail_name,
-							'text',
-							''
+							'text'
 						);
 					}
 
@@ -1757,8 +1755,7 @@ class AVE_Document
 					$AVE_Template->get_config_vars('DOC_MAIL_SUBJECT_NOTICE'),
 					$system_mail,
 					$system_mail_name,
-					'text',
-					''
+					'text'
 				);
 
 				// Выполняем обновление страницы

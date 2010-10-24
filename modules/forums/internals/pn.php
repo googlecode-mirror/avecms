@@ -764,8 +764,7 @@ else
 					$mod['config_vars']['PN_Subject'],
 					FORUMEMAIL,
 					FORUMABSENDER,
-					"text",
-					""
+					"text"
 				);
 
 				// Vielen Dank, Ihre Nachricht wurde erfolgreich versendet.

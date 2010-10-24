@@ -430,8 +430,7 @@ class Contact
 				$_POST['contact_form_in_subject'] . ' ' . $AVE_Template->get_config_vars('CONTACT_SUBJECT_COPY'),
 				$mail_from,
 				$mail_from_name,
-				'text',
-				''
+				'text'
 			);
 		}
 
