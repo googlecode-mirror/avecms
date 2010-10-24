@@ -11,7 +11,7 @@
 define('REWRITE_MODE', true);
 
 // транслитерация ЧПУ
-define('TRANSLIT_URL', false);
+define('TRANSLIT_URL', true);
 
 // суфикс ЧПУ
 define('URL_SUFF', '/');
@@ -29,7 +29,7 @@ define('DEFAULT_LANGUAGE', 'ru');
 define('SESSION_SAVE_HANDLER', true);
 
 // время жизни сессии (Значение по умолчанию 24 минуты)
-define('SESSION_LIFETIME', 60*24*60);
+define('SESSION_LIFETIME', 60*24);
 
 // время жизни cookie автологина (60*60*24*14 - 2 недели)
 define('COOKIE_LIFETIME', 60*60*24*14);
@@ -49,7 +49,7 @@ define('SMARTY_DEBUGGING', false);
 // {true|false} Установите это в false если ваше окружение PHP
 // не разрешает создание директорий от имени Smarty.
 // Поддиректории более эффективны, так что используйте их, если можете.
-define('SMARTY_USE_SUB_DIRS', true);
+define('SMARTY_USE_SUB_DIRS', false);
 
 // {true|false} кэширование скомпилированных шаблонов документов
 define('CACHE_DOC_TPL', false);

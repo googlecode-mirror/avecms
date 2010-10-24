@@ -1,111 +1,32 @@
-<Files .htaccess>
-	order allow,deny
-	deny from all
-</Files>
-
-
-## Своя ошибка 404
-ErrorDocument 404 index.php?id=2
-
-## Индексный файл
-DirectoryIndex index.php
-
-## Запрещаем просмотр (листинг) содержимого папки если в нем нету индексного файла
-## и отключаем контроль символьных линков для уменьшения нагрузки на сервер
 Options -Indexes +FollowSymLinks
 
-AddDefaultCharset windows-1251
+#AddDefaultCharset windows-1251
 
-
-## Закрываем директории от просмотра
 <FilesMatch "\.(class|functions|inc|modules|templates|templates_c|cache|lib)$">
     Order allow,deny
 </FilesMatch>
 
-
-<IfModule mod_php5.c>
-	php_value register_globals 0
-	php_value magic_quotes_gpc 1
-	php_value session.auto_start 0
-	php_value safe_mode 0
-
-#	php_value auto_prepend_file /home/www/inc/ids.php
-
-	## Отрубаем подстановку в URL сессию
-	php_flag session.use_trans_sid off
-
-	## Отрубаем вывод ошибок
-	php_value error_reporting 7
-</IfModule>
-
-<IfModule sapi_apache2.c>
-	php_value register_globals 0
-	php_value magic_quotes_gpc 1
-	php_value session.auto_start 0
-	php_value safe_mode 0
-
-	## Отрубаем подстановку в URL сессию
-	php_flag session.use_trans_sid off
-
-	## Отрубаем вывод ошибок
-	php_value error_reporting 7
-</IfModule>
-
-<IfModule mod_php4.c>
-	php_value register_globals 0
-	php_value magic_quotes_gpc 1
-	php_value session.auto_start 0
-	php_value safe_mode 0
-
-	## Отрубаем подстановку в URL сессию
-	php_flag session.use_trans_sid off
-
-	## Отрубаем вывод ошибок
-	php_value error_reporting 7
-</IfModule>
-
-
-## Кэширование на стороне браузера (отдаем нормальные заголовки)
-## Если на сайте не используется защитный код (в форме обратной связи) 
-## то строчку ExpiresByType image/jpeg A1 можно заремить
 <IfModule mod_expires.c>
-	## Включаем
 	ExpiresActive On
-
-	## Кэшировать браузером все файлы в течении двух недель
-	ExpiresDefault "access plus 2 weeks"
-
-	## Не кэшировать файлы, имеющие тип
+	ExpiresDefault "access plus 60 minutes"
 	ExpiresByType text/html "now"
-#	ExpiresByType image/jpeg "now"
 </IfModule>
-
 
 <IfModule mod_rewrite.c>
-	## Включаем модреврайт
 	RewriteEngine on
-
-	## Если ставили в корень
 	RewriteBase /
-
-	## Если ставили в папку cms
-#	RewriteBase /cms
-
-
-	RewriteCond %{REQUEST_URI} !^/(class|functions|inc|modules|templates|templates_c|cache)/
-
 
 #	RewriteCond %{REQUEST_URI} !^/robots\.txt$ [NC]
 #	RewriteCond %{HTTP_HOST} !^www\. [NC]
 #	RewriteRule ^(.*)$ http://www.%{HTTP_HOST}/$1 [QSA,L]
 
+	RewriteCond %{REQUEST_URI} !^/(class|functions|inc|modules|templates|templates_c|cache)/
 
 	RewriteRule ^(shop|forums|download|guestbook|roadmap)-([0-9]+).html$ index.php?module=$1&page=$2 [QSA,L]
 	RewriteRule ^(shop|forums|download|guestbook|roadmap)-print.html$ index.php?module=$1&print=1 [QSA,L]
 	RewriteRule ^(shop|forums|download|guestbook|roadmap).html$ index.php?module=$1 [QSA,L]
 
-
-	## ЧПУ для модуля Downloads
+	## Downloads
 	RewriteRule ^download-([0-9]+)-([0-9]+).html$ index.php?module=download&action=showfile&file_id=$1&categ=$2
 	RewriteRule ^download-([0-9]+)-([0-9]+)-print.html$ index.php?module=download&action=showfile&file_id=$1&categ=$2&print=1
 	RewriteRule ^download_file-([0-9]+)-([_a-zA-Z0-9]+).html$ index.php?module=download&action=get_file&file_id=$1&pop=1&cp_theme=$2
@@ -119,8 +40,7 @@ AddDefaultCharset windows-1251
 	RewriteRule ^toreg-([0-9,]+)-([_a-zA-Z0-9]+).html$ index.php?module=download&action=toreg&file_id=$1&pop=1&cp_theme=$2
 	RewriteRule ^denied-([0-9,]+)-([_a-zA-Z0-9]+).html$ index.php?module=download&action=get_denied&file_id=$1&pop=1&cp_theme=$2
 
-
-	## ЧПУ для модуля Магазин
+	## Shop
 	RewriteRule ^product-([0-9]+)-([0-9]+)-([0-9]+).html$ index.php?module=shop&action=product_detail&product_id=$1&categ=$2&navop=$3 [QSA,L]
 	RewriteRule ^product-([0-9]+)-([0-9]+)-([0-9]+)-print.html$ index.php?module=shop&action=product_detail&product_id=$1&categ=$2&navop=$3&print=1 [QSA,L]
 	RewriteRule ^category-([0-9]+)-([0-9]+)-([0-9]+)-([0-9]+).html$ index.php?module=shop&categ=$1&parent=$2&navop=$3&page=$4 [QSA,L]
@@ -142,20 +62,18 @@ AddDefaultCharset windows-1251
 	RewriteRule ^shippinginf.html$ index.php?module=shop&action=infopage&page=shippinginf [QSA,L]
 	RewriteRule ^shop-about.html$ index.php?module=shop&action=infopage&page=imprint [QSA,L]
 	RewriteRule ^agb.html$ index.php?module=shop&action=infopage&page=agb [QSA,L]
+	RewriteRule ^getfile-([0-9]+)-([\x21-\xFF]+).html$ index.php?module=shop&action=mydownloads&sub=getfile&Id=$1&FileId=$2&getId=$1 [QSA,L]
 
-	## ЧПУ для выгрузки товаров на Яндекс
+	## Yandex Market
 	RewriteRule ^market.xml$ inc/yandex.php [QSA,L]
 
-
-	## ЧПУ для модуля опросов ##
+	## Poll
 	RewriteRule ^poll-([0-9]+).html$ index.php?module=poll&action=result&pid=$1
 	RewriteRule ^pollcomment-([0-9]+).html$ index.php?module=poll&action=form&pop=1&pid=$1
 	RewriteRule ^poll-archive.html$ index.php?module=poll&action=archive
 
-
-	## ЧПУ для модуля RSS
+	## RSS
 	RewriteRule ^rss/rss-([0-9]+).xml$ inc/rss.php?id=$1 [QSA,L]
-
 
 	RewriteCond %{REQUEST_FILENAME} !-f
 	RewriteCond %{REQUEST_FILENAME} !-d
