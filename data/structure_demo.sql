@@ -2,21 +2,8 @@ CREATE TABLE `%%PRFX%%_countries` (
   `Id` mediumint(5) unsigned NOT NULL auto_increment,
   `country_code` char(2) NOT NULL default 'RU',
   `country_name` char(50) NOT NULL,
-  `status` enum('1','2') NOT NULL default '2',
-  `ist_eu` enum('1','2') NOT NULL default '2',
-  PRIMARY KEY  (`Id`)
-) ENGINE=MyISAM DEFAULT CHARSET=cp1251;#inst#
-
-CREATE TABLE `%%PRFX%%_document_comments` (
-  `Id` int(10) unsigned NOT NULL auto_increment,
-  `document_id` int(10) unsigned NOT NULL default '0',
-  `first_comment` enum('1','0') NOT NULL default '0',
-  `title` varchar(255) NOT NULL,
-  `comment_text` text NOT NULL,
-  `author` varchar(50) NOT NULL,
-  `published` int(10) unsigned NOT NULL,
-  `status` enum('1','0') NOT NULL default '1',
-  `author_email` varchar(100) NOT NULL,
+  `country_status` enum('1','2') NOT NULL default '2',
+  `country_eu` enum('1','2') NOT NULL default '2',
   PRIMARY KEY  (`Id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=cp1251;#inst#
 
@@ -25,46 +12,50 @@ CREATE TABLE `%%PRFX%%_document_fields` (
   `rubric_field_id` mediumint(5) unsigned NOT NULL default '0',
   `document_id` int(10) unsigned NOT NULL default '0',
   `field_value` longtext NOT NULL,
-  `in_search` enum('1','0') NOT NULL default '1',
+  `document_in_search` enum('1','0') NOT NULL default '1',
   PRIMARY KEY  (`Id`),
   KEY `document_id` (`document_id`),
-  KEY `rubric_field_id` (`rubric_field_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=cp1251;#inst#
+  KEY `rubric_field_id` (`rubric_field_id`,`document_in_search`)
+) ENGINE=MyISAM DEFAULT CHARSET=cp1251 PACK_KEYS=0;#inst#
 
-CREATE TABLE `%%PRFX%%_document_permissions` (
-  `Id` mediumint(5) unsigned NOT NULL auto_increment,
-  `rubric_id` smallint(3) unsigned NOT NULL,
-  `user_group` smallint(3) unsigned NOT NULL,
-  `permission` char(255) NOT NULL,
-  PRIMARY KEY  (`Id`),
-  KEY `rubric_id` (`rubric_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=cp1251;#inst#
+CREATE TABLE `%%PRFX%%_document_remarks` (
+  `Id` int(10) unsigned NOT NULL auto_increment,
+  `document_id` int(10) unsigned NOT NULL default '0',
+  `remark_first` enum('0','1') NOT NULL default '0',
+  `remark_title` varchar(255) NOT NULL,
+  `remark_text` text NOT NULL,
+  `remark_author_id` int(10) unsigned NOT NULL default '1',
+  `remark_published` int(10) unsigned NOT NULL default '0',
+  `remark_status` enum('1','0') NOT NULL default '1',
+  `remark_author_email` varchar(255) NOT NULL,
+  PRIMARY KEY  (`Id`)
+) ENGINE=MyISAM DEFAULT CHARSET=cp1251 PACK_KEYS=0;#inst#
 
 CREATE TABLE `%%PRFX%%_documents` (
   `Id` int(10) unsigned NOT NULL auto_increment,
   `rubric_id` mediumint(5) unsigned NOT NULL default '0',
-  `alias` varchar(255) NOT NULL,
-  `title` varchar(255) NOT NULL,
-  `published` int(10) unsigned NOT NULL default '0',
-  `expire` int(10) unsigned NOT NULL default '0',
-  `changed` int(10) unsigned NOT NULL default '0',
-  `author_id` mediumint(5) unsigned NOT NULL default '1',
-  `in_search` enum('1','0') NOT NULL default '1',
-  `meta_keywords` tinytext NOT NULL,
-  `meta_description` tinytext NOT NULL,
-  `meta_robots` enum('index,follow','index,nofollow','noindex,nofollow') NOT NULL default 'index,follow',
-  `status` enum('1','0') NOT NULL default '1',
-  `deleted` enum('0','1') NOT NULL default '0',
-  `count_print` int(10) unsigned NOT NULL default '0',
-  `count_view` int(10) unsigned NOT NULL default '0',
-  `linked_navi_id` mediumint(5) unsigned NOT NULL default '0',
+  `document_alias` varchar(255) NOT NULL,
+  `document_title` varchar(255) NOT NULL,
+  `document_published` int(10) unsigned NOT NULL default '0',
+  `document_expire` int(10) unsigned NOT NULL default '0',
+  `document_changed` int(10) unsigned NOT NULL default '0',
+  `document_author_id` mediumint(5) unsigned NOT NULL default '1',
+  `document_in_search` enum('1','0') NOT NULL default '1',
+  `document_meta_keywords` tinytext NOT NULL,
+  `document_meta_description` tinytext NOT NULL,
+  `document_meta_robots` enum('index,follow','index,nofollow','noindex,nofollow') NOT NULL default 'index,follow',
+  `document_status` enum('1','0') NOT NULL default '1',
+  `document_deleted` enum('0','1') NOT NULL default '0',
+  `document_count_print` int(10) unsigned NOT NULL default '0',
+  `document_count_view` int(10) unsigned NOT NULL default '0',
+  `document_linked_navi_id` mediumint(5) unsigned NOT NULL default '0',
   PRIMARY KEY  (`Id`),
-  UNIQUE KEY `alias` (`alias`),
-  KEY `expire` (`expire`),
-  KEY `published` (`published`),
-  KEY `status` (`status`),
-  KEY `rubric_id` (`rubric_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=cp1251;#inst#
+  UNIQUE KEY `document_alias` (`document_alias`),
+  KEY `rubric_id` (`rubric_id`),
+  KEY `document_status` (`document_status`),
+  KEY `document_published` (`document_published`),
+  KEY `document_expire` (`document_expire`)
+) ENGINE=MyISAM DEFAULT CHARSET=cp1251 PACK_KEYS=0;#inst#
 
 CREATE TABLE `%%PRFX%%_log` (
   `Id` int(10) unsigned NOT NULL auto_increment,
@@ -76,149 +67,6 @@ CREATE TABLE `%%PRFX%%_log` (
   `log_rubric` tinyint(1) unsigned NOT NULL default '2',
   PRIMARY KEY  (`Id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=cp1251 PACK_KEYS=0;#inst#
-
-CREATE TABLE `%%PRFX%%_modul_comment_info` (
-  `Id` int(10) unsigned NOT NULL auto_increment,
-  `parent_id` int(10) unsigned NOT NULL default '0',
-  `document_id` int(10) unsigned NOT NULL default '0',
-  `author_name` varchar(255) NOT NULL,
-  `author_id` int(10) unsigned NOT NULL default '0',
-  `author_email` varchar(255) NOT NULL,
-  `author_city` varchar(255) NOT NULL,
-  `author_website` varchar(255) NOT NULL,
-  `author_ip` varchar(15) NOT NULL,
-  `published` int(10) unsigned NOT NULL default '0',
-  `edited` int(10) unsigned NOT NULL default '0',
-  `message` text NOT NULL,
-  `status` tinyint(1) unsigned NOT NULL default '1',
-  `comments_close` tinyint(1) unsigned NOT NULL default '0',
-  PRIMARY KEY  (`Id`),
-  KEY `document_id` (`document_id`),
-  KEY `parent_id` (`parent_id`),
-  KEY `status` (`status`)
-) ENGINE=MyISAM DEFAULT CHARSET=cp1251 PACK_KEYS=0;#inst#
-
-CREATE TABLE `%%PRFX%%_modul_comments` (
-  `Id` tinyint(1) unsigned NOT NULL auto_increment,
-  `max_chars` smallint(3) unsigned NOT NULL default '1000',
-  `user_groups` text NOT NULL,
-  `moderate` enum('0','1') NOT NULL default '0',
-  `active` enum('1','0') NOT NULL default '1',
-  `spamprotect` enum('1','0') NOT NULL default '1',
-  PRIMARY KEY  (`Id`)
-) ENGINE=MyISAM DEFAULT CHARSET=cp1251;#inst#
-
-CREATE TABLE `%%PRFX%%_modul_counter` (
-  `id` smallint(3) unsigned NOT NULL auto_increment,
-  `counter_name` char(50) NOT NULL,
-  PRIMARY KEY  (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=cp1251;#inst#
-
-CREATE TABLE `%%PRFX%%_modul_counter_info` (
-  `id` int(11) unsigned NOT NULL auto_increment,
-  `counter_id` smallint(3) unsigned NOT NULL,
-  `client_ip` char(50) NOT NULL,
-  `client_os` char(20) NOT NULL,
-  `client_browser` char(20) NOT NULL,
-  `client_referer` char(255) NOT NULL,
-  `visit` int(10) unsigned NOT NULL,
-  `expire` int(10) unsigned NOT NULL,
-  PRIMARY KEY  (`id`),
-  KEY `expire` (`expire`,`counter_id`),
-  KEY `counter_id` (`counter_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=cp1251;#inst#
-
-CREATE TABLE `%%PRFX%%_modul_gallery` (
-  `id` int(10) unsigned NOT NULL auto_increment,
-  `gallery_title` varchar(255) NOT NULL,
-  `gallery_description` text NOT NULL,
-  `gallery_author` int(10) unsigned NOT NULL default '0',
-  `gallery_date` int(10) unsigned NOT NULL default '0',
-  `thumb_width` smallint(3) unsigned NOT NULL default '120',
-  `image_on_line` tinyint(1) unsigned NOT NULL default '4',
-  `show_title` enum('1','0') NOT NULL default '1',
-  `show_description` enum('1','0') NOT NULL default '1',
-  `show_size` enum('0','1') NOT NULL default '0',
-  `type_out` tinyint(1) unsigned NOT NULL default '4',
-  `image_on_page` tinyint(1) unsigned NOT NULL default '12',
-  `watermark` varchar(255) NOT NULL,
-  `gallery_folder` varchar(255) NOT NULL,
-  `orderby` enum('datedesc','dateasc','titleasc','titledesc','position') NOT NULL default 'datedesc',
-  `script_out` text NOT NULL,
-  `image_tpl` text NOT NULL,
-  PRIMARY KEY  (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=cp1251 PACK_KEYS=0;#inst#
-
-CREATE TABLE `%%PRFX%%_modul_gallery_images` (
-  `id` int(10) unsigned NOT NULL auto_increment,
-  `gallery_id` int(10) unsigned NOT NULL default '0',
-  `image_filename` varchar(255) NOT NULL,
-  `image_author` int(10) unsigned NOT NULL default '0',
-  `image_title` varchar(255) NOT NULL,
-  `image_description` text NOT NULL,
-  `image_file_ext` char(4) NOT NULL,
-  `image_date` int(10) unsigned NOT NULL default '0',
-  `image_position` smallint(3) unsigned NOT NULL default '1',
-  PRIMARY KEY  (`id`),
-  KEY `image_position` (`image_position`),
-  KEY `image_date` (`image_date`),
-  KEY `gallery_id` (`gallery_id`),
-  KEY `image_title` (`image_title`)
-) ENGINE=MyISAM DEFAULT CHARSET=cp1251 PACK_KEYS=0;#inst#
-
-CREATE TABLE `%%PRFX%%_modul_login` (
-  `Id` tinyint(1) unsigned NOT NULL auto_increment,
-  `login_reg_type` enum('now','email','byadmin') NOT NULL default 'now',
-  `login_spam_protect` enum('0','1') NOT NULL default '0',
-  `login_status` enum('1','0') NOT NULL default '1',
-  `login_deny_domain` text NOT NULL,
-  `login_deny_email` text NOT NULL,
-  `login_require_company` enum('0','1') NOT NULL default '0',
-  `login_require_firstname` enum('0','1') NOT NULL default '0',
-  `login_require_lastname` enum('0','1') NOT NULL default '0',
-  PRIMARY KEY  (`Id`)
-) ENGINE=MyISAM DEFAULT CHARSET=cp1251;#inst#
-
-CREATE TABLE `%%PRFX%%_modul_rss` (
-  `id` smallint(3) unsigned NOT NULL auto_increment,
-  `rss_site_name` char(255) NOT NULL,
-  `rss_site_description` char(255) NOT NULL,
-  `rss_site_url` char(255) NOT NULL,
-  `rss_rubric_id` smallint(3) unsigned NOT NULL,
-  `rss_title_id` int(10) unsigned NOT NULL,
-  `rss_description_id` int(10) unsigned NOT NULL,
-  `rss_item_on_page` tinyint(1) unsigned NOT NULL,
-  `rss_description_lenght` smallint(3) unsigned NOT NULL,
-  PRIMARY KEY  (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=cp1251;#inst#
-
-CREATE TABLE `%%PRFX%%_modul_search` (
-  `Id` int(10) unsigned NOT NULL auto_increment,
-  `search_query` char(255) NOT NULL,
-  `search_count` mediumint(5) unsigned NOT NULL default '0',
-  `search_found` mediumint(5) unsigned NOT NULL default '0',
-  PRIMARY KEY  (`Id`),
-  UNIQUE KEY `search_query` (`search_query`)
-) ENGINE=MyISAM DEFAULT CHARSET=cp1251 PACK_KEYS=0;#inst#
-
-CREATE TABLE `%%PRFX%%_modul_sysblock` (
-  `id` mediumint(5) unsigned NOT NULL auto_increment,
-  `sysblock_name` varchar(255) NOT NULL,
-  `sysblock_text` longtext NOT NULL,
-  PRIMARY KEY  (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=cp1251;#inst#
-
-CREATE TABLE `%%PRFX%%_modul_who_is_online` (
-  `id` int(10) unsigned NOT NULL auto_increment,
-  `ip` int(11) NOT NULL default '0',
-  `country` char(64) NOT NULL default '',
-  `countrycode` char(2) NOT NULL default '',
-  `city` char(64) NOT NULL default '',
-  `dt` timestamp NOT NULL default CURRENT_TIMESTAMP,
-  PRIMARY KEY  (`id`),
-  UNIQUE KEY `ip` (`ip`),
-  KEY `countrycode` (`countrycode`)
-) ENGINE=MyISAM DEFAULT CHARSET=cp1251;#inst#
 
 CREATE TABLE `%%PRFX%%_module` (
   `Id` smallint(3) unsigned NOT NULL auto_increment,
@@ -234,7 +82,7 @@ CREATE TABLE `%%PRFX%%_module` (
   `AdminEdit` enum('0','1') NOT NULL default '0',
   PRIMARY KEY  (`Id`),
   UNIQUE KEY `ModulName` (`ModulName`)
-) ENGINE=MyISAM DEFAULT CHARSET=cp1251;#inst#
+) ENGINE=MyISAM DEFAULT CHARSET=cp1251 PACK_KEYS=0;#inst#
 
 CREATE TABLE `%%PRFX%%_navigation` (
   `id` smallint(3) unsigned NOT NULL auto_increment,
@@ -254,66 +102,76 @@ CREATE TABLE `%%PRFX%%_navigation` (
   `navi_begin` text NOT NULL,
   `navi_end` text NOT NULL,
   `navi_user_group` text NOT NULL,
-  `navi_expand` enum('1','0') NOT NULL default '0',
+  `navi_expand` enum('0','1') NOT NULL default '0',
   PRIMARY KEY  (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=cp1251;#inst#
+) ENGINE=MyISAM DEFAULT CHARSET=cp1251 PACK_KEYS=0;#inst#
 
 CREATE TABLE `%%PRFX%%_navigation_items` (
   `Id` mediumint(5) unsigned NOT NULL auto_increment,
   `title` char(255) NOT NULL,
   `parent_id` mediumint(5) unsigned NOT NULL,
-  `navi_link` char(255) NOT NULL,
-  `target` enum('_blank','_self','_parent','_top') NOT NULL default '_self',
-  `level` enum('1','2','3') NOT NULL default '1',
-  `position` smallint(3) unsigned NOT NULL default '1',
+  `navi_item_link` char(255) NOT NULL,
+  `navi_item_target` enum('_blank','_self','_parent','_top') NOT NULL default '_self',
+  `navi_item_level` enum('1','2','3') NOT NULL default '1',
+  `navi_item_position` smallint(3) unsigned NOT NULL default '1',
   `navi_id` smallint(3) unsigned NOT NULL default '0',
-  `status` enum('1','0') NOT NULL default '1',
-  `alias` char(255) NOT NULL,
+  `navi_item_status` enum('1','0') NOT NULL default '1',
+  `document_alias` char(255) NOT NULL,
   PRIMARY KEY  (`Id`),
-  KEY `status` (`status`),
   KEY `navi_id` (`navi_id`),
-  KEY `alias` (`alias`)
-) ENGINE=MyISAM DEFAULT CHARSET=cp1251;#inst#
+  KEY `document_alias` (`document_alias`),
+  KEY `navi_item_status` (`navi_item_status`)
+) ENGINE=MyISAM DEFAULT CHARSET=cp1251 PACK_KEYS=0;#inst#
 
-CREATE TABLE `%%PRFX%%_queries` (
+CREATE TABLE `%%PRFX%%_request` (
   `Id` smallint(3) unsigned NOT NULL auto_increment,
   `rubric_id` smallint(3) unsigned NOT NULL,
-  `items_on_page` int(10) NOT NULL,
-  `title` varchar(255) NOT NULL,
-  `Template` text NOT NULL,
-  `AbGeruest` text NOT NULL,
-  `order_by` varchar(255) NOT NULL,
-  `Autor` int(10) unsigned NOT NULL default '1',
-  `Erstellt` int(10) unsigned NOT NULL,
-  `description` tinytext NOT NULL,
-  `asc_desc` enum('ASC','DESC') NOT NULL default 'DESC',
-  `show_pagination` enum('1','0') NOT NULL default '1',
-  `where_cond` text NOT NULL,
+  `request_items_per_page` smallint(3) unsigned NOT NULL,
+  `request_title` varchar(255) NOT NULL,
+  `request_template_item` text NOT NULL,
+  `request_template_main` text NOT NULL,
+  `request_order_by` varchar(255) NOT NULL,
+  `request_author_id` int(10) unsigned NOT NULL default '1',
+  `request_created` int(10) unsigned NOT NULL,
+  `request_description` tinytext NOT NULL,
+  `request_asc_desc` enum('ASC','DESC') NOT NULL default 'DESC',
+  `request_show_pagination` enum('0','1') NOT NULL default '0',
+  `request_where_cond` text NOT NULL,
   PRIMARY KEY  (`Id`)
-) ENGINE=MyISAM DEFAULT CHARSET=cp1251;#inst#
+) ENGINE=MyISAM DEFAULT CHARSET=cp1251 PACK_KEYS=0;#inst#
 
-CREATE TABLE `%%PRFX%%_queries_conditions` (
+CREATE TABLE `%%PRFX%%_request_conditions` (
   `Id` mediumint(5) unsigned NOT NULL auto_increment,
-  `Abfrage` smallint(3) unsigned NOT NULL,
-  `Operator` char(30) NOT NULL,
-  `Feld` int(10) NOT NULL,
-  `Wert` char(255) NOT NULL,
-  `Oper` enum('OR','AND') NOT NULL default 'OR',
+  `request_id` smallint(3) unsigned NOT NULL,
+  `condition_compare` char(30) NOT NULL,
+  `condition_field_id` int(10) NOT NULL,
+  `condition_value` char(255) NOT NULL,
+  `condition_join` enum('OR','AND') NOT NULL default 'OR',
   PRIMARY KEY  (`Id`)
-) ENGINE=MyISAM DEFAULT CHARSET=cp1251;#inst#
+) ENGINE=MyISAM DEFAULT CHARSET=cp1251 PACK_KEYS=0;#inst#
 
 CREATE TABLE `%%PRFX%%_rubric_fields` (
   `Id` mediumint(5) unsigned NOT NULL auto_increment,
   `rubric_id` smallint(3) unsigned NOT NULL,
-  `title` varchar(255) NOT NULL,
-  `RubTyp` varchar(75) NOT NULL,
-  `rubric_position` smallint(3) unsigned NOT NULL default '1',
-  `StdWert` text NOT NULL,
-  `tpl_field` text NOT NULL,
-  `tpl_req` text NOT NULL,
+  `rubric_field_title` varchar(255) NOT NULL,
+  `rubric_field_type` varchar(75) NOT NULL,
+  `rubric_field_position` smallint(3) unsigned NOT NULL default '1',
+  `rubric_field_default` text NOT NULL,
+  `rubric_field_template` text NOT NULL,
+  `rubric_field_template_request` text NOT NULL,
+  PRIMARY KEY  (`Id`),
+  KEY `rubric_id` (`rubric_id`),
+  KEY `rubric_field_type` (`rubric_field_type`)
+) ENGINE=MyISAM DEFAULT CHARSET=cp1251 PACK_KEYS=0;#inst#
+
+CREATE TABLE `%%PRFX%%_rubric_permissions` (
+  `Id` mediumint(5) unsigned NOT NULL auto_increment,
+  `rubric_id` smallint(3) unsigned NOT NULL,
+  `user_group_id` smallint(3) unsigned NOT NULL,
+  `rubric_permission` char(255) NOT NULL,
   PRIMARY KEY  (`Id`),
   KEY `rubric_id` (`rubric_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=cp1251;#inst#
+) ENGINE=MyISAM DEFAULT CHARSET=cp1251 PACK_KEYS=0;#inst#
 
 CREATE TABLE `%%PRFX%%_rubric_template_cache` (
   `id` bigint(15) unsigned NOT NULL auto_increment,
@@ -326,29 +184,29 @@ CREATE TABLE `%%PRFX%%_rubric_template_cache` (
   `compiled` longtext NOT NULL,
   PRIMARY KEY  (`id`),
   KEY `rubric_id` (`rub_id`,`doc_id`,`wysiwyg`)
-) ENGINE=MyISAM DEFAULT CHARSET=cp1251;#inst#
+) ENGINE=MyISAM DEFAULT CHARSET=cp1251 PACK_KEYS=0;#inst#
 
 CREATE TABLE `%%PRFX%%_rubrics` (
   `Id` smallint(3) unsigned NOT NULL auto_increment,
-  `RubrikName` varchar(255) NOT NULL,
-  `UrlPrefix` varchar(255) NOT NULL,
-  `RubrikTemplate` text NOT NULL,
-  `Vorlage` smallint(3) unsigned NOT NULL default '1',
-  `RBenutzer` int(10) unsigned NOT NULL default '1',
-  `RDatum` int(10) unsigned NOT NULL default '0',
+  `rubric_title` varchar(255) NOT NULL,
+  `rubric_alias` varchar(255) NOT NULL,
+  `rubric_template` text NOT NULL,
+  `rubric_template_id` smallint(3) unsigned NOT NULL default '1',
+  `rubric_author_id` int(10) unsigned NOT NULL default '1',
+  `rubric_created` int(10) unsigned NOT NULL default '0',
   PRIMARY KEY  (`Id`),
-  KEY `Vorlage` (`Vorlage`)
-) ENGINE=MyISAM DEFAULT CHARSET=cp1251;#inst#
+  KEY `rubric_template_id` (`rubric_template_id`)
+) ENGINE=MyISAM DEFAULT CHARSET=cp1251 PACK_KEYS=0;#inst#
 
 CREATE TABLE `%%PRFX%%_sessions` (
-  `sesskey` varchar(32) NOT NULL default '',
+  `sesskey` varchar(32) NOT NULL,
   `expiry` int(10) unsigned NOT NULL default '0',
   `value` text NOT NULL,
   `Ip` varchar(35) NOT NULL,
   `expire_datum` varchar(25) NOT NULL,
   PRIMARY KEY  (`sesskey`),
-  KEY `expire_datum` (`expire_datum`),
-  KEY `expiry` (`expiry`)
+  KEY `expiry` (`expiry`),
+  KEY `expire_datum` (`expire_datum`)
 ) ENGINE=MyISAM DEFAULT CHARSET=cp1251;#inst#
 
 CREATE TABLE `%%PRFX%%_settings` (
@@ -385,20 +243,20 @@ CREATE TABLE `%%PRFX%%_settings` (
 
 CREATE TABLE `%%PRFX%%_templates` (
   `Id` smallint(3) unsigned NOT NULL auto_increment,
-  `TplName` varchar(255) NOT NULL,
-  `Template` longtext NOT NULL,
-  `TBenutzer` int(10) unsigned NOT NULL,
-  `TDatum` int(10) unsigned NOT NULL,
+  `template_title` varchar(255) NOT NULL,
+  `template_text` longtext NOT NULL,
+  `template_author_id` int(10) unsigned NOT NULL default '1',
+  `template_created` int(10) unsigned NOT NULL,
   PRIMARY KEY  (`Id`)
-) ENGINE=MyISAM DEFAULT CHARSET=cp1251;#inst#
+) ENGINE=MyISAM DEFAULT CHARSET=cp1251 PACK_KEYS=0;#inst#
 
 CREATE TABLE `%%PRFX%%_user_groups` (
   `user_group` smallint(3) unsigned NOT NULL auto_increment,
-  `Name` char(50) NOT NULL,
+  `user_group_name` char(50) NOT NULL,
   `status` enum('1','0') NOT NULL default '1',
   `set_default_avatar` enum('1','0') NOT NULL default '0',
   `default_avatar` char(255) NOT NULL,
-  `permission` char(255) NOT NULL,
+  `user_group_permission` char(255) NOT NULL,
   PRIMARY KEY  (`user_group`)
 ) ENGINE=MyISAM DEFAULT CHARSET=cp1251;#inst#
 
@@ -419,17 +277,17 @@ CREATE TABLE `%%PRFX%%_users` (
   `user_group` smallint(3) unsigned NOT NULL default '4',
   `user_group_extra` char(255) NOT NULL,
   `reg_time` int(10) unsigned NOT NULL,
-  `Status` enum('1','0') NOT NULL default '1',
+  `status` enum('1','0') NOT NULL default '1',
   `last_visit` int(10) unsigned NOT NULL,
   `country` char(2) NOT NULL default 'ru',
   `birthday` char(10) NOT NULL,
-  `deleted` enum('1','0') NOT NULL default '0',
+  `deleted` enum('0','1') NOT NULL default '0',
   `del_time` int(10) unsigned NOT NULL,
   `emc` char(32) NOT NULL,
   `reg_ip` char(20) NOT NULL,
   `new_pass` char(32) NOT NULL,
   `company` char(255) NOT NULL,
-  `taxpay` enum('1','0') NOT NULL default '0',
+  `taxpay` enum('0','1') NOT NULL default '0',
   `salt` char(16) NOT NULL,
   `new_salt` char(16) NOT NULL,
   `user_ip` int(10) unsigned NOT NULL default '0',
@@ -437,4 +295,4 @@ CREATE TABLE `%%PRFX%%_users` (
   UNIQUE KEY `email` (`email`),
   UNIQUE KEY `user_name` (`user_name`),
   KEY `user_group` (`user_group`)
-) ENGINE=MyISAM DEFAULT CHARSET=cp1251;
+) ENGINE=MyISAM DEFAULT CHARSET=cp1251 PACK_KEYS=0;#inst#

@@ -49,7 +49,7 @@ $lang_i['noemail']                 = "Пожалуйста, укажите E-mail адрес.";
 $lang_i['email_no_specialchars']   = "Ошибка! E-mail адрес содержит недопустимые символы.";
 $lang_i['nopass']                  = "Пожалуйста, укажите пароль";
 $lang_i['pass_no_specialchars']    = "Ошибка! Пароль содержит специальные символы.";
-$lang_i['install_finish_body']     = "<p>Поздравляем! Установка системы успешно завершена.</p><div class=\"error\"><span>Удалите пожалуйста следующий файл и папку:</span><h5>/install.php</h5><h5>/data/</h5></div><div class=\"help\">Для перехода в панель управления нажмите <a href=\"admin/\"><strong>здесь</strong></a></div><div class=\"help\">Для перехода на сайт <a href=\"index.php\"><strong>здесь</strong></a></div>";
+$lang_i['install_finish_body']     = "<p>Поздравляем! Установка системы успешно завершена.</p><div class=\"error\"><span>Удалите пожалуйста следующий файл и папку:</span><h5>/install.php</h5><h5>/data/</h5></div><div class=\"help\">Для перехода в панель управления нажмите <a href=\"admin/\"><strong>здесь</strong></a></div><div class=\"help\">Для перехода на сайт <a href=\"/\"><strong>здесь</strong></a></div>";
 $lang_i['structure']               = "Создание структуры базы данных:";
 $lang_i['erroro']                  = "Возникла ошибка...";
 $lang_i['erroro_more']             = "Возникли ошибки...";
