@@ -13,12 +13,15 @@ function OrderPrint(id){ldelim}
 </script>
 
 <div class="grid_12">
+{*
 	<div class="mod_shop_topnav">
 		<a class="mod_shop_navi" href="{$ShopStartLink}">{#PageName#}</a> {#PageSep#} {#OrderOkNav#}
 	</div>
+
+*}	<h2 id="page-heading">{#OrderPrintM1#}</h2>
+
 	{include file="$mod_dir/shop/templates/shop_bar.tpl"}<br />
-	<br />
-	<h2 id="page-heading">{#OrderPrintM1#}</h2>
+
 	<p>
 		{#OrderPrintM2#}<br />
 		<br />

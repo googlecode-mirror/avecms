@@ -83,14 +83,14 @@
 .mod_shop_summoverall							{background:#f0eee7; border-top:1px solid #777; font-size:14px; font-weight:bold; padding:2px;}
 .mod_shop_incvat								{color:#777; padding:1px;}
 .mod_shop_orders_form							{background:#f0eee7;}
-.mod_shop_orders_wait							{background:#ccc; border:1px solid #fff; height:50px; width:50px;}
-.mod_shop_orders_progress						{background:#fc0; border:1px solid #fff; height:50px; width:50px;}
-.mod_shop_orders_ok								{background:#090; border:1px solid #fff; height:50px; width:50px;}
-.mod_shop_orders_ok_send						{background:#09f; border:1px solid #fff; height:50px; width:50px;}
-.mod_shop_orders_failed							{background:#f00; border:1px solid #fff; height:50px; width:50px;}
 .mod_shop_shop_items_left						{background:#fff; border:1px solid #f1f1f1; height:150px; margin-right:10px; padding:5px;}
 .mod_shop_shop_items_right						{background:#fff; border:1px solid #f1f1f1; height:150px; margin-bottom:10px; padding:5px;}
 */
+.mod_shop_orders_wait							{background:#ccc; border:1px solid #fff; height:1em; width:1em;}
+.mod_shop_orders_progress						{background:#fc0; border:1px solid #fff; height:1em; width:1em;}
+.mod_shop_orders_ok								{background:#090; border:1px solid #fff; height:1em; width:1em;}
+.mod_shop_orders_ok_send						{background:#09f; border:1px solid #fff; height:1em; width:1em;}
+.mod_shop_orders_failed							{background:#f00; border:1px solid #fff; height:1em; width:1em;}
 
 /* -----------------------------
  =модуль Форумы
