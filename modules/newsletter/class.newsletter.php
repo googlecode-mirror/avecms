@@ -235,7 +235,7 @@ class Newsletter
 					{
 						$uri = substr(ABS_PATH, 0, -7);
 						$url = HOST . $uri;
-						$_SESSION['nl']['text']       = ($_REQUEST['type'] == 'text') ? $_REQUEST['text_norm'] : str_replace('src="' . $uri, 'src="' . $url, $_REQUEST['text']);
+						$_SESSION['nl']['text']       = ($_REQUEST['type'] == 'text') ? $_REQUEST['text_norm'] : str_replace('src="' . $uri, 'src="' . $url, $_REQUEST['text_norm']);
 						$_SESSION['nl']['format']     = ($_REQUEST['type'] == 'text') ? 'text' : 'html';
 						$_SESSION['nl']['groups_id']  = implode(',', $_REQUEST['usergroups']);
 						$_SESSION['nl']['groups_db']  = implode(';', $_REQUEST['usergroups']);
