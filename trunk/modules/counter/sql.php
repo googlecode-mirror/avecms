@@ -35,7 +35,7 @@ $modul_sql_install[] = "CREATE TABLE CPPREFIX_modul_counter_info (
   `counter_visit_time` int(10) unsigned NOT NULL,
   `counter_expire_time` int(10) unsigned NOT NULL,
   PRIMARY KEY  (`id`),
-  KEY `counter_expire_time` (`counter_expire_time`,`counter_expire_time`),
+  KEY `counter_expire_time` (`counter_expire_time`, `counter_id`),
   KEY `counter_id` (`counter_id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=cp1251;";
 
