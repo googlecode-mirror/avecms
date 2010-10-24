@@ -246,9 +246,7 @@ class ModulBasket
 					. $AVE_Template->get_config_vars('BASKET_ORDER_TITLE'),
 				get_settings('mail_from'),
 				$AVE_Template->get_config_vars('BASKET_SHOP_NAME'),
-				'html',
-				'',
-				1
+				'html'
 			);
 		}
 
@@ -260,9 +258,7 @@ class ModulBasket
 				. $AVE_Template->get_config_vars('BASKET_ORDER_TITLE'),
 			get_settings('mail_from'),
 			$AVE_Template->get_config_vars('BASKET_SHOP_NAME'),
-			'html',
-			'',
-			1
+			'html'
 		);
 
 		// Удаляем заказ из корзины

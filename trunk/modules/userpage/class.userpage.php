@@ -272,8 +272,7 @@ class userpage {
 					stripslashes($_POST['title']),
 					FORUMEMAIL,
 					FORUMABSENDER,
-					"text",
-					""
+					'text'
 				);
     		$GLOBALS['AVE_Template']->assign("content", $GLOBALS['AVE_Template']->get_config_vars('MessageAfterEmail'));
     		$tpl_out = $GLOBALS['AVE_Template']->display($tpl_dir . 'after_send.tpl');

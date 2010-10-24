@@ -734,8 +734,7 @@ class Forum
 					stripslashes($_POST['Betreff']),
 					FORUMEMAIL,
 					FORUMABSENDER,
-					"text",
-					""
+					"text"
 				);
 
 				// weiter leiten

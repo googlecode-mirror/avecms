@@ -447,8 +447,7 @@ else
 						$subject_msg,
 						FORUMEMAIL,
 						FORUMABSENDER,
-						"text",
-						""
+						"text"
 					);
 				}
 			}
@@ -500,8 +499,7 @@ else
 					$GLOBALS['mod']['config_vars']['SubjectNewPostEmail'],
 					FORUMEMAIL,
 					FORUMABSENDER,
-					"text",
-					""
+					"text"
 				);
 			}
 		}

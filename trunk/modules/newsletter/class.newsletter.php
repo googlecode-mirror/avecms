@@ -279,9 +279,8 @@ class Newsletter
 								$_SESSION['nl']['titel'],
 								$_SESSION['nl']['from_mail'],
 								$_SESSION['nl']['from'],
-								"text",
-								$_SESSION['nl']['attach'],
-								((isset($_SESSION['nl']['format']) && $_SESSION['nl']['format'] == 'html') ? '1' : '')
+								((isset($_SESSION['nl']['format']) && $_SESSION['nl']['format'] == 'html') ? 'html' : 'text'),
+								$_SESSION['nl']['attach']
 							);
 						}
 						$_SESSION['nl']['count'] += $_SESSION['nl']['steps'];
