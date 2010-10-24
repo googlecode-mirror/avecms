@@ -207,14 +207,14 @@ class AVE_DB
 		if (! $this->_handle = @mysql_connect($host, $user, $pass))
 		{
 			$this->_error('connect');
-			return false;
+			exit;
 		}
 
 		// Пытаемся выбрать БД
  		if (! @mysql_select_db($db, $this->_handle))
 		{
 			$this->_error('select');
-			return false;
+			exit;
 		}
 
 		// Устанавливаем кодировку
@@ -241,8 +241,6 @@ class AVE_DB
 				define('SQL_PROFILING_DISABLE', 1);
 			}
 		}
-
-		return true;
 	}
 
 	/**
@@ -285,7 +283,7 @@ class AVE_DB
 	{
 		if ($type != 'query')
 		{
-			display_notice('Error ' . $type . ' MySQL database. <br />');
+			display_notice('Error ' . $type . ' MySQL database.');
 		}
 		else
 		{
