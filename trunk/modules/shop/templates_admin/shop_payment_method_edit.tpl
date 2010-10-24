@@ -21,7 +21,7 @@
 		<tr>
 			<td width="220" class="first">{#SShipperActive#} </td>
 			<td class="second">
-				<input type="radio" name="country_code" value="1" {if $ss->country_code=='1'}checked {/if}/>{#Yes#}&nbsp;
+				<input type="radio" name="status" value="1" {if $ss->status=='1'}checked {/if}/>{#Yes#}&nbsp;
 				<input type="radio" name="status" value="0" {if $ss->status=='0'}checked {/if}/>{#No#}
 			</td>
 		</tr>

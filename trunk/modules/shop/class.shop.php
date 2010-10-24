@@ -14,7 +14,7 @@ class Shop
 	var $_link_manufaturer       = 'index.php?module=shop&amp;manufacturer=';
 	var $_link_category          = 'index.php?module=shop&amp;categ=%u&amp;parent=%u&amp;navop=%u';
 	var $_link_product_detail    = 'index.php?module=shop&action=product_detail&product_id=%u&categ=%u&navop=%u';
-	var $_link_file_link         = 'index.php?module=shop&action=mydownloads&sub=getfile&Id=%u&FileId=%u&getId=%u';
+	var $_link_file_link         = 'index.php?module=shop&action=mydownloads&sub=getfile&Id=%u&FileId=%s&getId=%u';
 
 	var $_link_start       = 'index.php?module=shop';
 	var $_link_wishlist    = 'index.php?module=shop&amp;action=wishlist&amp;pop=1';
@@ -686,7 +686,7 @@ $AVE_Template->caching = 0;
 					while ($row_df = $sql_df->FetchRow())
 					{
 						if ($row->DownloadBis < time()) $row_df->Abgelaufen = 1;
-						$row_df->link = sprintf($this->_link_file_link, $row_df->Id, $row_df->ArtikelId, $row_df->Id);
+						$row_df->link = sprintf($this->_link_file_link, $row_df->Id, $row->ArtikelId, $row_df->Id);
 						$row_df->description = str_replace('"', '&quot;',$row_df->description);
 						$row_df->size = (file_exists(BASE_DIR . '/modules/shop/files/' . $row_df->Datei) ) ? round(@filesize(BASE_DIR . '/modules/shop/files/'.$row_df->Datei)/1024,2) : '';
 						array_push($DataFiles, $row_df);
@@ -704,7 +704,7 @@ $AVE_Template->caching = 0;
 					");
 					while ($row_df = $sql_df->FetchRow())
 					{
-						$row_df->link = sprintf($this->_link_file_link, $row_df->Id, $row_df->ArtikelId, $row_df->Id);
+						$row_df->link = sprintf($this->_link_file_link, $row_df->Id, $row->ArtikelId, $row_df->Id);
 						$row_df->description = str_replace('"', '&quot;', $row_df->description);
 						$row_df->size = (file_exists(BASE_DIR . '/modules/shop/files/' . $row_df->Datei) ) ? round(@filesize(BASE_DIR . '/modules/shop/files/' . $row_df->Datei)/1024, 2) : '';
 						array_push($DataFilesUpdates, $row_df);
@@ -722,7 +722,7 @@ $AVE_Template->caching = 0;
 					");
 					while ($row_df = $sql_df->FetchRow())
 					{
-						$row_df->link = sprintf($this->_link_file_link, $row_df->Id, $row_df->ArtikelId, $row_df->Id);
+						$row_df->link = sprintf($this->_link_file_link, $row_df->Id, $row->ArtikelId, $row_df->Id);
 						$row_df->description = str_replace('"', '&quot;', $row_df->description);
 						$row_df->size = (file_exists(BASE_DIR . '/modules/shop/files/' . $row_df->Datei) ) ? round(@filesize(BASE_DIR . '/modules/shop/files/'.$row_df->Datei)/1024,2) : '';
 						array_push($DataFilesOther, $row_df);
@@ -740,7 +740,7 @@ $AVE_Template->caching = 0;
 					");
 					while ($row_df = $sql_df->FetchRow())
 					{
-						$row_df->link = sprintf($this->_link_file_link, $row_df->Id, $row_df->ArtikelId, $row_df->Id);
+						$row_df->link = sprintf($this->_link_file_link, $row_df->Id, $row->ArtikelId, $row_df->Id);
 						$row_df->description = str_replace('"', '&quot;',$row_df->description);
 						$row_df->size = (file_exists(BASE_DIR . '/modules/shop/files/' . $row_df->Datei) ) ? round(@filesize(BASE_DIR . '/modules/shop/files/'.$row_df->Datei)/1024,2) : '';
 						array_push($DataFilesBugfixes, $row_df);
@@ -786,8 +786,7 @@ $AVE_Template->caching = 0;
 					stripslashes($_POST['subject']),
 					$_SESSION['user_email'],
 					$_SESSION['user_name'],
-					'text',
-					''
+					'text'
 				);
 				$AVE_Template->assign('orderRequestOk', 1);
 			}
@@ -3292,50 +3291,55 @@ $AVE_Template->caching = 0;
 
 				if ($orderok == true)
 				{
-					// Bestellung eintragen und weitere Aktionen durchführen
-					$ProductsOrder = (!empty($_SESSION['Product'])) ? serialize($_SESSION['Product']) : '';
-					$ProductsOrderVars = (!empty($_SESSION['ProductVar'])) ? serialize($_SESSION['ProductVar']) : '';
+					$EmpEmail = $this->_getShopSetting('EmpEmail');
+					if ($EmpEmail == '')
+					{
+						$EmpEmail = get_settings('mail_from');
+						if ($EmpEmail == '')
+						{
+							reportLog($GLOBALS['mod']['config_vars']['EmpEmailNotSet']);
+						}
+						else
+						{
+							reportLog($GLOBALS['mod']['config_vars']['EmpEmailEmpty']);
+						}
+					}
+
+					$AbsEmail = $this->_getShopSetting('AbsEmail');
+					if ($AbsEmail == '')
+					{
+						reportLog($GLOBALS['mod']['config_vars']['AbsEmailEmpty']);
+					}
+
+					$AbsName = $this->_getShopSetting('AbsName');
+					if ($AbsName == '')
+					{
+						reportLog($GLOBALS['mod']['config_vars']['FromNameEmpty']);
+					}
+
 					// $transId = 'CPE_' . $this->_transId(12) . '_' . date('dmy');
 					$transId = $this->_transId() . date('dmy');
 					$_SESSION['TransId'] = $transId;
 
 					//echo $_REQUEST['create_account'];
 
-					// Besteller
-					$Benutzer = (isset($_SESSION['user_id'])) ? $_SESSION['user_id'] : $_SESSION['OrderEmail'];
-
-					// Enthaltene Umsatzssteuer
-					$USt = '';
-
-					// Rechnung (Text - Format)
-					$RechnungText = '';
-
-					// Rechnung (HTML - Format)
-					$RechnungHtml = '';
-
-					// Kam der Käufer von einer bestimmten Seite?
-					$KamVon = (isset($_SESSION['Referer'])) ? $_SESSION['Referer'] : '';
-
-					// Gutscheincode - Wert
-//					$Gutscheincode = '';
-
 					$AVE_DB->Query("
 						INSERT INTO " . PREFIX . "_modul_shop_bestellungen
 						SET
-							Benutzer          = '" . $Benutzer . "',
+							Benutzer          = '" . (isset($_SESSION['user_id']) ? $_SESSION['user_id'] : $_SESSION['OrderEmail']) . "',
 							TransId           = '" . $transId . "',
 							Datum             = '" . time() . "',
 							Gesamt            = '" . str_replace(',', '.', $_SESSION['BasketSumm']) . "',
-							USt               = '" . $USt . "',
-							Artikel           = '" . $ProductsOrder . "',
-							Artikel_Vars      = '" . $ProductsOrderVars . "',
-							RechnungText      = '" . $RechnungText . "',
-							RechnungHtml      = '" . $RechnungHtml . "',
+							USt               = '',
+							Artikel           = '" . (!empty($_SESSION['Product']) ? serialize($_SESSION['Product']) : '') . "',
+							Artikel_Vars      = '" . (!empty($_SESSION['ProductVar']) ? serialize($_SESSION['ProductVar']) : '') . "',
+							RechnungText      = '',
+							RechnungHtml      = '',
 							NachrichtBenutzer = '" . nl2br($_POST['Msg']) . "',
 							Ip                = '" . $_SERVER['REMOTE_ADDR'] . "',
 							ZahlungsId        = '" . $_SESSION['PaymentId'] . "',
 							VersandId         = '" . $_SESSION['ShipperId'] . "',
-							KamVon            = '" . $KamVon . "',
+							KamVon            = '" . (isset($_SESSION['Referer']) ? $_SESSION['Referer'] : '') . "',
 							Gutscheincode     = '" . (isset($_SESSION['CouponCodeId']) ? $_SESSION['CouponCodeId'] : '') . "',
 							Bestell_Email     = '" . $_SESSION['OrderEmail'] . "',
 							Liefer_Firma      = '" . (isset($_SESSION['billing_company']) ? $_SESSION['billing_company'] : '') . "',
@@ -3413,65 +3417,29 @@ $AVE_Template->caching = 0;
 					$AVE_Template->assign('OrderTime', time());
 					$AVE_Template->assign('VatZones', $this->_showVatZones());
 
-					// HTML- & Text E-Mail Template laden
+					// ôîðìèðóåì òåêñòû êîïèè çàêàçà â ôîðìàòàõ HTML è Text
 					$mail_html = $AVE_Template->fetch($GLOBALS['mod']['tpl_dir'] . $this->_shop_orderconfirm_html_tpl);
 					$mail_text = $AVE_Template->fetch($GLOBALS['mod']['tpl_dir'] . $this->_shop_orderconfirm_text_tpl);
 					$mail_text = $this->_textReplace($mail_text);
 
-					// E-Mail mit Bestellbestätigung an Käufer senden
+					$AVE_Template->assign('innerhtml', htmlspecialchars($mail_html));
 
-					// Soll E-Mail als Text oder HTML versendet werden?
+					$BetreffBest = $this->_getShopSetting('BetreffBest');
+
+					// Îòïðàâêà êîïèè çàêàçà àäèíèñòðàòîðó è êëèåíòó
+					// â âûáðàííîì ôîðìàòå (Text èëè HTML)
 					if ($this->_getShopSetting('EmailFormat') == 'html')
 					{
-						send_mail(
-							$this->_getShopSetting('EmpEmail'),
-							$mail_html,
-							$this->_getShopSetting('BetreffBest'),
-							$this->_getShopSetting('AbsEmail'),
-							$this->_getShopSetting('AbsName'),
-							'html',
-							'',
-							1
-						);
-						send_mail(
-							$_SESSION['OrderEmail'],
-							$mail_html,
-							$this->_getShopSetting('BetreffBest'),
-							$this->_getShopSetting('AbsEmail'),
-							$this->_getShopSetting('AbsName'),
-							'html',
-							'',
-							1
-						);
-						$AVE_Template->assign('innerhtml', htmlspecialchars($mail_html));
+						send_mail($EmpEmail,               $mail_html, $BetreffBest, $AbsEmail, $AbsName, 'html');
+						send_mail($_SESSION['OrderEmail'], $mail_html, $BetreffBest, $AbsEmail, $AbsName, 'html');
 					}
 					else
 					{
-						send_mail(
-							$this->_getShopSetting('EmpEmail'),
-							$mail_text,
-							$this->_getShopSetting('BetreffBest'),
-							$this->_getShopSetting('AbsEmail'),
-							$this->_getShopSetting('AbsName'),
-							'text',
-							'',
-							''
-						);
-						send_mail(
-							$_SESSION['OrderEmail'],
-							$mail_text,
-							$this->_getShopSetting('BetreffBest'),
-							$this->_getShopSetting('AbsEmail'),
-							$this->_getShopSetting('AbsName'),
-							'text',
-							'',
-							''
-						);
-						$AVE_Template->assign('innerhtml',htmlspecialchars($mail_html));
+						send_mail($EmpEmail,               $mail_text, $BetreffBest, $AbsEmail, $AbsName, 'text');
+						send_mail($_SESSION['OrderEmail'], $mail_text, $BetreffBest, $AbsEmail, $AbsName, 'text');
 					}
-					// E-Mail mit Bestellbestätigung an Admin senden
 
-					// Rechnung als HTML & Text in Bestellung aktualisieren
+					// Ñîõðàíÿåì òåêñò êîïèè çàêàçà â ôîðìàòàõ HTML è Text
 					$AVE_DB->Query("
 						UPDATE " . PREFIX . "_modul_shop_bestellungen
 						SET
@@ -3482,7 +3450,6 @@ $AVE_Template->caching = 0;
 					");
 
 					// Gibt es ein Zahlunsg - Gateway?
-					$extern = false;
 					$row_gw = $AVE_DB->Query("
 						SELECT *
 						FROM " . PREFIX . "_modul_shop_zahlungsmethoden
@@ -3491,19 +3458,12 @@ $AVE_Template->caching = 0;
 					")
 					->FetchRow();
 
-					if (is_object($row_gw) && $row_gw->Extern == 1 && file_exists(BASE_DIR . '/modules/shop/gateways/' . $row_gw->Gateway . '.php'))
+					if (is_object($row_gw) && $row_gw->Extern == 1)
 					{
-//						$Waehrung = $this->_getShopSetting('Waehrung');
-						define('GATEWAY', BASE_DIR . '/modules/shop/gateways/' . $row_gw->Gateway . '.php');
-						if (@include(GATEWAY))
-						{
-							$extern = true;
-						}
-					}
+						$Waehrung = $this->_getShopSetting('Waehrung');
 
-					if ($extern == true)
-					{
-						exit;
+						define('GATEWAY', BASE_DIR . '/modules/shop/gateways/' . $row_gw->Gateway . '.php');
+						if (file_exists(GATEWAY) && @include(GATEWAY)) exit;
 					}
 
 					// Wenn es keinen Zahlungs - Gateway gibt, Bestätigungs - Seite anzeigen

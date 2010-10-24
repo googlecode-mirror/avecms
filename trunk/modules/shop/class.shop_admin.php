@@ -732,14 +732,12 @@ class Shop
 
 		if (isset($_REQUEST['sub']) && $_REQUEST['sub'] == 'save')
 		{
-			$SystemMail = get_settings("mail_from");
-			$SystemMailName = get_settings("mail_from_name");
 			send_mail(
 				$_REQUEST['mto'],
 				stripslashes($_POST['Message']),
 				$_POST['Subject'],
-				$SystemMail,
-				$SystemMailName,
+				get_settings("mail_from"),
+				get_settings("mail_from_name"),
 				"text",
 				$this->uploadFile()
 			);
@@ -1072,17 +1070,14 @@ class Shop
 			// Mail an Käufer senden
 			if (isset($_REQUEST['SendMail']) && $_REQUEST['SendMail'] == 1)
 			{
-				$SystemMail = get_settings("mail_from");
-				$SystemMailName = get_settings("mail_from_name");
-
 				$_POST['Message'] = str_replace("%%ORDER_NUMBER%%", $row->Id, $_POST['Message']);
 
 				send_mail(
 					$row->Bestell_Email,
 					stripslashes($_POST['Message'] . $_POST['Text']),
 					$_POST['Subject'],
-					$SystemMail,
-					$SystemMailName,
+					get_settings("mail_from"),
+					get_settings("mail_from_name"),
 					"text",
 					$this->uploadFile()
 				);
@@ -1917,7 +1912,7 @@ class Shop
 		$sql = $AVE_DB->Query("
 			SELECT *
 			FROM " . PREFIX . "_user_groups
-			ORDER BY Name ASC
+			ORDER BY user_group_name ASC
 		");
 		while ($row = $sql->FetchRow()) array_push($Groups,$row);
 
@@ -1945,7 +1940,7 @@ class Shop
 								SET
 									Name        = '" . htmlspecialchars($Name) . "',
 									KeineKosten = '" . intval($_POST['KeineKosten'][$id]) . "',
-									status       = '" . intval($_POST['status'][$id]) . "'
+									status      = '" . intval($_POST['status'][$id]) . "'
 								WHERE
 									Id = '" . (int)$id . "'
 							");
