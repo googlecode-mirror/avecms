@@ -1,400 +1,275 @@
-INSERT INTO `%%PRFX%%_countries` VALUES (1, 'AF', 'Афганистан', '2', '2');#inst#
-INSERT INTO `%%PRFX%%_countries` VALUES (2, 'AL', 'Албания', '2', '2');#inst#
-INSERT INTO `%%PRFX%%_countries` VALUES (3, 'DZ', 'Алжир', '2', '2');#inst#
-INSERT INTO `%%PRFX%%_countries` VALUES (4, 'AS', 'Американское Самоа', '2', '2');#inst#
-INSERT INTO `%%PRFX%%_countries` VALUES (5, 'AD', 'Андорра', '2', '2');#inst#
-INSERT INTO `%%PRFX%%_countries` VALUES (6, 'AO', 'Ангола', '2', '2');#inst#
-INSERT INTO `%%PRFX%%_countries` VALUES (7, 'AI', 'Ангвилла', '2', '2');#inst#
-INSERT INTO `%%PRFX%%_countries` VALUES (8, 'AQ', 'Антарктика', '2', '2');#inst#
-INSERT INTO `%%PRFX%%_countries` VALUES (9, 'AG', 'Антигуа и Барбуда', '2', '2');#inst#
-INSERT INTO `%%PRFX%%_countries` VALUES (10, 'AR', 'Аргентина', '2', '2');#inst#
-INSERT INTO `%%PRFX%%_countries` VALUES (11, 'AM', 'Армения', '2', '2');#inst#
-INSERT INTO `%%PRFX%%_countries` VALUES (12, 'AW', 'Аруба', '2', '2');#inst#
-INSERT INTO `%%PRFX%%_countries` VALUES (13, 'AU', 'Австралия', '2', '2');#inst#
-INSERT INTO `%%PRFX%%_countries` VALUES (14, 'AT', 'Австрия', '2', '1');#inst#
-INSERT INTO `%%PRFX%%_countries` VALUES (15, 'AZ', 'Азербайджан', '2', '2');#inst#
-INSERT INTO `%%PRFX%%_countries` VALUES (16, 'BS', 'Содружество Багамских островов', '2', '2');#inst#
-INSERT INTO `%%PRFX%%_countries` VALUES (17, 'BH', 'Бахрейн', '2', '2');#inst#
-INSERT INTO `%%PRFX%%_countries` VALUES (18, 'BD', 'Бангладеш', '2', '2');#inst#
-INSERT INTO `%%PRFX%%_countries` VALUES (19, 'BB', 'Барбадос', '2', '2');#inst#
-INSERT INTO `%%PRFX%%_countries` VALUES (20, 'BY', 'Беларусь', '1', '2');#inst#
-INSERT INTO `%%PRFX%%_countries` VALUES (21, 'BE', 'Бельгия', '2', '1');#inst#
-INSERT INTO `%%PRFX%%_countries` VALUES (22, 'BZ', 'Белиц', '2', '2');#inst#
-INSERT INTO `%%PRFX%%_countries` VALUES (23, 'BJ', 'Бенин', '2', '2');#inst#
-INSERT INTO `%%PRFX%%_countries` VALUES (24, 'BM', 'Бермудские острова', '2', '2');#inst#
-INSERT INTO `%%PRFX%%_countries` VALUES (25, 'BT', 'Бутан', '2', '2');#inst#
-INSERT INTO `%%PRFX%%_countries` VALUES (26, 'BO', 'Боливия', '2', '2');#inst#
-INSERT INTO `%%PRFX%%_countries` VALUES (27, 'BA', 'Босния и Герцеговина', '2', '1');#inst#
-INSERT INTO `%%PRFX%%_countries` VALUES (28, 'BW', 'Ботсвана', '2', '2');#inst#
-INSERT INTO `%%PRFX%%_countries` VALUES (29, 'BV', 'Остров Бювет', '2', '2');#inst#
-INSERT INTO `%%PRFX%%_countries` VALUES (30, 'BR', 'Бразилия', '2', '2');#inst#
-INSERT INTO `%%PRFX%%_countries` VALUES (31, 'IO', 'Британские территории в Индийском океане', '2', '2');#inst#
-INSERT INTO `%%PRFX%%_countries` VALUES (32, 'VG', 'Виргинские острова (Британия)', '2', '2');#inst#
-INSERT INTO `%%PRFX%%_countries` VALUES (33, 'BN', 'Бруней Дарусаллам', '2', '2');#inst#
-INSERT INTO `%%PRFX%%_countries` VALUES (34, 'BG', 'Болгария', '2', '2');#inst#
-INSERT INTO `%%PRFX%%_countries` VALUES (35, 'BF', 'Буркина-Фасо', '2', '2');#inst#
-INSERT INTO `%%PRFX%%_countries` VALUES (36, 'BI', 'Бурунди', '2', '2');#inst#
-INSERT INTO `%%PRFX%%_countries` VALUES (37, 'KH', 'Камбоджа', '2', '2');#inst#
-INSERT INTO `%%PRFX%%_countries` VALUES (38, 'CM', 'Камерун', '2', '2');#inst#
-INSERT INTO `%%PRFX%%_countries` VALUES (39, 'CA', 'Канада', '2', '2');#inst#
-INSERT INTO `%%PRFX%%_countries` VALUES (40, 'CV', 'Кейп-Верд', '2', '2');#inst#
-INSERT INTO `%%PRFX%%_countries` VALUES (41, 'KY', 'Кайманские острова', '2', '2');#inst#
-INSERT INTO `%%PRFX%%_countries` VALUES (42, 'CF', 'Центральная Африканская Республика', '2', '2');#inst#
-INSERT INTO `%%PRFX%%_countries` VALUES (43, 'TD', 'Чад', '2', '2');#inst#
-INSERT INTO `%%PRFX%%_countries` VALUES (44, 'CL', 'Чили', '2', '2');#inst#
-INSERT INTO `%%PRFX%%_countries` VALUES (45, 'CN', 'Китай', '2', '2');#inst#
-INSERT INTO `%%PRFX%%_countries` VALUES (46, 'CX', 'Рождественские острова', '2', '2');#inst#
-INSERT INTO `%%PRFX%%_countries` VALUES (47, 'CC', 'Кокосовые острова', '2', '2');#inst#
-INSERT INTO `%%PRFX%%_countries` VALUES (48, 'CO', 'Колумбия', '2', '2');#inst#
-INSERT INTO `%%PRFX%%_countries` VALUES (49, 'KM', 'Коморос', '2', '2');#inst#
-INSERT INTO `%%PRFX%%_countries` VALUES (50, 'CG', 'Конго', '2', '2');#inst#
-INSERT INTO `%%PRFX%%_countries` VALUES (51, 'CK', 'Острова Кука', '2', '2');#inst#
-INSERT INTO `%%PRFX%%_countries` VALUES (52, 'CR', 'Коста-Рика', '2', '2');#inst#
-INSERT INTO `%%PRFX%%_countries` VALUES (53, 'CI', 'Кот-д Ивуар (Берег Слоновой Кости)', '2', '2');#inst#
-INSERT INTO `%%PRFX%%_countries` VALUES (54, 'HR', 'Хорватия', '2', '1');#inst#
-INSERT INTO `%%PRFX%%_countries` VALUES (55, 'CU', 'Куба', '2', '2');#inst#
-INSERT INTO `%%PRFX%%_countries` VALUES (56, 'CY', 'Кипр', '2', '2');#inst#
-INSERT INTO `%%PRFX%%_countries` VALUES (57, 'CZ', 'Чешская Республика', '2', '1');#inst#
-INSERT INTO `%%PRFX%%_countries` VALUES (58, 'DK', 'Дания', '2', '1');#inst#
-INSERT INTO `%%PRFX%%_countries` VALUES (59, 'DJ', 'Джибути', '2', '2');#inst#
-INSERT INTO `%%PRFX%%_countries` VALUES (60, 'DM', 'Доминика', '2', '2');#inst#
-INSERT INTO `%%PRFX%%_countries` VALUES (61, 'DO', 'Доминиканская Республика', '2', '2');#inst#
-INSERT INTO `%%PRFX%%_countries` VALUES (62, 'TP', 'Восточный Тимор', '2', '2');#inst#
-INSERT INTO `%%PRFX%%_countries` VALUES (63, 'EC', 'Эквадор', '2', '2');#inst#
-INSERT INTO `%%PRFX%%_countries` VALUES (64, 'EG', 'Египет', '2', '2');#inst#
-INSERT INTO `%%PRFX%%_countries` VALUES (65, 'SV', 'Эль-Сальвадор', '2', '2');#inst#
-INSERT INTO `%%PRFX%%_countries` VALUES (66, 'GQ', 'Экваториальная Гвинея', '2', '2');#inst#
-INSERT INTO `%%PRFX%%_countries` VALUES (67, 'ER', 'Эритрея', '2', '2');#inst#
-INSERT INTO `%%PRFX%%_countries` VALUES (68, 'EE', 'Эстония', '2', '1');#inst#
-INSERT INTO `%%PRFX%%_countries` VALUES (69, 'ET', 'Эфиопия', '2', '2');#inst#
-INSERT INTO `%%PRFX%%_countries` VALUES (70, 'FK', 'Фолклендские острова', '2', '2');#inst#
-INSERT INTO `%%PRFX%%_countries` VALUES (71, 'FO', 'Острова Фаро', '2', '2');#inst#
-INSERT INTO `%%PRFX%%_countries` VALUES (72, 'FJ', 'Фиджи', '2', '2');#inst#
-INSERT INTO `%%PRFX%%_countries` VALUES (73, 'FI', 'Финляндия', '2', '2');#inst#
-INSERT INTO `%%PRFX%%_countries` VALUES (74, 'FR', 'Франция', '2', '1');#inst#
-INSERT INTO `%%PRFX%%_countries` VALUES (75, 'FX', 'Франция, Столица', '2', '1');#inst#
-INSERT INTO `%%PRFX%%_countries` VALUES (76, 'GF', 'Французская Гвиана', '2', '2');#inst#
-INSERT INTO `%%PRFX%%_countries` VALUES (77, 'PF', 'Французская Полинезия', '2', '2');#inst#
-INSERT INTO `%%PRFX%%_countries` VALUES (78, 'TF', 'Французские южные территории', '2', '2');#inst#
-INSERT INTO `%%PRFX%%_countries` VALUES (79, 'GA', 'Габон', '2', '2');#inst#
-INSERT INTO `%%PRFX%%_countries` VALUES (80, 'GM', 'Гамбия', '2', '2');#inst#
-INSERT INTO `%%PRFX%%_countries` VALUES (81, 'GE', 'Грузия', '2', '2');#inst#
-INSERT INTO `%%PRFX%%_countries` VALUES (82, 'DE', 'Германия', '2', '1');#inst#
-INSERT INTO `%%PRFX%%_countries` VALUES (83, 'GH', 'Гана', '2', '2');#inst#
-INSERT INTO `%%PRFX%%_countries` VALUES (84, 'GI', 'Гибралтар', '2', '2');#inst#
-INSERT INTO `%%PRFX%%_countries` VALUES (85, 'GR', 'Греция', '2', '1');#inst#
-INSERT INTO `%%PRFX%%_countries` VALUES (86, 'GL', 'Гренландия', '2', '2');#inst#
-INSERT INTO `%%PRFX%%_countries` VALUES (87, 'GD', 'Гренада', '2', '2');#inst#
-INSERT INTO `%%PRFX%%_countries` VALUES (88, 'GP', 'Гваделупа', '2', '2');#inst#
-INSERT INTO `%%PRFX%%_countries` VALUES (89, 'GU', 'Гуам', '2', '2');#inst#
-INSERT INTO `%%PRFX%%_countries` VALUES (90, 'GT', 'Гватемала', '2', '2');#inst#
-INSERT INTO `%%PRFX%%_countries` VALUES (91, 'GN', 'Гвинея', '2', '2');#inst#
-INSERT INTO `%%PRFX%%_countries` VALUES (92, 'GW', 'Гвинея-Биссау', '2', '2');#inst#
-INSERT INTO `%%PRFX%%_countries` VALUES (93, 'GY', 'Гайана', '2', '2');#inst#
-INSERT INTO `%%PRFX%%_countries` VALUES (94, 'HT', 'Гаити', '2', '2');#inst#
-INSERT INTO `%%PRFX%%_countries` VALUES (95, 'HM', 'Острова Хирт и Макдоналдс', '2', '2');#inst#
-INSERT INTO `%%PRFX%%_countries` VALUES (96, 'HN', 'Гондурас', '2', '2');#inst#
-INSERT INTO `%%PRFX%%_countries` VALUES (97, 'HK', 'Гонгконг', '2', '2');#inst#
-INSERT INTO `%%PRFX%%_countries` VALUES (98, 'HU', 'Венгрия', '2', '2');#inst#
-INSERT INTO `%%PRFX%%_countries` VALUES (99, 'IS', 'Исландия', '2', '2');#inst#
-INSERT INTO `%%PRFX%%_countries` VALUES (100, 'IN', 'Индия', '2', '2');#inst#
-INSERT INTO `%%PRFX%%_countries` VALUES (101, 'ID', 'Индонезия', '2', '2');#inst#
-INSERT INTO `%%PRFX%%_countries` VALUES (102, 'IQ', 'Ирак', '2', '2');#inst#
-INSERT INTO `%%PRFX%%_countries` VALUES (103, 'IE', 'Ирландия', '2', '1');#inst#
-INSERT INTO `%%PRFX%%_countries` VALUES (104, 'IR', 'Иран', '2', '2');#inst#
-INSERT INTO `%%PRFX%%_countries` VALUES (105, 'IL', 'Израиль', '2', '2');#inst#
-INSERT INTO `%%PRFX%%_countries` VALUES (106, 'IT', 'Италия', '2', '1');#inst#
-INSERT INTO `%%PRFX%%_countries` VALUES (107, 'JM', 'Ямайка', '2', '2');#inst#
-INSERT INTO `%%PRFX%%_countries` VALUES (108, 'JP', 'Япония', '2', '2');#inst#
-INSERT INTO `%%PRFX%%_countries` VALUES (109, 'JO', 'Иордан', '2', '2');#inst#
-INSERT INTO `%%PRFX%%_countries` VALUES (110, 'KZ', 'Казахстан', '2', '2');#inst#
-INSERT INTO `%%PRFX%%_countries` VALUES (111, 'KE', 'Кения', '2', '2');#inst#
-INSERT INTO `%%PRFX%%_countries` VALUES (112, 'KI', 'Кирибати', '2', '2');#inst#
-INSERT INTO `%%PRFX%%_countries` VALUES (113, 'KP', 'КНДР', '2', '2');#inst#
-INSERT INTO `%%PRFX%%_countries` VALUES (114, 'KR', 'Республика Корея', '2', '2');#inst#
-INSERT INTO `%%PRFX%%_countries` VALUES (115, 'KW', 'Кувейт', '2', '2');#inst#
-INSERT INTO `%%PRFX%%_countries` VALUES (116, 'KG', 'Киргизстан', '2', '2');#inst#
-INSERT INTO `%%PRFX%%_countries` VALUES (117, 'LA', 'Лаосская НДР', '2', '2');#inst#
-INSERT INTO `%%PRFX%%_countries` VALUES (118, 'LV', 'Латвия', '2', '2');#inst#
-INSERT INTO `%%PRFX%%_countries` VALUES (119, 'LB', 'Ливан', '2', '2');#inst#
-INSERT INTO `%%PRFX%%_countries` VALUES (120, 'LS', 'Лесото', '2', '2');#inst#
-INSERT INTO `%%PRFX%%_countries` VALUES (121, 'LR', 'Либерия', '2', '2');#inst#
-INSERT INTO `%%PRFX%%_countries` VALUES (122, 'LY', 'Ливийская Арабская Джамахерия', '2', '2');#inst#
-INSERT INTO `%%PRFX%%_countries` VALUES (123, 'LI', 'Лихтенштейн', '2', '1');#inst#
-INSERT INTO `%%PRFX%%_countries` VALUES (124, 'LT', 'Литва', '2', '2');#inst#
-INSERT INTO `%%PRFX%%_countries` VALUES (125, 'LU', 'Люксембург', '2', '1');#inst#
-INSERT INTO `%%PRFX%%_countries` VALUES (126, 'MO', 'Макао', '2', '2');#inst#
-INSERT INTO `%%PRFX%%_countries` VALUES (127, 'MK', 'Македония', '2', '1');#inst#
-INSERT INTO `%%PRFX%%_countries` VALUES (128, 'MG', 'Мадагаскар', '2', '2');#inst#
-INSERT INTO `%%PRFX%%_countries` VALUES (129, 'MW', 'Малави', '2', '2');#inst#
-INSERT INTO `%%PRFX%%_countries` VALUES (130, 'MY', 'Малайзия', '2', '2');#inst#
-INSERT INTO `%%PRFX%%_countries` VALUES (131, 'MV', 'Мальдивы', '2', '2');#inst#
-INSERT INTO `%%PRFX%%_countries` VALUES (132, 'ML', 'Мали', '2', '2');#inst#
-INSERT INTO `%%PRFX%%_countries` VALUES (133, 'MT', 'Мальта', '2', '2');#inst#
-INSERT INTO `%%PRFX%%_countries` VALUES (134, 'MH', 'Маршалловы острова', '2', '2');#inst#
-INSERT INTO `%%PRFX%%_countries` VALUES (135, 'MQ', 'Мартиника', '2', '2');#inst#
-INSERT INTO `%%PRFX%%_countries` VALUES (136, 'MR', 'Мавритания', '2', '2');#inst#
-INSERT INTO `%%PRFX%%_countries` VALUES (137, 'MU', 'Маврикий', '2', '2');#inst#
-INSERT INTO `%%PRFX%%_countries` VALUES (138, 'YT', 'Майотта', '2', '2');#inst#
-INSERT INTO `%%PRFX%%_countries` VALUES (139, 'MX', 'Мексика', '2', '2');#inst#
-INSERT INTO `%%PRFX%%_countries` VALUES (140, 'FM', 'Микронезия', '2', '2');#inst#
-INSERT INTO `%%PRFX%%_countries` VALUES (141, 'MD', 'Молдова', '2', '2');#inst#
-INSERT INTO `%%PRFX%%_countries` VALUES (142, 'MC', 'Монако', '2', '2');#inst#
-INSERT INTO `%%PRFX%%_countries` VALUES (143, 'MN', 'Монголия', '2', '2');#inst#
-INSERT INTO `%%PRFX%%_countries` VALUES (144, 'MS', 'Монтсеррат', '2', '2');#inst#
-INSERT INTO `%%PRFX%%_countries` VALUES (145, 'MA', 'Марокко', '2', '2');#inst#
-INSERT INTO `%%PRFX%%_countries` VALUES (146, 'MZ', 'Мозамбик', '2', '2');#inst#
-INSERT INTO `%%PRFX%%_countries` VALUES (147, 'MM', 'Мьянма', '2', '2');#inst#
-INSERT INTO `%%PRFX%%_countries` VALUES (148, 'NA', 'Намибия', '2', '2');#inst#
-INSERT INTO `%%PRFX%%_countries` VALUES (149, 'NR', 'Науру', '2', '2');#inst#
-INSERT INTO `%%PRFX%%_countries` VALUES (150, 'NP', 'Непал', '2', '2');#inst#
-INSERT INTO `%%PRFX%%_countries` VALUES (151, 'NL', 'Нидерланды', '2', '1');#inst#
-INSERT INTO `%%PRFX%%_countries` VALUES (152, 'AN', 'Антильские острова', '2', '2');#inst#
-INSERT INTO `%%PRFX%%_countries` VALUES (153, 'NC', 'Новая Каледония', '2', '2');#inst#
-INSERT INTO `%%PRFX%%_countries` VALUES (154, 'NZ', 'Новая Зеландия', '2', '2');#inst#
-INSERT INTO `%%PRFX%%_countries` VALUES (155, 'NI', 'Никарагуа', '2', '2');#inst#
-INSERT INTO `%%PRFX%%_countries` VALUES (156, 'NE', 'Нигер', '2', '2');#inst#
-INSERT INTO `%%PRFX%%_countries` VALUES (157, 'NG', 'Нигерия', '2', '2');#inst#
-INSERT INTO `%%PRFX%%_countries` VALUES (158, 'NU', 'Нию', '2', '2');#inst#
-INSERT INTO `%%PRFX%%_countries` VALUES (159, 'NF', 'Остров Норфолк', '2', '2');#inst#
-INSERT INTO `%%PRFX%%_countries` VALUES (160, 'MP', 'Остров Северной марины', '2', '2');#inst#
-INSERT INTO `%%PRFX%%_countries` VALUES (161, 'NO', 'Норвегия', '2', '1');#inst#
-INSERT INTO `%%PRFX%%_countries` VALUES (162, 'OM', 'Оман', '2', '2');#inst#
-INSERT INTO `%%PRFX%%_countries` VALUES (163, 'PK', 'Пакистан', '2', '2');#inst#
-INSERT INTO `%%PRFX%%_countries` VALUES (164, 'PW', 'Палау', '2', '2');#inst#
-INSERT INTO `%%PRFX%%_countries` VALUES (165, 'PA', 'Панама', '2', '2');#inst#
-INSERT INTO `%%PRFX%%_countries` VALUES (166, 'PG', 'Папуа-Новая Гвинея', '2', '2');#inst#
-INSERT INTO `%%PRFX%%_countries` VALUES (167, 'PY', 'Парагвай', '2', '2');#inst#
-INSERT INTO `%%PRFX%%_countries` VALUES (168, 'PE', 'Перу', '2', '2');#inst#
-INSERT INTO `%%PRFX%%_countries` VALUES (169, 'PH', 'Филипинны', '2', '2');#inst#
-INSERT INTO `%%PRFX%%_countries` VALUES (170, 'PN', 'Остров Питкаирн', '2', '2');#inst#
-INSERT INTO `%%PRFX%%_countries` VALUES (171, 'PL', 'Польша', '2', '1');#inst#
-INSERT INTO `%%PRFX%%_countries` VALUES (172, 'PT', 'Португалия', '2', '1');#inst#
-INSERT INTO `%%PRFX%%_countries` VALUES (173, 'PR', 'Пуэрто-Рико', '2', '2');#inst#
-INSERT INTO `%%PRFX%%_countries` VALUES (174, 'QA', 'Катар', '2', '2');#inst#
-INSERT INTO `%%PRFX%%_countries` VALUES (175, 'RE', 'Остров Воссоединения', '2', '2');#inst#
-INSERT INTO `%%PRFX%%_countries` VALUES (176, 'RO', 'Румыния', '2', '1');#inst#
-INSERT INTO `%%PRFX%%_countries` VALUES (177, 'RU', 'Россия', '1', '2');#inst#
-INSERT INTO `%%PRFX%%_countries` VALUES (178, 'RW', 'Руанда', '2', '2');#inst#
-INSERT INTO `%%PRFX%%_countries` VALUES (179, 'LC', 'Остров Святого Луки', '2', '2');#inst#
-INSERT INTO `%%PRFX%%_countries` VALUES (180, 'WS', 'Самоа', '2', '2');#inst#
-INSERT INTO `%%PRFX%%_countries` VALUES (181, 'SM', 'Сан-Марино', '2', '1');#inst#
-INSERT INTO `%%PRFX%%_countries` VALUES (182, 'ST', 'Сан-Томе и Принсипи', '2', '2');#inst#
-INSERT INTO `%%PRFX%%_countries` VALUES (183, 'SA', 'Саудовская Аравия', '2', '2');#inst#
-INSERT INTO `%%PRFX%%_countries` VALUES (184, 'SN', 'Сенегал', '2', '2');#inst#
-INSERT INTO `%%PRFX%%_countries` VALUES (185, 'SC', 'Сейшельские Острова', '2', '2');#inst#
-INSERT INTO `%%PRFX%%_countries` VALUES (186, 'SL', 'Сьерра Леоне', '2', '2');#inst#
-INSERT INTO `%%PRFX%%_countries` VALUES (187, 'SG', 'Сингапур', '2', '2');#inst#
-INSERT INTO `%%PRFX%%_countries` VALUES (188, 'SK', 'Словацкая Республика', '2', '1');#inst#
-INSERT INTO `%%PRFX%%_countries` VALUES (189, 'SI', 'Словения', '2', '1');#inst#
-INSERT INTO `%%PRFX%%_countries` VALUES (190, 'SB', 'Соломоновы Острова', '2', '2');#inst#
-INSERT INTO `%%PRFX%%_countries` VALUES (191, 'SO', 'Сомали', '2', '2');#inst#
-INSERT INTO `%%PRFX%%_countries` VALUES (192, 'ZA', 'Южная Африка', '2', '2');#inst#
-INSERT INTO `%%PRFX%%_countries` VALUES (193, 'ES', 'Испания', '2', '1');#inst#
-INSERT INTO `%%PRFX%%_countries` VALUES (194, 'LK', 'Шри-Ланка', '2', '2');#inst#
-INSERT INTO `%%PRFX%%_countries` VALUES (195, 'SH', 'Остров Святой Елены', '2', '2');#inst#
-INSERT INTO `%%PRFX%%_countries` VALUES (196, 'KN', 'Сент-Кикс и Невис', '2', '2');#inst#
-INSERT INTO `%%PRFX%%_countries` VALUES (197, 'PM', 'Остров Святого Петра', '2', '2');#inst#
-INSERT INTO `%%PRFX%%_countries` VALUES (198, 'VC', 'Сент-Винсент и Гренадины', '2', '2');#inst#
-INSERT INTO `%%PRFX%%_countries` VALUES (199, 'SD', 'Cудан', '2', '2');#inst#
-INSERT INTO `%%PRFX%%_countries` VALUES (200, 'SR', 'Суринам', '2', '2');#inst#
-INSERT INTO `%%PRFX%%_countries` VALUES (201, 'SJ', 'Острова Свалбард и Жан-Мейен', '2', '2');#inst#
-INSERT INTO `%%PRFX%%_countries` VALUES (202, 'SZ', 'Свазиленд', '2', '2');#inst#
-INSERT INTO `%%PRFX%%_countries` VALUES (203, 'SE', 'Швеция', '2', '1');#inst#
-INSERT INTO `%%PRFX%%_countries` VALUES (204, 'CH', 'Швейцария', '2', '2');#inst#
-INSERT INTO `%%PRFX%%_countries` VALUES (205, 'SY', 'Сирийская Арабская Республика', '2', '2');#inst#
-INSERT INTO `%%PRFX%%_countries` VALUES (206, 'TW', 'Тайвань', '2', '2');#inst#
-INSERT INTO `%%PRFX%%_countries` VALUES (207, 'TJ', 'Таджикистан', '2', '2');#inst#
-INSERT INTO `%%PRFX%%_countries` VALUES (208, 'TZ', 'Танзания', '2', '2');#inst#
-INSERT INTO `%%PRFX%%_countries` VALUES (209, 'TH', 'Таиланд', '2', '2');#inst#
-INSERT INTO `%%PRFX%%_countries` VALUES (210, 'TG', 'Того', '2', '2');#inst#
-INSERT INTO `%%PRFX%%_countries` VALUES (211, 'TK', 'Токелау', '2', '2');#inst#
-INSERT INTO `%%PRFX%%_countries` VALUES (212, 'TO', 'Тонга', '2', '2');#inst#
-INSERT INTO `%%PRFX%%_countries` VALUES (213, 'TT', 'Тринидад и Тобаго', '2', '2');#inst#
-INSERT INTO `%%PRFX%%_countries` VALUES (214, 'TN', 'Тунис', '2', '2');#inst#
-INSERT INTO `%%PRFX%%_countries` VALUES (215, 'TR', 'Турция', '2', '1');#inst#
-INSERT INTO `%%PRFX%%_countries` VALUES (216, 'TM', 'Туркменистан', '2', '2');#inst#
-INSERT INTO `%%PRFX%%_countries` VALUES (217, 'TC', 'Острова Теркс и Кайкос', '2', '2');#inst#
-INSERT INTO `%%PRFX%%_countries` VALUES (218, 'TV', 'Тувалу', '2', '2');#inst#
-INSERT INTO `%%PRFX%%_countries` VALUES (219, 'UG', 'Уганда', '2', '2');#inst#
-INSERT INTO `%%PRFX%%_countries` VALUES (220, 'UA', 'Украина', '1', '2');#inst#
-INSERT INTO `%%PRFX%%_countries` VALUES (221, 'AE', 'Объединённые Арабские Эмираты', '2', '2');#inst#
-INSERT INTO `%%PRFX%%_countries` VALUES (222, 'GB', 'Великобритания', '2', '1');#inst#
-INSERT INTO `%%PRFX%%_countries` VALUES (223, 'US', 'Соединённые Штаты Америки', '2', '2');#inst#
-INSERT INTO `%%PRFX%%_countries` VALUES (224, 'VI', 'Виргинские острова (США)', '2', '2');#inst#
-INSERT INTO `%%PRFX%%_countries` VALUES (225, 'UY', 'Уругвай', '2', '2');#inst#
-INSERT INTO `%%PRFX%%_countries` VALUES (226, 'UZ', 'Узбекистан', '2', '2');#inst#
-INSERT INTO `%%PRFX%%_countries` VALUES (227, 'VU', 'Вануату', '2', '2');#inst#
-INSERT INTO `%%PRFX%%_countries` VALUES (228, 'VA', 'Ватикан', '2', '2');#inst#
-INSERT INTO `%%PRFX%%_countries` VALUES (229, 'VE', 'Венесуэла', '2', '2');#inst#
-INSERT INTO `%%PRFX%%_countries` VALUES (230, 'VN', 'Вьетнам', '2', '2');#inst#
-INSERT INTO `%%PRFX%%_countries` VALUES (231, 'WF', 'Острова Уэльс и Фортуны', '2', '2');#inst#
-INSERT INTO `%%PRFX%%_countries` VALUES (232, 'EH', 'Западная Сахара', '2', '2');#inst#
-INSERT INTO `%%PRFX%%_countries` VALUES (233, 'YE', 'Йемен', '2', '2');#inst#
-INSERT INTO `%%PRFX%%_countries` VALUES (234, 'YU', 'Югославия', '2', '2');#inst#
-INSERT INTO `%%PRFX%%_countries` VALUES (235, 'ZR', 'Заир', '2', '2');#inst#
-INSERT INTO `%%PRFX%%_countries` VALUES (236, 'ZM', 'Замбия', '2', '2');#inst#
-INSERT INTO `%%PRFX%%_countries` VALUES (237, 'ZW', 'Зимбабве', '2', '2');#inst#
+INSERT INTO `%%PRFX%%_countries` VALUES
+  (1, 'AF', 'Афганистан', '2', '2'),
+  (2, 'AL', 'Албания', '2', '2'),
+  (3, 'DZ', 'Алжир', '2', '2'),
+  (4, 'AS', 'Американское Самоа', '2', '2'),
+  (5, 'AD', 'Андорра', '2', '2'),
+  (6, 'AO', 'Ангола', '2', '2'),
+  (7, 'AI', 'Ангвилла', '2', '2'),
+  (8, 'AQ', 'Антарктика', '2', '2'),
+  (9, 'AG', 'Антигуа и Барбуда', '2', '2'),
+  (10, 'AR', 'Аргентина', '2', '2'),
+  (11, 'AM', 'Армения', '2', '2'),
+  (12, 'AW', 'Аруба', '2', '2'),
+  (13, 'AU', 'Австралия', '2', '2'),
+  (14, 'AT', 'Австрия', '2', '1'),
+  (15, 'AZ', 'Азербайджан', '2', '2'),
+  (16, 'BS', 'Содружество Багамских островов', '2', '2'),
+  (17, 'BH', 'Бахрейн', '2', '2'),
+  (18, 'BD', 'Бангладеш', '2', '2'),
+  (19, 'BB', 'Барбадос', '2', '2'),
+  (20, 'BY', 'Беларусь', '1', '2'),
+  (21, 'BE', 'Бельгия', '2', '1'),
+  (22, 'BZ', 'Белиц', '2', '2'),
+  (23, 'BJ', 'Бенин', '2', '2'),
+  (24, 'BM', 'Бермудские острова', '2', '2'),
+  (25, 'BT', 'Бутан', '2', '2'),
+  (26, 'BO', 'Боливия', '2', '2'),
+  (27, 'BA', 'Босния и Герцеговина', '2', '1'),
+  (28, 'BW', 'Ботсвана', '2', '2'),
+  (29, 'BV', 'Остров Бювет', '2', '2'),
+  (30, 'BR', 'Бразилия', '2', '2'),
+  (31, 'IO', 'Британские территории в Индийском океане', '2', '2'),
+  (32, 'VG', 'Виргинские острова (Британия)', '2', '2'),
+  (33, 'BN', 'Бруней Дарусаллам', '2', '2'),
+  (34, 'BG', 'Болгария', '2', '2'),
+  (35, 'BF', 'Буркина-Фасо', '2', '2'),
+  (36, 'BI', 'Бурунди', '2', '2'),
+  (37, 'KH', 'Камбоджа', '2', '2'),
+  (38, 'CM', 'Камерун', '2', '2'),
+  (39, 'CA', 'Канада', '2', '2'),
+  (40, 'CV', 'Кейп-Верд', '2', '2'),
+  (41, 'KY', 'Кайманские острова', '2', '2'),
+  (42, 'CF', 'Центральная Африканская Республика', '2', '2'),
+  (43, 'TD', 'Чад', '2', '2'),
+  (44, 'CL', 'Чили', '2', '2'),
+  (45, 'CN', 'Китай', '2', '2'),
+  (46, 'CX', 'Рождественские острова', '2', '2'),
+  (47, 'CC', 'Кокосовые острова', '2', '2'),
+  (48, 'CO', 'Колумбия', '2', '2'),
+  (49, 'KM', 'Коморос', '2', '2'),
+  (50, 'CG', 'Конго', '2', '2'),
+  (51, 'CK', 'Острова Кука', '2', '2'),
+  (52, 'CR', 'Коста-Рика', '2', '2'),
+  (53, 'CI', 'Кот-д Ивуар (Берег Слоновой Кости)', '2', '2'),
+  (54, 'HR', 'Хорватия', '2', '1'),
+  (55, 'CU', 'Куба', '2', '2'),
+  (56, 'CY', 'Кипр', '2', '2'),
+  (57, 'CZ', 'Чешская Республика', '2', '1'),
+  (58, 'DK', 'Дания', '2', '1'),
+  (59, 'DJ', 'Джибути', '2', '2'),
+  (60, 'DM', 'Доминика', '2', '2'),
+  (61, 'DO', 'Доминиканская Республика', '2', '2'),
+  (62, 'TP', 'Восточный Тимор', '2', '2'),
+  (63, 'EC', 'Эквадор', '2', '2'),
+  (64, 'EG', 'Египет', '2', '2'),
+  (65, 'SV', 'Эль-Сальвадор', '2', '2'),
+  (66, 'GQ', 'Экваториальная Гвинея', '2', '2'),
+  (67, 'ER', 'Эритрея', '2', '2'),
+  (68, 'EE', 'Эстония', '2', '1'),
+  (69, 'ET', 'Эфиопия', '2', '2'),
+  (70, 'FK', 'Фолклендские острова', '2', '2'),
+  (71, 'FO', 'Острова Фаро', '2', '2'),
+  (72, 'FJ', 'Фиджи', '2', '2'),
+  (73, 'FI', 'Финляндия', '2', '2'),
+  (74, 'FR', 'Франция', '2', '1'),
+  (75, 'FX', 'Франция, Столица', '2', '1'),
+  (76, 'GF', 'Французская Гвиана', '2', '2'),
+  (77, 'PF', 'Французская Полинезия', '2', '2'),
+  (78, 'TF', 'Французские южные территории', '2', '2'),
+  (79, 'GA', 'Габон', '2', '2'),
+  (80, 'GM', 'Гамбия', '2', '2'),
+  (81, 'GE', 'Грузия', '2', '2'),
+  (82, 'DE', 'Германия', '2', '1'),
+  (83, 'GH', 'Гана', '2', '2'),
+  (84, 'GI', 'Гибралтар', '2', '2'),
+  (85, 'GR', 'Греция', '2', '1'),
+  (86, 'GL', 'Гренландия', '2', '2'),
+  (87, 'GD', 'Гренада', '2', '2'),
+  (88, 'GP', 'Гваделупа', '2', '2'),
+  (89, 'GU', 'Гуам', '2', '2'),
+  (90, 'GT', 'Гватемала', '2', '2'),
+  (91, 'GN', 'Гвинея', '2', '2'),
+  (92, 'GW', 'Гвинея-Биссау', '2', '2'),
+  (93, 'GY', 'Гайана', '2', '2'),
+  (94, 'HT', 'Гаити', '2', '2'),
+  (95, 'HM', 'Острова Хирт и Макдоналдс', '2', '2'),
+  (96, 'HN', 'Гондурас', '2', '2'),
+  (97, 'HK', 'Гонгконг', '2', '2'),
+  (98, 'HU', 'Венгрия', '2', '2'),
+  (99, 'IS', 'Исландия', '2', '2'),
+  (100, 'IN', 'Индия', '2', '2'),
+  (101, 'ID', 'Индонезия', '2', '2'),
+  (102, 'IQ', 'Ирак', '2', '2'),
+  (103, 'IE', 'Ирландия', '2', '1'),
+  (104, 'IR', 'Иран', '2', '2'),
+  (105, 'IL', 'Израиль', '2', '2'),
+  (106, 'IT', 'Италия', '2', '1'),
+  (107, 'JM', 'Ямайка', '2', '2'),
+  (108, 'JP', 'Япония', '2', '2'),
+  (109, 'JO', 'Иордан', '2', '2'),
+  (110, 'KZ', 'Казахстан', '2', '2'),
+  (111, 'KE', 'Кения', '2', '2'),
+  (112, 'KI', 'Кирибати', '2', '2'),
+  (113, 'KP', 'КНДР', '2', '2'),
+  (114, 'KR', 'Республика Корея', '2', '2'),
+  (115, 'KW', 'Кувейт', '2', '2'),
+  (116, 'KG', 'Киргизстан', '2', '2'),
+  (117, 'LA', 'Лаосская НДР', '2', '2'),
+  (118, 'LV', 'Латвия', '2', '2'),
+  (119, 'LB', 'Ливан', '2', '2'),
+  (120, 'LS', 'Лесото', '2', '2'),
+  (121, 'LR', 'Либерия', '2', '2'),
+  (122, 'LY', 'Ливийская Арабская Джамахерия', '2', '2'),
+  (123, 'LI', 'Лихтенштейн', '2', '1'),
+  (124, 'LT', 'Литва', '2', '2'),
+  (125, 'LU', 'Люксембург', '2', '1'),
+  (126, 'MO', 'Макао', '2', '2'),
+  (127, 'MK', 'Македония', '2', '1'),
+  (128, 'MG', 'Мадагаскар', '2', '2'),
+  (129, 'MW', 'Малави', '2', '2'),
+  (130, 'MY', 'Малайзия', '2', '2'),
+  (131, 'MV', 'Мальдивы', '2', '2'),
+  (132, 'ML', 'Мали', '2', '2'),
+  (133, 'MT', 'Мальта', '2', '2'),
+  (134, 'MH', 'Маршалловы острова', '2', '2'),
+  (135, 'MQ', 'Мартиника', '2', '2'),
+  (136, 'MR', 'Мавритания', '2', '2'),
+  (137, 'MU', 'Маврикий', '2', '2'),
+  (138, 'YT', 'Майотта', '2', '2'),
+  (139, 'MX', 'Мексика', '2', '2'),
+  (140, 'FM', 'Микронезия', '2', '2'),
+  (141, 'MD', 'Молдова', '2', '2'),
+  (142, 'MC', 'Монако', '2', '2'),
+  (143, 'MN', 'Монголия', '2', '2'),
+  (144, 'MS', 'Монтсеррат', '2', '2'),
+  (145, 'MA', 'Марокко', '2', '2'),
+  (146, 'MZ', 'Мозамбик', '2', '2'),
+  (147, 'MM', 'Мьянма', '2', '2'),
+  (148, 'NA', 'Намибия', '2', '2'),
+  (149, 'NR', 'Науру', '2', '2'),
+  (150, 'NP', 'Непал', '2', '2'),
+  (151, 'NL', 'Нидерланды', '2', '1'),
+  (152, 'AN', 'Антильские острова', '2', '2'),
+  (153, 'NC', 'Новая Каледония', '2', '2'),
+  (154, 'NZ', 'Новая Зеландия', '2', '2'),
+  (155, 'NI', 'Никарагуа', '2', '2'),
+  (156, 'NE', 'Нигер', '2', '2'),
+  (157, 'NG', 'Нигерия', '2', '2'),
+  (158, 'NU', 'Нию', '2', '2'),
+  (159, 'NF', 'Остров Норфолк', '2', '2'),
+  (160, 'MP', 'Остров Северной марины', '2', '2'),
+  (161, 'NO', 'Норвегия', '2', '1'),
+  (162, 'OM', 'Оман', '2', '2'),
+  (163, 'PK', 'Пакистан', '2', '2'),
+  (164, 'PW', 'Палау', '2', '2'),
+  (165, 'PA', 'Панама', '2', '2'),
+  (166, 'PG', 'Папуа-Новая Гвинея', '2', '2'),
+  (167, 'PY', 'Парагвай', '2', '2'),
+  (168, 'PE', 'Перу', '2', '2'),
+  (169, 'PH', 'Филипинны', '2', '2'),
+  (170, 'PN', 'Остров Питкаирн', '2', '2'),
+  (171, 'PL', 'Польша', '2', '1'),
+  (172, 'PT', 'Португалия', '2', '1'),
+  (173, 'PR', 'Пуэрто-Рико', '2', '2'),
+  (174, 'QA', 'Катар', '2', '2'),
+  (175, 'RE', 'Остров Воссоединения', '2', '2'),
+  (176, 'RO', 'Румыния', '2', '1'),
+  (177, 'RU', 'Россия', '1', '2'),
+  (178, 'RW', 'Руанда', '2', '2'),
+  (179, 'LC', 'Остров Святого Луки', '2', '2'),
+  (180, 'WS', 'Самоа', '2', '2'),
+  (181, 'SM', 'Сан-Марино', '2', '1'),
+  (182, 'ST', 'Сан-Томе и Принсипи', '2', '2'),
+  (183, 'SA', 'Саудовская Аравия', '2', '2'),
+  (184, 'SN', 'Сенегал', '2', '2'),
+  (185, 'SC', 'Сейшельские Острова', '2', '2'),
+  (186, 'SL', 'Сьерра Леоне', '2', '2'),
+  (187, 'SG', 'Сингапур', '2', '2'),
+  (188, 'SK', 'Словацкая Республика', '2', '1'),
+  (189, 'SI', 'Словения', '2', '1'),
+  (190, 'SB', 'Соломоновы Острова', '2', '2'),
+  (191, 'SO', 'Сомали', '2', '2'),
+  (192, 'ZA', 'Южная Африка', '2', '2'),
+  (193, 'ES', 'Испания', '2', '1'),
+  (194, 'LK', 'Шри-Ланка', '2', '2'),
+  (195, 'SH', 'Остров Святой Елены', '2', '2'),
+  (196, 'KN', 'Сент-Кикс и Невис', '2', '2'),
+  (197, 'PM', 'Остров Святого Петра', '2', '2'),
+  (198, 'VC', 'Сент-Винсент и Гренадины', '2', '2'),
+  (199, 'SD', 'Cудан', '2', '2'),
+  (200, 'SR', 'Суринам', '2', '2'),
+  (201, 'SJ', 'Острова Свалбард и Жан-Мейен', '2', '2'),
+  (202, 'SZ', 'Свазиленд', '2', '2'),
+  (203, 'SE', 'Швеция', '2', '1'),
+  (204, 'CH', 'Швейцария', '2', '2'),
+  (205, 'SY', 'Сирийская Арабская Республика', '2', '2'),
+  (206, 'TW', 'Тайвань', '2', '2'),
+  (207, 'TJ', 'Таджикистан', '2', '2'),
+  (208, 'TZ', 'Танзания', '2', '2'),
+  (209, 'TH', 'Таиланд', '2', '2'),
+  (210, 'TG', 'Того', '2', '2'),
+  (211, 'TK', 'Токелау', '2', '2'),
+  (212, 'TO', 'Тонга', '2', '2'),
+  (213, 'TT', 'Тринидад и Тобаго', '2', '2'),
+  (214, 'TN', 'Тунис', '2', '2'),
+  (215, 'TR', 'Турция', '2', '1'),
+  (216, 'TM', 'Туркменистан', '2', '2'),
+  (217, 'TC', 'Острова Теркс и Кайкос', '2', '2'),
+  (218, 'TV', 'Тувалу', '2', '2'),
+  (219, 'UG', 'Уганда', '2', '2'),
+  (220, 'UA', 'Украина', '1', '2'),
+  (221, 'AE', 'Объединённые Арабские Эмираты', '2', '2'),
+  (222, 'GB', 'Великобритания', '2', '1'),
+  (223, 'US', 'Соединённые Штаты Америки', '2', '2'),
+  (224, 'VI', 'Виргинские острова (США)', '2', '2'),
+  (225, 'UY', 'Уругвай', '2', '2'),
+  (226, 'UZ', 'Узбекистан', '2', '2'),
+  (227, 'VU', 'Вануату', '2', '2'),
+  (228, 'VA', 'Ватикан', '2', '2'),
+  (229, 'VE', 'Венесуэла', '2', '2'),
+  (230, 'VN', 'Вьетнам', '2', '2'),
+  (231, 'WF', 'Острова Уэльс и Фортуны', '2', '2'),
+  (232, 'EH', 'Западная Сахара', '2', '2'),
+  (233, 'YE', 'Йемен', '2', '2'),
+  (234, 'YU', 'Югославия', '2', '2'),
+  (235, 'ZR', 'Заир', '2', '2'),
+  (236, 'ZM', 'Замбия', '2', '2'),
+  (237, 'ZW', 'Зимбабве', '2', '2');#inst#
 
-INSERT INTO `%%PRFX%%_document_fields` VALUES (1, 1, 1, 'Поздравляем!', '1');#inst#
-INSERT INTO `%%PRFX%%_document_fields` VALUES (2, 2, 1, '<p>Установка <strong>AVE.cms 2.09RC1</strong> прошла успешно!</p>', '1');#inst#
-INSERT INTO `%%PRFX%%_document_fields` VALUES (3, 1, 2, 'Ошибка 404', '0');#inst#
-INSERT INTO `%%PRFX%%_document_fields` VALUES (4, 2, 2, 'Извините, запрошенный Вами документ не найден.', '0');#inst#
-INSERT INTO `%%PRFX%%_document_fields` VALUES (5, 1, 3, 'Пример модуля Галерея', '1');#inst#
-INSERT INTO `%%PRFX%%_document_fields` VALUES (6, 2, 3, '[mod_gallery:1]<br />', '1');#inst#
-INSERT INTO `%%PRFX%%_document_fields` VALUES (7, 7, 4, 'Design Process', '1');#inst#
-INSERT INTO `%%PRFX%%_document_fields` VALUES (8, 8, 4, '<p>Дизайн основан на вдохновение прошлых достижений. На этой основе, мы можем опираться на эти достижения, чтобы строить будущее. Дизайн о жизни - прошлое, настоящее и будущее - и процесс обучения, который происходит между рождением и смертью. Речь идет о сообществе и обмен знаниями и опытом. Это страсть, опираться на то, что мы научились создавать что-то лучше.</p>\r\n<a name="more"></a>\r\n<p>Design is based on the inspiration of past accomplishments. On that  foundation, we can build upon those achievements to shape the future.  Design is about life &mdash; past, present and future &mdash; and the learning  process that happens between birth and death. It is about community and  shared knowledge and experience. It is the passion to build on what  we''ve learned to create something better.</p>', '1');#inst#
-INSERT INTO `%%PRFX%%_document_fields` VALUES (9, 9, 4, '', '1');#inst#
-INSERT INTO `%%PRFX%%_document_fields` VALUES (10, 10, 4, 'Политика', '1');#inst#
-INSERT INTO `%%PRFX%%_document_fields` VALUES (11, 7, 5, 'Design Influences', '1');#inst#
-INSERT INTO `%%PRFX%%_document_fields` VALUES (12, 8, 5, '<p>Слова &quot;дизайн влияет&quot; можно понимать и как множественное существительное и как субъект и глагола. Существительное множественного говорит о тех, кто пришел до нас, и проложили дорогу. Глагола говорит об ответственности дизайн ведущую роль. По понимание, куда мы пришли, у нас есть лучшее представление о том, куда мы идем и, возможно, где мы должны быть заголовок.</p>\r\n<a name="more"></a>\r\n<p>The words &quot;design influences&quot; can be understood as both a plural noun  and as subject and verb. The plural noun speaks of those who have come  before us and paved the way. The verb speaks of the responsibility of  design to lead the way. By understanding where we have come from, we  have a better idea of where we are going and, perhaps, where we should  be heading.</p>', '1');#inst#
-INSERT INTO `%%PRFX%%_document_fields` VALUES (13, 9, 5, '', '1');#inst#
-INSERT INTO `%%PRFX%%_document_fields` VALUES (14, 10, 5, 'Политика', '1');#inst#
-INSERT INTO `%%PRFX%%_document_fields` VALUES (15, 7, 6, 'Inspiration', '1');#inst#
-INSERT INTO `%%PRFX%%_document_fields` VALUES (16, 8, 6, '<p>I have been inspired by the work of many who have pioneered advances in Web Standards, including  <a title="www.31three.com" href="http://www.31three.com/">Jesse Bennett-Chamberlain</a>,  <a title="www.stopdesign.com" href="http://www.stopdesign.com/">Douglas Bowman</a>,  <a title="www.chaoticpattern.com" href="http://www.chaoticpattern.com/">Allen Chang</a>,  <a title="www.stuffandnonsense.co.uk" href="http://www.stuffandnonsense.co.uk/">Andy Clarke</a>,  <a title="www.hicksdesign.co.uk" href="http://www.hicksdesign.co.uk/">Jon Hicks</a>,  <a title="www.shauninman.com" href="http://www.shauninman.com/">Shaun Inman</a>,  <a title="www.cameronmoll.com" href="http://www.cameronmoll.com/">Cameron Moll</a>,  <a title="veerle.duoh.com" href="http://veerle.duoh.com/">Veerle Pieters</a>,  <a title="www.jasonsantamaria.com" href="http://www.jasonsantamaria.com/">Jason Santa Maria</a>,  <a title="www.mezzoblue.com" href="http://www.mezzoblue.com/">Dave Shea</a>,  <a title="www.thebignoob.com" href="http://www.thebignoob.com/">Ryan Sims</a>,  <a title="www.sonspring.com" href="http://www.sonspring.com/">Nathan Smith</a>, and  <a title="www.zeldman.com" href="http://www.zeldman.com/">Jeffrey Zeldman</a>,  to name a few. Thank you for inspiring <a title="Stephen Bau, Designer, Domain7" href="http://www.domain7.com/WhoWeAre/StephenBau.html">me</a> to give something back.</p>\r\n<a name="more"></a>\r\n<p>Я был вдохновлен работой многих людей, которые первыми достижениями в веб-стандартов, в том числе Джесси Беннетт-Чемберлен, Douglas Bowman, Аллен Чан, Энди Кларк, Джон Хикс, Шон Инман, Камерон Молл, Veerle Pieters, Джейсон Santa Maria, Дэйв Ши Райан Sims, Натан Смит, и Джеффри Зельдман, чтобы назвать несколько. Спасибо за вдохновляющий меня что-то отдавать.</p>', '1');#inst#
-INSERT INTO `%%PRFX%%_document_fields` VALUES (17, 9, 6, '', '1');#inst#
-INSERT INTO `%%PRFX%%_document_fields` VALUES (18, 10, 6, 'Политика', '1');#inst#
-INSERT INTO `%%PRFX%%_document_fields` VALUES (19, 7, 7, 'Contribution', '1');#inst#
-INSERT INTO `%%PRFX%%_document_fields` VALUES (20, 8, 7, '<p>Шаблоны <a href="/fluid960gs/">Fluid 960 Grid System</a> построены на базе работ Натан Смит и его <a href="http://960.gs/">960 Grid System</a>, с использыванием эффектов <a href="http://mootools.net/">MooTools</a> и <a href="http://jquery.com/">jQuery</a> JavaScript библиотек. Идея создания этих шаблонов принадлежит Энди Кларк, автору <a href="http://www.transcendingcss.com/">Transcending CSS</a>, who advocates a content-out approach to rapid interactive prototyping, crediting Jason Santa Maria with the <a href="http://www.jasonsantamaria.com/archive/2004/05/24/grey_box_method.php">grey box method</a>.</p>\r\n<a name="more"></a>\r\n<p>The <a href="/fluid960gs/">Fluid 960 Grid System</a> templates have been built upon the work of Nathan Smith and his <a href="http://960.gs/">960 Grid System</a> using effects from the <a href="http://mootools.net/">MooTools</a> and <a href="http://jquery.com/">jQuery</a>  JavaScript libraries. The idea for building these templates was inspired by Andy Clarke, author of <a href="http://www.transcendingcss.com/">Transcending CSS</a>, who advocates a content-out approach to rapid interactive prototyping, crediting Jason Santa Maria with the <a href="http://www.jasonsantamaria.com/archive/2004/05/24/grey_box_method.php">grey box method</a>.</p>', '1');#inst#
-INSERT INTO `%%PRFX%%_document_fields` VALUES (21, 9, 7, '', '1');#inst#
-INSERT INTO `%%PRFX%%_document_fields` VALUES (22, 10, 7, 'Политика', '1');#inst#
+INSERT INTO `%%PRFX%%_document_fields` VALUES
+  (1, 1, 1, 'Поздравляем!', '0'),
+  (2, 2, 1, '<p>Установка <strong>%%SITENAME%%</strong> прошла успешно!</p>', '0'),
+  (3, 1, 2, 'Ошибка 404', '0'),
+  (4, 2, 2, 'Извините, запрошенный Вами документ не найден.', '0');#inst#
 
-INSERT INTO `%%PRFX%%_document_permissions` VALUES (1, 1, 1, 'docread|alles|new|newnow|editown');#inst#
-INSERT INTO `%%PRFX%%_document_permissions` VALUES (2, 1, 2, 'docread');#inst#
-INSERT INTO `%%PRFX%%_document_permissions` VALUES (3, 1, 3, 'docread');#inst#
-INSERT INTO `%%PRFX%%_document_permissions` VALUES (4, 2, 1, 'docread|alles|new|newnow|editown');#inst#
-INSERT INTO `%%PRFX%%_document_permissions` VALUES (5, 2, 2, 'docread');#inst#
-INSERT INTO `%%PRFX%%_document_permissions` VALUES (6, 2, 3, 'docread');#inst#
-INSERT INTO `%%PRFX%%_document_permissions` VALUES (7, 3, 1, 'docread|alles|new|newnow|editown');#inst#
-INSERT INTO `%%PRFX%%_document_permissions` VALUES (8, 3, 2, 'docread');#inst#
-INSERT INTO `%%PRFX%%_document_permissions` VALUES (9, 3, 3, 'docread');#inst#
+INSERT INTO `%%PRFX%%_documents` VALUES
+  (1, 1, 'home', 'Главная', 0, 0, 0, 1, '0', '', '', 'index,follow', '1', '0', 0, 0, 0),
+  (2, 1, '404-not-found', '404 - Документ не найден', 0, 0, 0, 1, '0', '', '', 'noindex,nofollow', '1', '0', 0, 0, 0);#inst#
 
-INSERT INTO `%%PRFX%%_documents` VALUES (1, 1, 'home', 'Главная', 0, 0, 1275283336, 1, '0', '', '', 'index,follow', '1', '0', 0, 0, 0);#inst#
-INSERT INTO `%%PRFX%%_documents` VALUES (2, 1, '404-not-found', '404 - Документ не найден', 0, 0, 0, 1, '0', '', '', 'noindex,nofollow', '1', '0', 0, 0, 0);#inst#
-INSERT INTO `%%PRFX%%_documents` VALUES (3, 1, 'галерея', 'Галерея', 1275317580, 1906401600, 1275317636, 1, '1', '', '', 'index,follow', '1', '0', 0, 0, 0);#inst#
-INSERT INTO `%%PRFX%%_documents` VALUES (4, 3, 'article/design-process', 'Design Process', 1275348840, 1906488000, 1275351270, 1, '1', '', '', 'index,follow', '1', '0', 0, 0, 0);#inst#
-INSERT INTO `%%PRFX%%_documents` VALUES (5, 3, 'article/design-influences', 'Design Influences', 1275349260, 1906488000, 1275351291, 1, '1', '', '', 'index,follow', '1', '0', 0, 0, 0);#inst#
-INSERT INTO `%%PRFX%%_documents` VALUES (6, 3, 'article/inspiration', 'Inspiration', 1275349440, 1906488000, 1275351312, 1, '1', '', '', 'index,follow', '1', '0', 0, 0, 0);#inst#
-INSERT INTO `%%PRFX%%_documents` VALUES (7, 3, 'article/contribution', 'Contribution', 1275349680, 1906488000, 1275353508, 1, '1', '', '', 'index,follow', '1', '0', 0, 0, 0);#inst#
+INSERT INTO `%%PRFX%%_navigation` VALUES
+  (1, 'Основное меню', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '');#inst#
 
-INSERT INTO `%%PRFX%%_modul_comments` VALUES (1, 1000, '1,3', '0', '1', '1');#inst#
+INSERT INTO `%%PRFX%%_rubric_fields` VALUES
+  (1, 1, 'Заголовок', 'kurztext', 5, '', '', ''),
+  (2, 1, 'Текст', 'langtext', 10, '', '', '');#inst#
 
-INSERT INTO `%%PRFX%%_modul_counter` VALUES (1, 'Основной счетчик');#inst#
-INSERT INTO `%%PRFX%%_modul_counter` VALUES (2, 'Дополнительный счетчик');#inst#
+INSERT INTO `%%PRFX%%_rubric_permissions` VALUES
+  (1, 1, 1, 'alles'),
+  (2, 1, 2, 'docread');#inst#
 
-INSERT INTO `%%PRFX%%_modul_gallery` VALUES (1, 'Демонстрационная галерея', 'Эта галерея создана для ознакомления с возможностями модуля', 1, 1250295071, 120, 4, '1', '1', '', 6, 4, 'watermark.gif', '', 'position', '', '');#inst#
+INSERT INTO `%%PRFX%%_rubrics` VALUES
+  (1, 'Основные страницы', '', '<h1>[tag:fld:1]</h1>[tag:fld:2]', 1, 1, 0);#inst#
 
-INSERT INTO `%%PRFX%%_modul_gallery_images` VALUES (1, 1, 'crocodile.jpg', 1, 'Крокодил', '', '.jpg', 1250295071, 1);#inst#
-INSERT INTO `%%PRFX%%_modul_gallery_images` VALUES (2, 1, 'dolphin.jpg', 1, 'Дельфин', '', '.jpg', 1250295071, 1);#inst#
-INSERT INTO `%%PRFX%%_modul_gallery_images` VALUES (3, 1, 'duck.jpg', 1, 'Утка', '', '.jpg', 1250295071, 1);#inst#
-INSERT INTO `%%PRFX%%_modul_gallery_images` VALUES (4, 1, 'eagle.jpg', 1, 'Орел', '', '.jpg', 1250295071, 7);#inst#
-INSERT INTO `%%PRFX%%_modul_gallery_images` VALUES (5, 1, 'jellyfish.jpg', 1, 'Медузы', '', '.jpg', 1250295071, 1);#inst#
-INSERT INTO `%%PRFX%%_modul_gallery_images` VALUES (6, 1, 'killer_whale.jpg', 1, 'Касатка', '', '.jpg', 1250295071, 6);#inst#
-INSERT INTO `%%PRFX%%_modul_gallery_images` VALUES (7, 1, 'leaf.jpg', 1, 'Лист', '', '.jpg', 1250295071, 1);#inst#
-INSERT INTO `%%PRFX%%_modul_gallery_images` VALUES (8, 1, 'spider.jpg', 1, 'Паук', '', '.jpg', 1250295071, 5);#inst#
+INSERT INTO `%%PRFX%%_settings` VALUES
+  (1, '%%SITENAME%%', 'mail', 'text/plain', 465, 'smtp.gmail.com', 'yourusername@gmail.com', 'yourpassword', '/usr/sbin/sendmail', 50, '%%EMAIL%%', '%%USERNAME%%', 'Здравствуйте %NAME%,\r\nВаша регистрация на сайте %HOST%. \r\n\r\nТеперь Вы можете войти на %HOST% со следующими данными:: \r\n\r\nПароль: %KENNWORT%\r\nE-Mail: %EMAIL%\r\n\r\n-----------------------\r\n%EMAILFUSS%\r\n\r\n', '--------------------\r\nOverdoze Team\r\nwww.overdoze.ru\r\ninfo@overdoze.ru\r\n--------------------', 2, '<h2>Ошибка...</h2>\r\n<br />\r\nУ Вас нет прав на просмотр этого документа!.', '<div class="page_navigation_box">%s</div>', 'Первая «', '» Последняя', '…', '»', '«', 'Страница %d из %d', '%d %B %Y', '%d %B %Y, %H:%M', 'ru', '0', '<div class="hidden_box">Содержимое скрыто. Пожалуйста, <a href="index.php?module=login&action=register">зарегистрируйтесь</a></div>');#inst#
 
-INSERT INTO `%%PRFX%%_modul_login` VALUES (1, 'email', '1', '1', 'domain.ru', 'name@domain.ru', '1', '1', '1');#inst#
+INSERT INTO `%%PRFX%%_templates` VALUES
+  (1, 'Основной шаблон', '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">\r\n<html xmlns="http://www.w3.org/1999/xhtml">\r\n<head>\r\n<meta http-equiv="Content-Type" content="text/html; charset=windows-1251" />\r\n</head>\r\n<body>\r\n[tag:maincontent]\r\n</body>\r\n</html>', 1, 0);#inst#
 
-INSERT INTO `%%PRFX%%_modul_rss` VALUES (1, 'Первый канал', 'Описание канала', 'http://960px.ru/', 1, 1, 2, 10, 200);#inst#
+INSERT INTO `%%PRFX%%_user_groups` VALUES
+  (1, 'Администраторы', '1', '0', '', 'alles'),
+  (2, 'Анонимные пользователи', '1', '0', '', '');#inst#
 
-INSERT INTO `%%PRFX%%_modul_sysblock` VALUES (1, 'Тестовый блок', 'Hello world!');#inst#
-
-INSERT INTO `%%PRFX%%_module` VALUES (1, 'Навигация', '1', '#\\[mod_navigation:(\\d+)]#', '<?php mod_navigation(''$1''); ?>', 'mod_navigation', '1', 'navigation', '1.2', 0, '0');#inst#
-INSERT INTO `%%PRFX%%_module` VALUES (2, 'Карта сайта', '1', '#\\[mod_sitemap:([\\d,]*)]#', '<?php mod_sitemap(''$1''); ?>', 'mod_sitemap', '1', 'sitemap', '1.1', 0, '0');#inst#
-INSERT INTO `%%PRFX%%_module` VALUES (3, 'Авторизация', '1', '#\\[mod_login]#', '<?php mod_login(); ?>', 'mod_login', '1', 'login', '2.2', 5, '1');#inst#
-INSERT INTO `%%PRFX%%_module` VALUES (4, 'Комментарии', '1', '#\\[mod_comment]#', '<?php mod_comment(); ?>', 'mod_comment', '1', 'comment', '1.2', 0, '1');#inst#
-INSERT INTO `%%PRFX%%_module` VALUES (5, 'RSS потоки', '1', '#\\[mod_rss:(\\d+)]#', '<?php mod_rss(''$1''); ?>', 'mod_rss', '1', 'rss', '1.1', 0, '1');#inst#
-INSERT INTO `%%PRFX%%_module` VALUES (6, 'Who is online', '1', '#\\[mod_online]#', '<?php mod_online(); ?>', 'mod_online', '1', 'whoisonline', '1.0', 0, '0');#inst#
-INSERT INTO `%%PRFX%%_module` VALUES (7, 'Статистика', '1', '#\\[mod_counter:(\\d+)(-show)*]#', '<?php mod_counter(''$1'', ''$2''); ?>', 'mod_counter', '1', 'counter', '1.3', 0, '1');#inst#
-INSERT INTO `%%PRFX%%_module` VALUES (8, 'Быстрый переход', '1', '#\\[mod_quickfinder:([\\d,]*)]#', '<?php mod_quickfinder(''$1''); ?>', 'mod_quickfinder', '1', 'quickfinder', '1.1', 0, '0');#inst#
-INSERT INTO `%%PRFX%%_module` VALUES (9, 'Системные блоки', '1', '#\\[mod_sysblock:(\\d+)]#', '<?php mod_sysblock(''$1''); ?>', 'mod_sysblock', '1', 'sysblock', '1.1', 0, '1');#inst#
-INSERT INTO `%%PRFX%%_module` VALUES (10, 'Поиск', '1', '#\\[mod_search]#', '<?php mod_search(); ?>', 'mod_search', '1', 'search', '2.0', 5, '1');#inst#
-INSERT INTO `%%PRFX%%_module` VALUES (11, 'Галерея', '1', '#\\[mod_gallery:([\\d-]+)]#', '<?php mod_gallery(''$1''); ?>', 'mod_gallery', '1', 'gallery', '2.2', 0, '1');#inst#
-
-INSERT INTO `%%PRFX%%_navigation` VALUES (1, 'Вертикальное меню 1', '<li><a href=''[cp:link]'' title="[cp:linkname]" target="[cp:target]">[cp:linkname]</a></li>', '<li><a href="[cp:link]" title="[cp:linkname]" target="[cp:target]">[cp:linkname]</a></li>', '<li><a href="[cp:link]" title="[cp:linkname]" target="[cp:target]">[cp:linkname]</a></li>', '<li class=''active''><b><a target=''[cp:target]'' href="[cp:link]">[cp:linkname]</a></b></li>\r\n', '<li class="active"><b><a target="[cp:target]" href="[cp:link]" title="[cp:linkname]">[cp:linkname]</a></b></li>\r\n', '<li><b><a href="[cp:link]" title="[cp:linkname]" target="[cp:target]">[cp:linkname]</a></b></li>', '<ul class="menu_v" style="margin-bottom:0;">', '</ul>', '<ul>', '</ul>', '<ul>', '</ul>', '<!-- vnavi -->', '<!-- /vnavi -->', '1,2,3', '0');#inst#
-INSERT INTO `%%PRFX%%_navigation` VALUES (2, 'Горизонтальное меню', '<li><a href="[cp:link]">[cp:linkname]</a></li>', '<li><a href="[cp:link]">[cp:linkname]</a></li>', '<li><a href="[cp:link]">[cp:linkname]</a></li>', '<li><a href="[cp:link]">[cp:linkname]</a></li>', '<li><a href="[cp:link]">[cp:linkname]</a></li>', '<li><a href="[cp:link]">[cp:linkname]</a></li>', '<ul class="nav main">', '<li class="secondary"><a href="http://960.gs/" title="960.gs | A CSS grid system developed by Nathan Smith">The 960 Grid System</a></li></ul>', '<ul>', '</ul>', '<ul>', '</ul>', '', '', '1,2,3', '1');#inst#
-INSERT INTO `%%PRFX%%_navigation` VALUES (3, 'Section Menu', '<li><a class="menuitem" href="[cp:link]">[cp:linkname]</a></li>', '<li><a href="[cp:link]">[cp:linkname]</a></li>', '<li><a href="[cp:link]">[cp:linkname]</a></li>', '<li><a class="menuitem" href="[cp:link]">[cp:linkname]</a></li>', '<li><a href="[cp:link]">[cp:linkname]</a></li>', '<li><a href="[cp:link]">[cp:linkname]</a></li>', '<ul class="section menu">', '</ul>', '<ul class="submenu">', '</ul>', '<ul>', '</ul>', '<h2><a href="#" id="toggle-section-menu">Section Menu</a></h2>\r\n<div class="block" id="section-menu">\r\n', '</div>\r\n', '1,2,3', '1');#inst#
-
-INSERT INTO `%%PRFX%%_navigation_items` VALUES (1, 'Главная', 0, 'index.php?id=1', '_self', '1', 10, 1, '1', 'home');#inst#
-INSERT INTO `%%PRFX%%_navigation_items` VALUES (2, '404  Документ не найден', 0, 'index.php?id=2', '_self', '1', 20, 1, '1', '404-not-found');#inst#
-INSERT INTO `%%PRFX%%_navigation_items` VALUES (3, 'Галерея', 0, 'index.php?id=3', '_self', '1', 30, 1, '1', 'галерея');#inst#
-INSERT INTO `%%PRFX%%_navigation_items` VALUES (4, 'Fluid 12column', 0, '/fluid/12/', '_self', '1', 10, 2, '1', 'fluid-12-column');#inst#
-INSERT INTO `%%PRFX%%_navigation_items` VALUES (5, 'Fluid 16column', 0, '/fluid/16/', '_self', '1', 20, 2, '1', 'fluid-16-column');#inst#
-INSERT INTO `%%PRFX%%_navigation_items` VALUES (6, 'Fixed 12column', 0, '/fixed/12/', '_self', '1', 30, 2, '1', 'fixed-12-column');#inst#
-INSERT INTO `%%PRFX%%_navigation_items` VALUES (7, 'Fixed 16column', 0, '/fixed/16/', '_self', '1', 40, 2, '1', 'fixed-16-column');#inst#
-INSERT INTO `%%PRFX%%_navigation_items` VALUES (8, 'Download  Forum', 0, 'http://overture21.com/forum/comments.php?DiscussionID=231', '_self', '1', 50, 2, '1', 'download/forum');#inst#
-INSERT INTO `%%PRFX%%_navigation_items` VALUES (9, 'Download Github', 8, 'http://github.com/bauhouse/fluid960gs/tree/', '_self', '2', 10, 2, '1', 'download-github');#inst#
-INSERT INTO `%%PRFX%%_navigation_items` VALUES (10, 'Symphony Ensemble', 8, 'http://github.com/bauhouse/sym-fluid960gs/tree/', '_self', '2', 20, 2, '1', 'symphony-ensemble');#inst#
-INSERT INTO `%%PRFX%%_navigation_items` VALUES (11, 'Forum Discussion', 8, 'http://overture21.com/forum/comments.php?DiscussionID=231', '_self', '2', 30, 2, '1', 'forum-discussion');#inst#
-INSERT INTO `%%PRFX%%_navigation_items` VALUES (12, 'Menu 1', 0, '#', '_self', '1', 10, 3, '1', 'menu-1');#inst#
-INSERT INTO `%%PRFX%%_navigation_items` VALUES (13, 'Menu 2', 0, '#', '_self', '1', 20, 3, '1', 'menu-2');#inst#
-INSERT INTO `%%PRFX%%_navigation_items` VALUES (14, 'Menu 3', 0, '#', '_self', '1', 30, 3, '1', 'menu-3');#inst#
-INSERT INTO `%%PRFX%%_navigation_items` VALUES (15, 'Menu 4', 0, '#', '_self', '1', 40, 3, '1', 'menu-4');#inst#
-INSERT INTO `%%PRFX%%_navigation_items` VALUES (16, 'Menu 5', 0, '#', '_self', '1', 50, 3, '1', 'menu-5');#inst#
-INSERT INTO `%%PRFX%%_navigation_items` VALUES (17, 'Submenu 1', 12, '#', '_self', '2', 10, 3, '1', 'submenu-1');#inst#
-INSERT INTO `%%PRFX%%_navigation_items` VALUES (18, 'Submenu 2', 12, '#', '_self', '2', 20, 3, '1', 'submenu-2');#inst#
-INSERT INTO `%%PRFX%%_navigation_items` VALUES (19, 'Submenu 3', 12, '#', '_self', '2', 30, 3, '1', 'submenu-3');#inst#
-INSERT INTO `%%PRFX%%_navigation_items` VALUES (20, 'Submenu 4', 12, '#', '_self', '2', 40, 3, '1', 'submenu-4');#inst#
-INSERT INTO `%%PRFX%%_navigation_items` VALUES (21, 'Submenu 5', 12, '#', '_self', '2', 50, 3, '1', 'submenu-5');#inst#
-INSERT INTO `%%PRFX%%_navigation_items` VALUES (22, 'Submenu 1', 13, '#', '_self', '2', 10, 3, '1', 'submenu-1');#inst#
-INSERT INTO `%%PRFX%%_navigation_items` VALUES (23, 'Submenu 1', 14, '#', '_self', '2', 10, 3, '1', 'submenu-1');#inst#
-INSERT INTO `%%PRFX%%_navigation_items` VALUES (24, 'Submenu 1', 15, '#', '_self', '2', 10, 3, '1', 'submenu-1');#inst#
-INSERT INTO `%%PRFX%%_navigation_items` VALUES (25, 'Submenu 1', 16, '#', '_self', '2', 10, 3, '1', 'submenu-1');#inst#
-INSERT INTO `%%PRFX%%_navigation_items` VALUES (26, 'Submenu 2', 13, '#', '_self', '2', 20, 3, '1', 'submenu-2');#inst#
-INSERT INTO `%%PRFX%%_navigation_items` VALUES (27, 'Submenu 2', 14, '#', '_self', '2', 20, 3, '1', 'submenu-2');#inst#
-INSERT INTO `%%PRFX%%_navigation_items` VALUES (28, 'Submenu 2', 15, '#', '_self', '2', 20, 3, '1', 'submenu-2');#inst#
-INSERT INTO `%%PRFX%%_navigation_items` VALUES (29, 'Submenu 2', 16, '#', '_self', '2', 20, 3, '1', 'submenu-2');#inst#
-INSERT INTO `%%PRFX%%_navigation_items` VALUES (30, 'Submenu 3', 13, '#', '_self', '2', 30, 3, '1', 'submenu-3');#inst#
-INSERT INTO `%%PRFX%%_navigation_items` VALUES (31, 'Submenu 3', 14, '#', '_self', '2', 30, 3, '1', 'submenu-3');#inst#
-INSERT INTO `%%PRFX%%_navigation_items` VALUES (32, 'Submenu 3', 15, '#', '_self', '2', 30, 3, '1', 'submenu-3');#inst#
-INSERT INTO `%%PRFX%%_navigation_items` VALUES (33, 'Submenu 3', 16, '#', '_self', '2', 30, 3, '1', 'submenu-3');#inst#
-INSERT INTO `%%PRFX%%_navigation_items` VALUES (34, 'Submenu 4', 13, '#', '_self', '2', 40, 3, '1', 'submenu-4');#inst#
-INSERT INTO `%%PRFX%%_navigation_items` VALUES (35, 'Submenu 4', 14, '#', '_self', '2', 40, 3, '1', 'submenu-4');#inst#
-INSERT INTO `%%PRFX%%_navigation_items` VALUES (36, 'Submenu 4', 15, '#', '_self', '2', 40, 3, '1', 'submenu-4');#inst#
-INSERT INTO `%%PRFX%%_navigation_items` VALUES (37, 'Submenu 4', 16, '#', '_self', '2', 40, 3, '1', 'submenu-4');#inst#
-INSERT INTO `%%PRFX%%_navigation_items` VALUES (38, 'Submenu 5', 13, '#', '_self', '2', 50, 3, '1', 'submenu-5');#inst#
-INSERT INTO `%%PRFX%%_navigation_items` VALUES (39, 'Submenu 5', 14, '#', '_self', '2', 50, 3, '1', 'submenu-5');#inst#
-INSERT INTO `%%PRFX%%_navigation_items` VALUES (40, 'Submenu 5', 15, '#', '_self', '2', 50, 3, '1', 'submenu-5');#inst#
-INSERT INTO `%%PRFX%%_navigation_items` VALUES (41, 'Submenu 5', 16, '#', '_self', '2', 50, 3, '1', 'submenu-5');#inst#
-INSERT INTO `%%PRFX%%_navigation_items` VALUES (42, 'MooTools', 4, '/fluid/12/mootools/', '_self', '2', 10, 2, '1', 'mootools');#inst#
-INSERT INTO `%%PRFX%%_navigation_items` VALUES (43, 'MooTools', 5, '/fluid/16/mootools/', '_self', '2', 10, 2, '1', 'mootools');#inst#
-INSERT INTO `%%PRFX%%_navigation_items` VALUES (44, 'MooTools', 6, '/fixed/12/mootools/', '_self', '2', 10, 2, '1', 'mootools');#inst#
-INSERT INTO `%%PRFX%%_navigation_items` VALUES (45, 'MooTools', 7, '/fixed/16/mootools/', '_self', '2', 10, 2, '1', 'mootools');#inst#
-INSERT INTO `%%PRFX%%_navigation_items` VALUES (46, 'jQuery', 4, '/fluid/12/jquery/', '_self', '2', 20, 2, '1', 'jquery');#inst#
-INSERT INTO `%%PRFX%%_navigation_items` VALUES (47, 'jQuery', 5, '/fluid/16/jquery/', '_self', '2', 20, 2, '1', 'jquery');#inst#
-INSERT INTO `%%PRFX%%_navigation_items` VALUES (48, 'jQuery', 6, '/fixed/12/jquery/', '_self', '2', 20, 2, '1', 'jquery');#inst#
-INSERT INTO `%%PRFX%%_navigation_items` VALUES (49, 'jQuery', 7, '/fixed/16/jquery/', '_self', '2', 20, 2, '1', 'jquery');#inst#
-INSERT INTO `%%PRFX%%_navigation_items` VALUES (50, 'No Javascript', 4, '/fluid/12/none/', '_self', '2', 30, 2, '1', 'no-javascript');#inst#
-INSERT INTO `%%PRFX%%_navigation_items` VALUES (51, 'No Javascript', 5, '/fluid/16/none/', '_self', '2', 30, 2, '1', 'no-javascript');#inst#
-INSERT INTO `%%PRFX%%_navigation_items` VALUES (52, 'No Javascript', 6, '/fixed/12/none/', '_self', '2', 30, 2, '1', 'no-javascript');#inst#
-INSERT INTO `%%PRFX%%_navigation_items` VALUES (53, 'No Javascript', 7, '/fixed/16/none/', '_self', '2', 30, 2, '1', 'no-javascript');#inst#
-
-INSERT INTO `%%PRFX%%_queries` VALUES (1, 3, 4, 'Статьи', '<div class="grid_4">\r\n	<div class="box">\r\n		<h2>[cpabrub:7][70]</h2>\r\n\r\n		<div class="block">\r\n			[cpabrub:8][more]\r\n		</div>\r\n		<a href="[link]#more">полная версия статьи »</a>\r\n	</div>\r\n</div>\r\n', '[content]', 'DokStart', 1, 1275350825, '', 'DESC', '', '');#inst#
-
-INSERT INTO `%%PRFX%%_rubric_fields` VALUES (1, 1, 'Заголовок', 'kurztext', 5, '', '', '');#inst#
-INSERT INTO `%%PRFX%%_rubric_fields` VALUES (2, 1, 'Текст', 'langtext', 10, '', '', '');#inst#
-INSERT INTO `%%PRFX%%_rubric_fields` VALUES (3, 2, 'Зоголовок', 'kurztext', 10, '', '', '');#inst#
-INSERT INTO `%%PRFX%%_rubric_fields` VALUES (4, 2, 'Текст', 'langtext', 20, '', '', '');#inst#
-INSERT INTO `%%PRFX%%_rubric_fields` VALUES (5, 2, 'Изображение', 'bild', 30, '', '', '');#inst#
-INSERT INTO `%%PRFX%%_rubric_fields` VALUES (6, 2, 'Раздел', 'langtext', 40, 'Политика,Экономика,Спорт', '', '');#inst#
-INSERT INTO `%%PRFX%%_rubric_fields` VALUES (7, 3, 'Зоголовок', 'kurztext', 10, '', '', '');#inst#
-INSERT INTO `%%PRFX%%_rubric_fields` VALUES (8, 3, 'Текст', 'langtext', 20, '', '', '');#inst#
-INSERT INTO `%%PRFX%%_rubric_fields` VALUES (9, 3, 'Изображение', 'bild', 30, '', '', '');#inst#
-INSERT INTO `%%PRFX%%_rubric_fields` VALUES (10, 3, 'Раздел', 'dropdown', 40, 'Политика,Экономика,Спорт,Развлечения', '', '');#inst#
-
-INSERT INTO `%%PRFX%%_rubrics` VALUES (1, 'Основные страницы', '', '<h1>[cprub:1]</h1>\r\n[cprub:2]', 2, 1, 0);#inst#
-INSERT INTO `%%PRFX%%_rubrics` VALUES (2, 'Новости', 'news/%Y/%m-%d', '<h2>[cprub:3]</h2>\r\n[cprub:5][cprub:4]', 3, 1, 1275348496);#inst#
-INSERT INTO `%%PRFX%%_rubrics` VALUES (3, 'Статьи', 'article', '<h2>[cprub:7]</h2>\r\n[cprub:9][cprub:8]\r\n[mod_comment]', 3, 1, 1275348727);#inst#
-
-INSERT INTO `%%PRFX%%_settings` VALUES (1, '%%SITENAME%%', 'mail', 'text/plain', 25, 'smtp.yourserver.ru', 'xxxxx', 'xxxxx', '/usr/sbin/sendmail', 50, '%%EMAIL%%', '%%USERNAME%%', 'Здравствуйте %NAME%,\r\nВаша регистрация на сайте %HOST%. \r\n\r\nТеперь Вы можете войти на %HOST% со следующими данными:: \r\n\r\nПароль: %KENNWORT%\r\nE-Mail: %EMAIL%\r\n\r\n-----------------------\r\n%EMAILFUSS%\r\n\r\n', 'Администратор сайта %HOST%\r\n%HOST%\r\ninfo@%HOST%\r\n--------------------', 2, '<h2>Ошибка...</h2>\r\n<br />\r\nУ Вас нет прав на просмотр этого документа!.', '<div class="page_navigation_box">%s</div>', 'Первая «', '» Последняя', '...', '»', '«', 'Страница %d из %d', '%d %B %Y', '%d %B %Y, %H:%M', 'ru', '0', '<div class="hidden_box">Содержимое скрыто. Пожалуйста, <a href="/index.php?module=login&action=register">зарегистрируйтесь</a></div>');#inst#
-
-INSERT INTO `%%PRFX%%_templates` VALUES (1, 'Фикс. 16 колонок MooTools', '[cp:theme:960px]<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">\r\n<html xmlns="http://www.w3.org/1999/xhtml">\r\n	<head>\r\n		<meta http-equiv="content-type" content="text/html; charset=windows-1251" />\r\n		<title>[cp:title]</title>\r\n		<meta http-equiv="pragma" content="no-cache" />\r\n		<meta name="Keywords" content="[cp:keywords]" />\r\n		<meta name="Description" content="[cp:description]" />\r\n		<meta name="robots" content="[cp:indexfollow]" />\r\n		<link rel="stylesheet" type="text/css" href="[cp:mediapath]css/reset.css" media="screen" />\r\n		<link rel="stylesheet" type="text/css" href="[cp:mediapath]css/text.css" media="screen" />\r\n		<link rel="stylesheet" type="text/css" href="[cp:mediapath]css/960.css" media="screen" />\r\n		<link rel="stylesheet" type="text/css" href="[cp:mediapath]css/layout.css" media="screen" />\r\n		<link rel="stylesheet" type="text/css" href="[cp:mediapath]css/nav.css" media="screen" />\r\n		<!--[if IE 6]><link rel="stylesheet" type="text/css" href="[cp:mediapath]css/ie6.css" media="screen" /><![endif]-->\r\n		<!--[if IE 7]><link rel="stylesheet" type="text/css" href="[cp:mediapath]css/ie.css" media="screen" /><![endif]-->\r\n	</head>\r\n	<body>\r\n		<div class="container_16">\r\n			<div class="grid_16">\r\n				<h1 id="branding">\r\n					<a href="[cp:home]">[cp:pagename]</a>\r\n				</h1>\r\n			</div>\r\n			<div class="clear"></div>\r\n			<div class="grid_16">\r\n				[mod_navigation:2]\r\n			</div>\r\n			<div class="clear"></div>\r\n			<div class="grid_16">\r\n				<h2 id="page-heading">Templates for Rapid Interactive Prototyping</h2>\r\n			</div>\r\n			<div class="clear"></div>\r\n			<div class="grid_4">\r\n				<div class="box">\r\n					<h2>Design Process</h2>\r\n					<div class="block">\r\n						<p>Design is based on the inspiration of past accomplishments. On that foundation, we can build upon those achievements to shape the future. Design is about life вЂ” past, present and future вЂ” and the learning process that happens between birth and death. It is about community and shared knowledge and experience. It is the passion to build on what we''ve learned to create something better.</p>\r\n					</div>\r\n				</div>\r\n			</div>\r\n			<div class="grid_4">\r\n				<div class="box">\r\n					<h2>Design Influences</h2>\r\n					<div class="block">\r\n						<p>The words "design influences" can be understood as both a plural noun and as subject and verb. The plural noun speaks of those who have come before us and paved the way. The verb speaks of the responsibility of design to lead the way. By understanding where we have come from, we have a better idea of where we are going and, perhaps, where we should be heading.</p>\r\n					</div>\r\n				</div>\r\n			</div>\r\n			<div class="grid_4">\r\n				<div class="box">\r\n					<h2>Inspiration</h2>\r\n					<div class="block">\r\n						<p>I have been inspired by the work of many who have pioneered advances in Web Standards, including \r\n				<a href="http://www.31three.com/" title="www.31three.com">Jesse Bennett-Chamberlain</a>, \r\n				<a href="http://www.stopdesign.com/" title="www.stopdesign.com">Douglas Bowman</a>, \r\n				<a href="http://www.chaoticpattern.com/" title="www.chaoticpattern.com">Allen Chang</a>, \r\n				<a href="http://www.stuffandnonsense.co.uk/" title="www.stuffandnonsense.co.uk">Andy Clarke</a>, \r\n				<a href="http://www.hicksdesign.co.uk/" title="www.hicksdesign.co.uk">Jon Hicks</a>, \r\n				<a href="http://www.shauninman.com/" title="www.shauninman.com">Shaun Inman</a>, \r\n				<a href="http://www.cameronmoll.com/" title="www.cameronmoll.com">Cameron Moll</a>, \r\n				<a href="http://veerle.duoh.com/" title="veerle.duoh.com">Veerle Pieters</a>, \r\n				<a href="http://www.jasonsantamaria.com/" title="www.jasonsantamaria.com">Jason Santa Maria</a>, \r\n				<a href="http://www.mezzoblue.com/" title="www.mezzoblue.com">Dave Shea</a>, \r\n				<a href="http://www.thebignoob.com/" title="www.thebignoob.com">Ryan Sims</a>, \r\n				<a href="http://www.sonspring.com/" title="www.sonspring.com">Nathan Smith</a>, and \r\n				<a href="http://www.zeldman.com/" title="www.zeldman.com">Jeffrey Zeldman</a>, \r\n				to name a few. Thank you for inspiring <a href="http://www.domain7.com/WhoWeAre/StephenBau.html" title="Stephen Bau, Designer, Domain7">me</a> to give something back.</p>\r\n					</div>\r\n				</div>\r\n			</div>\r\n			<div class="grid_4">\r\n				<div class="box">\r\n					<h2>Contribution</h2>\r\n					<div class="block">\r\n						<p>The <a href="/fluid960gs/">Fluid 960 Grid System</a> templates have been built upon the work of Nathan Smith and his <a href="http://960.gs/">960 Grid System</a> using effects from the <a href="http://mootools.net/">MooTools</a> and <a href="http://jquery.com/">jQuery</a>  JavaScript libraries. \r\n			 The idea for building these templates was inspired by Andy Clarke, author of <a href="http://www.transcendingcss.com/">Transcending CSS</a>, who advocates a content-out approach to rapid interactive prototyping, crediting Jason Santa Maria with the <a href="http://www.jasonsantamaria.com/archive/2004/05/24/grey_box_method.php">grey box method</a>.</p>\r\n					</div>\r\n				</div>\r\n			</div>\r\n			<div class="clear"></div>\r\n			<div class="box grid_16" style="padding:0;">\r\n				<h2 style="margin:0">\r\n					<a href="#" style="background-position:99.3% 50%" id="toggle-grid">16-column Grid</a>\r\n				</h2>\r\n			</div>\r\n			<div class="clear"></div>\r\n			<div id="grid">\r\n				<div class="grid_1">\r\n					<div class="box">\r\n						<p>01</p>\r\n					</div>\r\n				</div>\r\n				<div class="grid_1">\r\n					<div class="box">\r\n						<p>02</p>\r\n					</div>\r\n				</div>\r\n				<div class="grid_1">\r\n					<div class="box">\r\n						<p>03</p>\r\n					</div>\r\n				</div>\r\n				<div class="grid_1">\r\n					<div class="box">\r\n						<p>04</p>\r\n					</div>\r\n				</div>\r\n				<div class="grid_1">\r\n					<div class="box">\r\n						<p>05</p>\r\n					</div>\r\n				</div>\r\n				<div class="grid_1">\r\n					<div class="box">\r\n						<p>06</p>\r\n					</div>\r\n				</div>\r\n				<div class="grid_1">\r\n					<div class="box">\r\n						<p>07</p>\r\n					</div>\r\n				</div>\r\n				<div class="grid_1">\r\n					<div class="box">\r\n						<p>08</p>\r\n					</div>\r\n				</div>\r\n				<div class="grid_1">\r\n					<div class="box">\r\n						<p>09</p>\r\n					</div>\r\n				</div>\r\n				<div class="grid_1">\r\n					<div class="box">\r\n						<p>10</p>\r\n					</div>\r\n				</div>\r\n				<div class="grid_1">\r\n					<div class="box">\r\n						<p>11</p>\r\n					</div>\r\n				</div>\r\n				<div class="grid_1">\r\n					<div class="box">\r\n						<p>12</p>\r\n					</div>\r\n				</div>\r\n				<div class="grid_1">\r\n					<div class="box">\r\n						<p>13</p>\r\n					</div>\r\n				</div>\r\n				<div class="grid_1">\r\n					<div class="box">\r\n						<p>14</p>\r\n					</div>\r\n				</div>\r\n				<div class="grid_1">\r\n					<div class="box">\r\n						<p>15</p>\r\n					</div>\r\n				</div>\r\n				<div class="grid_1">\r\n					<div class="box">\r\n						<p>16</p>\r\n					</div>\r\n				</div>\r\n				<div class="clear"></div>\r\n				<div class="grid_2">\r\n					<div class="box">\r\n						<p>01</p>\r\n					</div>\r\n				</div>\r\n				<div class="grid_2">\r\n					<div class="box">\r\n						<p>02</p>\r\n					</div>\r\n				</div>\r\n				<div class="grid_2">\r\n					<div class="box">\r\n						<p>03</p>\r\n					</div>\r\n				</div>\r\n				<div class="grid_2">\r\n					<div class="box">\r\n						<p>04</p>\r\n					</div>\r\n				</div>\r\n				<div class="grid_2">\r\n					<div class="box">\r\n						<p>05</p>\r\n					</div>\r\n				</div>\r\n				<div class="grid_2">\r\n					<div class="box">\r\n						<p>06</p>\r\n					</div>\r\n				</div>\r\n				<div class="grid_2">\r\n					<div class="box">\r\n						<p>07</p>\r\n					</div>\r\n				</div>\r\n				<div class="grid_2">\r\n					<div class="box">\r\n						<p>08</p>\r\n					</div>\r\n				</div>\r\n				<div class="clear"></div>\r\n				<div class="grid_3">\r\n					<div class="box">\r\n						<p>01</p>\r\n					</div>\r\n				</div>\r\n				<div class="grid_3">\r\n					<div class="box">\r\n						<p>02</p>\r\n					</div>\r\n				</div>\r\n				<div class="grid_3">\r\n					<div class="box">\r\n						<p>03</p>\r\n					</div>\r\n				</div>\r\n				<div class="grid_3">\r\n					<div class="box">\r\n						<p>04</p>\r\n					</div>\r\n				</div>\r\n				<div class="grid_4">\r\n					<div class="box">\r\n						<p>05</p>\r\n					</div>\r\n				</div>\r\n				<div class="clear"></div>\r\n				<div class="grid_4">\r\n					<div class="box">\r\n						<p>01</p>\r\n					</div>\r\n				</div>\r\n				<div class="grid_4">\r\n					<div class="box">\r\n						<p>02</p>\r\n					</div>\r\n				</div>\r\n				<div class="grid_4">\r\n					<div class="box">\r\n						<p>03</p>\r\n					</div>\r\n				</div>\r\n				<div class="grid_4">\r\n					<div class="box">\r\n						<p>04</p>\r\n					</div>\r\n				</div>\r\n				<div class="clear"></div>\r\n				<div class="grid_5">\r\n					<div class="box">\r\n						<p>01</p>\r\n					</div>\r\n				</div>\r\n				<div class="grid_5">\r\n					<div class="box">\r\n						<p>02</p>\r\n					</div>\r\n				</div>\r\n				<div class="grid_6">\r\n					<div class="box">\r\n						<p>03</p>\r\n					</div>\r\n				</div>\r\n				<div class="clear"></div>\r\n				<div class="grid_6">\r\n					<div class="box">\r\n						<p>01</p>\r\n					</div>\r\n				</div>\r\n				<div class="grid_5">\r\n					<div class="box">\r\n						<p>02</p>\r\n					</div>\r\n				</div>\r\n				<div class="grid_5">\r\n					<div class="box">\r\n						<p>03</p>\r\n					</div>\r\n				</div>\r\n				<div class="clear"></div>\r\n				<div class="grid_7">\r\n					<div class="box">\r\n						<p>01</p>\r\n					</div>\r\n				</div>\r\n				<div class="grid_5">\r\n					<div class="box">\r\n						<p>02</p>\r\n					</div>\r\n				</div>\r\n				<div class="grid_4">\r\n					<div class="box">\r\n						<p>03</p>\r\n					</div>\r\n				</div>\r\n				<div class="clear"></div>\r\n				<div class="grid_8">\r\n					<div class="box">\r\n						<p>01</p>\r\n					</div>\r\n				</div>\r\n				<div class="grid_8">\r\n					<div class="box">\r\n						<p>02</p>\r\n					</div>\r\n				</div>\r\n				<div class="clear"></div>\r\n				<div class="grid_1 suffix_11">\r\n					<div class="box">\r\n						<p>01</p>\r\n					</div>\r\n				</div>\r\n				<div class="clear"></div>\r\n				<div class="grid_1 prefix_1 suffix_10">\r\n					<div class="box">\r\n						<p>02</p>\r\n					</div>\r\n				</div>\r\n				<div class="clear"></div>\r\n				<div class="grid_1 prefix_2 suffix_9">\r\n					<div class="box">\r\n						<p>03</p>\r\n					</div>\r\n				</div>\r\n				<div class="clear"></div>\r\n				<div class="grid_1 prefix_3 suffix_8">\r\n					<div class="box">\r\n						<p>04</p>\r\n					</div>\r\n				</div>\r\n				<div class="clear"></div>\r\n				<div class="grid_1 prefix_4 suffix_7">\r\n					<div class="box">\r\n						<p>05</p>\r\n					</div>\r\n				</div>\r\n				<div class="clear"></div>\r\n				<div class="grid_1 prefix_5 suffix_6">\r\n					<div class="box">\r\n						<p>06</p>\r\n					</div>\r\n				</div>\r\n				<div class="clear"></div>\r\n				<div class="grid_1 prefix_6 suffix_5">\r\n					<div class="box">\r\n						<p>07</p>\r\n					</div>\r\n				</div>\r\n				<div class="clear"></div>\r\n				<div class="grid_1 prefix_7 suffix_4">\r\n					<div class="box">\r\n						<p>08</p>\r\n					</div>\r\n				</div>\r\n				<div class="clear"></div>\r\n				<div class="grid_1 prefix_8 suffix_3">\r\n					<div class="box">\r\n						<p>09</p>\r\n					</div>\r\n				</div>\r\n				<div class="clear"></div>\r\n				<div class="grid_1 prefix_9 suffix_2">\r\n					<div class="box">\r\n						<p>10</p>\r\n					</div>\r\n				</div>\r\n				<div class="clear"></div>\r\n				<div class="grid_1 prefix_10 suffix_1">\r\n					<div class="box">\r\n						<p>11</p>\r\n					</div>\r\n				</div>\r\n				<div class="clear"></div>\r\n				<div class="grid_1 prefix_11 suffix_1">\r\n					<div class="box">\r\n						<p>12</p>\r\n					</div>\r\n				</div>\r\n				<div class="clear"></div>\r\n				<div class="grid_1 prefix_12 suffix_1">\r\n					<div class="box">\r\n						<p>13</p>\r\n					</div>\r\n				</div>\r\n				<div class="clear"></div>\r\n				<div class="grid_1 prefix_13 suffix_1">\r\n					<div class="box">\r\n						<p>14</p>\r\n					</div>\r\n				</div>\r\n				<div class="clear"></div>\r\n				<div class="grid_1 prefix_14 suffix_1">\r\n					<div class="box">\r\n						<p>15</p>\r\n					</div>\r\n				</div>\r\n				<div class="clear"></div>\r\n				<div class="grid_1 prefix_15">\r\n					<div class="box">\r\n						<p>16</p>\r\n					</div>\r\n				</div>\r\n				<div class="clear"></div>\r\n			</div>\r\n			<div class="grid_16">\r\n				<div class="box" id="kwick-box">\r\n					<h2>Mootools Fx.Elements</h2>\r\n					<div id="kwick">\r\n						<ul class="kwicks">\r\n							<li>\r\n								<a class="kwick one" href="#">\r\n									<span>One</span>\r\n								</a>\r\n							</li>\r\n							<li>\r\n								<a class="kwick two" href="#">\r\n									<span>Two</span>\r\n								</a>\r\n							</li>\r\n							<li>\r\n								<a class="kwick three" href="#">\r\n									<span>Three</span>\r\n								</a>\r\n							</li>\r\n							<li>\r\n								<a class="kwick four" href="#">\r\n									<span>Four</span>\r\n								</a>\r\n							</li>\r\n						</ul>\r\n					</div>\r\n				</div>\r\n			</div>\r\n			<div class="clear"></div>\r\n			<div class="grid_4">\r\n				<div class="box">\r\n					<h2>\r\n						<a href="#" id="toggle-paragraphs">Paragraphs</a>\r\n					</h2>\r\n					<div class="block" id="paragraphs">\r\n						<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.</p>\r\n						<p>Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat.</p>\r\n					</div>\r\n				</div>\r\n				<div class="box">\r\n					<h2>\r\n						<a href="#" id="toggle-ajax" class="hidden"><img src="[cp:mediapath]img/ajax-loader.gif" id="loading" alt="Loading" />\r\n				Ajax Content\r\n			</a>\r\n					</h2>\r\n					<div class="block" id="ajax-content">\r\n			Content loaded dynamically\r\n		</div>\r\n				</div>\r\n				<div class="box menu">\r\n					[mod_navigation:3]\r\n				</div>\r\n				<div class="box">\r\n					<h2>\r\n						<a href="#" id="toggle-list-items">List Items</a>\r\n					</h2>\r\n					<div class="block" id="list-items">\r\n						<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod. </p>\r\n						<h5>A menu</h5>\r\n						<ul class="menu">\r\n							<li>\r\n								<a href="#">Item 1</a>\r\n							</li>\r\n							<li>\r\n								<a href="#">Item 2</a>\r\n							</li>\r\n							<li>\r\n								<a href="#">Item 3</a>\r\n							</li>\r\n						</ul>\r\n						<h5>An unordered list</h5>\r\n						<ul>\r\n							<li>\r\n								<a href="#">Item 1</a>\r\n							</li>\r\n							<li>\r\n								<a href="#">Item 2</a>\r\n							</li>\r\n							<li>\r\n								<a href="#">Item 3</a>\r\n							</li>\r\n						</ul>\r\n						<h5>An ordered list</h5>\r\n						<ol>\r\n							<li>\r\n								<a href="#">Item 1</a>\r\n							</li>\r\n							<li>\r\n								<a href="#">Item 2</a>\r\n							</li>\r\n							<li>\r\n								<a href="#">Item 3</a>\r\n							</li>\r\n						</ol>\r\n					</div>\r\n				</div>\r\n			</div>\r\n			<div class="grid_7">\r\n				<div class="box">\r\n					<h2>\r\n						<a href="#" id="toggle-accordion">Accordion</a>\r\n					</h2>\r\n					<div class="block" id="accordion">\r\n						<div id="accordion">\r\n							<h3 class="toggler atStart">Design Process</h3>\r\n							<div class="element atStart">\r\n								<h4>The Value of Design</h4>\r\n								<p>Design is based on the inspiration of past accomplishments. On that foundation, we can build upon those achievements to shape the future. Design is about life вЂ” past, present and future вЂ” and the learning process that happens between birth and death. It is about community and shared knowledge and experience. It is the passion to build on what we''ve learned to create something better.</p>\r\n							</div>\r\n							<h3 class="toggler atStart">Design Influences</h3>\r\n							<div class="element atStart">\r\n								<h4>About this Site</h4>\r\n								<p>The words "design influences" can be understood as both a plural noun and as subject and verb. The plural noun speaks of those who have come before us and paved the way. The verb speaks of the responsibility of design to lead the way. By understanding where we have come from, we have a better idea of where we are going and, perhaps, where we should be heading.</p>\r\n							</div>\r\n							<h3 class="toggler atStart">Inspiration</h3>\r\n							<div class="element atStart">\r\n								<h4>Inspired by the Past</h4>\r\n								<p>I have been inspired by the work of many who have pioneered advances in Web Standards, including \r\n						<a href="http://www.31three.com/" title="www.31three.com">Jesse Bennett-Chamberlain</a>, \r\n						<a href="http://www.stopdesign.com/" title="www.stopdesign.com">Douglas Bowman</a>, \r\n						<a href="http://www.chaoticpattern.com/" title="www.chaoticpattern.com">Allen Chang</a>, \r\n						<a href="http://www.stuffandnonsense.co.uk/" title="www.stuffandnonsense.co.uk">Andy Clarke</a>, \r\n						<a href="http://www.hicksdesign.co.uk/" title="www.hicksdesign.co.uk">Jon Hicks</a>, \r\n						<a href="http://www.shauninman.com/" title="www.shauninman.com">Shaun Inman</a>, \r\n						<a href="http://www.cameronmoll.com/" title="www.cameronmoll.com">Cameron Moll</a>, \r\n						<a href="http://veerle.duoh.com/" title="veerle.duoh.com">Veerle Pieters</a>, \r\n						<a href="http://www.jasonsantamaria.com/" title="www.jasonsantamaria.com">Jason Santa Maria</a>, \r\n						<a href="http://www.mezzoblue.com/" title="www.mezzoblue.com">Dave Shea</a>, \r\n						<a href="http://www.thebignoob.com/" title="www.thebignoob.com">Ryan Sims</a>, \r\n						<a href="http://www.sonspring.com/" title="www.sonspring.com">Nathan Smith</a>, and \r\n						<a href="http://www.zeldman.com/" title="www.zeldman.com">Jeffrey Zeldman</a>, \r\n						to name a few. Thank you for inspiring <a href="http://www.domain7.com/WhoWeAre/StephenBau.html" title="Stephen Bau, Designer, Domain7">me</a> to give something back.</p>\r\n							</div>\r\n							<h3 class="toggler atStart">Contribution</h3>\r\n							<div class="element atStart">\r\n								<h4>Shaping the Future</h4>\r\n								<p>The <a href="/fluid960gs/">Fluid 960 Grid System</a> templates have been built upon the work of Nathan Smith and his <a href="http://960.gs/">960 Grid System</a> using effects from the <a href="http://www.mootools.net/">Mootools</a> JavaScript library. The idea for building these templates was inspired by Andy Clarke, author of <a href="http://www.transcendingcss.com/">Transcending CSS</a>, who advocates a content-out approach to rapid interactive prototyping, crediting Jason Santa Maria with the <a href="http://www.jasonsantamaria.com/archive/2004/05/24/grey_box_method.php">grey box method</a>.</p>\r\n							</div>\r\n						</div>\r\n					</div>\r\n				</div>\r\n				<div class="box">\r\n					<h2>\r\n						<a href="#" id="toggle-blockquote">Blockquote</a>\r\n					</h2>\r\n					<div class="block" id="blockquote">\r\n						<blockquote>\r\n							<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat.</p>\r\n							<p class="cite">\r\n								<cite>John Smith</cite>\r\n							</p>\r\n						</blockquote>\r\n					</div>\r\n				</div>\r\n				<div class="box">\r\n					<h2>\r\n						<a href="#" id="toggle-tables">Tables</a>\r\n					</h2>\r\n					<div class="block" id="tables">\r\n						<table>\r\n							<tr>\r\n								<th>Lorem ipsum</th>\r\n								<td>Dolor sit</td>\r\n								<td class="currency">$125.00</td>\r\n							</tr>\r\n							<tr>\r\n								<th>Dolor sit</th>\r\n								<td>Nostrud exerci</td>\r\n								<td class="currency">$75.00</td>\r\n							</tr>\r\n							<tr>\r\n								<th>Nostrud exerci</th>\r\n								<td>Lorem ipsum</td>\r\n								<td class="currency">$200.00</td>\r\n							</tr>\r\n							<tr>\r\n								<th>Lorem ipsum</th>\r\n								<td>Dolor sit</td>\r\n								<td class="currency">$64.00</td>\r\n							</tr>\r\n							<tr>\r\n								<th>Dolor sit</th>\r\n								<td>Nostrud exerci</td>\r\n								<td class="currency">$36.00</td>\r\n							</tr>\r\n						</table>\r\n						<table summary="This table includes examples of as many table elements as possible">\r\n							<caption>An example table</caption>\r\n							<colgroup>\r\n								<col class="colA" />\r\n								<col class="colB" />\r\n								<col class="colC" />\r\n							</colgroup>\r\n							<thead>\r\n								<tr>\r\n									<th colspan="3" class="table-head">Table heading</th>\r\n								</tr>\r\n								<tr>\r\n									<th>Column 1</th>\r\n									<th>Column 2</th>\r\n									<th class="currency">Column 3</th>\r\n								</tr>\r\n							</thead>\r\n							<tfoot>\r\n								<tr>\r\n									<th>Subtotal</th>\r\n									<td></td>\r\n									<th class="currency">$500.00</th>\r\n								</tr>\r\n								<tr class="total">\r\n									<th>Total</th>\r\n									<td></td>\r\n									<th class="currency">$500.00</th>\r\n								</tr>\r\n							</tfoot>\r\n							<tbody>\r\n								<tr class="odd">\r\n									<th>Lorem ipsum</th>\r\n									<td>Dolor sit</td>\r\n									<td class="currency">$125.00</td>\r\n								</tr>\r\n								<tr>\r\n									<th>Dolor sit</th>\r\n									<td>Nostrud exerci</td>\r\n									<td class="currency">$75.00</td>\r\n								</tr>\r\n								<tr class="odd">\r\n									<th>Nostrud exerci</th>\r\n									<td>Lorem ipsum</td>\r\n									<td class="currency">$200.00</td>\r\n								</tr>\r\n								<tr>\r\n									<th>Lorem ipsum</th>\r\n									<td>Dolor sit</td>\r\n									<td class="currency">$64.00</td>\r\n								</tr>\r\n								<tr class="odd">\r\n									<th>Dolor sit</th>\r\n									<td>Nostrud exerci</td>\r\n									<td class="currency">$36.00</td>\r\n								</tr>\r\n							</tbody>\r\n						</table>\r\n					</div>\r\n				</div>\r\n				<div class="box">\r\n					<h2>\r\n						<a href="#" id="toggle-forms">Forms</a>\r\n					</h2>\r\n					<div class="block" id="forms">\r\n						<form action="">\r\n							<fieldset class="login">\r\n								<legend>Login Information</legend>\r\n								<p>\r\n									<label>Username: </label>\r\n									<input type="text" name="username" value="" />\r\n								</p>\r\n								<p>\r\n									<label>Password: </label>\r\n									<input type="password" name="password" />\r\n								</p>\r\n								<p>\r\n									<label>Re-type Password: </label>\r\n									<input type="password" name="password2" />\r\n								</p>\r\n								<input class="confirm button" type="submit" value="Confirm Availability" />\r\n							</fieldset>\r\n							<fieldset>\r\n								<legend>Personal Information</legend>\r\n								<p>\r\n									<label>First Name: </label>\r\n									<input type="text" name="first-name" value="" />\r\n								</p>\r\n								<p>\r\n									<label>Last Name: </label>\r\n									<input type="text" name="last-name" value="" />\r\n								</p>\r\n								<p>\r\n									<label>Address: </label>\r\n									<input type="text" name="address1" value="" />\r\n								</p>\r\n								<p>\r\n									<label>Address 2: </label>\r\n									<input type="text" name="address2" value="" />\r\n								</p>\r\n								<p>\r\n									<label>City: </label>\r\n									<input type="text" name="city" value="" />\r\n								</p>\r\n								<p>\r\n									<label>State/Province: </label>\r\n									<select name="State">\r\n										<option value="">Select State/Province...</option>\r\n										<option value="AL">Alabama </option>\r\n										<option value="AK">Alaska </option>\r\n										<option value="AB">Alberta </option>\r\n										<option value="AZ">Arizona </option>\r\n										<option value="AR">Arkansas </option>\r\n										<option value="BC">British Columbia </option>\r\n										<option value="CA">California </option>\r\n										<option value="CO">Colorado </option>\r\n										<option value="CT">Connecticut </option>\r\n										<option value="DE">Delaware </option>\r\n										<option value="DC">District of Columbia </option>\r\n										<option value="FL">Florida </option>\r\n										<option value="GA">Georgia </option>\r\n										<option value="HI">Hawaii </option>\r\n										<option value="ID">Idaho </option>\r\n										<option value="IL">Illinois </option>\r\n										<option value="IN">Indiana </option>\r\n										<option value="IA">Iowa </option>\r\n										<option value="KS">Kansas </option>\r\n										<option value="KY">Kentucky </option>\r\n										<option value="LA">Louisiana </option>\r\n										<option value="ME">Maine </option>\r\n										<option value="MB">Manitoba </option>\r\n										<option value="MD">Maryland </option>\r\n										<option value="MA">Massachusetts </option>\r\n										<option value="MI">Michigan </option>\r\n										<option value="MN">Minnesota </option>\r\n										<option value="MS">Mississippi </option>\r\n										<option value="MO">Missouri </option>\r\n										<option value="MT">Montana </option>\r\n										<option value="NE">Nebraska </option>\r\n										<option value="NV">Nevada </option>\r\n										<option value="NB">New Brunswick </option>\r\n										<option value="NH">New Hampshire </option>\r\n										<option value="NJ">New Jersey </option>\r\n										<option value="NM">New Mexico </option>\r\n										<option value="NY">New York </option>\r\n										<option value="NF">Newfoundland </option>\r\n										<option value="NC">North Carolina </option>\r\n										<option value="ND">North Dakota </option>\r\n										<option value="NT">Northwest Territories </option>\r\n										<option value="NS">Nova Scotia </option>\r\n										<option value="OH">Ohio </option>\r\n										<option value="OK">Oklahoma </option>\r\n										<option value="ON">Ontario </option>\r\n										<option value="OR">Oregon </option>\r\n										<option value="PA">Pennsylvania </option>\r\n										<option value="PE">Prince Edward Island </option>\r\n										<option value="PR">Puerto Rico </option>\r\n										<option value="QC">Quebec </option>\r\n										<option value="RI">Rhode Island </option>\r\n										<option value="SK">Saskatchewan </option>\r\n										<option value="SC">South Carolina </option>\r\n										<option value="SD">South Dakota </option>\r\n										<option value="TN">Tennessee </option>\r\n										<option value="TX">Texas </option>\r\n										<option value="UT">Utah </option>\r\n										<option value="VT">Vermont </option>\r\n										<option value="VA">Virginia </option>\r\n										<option value="WA">Washington </option>\r\n										<option value="WV">West Virginia </option>\r\n										<option value="WI">Wisconsin </option>\r\n										<option value="WY">Wyoming </option>\r\n										<option value="YT">Yukon </option>\r\n									</select>\r\n								</p>\r\n								<p>\r\n									<label>Country: </label>\r\n									<select name="Country">\r\n										<option value="">Select Country...</option>\r\n										<option value="Canada">Canada</option>\r\n										<option value="United States">United States</option>\r\n									</select>\r\n								</p>\r\n								<p>\r\n									<label>Zip/Postal Code: </label>\r\n									<input type="text" name="zipcode" value="" />\r\n								</p>\r\n								<p>\r\n									<label>Phone Number: </label>\r\n									<input type="text" name="phone" value="" />\r\n								</p>\r\n								<p>\r\n									<label>Email Address: </label>\r\n									<input type="text" name="email" value="" />\r\n								</p>\r\n								<input type="submit" value="Register" class="register-button" />\r\n							</fieldset>\r\n						</form>\r\n					</div>\r\n				</div>\r\n			</div>\r\n			<div class="grid_5">\r\n				<div class="box">\r\n					<h2>\r\n						<a href="#" id="toggle-search">Search</a>\r\n					</h2>\r\n					<div class="block" id="search">\r\n						<form method="get" action="" class="search">\r\n							<p>\r\n								<input class="search text" name="value" type="text" />\r\n								<input class="search button" value="Search" type="submit" />\r\n							</p>\r\n						</form>\r\n					</div>\r\n				</div>\r\n				<div class="box">\r\n					<h2>\r\n						<a href="#" id="toggle-login-forms">Login Forms</a>\r\n					</h2>\r\n					<div class="block" id="login-forms">\r\n						<form action="">\r\n							<fieldset class="login">\r\n								<legend>Login</legend>\r\n								<p class="notice">Login to complete your purchase.</p>\r\n								<p>\r\n									<label>Username: </label>\r\n									<input type="text" name="username" />\r\n								</p>\r\n								<p>\r\n									<label>Password: </label>\r\n									<input type="password" name="password" />\r\n								</p>\r\n								<input class="login button" type="submit" value="Login" />\r\n							</fieldset>\r\n						</form>\r\n						<form action="">\r\n							<fieldset>\r\n								<legend>Register</legend>\r\n								<p>If you do not already have an account, please create a new account to register.</p>\r\n								<input type="submit" value="Create Account" />\r\n							</fieldset>\r\n						</form>\r\n					</div>\r\n				</div>\r\n				<div class="box articles">\r\n					<h2>\r\n						<a href="#" id="toggle-articles">Articles</a>\r\n					</h2>\r\n					<div class="block" id="articles">\r\n						<div class="first article">\r\n							<h3>\r\n								<a href="#">Article Heading</a>\r\n							</h3>\r\n							<h4>Subheading</h4>\r\n							<p class="meta">Vancouver, BC вЂ” Wednesday, 23 April 2008</p>\r\n							<a href="#" class="image">\r\n								<img src="[cp:mediapath]img/photo_60x60.jpg" width="60" height="60" alt="photo" />\r\n							</a>\r\n							<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat. <a href="#">Visit site.</a></p>\r\n						</div>\r\n						<div class="article">\r\n							<h3>\r\n								<a href="#">Article Heading</a>\r\n							</h3>\r\n							<h4>Subheading</h4>\r\n							<p class="meta">Vancouver, BC вЂ” Wednesday, 23 April 2008</p>\r\n							<a href="#" class="image">\r\n								<img src="[cp:mediapath]img/photo_60x60.jpg" width="60" height="60" alt="photo" />\r\n							</a>\r\n							<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat. <a href="#">Visit site.</a></p>\r\n						</div>\r\n						<div class="article">\r\n							<h1>Heading 1</h1>\r\n							<h2>Heading 2</h2>\r\n							<h3>Heading 3</h3>\r\n							<h4>Heading 4</h4>\r\n							<p class="meta">Vancouver, BC вЂ” Wednesday, 23 April 2008</p>\r\n							<a href="#" class="image">\r\n								<img src="[cp:mediapath]img/photo_60x60.jpg" width="60" height="60" alt="photo" />\r\n							</a>\r\n							<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat. <a href="#">Visit site.</a></p>\r\n							<h5>Heading 5</h5>\r\n							<p>Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi.</p>\r\n							<h6>Heading 6</h6>\r\n							<p>Epsum factorial non deposit quid pro quo hic escorol. Olypian quarrels et gorilla congolium sic ad nauseum. Souvlaki ignitus carborundum e pluribus unum.</p>\r\n						</div>\r\n					</div>\r\n				</div>\r\n			</div>\r\n			<div class="clear"></div>\r\n			<div class="grid_16" id="site_info">\r\n				<div class="box">\r\n					<p>Fluid 960 Grid System, created by <a href="http://www.domain7.com/WhoWeAre/StephenBau.html">Stephen Bau</a>, based on the <a href="http://960.gs/">960 Grid System</a> by <a href="http://sonspring.com/journal/960-grid-system">Nathan Smith</a>. Released under the \r\n		<a href="[cp:mediapath]licenses/GPL_license.txt">GPL</a> / <a href="[cp:mediapath]licenses/MIT_license.txt">MIT</a> <a href="[cp:mediapath]README.txt">Licenses</a>.</p>\r\n				</div>\r\n			</div>\r\n			<div class="clear"></div>\r\n		</div>\r\n		<script>\r\n		var aveabspath = ''[cp:path]'';\r\n		</script>\r\n		<script type="text/javascript" src="[cp:mediapath]js/mootools-1.2.1-core.js"></script>\r\n		<script type="text/javascript" src="[cp:mediapath]js/mootools-1.2-more.js"></script>\r\n		<script type="text/javascript" src="[cp:mediapath]js/mootools-fluid16-autoselect.js"></script>\r\n	</body>\r\n</html>', 1, 1275342696);#inst#
-INSERT INTO `%%PRFX%%_templates` VALUES (2, 'Фикс. 16 колонок jQuery', '[cp:theme:960px]<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">\r\n<html xmlns="http://www.w3.org/1999/xhtml">\r\n	<head>\r\n		<meta http-equiv="content-type" content="text/html; charset=windows-1251" />\r\n		<title>[cp:title]</title>\r\n		<meta http-equiv="pragma" content="no-cache" />\r\n		<meta name="Keywords" content="[cp:keywords]" />\r\n		<meta name="Description" content="[cp:description]" />\r\n		<meta name="robots" content="[cp:indexfollow]" />\r\n		<link rel="stylesheet" type="text/css" href="[cp:mediapath]css/reset.css" media="screen" />\r\n		<link rel="stylesheet" type="text/css" href="[cp:mediapath]css/text.css" media="screen" />\r\n		<link rel="stylesheet" type="text/css" href="[cp:mediapath]css/960.css" media="screen" />\r\n		<link rel="stylesheet" type="text/css" href="[cp:mediapath]css/layout.css" media="screen" />\r\n		<link rel="stylesheet" type="text/css" href="[cp:mediapath]css/nav.css" media="screen" />\r\n		<!--[if IE 6]><link rel="stylesheet" type="text/css" href="[cp:mediapath]css/ie6.css" media="screen" /><![endif]-->\r\n		<!--[if IE 7]><link rel="stylesheet" type="text/css" href="[cp:mediapath]css/ie.css" media="screen" /><![endif]-->\r\n	</head>\r\n	<body>\r\n		<div class="container_16">\r\n			<div class="grid_16">\r\n				<h1 id="branding">\r\n					<a href="[cp:home]">[cp:pagename]</a>\r\n				</h1>\r\n			</div>\r\n			<div class="clear"></div>\r\n			<div class="grid_16">\r\n				[mod_navigation:2]\r\n			</div>\r\n			<div class="clear"></div>\r\n			<div class="grid_16">\r\n				<h2 id="page-heading">Templates for Rapid Interactive Prototyping</h2>\r\n			</div>\r\n			<div class="clear"></div>\r\n			[cprequest:1]\r\n			<div class="clear"></div>\r\n			<div class="box grid_16" style="padding:0;">\r\n				<h2 style="margin:0">\r\n					<a href="#" style="background-position:99.3% 50%" id="toggle-grid">16-column Grid</a>\r\n				</h2>\r\n			</div>\r\n			<div class="clear"></div>\r\n			<div id="grid">\r\n				<div class="grid_1">\r\n					<div class="box">\r\n						<p>01</p>\r\n					</div>\r\n				</div>\r\n				<div class="grid_1">\r\n					<div class="box">\r\n						<p>02</p>\r\n					</div>\r\n				</div>\r\n				<div class="grid_1">\r\n					<div class="box">\r\n						<p>03</p>\r\n					</div>\r\n				</div>\r\n				<div class="grid_1">\r\n					<div class="box">\r\n						<p>04</p>\r\n					</div>\r\n				</div>\r\n				<div class="grid_1">\r\n					<div class="box">\r\n						<p>05</p>\r\n					</div>\r\n				</div>\r\n				<div class="grid_1">\r\n					<div class="box">\r\n						<p>06</p>\r\n					</div>\r\n				</div>\r\n				<div class="grid_1">\r\n					<div class="box">\r\n						<p>07</p>\r\n					</div>\r\n				</div>\r\n				<div class="grid_1">\r\n					<div class="box">\r\n						<p>08</p>\r\n					</div>\r\n				</div>\r\n				<div class="grid_1">\r\n					<div class="box">\r\n						<p>09</p>\r\n					</div>\r\n				</div>\r\n				<div class="grid_1">\r\n					<div class="box">\r\n						<p>10</p>\r\n					</div>\r\n				</div>\r\n				<div class="grid_1">\r\n					<div class="box">\r\n						<p>11</p>\r\n					</div>\r\n				</div>\r\n				<div class="grid_1">\r\n					<div class="box">\r\n						<p>12</p>\r\n					</div>\r\n				</div>\r\n				<div class="grid_1">\r\n					<div class="box">\r\n						<p>13</p>\r\n					</div>\r\n				</div>\r\n				<div class="grid_1">\r\n					<div class="box">\r\n						<p>14</p>\r\n					</div>\r\n				</div>\r\n				<div class="grid_1">\r\n					<div class="box">\r\n						<p>15</p>\r\n					</div>\r\n				</div>\r\n				<div class="grid_1">\r\n					<div class="box">\r\n						<p>16</p>\r\n					</div>\r\n				</div>\r\n				<div class="clear"></div>\r\n				<div class="grid_2">\r\n					<div class="box">\r\n						<p>01</p>\r\n					</div>\r\n				</div>\r\n				<div class="grid_2">\r\n					<div class="box">\r\n						<p>02</p>\r\n					</div>\r\n				</div>\r\n				<div class="grid_2">\r\n					<div class="box">\r\n						<p>03</p>\r\n					</div>\r\n				</div>\r\n				<div class="grid_2">\r\n					<div class="box">\r\n						<p>04</p>\r\n					</div>\r\n				</div>\r\n				<div class="grid_2">\r\n					<div class="box">\r\n						<p>05</p>\r\n					</div>\r\n				</div>\r\n				<div class="grid_2">\r\n					<div class="box">\r\n						<p>06</p>\r\n					</div>\r\n				</div>\r\n				<div class="grid_2">\r\n					<div class="box">\r\n						<p>07</p>\r\n					</div>\r\n				</div>\r\n				<div class="grid_2">\r\n					<div class="box">\r\n						<p>08</p>\r\n					</div>\r\n				</div>\r\n				<div class="clear"></div>\r\n				<div class="grid_3">\r\n					<div class="box">\r\n						<p>01</p>\r\n					</div>\r\n				</div>\r\n				<div class="grid_3">\r\n					<div class="box">\r\n						<p>02</p>\r\n					</div>\r\n				</div>\r\n				<div class="grid_3">\r\n					<div class="box">\r\n						<p>03</p>\r\n					</div>\r\n				</div>\r\n				<div class="grid_3">\r\n					<div class="box">\r\n						<p>04</p>\r\n					</div>\r\n				</div>\r\n				<div class="grid_4">\r\n					<div class="box">\r\n						<p>05</p>\r\n					</div>\r\n				</div>\r\n				<div class="clear"></div>\r\n				<div class="grid_4">\r\n					<div class="box">\r\n						<p>01</p>\r\n					</div>\r\n				</div>\r\n				<div class="grid_4">\r\n					<div class="box">\r\n						<p>02</p>\r\n					</div>\r\n				</div>\r\n				<div class="grid_4">\r\n					<div class="box">\r\n						<p>03</p>\r\n					</div>\r\n				</div>\r\n				<div class="grid_4">\r\n					<div class="box">\r\n						<p>04</p>\r\n					</div>\r\n				</div>\r\n				<div class="clear"></div>\r\n				<div class="grid_5">\r\n					<div class="box">\r\n						<p>01</p>\r\n					</div>\r\n				</div>\r\n				<div class="grid_5">\r\n					<div class="box">\r\n						<p>02</p>\r\n					</div>\r\n				</div>\r\n				<div class="grid_6">\r\n					<div class="box">\r\n						<p>03</p>\r\n					</div>\r\n				</div>\r\n				<div class="clear"></div>\r\n				<div class="grid_6">\r\n					<div class="box">\r\n						<p>01</p>\r\n					</div>\r\n				</div>\r\n				<div class="grid_5">\r\n					<div class="box">\r\n						<p>02</p>\r\n					</div>\r\n				</div>\r\n				<div class="grid_5">\r\n					<div class="box">\r\n						<p>03</p>\r\n					</div>\r\n				</div>\r\n				<div class="clear"></div>\r\n				<div class="grid_7">\r\n					<div class="box">\r\n						<p>01</p>\r\n					</div>\r\n				</div>\r\n				<div class="grid_5">\r\n					<div class="box">\r\n						<p>02</p>\r\n					</div>\r\n				</div>\r\n				<div class="grid_4">\r\n					<div class="box">\r\n						<p>03</p>\r\n					</div>\r\n				</div>\r\n				<div class="clear"></div>\r\n				<div class="grid_8">\r\n					<div class="box">\r\n						<p>01</p>\r\n					</div>\r\n				</div>\r\n				<div class="grid_8">\r\n					<div class="box">\r\n						<p>02</p>\r\n					</div>\r\n				</div>\r\n				<div class="clear"></div>\r\n				<div class="grid_1 suffix_11">\r\n					<div class="box">\r\n						<p>01</p>\r\n					</div>\r\n				</div>\r\n				<div class="clear"></div>\r\n				<div class="grid_1 prefix_1 suffix_10">\r\n					<div class="box">\r\n						<p>02</p>\r\n					</div>\r\n				</div>\r\n				<div class="clear"></div>\r\n				<div class="grid_1 prefix_2 suffix_9">\r\n					<div class="box">\r\n						<p>03</p>\r\n					</div>\r\n				</div>\r\n				<div class="clear"></div>\r\n				<div class="grid_1 prefix_3 suffix_8">\r\n					<div class="box">\r\n						<p>04</p>\r\n					</div>\r\n				</div>\r\n				<div class="clear"></div>\r\n				<div class="grid_1 prefix_4 suffix_7">\r\n					<div class="box">\r\n						<p>05</p>\r\n					</div>\r\n				</div>\r\n				<div class="clear"></div>\r\n				<div class="grid_1 prefix_5 suffix_6">\r\n					<div class="box">\r\n						<p>06</p>\r\n					</div>\r\n				</div>\r\n				<div class="clear"></div>\r\n				<div class="grid_1 prefix_6 suffix_5">\r\n					<div class="box">\r\n						<p>07</p>\r\n					</div>\r\n				</div>\r\n				<div class="clear"></div>\r\n				<div class="grid_1 prefix_7 suffix_4">\r\n					<div class="box">\r\n						<p>08</p>\r\n					</div>\r\n				</div>\r\n				<div class="clear"></div>\r\n				<div class="grid_1 prefix_8 suffix_3">\r\n					<div class="box">\r\n						<p>09</p>\r\n					</div>\r\n				</div>\r\n				<div class="clear"></div>\r\n				<div class="grid_1 prefix_9 suffix_2">\r\n					<div class="box">\r\n						<p>10</p>\r\n					</div>\r\n				</div>\r\n				<div class="clear"></div>\r\n				<div class="grid_1 prefix_10 suffix_1">\r\n					<div class="box">\r\n						<p>11</p>\r\n					</div>\r\n				</div>\r\n				<div class="clear"></div>\r\n				<div class="grid_1 prefix_11 suffix_1">\r\n					<div class="box">\r\n						<p>12</p>\r\n					</div>\r\n				</div>\r\n				<div class="clear"></div>\r\n				<div class="grid_1 prefix_12 suffix_1">\r\n					<div class="box">\r\n						<p>13</p>\r\n					</div>\r\n				</div>\r\n				<div class="clear"></div>\r\n				<div class="grid_1 prefix_13 suffix_1">\r\n					<div class="box">\r\n						<p>14</p>\r\n					</div>\r\n				</div>\r\n				<div class="clear"></div>\r\n				<div class="grid_1 prefix_14 suffix_1">\r\n					<div class="box">\r\n						<p>15</p>\r\n					</div>\r\n				</div>\r\n				<div class="clear"></div>\r\n				<div class="grid_1 prefix_15">\r\n					<div class="box">\r\n						<p>16</p>\r\n					</div>\r\n				</div>\r\n				<div class="clear"></div>\r\n			</div>\r\n			<div class="grid_16">\r\n				<div class="box" id="kwick-box">\r\n					<h2>Mootools Fx.Elements</h2>\r\n					<div id="kwick">\r\n						<ul class="kwicks">\r\n							<li>\r\n								<a class="kwick one" href="#">\r\n									<span>One</span>\r\n								</a>\r\n							</li>\r\n							<li>\r\n								<a class="kwick two" href="#">\r\n									<span>Two</span>\r\n								</a>\r\n							</li>\r\n							<li>\r\n								<a class="kwick three" href="#">\r\n									<span>Three</span>\r\n								</a>\r\n							</li>\r\n							<li>\r\n								<a class="kwick four" href="#">\r\n									<span>Four</span>\r\n								</a>\r\n							</li>\r\n						</ul>\r\n					</div>\r\n				</div>\r\n			</div>\r\n			<div class="clear"></div>\r\n			<div class="grid_4">\r\n				<div class="box">\r\n					[mod_login]\r\n				</div>\r\n				<div class="box">\r\n					<h2>\r\n						<a href="#" id="toggle-ajax" class="hidden"><img src="[cp:mediapath]img/ajax-loader.gif" id="loading" alt="Loading" />Ajax Content</a>\r\n					</h2>\r\n					<div class="block" id="ajax-content">Content loaded dynamically</div>\r\n				</div>\r\n				<div class="box menu">\r\n					[mod_navigation:3]\r\n				</div>\r\n				<div class="box">\r\n					<h2>\r\n						<a href="#" id="toggle-list-items">List Items</a>\r\n					</h2>\r\n					<div class="block" id="list-items">\r\n						<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod. </p>\r\n						<h5>A menu</h5>\r\n						<ul class="menu">\r\n							<li>\r\n								<a href="#">Item 1</a>\r\n							</li>\r\n							<li>\r\n								<a href="#">Item 2</a>\r\n							</li>\r\n							<li>\r\n								<a href="#">Item 3</a>\r\n							</li>\r\n						</ul>\r\n						<h5>An unordered list</h5>\r\n						<ul>\r\n							<li>\r\n								<a href="#">Item 1</a>\r\n							</li>\r\n							<li>\r\n								<a href="#">Item 2</a>\r\n							</li>\r\n							<li>\r\n								<a href="#">Item 3</a>\r\n							</li>\r\n						</ul>\r\n						<h5>An ordered list</h5>\r\n						<ol>\r\n							<li>\r\n								<a href="#">Item 1</a>\r\n							</li>\r\n							<li>\r\n								<a href="#">Item 2</a>\r\n							</li>\r\n							<li>\r\n								<a href="#">Item 3</a>\r\n							</li>\r\n						</ol>\r\n					</div>\r\n				</div>\r\n			</div>\r\n			<div class="grid_7">\r\n				<div class="box">\r\n					<h2>\r\n						<a href="#" id="toggle-accordion">Accordion</a>\r\n					</h2>\r\n					<div class="block" id="accordion">\r\n						<div id="accordion">\r\n							<h3 class="toggler atStart">Design Process</h3>\r\n							<div class="element atStart">\r\n								<h4>The Value of Design</h4>\r\n								<p>Design is based on the inspiration of past accomplishments. On that foundation, we can build upon those achievements to shape the future. Design is about life — past, present and future — and the learning process that happens between birth and death. It is about community and shared knowledge and experience. It is the passion to build on what we''ve learned to create something better.</p>\r\n							</div>\r\n							<h3 class="toggler atStart">Design Influences</h3>\r\n							<div class="element atStart">\r\n								<h4>About this Site</h4>\r\n								<p>The words "design influences" can be understood as both a plural noun and as subject and verb. The plural noun speaks of those who have come before us and paved the way. The verb speaks of the responsibility of design to lead the way. By understanding where we have come from, we have a better idea of where we are going and, perhaps, where we should be heading.</p>\r\n							</div>\r\n							<h3 class="toggler atStart">Inspiration</h3>\r\n							<div class="element atStart">\r\n								<h4>Inspired by the Past</h4>\r\n								<p>I have been inspired by the work of many who have pioneered advances in Web Standards, including \r\n						<a href="http://www.31three.com/" title="www.31three.com">Jesse Bennett-Chamberlain</a>, \r\n						<a href="http://www.stopdesign.com/" title="www.stopdesign.com">Douglas Bowman</a>, \r\n						<a href="http://www.chaoticpattern.com/" title="www.chaoticpattern.com">Allen Chang</a>, \r\n						<a href="http://www.stuffandnonsense.co.uk/" title="www.stuffandnonsense.co.uk">Andy Clarke</a>, \r\n						<a href="http://www.hicksdesign.co.uk/" title="www.hicksdesign.co.uk">Jon Hicks</a>, \r\n						<a href="http://www.shauninman.com/" title="www.shauninman.com">Shaun Inman</a>, \r\n						<a href="http://www.cameronmoll.com/" title="www.cameronmoll.com">Cameron Moll</a>, \r\n						<a href="http://veerle.duoh.com/" title="veerle.duoh.com">Veerle Pieters</a>, \r\n						<a href="http://www.jasonsantamaria.com/" title="www.jasonsantamaria.com">Jason Santa Maria</a>, \r\n						<a href="http://www.mezzoblue.com/" title="www.mezzoblue.com">Dave Shea</a>, \r\n						<a href="http://www.thebignoob.com/" title="www.thebignoob.com">Ryan Sims</a>, \r\n						<a href="http://www.sonspring.com/" title="www.sonspring.com">Nathan Smith</a>, and \r\n						<a href="http://www.zeldman.com/" title="www.zeldman.com">Jeffrey Zeldman</a>, \r\n						to name a few. Thank you for inspiring <a href="http://www.domain7.com/WhoWeAre/StephenBau.html" title="Stephen Bau, Designer, Domain7">me</a> to give something back.</p>\r\n							</div>\r\n							<h3 class="toggler atStart">Contribution</h3>\r\n							<div class="element atStart">\r\n								<h4>Shaping the Future</h4>\r\n								<p>The <a href="/fluid960gs/">Fluid 960 Grid System</a> templates have been built upon the work of Nathan Smith and his <a href="http://960.gs/">960 Grid System</a> using effects from the <a href="http://www.mootools.net/">Mootools</a> JavaScript library. The idea for building these templates was inspired by Andy Clarke, author of <a href="http://www.transcendingcss.com/">Transcending CSS</a>, who advocates a content-out approach to rapid interactive prototyping, crediting Jason Santa Maria with the <a href="http://www.jasonsantamaria.com/archive/2004/05/24/grey_box_method.php">grey box method</a>.</p>\r\n							</div>\r\n						</div>\r\n					</div>\r\n				</div>\r\n				<div class="box">\r\n					<h2>\r\n						<a href="#" id="toggle-blockquote">Blockquote</a>\r\n					</h2>\r\n					<div class="block" id="blockquote">\r\n						<blockquote>\r\n							<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat.</p>\r\n							<p class="cite">\r\n								<cite>John Smith</cite>\r\n							</p>\r\n						</blockquote>\r\n					</div>\r\n				</div>\r\n				<div class="box">\r\n					<h2>\r\n						<a href="#" id="toggle-tables">Tables</a>\r\n					</h2>\r\n					<div class="block" id="tables">\r\n						<table>\r\n							<tr>\r\n								<th>Lorem ipsum</th>\r\n								<td>Dolor sit</td>\r\n								<td class="currency">$125.00</td>\r\n							</tr>\r\n							<tr>\r\n								<th>Dolor sit</th>\r\n								<td>Nostrud exerci</td>\r\n								<td class="currency">$75.00</td>\r\n							</tr>\r\n							<tr>\r\n								<th>Nostrud exerci</th>\r\n								<td>Lorem ipsum</td>\r\n								<td class="currency">$200.00</td>\r\n							</tr>\r\n							<tr>\r\n								<th>Lorem ipsum</th>\r\n								<td>Dolor sit</td>\r\n								<td class="currency">$64.00</td>\r\n							</tr>\r\n							<tr>\r\n								<th>Dolor sit</th>\r\n								<td>Nostrud exerci</td>\r\n								<td class="currency">$36.00</td>\r\n							</tr>\r\n						</table>\r\n						<table summary="This table includes examples of as many table elements as possible">\r\n							<caption>An example table</caption>\r\n							<colgroup>\r\n								<col class="colA" />\r\n								<col class="colB" />\r\n								<col class="colC" />\r\n							</colgroup>\r\n							<thead>\r\n								<tr>\r\n									<th colspan="3" class="table-head">Table heading</th>\r\n								</tr>\r\n								<tr>\r\n									<th>Column 1</th>\r\n									<th>Column 2</th>\r\n									<th class="currency">Column 3</th>\r\n								</tr>\r\n							</thead>\r\n							<tfoot>\r\n								<tr>\r\n									<th>Subtotal</th>\r\n									<td></td>\r\n									<th class="currency">$500.00</th>\r\n								</tr>\r\n								<tr class="total">\r\n									<th>Total</th>\r\n									<td></td>\r\n									<th class="currency">$500.00</th>\r\n								</tr>\r\n							</tfoot>\r\n							<tbody>\r\n								<tr class="odd">\r\n									<th>Lorem ipsum</th>\r\n									<td>Dolor sit</td>\r\n									<td class="currency">$125.00</td>\r\n								</tr>\r\n								<tr>\r\n									<th>Dolor sit</th>\r\n									<td>Nostrud exerci</td>\r\n									<td class="currency">$75.00</td>\r\n								</tr>\r\n								<tr class="odd">\r\n									<th>Nostrud exerci</th>\r\n									<td>Lorem ipsum</td>\r\n									<td class="currency">$200.00</td>\r\n								</tr>\r\n								<tr>\r\n									<th>Lorem ipsum</th>\r\n									<td>Dolor sit</td>\r\n									<td class="currency">$64.00</td>\r\n								</tr>\r\n								<tr class="odd">\r\n									<th>Dolor sit</th>\r\n									<td>Nostrud exerci</td>\r\n									<td class="currency">$36.00</td>\r\n								</tr>\r\n							</tbody>\r\n						</table>\r\n					</div>\r\n				</div>\r\n				<div class="box">\r\n					<h2>\r\n						<a href="#" id="toggle-forms">Forms</a>\r\n					</h2>\r\n					<div class="block" id="forms">\r\n						<form action="">\r\n							<fieldset class="login">\r\n								<legend>Login Information</legend>\r\n								<p>\r\n									<label>Username: </label>\r\n									<input type="text" name="username" value="" />\r\n								</p>\r\n								<p>\r\n									<label>Password: </label>\r\n									<input type="password" name="password" />\r\n								</p>\r\n								<p>\r\n									<label>Re-type Password: </label>\r\n									<input type="password" name="password2" />\r\n								</p>\r\n								<input class="confirm button" type="submit" value="Confirm Availability" />\r\n							</fieldset>\r\n							<fieldset>\r\n								<legend>Personal Information</legend>\r\n								<p>\r\n									<label>First Name: </label>\r\n									<input type="text" name="first-name" value="" />\r\n								</p>\r\n								<p>\r\n									<label>Last Name: </label>\r\n									<input type="text" name="last-name" value="" />\r\n								</p>\r\n								<p>\r\n									<label>Address: </label>\r\n									<input type="text" name="address1" value="" />\r\n								</p>\r\n								<p>\r\n									<label>Address 2: </label>\r\n									<input type="text" name="address2" value="" />\r\n								</p>\r\n								<p>\r\n									<label>City: </label>\r\n									<input type="text" name="city" value="" />\r\n								</p>\r\n								<p>\r\n									<label>State/Province: </label>\r\n									<select name="State">\r\n										<option value="">Select State/Province...</option>\r\n										<option value="AL">Alabama </option>\r\n										<option value="AK">Alaska </option>\r\n										<option value="AB">Alberta </option>\r\n										<option value="AZ">Arizona </option>\r\n										<option value="AR">Arkansas </option>\r\n										<option value="BC">British Columbia </option>\r\n										<option value="CA">California </option>\r\n										<option value="CO">Colorado </option>\r\n										<option value="CT">Connecticut </option>\r\n										<option value="DE">Delaware </option>\r\n										<option value="DC">District of Columbia </option>\r\n										<option value="FL">Florida </option>\r\n										<option value="GA">Georgia </option>\r\n										<option value="HI">Hawaii </option>\r\n										<option value="ID">Idaho </option>\r\n										<option value="IL">Illinois </option>\r\n										<option value="IN">Indiana </option>\r\n										<option value="IA">Iowa </option>\r\n										<option value="KS">Kansas </option>\r\n										<option value="KY">Kentucky </option>\r\n										<option value="LA">Louisiana </option>\r\n										<option value="ME">Maine </option>\r\n										<option value="MB">Manitoba </option>\r\n										<option value="MD">Maryland </option>\r\n										<option value="MA">Massachusetts </option>\r\n										<option value="MI">Michigan </option>\r\n										<option value="MN">Minnesota </option>\r\n										<option value="MS">Mississippi </option>\r\n										<option value="MO">Missouri </option>\r\n										<option value="MT">Montana </option>\r\n										<option value="NE">Nebraska </option>\r\n										<option value="NV">Nevada </option>\r\n										<option value="NB">New Brunswick </option>\r\n										<option value="NH">New Hampshire </option>\r\n										<option value="NJ">New Jersey </option>\r\n										<option value="NM">New Mexico </option>\r\n										<option value="NY">New York </option>\r\n										<option value="NF">Newfoundland </option>\r\n										<option value="NC">North Carolina </option>\r\n										<option value="ND">North Dakota </option>\r\n										<option value="NT">Northwest Territories </option>\r\n										<option value="NS">Nova Scotia </option>\r\n										<option value="OH">Ohio </option>\r\n										<option value="OK">Oklahoma </option>\r\n										<option value="ON">Ontario </option>\r\n										<option value="OR">Oregon </option>\r\n										<option value="PA">Pennsylvania </option>\r\n										<option value="PE">Prince Edward Island </option>\r\n										<option value="PR">Puerto Rico </option>\r\n										<option value="QC">Quebec </option>\r\n										<option value="RI">Rhode Island </option>\r\n										<option value="SK">Saskatchewan </option>\r\n										<option value="SC">South Carolina </option>\r\n										<option value="SD">South Dakota </option>\r\n										<option value="TN">Tennessee </option>\r\n										<option value="TX">Texas </option>\r\n										<option value="UT">Utah </option>\r\n										<option value="VT">Vermont </option>\r\n										<option value="VA">Virginia </option>\r\n										<option value="WA">Washington </option>\r\n										<option value="WV">West Virginia </option>\r\n										<option value="WI">Wisconsin </option>\r\n										<option value="WY">Wyoming </option>\r\n										<option value="YT">Yukon </option>\r\n									</select>\r\n								</p>\r\n								<p>\r\n									<label>Country: </label>\r\n									<select name="Country">\r\n										<option value="">Select Country...</option>\r\n										<option value="Canada">Canada</option>\r\n										<option value="United States">United States</option>\r\n									</select>\r\n								</p>\r\n								<p>\r\n									<label>Zip/Postal Code: </label>\r\n									<input type="text" name="zipcode" value="" />\r\n								</p>\r\n								<p>\r\n									<label>Phone Number: </label>\r\n									<input type="text" name="phone" value="" />\r\n								</p>\r\n								<p>\r\n									<label>Email Address: </label>\r\n									<input type="text" name="email" value="" />\r\n								</p>\r\n								<input type="submit" value="Register" class="register-button" />\r\n							</fieldset>\r\n						</form>\r\n					</div>\r\n				</div>\r\n			</div>\r\n			<div class="grid_5">\r\n				<div class="box">\r\n					[mod_search]\r\n				</div>\r\n				<div class="box">\r\n					<h2>\r\n						<a href="#" id="toggle-paragraphs">Paragraphs</a>\r\n					</h2>\r\n					<div class="block" id="paragraphs">\r\n						<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.</p>\r\n						<p>Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat.</p>\r\n					</div>\r\n				</div>\r\n				<div class="box articles">\r\n					<h2>\r\n						<a href="#" id="toggle-articles">Articles</a>\r\n					</h2>\r\n					<div class="block" id="articles">\r\n						<div class="first article">\r\n							<h3>\r\n								<a href="#">Article Heading</a>\r\n							</h3>\r\n							<h4>Subheading</h4>\r\n							<p class="meta">Vancouver, BC — Wednesday, 23 April 2008</p>\r\n							<a href="#" class="image">\r\n								<img src="[cp:mediapath]img/photo_60x60.jpg" width="60" height="60" alt="photo" />\r\n							</a>\r\n							<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat. <a href="#">Visit site.</a></p>\r\n						</div>\r\n						<div class="article">\r\n							<h3>\r\n								<a href="#">Article Heading</a>\r\n							</h3>\r\n							<h4>Subheading</h4>\r\n							<p class="meta">Vancouver, BC — Wednesday, 23 April 2008</p>\r\n							<a href="#" class="image">\r\n								<img src="[cp:mediapath]img/photo_60x60.jpg" width="60" height="60" alt="photo" />\r\n							</a>\r\n							<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat. <a href="#">Visit site.</a></p>\r\n						</div>\r\n						<div class="article">\r\n							<h1>Heading 1</h1>\r\n							<h2>Heading 2</h2>\r\n							<h3>Heading 3</h3>\r\n							<h4>Heading 4</h4>\r\n							<p class="meta">Vancouver, BC — Wednesday, 23 April 2008</p>\r\n							<a href="#" class="image">\r\n								<img src="[cp:mediapath]img/photo_60x60.jpg" width="60" height="60" alt="photo" />\r\n							</a>\r\n							<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat. <a href="#">Visit site.</a></p>\r\n							<h5>Heading 5</h5>\r\n							<p>Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi.</p>\r\n							<h6>Heading 6</h6>\r\n							<p>Epsum factorial non deposit quid pro quo hic escorol. Olypian quarrels et gorilla congolium sic ad nauseum. Souvlaki ignitus carborundum e pluribus unum.</p>\r\n						</div>\r\n					</div>\r\n				</div>\r\n			</div>\r\n			<div class="clear"></div>\r\n			<div class="grid_16" id="site_info">\r\n				<div class="box">\r\n					<p>Fluid 960 Grid System, created by <a href="http://www.domain7.com/WhoWeAre/StephenBau.html">Stephen Bau</a>, based on the <a href="http://960.gs/">960 Grid System</a> by <a href="http://sonspring.com/journal/960-grid-system">Nathan Smith</a>. Released under the \r\n		<a href="[cp:mediapath]licenses/GPL_license.txt">GPL</a> / <a href="[cp:mediapath]licenses/MIT_license.txt">MIT</a> <a href="[cp:mediapath]README.txt">Licenses</a>.</p>\r\n				</div>\r\n			</div>\r\n			<div class="clear"></div>\r\n		</div>\r\n		<script type="text/javascript" src="[cp:mediapath]js/jquery-1.3.2.min.js"></script>\r\n		<script type="text/javascript" src="[cp:mediapath]js/jquery-ui.js"></script>\r\n		<script>\r\n		var aveabspath = ''[cp:path]'';\r\n		</script>\r\n		<script type="text/javascript" src="[cp:mediapath]js/jquery-fluid16.js"></script>\r\n		<script src="[cp:mediapath]js/common.js" type="text/javascript"></script>\r\n	</body>\r\n</html>', 1, 1275326299);#inst#
-INSERT INTO `%%PRFX%%_templates` VALUES (3, 'Фикс. 16-2 колонок jQuery', '[cp:theme:960px]<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">\r\n<html xmlns="http://www.w3.org/1999/xhtml">\r\n	<head>\r\n		<meta http-equiv="content-type" content="text/html; charset=windows-1251" />\r\n		<title>[cp:title]</title>\r\n		<meta http-equiv="pragma" content="no-cache" />\r\n		<meta name="Keywords" content="[cp:keywords]" />\r\n		<meta name="Description" content="[cp:description]" />\r\n		<meta name="robots" content="[cp:indexfollow]" />\r\n		<link rel="stylesheet" type="text/css" href="[cp:mediapath]css/reset.css" media="screen" />\r\n		<link rel="stylesheet" type="text/css" href="[cp:mediapath]css/text.css" media="screen" />\r\n		<link rel="stylesheet" type="text/css" href="[cp:mediapath]css/960.css" media="screen" />\r\n		<link rel="stylesheet" type="text/css" href="[cp:mediapath]css/layout.css" media="screen" />\r\n		<link rel="stylesheet" type="text/css" href="[cp:mediapath]css/nav.css" media="screen" />\r\n		<!--[if IE 6]><link rel="stylesheet" type="text/css" href="[cp:mediapath]css/ie6.css" media="screen" /><![endif]-->\r\n		<!--[if IE 7]><link rel="stylesheet" type="text/css" href="[cp:mediapath]css/ie.css" media="screen" /><![endif]-->\r\n	</head>\r\n	<body>\r\n		<div class="container_16">\r\n			<div class="grid_16">\r\n				<h1 id="branding">\r\n					<a href="[cp:home]">[cp:pagename]</a>\r\n				</h1>\r\n			</div>\r\n			<div class="clear"></div>\r\n			<div class="grid_16">\r\n				[mod_navigation:2]\r\n			</div>\r\n			<div class="clear"></div>\r\n			<div class="grid_16">\r\n				<h2 id="page-heading">Templates for Rapid Interactive Prototyping</h2>\r\n			</div>\r\n			<div class="clear"></div>\r\n			<div class="grid_4">\r\n				<div class="box">\r\n					[mod_search]\r\n				</div>\r\n				<div class="box">\r\n					[mod_login]\r\n				</div>\r\n				<div class="box menu">\r\n					[mod_navigation:3]\r\n				</div>\r\n				<div class="box articles">\r\n					<h2>\r\n						<a href="#" id="toggle-articles">Articles</a>\r\n					</h2>\r\n					<div class="block" id="articles">\r\n						<div class="first article">\r\n							<h3>\r\n								<a href="#">Article Heading</a>\r\n							</h3>\r\n							<h4>Subheading</h4>\r\n							<p class="meta">Vancouver, BC — Wednesday, 23 April 2008</p>\r\n							<a href="#" class="image">\r\n								<img src="[cp:mediapath]img/photo_60x60.jpg" width="60" height="60" alt="photo" />\r\n							</a>\r\n							<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat. <a href="#">Visit site.</a></p>\r\n						</div>\r\n						<div class="article">\r\n							<h3>\r\n								<a href="#">Article Heading</a>\r\n							</h3>\r\n							<h4>Subheading</h4>\r\n							<p class="meta">Vancouver, BC — Wednesday, 23 April 2008</p>\r\n							<a href="#" class="image">\r\n								<img src="[cp:mediapath]img/photo_60x60.jpg" width="60" height="60" alt="photo" />\r\n							</a>\r\n							<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat. <a href="#">Visit site.</a></p>\r\n						</div>\r\n						<div class="article">\r\n							<h1>Heading 1</h1>\r\n							<h2>Heading 2</h2>\r\n							<h3>Heading 3</h3>\r\n							<h4>Heading 4</h4>\r\n							<p class="meta">Vancouver, BC — Wednesday, 23 April 2008</p>\r\n							<a href="#" class="image">\r\n								<img src="[cp:mediapath]img/photo_60x60.jpg" width="60" height="60" alt="photo" />\r\n							</a>\r\n							<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat. <a href="#">Visit site.</a></p>\r\n							<h5>Heading 5</h5>\r\n							<p>Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi.</p>\r\n							<h6>Heading 6</h6>\r\n							<p>Epsum factorial non deposit quid pro quo hic escorol. Olypian quarrels et gorilla congolium sic ad nauseum. Souvlaki ignitus carborundum e pluribus unum.</p>\r\n						</div>\r\n					</div>\r\n				</div>\r\n			</div>\r\n			<div class="grid_12">\r\n				<!-- <div class="article"> -->\r\n					[cp:maincontent]\r\n				<!-- </div> -->\r\n			</div>\r\n			<div class="clear"></div>\r\n			<div class="grid_16" id="site_info">\r\n				<div class="box">\r\n					<p>Fluid 960 Grid System, created by <a href="http://www.domain7.com/WhoWeAre/StephenBau.html">Stephen Bau</a>, based on the <a href="http://960.gs/">960 Grid System</a> by <a href="http://sonspring.com/journal/960-grid-system">Nathan Smith</a>. Released under the \r\n					<a href="[cp:mediapath]licenses/GPL_license.txt">GPL</a> / <a href="[cp:mediapath]licenses/MIT_license.txt">MIT</a> <a href="[cp:mediapath]README.txt">Licenses</a>.</p>\r\n				</div>\r\n			</div>\r\n			<div class="clear"></div>\r\n		</div>\r\n		<script type="text/javascript" src="[cp:mediapath]js/jquery-1.3.2.min.js"></script>\r\n		<script type="text/javascript" src="[cp:mediapath]js/jquery-ui.js"></script>\r\n		<script>\r\n		var aveabspath = ''[cp:path]'';\r\n		</script>\r\n		<script type="text/javascript" src="[cp:mediapath]js/jquery-fluid16.js"></script>\r\n		<script src="[cp:mediapath]js/common.js" type="text/javascript"></script>\r\n		<script type="text/javascript" src="[cp:mediapath]js/jquery.form.js"></script>\r\n		<script src="[cp:path]modules/comment/js/comment.js" type="text/javascript"></script>\r\n	</body>\r\n</html>', 1, 1275355156);#inst#
-INSERT INTO `%%PRFX%%_templates` VALUES (5, 'Фикс. 16-3 колонок jQuery', '[cp:theme:960px]<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">\r\n<html xmlns="http://www.w3.org/1999/xhtml">\r\n	<head>\r\n		<meta http-equiv="content-type" content="text/html; charset=windows-1251" />\r\n		<title>[cp:title]</title>\r\n		<meta http-equiv="pragma" content="no-cache" />\r\n		<meta name="Keywords" content="[cp:keywords]" />\r\n		<meta name="Description" content="[cp:description]" />\r\n		<meta name="robots" content="[cp:indexfollow]" />\r\n		<link rel="stylesheet" type="text/css" href="[cp:mediapath]css/reset.css" media="screen" />\r\n		<link rel="stylesheet" type="text/css" href="[cp:mediapath]css/text.css" media="screen" />\r\n		<link rel="stylesheet" type="text/css" href="[cp:mediapath]css/960.css" media="screen" />\r\n		<link rel="stylesheet" type="text/css" href="[cp:mediapath]css/layout.css" media="screen" />\r\n		<link rel="stylesheet" type="text/css" href="[cp:mediapath]css/nav.css" media="screen" />\r\n		<!--[if IE 6]><link rel="stylesheet" type="text/css" href="[cp:mediapath]css/ie6.css" media="screen" /><![endif]-->\r\n		<!--[if IE 7]><link rel="stylesheet" type="text/css" href="[cp:mediapath]css/ie.css" media="screen" /><![endif]-->\r\n	</head>\r\n	<body>\r\n		<div class="container_16">\r\n			<div class="grid_16">\r\n				<h1 id="branding">\r\n					<a href="[cp:home]">[cp:pagename]</a>\r\n				</h1>\r\n			</div>\r\n			<div class="clear"></div>\r\n			<div class="grid_16">\r\n				[mod_navigation:2]\r\n			</div>\r\n			<div class="clear"></div>\r\n			<div class="grid_16">\r\n				<h2 id="page-heading">Templates for Rapid Interactive Prototyping</h2>\r\n			</div>\r\n			<div class="clear"></div>\r\n			<div class="grid_4">\r\n				<div class="box">\r\n					[mod_login]\r\n				</div>\r\n				<div class="box">\r\n					<h2>\r\n						<a href="#" id="toggle-ajax" class="hidden"><img src="[cp:mediapath]img/ajax-loader.gif" id="loading" alt="Loading" />Ajax Content</a>\r\n					</h2>\r\n					<div class="block" id="ajax-content">Content loaded dynamically</div>\r\n				</div>\r\n				<div class="box menu">\r\n					[mod_navigation:3]\r\n				</div>\r\n				<div class="box">\r\n					<h2>\r\n						<a href="#" id="toggle-list-items">List Items</a>\r\n					</h2>\r\n					<div class="block" id="list-items">\r\n						<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod. </p>\r\n						<h5>A menu</h5>\r\n						<ul class="menu">\r\n							<li>\r\n								<a href="#">Item 1</a>\r\n							</li>\r\n							<li>\r\n								<a href="#">Item 2</a>\r\n							</li>\r\n							<li>\r\n								<a href="#">Item 3</a>\r\n							</li>\r\n						</ul>\r\n						<h5>An unordered list</h5>\r\n						<ul>\r\n							<li>\r\n								<a href="#">Item 1</a>\r\n							</li>\r\n							<li>\r\n								<a href="#">Item 2</a>\r\n							</li>\r\n							<li>\r\n								<a href="#">Item 3</a>\r\n							</li>\r\n						</ul>\r\n						<h5>An ordered list</h5>\r\n						<ol>\r\n							<li>\r\n								<a href="#">Item 1</a>\r\n							</li>\r\n							<li>\r\n								<a href="#">Item 2</a>\r\n							</li>\r\n							<li>\r\n								<a href="#">Item 3</a>\r\n							</li>\r\n						</ol>\r\n					</div>\r\n				</div>\r\n			</div>\r\n			<div class="grid_7">\r\n				[cp:maincontent]\r\n			</div>\r\n			<div class="grid_5">\r\n				<div class="box">\r\n					[mod_search]\r\n				</div>\r\n				<div class="box">\r\n					<h2>\r\n						<a href="#" id="toggle-paragraphs">Paragraphs</a>\r\n					</h2>\r\n					<div class="block" id="paragraphs">\r\n						<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.</p>\r\n						<p>Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat.</p>\r\n					</div>\r\n				</div>\r\n				<div class="box articles">\r\n					<h2>\r\n						<a href="#" id="toggle-articles">Articles</a>\r\n					</h2>\r\n					<div class="block" id="articles">\r\n						<div class="first article">\r\n							<h3>\r\n								<a href="#">Article Heading</a>\r\n							</h3>\r\n							<h4>Subheading</h4>\r\n							<p class="meta">Vancouver, BC — Wednesday, 23 April 2008</p>\r\n							<a href="#" class="image">\r\n								<img src="[cp:mediapath]img/photo_60x60.jpg" width="60" height="60" alt="photo" />\r\n							</a>\r\n							<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat. <a href="#">Visit site.</a></p>\r\n						</div>\r\n						<div class="article">\r\n							<h3>\r\n								<a href="#">Article Heading</a>\r\n							</h3>\r\n							<h4>Subheading</h4>\r\n							<p class="meta">Vancouver, BC — Wednesday, 23 April 2008</p>\r\n							<a href="#" class="image">\r\n								<img src="[cp:mediapath]img/photo_60x60.jpg" width="60" height="60" alt="photo" />\r\n							</a>\r\n							<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat. <a href="#">Visit site.</a></p>\r\n						</div>\r\n						<div class="article">\r\n							<h1>Heading 1</h1>\r\n							<h2>Heading 2</h2>\r\n							<h3>Heading 3</h3>\r\n							<h4>Heading 4</h4>\r\n							<p class="meta">Vancouver, BC — Wednesday, 23 April 2008</p>\r\n							<a href="#" class="image">\r\n								<img src="[cp:mediapath]img/photo_60x60.jpg" width="60" height="60" alt="photo" />\r\n							</a>\r\n							<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat. <a href="#">Visit site.</a></p>\r\n							<h5>Heading 5</h5>\r\n							<p>Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi.</p>\r\n							<h6>Heading 6</h6>\r\n							<p>Epsum factorial non deposit quid pro quo hic escorol. Olypian quarrels et gorilla congolium sic ad nauseum. Souvlaki ignitus carborundum e pluribus unum.</p>\r\n						</div>\r\n					</div>\r\n				</div>\r\n			</div>\r\n			<div class="clear"></div>\r\n			<div class="grid_16" id="site_info">\r\n				<div class="box">\r\n					<p>Fluid 960 Grid System, created by <a href="http://www.domain7.com/WhoWeAre/StephenBau.html">Stephen Bau</a>, based on the <a href="http://960.gs/">960 Grid System</a> by <a href="http://sonspring.com/journal/960-grid-system">Nathan Smith</a>. Released under the \r\n		<a href="[cp:mediapath]licenses/GPL_license.txt">GPL</a> / <a href="[cp:mediapath]licenses/MIT_license.txt">MIT</a> <a href="[cp:mediapath]README.txt">Licenses</a>.</p>\r\n				</div>\r\n			</div>\r\n			<div class="clear"></div>\r\n		</div>\r\n		<script type="text/javascript" src="[cp:mediapath]js/jquery-1.3.2.min.js"></script>\r\n		<script type="text/javascript" src="[cp:mediapath]js/jquery-ui.js"></script>\r\n		<script>\r\n		var aveabspath = ''[cp:path]'';\r\n		</script>\r\n		<script type="text/javascript" src="[cp:mediapath]js/jquery-fluid16.js"></script>\r\n		<script src="[cp:mediapath]js/common.js" type="text/javascript"></script>\r\n	</body>\r\n</html>', 1, 1275483101);#inst#
-
-INSERT INTO `%%PRFX%%_user_groups` VALUES (1, 'Администраторы', '1', '0', '', 'alles');#inst#
-INSERT INTO `%%PRFX%%_user_groups` VALUES (2, 'Анонимные пользователи', '1', '0', '', '');#inst#
-INSERT INTO `%%PRFX%%_user_groups` VALUES (3, 'Зарегистрированные пользователи', '1', '0', '', '');#inst#
-
-INSERT INTO `%%PRFX%%_users` VALUES (1, '%%PASS%%', '%%EMAIL%%', '%%STRASSE%%', '%%HNR%%', '%%PLZ%%', '%%ORT%%', '%%FON%%', '', '', '%%VORNAME%%', '%%NACHNAME%%', '%%USERNAME%%', 1, '', '%%ZEIT%%', '1', '%%ZEIT%%', 'ru', '', '0', '0', '0', '0', '', '', '', '%%SALT%%', '', 0);
+INSERT INTO `%%PRFX%%_users` VALUES
+  (1, '%%PASS%%', '%%EMAIL%%', '%%STRASSE%%', '%%HNR%%', '%%PLZ%%', '%%ORT%%', '%%FON%%', '', '', '%%VORNAME%%', '%%NACHNAME%%', '%%USERNAME%%', 1, '', '%%ZEIT%%', '1', '%%ZEIT%%', 'ru', '', '0', '0', '0', '0', '', '', '', '%%SALT%%', '', 0);

@@ -243,35 +243,33 @@ INSERT INTO `%%PRFX%%_document_fields` VALUES
   (3, 1, 2, 'Ошибка 404', '0'),
   (4, 2, 2, 'Извините, запрошенный Вами документ не найден.', '0');#inst#
 
-INSERT INTO `%%PRFX%%_document_permissions` VALUES
-  (1, 1, 1, 'alles'),
-  (2, 1, 2, 'docread'),
-  (3, 1, 3, 'docread');#inst#
-
 INSERT INTO `%%PRFX%%_documents` VALUES
-  (1, 1, 'home', 'Главная', 0, 0, 1275093312, 1, '0', '', '', 'index,follow', '1', '0', 0, 1, 0),
+  (1, 1, 'home', 'Главная', 0, 0, 0, 1, '0', '', '', 'index,follow', '1', '0', 0, 0, 0),
   (2, 1, '404-not-found', '404 - Документ не найден', 0, 0, 0, 1, '0', '', '', 'noindex,nofollow', '1', '0', 0, 0, 0);#inst#
 
 INSERT INTO `%%PRFX%%_navigation` VALUES
-  (1, 'Вертикальное меню', '<li><a href=''[cp:link]'' title="[cp:linkname]" target="[cp:target]">[cp:linkname]</a></li>', '<li><a href="[cp:link]" title="[cp:linkname]" target="[cp:target]">[cp:linkname]</a></li>', '<li><a href="[cp:link]" title="[cp:linkname]" target="[cp:target]">[cp:linkname]</a></li>', '<li class=''active''><b><a target=''[cp:target]'' href="[cp:link]">[cp:linkname]</a></b></li>\r\n', '<li class="active"><b><a target="[cp:target]" href="[cp:link]" title="[cp:linkname]">[cp:linkname]</a></b></li>\r\n', '<li><b><a href="[cp:link]" title="[cp:linkname]" target="[cp:target]">[cp:linkname]</a></b></li>', '<ul class="menu_v" style="margin-bottom:0;">', '</ul>', '<ul>', '</ul>', '<ul>', '</ul>', '<!-- vnavi -->', '<!-- /vnavi -->', '1,2,3', '0');#inst#
+  (1, 'Основное меню', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '');#inst#
 
 INSERT INTO `%%PRFX%%_rubric_fields` VALUES
   (1, 1, 'Заголовок', 'kurztext', 5, '', '', ''),
   (2, 1, 'Текст', 'langtext', 10, '', '', '');#inst#
 
+INSERT INTO `%%PRFX%%_rubric_permissions` VALUES
+  (1, 1, 1, 'alles'),
+  (2, 1, 2, 'docread');#inst#
+
 INSERT INTO `%%PRFX%%_rubrics` VALUES
-  (1, 'Основные страницы', '', '<h1>[cprub:1]</h1>\r\n[cprub:2]', 1, 1, 0);#inst#
+  (1, 'Основные страницы', '', '<h1>[tag:fld:1]</h1>[tag:fld:2]', 1, 1, 0);#inst#
 
 INSERT INTO `%%PRFX%%_settings` VALUES
-  (1, '%%SITENAME%%', 'mail', 'text/plain', 25, 'smtp.yourserver.ru', 'xxxxx', 'xxxxx', '/usr/sbin/sendmail', 50, '%%EMAIL%%', '%%USERNAME%%', 'Здравствуйте %NAME%,\r\nВаша регистрация на сайте %HOST%. \r\n\r\nТеперь Вы можете войти на %HOST% со следующими данными:: \r\n\r\nПароль: %KENNWORT%\r\nE-Mail: %EMAIL%\r\n\r\n-----------------------\r\n%EMAILFUSS%\r\n\r\n', '--------------------\r\nOverdoze Team\r\nwww.overdoze.ru\r\ninfo@overdoze.ru\r\n--------------------', 2, '<h2>Ошибка...</h2>\r\n<br />\r\nУ Вас нет прав на просмотр этого документа!.', '<div class="page_navigation_box">%s</div>', 'Первая «', '» Последняя', '...', '»', '«', 'Страница %d из %d', '%d %B %Y', '%d %B %Y, %H:%M', 'ru', '0', '<div class="hidden_box">Содержимое скрыто. Пожалуйста, <a href="/index.php?module=login&action=register">зарегистрируйтесь</a></div>');#inst#
+  (1, '%%SITENAME%%', 'mail', 'text/plain', 465, 'smtp.gmail.com', 'yourusername@gmail.com', 'yourpassword', '/usr/sbin/sendmail', 50, '%%EMAIL%%', '%%USERNAME%%', 'Здравствуйте %NAME%,\r\nВаша регистрация на сайте %HOST%. \r\n\r\nТеперь Вы можете войти на %HOST% со следующими данными:: \r\n\r\nПароль: %KENNWORT%\r\nE-Mail: %EMAIL%\r\n\r\n-----------------------\r\n%EMAILFUSS%\r\n\r\n', '--------------------\r\nOverdoze Team\r\nwww.overdoze.ru\r\ninfo@overdoze.ru\r\n--------------------', 2, '<h2>Ошибка...</h2>\r\n<br />\r\nУ Вас нет прав на просмотр этого документа!.', '<div class="page_navigation_box">%s</div>', 'Первая «', '» Последняя', '…', '»', '«', 'Страница %d из %d', '%d %B %Y', '%d %B %Y, %H:%M', 'ru', '0', '<div class="hidden_box">Содержимое скрыто. Пожалуйста, <a href="index.php?module=login&action=register">зарегистрируйтесь</a></div>');#inst#
 
 INSERT INTO `%%PRFX%%_templates` VALUES
-  (1, 'ave_base', '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">\r\n<html xmlns="http://www.w3.org/1999/xhtml">\r\n<head>\r\n<title>[cp:title]</title>\r\n<meta http-equiv="Content-Type" content="text/html; charset=windows-1251" />\r\n<meta http-equiv="pragma" content="no-cache" />\r\n<meta name="Keywords" content="[cp:keywords]" />\r\n<meta name="Description" content="[cp:description]" />\r\n<meta name="robots" content="[cp:indexfollow]" />\r\n</head>\r\n<body>\r\n\r\n[cp:maincontent]\r\n\r\n</body>\r\n</html>', 1, 0);#inst#
+  (1, 'Основной шаблон', '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">\r\n<html xmlns="http://www.w3.org/1999/xhtml">\r\n<head>\r\n<meta http-equiv="Content-Type" content="text/html; charset=windows-1251" />\r\n</head>\r\n<body>\r\n[tag:maincontent]\r\n</body>\r\n</html>', 1, 0);#inst#
 
 INSERT INTO `%%PRFX%%_user_groups` VALUES
   (1, 'Администраторы', '1', '0', '', 'alles'),
-  (2, 'Анонимные пользователи', '1', '0', '', ''),
-  (3, 'Зарегистрированные пользователи', '1', '0', '', '');#inst#
+  (2, 'Анонимные пользователи', '1', '0', '', '');#inst#
 
 INSERT INTO `%%PRFX%%_users` VALUES
   (1, '%%PASS%%', '%%EMAIL%%', '%%STRASSE%%', '%%HNR%%', '%%PLZ%%', '%%ORT%%', '%%FON%%', '', '', '%%VORNAME%%', '%%NACHNAME%%', '%%USERNAME%%', 1, '', '%%ZEIT%%', '1', '%%ZEIT%%', 'ru', '', '0', '0', '0', '0', '', '', '', '%%SALT%%', '', 0);
