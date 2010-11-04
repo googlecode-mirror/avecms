@@ -101,7 +101,7 @@ if (!defined('ACP') && isset($_REQUEST['module']) && $_REQUEST['module'] == 'who
 					// A "geoData" cookie has been previously set by the script, so we will use it
 
 					// Always escape any user input, including cookies:
-					list($city, $countryName, $countryAbbrev) = explode('|', mysql_real_escape_string(strip_tags($_COOKIE['geoData'])));
+					list($city, $countryName, $countryAbbrev) = explode('|', stripslashes(strip_tags($_COOKIE['geoData'])));
 				}
 				else
 				{
@@ -137,9 +137,9 @@ if (!defined('ACP') && isset($_REQUEST['module']) && $_REQUEST['module'] == 'who
 					INSERT INTO " . PREFIX . "_modul_who_is_online
 					SET
 						ip          = " . $intIp . ",
-						city        = '" . $city . "',
-						country     = '" . $countryName . "',
-						countrycode = '" . $countryAbbrev . "'
+						city        = '" . addslashes($city) . "',
+						country     = '" . addslashes($countryName) . "',
+						countrycode = '" . addslashes($countryAbbrev) . "'
 				");
 			}
 			else
