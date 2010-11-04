@@ -290,14 +290,19 @@ function get_print_link()
 
 function get_referer_link()
 {
-	$link = false;
-	if (isset($_SERVER['HTTP_REFERER']))
+	static $link = null;
+
+	if ($link === null)
 	{
-		$link = parse_url($_SERVER['HTTP_REFERER']);
-		$link = (trim($link['host']) == $_SERVER['SERVER_NAME']);
+		if (isset($_SERVER['HTTP_REFERER']))
+		{
+			$link = parse_url($_SERVER['HTTP_REFERER']);
+			$link = (trim($link['host']) == $_SERVER['SERVER_NAME']);
+		}
+		$link = ($link === true ? $_SERVER['HTTP_REFERER'] : get_home_link());
 	}
 
-	return ($link ? $_SERVER['HTTP_REFERER'] : get_home_link());
+	return $link;
 }
 
 function truncate_text($string, $length = 80, $etc = '...', $break_words = false, $middle = false)
