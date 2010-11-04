@@ -126,16 +126,16 @@ class Forum
 				topic_emails
 			) VALUES (
 				'',
-				'" . $title . "'
-				'" . $comment . "'
-				'" . $_POST['c_id'] . "'
-				'" . $_POST['active'] . "'
-				'" . $password . "'
-				'" . $password_raw . "'
-				'" . $c_groups->group_id . "'
-				'" . $moderated . "'
-				'" . $moderated_posts . "'
-				'" . $_POST['post_emails'] . "'
+				'" . $title . "',
+				'" . $comment . "',
+				'" . $_POST['c_id'] . "',
+				'" . $_POST['active'] . "',
+				'" . $password . "',
+				'" . $password_raw . "',
+				'" . $c_groups->group_id . "',
+				'" . $moderated . "',
+				'" . $moderated_posts . "',
+				'" . $_POST['post_emails'] . "',
 				'" . $_POST['topic_emails'] . "'
 			)";
 
@@ -162,7 +162,7 @@ class Forum
 					group_id,
 					permissions
 				) VALUES (
-					'" . $forum_id . "'
+					'" . $forum_id . "',
 					'" . $group->ugroup . "',
 					'" . $defmask . "')";
 				$result = $GLOBALS['AVE_DB']->Query($query);
@@ -396,10 +396,10 @@ class Forum
 					group_id
 				) VALUES (
 					'',
-					'" . $title . "'
-					$position,
-					'" . $comment . "'
-					'" . $parent_id . "'
+					'" . $title . "',
+					'" . $position . "',
+					'" . $comment . "',
+					'" . $parent_id . "',
 					'" . @implode(",", $_POST['group_id']) . "'
 				)";
 			} else {
@@ -1443,24 +1443,24 @@ class Forum
 					INTO " . PREFIX . "_modul_forum_userprofile
 					SET
 						Id             = '',
-						BenutzerId     = '" . $row->uid . "'
-						BenutzerName   = '" . $row->uname . "'
-						GroupIdMisc    = '" . $row->group_id_misc . "'
-						Beitraege      = '" . $row->user_posts . "'
-						ZeigeProfil    = '" . $row->show_public . "'
-						Signatur       = '" . $row->user_sig . "'
-						Icq            = '" . $row->user_icq . "'
-						Aim            = '" . $row->user_aim . "'
-						Skype          = '" . $row->user_skype . "'
+						BenutzerId     = '" . $row->uid . "',
+						BenutzerName   = '" . $row->uname . "',
+						GroupIdMisc    = '" . $row->group_id_misc . "',
+						Beitraege      = '" . $row->user_posts . "',
+						ZeigeProfil    = '" . $row->show_public . "',
+						Signatur       = '" . $row->user_sig . "',
+						Icq            = '" . $row->user_icq . "',
+						Aim            = '" . $row->user_aim . "',
+						Skype          = '" . $row->user_skype . "',
 						Emailempfang   = '" . (($row->user_viewemail=='yes' || $row->user_viewemail=='') ? 1 : 0) . "',
 						Pnempfang      = '" . (($row->user_canpn=='yes') ? 1 : 0) . "',
-						Avatar         = '" . $row->user_avatar . "'
-						AvatarStandard = '" . $row->usedefault_avatar . "'
-						Webseite       = '" . $row->url . "'
+						Avatar         = '" . $row->user_avatar . "',
+						AvatarStandard = '" . $row->usedefault_avatar . "',
+						Webseite       = '" . $row->url . "',
 						Unsichtbar     = '" . (($row->invisible=='yes') ? 1 : 0) . "',
-						Interessen     = '" . $row->user_interests . "'
-						email          = '" . $row->email . "'
-						reg_time       = '" . $row->user_regdate . "'
+						Interessen     = '" . $row->user_interests . "',
+						email          = '" . $row->email . "',
+						reg_time       = '" . $row->user_regdate . "',
 						GeburtsTag     = '" . $row->user_birthday . "'
 					");
 
@@ -1483,7 +1483,7 @@ class Forum
 							lastname         = '" . $row->lastname . "',
 							user_name        = '" . $row->uname . "',
 							user_group       = '" . $row->ugroup . "',
-							user_group_extra = '" . $row->group_id_misc . "'
+							user_group_extra = '" . $row->group_id_misc . "',
 							reg_time         = '" . $row->user_regdate . "',
 							status           = '" . $row->status . "',
 							last_visit       = '" . $row->last_login . "',
