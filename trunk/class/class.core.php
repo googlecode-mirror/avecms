@@ -827,7 +827,7 @@ class AVE_Core
 	{
 		global $AVE_DB;
 
-		$get_url = iconv("UTF-8", "WINDOWS-1251//IGNORE", rawurldecode($get_url));
+		$get_url = iconv("UTF-8", "WINDOWS-1251//IGNORE//TRANSLIT", rawurldecode($get_url));
 		$get_url = substr($get_url, strlen(ABS_PATH));
 		if (substr($get_url, - strlen(URL_SUFF)) == URL_SUFF)
 		{
