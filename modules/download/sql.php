@@ -25,7 +25,7 @@ $modul_sql_install[] = "CREATE TABLE CPPREFIX_modul_download_comments (
   Ip varchar(200) NOT NULL default '',
   status tinyint(1) unsigned NOT NULL default '1',
   PRIMARY KEY  (Id)
-) TYPE=MyISAM DEFAULT CHARSET=cp1251;";
+) ENGINE=MyISAM DEFAULT CHARSET=cp1251;";
 
 $modul_sql_install[] = "CREATE TABLE CPPREFIX_modul_download_files (
   Id int(10) unsigned NOT NULL auto_increment,
@@ -62,7 +62,7 @@ $modul_sql_install[] = "CREATE TABLE CPPREFIX_modul_download_files (
   Pay varchar(10) default '0',
   Pay_val int(10) unsigned NOT NULL default '0',
   PRIMARY KEY  (Id)
-) TYPE=MyISAM DEFAULT CHARSET=cp1251;";
+) ENGINE=MyISAM DEFAULT CHARSET=cp1251;";
 
 $modul_sql_install[] = "CREATE TABLE CPPREFIX_modul_download_kat (
   Id int(10) unsigned NOT NULL auto_increment,
@@ -73,13 +73,13 @@ $modul_sql_install[] = "CREATE TABLE CPPREFIX_modul_download_kat (
   user_group varchar(255) NOT NULL default '1|2|3|4|5|6',
   Bild varchar(200) default NULL,
   PRIMARY KEY  (Id)
-) TYPE=MyISAM DEFAULT CHARSET=cp1251;";
+) ENGINE=MyISAM DEFAULT CHARSET=cp1251;";
 
 $modul_sql_install[] = "CREATE TABLE CPPREFIX_modul_download_lizenzen (
   Id smallint(2) unsigned NOT NULL auto_increment,
   Name varchar(255) NOT NULL default '',
   PRIMARY KEY  (Id)
-) TYPE=MyISAM DEFAULT CHARSET=cp1251;";
+) ENGINE=MyISAM DEFAULT CHARSET=cp1251;";
 
 $modul_sql_install[] = "CREATE TABLE CPPREFIX_modul_download_log (
   Id int(14) unsigned NOT NULL auto_increment,
@@ -87,26 +87,26 @@ $modul_sql_install[] = "CREATE TABLE CPPREFIX_modul_download_log (
   Datum varchar(10) NOT NULL default '',
   Ip varchar(100) NOT NULL default '',
   PRIMARY KEY  (Id)
-) TYPE=MyISAM DEFAULT CHARSET=cp1251;";
+) ENGINE=MyISAM DEFAULT CHARSET=cp1251;";
 
 $modul_sql_install[] = "CREATE TABLE CPPREFIX_modul_download_os (
   Id int(10) unsigned NOT NULL auto_increment,
   Name varchar(200) NOT NULL default '',
   PRIMARY KEY  (Id)
-) TYPE=MyISAM DEFAULT CHARSET=cp1251;";
+) ENGINE=MyISAM DEFAULT CHARSET=cp1251;";
 
 $modul_sql_install[] = "CREATE TABLE CPPREFIX_modul_download_settings (
   Empfehlen tinyint(1) unsigned NOT NULL default '1',
   Bewerten tinyint(1) unsigned NOT NULL default '0',
   Spamwoerter text NOT NULL,
   Kommentare tinyint(1) unsigned NOT NULL default '1'
-) TYPE=MyISAM DEFAULT CHARSET=cp1251;";
+) ENGINE=MyISAM DEFAULT CHARSET=cp1251;";
 
 $modul_sql_install[] = "CREATE TABLE CPPREFIX_modul_download_sprachen (
   Id int(10) unsigned NOT NULL auto_increment,
   Name varchar(200) NOT NULL default '',
   PRIMARY KEY  (Id)
-) TYPE=MyISAM DEFAULT CHARSET=cp1251;";
+) ENGINE=MyISAM DEFAULT CHARSET=cp1251;";
 
 $modul_sql_install[] = "INSERT INTO CPPREFIX_modul_download_files VALUES (8, 'Overdoze', 'http://www.overdoze.ru', '5.0', '1', 24, 'Koobi Handbuch', '<p>Актуальное руководство для Koobi 5 Standard и Koobi 5 Pro.<br />\r\n<br />\r\nНа данный момент руководство состоит из 130 страниц с 240 цветными иллюстрациями. Это руководство постоянно обновляется, поэтому Вы сможете получить специальные сведения о последних изменениях.</p>\r\n<p>Для просмотра у Вас должна быть установлена программа Adobe&reg; Acrobat&reg; Reader</p>', 'keine', 1, 'local', 'HandbuchKoobi5.pdf', 450, 0, 'kb', 1164046575, 1164047383, '8', 3, '5', 32, 5, '', 1, 'keine', 'http://www.overdoze.ru\r\nhttp://www.domain.ru', 'uploads/images/splash_koobi.gif', 1, 1, 1, 0, 0, 0);";
 $modul_sql_install[] = "INSERT INTO CPPREFIX_modul_download_files VALUES (11, '', '', '', '1', 24, 'Koobi Changelog', 'Этот документ содержит описание всех изменений в Koobi', '', 1, 'local', 'Changelog.pdf', 69, 0, 'kb', 1164047584, NULL, '9', 3, '5', 20, 3, '', 1, '', '', 'uploads/images/splash_koobi.gif', 1, 1, 1, 0, 0, 0);";
@@ -159,7 +159,7 @@ $modul_sql_install[] = "CREATE TABLE CPPREFIX_modul_download_payhistory (
   PayDate varchar(10) default '',
   User_IP varchar(15) default '',
   PRIMARY KEY  (Id)
-) TYPE=MyISAM DEFAULT CHARSET=cp1251;";
+) ENGINE=MyISAM DEFAULT CHARSET=cp1251;";
 
 $modul_sql_update[] = "UPDATE CPPREFIX_module SET CpEngineTag = '" . $modul['CpEngineTag'] . "', CpPHPTag = '" . $modul['CpPHPTag'] . "', Version = '" . $modul['ModulVersion'] . "' WHERE ModulPfad = '" . $modul['ModulPfad'] . "' LIMIT 1;";
 

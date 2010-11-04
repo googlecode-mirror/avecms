@@ -30,7 +30,7 @@ $modul_sql_install[] = "CREATE TABLE CPPREFIX_modul_login (
   login_require_firstname enum('0','1') NOT NULL default '0',
   login_require_lastname enum('0','1') NOT NULL default '0',
   PRIMARY KEY  (Id)
-) TYPE=MyISAM DEFAULT CHARSET=cp1251;";
+) ENGINE=MyISAM DEFAULT CHARSET=cp1251;";
 
 $modul_sql_install[] = "INSERT INTO CPPREFIX_modul_login VALUES (1, 'email', 1, 1, 'domain.ru', 'name@domain.ru',0,0,0);";
 

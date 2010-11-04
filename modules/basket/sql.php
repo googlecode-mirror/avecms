@@ -27,7 +27,7 @@ $modul_sql_install[] = "CREATE TABLE `CPPREFIX_modul_basket` (
   `basket_product_quantity` smallint(5) default NULL,
   `basket_product_amount` float(10,2) default NULL,
   PRIMARY KEY  (`id`)
-) TYPE=MyISAM DEFAULT CHARSET=cp1251;";
+) ENGINE=MyISAM DEFAULT CHARSET=cp1251;";
 
 $modul_sql_update[] = "UPDATE CPPREFIX_module SET CpEngineTag = '" . $modul['CpEngineTag'] . "', CpPHPTag = '" . $modul['CpPHPTag'] . "', Version = '" . $modul['ModulVersion'] . "' WHERE ModulPfad = 'basket' LIMIT 1;";
 

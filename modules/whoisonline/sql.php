@@ -25,7 +25,7 @@ $modul_sql_install[] = "CREATE TABLE CPPREFIX_modul_who_is_online (
   PRIMARY KEY  (`id`),
   UNIQUE KEY `ip` (`ip`),
   KEY `countrycode` (`countrycode`)
-) TYPE=MyISAM DEFAULT CHARSET=cp1251;";
+) ENGINE=MyISAM DEFAULT CHARSET=cp1251;";
 
 $modul_sql_update[] = "UPDATE CPPREFIX_module SET CpEngineTag = '" . $modul['CpEngineTag'] . "', CpPHPTag = '" . $modul['CpPHPTag'] . "', Version = '" . $modul['ModulVersion'] . "' WHERE ModulPfad = '" . $modul['ModulPfad'] . "' LIMIT 1;";
 

@@ -15,7 +15,7 @@ $modul_sql_install[] = "CREATE TABLE CPPREFIX_modul_userpage (
   group_id tinytext,
   can_comment tinyint(1) NOT NULL default '0',
   PRIMARY KEY  (Id)
-) TYPE=MyISAM DEFAULT CHARSET=cp1251;";
+) ENGINE=MyISAM DEFAULT CHARSET=cp1251;";
 
 $modul_sql_install[] = "CREATE TABLE CPPREFIX_modul_userpage_items (
   Id int(10) unsigned NOT NULL auto_increment,
@@ -24,13 +24,13 @@ $modul_sql_install[] = "CREATE TABLE CPPREFIX_modul_userpage_items (
   value text NOT NULL default '',
   active tinyint(1) NOT NULL default '1',
   PRIMARY KEY  (Id)
-) TYPE=MyISAM DEFAULT CHARSET=cp1251;";
+) ENGINE=MyISAM DEFAULT CHARSET=cp1251;";
 
 $modul_sql_install[] = "CREATE TABLE CPPREFIX_modul_userpage_values (
   id int(10) unsigned NOT NULL auto_increment,
   uid varchar(15) NOT NULL default '',
   PRIMARY KEY  (Id)
-) TYPE=MyISAM DEFAULT CHARSET=cp1251;";
+) ENGINE=MyISAM DEFAULT CHARSET=cp1251;";
 
 $modul_sql_install[] = "CREATE TABLE CPPREFIX_modul_userpage_guestbook (
   id int(10) unsigned NOT NULL auto_increment,
@@ -40,13 +40,13 @@ $modul_sql_install[] = "CREATE TABLE CPPREFIX_modul_userpage_guestbook (
   title varchar(250),
   message text,
   PRIMARY KEY  (Id)
-) TYPE=MyISAM DEFAULT CHARSET=cp1251;";
+) ENGINE=MyISAM DEFAULT CHARSET=cp1251;";
 
 $modul_sql_install[] = "CREATE TABLE CPPREFIX_modul_userpage_template (
   id int(1) unsigned NOT NULL auto_increment,
   tpl text NOT NULL default '',
   PRIMARY KEY  (Id)
-) TYPE=MyISAM DEFAULT CHARSET=cp1251;";
+) ENGINE=MyISAM DEFAULT CHARSET=cp1251;";
 
 $modul_sql_install[] = "INSERT INTO  CPPREFIX_modul_userpage VALUES ('1', '1', '1');";
 $modul_sql_install[] = "INSERT INTO  CPPREFIX_modul_userpage_template VALUES ('1', '
