@@ -6,7 +6,7 @@ function user_login($login, $password, $attach_ip = 0, $keep_in = 0, $sleep = 0)
 
 	sleep($sleep);
 
-	if (empty($login)) return false;
+	if (empty($login)) return 1;
 
 	$row = $AVE_DB->Query("
 		SELECT
@@ -31,7 +31,8 @@ function user_login($login, $password, $attach_ip = 0, $keep_in = 0, $sleep = 0)
 		LIMIT 1
 	")->FetchRow();
 
-	if (! (isset($row->status) && $row->status == '1' && $row->password == md5(md5($password . $row->salt)))) return false;
+	if (! (isset($row->password) && $row->password == md5(md5($password . $row->salt)))) return 2;
+	if ($row->status != '1') return 3;
 
 	$salt = make_random_string();
 
