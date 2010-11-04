@@ -24,7 +24,7 @@ $modul_sql_install[] = "CREATE TABLE `CPPREFIX_modul_banner_categories` (
   `Id` smallint(3) unsigned NOT NULL auto_increment,
   `banner_category_name` char(100) NOT NULL default '',
   PRIMARY KEY  (`Id`)
-) TYPE=MyISAM DEFAULT CHARSET=cp1251;";
+) ENGINE=MyISAM DEFAULT CHARSET=cp1251;";
 
 $modul_sql_install[] = "CREATE TABLE `CPPREFIX_modul_banners` (
   `Id` mediumint(5) unsigned NOT NULL auto_increment,
@@ -46,7 +46,7 @@ $modul_sql_install[] = "CREATE TABLE `CPPREFIX_modul_banners` (
   `banner_height` smallint(3) unsigned NOT NULL default '0',
   PRIMARY KEY  (`Id`),
   KEY `banner_category_id` (`banner_category_id`)
-) TYPE=MyISAM DEFAULT CHARSET=cp1251;";
+) ENGINE=MyISAM DEFAULT CHARSET=cp1251;";
 
 $modul_sql_install[] = "INSERT INTO `CPPREFIX_modul_banner_categories` VALUES ('1', 'Катагория 1');";
 $modul_sql_install[] = "INSERT INTO `CPPREFIX_modul_banner_categories` VALUES ('2', 'Категория 2');";

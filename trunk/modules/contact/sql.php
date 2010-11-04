@@ -34,7 +34,7 @@ $modul_sql_install[] = "CREATE TABLE CPPREFIX_modul_contacts (
   `contact_form_send_copy` enum('1','0') NOT NULL default '1',
   `contact_form_message_noaccess` text NOT NULL,
   PRIMARY KEY  (`Id`)
-) TYPE=MyISAM PACK_KEYS=0 DEFAULT CHARSET=cp1251;";
+) ENGINE=MyISAM PACK_KEYS=0 DEFAULT CHARSET=cp1251;";
 
 $modul_sql_install[] = "CREATE TABLE CPPREFIX_modul_contact_fields (
   `Id` int(10) unsigned NOT NULL auto_increment,
@@ -51,7 +51,7 @@ $modul_sql_install[] = "CREATE TABLE CPPREFIX_modul_contact_fields (
   `contact_field_max_chars` varchar(20) NOT NULL,
   `contact_field_value` varchar(255) NOT NULL,
   PRIMARY KEY  (`Id`)
-) TYPE=MyISAM DEFAULT CHARSET=cp1251;";
+) ENGINE=MyISAM DEFAULT CHARSET=cp1251;";
 
 $modul_sql_install[] = "CREATE TABLE CPPREFIX_modul_contact_info (
   `Id` int(10) unsigned NOT NULL auto_increment,
@@ -68,7 +68,7 @@ $modul_sql_install[] = "CREATE TABLE CPPREFIX_modul_contact_info (
   `contact_form_out_message` longtext NOT NULL,
   `contact_form_out_attachment` tinytext NOT NULL,
   PRIMARY KEY  (`Id`)
-) TYPE=MyISAM DEFAULT CHARSET=cp1251;";
+) ENGINE=MyISAM DEFAULT CHARSET=cp1251;";
 
 $modul_sql_install[] = "INSERT INTO `CPPREFIX_modul_contacts` VALUES (1, 'Обратная Связь', 5000, 'youremail@yourdomain.ru', '', '1', 120, '0', '', '1,2,3,4', '0', 'У Вас недостаточно прав для использования этой формы.');";
 

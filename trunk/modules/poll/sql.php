@@ -19,7 +19,7 @@ $modul_sql_install[] = "CREATE TABLE CPPREFIX_modul_poll (
   poll_users_id text NOT NULL default '',
   poll_users_ip text NOT NULL default '',
   PRIMARY KEY  (id)
-) TYPE=MyISAM DEFAULT CHARSET=cp1251;";
+) ENGINE=MyISAM DEFAULT CHARSET=cp1251;";
 
 $modul_sql_install[] = "CREATE TABLE CPPREFIX_modul_poll_comments (
   id int(10) unsigned NOT NULL auto_increment,
@@ -30,7 +30,7 @@ $modul_sql_install[] = "CREATE TABLE CPPREFIX_modul_poll_comments (
   poll_comment_title varchar(250) NOT NULL default '',
   poll_comment_text text NOT NULL default '',
   PRIMARY KEY  (id)
-) TYPE=MyISAM DEFAULT CHARSET=cp1251;";
+) ENGINE=MyISAM DEFAULT CHARSET=cp1251;";
 
 $modul_sql_install[] = "CREATE TABLE CPPREFIX_modul_poll_items (
   id int(10) unsigned NOT NULL auto_increment,
@@ -40,7 +40,7 @@ $modul_sql_install[] = "CREATE TABLE CPPREFIX_modul_poll_items (
   poll_item_color varchar(10) NOT NULL default '',
   poll_item_position int(2) NOT NULL,
   PRIMARY KEY  (id)
-) TYPE=MyISAM DEFAULT CHARSET=cp1251;";
+) ENGINE=MyISAM DEFAULT CHARSET=cp1251;";
 
 $modul_sql_update[] = "UPDATE CPPREFIX_module SET CpEngineTag = '" . $modul['CpEngineTag'] . "', CpPHPTag = '" . $modul['CpPHPTag'] . "', Version = '" . $modul['ModulVersion'] . "' WHERE ModulPfad = '" . $modul['ModulPfad'] . "' LIMIT 1;";
 

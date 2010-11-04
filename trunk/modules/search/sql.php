@@ -22,7 +22,7 @@ $modul_sql_install[] = "CREATE TABLE CPPREFIX_modul_search (
   `search_found` mediumint(5) unsigned NOT NULL default '0',
   PRIMARY KEY  (`Id`),
   UNIQUE KEY `search_query` (`search_query`)
-) TYPE=MyISAM DEFAULT CHARSET=cp1251 PACK_KEYS=0;";
+) ENGINE=MyISAM DEFAULT CHARSET=cp1251 PACK_KEYS=0;";
 
 $modul_sql_update[] = "UPDATE CPPREFIX_module SET CpEngineTag = '" . $modul['CpEngineTag'] . "', CpPHPTag = '" . $modul['CpPHPTag'] . "', Version = '" . $modul['ModulVersion'] . "' WHERE ModulPfad = '" . $modul['ModulPfad'] . "' LIMIT 1;";
 

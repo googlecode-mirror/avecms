@@ -27,7 +27,7 @@ $modul_sql_install[] = "CREATE TABLE CPPREFIX_modul_newsarchive (
   `newsarchive_show_days` enum('1','0') NOT NULL default '1',
   `newsarchive_show_empty` enum('1','0') NOT NULL default '1',
   PRIMARY KEY  (`id`)
-) TYPE=MyISAM DEFAULT CHARSET=cp1251;";
+) ENGINE=MyISAM DEFAULT CHARSET=cp1251;";
 
 $modul_sql_update[] = "UPDATE CPPREFIX_module SET CpEngineTag = '" . $modul['CpEngineTag'] . "', CpPHPTag = '" . $modul['CpPHPTag'] . "', Version = '" . $modul['ModulVersion'] . "' WHERE ModulPfad = '" . $modul['ModulPfad'] . "' LIMIT 1;";
 
