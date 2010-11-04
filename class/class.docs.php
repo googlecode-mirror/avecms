@@ -1560,9 +1560,9 @@ class AVE_Document
 	 */
 	function documentAliasCreate()
 	{
-		$alias  = empty($_REQUEST['alias'])  ? '' : prepare_url(iconv("UTF-8", "WINDOWS-1251", $_REQUEST['alias']));
-		$title  = empty($_REQUEST['title'])  ? '' : prepare_url(iconv("UTF-8", "WINDOWS-1251", $_REQUEST['title']));
-		$prefix = empty($_REQUEST['prefix']) ? '' : prepare_url(iconv("UTF-8", "WINDOWS-1251", $_REQUEST['prefix']));
+		$alias  = empty($_REQUEST['alias'])  ? '' : prepare_url(iconv("UTF-8", "WINDOWS-1251//IGNORE//TRANSLIT", $_REQUEST['alias']));
+		$title  = empty($_REQUEST['title'])  ? '' : prepare_url(iconv("UTF-8", "WINDOWS-1251//IGNORE//TRANSLIT", $_REQUEST['title']));
+		$prefix = empty($_REQUEST['prefix']) ? '' : prepare_url(iconv("UTF-8", "WINDOWS-1251//IGNORE//TRANSLIT", $_REQUEST['prefix']));
 
 		if ($alias != $title && $alias != trim($prefix . '/' . $title, '/')) $alias = trim($alias . '/' . $title, '/');
 
@@ -1578,7 +1578,7 @@ class AVE_Document
 		global $AVE_DB, $AVE_Template;
 
 		$document_id = (isset($_REQUEST['id']) && is_numeric($_REQUEST['id'])) ? $_REQUEST['id'] : 0;
-		$document_alias = (isset($_REQUEST['alias'])) ? iconv("UTF-8", "WINDOWS-1251", $_REQUEST['alias']) : '';
+		$document_alias = (isset($_REQUEST['alias'])) ? iconv("UTF-8", "WINDOWS-1251//IGNORE//TRANSLIT", $_REQUEST['alias']) : '';
 
 		$errors = array();
 
