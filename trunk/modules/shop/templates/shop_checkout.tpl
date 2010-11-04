@@ -24,7 +24,7 @@
 	</div>
 
 	<div class="grid_4">
-		<form method="post" action="index.php">
+		<form method="post" action="{$ABS_PATH}index.php?module=login&action=login">
 			<table>
 				<thead>
 					<tr>
@@ -75,9 +75,7 @@
 				<tfoot>
 					<tr>
 						<td align="center" valign="middle" class="mod_shop_basket_row">
-							<form method="post" action="index.php">
-								<input type="hidden" name="module" value="shop" />
-								<input type="hidden" name="action" value="checkout" />
+							<form method="post" action="index.php?module=shop&action=checkout">
 								<input type="hidden" name="create_account" value="no" />
 								<input class="absmiddle" type="image" src="{$shop_images}guest_order.gif" alt="{#PaymentGuestLink#}" />
 							</form>

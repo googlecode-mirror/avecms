@@ -127,7 +127,7 @@
 	</div>
 	<div class="clear"></div>
 
-	<form name="process" method="post" action="index.php">
+	<form name="process" method="post" action="index.php?module=shop&action=checkout">
 		<div class="grid_4 alpha tablebox">
 			<table width="100%">
 				<tr>
@@ -228,9 +228,9 @@
 		</div>
 		<div class="clear"></div>
 
-		{*if $smarty.session.ShowNoVatInfo==1*}
+		{if $smarty.session.ShowNoVatInfo==1}
 			<div class="mod_shop_warn">{#WarnVatInc#}</div><br />
-		{*/if*}
+		{/if}
 
 		<div class="grid_6 alpha tablebox">
 			<table width="100%">
@@ -276,9 +276,9 @@
 			<label for="abg_accept">{#AcceptAGB#}</label>
 		</div>
 
-		<input type="hidden" name="module" value="shop" />
+{*		<input type="hidden" name="module" value="shop" />
 		<input type="hidden" name="action" value="checkout" />
-		<input type="hidden" name="sendorder" value="1" />
+*}		<input type="hidden" name="sendorder" value="1" />
 		<input type="hidden" name="create_account" value="{$smarty.request.create_account}" />
 		<input type="hidden" name="zusammenfassung" id="zus" value="1" />
 		<input type="hidden" name="PaymentId" value="{$smarty.session.PaymentId}" />
