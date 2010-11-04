@@ -16,9 +16,7 @@
 
 <p><em>{#BASKET_ORDER_FORM_TIP#}</em></p>
 
-<form method="post" action="index.php">
-	<input type="hidden" name="module" value="basket" />
-	<input type="hidden" name="action" value="send" />
+<form method="post" action="index.php?module=basket&action=send">
 {* раскомментировать при желании отображать список заказанных товаров
 	<table width="100%" border="1" cellpadding="0" cellspacing="0">
 		<colgroup>
