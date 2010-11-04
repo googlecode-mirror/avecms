@@ -40,7 +40,7 @@ if (isset($_REQUEST['action']) && $_REQUEST['action'] == 'login')
 	// Авторизация
 	if (!empty($_POST['user_login']) && !empty($_POST['user_pass']))
 	{
-		if (user_login($_POST['user_login'], $_POST['user_pass'], 1))
+		if (true === user_login($_POST['user_login'], $_POST['user_pass'], 1))
 		{
             if (!empty($_SESSION['redirectlink']))
             {
