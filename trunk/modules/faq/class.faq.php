@@ -167,7 +167,7 @@ class Faq
 		}
 		else
 		{
-			if ($AVE_DB->Query("SELECT 1 FROM " . PREFIX . "_modul_faq_quest WHERE faq_id = '" . $_POST['fid'] . "'")->GetCell())
+			if ($AVE_DB->Query("SELECT 1 FROM " . PREFIX . "_modul_faq WHERE id = '" . $_POST['fid'] . "'")->GetCell())
 			{
 				$AVE_DB->Query("INSERT INTO " . PREFIX . "_modul_faq_quest SET id = '', faq_id = '" . $_POST['fid'] . "', faq_quest = '" . $_POST['faq_quest'] . "', faq_answer = '" . $_POST['faq_answer'] . "'");
 			}
