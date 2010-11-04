@@ -166,6 +166,7 @@ fieldset p input { width:98%; }
 fieldset p select { width:99%; }
 fieldset.login p label { float:left; line-height:2em; margin-right:3%; text-align:right; width:32%; }
 fieldset.login p input { width:60%; }
+fieldset.login p select { width:61%; }
 fieldset.login input.button { margin-left:35%; }
 form p.notice { font-weight:normal; }
 #search { position: absolute; top: 8px; right: 10px; width: 210px; z-index: auto; }
@@ -173,7 +174,7 @@ input.search.text { width:210px; height: 20px; border: 1px solid #676767; line-h
 input.search.button { width: 22px; height: 22px; background: url(../images/button_s.gif) no-repeat center center; vertical-align: middle; border-style: none; cursor: pointer; position: absolute; top: 1px; right: 0px; text-indent: -1000px; overflow: hidden; }
 .login input.inputbox { width:190px; margin: 0 0 5px 0; }
 .login input.pass { width:135px; margin: 0 5px 5px 0; vertical-align: middle;}
-.login input.button { vertical-align: middle; width: 47px; margin: 0 0 5px 0;}
+.login input.button { vertical-align: middle; /*width: 47px;*/ margin: 0 0 5px 0;}
 
 /* page navigation
 ----------------------------------------------- */
