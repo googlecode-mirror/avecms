@@ -1,3 +1,4 @@
+
 <div id="module_header">
 	<h2>{#LOGIN_REGISTER_OK#}</h2>
 </div>

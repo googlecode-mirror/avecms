@@ -291,6 +291,12 @@ class Login
 	{
 		global $AVE_Template;
 
+		if (empty($_SESSION['referer']))
+		{
+			$referer = get_referer_link();
+			$_SESSION['referer'] = (false === strstr($referer, 'module=login')) ? $referer : get_home_link();
+		}
+
 		if (!empty($_POST['user_login']) && !empty($_POST['user_pass']))
 		{
 			$result = user_login(
@@ -299,17 +305,15 @@ class Login
 				1,
 				(int)(isset($_POST['SaveLogin']) && $_POST['SaveLogin'] == 1)
 			);
-			if ($result)
+			if ($result === true)
 			{
-				$referer_link = get_referer_link();
-				if (false === strstr($referer_link, 'module=login'))
-				{
-					header('Location:' . $referer_link);
-				}
-				else
-				{
-					header('Location:' . get_home_link());
-				}
+				header('Location:' . rewrite_link($_SESSION['referer']));
+				unset($_SESSION['referer']);
+				exit;
+			}
+			elseif ($result === 3)
+			{
+				header('Location:' . ABS_PATH . 'index.php?module=login&action=register&sub=registerfinal');
 				exit;
 			}
 			else
@@ -344,8 +348,14 @@ class Login
 
 		if (isset($_SESSION['user_id']) || isset($_SESSION['user_pass']))
 		{
-			header('Location:'.get_home_link());
+			header('Location:' . get_referer_link());
 			exit;
+		}
+
+		if (empty($_SESSION['referer']))
+		{
+			$referer = get_referer_link();
+			$_SESSION['referer'] = (false === strstr($referer, 'module=login')) ? $referer : get_home_link();
 		}
 
 		$AVE_Template->config_load($this->_lang_file, 'registernew');
@@ -602,7 +612,7 @@ class Login
 						break;
 
 					case 'registerfinal':
-						if (isset($_REQUEST['emc']) && $_REQUEST['emc'] != '0')
+						if (isset($_REQUEST['emc']) && $_REQUEST['emc'] != '')
 						{
 							$row = $AVE_DB->Query("
 								SELECT *
