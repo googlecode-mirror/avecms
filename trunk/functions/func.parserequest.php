@@ -18,26 +18,22 @@ function request_get_condition_sql_string($id)
 {
 	global $AVE_DB, $AVE_Core;
 
-	$where = '';
-	$from = PREFIX . '_document_fields AS t0';
-	$eq_string = '';
-	$ueb = '';
-	$start = 0;
-	$doc_label = 'doc_' . $AVE_Core->curentdoc->Id;
+	$from = array();
+	$where = array();
+	$retval = '';
+	$i = 0;
 
-	if (!empty($_REQUEST['req_' . $id]))
+	if (!defined('ACP'))
 	{
-		$_SESSION[$doc_label]['req_' . $id] = $_REQUEST['req_' . $id];
-	}
-	else
-	{
-		if (!empty($_SESSION[$doc_label]['req_' . $id]))
+		$doc = 'doc_' . $AVE_Core->curentdoc->Id;
+
+		if (isset($_POST['req_' . $id]))
 		{
-			$_REQUEST['req_' . $id] = $_SESSION[$doc_label]['req_' . $id];
+			$_SESSION[$doc]['req_' . $id] = $_POST['req_' . $id];
 		}
-		else
+		elseif (isset($_SESSION[$doc]['req_' . $id]))
 		{
-			$_REQUEST['req_' . $id] = array();
+			$_POST['req_' . $id] = $_SESSION[$doc]['req_' . $id];
 		}
 	}
 
@@ -47,106 +43,64 @@ function request_get_condition_sql_string($id)
 		WHERE request_id = '" . $id . "'
 	");
 
+	if (!empty($_POST['req_' . $id]) && is_array($_POST['req_' . $id]))
+	{
+		foreach ($_POST['req_' . $id] as $fid => $val)
+		{
+			if (!($val != '' && isset($_SESSION['val_' . $fid]) && in_array($val, $_SESSION['val_' . $fid]))) continue;
+
+			if ($i) $from[] = "JOIN %%PREFIX%%_document_fields AS t$i ON t$i.document_id = t0.document_id";
+
+			$where[] = "t$i.rubric_field_id = $fid AND t$i.field_value = '$val'";
+
+			++$i;
+		}
+	}
+
 	while ($row_ak = $sql_ak->FetchRow())
 	{
-		$feld = $row_ak->condition_field_id;
+		$fid = $row_ak->condition_field_id;
 
-		if (!empty($_REQUEST['req_' . $id][$feld]))
-		{
-			$wert = $_REQUEST['req_' . $id][$feld];
-			unset($_REQUEST['req_' . $id][$feld]);
-		}
-		else
-		{
-			$wert = $row_ak->condition_value;
-		}
+		if (isset($_POST['req_' . $id]) && isset($_POST['req_' . $id][$fid])) continue;
 
-		if ($row_ak->condition_join != 'OR')
-		{
-			$where = ' WHERE 1';
-			$start_bracket = ' AND ';
-			$lastb_bracket = '';
-			$alias = 't' . $start;
-			$from .= ($start != 0) ? ' JOIN ' . PREFIX . '_document_fields AS ' . $alias . ' ON ' . $alias . '.document_id = t0.document_id' : '';
-		}
-		else
-		{
-			$where = ' WHERE 0';
-			$start_bracket = ' OR(';
-			$lastb_bracket = ')';
-			$alias = 't0';
-		}
+		if ($i) $from[] = "JOIN %%PREFIX%%_document_fields AS t$i ON t$i.document_id = t0.document_id";
+
+		$val = $row_ak->condition_value;
 
 		switch ($row_ak->condition_compare)
 		{
-			case '%%':
-				$eq_string .= $start_bracket . $alias . ".rubric_field_id = '" . $feld . "' AND " . $alias . ".field_value LIKE '%" . $wert . "%' " . $lastb_bracket;
-				break;
-
-			case '%':
-				$eq_string .= $start_bracket . $alias . ".rubric_field_id = '" . $feld . "' AND " . $alias . ".field_value LIKE '" . $wert . "%' " . $lastb_bracket;
-				break;
-
-			case '<':
-				$eq_string .= $start_bracket . $alias . ".rubric_field_id = '" . $feld . "' AND " . $alias . ".field_value < '" . $wert . "' " . $lastb_bracket;
-				break;
-
-			case '<=':
-				$eq_string .= $start_bracket . $alias . ".rubric_field_id = '" . $feld . "' AND " . $alias . ".field_value <= '" . $wert . "' " . $lastb_bracket;
-				break;
-
-			case '>':
-				$eq_string .= $start_bracket . $alias . ".rubric_field_id = '" . $feld . "' AND " . $alias . ".field_value > '" . $wert . "' " . $lastb_bracket;
-				break;
-
-			case '>=':
-				$eq_string .= $start_bracket . $alias . ".rubric_field_id = '" . $feld . "' AND " . $alias . ".field_value >= '" . $wert . "' " . $lastb_bracket;
-				break;
-
-			case '==':
-				$eq_string .= $start_bracket . $alias . ".rubric_field_id = '" . $feld . "' AND " . $alias . ".field_value = '" . $wert . "' " . $lastb_bracket;
-				break;
-
-			case '!=':
-				$eq_string .= $start_bracket . $alias . ".rubric_field_id = '" . $feld . "' AND " . $alias . ".field_value != '" . $wert . "' " . $lastb_bracket;
-				break;
-
-			case '--':
-				$eq_string .= $start_bracket . $alias . ".rubric_field_id = '" . $feld . "' AND " . $alias . ".field_value NOT LIKE '%" . $wert . "%' " . $lastb_bracket;
-				break;
+			case  '<': $where[] = "t$i.rubric_field_id = $fid AND t$i.field_value < '$val'"; break;
+			case  '>': $where[] = "t$i.rubric_field_id = $fid AND t$i.field_value > '$val'"; break;
+			case '<=': $where[] = "t$i.rubric_field_id = $fid AND t$i.field_value <= '$val'"; break;
+			case '>=': $where[] = "t$i.rubric_field_id = $fid AND t$i.field_value >= '$val'"; break;
+			case '==': $where[] = "t$i.rubric_field_id = $fid AND t$i.field_value = '$val'"; break;
+			case '!=': $where[] = "t$i.rubric_field_id = $fid AND t$i.field_value != '$val'"; break;
+			case '%%': $where[] = "t$i.rubric_field_id = $fid AND t$i.field_value LIKE '%$val%'"; break;
+			case  '%': $where[] = "t$i.rubric_field_id = $fid AND t$i.field_value LIKE '$val%'"; break;
+			case '--': $where[] = "t$i.rubric_field_id = $fid AND t$i.field_value NOT LIKE '%$val%'"; break;
+			case '!-': $where[] = "t$i.rubric_field_id = $fid AND t$i.field_value NOT LIKE '$val%'"; break;
 		}
-		++$start;
+
+		if ($i || $row_ak->condition_join == 'AND') ++$i;
 	}
 
-	if (!empty($_REQUEST['req_' . $id]) && is_array($_REQUEST['req_' . $id]))
+	if (!empty($where))
 	{
-		arsort($_REQUEST['req_' . $id]);
-		foreach ($_REQUEST['req_' . $id] as $feld => $wert)
-		{
-			if ($wert == '') continue;
-			$where = ' WHERE 1';
-			$alias = 't' . $start;
-			$from .= ($start != 0) ? ' JOIN ' . PREFIX . '_document_fields AS ' . $alias . ' ON ' . $alias . '.document_id = t0.document_id' : '';
-			$eq_string .= ' AND ' . $alias . ".rubric_field_id = '" . $feld . "' AND " . $alias . ".field_value = '" . $wert . "'";
-			++$start;
-		}
+		$from = ' FROM %%PREFIX%%_document_fields AS t0 ' . implode(' ', $from);
+		$where = ' WHERE ' . (($i) ? implode(' AND ', $where) : '(' . implode(') OR(', $where) . ')');
+		$retval = 'AND a.Id = ANY(SELECT t0.document_id' . $from . $where . ')';
 	}
 
-	if ($where != '')
-	{
-		$ueb = 'AND a.Id = ANY(SELECT t0.document_id FROM ' . $from . $where . $eq_string . ')';
-	}
-
-	if (empty($_SESSION[$doc_label]['req_' . $id]))
+	if (defined('ACP'))
 	{
 		$AVE_DB->Query("
 			UPDATE " . PREFIX . "_request
-			SET	request_where_cond = '" . addslashes($ueb) . "'
+			SET	request_where_cond = '" . addslashes($retval) . "'
 			WHERE Id = '" . $id . "'
 		");
 	}
 
-	return $ueb;
+	return $retval;
 }
 
 /**
@@ -271,12 +225,6 @@ function request_parse($id)
 
 	if (is_object($row_ab))
 	{
-//		$eq = '';
-//		$wo = '';
-//		$suchart = '';
-//		$first = '';
-//		$second = '';
-
 		$limit = ($row_ab->request_items_per_page < 1) ? 1 : $row_ab->request_items_per_page;
 		$main_template = $row_ab->request_template_main;
 		$item_template = $row_ab->request_template_item;
@@ -286,10 +234,10 @@ function request_parse($id)
 		$doctime = get_settings('use_doctime')
 			? ("AND a.document_published <= " . time() . " AND (a.document_expire = 0 OR a.document_expire >= " . time() . ")") : '';
 
-		$doc_label = 'doc_' . $AVE_Core->curentdoc->Id;
-		$where_cond = (empty($_REQUEST['req_' . $id]) && empty($_SESSION[$doc_label]['req_' . $id]))
+		$where_cond = (empty($_POST['req_' . $id]) && empty($_SESSION['doc_' . $AVE_Core->curentdoc->Id]['req_' . $id]))
 			? $row_ab->request_where_cond
 			: request_get_condition_sql_string($row_ab->Id);
+		$where_cond = str_replace('%%PREFIX%%', PREFIX, $where_cond);
 
 		if ($row_ab->request_show_pagination == 1)
 		{
@@ -527,7 +475,7 @@ function request_get_dropdown($dropdown_ids, $rubric_id, $request_id)
 	$dropdown_ids = explode(',', preg_replace('/[^,\d]/', '', $dropdown_ids));
 	$dropdown_ids[] = 0;
 	$dropdown_ids = implode(',', $dropdown_ids);
-	$doc_label = 'doc_' . $AVE_Core->curentdoc->Id;
+	$doc = 'doc_' . $AVE_Core->curentdoc->Id;
 	$control = array();
 
 	$sql = $AVE_DB->Query("
@@ -543,8 +491,8 @@ function request_get_dropdown($dropdown_ids, $rubric_id, $request_id)
 	while ($row = $sql->FetchRow())
 	{
 		$dropdown['titel'] = $row->rubric_field_title;
-		$dropdown['selected'] = isset($_SESSION[$doc_label]['req_' . $request_id][$row->Id]) ? $_SESSION[$doc_label]['req_' . $request_id][$row->Id] : '';
-		$dropdown['options'] = explode(',', $row->rubric_field_default);
+		$dropdown['selected'] = isset($_SESSION[$doc]['req_' . $request_id][$row->Id]) ? $_SESSION[$doc]['req_' . $request_id][$row->Id] : '';
+		$dropdown['options'] = $_SESSION['val_' . $row->Id] = explode(',', $row->rubric_field_default);
 		$control[$row->Id] = $dropdown;
 	}
 
