@@ -11,6 +11,7 @@
 <script>
 $(document).ready(function() {
 	$(".mod_faq dd").hide();
+	$(".mod_faq dt").unbind('click');
 	$(".mod_faq dt").click(function() {
 		$(this).toggleClass("highlight").next("dd").slideToggle();
 	});
