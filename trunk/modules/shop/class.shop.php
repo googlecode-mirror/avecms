@@ -188,7 +188,7 @@ class Shop
 
 $AVE_Template->caching = 1;
 		$AVE_Template->assign('InfoBox',          $this->_shopRewrite($AVE_Template->fetch($GLOBALS['mod']['tpl_dir'] . $this->_shop_infobox_tpl)));
-		$AVE_Template->assign('MyOrders',         $this->_shopRewrite($AVE_Template->fetch($GLOBALS['mod']['tpl_dir'] . $this->_shop_myorders_tpl)));
+		$AVE_Template->assign('MyOrders',         $this->_shopRewrite($AVE_Template->fetch($GLOBALS['mod']['tpl_dir'] . $this->_shop_myorders_tpl, UGROUP)));
 $AVE_Template->caching = 0;
 	}
 
