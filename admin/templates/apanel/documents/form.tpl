@@ -9,7 +9,7 @@ function openLinkWin(target,doc) {ldelim}
 	if (typeof height=='undefined' || height=='') var height = screen.height * 0.6;
 	if (typeof doc=='undefined') var doc = 'doc_title';
 	if (typeof scrollbar=='undefined') var scrollbar=1;
-	window.open('index.php?do=docs&action=showsimple_edit&doc='+doc+'&target='+target+'&pop=1&cp={$sess}','pop','left=0,top=0,width='+width+',height='+height+',scrollbars='+scrollbar+',resizable=1');
+	window.open('index.php?do=docs&action=showsimple&doc='+doc+'&target='+target+'&pop=1&cp={$sess}','pop','left=0,top=0,width='+width+',height='+height+',scrollbars='+scrollbar+',resizable=1');
 {rdelim}
 
 function openFileWin(target,id) {ldelim}
