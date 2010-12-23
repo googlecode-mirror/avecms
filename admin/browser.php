@@ -14,7 +14,7 @@ ob_start();
 
 define('BASE_DIR', str_replace("\\", "/", dirname(dirname(__FILE__))));
 
-define('MEDIAPATH', '/uploads');
+define('MEDIAPATH', 'uploads');
 $max_size = 128; // максимальный размер миниатюры
 define('TH_PREF', 'thumbnail/th_' . $max_size . '_'); // префикс миниатюр
 
