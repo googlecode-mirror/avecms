@@ -518,7 +518,7 @@ class AVE_Rubric
 			reportLog($_SESSION['user_name'] . ' - добавил поле рубрики (' . stripslashes($_POST['TitelNew']) . ')', 2, 2);
 		}
 
-		header('Location:index.php?do=rubs&action=edit&Id=' . $rubric_id . 'cp=' . SESSION);
+		header('Location:index.php?do=rubs&action=edit&Id=' . $rubric_id . '&cp=' . SESSION);
 		exit;
 	}
 
