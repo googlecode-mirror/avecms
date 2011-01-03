@@ -370,27 +370,27 @@ $modul_sql_install[] = "CREATE TABLE `CPPREFIX_modul_shop_zahlungsmethoden` (
 $modul_sql_install[] = "INSERT INTO `CPPREFIX_modul_shop` VALUES ();";
 
 // удаление
-$modul_sql_deinstall[] = "DROP TABLE CPPREFIX_modul_shop";
-$modul_sql_deinstall[] = "DROP TABLE CPPREFIX_modul_shop_artikel";
-$modul_sql_deinstall[] = "DROP TABLE CPPREFIX_modul_shop_artikel_bilder";
-$modul_sql_deinstall[] = "DROP TABLE CPPREFIX_modul_shop_artikel_downloads";
-$modul_sql_deinstall[] = "DROP TABLE CPPREFIX_modul_shop_artikel_kommentare";
-$modul_sql_deinstall[] = "DROP TABLE CPPREFIX_modul_shop_bestellungen";
-$modul_sql_deinstall[] = "DROP TABLE CPPREFIX_modul_shop_einheiten";
-$modul_sql_deinstall[] = "DROP TABLE CPPREFIX_modul_shop_downloads";
-$modul_sql_deinstall[] = "DROP TABLE CPPREFIX_modul_shop_gutscheine";
-$modul_sql_deinstall[] = "DROP TABLE CPPREFIX_modul_shop_hersteller";
-$modul_sql_deinstall[] = "DROP TABLE CPPREFIX_modul_shop_kategorie";
-$modul_sql_deinstall[] = "DROP TABLE CPPREFIX_modul_shop_kundenrabatte";
-$modul_sql_deinstall[] = "DROP TABLE CPPREFIX_modul_shop_merkliste";
-$modul_sql_deinstall[] = "DROP TABLE CPPREFIX_modul_shop_staffelpreise";
-$modul_sql_deinstall[] = "DROP TABLE CPPREFIX_modul_shop_ust";
-$modul_sql_deinstall[] = "DROP TABLE CPPREFIX_modul_shop_varianten";
-$modul_sql_deinstall[] = "DROP TABLE CPPREFIX_modul_shop_varianten_kategorien";
-$modul_sql_deinstall[] = "DROP TABLE CPPREFIX_modul_shop_versandarten";
-$modul_sql_deinstall[] = "DROP TABLE CPPREFIX_modul_shop_versandkosten";
-$modul_sql_deinstall[] = "DROP TABLE CPPREFIX_modul_shop_versandzeit";
-$modul_sql_deinstall[] = "DROP TABLE CPPREFIX_modul_shop_zahlungsmethoden";
+$modul_sql_deinstall[] = "DROP TABLE IF EXISTS CPPREFIX_modul_shop";
+$modul_sql_deinstall[] = "DROP TABLE IF EXISTS CPPREFIX_modul_shop_artikel";
+$modul_sql_deinstall[] = "DROP TABLE IF EXISTS CPPREFIX_modul_shop_artikel_bilder";
+$modul_sql_deinstall[] = "DROP TABLE IF EXISTS CPPREFIX_modul_shop_artikel_downloads";
+$modul_sql_deinstall[] = "DROP TABLE IF EXISTS CPPREFIX_modul_shop_artikel_kommentare";
+$modul_sql_deinstall[] = "DROP TABLE IF EXISTS CPPREFIX_modul_shop_bestellungen";
+$modul_sql_deinstall[] = "DROP TABLE IF EXISTS CPPREFIX_modul_shop_einheiten";
+$modul_sql_deinstall[] = "DROP TABLE IF EXISTS CPPREFIX_modul_shop_downloads";
+$modul_sql_deinstall[] = "DROP TABLE IF EXISTS CPPREFIX_modul_shop_gutscheine";
+$modul_sql_deinstall[] = "DROP TABLE IF EXISTS CPPREFIX_modul_shop_hersteller";
+$modul_sql_deinstall[] = "DROP TABLE IF EXISTS CPPREFIX_modul_shop_kategorie";
+$modul_sql_deinstall[] = "DROP TABLE IF EXISTS CPPREFIX_modul_shop_kundenrabatte";
+$modul_sql_deinstall[] = "DROP TABLE IF EXISTS CPPREFIX_modul_shop_merkliste";
+$modul_sql_deinstall[] = "DROP TABLE IF EXISTS CPPREFIX_modul_shop_staffelpreise";
+$modul_sql_deinstall[] = "DROP TABLE IF EXISTS CPPREFIX_modul_shop_ust";
+$modul_sql_deinstall[] = "DROP TABLE IF EXISTS CPPREFIX_modul_shop_varianten";
+$modul_sql_deinstall[] = "DROP TABLE IF EXISTS CPPREFIX_modul_shop_varianten_kategorien";
+$modul_sql_deinstall[] = "DROP TABLE IF EXISTS CPPREFIX_modul_shop_versandarten";
+$modul_sql_deinstall[] = "DROP TABLE IF EXISTS CPPREFIX_modul_shop_versandkosten";
+$modul_sql_deinstall[] = "DROP TABLE IF EXISTS CPPREFIX_modul_shop_versandzeit";
+$modul_sql_deinstall[] = "DROP TABLE IF EXISTS CPPREFIX_modul_shop_zahlungsmethoden";
 
 // обновление
 $modul_sql_update[] = "UPDATE CPPREFIX_module SET CpEngineTag = '" . $modul['CpEngineTag'] . "', CpPHPTag = '" . $modul['CpPHPTag'] . "', Version = '" . $modul['ModulVersion'] . "' WHERE ModulPfad = '" . $modul['ModulPfad'] . "' LIMIT 1;";
