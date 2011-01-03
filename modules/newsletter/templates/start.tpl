@@ -10,7 +10,7 @@
 </div><br />
 
 <div class="infobox">
-	<form method="post" action="index.php?do=modules&action=modedit&mod=newsletter&moduleaction=1&cp=$sess">
+	<form method="post" action="index.php?do=modules&action=modedit&mod=newsletter&moduleaction=1&cp={$sess}">
 		<input name="q" type="text" value="{$smarty.request.q|escape}" size="40" />
 		<input type="submit" class="button" value="{#SNL_BUTTON_SEARCH#}" />
 	</form>
@@ -22,7 +22,7 @@
 	<tr>
 		<td class="second" nowrap="nowrap">
 			<div id="otherLinks">
-				<form method="post" action="index.php?do=modules&action=modedit&mod=newsletter&moduleaction=1&cp=$sess">
+				<form method="post" action="index.php?do=modules&action=modedit&mod=newsletter&moduleaction=1&cp={$sess}">
 					<input name="q" type="text" value="{$smarty.request.q|escape}" size="50" />
 					<input type="submit" class="button" value="{#SNL_BUTTON_SEARCH#}" />
 				</form>
@@ -38,7 +38,7 @@
 	</tr>
 </table>
 
-<form method="post" action="index.php?do=modules&action=modedit&mod=newsletter&moduleaction=delete&cp=$sess">
+<form method="post" action="index.php?do=modules&action=modedit&mod=newsletter&moduleaction=delete&cp={$sess}">
 	{if $smarty.request.file_not_found==1}
 		<br />
 		<div class="infobox">{#SNL_FILE_NOT_FOUND#}</div><br />
