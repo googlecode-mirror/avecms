@@ -476,7 +476,7 @@ function prepare_fname($st)
 	$st = strtr($st,'ABCDEFGHIJKLMNOPQRSTUVWXYZÀÁÂÃÄÅ¨ÆÇÈÉÊËÌÍÎÏĞÑÒÓÔÕÖ×ØÙÜÚÛİŞß¯ª²',
 					'abcdefghijklmnopqrstuvwxyzàáâãäå¸æçèéêëìíîïğñòóôõö÷øùüúûışÿ¿º³');
 
-	translit_string(trim($st));
+	$st = translit_string(trim($st));
 
 	$st = preg_replace(array('/[^a-z0-9_-]/', '/--+/'), '-', $st);
 
