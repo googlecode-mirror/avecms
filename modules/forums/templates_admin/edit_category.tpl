@@ -1,7 +1,7 @@
 {if $smarty.request.moduleaction=='addcategory'}
-{assign var="action" value="index.php?do=modules&action=modedit&mod=forums&moduleaction=addcategory&cp=$sess&pop=1&save=1"}
+{assign var="action" value="index.php?do=modules&action=modedit&mod=forums&moduleaction=addcategory&cp={$sess}&pop=1&save=1"}
 {else}
-{assign var="action" value="index.php?do=modules&action=modedit&mod=forums&moduleaction=edit_category&cp=$sess&pop=1&save=1"}
+{assign var="action" value="index.php?do=modules&action=modedit&mod=forums&moduleaction=edit_category&cp={$sess}&pop=1&save=1"}
 {/if}
 
 <form action="{$action}" method="post">
