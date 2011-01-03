@@ -4,7 +4,7 @@
 	<div class="HeaderText">{#FileInf#}</div>
 </div><br />
 
-<form method="post" action="index.php?do=modules&action=modedit&mod=shop&moduleaction=esd_downloads&cp=e9d15f6dd0b08e19c149475e998b83f2&pop=1&Id={$smarty.request.Id}&sub=save">
+<form method="post" action="index.php?do=modules&action=modedit&mod=shop&moduleaction=esd_downloads&cp={$sess}&pop=1&Id={$smarty.request.Id}&sub=save">
 	<table width="100%" border="0" cellpadding="8" cellspacing="1" class="tableborder">
 		<tr>
 			<td class="tableheader" align="center"><img src="{$tpl_dir}/images/icon_del.gif" alt="" /></td>
@@ -173,7 +173,7 @@
 
 <h4>{#ProductEsdsNew#}</h4>
 
-<form method="post" action="index.php?do=modules&action=modedit&mod=shop&moduleaction=esd_downloads&cp=e9d15f6dd0b08e19c149475e998b83f2&pop=1&Id={$smarty.request.Id}&sub=new">
+<form method="post" action="index.php?do=modules&action=modedit&mod=shop&moduleaction=esd_downloads&cp={$sess}&pop=1&Id={$smarty.request.Id}&sub=new">
 
 <table width="100%" border="0" cellpadding="8" cellspacing="1" class="tableborder">
 	<tr>
