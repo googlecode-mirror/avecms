@@ -210,6 +210,7 @@ function printNavi(&$navi, &$ebenen, &$way, &$rub, &$nav_items, &$row_ul, $paren
 //		$aktiv = (in_array($row['Id'], $way) || strpos($row['navi_item_link'], 'index.php?' . $_SERVER['QUERY_STRING']) !== false) ? 'aktiv' : 'inaktiv';
 		$aktiv = (in_array($row['Id'], $way)) ? 'aktiv' : 'inaktiv';
 		$akt = str_replace('[tag:linkname]', $row['title'], $ebenen[$ebene][$aktiv]);
+		$akt = str_replace('[tag:linkid]', $row['Id'], $akt);
 
 		if (strpos($row['navi_item_link'], 'module=') === false && start_with('index.php?', $row['navi_item_link']))
 		{
