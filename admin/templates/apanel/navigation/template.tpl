@@ -75,6 +75,7 @@
 		<tr>
 			<td width="200" class="first">
 				<strong>{#NAVI_LINK_INACTIVE#}</strong><br />
+				<a title="{#NAVI_LINK_ID#}" href="javascript:cp_insert('[tag:linkid]','navi_level1', 'navitemplate');">[tag:linkid]</a><br />
 				<a title="{#NAVI_LINK_TARGET#}" href="javascript:cp_insert('[tag:target]','navi_level1', 'navitemplate');">[tag:target]</a><br />
 				<a title="{#NAVI_LINK_URL#}" href="javascript:cp_insert('[tag:link]','navi_level1', 'navitemplate');">[tag:link]</a><br />
 				<a title="{#NAVI_LINK_NAME#}" href="javascript:cp_insert('[tag:linkname]','navi_level1', 'navitemplate');">[tag:linkname]</a>
@@ -85,6 +86,7 @@
 		<tr>
 			<td width="200" class="first">
 				<strong>{#NAVI_LINK_ACTIVE#}</strong><br />
+				<a title="{#NAVI_LINK_ID#}" href="javascript:cp_insert('[tag:linkid]','navi_level1active', 'navitemplate');">[tag:linkid]</a><br />
 				<a title="{#NAVI_LINK_TARGET#}" href="javascript:cp_insert('[tag:target]','navi_level1active', 'navitemplate');">[tag:target]</a><br />
 				<a title="{#NAVI_LINK_URL#}" href="javascript:cp_insert('[tag:link]','navi_level1active', 'navitemplate');">[tag:link]</a><br />
 				<a title="{#NAVI_LINK_NAME#}" href="javascript:cp_insert('[tag:linkname]','navi_level1active', 'navitemplate');">[tag:linkname]</a>
@@ -109,6 +111,7 @@
 		<tr>
 			<td width="200" class="first">
 				<strong>{#NAVI_LINK_INACTIVE#}</strong><br />
+				<a title="{#NAVI_LINK_ID#}" href="javascript:cp_insert('[tag:linkid]','navi_level2', 'navitemplate');">[tag:linkid]</a><br />
 				<a title="{#NAVI_LINK_TARGET#}" href="javascript:cp_insert('[tag:target]','navi_level2', 'navitemplate');">[tag:target]</a><br />
 				<a title="{#NAVI_LINK_URL#}" href="javascript:cp_insert('[tag:link]','navi_level2', 'navitemplate');">[tag:link]</a><br />
 				<a title="{#NAVI_LINK_NAME#}" href="javascript:cp_insert('[tag:linkname]','navi_level2', 'navitemplate');">[tag:linkname]</a>
@@ -119,6 +122,7 @@
 		<tr>
 			<td class="first">
 				<strong>{#NAVI_LINK_ACTIVE#}</strong><br />
+				<a title="{#NAVI_LINK_ID#}" href="javascript:cp_insert('[tag:linkid]','navi_level2active', 'navitemplate');">[tag:linkid]</a><br />
 				<a title="{#NAVI_LINK_TARGET#}" href="javascript:cp_insert('[tag:target]','navi_level2active', 'navitemplate');">[tag:target]</a><br />
 				<a title="{#NAVI_LINK_URL#}" href="javascript:cp_insert('[tag:link]','navi_level2active', 'navitemplate');">[tag:link]</a><br />
 				<a title="{#NAVI_LINK_NAME#}" href="javascript:cp_insert('[tag:linkname]','navi_level2active', 'navitemplate');">[tag:linkname]</a>
@@ -143,6 +147,7 @@
 		<tr>
 			<td class="first">
 				<strong>{#NAVI_LINK_INACTIVE#}</strong><br />
+				<a title="{#NAVI_LINK_ID#}" href="javascript:cp_insert('[tag:linkid]','navi_level3', 'navitemplate');">[tag:linkid]</a><br />
 				<a title="{#NAVI_LINK_TARGET#}" href="javascript:cp_insert('[tag:target]','navi_level3', 'navitemplate');">[tag:target]</a><br />
 				<a title="{#NAVI_LINK_URL#}" href="javascript:cp_insert('[tag:link]','navi_level3', 'navitemplate');">[tag:link]</a><br />
 				<a title="{#NAVI_LINK_NAME#}" href="javascript:cp_insert('[tag:linkname]','navi_level3', 'navitemplate');">[tag:linkname]</a>
@@ -153,6 +158,7 @@
 		<tr>
 			<td class="first">
 				<strong>{#NAVI_LINK_ACTIVE#}</strong><br />
+				<a title="{#NAVI_LINK_ID#}" href="javascript:cp_insert('[tag:linkid]','navi_level3active', 'navitemplate');">[tag:linkid]</a><br />
 				<a title="{#NAVI_LINK_TARGET#}" href="javascript:cp_insert('[tag:target]','navi_level3active', 'navitemplate');">[tag:target]</a><br />
 				<a title="{#NAVI_LINK_URL#}" href="javascript:cp_insert('[tag:link]','navi_level3active', 'navitemplate');">[tag:link]</a><br />
 				<a title="{#NAVI_LINK_NAME#}" href="javascript:cp_insert('[tag:linkname]','navi_level3active', 'navitemplate');">[tag:linkname]</a>
