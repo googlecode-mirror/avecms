@@ -591,29 +591,27 @@ class Poll
 				$groups = array();
 				$sql = $AVE_DB->Query("
 					SELECT
-						user_group,
-						user_group_name
+						user_group AS id,
+						user_group_name AS name
 					FROM " . PREFIX . "_user_groups
 				");
 				while ($row = $sql->FetchRow())
 				{
-					array_push($groups, $row);
+					$groups[$row->id] = $row->name;
 				}
 
 				$AVE_Template->assign('groups', $groups);
-				$AVE_Template->assign('year', date('Y'));
-				$AVE_Template->assign('mon', date('m'));
-				$AVE_Template->assign('day', date('d'));
-				$AVE_Template->assign('hour', date('H'));
-				$AVE_Template->assign('min', date('i'));
+				$AVE_Template->assign('selected', array_keys($groups));
 				$AVE_Template->assign('tpl_dir', $tpl_dir);
+				$AVE_Template->assign('start', time());
+				$AVE_Template->assign('end', time());
 				$AVE_Template->assign('formaction', 'index.php?do=modules&action=modedit&mod=poll&moduleaction=new&sub=save&cp=' . SESSION . '&pop=1');
 				$AVE_Template->assign('content', $AVE_Template->fetch($tpl_dir . 'admin_fields.tpl'));
 				break;
 
 			case 'save':
-				$start_date = mktime($_REQUEST['s_hour'], $_REQUEST['s_min'], 0, $_REQUEST['s_mon'], $_REQUEST['s_day'], $_REQUEST['s_year']);
-				$end_date = mktime($_REQUEST['e_hour'], $_REQUEST['e_min'], 0, $_REQUEST['e_mon'], $_REQUEST['e_day'], $_REQUEST['e_year']);
+				$start_date = $this->_mktime('sd', 'st');
+				$end_date = $this->_mktime('ed', 'et');
 
 				$AVE_DB->Query("
 					INSERT
@@ -696,13 +694,13 @@ class Poll
 		$groups = array();
 		$sql = $AVE_DB->Query("
 			SELECT
-				user_group,
-				user_group_name
+				user_group AS id,
+				user_group_name AS name
 			FROM " . PREFIX . "_user_groups
 		");
 		while ($row = $sql->FetchRow())
 		{
-			array_push($groups, $row);
+			$groups[$row->id] = $row->name;
 		}
 
 		$row = $AVE_DB->Query("
@@ -712,24 +710,12 @@ class Poll
 		")->FetchRow();
 
 		$AVE_Template->assign('groups', $groups);
-		$AVE_Template->assign('groups_form', explode(',', $row->poll_groups_id));
+		$AVE_Template->assign('selected', explode(',', $row->poll_groups_id));
 		$AVE_Template->assign('row', $row);
 		$AVE_Template->assign('items', $items);
 		$AVE_Template->assign('tpl_dir', $tpl_dir);
-		$AVE_Template->assign('year', date('Y'));
-
-		$AVE_Template->assign('s_year', date('Y', $row->poll_start));
-		$AVE_Template->assign('s_mon', date('m', $row->poll_start));
-		$AVE_Template->assign('s_day', date('d', $row->poll_start));
-		$AVE_Template->assign('s_hour', date('H', $row->poll_start));
-		$AVE_Template->assign('s_min', date('i', $row->poll_start));
-
-		$AVE_Template->assign('e_year', date('Y', $row->poll_end));
-		$AVE_Template->assign('e_mon', date('m', $row->poll_end));
-		$AVE_Template->assign('e_day', date('d', $row->poll_end));
-		$AVE_Template->assign('e_hour', date('H', $row->poll_end));
-		$AVE_Template->assign('e_min', date('i', $row->poll_end));
-
+		$AVE_Template->assign('start', $row->poll_start);
+		$AVE_Template->assign('end', $row->poll_end);
 		$AVE_Template->assign('formaction', 'index.php?do=modules&action=modedit&mod=poll&moduleaction=save&cp=' . SESSION . '&id=' . $pid . '&pop=1');
 		$AVE_Template->assign('content', $AVE_Template->fetch($tpl_dir . 'admin_fields.tpl'));
 	}
@@ -743,8 +729,8 @@ class Poll
 	{
 		global $AVE_DB;
 
-		$start_date = mktime($_REQUEST['s_hour'], $_REQUEST['s_min'], 0, $_REQUEST['s_mon'], $_REQUEST['s_day'], $_REQUEST['s_year']);
-		$end_date   = mktime($_REQUEST['e_hour'], $_REQUEST['e_min'], 0, $_REQUEST['e_mon'], $_REQUEST['e_day'], $_REQUEST['e_year']);
+		$start_date = $this->_mktime('sd', 'st');
+		$end_date = $this->_mktime('ed', 'et');
 
 		$AVE_DB->Query("
 			UPDATE " . PREFIX . "_modul_poll
@@ -754,7 +740,7 @@ class Poll
 				poll_can_comment = '" . $_REQUEST['poll_can_comment'] . "',
 				poll_start       = '" . $start_date . "',
 				poll_end         = '" . $end_date . "',
-				poll_groups_id   = '" . @implode(',', $_REQUEST['groups']) . "'
+				poll_groups_id   = '" . @implode(',', (array)$_REQUEST['groups']) . "'
 			WHERE
 				id = '" . $pid . "'
 		");
@@ -888,6 +874,37 @@ class Poll
 				header('Location:index.php?do=modules&action=modedit&mod=poll&moduleaction=comments&id=' . $pid . '&pop=1&cp=' . SESSION);
 				exit;
 		}
+	}
+
+	/**
+	 * Формитрование метки времени по данным полученным из выпадающих списков
+	 * сформированных Smarty {html_select_date} и {html_select_time}
+	 *
+	 * @param string $date имя массива с значениями даты
+	 * @param string $time имя массива с значениями времени
+	 * @return unknown timestamp
+	 */
+	function _mktime($date = '', $time = '')
+	{
+		if (empty($date) && empty($time)) return time();
+
+		$hour = $minute = $second = $day = $month = $year = 0;
+
+		if ($time != '' && isset($_REQUEST[$time]) && is_array($_REQUEST[$time]))
+		{
+			$hour   = isset($_REQUEST[$time]['Hour'])   ? (int)$_REQUEST[$time]['Hour']   : 0;
+			$minute = isset($_REQUEST[$time]['Minute']) ? (int)$_REQUEST[$time]['Minute'] : 0;
+			$second = isset($_REQUEST[$time]['Second']) ? (int)$_REQUEST[$time]['Second'] : 0;
+		}
+
+		if ($date != '' && isset($_REQUEST[$date]) && is_array($_REQUEST[$date]))
+		{
+			$day   = isset($_REQUEST[$date]['Day'])   ? (int)$_REQUEST[$date]['Day']   : 0;
+			$month = isset($_REQUEST[$date]['Month']) ? (int)$_REQUEST[$date]['Month'] : 0;
+			$year  = isset($_REQUEST[$date]['Year'])  ? (int)$_REQUEST[$date]['Year']  : 0;
+		}
+
+		return mktime($hour, $minute, $second, $month, $day, $year);
 	}
 }
 
