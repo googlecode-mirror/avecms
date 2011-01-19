@@ -9,17 +9,6 @@
 
 if (!defined('BASE_DIR')) exit;
 
-if (isset($_SERVER['REQUEST_METHOD']) && strtolower($_SERVER['REQUEST_METHOD']) === 'post')
-{
-	$ref_url = false;
-	if (isset($_SERVER['HTTP_REFERER']))
-	{
-		$ref_url = parse_url($_SERVER['HTTP_REFERER']);
-		$ref_url = (trim($ref_url['host']) == $_SERVER['SERVER_NAME']);
-	}
-	if (!$ref_url) die('<div style="background-color:#fff;padding:5px;border:2px solid #f00"><b>Illegal Operation:</b> Posting allowed only from main server.</div>');
-}
-
 /**
  * Удаление глобальных массивов
  *
