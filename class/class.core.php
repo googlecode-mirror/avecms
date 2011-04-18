@@ -769,7 +769,8 @@ class AVE_Core
 			'[tag:keywords]',
 			'[tag:description]',
 			'[tag:robots]',
-			'[tag:docid]'
+			'[tag:docid]',
+			'[tag:breadcrumb]'
 		);
 
 		$replace = array(
@@ -781,7 +782,8 @@ class AVE_Core
 			(isset ($this->curentdoc->document_meta_keywords) ? htmlspecialchars($this->curentdoc->document_meta_keywords, ENT_QUOTES) : ''),
 			(isset ($this->curentdoc->document_meta_description) ? htmlspecialchars($this->curentdoc->document_meta_description, ENT_QUOTES) : ''),
 			(isset ($this->curentdoc->document_meta_robots) ? $this->curentdoc->document_meta_robots : ''),
-			(isset ($this->curentdoc->Id) ? $this->curentdoc->Id : '')
+			(isset ($this->curentdoc->Id) ? $this->curentdoc->Id : ''),
+			get_breadcrumb()
 		);
 
 		if (defined('MODULE_CONTENT'))

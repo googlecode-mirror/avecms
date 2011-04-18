@@ -276,6 +276,61 @@ function get_home_link()
 }
 
 /**
+ * Формирование хлебных крошек
+ *
+ * @return string ссылка
+ */
+function get_breadcrumb()
+{
+	global $AVE_DB;
+	
+	$crumb = array();
+	$curent_document = get_current_document_id();
+	
+	$bread_crumb = "<a href=\"".get_home_link()."\">Главная</a>&nbsp;&rarr;&nbsp;";
+	if ($curent_document == 1|| $curent_document == 2) $noprint = 1;
+	
+	$sql_document = $AVE_DB->Query("SELECT document_title, document_parent FROM " . PREFIX . "_documents WHERE Id = '".$curent_document."'");
+	$row_document = $sql_document->fetchrow();
+	$current->document_title = $row_document->document_title;
+		
+	if (isset($row_document->document_parent) && $row_document->document_parent != 0) {
+		$i = 0;
+		$current->document_parent = $row_document->document_parent;
+
+		 while ($current->document_parent != 0) {
+			$sql_doc = $AVE_DB->Query("SELECT Id, document_alias, document_title, document_parent FROM " . PREFIX . "_documents WHERE Id = '".$current->document_parent."'");
+			$row_doc = $sql_doc->fetchrow();
+			$current->document_parent = $row_doc->document_parent;
+			
+			if ($row_doc->document_parent == $row_doc->Id) {
+				echo "Ошибка! Вы указали в качестве родительского документа текущий документ.<br>";
+				$current->document_parent = 1;
+			}
+			
+			$crumb['document_title'][$i] = $row_doc->document_title;
+			$crumb['document_alias'][$i] = $row_doc->document_alias;
+			$crumb['Id'][$i] = $row_doc->Id;
+			$i++;
+		 }
+				
+		$length = count($crumb['document_title']);
+		$crumb['document_title'] = array_reverse($crumb['document_title']);
+		$crumb['document_alias'] = array_reverse($crumb['document_alias']);
+		$crumb['Id'] = array_reverse($crumb['Id']);
+		
+		for ($n=0; $n < $length; $n++) {
+			$url = rewrite_link('index.php?id=' . $crumb['Id'][$n] . '&amp;doc=' . (empty($crumb['document_alias'][$n]) ? prepare_url($crumb['document_title'][$n]) : $crumb['document_alias'][$n]));
+			$bread_crumb.= "<a href=\"".$url."\"  target=\"_self\">".$crumb['document_title'][$n]."</a>&nbsp;&rarr;&nbsp;";
+		}
+	}
+	
+	$bread_crumb.= "<span>".$current->document_title."</span>";
+		
+	 if (!$noprint)  return $bread_crumb;
+}
+
+/**
  * Ссылка на страницу версии для печати
  *
  * @return string ссылка
