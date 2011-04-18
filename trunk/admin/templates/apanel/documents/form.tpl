@@ -9,7 +9,7 @@ function openLinkWin(target,doc) {ldelim}
 	if (typeof height=='undefined' || height=='') var height = screen.height * 0.6;
 	if (typeof doc=='undefined') var doc = 'doc_title';
 	if (typeof scrollbar=='undefined') var scrollbar=1;
-	window.open('index.php?do=docs&action=showsimple&doc='+doc+'&target='+target+'&pop=1&cp={$sess}','pop','left=0,top=0,width='+width+',height='+height+',scrollbars='+scrollbar+',resizable=1');
+	window.open('index.php?idonly=1&do=docs&action=showsimple&doc='+doc+'&target='+target+'&pop=1&cp={$sess}','pop','left=0,top=0,width='+width+',height='+height+',scrollbars='+scrollbar+',resizable=1');
 {rdelim}
 
 function openFileWin(target,id) {ldelim}
@@ -220,6 +220,14 @@ $(document).ready(function(){ldelim}
 			<td>
 				{include file='navigation/tree.tpl'}
 				<input title="{#DOC_NAVIGATION_INFO#}" class="button" style="cursor:help" type="button" value="?" />
+			</td>
+		</tr>
+		
+		<tr>
+			<td>{#DOC_USE_BREADCRUMB#}</td>
+			<td>
+				<input name="document_parent" type="text" id="document_parent" value="{$document->document_parent}" size="4" maxlength="10" readonly="readonly" />&nbsp;
+				<div class="button" onClick="openLinkWin('document_parent','document_parent');"><span class="ui-icon ui-icon-pencil"></span>выбрать</div>
 			</td>
 		</tr>
 
