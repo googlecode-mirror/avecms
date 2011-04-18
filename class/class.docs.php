@@ -797,6 +797,7 @@ class AVE_Document
 						INTO " . PREFIX . "_documents
 						SET
 							rubric_id                 = '" . $rubric_id . "',
+							document_parent                 = '" . (int)$_REQUEST['document_parent'] . "',
 							document_title            = '" . clean_no_print_char($_POST['doc_title']) . "',
 							document_alias            = '" . $_REQUEST['document_alias'] . "',
 							document_published        = '" . $start . "',
@@ -991,6 +992,7 @@ class AVE_Document
 					$AVE_DB->Query("
 						UPDATE " . PREFIX . "_documents
 						SET
+							document_parent                 = '" . (int)$_REQUEST['document_parent'] . "',
 							document_title            = '" . clean_no_print_char($_POST['doc_title']) . "',
 							document_alias            = '" . $_REQUEST['document_alias'] . "',
 							document_in_search        = '" . $suche . "',
