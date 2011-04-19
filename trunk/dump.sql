@@ -401,7 +401,7 @@ CREATE TABLE `cp_documents` (
   KEY `document_expire` (`document_expire`)
 ) ENGINE=MyISAM AUTO_INCREMENT=28 DEFAULT CHARSET=cp1251 PACK_KEYS=0;
 
-INSERT INTO `cp_documents` VALUES (1, 1, 'главная', 'Главная', 0, 0, 1284323091, 1, '0', '', '', 'index,follow', '1', '0', 10, 1166, 0),
+INSERT INTO `cp_documents` VALUES (1, 1, 0, 'главная', 'Главная', 0, 0, 1284323091, 1, '0', '', '', 'index,follow', '1', '0', 10, 1166, 0),
 (2, 1, 0, '404-not-found', '404 - Документ не найден', 0, 0, 1258259536, 1, '0', '', '', 'noindex,nofollow', '1', '0', 5, 352, 1),
 (3, 1, 0, 'о-компании', 'О компании', 1250047140, 1597202340, 1280781668, 1, '0', '', '', 'index,follow', '1', '0', 0, 171, 0),
 (4, 1, 0, 'условия-сделки', 'Условия сделки', 1250986260, 1598141460, 1284323274, 1, '1', '', '', 'index,follow', '1', '0', 1, 95, 0),
