@@ -34,6 +34,7 @@ CREATE TABLE `%%PRFX%%_document_remarks` (
 CREATE TABLE `%%PRFX%%_documents` (
   `Id` int(10) unsigned NOT NULL auto_increment,
   `rubric_id` mediumint(5) unsigned NOT NULL default '0',
+  `document_parent` int(10) unsigned NOT NULL default '0',
   `document_alias` varchar(255) NOT NULL,
   `document_title` varchar(255) NOT NULL,
   `document_published` int(10) unsigned NOT NULL default '0',
