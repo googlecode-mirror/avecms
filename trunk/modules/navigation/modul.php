@@ -214,7 +214,14 @@ function printNavi(&$navi, &$ebenen, &$way, &$rub, &$nav_items, &$row_ul, $paren
 
 		if (strpos($row['navi_item_link'], 'module=') === false && start_with('index.php?', $row['navi_item_link']))
 		{
-			$akt = str_replace('[tag:link]', $row['navi_item_link'] . "&amp;doc=" . (empty($row['document_alias']) ? prepare_url($row['title']) : $row['document_alias']), $akt);
+			if ($row['navi_item_link'] == 'index.php?id=1') 
+			{
+				$akt = str_replace('[tag:link]', ABS_PATH, $akt);
+			}
+			else
+			{
+				$akt = str_replace('[tag:link]', $row['navi_item_link'] . "&amp;doc=" . (empty($row['document_alias']) ? prepare_url($row['title']) : $row['document_alias']), $akt);
+			}
 		}
 		else
 		{
