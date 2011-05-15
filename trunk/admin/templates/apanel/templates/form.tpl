@@ -13,53 +13,54 @@
 </div>
 <div class="upPage">&nbsp;</div><br />
 
-<form name="f_tpl" id="f_tpl" method="post" action="{$formaction}">
-	<table width="100%" border="0" cellpadding="8" cellspacing="1" class="tableborder">
-		{if $smarty.request.action=='new'}
-			<tr>
-				<td class="tableheader">{#TEMPLATES_LOAD_INFO#}</td>
-			</tr>
+<table width="100%" border="0" cellpadding="8" cellspacing="1" class="tableborder">
+  {if $smarty.request.action=='new'}
+  <tr>
+    <td class="tableheader">{#TEMPLATES_LOAD_INFO#}</td>
+  </tr>
 
-			<tr>
-				<td class="first">
-					<form action="index.php?do=templates&action=new" method="post">
-						<select name="theme_pref">
-							<option></option>
-							{$sel_theme}
-						</select>
-						<input type="hidden" name="TempName" value="{$smarty.request.TempName|escape}">
-						<input type="submit" class="button" value="{#TEMPLATES_BUTTON_LOAD#}">
-					</form>
-				</td>
-			</tr>
-		{/if}
+  <tr>
+    <td class="first">
+      <form action="index.php?do=templates&action=new" method="post">
+        <select name="theme_pref">
+          <option></option>
+          {$sel_theme}
+        </select>
+		<input type="hidden" name="TempName" value="{$smarty.request.TempName|escape:html}">
+        <input type="submit" class="button" value="{#TEMPLATES_BUTTON_LOAD#}">
+      </form>
+    </td>
+  </tr>
+  {/if}
 
-		<tr>
-			<td class="tableheader">{#TEMPLATES_NAME#}</td>
-		</tr>
+	 <form name="f_tpl" id="f_tpl" method="post" action="{$formaction}">
+  <tr>
+    <td class="tableheader">{#TEMPLATES_NAME#}</td>
+  </tr>
 
-		<tr class="{cycle name='ta' values='first,second'}">
-			<td>
-				{foreach from=$errors item=message}
-					<ul>
-						<li>{$message}</li>
-					</ul>
-				{/foreach}
-				<input name="template_title" type="text" value="{$row->template_title|default:$smarty.request.TempName|escape}" size="50" maxlength="50" >
-			</td>
-		</tr>
+  <tr class="{cycle name='ta' values='first,second'}">
+    <td>
+      {foreach from=$errors item=e}
+        {assign var=message value=$e}
+        <ul>
+          <li>{$message}</li>
+        </ul>
+      {/foreach}
+      <input name="template_title" type="text" value="{$row->template_title|escape:html}{$smarty.request.TempName|escape:html}" size="50" maxlength="50" >
+    </td>
+  </tr>
 
-		<tr>
-			<td class="tableheader">{#TEMPLATES_HTML#}</td>
-		</tr>
+  <tr>
+    <td class="tableheader">{#TEMPLATES_HTML#}</td>
+  </tr>
 
-		<tr>
-			<td class="second">
-				{if $php_forbidden==1}
-					<div class="infobox_error">{#TEMPLATES_USE_PHP#} </div>
-				{/if}
-
-				<textarea {$read_only} class="{if $php_forbidden==1}tpl_code_readonly{/if}" wrap="off" style="width:100%; height:500px" name="template_text" id="template_text">{$row->template_text|default:$prefab|escape}</textarea>
+  <tr>
+    <td class="second">
+      {if $php_forbidden==1}
+        <div class="infobox_error">{#TEMPLATES_USE_PHP#} </div>
+      {/if}
+      
+				<textarea {$read_only} class="{if $php_forbidden==1}tpl_code_readonly{else}{/if}" wrap="off" style="width:100%; height:500px" name="template_text" id="template_text">{$row->template_text|default:$prefab|escape}</textarea>
 				<div class="infobox">
 					{assign var=js_textfeld value='template_text'}
 					<a href="javascript:void(0);" onclick="editAreaLoader.insertTags('{$js_textfeld}', '<ol>', '</ol>');">OL</a>&nbsp;|&nbsp;
@@ -211,10 +212,14 @@
 		</tr>
 
 		<tr class="{cycle name='ta' values='first,second'}">
-			<td class="second">
-				<input type="hidden" name="Id" value="{$smarty.request.Id|escape}">
-				<input class="button" type="submit" value="{if $smarty.request.action=='new'}{#TEMPLATES_BUTTON_ADD#}{else}{#TEMPLATES_BUTTON_SAVE#}{/if}" />
-			</td>
-		</tr>
-	</table>
-</form>
+    <td class="second">
+      <input type="hidden" name="Id" value="{$smarty.request.Id}">
+      {if $smarty.request.action=='new'}
+        <input class="button" type="submit" value="{#TEMPLATES_BUTTON_ADD#}" />
+      {else}
+        <input class="button" type="submit" value="{#TEMPLATES_BUTTON_SAVE#}" />
+      {/if}
+    </td>
+  </tr>
+  </form>
+</table>
