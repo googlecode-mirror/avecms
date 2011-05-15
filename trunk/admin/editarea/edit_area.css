@@ -151,7 +151,7 @@ pre{
 	position: absolute; 
 	z-index:6; 
 	background-color: #FF6633;
-	top: -100px;
+	/*top: -100px; for Opera что-бы строка не улетала с 1 сразу на 9 */ 
 	margin: 0;
 }
 
