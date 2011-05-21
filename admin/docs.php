@@ -167,6 +167,7 @@ switch($_REQUEST['action'])
 		exit;
 
 	case 'checkurl':
+	    header('Content-Type: text/html; charset=windows-1251');
 		echo($AVE_Document->documentAliasCheck());
 		exit;
 }
