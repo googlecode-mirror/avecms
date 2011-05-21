@@ -226,8 +226,8 @@ $(document).ready(function(){ldelim}
 		<tr>
 			<td>{#DOC_USE_BREADCRUMB#}</td>
 			<td>
-				<input name="document_parent" type="text" id="document_parent" value="{$document->document_parent}" size="4" maxlength="10" readonly="readonly" />&nbsp;
-				<div class="button" onClick="openLinkWin('document_parent','document_parent');"><span class="ui-icon ui-icon-pencil"></span>выбрать</div>
+				<input name="document_parent" type="text" id="document_parent" value="{$document->document_parent}" size="4" maxlength="10" />&nbsp;
+				<span class="button" onClick="openLinkWin('document_parent','document_parent');">выбрать</span>
 			</td>
 		</tr>
 
