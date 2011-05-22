@@ -646,7 +646,7 @@ class AVE_User
 
 					if ($_REQUEST['status'] == 1 && @$_REQUEST['SendFreeMail'] == 1)
 					{
-						$host        = substr(HOST . ABS_PATH, 0, -6);
+						$host = HOST . ABS_PATH;
 						$body_start  = $AVE_Template->get_config_vars('USER_MAIL_BODY1');
 						$body_start  = str_replace('%USER%', $_REQUEST['user_name'], $body_start);
 						$body_start .= str_replace('%HOST%', $host, $AVE_Template->get_config_vars('USER_MAIL_BODY2'));
