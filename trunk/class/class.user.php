@@ -505,7 +505,7 @@ class AVE_User
 
 					$message = get_settings('mail_new_user');
 					$message = str_replace('%NAME%', $_POST['user_name'], $message);
-					$message = str_replace('%HOST%', substr(HOST . ABS_PATH, 0, -6), $message);
+					$message = str_replace('%HOST%', HOST . ABS_PATH, $message);
 					$message = str_replace('%KENNWORT%', $_POST['password'], $message);
 					$message = str_replace('%EMAIL%', $_POST['email'], $message);
 					$message = str_replace('%EMAILFUSS%', get_settings('mail_signature'), $message);
