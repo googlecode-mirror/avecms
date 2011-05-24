@@ -20,7 +20,7 @@ function document_pagination($text)
 // IE8                    <div style="page-break-after: always"><span style="display: none">&nbsp;</span></div>
 // Chrome                 <div style="page-break-after: always; "><span style="DISPLAY:none">&nbsp;</span></div>
 // FF                     <div style="page-break-after: always;"><span style="display: none;">&nbsp;</span></div>
-	$pages = preg_split('#<div style="page-break-after: always[; ]*"><span style="display:[ ]*none[;]*">&nbsp;</span></div>#i', $text);
+	$pages = preg_split('#<div style="page-break-after:[; ]*always[; ]*"><span style="display:[ ]*none[;]*">&nbsp;</span></div>#i', $text);
 	$total_page = @sizeof($pages);
 
 	if ($total_page > 1)
