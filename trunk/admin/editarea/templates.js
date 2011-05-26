@@ -5,7 +5,8 @@ editAreaLoader.init({
 	,show_line_colors: true
 	,word_wrap: true
 	,font_family: "verdana, monospace"
-	,font_size: "8"
+	,font_size: "10"
+	,allow_toggle: false
 	,language: "ru"
 	,syntax: "html"
 	,allow_resize: "y"
