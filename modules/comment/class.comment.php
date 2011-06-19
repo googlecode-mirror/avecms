@@ -1,5 +1,4 @@
 <?php
-
 /**
  * Класс, включающий все свойства и методы для управления комментариями как в
  * Публичной части сайта, так и в Панели управления.
@@ -301,6 +300,7 @@ class Comment
 				}
 				else
 				{
+					$GLOBALS['tmpl']->assign("wrongSecureCode", 1);
 					header('Location:' . $link . '#end');
 				}
 				exit;
@@ -526,6 +526,27 @@ class Comment
 			AND parent_id != 0
 		");
 
+		exit;
+	}
+	function commentAdminDelete($comment_id)
+	{
+		global $AVE_DB;
+
+        // Выполняем запрос к БД на удаление родительского комментария
+		$AVE_DB->Query("
+			DELETE
+			FROM " . PREFIX . "_modul_comment_info
+			WHERE Id = '" . $comment_id . "'
+		");
+
+        // Выполняем запрос к БД на удаление дочерних комментариев (ответов)
+        $AVE_DB->Query("
+			DELETE
+			FROM " . PREFIX . "_modul_comment_info
+			WHERE parent_id = '" . $comment_id . "'
+			AND parent_id != 0
+		");
+        header('Location:index.php?do=modules&action=modedit&mod=comment&moduleaction=1&cp= . SESSION');
 		exit;
 	}
 
