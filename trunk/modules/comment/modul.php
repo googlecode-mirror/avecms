@@ -1,5 +1,4 @@
 <?php
-
 /**
  * AVE.cms - Модуль Комментарии
  *
@@ -167,6 +166,9 @@ if (defined('ACP') && !empty($_REQUEST['moduleaction']))
 
 			$comment->commentAdminSettingsEdit($tpl_dir);
 			break;
+		case 'admin_del':
+            $comment->commentAdminDelete((int)$_REQUEST['Id']); 
+            break;
 	}
 }
 
