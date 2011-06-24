@@ -766,8 +766,6 @@ class AVE_Core
 			'[tag:sitename]',
 			'[tag:document]',
 			'[tag:home]',
-			'[tag:keywords]',
-			'[tag:description]',
 			'[tag:robots]',
 			'[tag:docid]',
 			'[tag:breadcrumb]'
@@ -779,22 +777,28 @@ class AVE_Core
 			htmlspecialchars(get_settings('site_name'), ENT_QUOTES),
 			get_redirect_link('print'),
 			get_home_link(),
-			(isset ($this->curentdoc->document_meta_keywords) ? htmlspecialchars($this->curentdoc->document_meta_keywords, ENT_QUOTES) : ''),
-			(isset ($this->curentdoc->document_meta_description) ? htmlspecialchars($this->curentdoc->document_meta_description, ENT_QUOTES) : ''),
 			(isset ($this->curentdoc->document_meta_robots) ? $this->curentdoc->document_meta_robots : ''),
 			(isset ($this->curentdoc->Id) ? $this->curentdoc->Id : ''),
 			get_breadcrumb()
 		);
 
 		if (defined('MODULE_CONTENT'))
-		{	// парсинг тэгов при выводе из модуля
+		{	// парсинг тэгов при выводе из модуля		
 			$search[] = '[tag:maincontent]';
 			$replace[] = MODULE_CONTENT;
 			$search[] = '[tag:title]';
 			$replace[] = htmlspecialchars(defined('MODULE_SITE') ? MODULE_SITE : '', ENT_QUOTES);
+			$search[] = '[tag:description]';
+			$replace[] =  htmlspecialchars(defined('MODULE_DESCRIPTION') ? MODULE_DESCRIPTION : '', ENT_QUOTES); 
+			$search[] = '[tag:keywords]';
+			$replace[] = htmlspecialchars(defined('MODULE_KEYWORDS') ? MODULE_KEYWORDS : '', ENT_QUOTES); 
 		}
 		else
 		{
+			$search[] = '[tag:keywords]';
+			$replace[] = (isset ($this->curentdoc->document_meta_keywords) ? htmlspecialchars($this->curentdoc->document_meta_keywords, ENT_QUOTES) : '');
+			$search[] = '[tag:description]';
+			$replace[] = (isset ($this->curentdoc->document_meta_description) ? htmlspecialchars($this->curentdoc->document_meta_description, ENT_QUOTES) : '');
 			$search[] = '[tag:title]';
 			$replace[] = htmlspecialchars(pretty_chars($this->curentdoc->document_title), ENT_QUOTES);
 		}
