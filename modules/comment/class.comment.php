@@ -282,7 +282,7 @@ class Comment
         // ≈сли запрос пришел не ajax запросом, тогда формируем ссылку дл€ последующего редиректа
 		if (! $ajax = (isset($_REQUEST['ajax']) && $_REQUEST['ajax'] == 1))
 		{
-			$link = rewrite_link(urldecode(get_redirect_link()));
+			$link = rewrite_link(base64_decode($_REQUEST['page']));
 		}
 
         // ≈сли в настройках модул€ включено использование защитного кода, тогда
