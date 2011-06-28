@@ -72,7 +72,7 @@ if (!defined('ACP') && isset($_REQUEST['module']) && $_REQUEST['module'] == 'bas
 				header("Location:" . get_referer_link());
 			}
 			else
-			{
+			{   header('Content-Type: text/html; charset=windows-1251');
 				$AVE_Template->display(BASE_DIR . '/modules/basket/templates/basket_show.tpl');
 			}
 			exit;
@@ -85,7 +85,7 @@ if (!defined('ACP') && isset($_REQUEST['module']) && $_REQUEST['module'] == 'bas
 				header("Location:" . get_referer_link());
 			}
 			else
-			{
+			{   header('Content-Type: text/html; charset=windows-1251');
 				$AVE_Template->display(BASE_DIR . '/modules/basket/templates/basket_show.tpl');
 			}
 			exit;
@@ -104,7 +104,7 @@ if (!defined('ACP') && isset($_REQUEST['module']) && $_REQUEST['module'] == 'bas
 				header("Location:" . get_referer_link());
 			}
 			else
-			{
+			{   header('Content-Type: text/html; charset=windows-1251');
 				$AVE_Template->display(BASE_DIR . '/modules/basket/templates/order_show.tpl');
 			}
 			exit;
