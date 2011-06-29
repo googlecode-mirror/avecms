@@ -100,6 +100,8 @@ $(document).ready(function(){ldelim}
 
 <form method="post" name="formDocOption" action="{$document->formaction}" enctype="multipart/form-data">
 	<input type="hidden" name="prefix" value="{$document->rubric_url_prefix}" />
+	<input name="closeafter" type="hidden" id="closeafter" value="{$smarty.request.closeafter}">
+	
 	<table width="100%" border="0" cellpadding="8" cellspacing="1" class="tableborder">
 		<col width="200" class="first">
 		<col class="second">

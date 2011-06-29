@@ -1067,7 +1067,11 @@ class AVE_Document
 					reportLog($_SESSION['user_name'] . ' - отредактировал документ (' . $document_id . ')', 2, 2);
 				}
 
-				header('Location:index.php?do=docs&action=after&document_id=' . $document_id . '&rubric_id=' . $row->rubric_id . '&cp=' . SESSION);
+				if(isset($_REQUEST['closeafter']) && $_REQUEST['closeafter']==1) {
+					echo "<script>window.opener.location.reload(); window.close();</script>";
+				} else {					
+					header('Location:index.php?do=docs&action=after&document_id=' . $document_id . '&rubric_id=' . $row->rubric_id . '&cp=' . SESSION);
+				}
 				exit;
 
 			// Если пользователь не выполнял никаких действий, а просто открыл документ для редактирования
