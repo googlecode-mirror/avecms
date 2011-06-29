@@ -374,7 +374,7 @@ if ( isset($_GET['toid']) && $_GET['toid'] != "" )
 		$topic = $topic_result->FetchRow();
 
 		// hat der user das thema abonniert?
-		$user_id = split(";", $topic->notification);
+		$user_id = explode(";", $topic->notification);
 		if (@in_array(UID, $user_id))
 		{
 			$GLOBALS['AVE_Template']->assign('canabo', 0);
