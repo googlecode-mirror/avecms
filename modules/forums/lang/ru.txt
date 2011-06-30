@@ -6,7 +6,7 @@ UsersReg = "Дата регистрации"
 UsersPosts = "Сообщения"
 UseresSearch = "Найти"
 UsersPNNew = "Написать"
-
+LOgin = "Логин"
 PageNameForums = "Форумы"
 ForumSep = " // "
 ShowPostsThread = "Тема:"
