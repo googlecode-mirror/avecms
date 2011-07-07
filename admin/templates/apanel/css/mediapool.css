@@ -1,0 +1,50 @@
+body {
+	font-family:Arial,Helvetica,sans-serif;
+	font-size:11px;
+	margin:0;
+	padding:0;
+	background-color:#e8e8e8;
+}
+#body2 {
+	background-color:#bfbfbf;
+}
+.feld,
+textarea,
+.button {
+	font-size:11px;
+	color:#000;
+	font-family:Arial,Verdana,Helvetica,sans-serif;
+}
+.c1 {
+	background-color:#f0f0f0;
+}
+.warning_border {
+	border:2px solid #777;
+	margin:5px;
+	padding:5px;
+	color:#eec00a;
+	background-color:#fff;
+	font-weight:bold;
+}
+td {
+	font-family:Arial,Helvetica,sans-serif;
+	font-size:11px;
+}
+.tableborder {
+	background-color:#fff;
+}
+a:link {
+	color:#000;
+	text-decoration:underline;
+	font-size:11px;
+}
+a:visited {
+	color:#000;
+	text-decoration:underline;
+	font-size:11px;
+}
+a:hover {
+	color:#eec00a;
+	text-decoration:none;
+	font-size:11px;
+}

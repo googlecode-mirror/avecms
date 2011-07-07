@@ -1,0 +1,88 @@
+<?php
+
+/**
+ * AVE.cms - Модуль Системные блоки
+ *
+ * @package AVE.cms
+ * @subpackage module_SysBlock
+ * @author Mad Den
+ * @since 2.07
+ * @filesource
+ */
+
+if (!defined('BASE_DIR')) exit;
+
+if (defined('ACP'))
+{
+    $modul['ModulName'] = 'Системные блоки';
+    $modul['ModulPfad'] = 'sysblock';
+    $modul['ModulVersion'] = '1.1';
+    $modul['description'] = 'Данный модуль предназначен для вывода системных блоков с произвольным содержимым в шаблоне или документе.<br /><br />Можно использовать PHP и тэги модулей<br /><br />Для вывода результатов используйте системный тег<br /><strong>[mod_sysblock:XXX]</strong>';
+    $modul['Autor'] = 'Mad Den';
+    $modul['MCopyright'] = '&copy; 2008 Overdoze Team';
+    $modul['Status'] = 1;
+    $modul['IstFunktion'] = 1;
+    $modul['AdminEdit'] = 1;
+    $modul['ModulTemplate'] = 0;
+    $modul['ModulFunktion'] = 'mod_sysblock';
+    $modul['CpEngineTagTpl'] = '[mod_sysblock:XXX]';
+    $modul['CpEngineTag'] = '#\\\[mod_sysblock:(\\\d+)]#';
+    $modul['CpPHPTag'] = "<?php mod_sysblock(''$1''); ?>";
+}
+
+/**
+ * Обработка тэга модуля
+ *
+ * @param int $sysblock_id идентификатор системного блока
+ */
+function mod_sysblock($sysblock_id)
+{
+	global $AVE_DB;
+
+	if (is_numeric($sysblock_id))
+	{
+		$return = $AVE_DB->Query("
+			SELECT sysblock_text
+			FROM " . PREFIX . "_modul_sysblock
+			WHERE id = '" . $sysblock_id . "'
+			LIMIT 1
+		")->GetCell();
+
+		eval ('?>' . $return . '<?');
+	}
+}
+
+/**
+ * Администрирование
+ */
+if (defined('ACP') && !empty($_REQUEST['moduleaction']))
+{
+	if (! (is_file(BASE_DIR . '/modules/sysblock/class.sysblock.php') &&
+		@require_once(BASE_DIR . '/modules/sysblock/class.sysblock.php'))) module_error();
+
+	$tpl_dir   = BASE_DIR . '/modules/sysblock/templates/';
+	$lang_file = BASE_DIR . '/modules/sysblock/lang/' . $_SESSION['user_language'] . '.txt';
+
+	$AVE_Template->config_load($lang_file);
+
+	switch ($_REQUEST['moduleaction'])
+	{
+		case '1':
+			Sysblock::sysblockList($tpl_dir);
+			break;
+
+		case 'del':
+			Sysblock::sysblockDelete($_REQUEST['id']);
+			break;
+
+		case 'edit':
+			Sysblock::sysblockEdit(isset($_REQUEST['id']) ? $_REQUEST['id'] : null, $tpl_dir);
+			break;
+
+		case 'saveedit':
+			Sysblock::sysblockSave(isset($_REQUEST['id']) ? $_REQUEST['id'] : null);
+			break;
+	}
+}
+
+?>

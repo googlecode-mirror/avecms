@@ -1,0 +1,1 @@
+<li><a {if $smarty.request.do=='modules'}class="active"{else}{/if} href="index.php?do=modules&amp;cp={$sess}">{#MAIN_NAVI_MODULES#}</a></li>
