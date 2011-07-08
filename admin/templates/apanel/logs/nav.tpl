@@ -1,1 +1,0 @@
-<li><a {if $smarty.request.do=='logs'}class="active"{else}{/if} href="index.php?do=logs&amp;cp={$sess}">{#MAIN_LOGS#}</a></li>

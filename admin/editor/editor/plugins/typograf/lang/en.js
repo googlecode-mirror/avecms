@@ -1,2 +1,0 @@
-﻿
-FCKLang['DlgMyTypografTitle']		= 'TypograF' ;
