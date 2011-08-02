@@ -58,7 +58,7 @@ function get_pagination($total_pages, $type, $template_label, $navi_box = '')
 
 	if ($total_pages > 5 && $curent_page > 3)
 	{
-		$nav .= str_replace('{t}', $start_label, str_replace(array('&amp;'.$type.'={s}','&'.$type.'={s}'), '', $template_label));
+		$nav .= str_replace('{t}', $start_label, str_replace(array('&amp;'.$type.'={s}','&'.$type.'={s}','/'.$type.'-{s}'), '', $template_label));
 		if ($separator_label != '') $nav .= '<span>' . $separator_label . '</span>';
 	}
 
@@ -66,7 +66,7 @@ function get_pagination($total_pages, $type, $template_label, $navi_box = '')
 	{
 		if ($curent_page == 2)
 		{
-			$nav .= str_replace('{t}', $prev_label, str_replace(array('&amp;'.$type.'={s}','&'.$type.'={s}'), '', $template_label));
+			$nav .= str_replace('{t}', $prev_label, str_replace(array('&amp;'.$type.'={s}','&'.$type.'={s}','/'.$type.'-{s}'), '', $template_label));
 		}
 		else
 		{
@@ -87,7 +87,7 @@ function get_pagination($total_pages, $type, $template_label, $navi_box = '')
 			{
 				if ($val == 1)
 				{
-					$nav .= str_replace('{t}', $val, str_replace(array('&amp;'.$type.'={s}','&'.$type.'={s}'), '', $template_label));
+					$nav .= str_replace('{t}', $val, str_replace(array('&amp;'.$type.'={s}','&'.$type.'={s}','/'.$type.'-{s}'), '', $template_label));
 				}
 				else
 				{
