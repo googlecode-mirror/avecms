@@ -15,19 +15,19 @@ FCKConfig.ToolbarSets["cpengine"] = [
   ['Undo','Redo'],['Bold','Italic','Underline','StrikeThrough'],
   ['OrderedList','UnorderedList','-','Outdent','Indent','Blockquote','CreateDiv'],
   ['JustifyLeft','JustifyCenter','JustifyRight','JustifyFull'],['Link','Unlink','Anchor'], ['Image','Flash','Table','Rule','SpecialChar'], '/',
-  ['FontFormat','FontName','FontSize'],['TextColor','BGColor','RemoveFormat'], ['FitWindow','ShowBlocks'], ['AnchorMore','PageBreak','typograf','SyntaxHighLight2','googlemaps','OnlineVideo']  // Не ставить запятую в последней строке.
+  ['FontFormat','FontName','FontSize'],['TextColor','BGColor','RemoveFormat'], ['FitWindow','ShowBlocks'], ['AnchorMore','PageBreak','typograf','SyntaxHighLight2','googlemaps','OnlineVideo','flvS3Player']  // Не ставить запятую в последней строке.
 ] ;
 
 FCKConfig.ToolbarSets["cpengine_small"] = [
   ['Source','-','Save'],
   ['Cut','Copy','Paste','PasteText','PasteWord'],
   ['Undo','Redo'],['Bold','Italic','Underline','StrikeThrough'],['OrderedList','UnorderedList'],
-  ['JustifyLeft','JustifyCenter','JustifyRight','JustifyFull'],['Link','Unlink','Anchor','Image'],['AnchorMore','PageBreak','typograf','SyntaxHighLight2','googlemaps','OnlineVideo']  // Не ставить запятую в последней строке.
+  ['JustifyLeft','JustifyCenter','JustifyRight','JustifyFull'],['Link','Unlink','Anchor','Image'],['AnchorMore','PageBreak','typograf','SyntaxHighLight2','googlemaps','OnlineVideo','flvS3Player']  // Не ставить запятую в последней строке.
 ] ;
 
 FCKConfig.ToolbarSets["Simple"] = [
   ['Source','Bold','Italic','-','OrderedList','UnorderedList','-','Link','Unlink','-','Image','-','RemoveFormat','-','Preview',
-  'FontFormat','FontName','FontSize','AnchorMore','PageBreak','typograf','SyntaxHighLight2','googlemaps','OnlineVideo']
+  'FontFormat','FontName','FontSize','AnchorMore','PageBreak','typograf','SyntaxHighLight2','googlemaps','OnlineVideo','flvS3Player']
 ] ;
 
 FCKConfig.EnterMode = 'br' ;       // p | div | br
@@ -35,14 +35,19 @@ FCKConfig.EnterMode = 'br' ;       // p | div | br
 
 FCKConfig.FontFormats = 'div;p;h1;h2;h3;h4;h5;h6;pre;address' ;
 
-FCKConfig.LinkBrowserURL    = "../../../../admin/browser.php?typ=bild&mode=fck&target=link" ;
+FCKConfig.LinkBrowserURL    = "../../../../../admin/browser.php?typ=bild&mode=fck&target=link" ;
 FCKConfig.LinkBrowserLnkUrl = "../../../../admin/browser.php?typ=bild&mode=fck&target=link_image" ;
-FCKConfig.ImageBrowserURL   = "../../../../admin/browser.php?typ=bild&mode=fck&target=txtUrl" ;
-FCKConfig.FlashBrowserURL   = "../../../../admin/browser.php?typ=bild&mode=fck&target=txtUrl" ;
+FCKConfig.ImageBrowserURL   = "../../../../../admin/browser.php?typ=bild&mode=fck&target=txtUrl" ;
+FCKConfig.FlashBrowserURL   = "../../../../../admin/browser.php?typ=bild&mode=fck&target=txtUrl";
+FCKConfig.ImagesBrowserURL  = "../../../../../admin/browser.php?typ=bild&mode=fck&target=txtImgURL";
+FCKConfig.StyleBrowserURL   = "../../../../../admin/browser.php?typ=bild&mode=fck&target=txtExternalStyleURL";
+
 
 FCKConfig.LinkUpload  = false ;
 FCKConfig.ImageUpload = false ;
 FCKConfig.FlashUpload = false ;
+FCKConfig.ImagesUpload = false ;
+FCKConfig.StyleUpload = false ;
 
 FCKConfig.EMailProtection = 'encode' ; // none | encode | function
 
@@ -81,3 +86,7 @@ FCKConfig.Plugins.Add ('typograf', 'ru,en');
 //Подключаем OnlineVideo
 //Для добавления кнопки в панель редактора испозуем 'OnlineVideo'
 FCKConfig.Plugins.Add('onlinevideo', 'ru,en');
+//Подключаем OnlineVideo
+
+//Для добавления кнопки в панель редактора испозуем 'flvS3Player'
+FCKConfig.Plugins.Add( 'flvS3Player','ru,en');
