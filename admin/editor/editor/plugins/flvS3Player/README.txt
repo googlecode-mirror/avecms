@@ -1,3 +1,14 @@
+Файлы и папки, которые обновляются для плеера:
+
+1. Добавляется папака video со всем ее содержимым полный путь к ней uploads/
+2. Добавляется папка flvS3Player со всем ее содержимым полный путь до нее admin/editor/editor/plugins/ 
+3. Изменены файлы: aveconfig.js и fckconfig.js  путь к этим файлам admin/editor/ 
+4. Изменен файл browser_2frames.tpl  путь к этому файлу: admin/templates/apanel/browser/
+
+
+
+
+
 Видео-аудио-плеер. Подключен в качестве плагина FSKeditor.
 
 Возможности:
