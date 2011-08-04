@@ -86,8 +86,29 @@ function submitTheForm() {ldelim}
 		window.opener.UpdatePreview();
 {else}
 		window.opener.document.getElementById('txtUrl').value = '{$cppath}/{$mediapath}' + document.dat.dateiname.value + document.dat.fn.value;
-		window.opener.UpdatePreview();
+		
 {/if}
+
+{elseif $smarty.request.target=='txtImgURL'}
+{if $smarty.request.nosource=='1'}
+		window.opener.document.getElementById('txtImgURL').value = '{$mediapath}' + document.dat.dateiname.value + document.dat.fn.value;
+		window.opener.UpdatePreview();
+{else}
+		window.opener.document.getElementById('txtImgURL').value = '{$cppath}/{$mediapath}' + document.dat.dateiname.value + document.dat.fn.value;
+		
+{/if}
+
+{elseif $smarty.request.target=='txtExternalStyleURL'}
+{if $smarty.request.nosource=='1'}
+		window.opener.document.getElementById('txtExternalStyleURL').value = '{$mediapath}' + document.dat.dateiname.value + document.dat.fn.value;
+		window.opener.UpdatePreview();
+{else}
+		window.opener.document.getElementById('txtExternalStyleURL').value = '{$cppath}/{$mediapath}' + document.dat.dateiname.value + document.dat.fn.value;
+		
+{/if}
+
+
+
 
 {elseif $smarty.request.target=='navi'}
 		window.opener.document.getElementById('{$smarty.request.id|escape}').value = '{$cppath}/{$mediapath}' + document.dat.dateiname.value + document.dat.fn.value;
