@@ -1,0 +1,27 @@
+{"playlist":[
+{"comment":"файл","file":"http://video.uppod.net/sample.flv","poster":"http://img.uppod.net/poster.jpg"},
+{"comment":"папка","poster":"http://img.uppod.net/posterfolder.png",
+	"playlist":[
+		{"comment":"файл","file":"http://video.uppod.net/sample.flv","poster":"http://img.uppod.net/poster.jpg"},
+		{"comment":"файл","file":"http://video.uppod.net/sample.flv","poster":"http://img.uppod.net/poster.jpg"},
+		{"comment":"папка","poster":"http://img.uppod.net/posterfolder.png",
+			"playlist":[
+				{"comment":"файл","file":"http://video.uppod.net/sample.flv","poster":"http://img.uppod.net/poster.jpg"},
+				{"comment":"файл","file":"http://video.uppod.net/sample.flv","poster":"http://img.uppod.net/poster.jpg"}
+			]
+		}
+	]
+},
+{"comment":"папка","poster":"folder.png","poster":"http://img.uppod.net/posterfolder.png",
+	"playlist":[
+		{"comment":"файл","file":"http://video.uppod.net/sample.flv","poster":"http://img.uppod.net/poster.jpg"},
+		{"comment":"файл","file":"http://video.uppod.net/sample.flv","poster":"http://img.uppod.net/poster.jpg"}
+	]
+},
+{"comment":"папка","poster":"folder.png","poster":"http://img.uppod.net/posterfolder.png",
+	"playlist":[
+		{"comment":"файл","file":"http://video.uppod.net/sample.flv","poster":"http://img.uppod.net/poster.jpg"},
+		{"comment":"файл","file":"http://video.uppod.net/sample.flv","poster":"http://img.uppod.net/poster.jpg"}
+	]
+}
+]}

@@ -301,6 +301,16 @@ FCKConfig.StyleBrowserURL = FCKConfig.BasePath + 'filemanager/browser/default/br
 FCKConfig.StyleBrowserWindowWidth  = FCKConfig.ScreenWidth * 0.7 ;	// 70% ;
 FCKConfig.StyleBrowserWindowHeight = FCKConfig.ScreenHeight * 0.7 ;	// 70% ;
 
+FCKConfig.CommentBrowser = true ;
+FCKConfig.CommentBrowserURL = FCKConfig.BasePath + 'filemanager/browser/default/browser.html?Connector=' + encodeURIComponent( FCKConfig.BasePath + 'filemanager/connectors/' + _FileBrowserLanguage + '/connector.' + _FileBrowserExtension ) ;
+FCKConfig.CommentBrowserWindowWidth  = FCKConfig.ScreenWidth * 0.7 ;	// 70% ;
+FCKConfig.CommentBrowserWindowHeight = FCKConfig.ScreenHeight * 0.7 ;	// 70% ;
+
+FCKConfig.PlayBrowser = true ;
+FCKConfig.PlayBrowserURL = FCKConfig.BasePath + 'filemanager/browser/default/browser.html?Connector=' + encodeURIComponent( FCKConfig.BasePath + 'filemanager/connectors/' + _FileBrowserLanguage + '/connector.' + _FileBrowserExtension ) ;
+FCKConfig.PlayBrowserWindowWidth  = FCKConfig.ScreenWidth * 0.7 ;	// 70% ;
+FCKConfig.PlayBrowserWindowHeight = FCKConfig.ScreenHeight * 0.7 ;	// 70% ;
+
 
 FCKConfig.FlashBrowser = true ;
 FCKConfig.FlashBrowserURL = FCKConfig.BasePath + 'filemanager/browser/default/browser.html?Type=Flash&Connector=' + encodeURIComponent( FCKConfig.BasePath + 'filemanager/connectors/' + _FileBrowserLanguage + '/connector.' + _FileBrowserExtension ) ;
@@ -331,6 +341,17 @@ FCKConfig.FlashUpload = true ;
 FCKConfig.FlashUploadURL = FCKConfig.BasePath + 'filemanager/connectors/' + _QuickUploadLanguage + '/upload.' + _QuickUploadExtension + '?Type=Flash' ;
 FCKConfig.FlashUploadAllowedExtensions	= ".(swf|flv|f4v|mp4|mov|m4a|mp4v|3gp|3g2|mp3|h.264.)$" ;		// empty for all
 FCKConfig.FlashUploadDeniedExtensions	= "" ;					// empty for no one
+
+FCKConfig.CommentUpload = true ;
+FCKConfig.CommentUploadURL = FCKConfig.BasePath + 'filemanager/connectors/' + _QuickUploadLanguage + '/upload.' + _QuickUploadExtension ;
+FCKConfig.CommentUploadAllowedExtensions	= ".(swf|flv|f4v|mp4|mov|m4a|mp4v|3gp|3g2|mp3|h.264.|txt|gif|jpg|png)$" ;		// empty for all
+FCKConfig.CommentUploadDeniedExtensions	= "" ;					// empty for no one
+
+FCKConfig.PlayUpload = true ;
+FCKConfig.PlayUploadURL = FCKConfig.BasePath + 'filemanager/connectors/' + _QuickUploadLanguage + '/upload.' + _QuickUploadExtension ;
+FCKConfig.PlayUploadAllowedExtensions	= ".(txt)$" ;		// empty for all
+FCKConfig.PlayUploadDeniedExtensions	= "" ;					// empty for no one
+
 
 FCKConfig.SmileyPath	= FCKConfig.BasePath + 'images/smiley/msn/' ;
 FCKConfig.SmileyImages	= ['regular_smile.gif','sad_smile.gif','wink_smile.gif','teeth_smile.gif','confused_smile.gif','tounge_smile.gif','embaressed_smile.gif','omg_smile.gif','whatchutalkingabout_smile.gif','angry_smile.gif','angel_smile.gif','shades_smile.gif','devil_smile.gif','cry_smile.gif','lightbulb.gif','thumbs_down.gif','thumbs_up.gif','heart.gif','broken_heart.gif','kiss.gif','envelope.gif'] ;

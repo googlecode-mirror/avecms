@@ -107,7 +107,23 @@ function submitTheForm() {ldelim}
 		
 {/if}
 
+{elseif $smarty.request.target=='txtPlayURL'}
+{if $smarty.request.nosource=='1'}
+		window.opener.document.getElementById('txtPlayURL').value = '{$mediapath}' + document.dat.dateiname.value + document.dat.fn.value;
+		window.opener.UpdatePreview();
+{else}
+		window.opener.document.getElementById('txtPlayURL').value = '{$cppath}/{$mediapath}' + document.dat.dateiname.value + document.dat.fn.value;
+		
+{/if}
 
+{elseif $smarty.request.target=='txtComURL'}
+{if $smarty.request.nosource=='1'}
+		window.opener.document.getElementById('txtComURL').value = '{$mediapath}' + document.dat.dateiname.value + document.dat.fn.value;
+		window.opener.UpdatePreview();
+{else}
+		window.opener.document.getElementById('txtComURL').value = '{$cppath}/{$mediapath}' + document.dat.dateiname.value + document.dat.fn.value;
+		
+{/if}
 
 
 {elseif $smarty.request.target=='navi'}

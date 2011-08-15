@@ -41,13 +41,16 @@ FCKConfig.ImageBrowserURL   = "../../../../../admin/browser.php?typ=bild&mode=fc
 FCKConfig.FlashBrowserURL   = "../../../../../admin/browser.php?typ=bild&mode=fck&target=txtUrl";
 FCKConfig.ImagesBrowserURL  = "../../../../../admin/browser.php?typ=bild&mode=fck&target=txtImgURL";
 FCKConfig.StyleBrowserURL   = "../../../../../admin/browser.php?typ=bild&mode=fck&target=txtExternalStyleURL";
-
+FCKConfig.CommentBrowserURL   = "../../../../../admin/browser.php?typ=bild&mode=fck&target=txtComURL";
+FCKConfig.PlayBrowserURL   = "../../../../../admin/browser.php?typ=bild&mode=fck&target=txtPlayURL";
 
 FCKConfig.LinkUpload  = false ;
 FCKConfig.ImageUpload = false ;
 FCKConfig.FlashUpload = false ;
 FCKConfig.ImagesUpload = false ;
 FCKConfig.StyleUpload = false ;
+FCKConfig.CommentUpload = false ;
+FCKConfig.PlayUpload = false ;
 
 FCKConfig.EMailProtection = 'encode' ; // none | encode | function
 
