@@ -1,9 +1,10 @@
 //------------------------------------------------------
 // This plugin created by Aleksandr Popov
-// http://s3blog.org
 // 5 september 2009 
-// fixes, and adaptation of AVE-CMS v.2.09 made the bad guy - Repellent)
-// 4 august 2011
+// Update, upgrade and adaptation of AVE-CMS v.2.09
+// created by - Repellent - Overdoze.ru
+// AVE FLV Media Player v1.1
+// 15 august 2011
 //------------------------------------------------------
 
 var oEditor = window.parent.InnerDialogLoaded() ;
@@ -75,6 +76,7 @@ function LoadSelection()
 
 	GetE('txtUrl').value    	= oMedia.url;
 	GetE('txtImgURL').value    	= oMedia.iurl;
+	GetE('txtComURL').value    	= oMedia.curl;
 	GetE('txtWidth').value		= oMedia.width;
 	GetE('txtHeight').value		= oMedia.height;
 	GetE('selAlign').value		= oMedia.align;
@@ -82,18 +84,34 @@ function LoadSelection()
 	GetE('btnStyleBrowse').disabled		= oMedia.istyle; 
 	GetE('txtExternalStyleURL').disabled	= oMedia.istyle;
 	GetE('txtExternalStyleURL').value		= oMedia.estyleUrl;
+	GetE('chkExternalPlaylist').checked	= oMedia.iplay;
+	GetE('btnPlayBrowse').disabled		= oMedia.iplay; 
+	GetE('txtPlayURL').disabled	= oMedia.iplay;
+	GetE('txtPlayURL').value		= oMedia.playUrl;
+    
 }
 
 //#### The OK button was hit.
 function Ok()
 {
-	if ( GetE('txtUrl').value.length == 0 )
+	
+	if (GetE('txtUrl').value.length == 0 & GetE('txtPlayURL').disabled)
 	{
 		GetE('txtUrl').focus() ;	
 
 		alert( oEditor.FCKLang.DlgFLVS3PlayerAlertUrl ) ;
 		return false ;
 	}
+	
+	if (GetE('txtPlayURL').value.length == 0 & GetE('txtUrl').disabled)
+	{
+		GetE('txtPlayURL').focus() ;	
+
+		alert( oEditor.FCKLang.DlgFLVS3PlaylistAlertUrl ) ;
+		return false ;
+	}
+	
+	
 
 	if ( GetE('txtWidth').value.length == 0 )
 	{
@@ -139,11 +157,14 @@ function Ok()
 function updateMovie(e){
 	e.url = GetE('txtUrl').value;
 	e.iurl = GetE('txtImgURL').value;
+	e.curl = GetE('txtComURL').value;
 	e.width = (isNaN(GetE('txtWidth').value)) ? 0 : parseInt(GetE('txtWidth').value);
 	e.height = (isNaN(GetE('txtHeight').value)) ? 0 : parseInt(GetE('txtHeight').value);
 	e.align =	GetE('selAlign').value;
 	e.istyle = (GetE('chkInternalStyle').checked) ? 'true' : 'false';
 	e.estyleUrl = GetE('txtExternalStyleURL').value;
+    e.iplay = (GetE('chkExternalPlaylist').checked) ? 'true' : 'false';
+    e.playUrl = GetE('txtPlayURL').value;
 
 }
 
@@ -175,6 +196,27 @@ function styleBrowseServer()
 		oEditor.FCKConfig.StyleBrowserWindowHeight ) ;
 }
 
+function commentBrowseServer()
+{
+	OpenServerBrowser(
+		'comment',
+		oEditor.FCKConfig.CommentBrowserURL,
+		oEditor.FCKConfig.CommentBrowserWindowWidth,
+		oEditor.FCKConfig.CommentBrowserWindowHeight ) ;
+}
+
+function playBrowseServer()
+{
+	OpenServerBrowser(
+		'play',
+		oEditor.FCKConfig.PlayBrowserURL,
+		oEditor.FCKConfig.PlayBrowserWindowWidth,
+		oEditor.FCKConfig.PlayBrowserWindowHeight ) ;
+}
+
+
+
+
 function OpenServerBrowser( type, url, width, height )
 {
 	sActualBrowser = type ;
@@ -189,22 +231,30 @@ function SetUrl( url ) {
 	if ( sActualBrowser == 'flv' ) {
 		document.getElementById('txtUrl').value = url ;
 //		GetE('txtHeight').value = GetE('txtWidth').value = '' ;
+	} else if ( sActualBrowser == 'comment' ) {
+		document.getElementById('txtComURL').value = url;
 	} else if ( sActualBrowser == 'img' ) {
 		document.getElementById('txtImgURL').value = url ;
 	} else if ( sActualBrowser == 'style' ) {
 		document.getElementById('txtExternalStyleURL').value = url ;
-	}
+	} else if ( sActualBrowser == 'play' ) {
+		document.getElementById('txtPlayURL').value = url ;
+	} 
+    
 }
 
 
 var Media = function (o){
 	this.url = '';
 	this.iurl = '';
+	this.curl = '';
 	this.width = '400';
 	this.height = '300';
 	this.align = '';
-	this.istyle = 'true';
+	this.istyle = 'true'; 
 	this.estyleUrl = '';
+	this.iplay = 'true';
+	this.playUrl = '';
 	
 	if (o) 
 		this.setObjectElement(o);
@@ -275,8 +325,12 @@ Media.prototype.getInnerHTML = function (objectId){
 
 	var poster = (this.iurl) ? ',"poster":"' + this.iurl + '"' : '';
 	var poster2 = (this.iurl) ? '&amp;poster=' + this.iurl : '';
+	var comment = (this.curl) ? ',"comment":"' + this.curl + '"' : '';
+	var pl = (this.playUrl) ? ',"pl":"' + this.playUrl + '"' : '';
 	
-	s+= 'var flashvars' + randomnumber + ' = {"st":"' + videoStyle + '","file":"' + this.url + '"' + poster + '};';
+	if (GetE('txtUrl').value.length > 1 & GetE('txtPlayURL').disabled)
+	{s+= 'var flashvars' + randomnumber + ' = {"st":"' + videoStyle + '","file":"' + this.url + '"' + poster + '' + comment + '' + pl +'};';}
+	else {s+= 'var flashvars' + randomnumber + ' = {"st":"' + videoStyle + '"' + pl +'};';}
 	s+= 'var params' + randomnumber + ' = {wmode:"transparent", allowFullScreen:"true", allowScriptAccess:"always"}; ';
 
 	s+= ' new swfobject.embedSWF("' + oEditor.FCKConfig.PluginsPath + 'flvS3Player/uppod.swf", "flvS3player' + randomnumber + '", "' + thisWidth +'", "' + thisHeight + '", "9.0.0", false, flashvars' + randomnumber + ', params' + randomnumber + ');';

@@ -1,6 +1,6 @@
 ﻿// Register the related commands.
 var dialogPath = FCKConfig.PluginsPath + 'flvS3Player/flvS3Player.html';
-var flvS3PlayerDialogCmd = new FCKDialogCommand( FCKLang["DlgFLVS3PlayerTitle"], FCKLang["DlgFLVS3PlayerTitle"], dialogPath, 400, 350 );
+var flvS3PlayerDialogCmd = new FCKDialogCommand( FCKLang["DlgFLVS3PlayerTitle"], FCKLang["DlgFLVS3PlayerTitle"], dialogPath, 650, 460);
 FCKCommands.RegisterCommand( 'flvS3Player', flvS3PlayerDialogCmd ) ;
 
 // Create the Flash toolbar button.
