@@ -15,20 +15,23 @@ FCKConfig.ToolbarSets["cpengine"] = [
   ['Undo','Redo'],['Bold','Italic','Underline','StrikeThrough'],
   ['OrderedList','UnorderedList','-','Outdent','Indent','Blockquote','CreateDiv'],
   ['JustifyLeft','JustifyCenter','JustifyRight','JustifyFull'],['Link','Unlink','Anchor'], ['Image','Flash','Table','Rule','SpecialChar'], '/',
-  ['FontFormat','FontName','FontSize'],['TextColor','BGColor','RemoveFormat'], ['FitWindow','ShowBlocks'], ['AnchorMore','PageBreak','typograf','SyntaxHighLight2','googlemaps','OnlineVideo','flvS3Player']  // Не ставить запятую в последней строке.
+  ['FontFormat','FontName','FontSize'],['TextColor','BGColor','RemoveFormat'], ['FitWindow','ShowBlocks'], ['AnchorMore','PageBreak','typograf','SyntaxHighLight2','googlemaps','OnlineVideo','flvS3Player','Switchtoolbar']  // Не ставить запятую в последней строке.
 ] ;
 
 FCKConfig.ToolbarSets["cpengine_small"] = [
   ['Source','-','Save'],
   ['Cut','Copy','Paste','PasteText','PasteWord'],
   ['Undo','Redo'],['Bold','Italic','Underline','StrikeThrough'],['OrderedList','UnorderedList'],
-  ['JustifyLeft','JustifyCenter','JustifyRight','JustifyFull'],['Link','Unlink','Anchor','Image'],['AnchorMore','PageBreak','typograf','SyntaxHighLight2','googlemaps','OnlineVideo','flvS3Player']  // Не ставить запятую в последней строке.
+  ['JustifyLeft','JustifyCenter','JustifyRight','JustifyFull'],['Link','Unlink','Anchor','Image'],['AnchorMore','PageBreak','typograf','SyntaxHighLight2','googlemaps','OnlineVideo','flvS3Player','Switchtoolbar']  // Не ставить запятую в последней строке.
 ] ;
 
 FCKConfig.ToolbarSets["Simple"] = [
   ['Source','Bold','Italic','-','OrderedList','UnorderedList','-','Link','Unlink','-','Image','-','RemoveFormat','-','Preview',
-  'FontFormat','FontName','FontSize','AnchorMore','PageBreak','typograf','SyntaxHighLight2','googlemaps','OnlineVideo','flvS3Player']
+  'FontFormat','FontName','FontSize','AnchorMore','PageBreak','typograf','SyntaxHighLight2','googlemaps','OnlineVideo','flvS3Player','Switchtoolbar']
 ] ;
+
+FCKConfig.SwitchtoolbarCycle = ['cpengine','cpengine_small','Simple'];
+
 
 FCKConfig.EnterMode = 'br' ;       // p | div | br
 //FCKConfig.ShiftEnterMode = 'br' ;  // p | div | br
@@ -93,3 +96,6 @@ FCKConfig.Plugins.Add('onlinevideo', 'ru,en');
 
 //Для добавления кнопки в панель редактора испозуем 'flvS3Player'
 FCKConfig.Plugins.Add( 'flvS3Player','ru,en');
+
+//Переключатель панелей редактора 'Switchtoolbar'
+FCKConfig.Plugins.Add('Switchtoolbar', 'ru,en,uk');
