@@ -15,7 +15,7 @@ FCKConfig.ToolbarSets["cpengine"] = [
   ['Undo','Redo'],['Bold','Italic','Underline','StrikeThrough'],
   ['OrderedList','UnorderedList','-','Outdent','Indent','Blockquote','CreateDiv'],
   ['JustifyLeft','JustifyCenter','JustifyRight','JustifyFull'],['Link','Unlink','Anchor'], ['Image','Flash','Table','Rule','SpecialChar'], '/',
-  ['FontFormat','FontName','FontSize'],['TextColor','BGColor','RemoveFormat'], ['FitWindow','ShowBlocks'], ['AnchorMore','PageBreak','typograf','SyntaxHighLight2','googlemaps','OnlineVideo','flvS3Player','Switchtoolbar']  // Не ставить запятую в последней строке.
+  ['FontFormat','FontName','FontSize'],['TextColor','BGColor','RemoveFormat'], ['FitWindow','ShowBlocks'], ['AnchorMore','PageBreak','linebreaks','typograf','SyntaxHighLight2','googlemaps','OnlineVideo','flvS3Player','Switchtoolbar']  // Не ставить запятую в последней строке.
 ] ;
 
 FCKConfig.ToolbarSets["cpengine_small"] = [
@@ -82,20 +82,23 @@ FCKConfig.Plugins.Add('googlemaps', 'ru,en,de,es,fr,it,nl,no,zh');
 FCKConfig.GoogleMaps_Key = 'ABQIAAAAlXu5Pw6DFAUgqM2wQn01gxT2yXp_ZAY8_ufC3CFXhHIE1NvwkxSy5hTGQdsosYD3dz6faZHVrO-02A';
 
 //Подключаем SyntaxHighlight 2
-//Для добавления кнопки в панель редактора испозуем 'SyntaxHighLight2'
+//Для добавления кнопки в панель редактора используем 'SyntaxHighLight2'
 FCKConfig.Plugins.Add( 'syntaxhighlight2', 'ru,en');
 
 //Подключаем Typograf
-//Для добавления кнопки в панель редактора испозуем 'typograf'
+//Для добавления кнопки в панель редактора используем 'typograf'
 FCKConfig.Plugins.Add ('typograf', 'ru,en');
 
 //Подключаем OnlineVideo
-//Для добавления кнопки в панель редактора испозуем 'OnlineVideo'
+//Для добавления кнопки в панель редактора используем 'OnlineVideo'
 FCKConfig.Plugins.Add('onlinevideo', 'ru,en');
 //Подключаем OnlineVideo
 
-//Для добавления кнопки в панель редактора испозуем 'flvS3Player'
+//Для добавления кнопки в панель редактора используем 'flvS3Player'
 FCKConfig.Plugins.Add( 'flvS3Player','ru,en');
 
 //Переключатель панелей редактора 'Switchtoolbar'
 FCKConfig.Plugins.Add('Switchtoolbar', 'ru,en,uk');
+
+//Кнопка разрыва строки 'linebreaks'
+FCKConfig.Plugins.Add( 'linebreaks', 'ru') ;
