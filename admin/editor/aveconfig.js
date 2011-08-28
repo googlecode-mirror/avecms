@@ -15,7 +15,7 @@ FCKConfig.ToolbarSets["cpengine"] = [
   ['Undo','Redo'],['Bold','Italic','Underline','StrikeThrough'],
   ['OrderedList','UnorderedList','-','Outdent','Indent','Blockquote','CreateDiv'],
   ['JustifyLeft','JustifyCenter','JustifyRight','JustifyFull'],['Link','Unlink','Anchor'], ['Image','Flash','Table','Rule','SpecialChar'], '/',
-  ['FontFormat','FontName','FontSize'],['TextColor','BGColor','RemoveFormat'], ['FitWindow','ShowBlocks'], ['AnchorMore','PageBreak','linebreaks','typograf','SyntaxHighLight2','googlemaps','OnlineVideo','flvS3Player','Switchtoolbar']  // Не ставить запятую в последней строке.
+  ['FontFormat','FontName','FontSize'],['TextColor','BGColor','RemoveFormat','InsertIcon'], ['FitWindow','ShowBlocks'], ['AnchorMore','PageBreak','linebreaks','typograf','SyntaxHighLight2','googlemaps','OnlineVideo','flvS3Player','Switchtoolbar']  // Не ставить запятую в последней строке.
 ] ;
 
 FCKConfig.ToolbarSets["cpengine_small"] = [
@@ -102,3 +102,6 @@ FCKConfig.Plugins.Add('Switchtoolbar', 'ru,en,uk');
 
 //Кнопка разрыва строки 'linebreaks'
 FCKConfig.Plugins.Add( 'linebreaks', 'ru') ;
+
+//Кнопка вставить иконки  'InsertIcon'
+FCKConfig.Plugins.Add( 'InsertIcon', 'ru,en') ;
