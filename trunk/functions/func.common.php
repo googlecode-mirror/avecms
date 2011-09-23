@@ -584,7 +584,8 @@ function reportLog($meldung, $typ = 0, $rub = 0)
 }
 
 function get_document_fields($document_id)
-{
+{  
+    header('Content-Type: text/html; charset=windows-1251');
 	global $AVE_DB, $request_documents;
 
 	static $document_fields = array();
