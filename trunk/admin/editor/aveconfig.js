@@ -104,4 +104,4 @@ FCKConfig.Plugins.Add('Switchtoolbar', 'ru,en,uk');
 FCKConfig.Plugins.Add( 'linebreaks', 'ru') ;
 
 //Кнопка вставить иконки  'InsertIcon'
-FCKConfig.Plugins.Add( 'InsertIcon', 'ru,en') ;
+FCKConfig.Plugins.Add( 'inserticon', 'ru,en') ;
