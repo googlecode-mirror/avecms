@@ -276,7 +276,7 @@ class Download {
 
 	function UserGroups()
 	{
-		$sql = $GLOBALS['AVE_DB']->Query("SELECT * FROM " . PREFIX . "_user_groups ORDER BY Name ASC");
+		$sql = $GLOBALS['AVE_DB']->Query("SELECT * FROM " . PREFIX . "_user_groups ORDER BY user_group_name ASC");
 		$gruppen = array();
 		while($row = $sql->FetchRow())
 		{
