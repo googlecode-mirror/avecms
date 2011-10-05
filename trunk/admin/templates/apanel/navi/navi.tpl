@@ -18,6 +18,10 @@
 	{include file='templates/nav.tpl'}
 {/if}
 
+{if check_permission('finder')}
+	{include file='finder/nav.tpl'}
+{/if}
+
 {if check_permission('modules')}
 	{include file='modules/nav.tpl'}
 {/if}
