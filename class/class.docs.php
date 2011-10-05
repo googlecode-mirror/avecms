@@ -22,7 +22,7 @@ class AVE_Document
 	 *
 	 * @var int
 	 */
-	var $_limit = 15;
+	var $_limit = 40;
 
 	/**
 	 * Ўирина пол€ ввода (дл€ элементов input)
@@ -164,7 +164,7 @@ class AVE_Document
 			// ѕравила формировани€ однострочного пол€ (input)
 			case 'kurztext' :
 				$field  = '<a name="' . $field_id . '"></a>';
-				$field .= '<input id="feld_' . $field_id . '" type="text" style="width:' . $this->_field_width . '" name="feld[' . $field_id . ']" value="' . htmlspecialchars($field_value, ENT_QUOTES) . '"> ';
+				$field .= '<input class="docm" id="feld_' . $field_id . '" type="text" style="width:' . $this->_field_width . '" name="feld[' . $field_id . ']" value="' . htmlspecialchars($field_value, ENT_QUOTES) . '"> ';
 				break;
 
 			// ѕравила формировани€ многострочного пол€ (textarea или FCKEditor в зависимости от настроек)
@@ -176,10 +176,30 @@ class AVE_Document
 				}
 				else
 				{
-					$oFCKeditor = new FCKeditor('feld[' . $field_id . ']') ;
-					$oFCKeditor->Height = $this->_textarea_height;
-					$oFCKeditor->Value  = $field_value;
-					$field  = $oFCKeditor->Create($field_id);
+					switch (get_settings('use_editor')) {
+					case '0': // стандартный редактор
+						$oFCKeditor = new FCKeditor('feld[' . $field_id . ']') ;
+						$oFCKeditor->Height = $this->_textarea_height;
+						$oFCKeditor->Value  = $field_value;
+						$field  = $oFCKeditor->Create($field_id);
+						break;
+						
+					case '1': // Elrte и Elfinder 
+						$field  = '<a name="' . $field_id . '"></a>';
+						$field  .='<textarea style="width:' . $this->_textarea_width . ';height:' . $this->_textarea_height . '" name="feld[' . $field_id . ']" class="editor">' . $field_value . '</textarea></div>';
+						break;
+						
+					case '2': // Innova
+						$field  = '<a name="' . $field_id . '"></a>';
+						$field  .='<textarea style="width:' . $this->_textarea_width . ';height:' . $this->_textarea_height . '" name="feld[' . $field_id . ']" Id="editor[' . $field_id . ']">' . $field_value . '</textarea></div>';
+						$field  .='<script>
+						var oEdit' . $field_id . ' = new InnovaEditor("oEdit' . $field_id . '");  
+						oEdit' . $field_id . '.cmdAssetManager="modalDialogShow(\"/admin/redactor/innova/assetmanager/assetmanager.php\",640,445);";
+						oEdit' . $field_id . '.width="' . $this->_textarea_width_small . '";
+						oEdit' . $field_id . '.height="' . $this->_textarea_height_small . '";
+						oEdit' . $field_id . '.REPLACE("editor[' . $field_id . ']");</script>';
+						break;	
+					}
 				}
 				break;
 
@@ -192,11 +212,31 @@ class AVE_Document
 				}
 				else
 				{
-					$oFCKeditor = new FCKeditor('feld[' . $field_id . ']') ;
-					$oFCKeditor->Height = $this->_textarea_height_small;
-					$oFCKeditor->Value  = $field_value;
-					$oFCKeditor->ToolbarSet = 'cpengine_small';
-					$field = $oFCKeditor->Create($field_id);
+					switch (get_settings('use_editor')) {
+					case '0': // стандартный редактор
+						$oFCKeditor = new FCKeditor('feld[' . $field_id . ']') ;
+						$oFCKeditor->Height = $this->_textarea_height_small;
+						$oFCKeditor->Value  = $field_value;
+						$oFCKeditor->ToolbarSet = 'cpengine_small';
+						$field = $oFCKeditor->Create($field_id);
+						break;
+						
+					case '1': // Elrte и Elfinder 
+						$field  = "<a name=\"" . $field_id . "\"></a>";
+						$field .= "<textarea style=\"width:" . $this->_textarea_width_small . "; height:" . $this->_textarea_height_small . "\"  name=\"feld[" . $field_id . "]\" class=\"small-editor\">" . $field_value . "</textarea>";
+						break;
+						
+					case '2': // Innova
+						$field  = '<a name="' . $field_id . '"></a>';
+						$field .= "<textarea style=\"width:" . $this->_textarea_width_small . "; height:" . $this->_textarea_height_small . "\"  name=\"feld[" . $field_id . "]\" Id=\"small-editor[" . $field_id . "]\">" . $field_value . "</textarea>";
+						$field  .='<script>
+							var oEdit' . $field_id . ' = new InnovaEditor("oEdit' . $field_id . '");  
+							oEdit' . $field_id . '.cmdAssetManager="modalDialogShow(\"/admin/redactor/innova/assetmanager/assetmanager.php\",640,445);";
+							oEdit' . $field_id . '.width="' . $this->_textarea_width_small . '";
+							oEdit' . $field_id . '.height="' . $this->_textarea_height_small . '";
+							oEdit' . $field_id . '.REPLACE("small-editor[' . $field_id . ']");</script>';
+						break;		
+					}
 				}
 				break;
 
@@ -228,10 +268,23 @@ class AVE_Document
 			case 'bild_rechts' :
 				$massiv = explode('|', $field_value);
 				$field  = "<a name=\"" . $field_id . "\"></a>";
-				$field .= "<div id=\"feld_" . $field_id . "\"><img id=\"_img_feld__" . $field_id . "\" src=\"" . (!empty($field_value) ? '../index.php?thumb=' . htmlspecialchars($massiv[0], ENT_QUOTES) : $img_pixel) . "\" alt=\"" . (isset($massiv[1]) ? htmlspecialchars($massiv[1], ENT_QUOTES) : '') . "\" border=\"0\" /></div>";
-				$field .= "<div style=\"display:none\" id=\"span_feld__" . $field_id . "\">&nbsp;</div>" . (!empty($field_value) ? "<br />" : '');
-				$field .= "<input type=\"text\" style=\"width:" . $this->_field_width . "\" name=\"feld[" . $field_id . "]\" value=\"" . htmlspecialchars($field_value, ENT_QUOTES) . "\" id=\"img_feld__" . $field_id . "\" />&nbsp;";
-				$field .= "<input value=\"" . $AVE_Template->get_config_vars('MAIN_OPEN_MEDIAPATH') . "\" class=\"button\" type=\"button\" onclick=\"cp_imagepop('img_feld__" . $field_id . "', '', '', '0');\" />";
+				//$field .= "<div id=\"feld_" . $field_id . "\"><img id=\"_img_feld__" . $field_id . "\" src=\"" . (!empty($field_value) ? '../index.php?thumb=' . htmlspecialchars($massiv[0], ENT_QUOTES) : $img_pixel) . "\" alt=\"" . (isset($massiv[1]) ? htmlspecialchars($massiv[1], ENT_QUOTES) : '') . "\" border=\"0\" /></div>";
+				//$field .= "<div style=\"display:none\" id=\"span_feld__" . $field_id . "\">&nbsp;</div>" . (!empty($field_value) ? "<br />" : '');
+				$field .= "<div id=\"imm_img_feld__" . $field_id . "\"><img id=\"_img_feld__" . $field_id . "\" src=\"" . (!empty($field_value) ? '../' . htmlspecialchars($massiv[0], ENT_QUOTES) : $img_pixel) . "\" alt=\"" . (isset($massiv[1]) ? htmlspecialchars($massiv[1], ENT_QUOTES) : '') . "\" border=\"0\" /></div><br>";
+				switch (get_settings('use_editor')) {
+					case '0': // стандартный редактор
+					case '2':
+						$field .= "<div id=\"feld_" . $field_id . "\"><img id=\"_img_feld__" . $field_id . "\" src=\"" . (!empty($field_value) ? '../index.php?thumb=' . htmlspecialchars($massiv[0], ENT_QUOTES) : $img_pixel) . "\" alt=\"" . (isset($massiv[1]) ? htmlspecialchars($massiv[1], ENT_QUOTES) : '') . "\" border=\"0\" /></div>";
+						$field .= "<div style=\"display:none\" id=\"span_feld__" . $field_id . "\">&nbsp;</div>" . (!empty($field_value) ? "<br />" : '');
+						$field .= "<input type=\"text\" style=\"width:" . $this->_field_width . "\" name=\"feld[" . $field_id . "]\" value=\"" . htmlspecialchars($field_value, ENT_QUOTES) . "\" id=\"img_feld__" . $field_id . "\" />&nbsp;";
+						$field .= "<input value=\"" . $AVE_Template->get_config_vars('MAIN_OPEN_MEDIAPATH') . "\" class=\"button\" type=\"button\" onclick=\"cp_imagepop('img_feld__" . $field_id . "', '', '', '0');\" />";
+						break;
+				
+					case '1': // Elrte и Elfinder 
+						$field .= "<input class=\"docm finder\" type=\"text\" style=\"width:" . $this->_field_width . "\" name=\"feld[" . $field_id . "]\" value=\"" . htmlspecialchars($field_value, ENT_QUOTES) . "\" id=\"img_feld__" . $field_id . "\"/>&nbsp;";
+						$field .= "<span class=\"button dialog_images\" rel=\"img_feld__" . $field_id . "\">" . $AVE_Template->get_config_vars('MAIN_OPEN_MEDIAPATH') . "</span>";
+						break;
+				}	
 				break;
 
 			// ѕравила формировани€ пол€ типа  од €зыка программировани€
@@ -452,8 +505,8 @@ class AVE_Document
 		$seiten = ceil($num / $limit);
 		$start = get_current_page() * $limit - $limit;
 
-		$db_sort   = 'ORDER BY document_changed DESC';
-		$navi_sort = '&sort=changed_desc';
+		$db_sort   = 'ORDER BY Id DESC';
+		$navi_sort = '&sort=id_desc';
 
 		// ≈сли в запросе используетс€ параметр сортировки
 		if (!empty($_REQUEST['sort']))
@@ -714,7 +767,7 @@ class AVE_Document
 					$innavi = check_permission_acp('navigation_new') ? '&innavi=1' : '';
 
 					// ќпредел€ем статус документа
-					$document_status = !empty($_REQUEST['document_status']) ? (int)$_REQUEST['document_status'] : '';
+					$document_status = (int)$_REQUEST['document_status'];
 
 					// ≈сли статус документа не определен
 					if (empty($document_status))
@@ -734,7 +787,8 @@ class AVE_Document
 							}
 						}
 						$text = strip_tags($newtext);
-
+						
+						if ($_SESSION['user_group'] != 1) {
 						// ѕолучаем e-mail адрес из общих настроек системы
 						$system_mail = get_settings('mail_from');
 						$system_mail_name = get_settings('mail_from_name');
@@ -750,7 +804,7 @@ class AVE_Document
 							$AVE_Template->get_config_vars('DOC_MAIL_SUBJECT_CHECK'),
 							$system_mail,
 							$system_mail_name,
-							'text'
+							'text'							
 						);
 
 						// ќтправл€ем уведомление автору, о том что документ находитс€ на проверке
@@ -763,8 +817,9 @@ class AVE_Document
 							$AVE_Template->get_config_vars('DOC_MAIL_SUBJECT_USER'),
 							$system_mail,
 							$system_mail_name,
-							'text'
+							'text'							
 						);
+						}
 					}
 
 					if (! ((isset($_SESSION[$rubric_id . '_newnow']) && $_SESSION[$rubric_id . '_newnow'] == 1)
@@ -1761,7 +1816,7 @@ class AVE_Document
 					$AVE_Template->get_config_vars('DOC_MAIL_SUBJECT_NOTICE'),
 					$system_mail,
 					$system_mail_name,
-					'text'
+					'text'					
 				);
 
 				// ¬ыполн€ем обновление страницы

@@ -1,5 +1,4 @@
 <?php
-
 /**
  * AVE.cms
  *
@@ -7,7 +6,6 @@
  * @subpackage admin
  * @filesource
  */
-
 @date_default_timezone_set('Europe/Moscow');
 
 define('START_MICROTIME', microtime());
@@ -54,7 +52,7 @@ if (!isset($_REQUEST['submit'])) $_REQUEST['submit'] = '';
 
 $AVE_Template->assign('navi', $AVE_Template->fetch('navi/navi.tpl'));
 
-$allowed = array('index',   'start',    'templates',  'rubs', 'user',
+$allowed = array('index',   'start',    'templates',  'rubs', 'user', 'finder',
 				 'groups',  'docs',     'navigation', 'logs', 'request',
 				 'modules', 'settings', 'dbsettings'
 );
