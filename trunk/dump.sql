@@ -2002,12 +2002,13 @@ CREATE TABLE `cp_settings` (
   `date_format` varchar(25) NOT NULL default '%d.%m.%Y',
   `time_format` varchar(25) NOT NULL default '%d.%m.%Y, %H:%M',
   `default_country` char(2) NOT NULL default 'ru',
+  `use_editor` int(1) unsigned NOT NULL default '0',
   `use_doctime` enum('1','0') NOT NULL default '1',
   `hidden_text` text NOT NULL,
   PRIMARY KEY  (`Id`)
 ) ENGINE=MyISAM AUTO_INCREMENT=2 DEFAULT CHARSET=cp1251;
 
-INSERT INTO `cp_settings` VALUES (1, 'AVE.cms 2.09e', 'mail', 'text/plain', 465, 'smtp.gmail.com', 'yourusername@gmail.com', 'yourpassword', '/usr/sbin/sendmail', 50, 'info@avecms.ru', 'Admin', 'Здравствуйте %NAME%,\r\nВаша регистрация на сайте %HOST%. \r\n\r\nТеперь Вы можете войти на %HOST% со следующими данными:: \r\n\r\nПароль: %KENNWORT%\r\nE-Mail: %EMAIL%\r\n\r\n-----------------------\r\n%EMAILFUSS%\r\n\r\n', '--------------------\r\nOverdoze Team\r\nwww.overdoze.ru\r\ninfo@overdoze.ru\r\n--------------------', 2, '<h2>Ошибка...</h2>\r\n<br />\r\nУ Вас нет прав на просмотр этого документа!.', '<div class="page_navigation_box">%s</div>', 'Первая «', '» Последняя', '…', '»', '«', 'Страница %d из %d', '%d %B %Y', '%d %B %Y, %H:%M', 'ru', '0', '<div class="hidden_box">Содержимое скрыто. Пожалуйста, <a href="index.php?module=login&action=register">зарегистрируйтесь</a></div>');
+INSERT INTO `cp_settings` VALUES (1, 'AVE.cms 2.09e', 'mail', 'text/plain', 465, 'smtp.gmail.com', 'yourusername@gmail.com', 'yourpassword', '/usr/sbin/sendmail', 50, 'info@avecms.ru', 'Admin', 'Здравствуйте %NAME%,\r\nВаша регистрация на сайте %HOST%. \r\n\r\nТеперь Вы можете войти на %HOST% со следующими данными:: \r\n\r\nПароль: %KENNWORT%\r\nE-Mail: %EMAIL%\r\n\r\n-----------------------\r\n%EMAILFUSS%\r\n\r\n', '--------------------\r\nOverdoze Team\r\nwww.overdoze.ru\r\ninfo@overdoze.ru\r\n--------------------', 2, '<h2>Ошибка...</h2>\r\n<br />\r\nУ Вас нет прав на просмотр этого документа!.', '<div class="page_navigation_box">%s</div>', 'Первая «', '» Последняя', '…', '»', '«', 'Страница %d из %d', '%d %B %Y', '%d %B %Y, %H:%M', 'ru', '0', '0', '<div class="hidden_box">Содержимое скрыто. Пожалуйста, <a href="index.php?module=login&action=register">зарегистрируйтесь</a></div>');
 
 CREATE TABLE `cp_templates` (
   `Id` smallint(3) unsigned NOT NULL auto_increment,

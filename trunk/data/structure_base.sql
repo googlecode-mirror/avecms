@@ -237,6 +237,7 @@ CREATE TABLE `%%PRFX%%_settings` (
   `date_format` varchar(25) NOT NULL default '%d.%m.%Y',
   `time_format` varchar(25) NOT NULL default '%d.%m.%Y, %H:%M',
   `default_country` char(2) NOT NULL default 'ru',
+  `use_editor` int(1) unsigned NOT NULL default '0',
   `use_doctime` enum('1','0') NOT NULL default '1',
   `hidden_text` text NOT NULL,
   PRIMARY KEY  (`Id`)

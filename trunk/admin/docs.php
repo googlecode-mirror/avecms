@@ -38,6 +38,7 @@ switch($_REQUEST['action'])
 			switch($_REQUEST['sub'])
 			{
 				case 'quicksave':
+					$_SESSION['use_editor'] = get_settings('use_editor');
 					$AVE_Document->quickSave();
 					break;
 			}
@@ -57,6 +58,7 @@ switch($_REQUEST['action'])
 	case 'edit':
 		if (check_permission_acp('documents'))
 		{
+			$_SESSION['use_editor'] = get_settings('use_editor');
 			$AVE_Navigation->navigationAllItemList();
 			$AVE_Request->requestListFetch();
 			$AVE_Document->documentEdit((int)$_REQUEST['Id']);
@@ -66,6 +68,7 @@ switch($_REQUEST['action'])
 	case 'new':
 		if (check_permission_acp('documents'))
 		{
+			$_SESSION['use_editor'] = get_settings('use_editor');
 			$AVE_Navigation->navigationAllItemList();
 			$AVE_Request->requestListFetch();
 			$AVE_Document->documentNew((int)$_REQUEST['rubric_id']);

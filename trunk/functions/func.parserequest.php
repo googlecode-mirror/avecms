@@ -201,6 +201,32 @@ function request_get_document_field($rubric_id, $document_id, $maxlength = '')
 	return $field_value;
 }
 
+
+function request_get_where($id){
+	global $AVE_DB, $AVE_Core;
+	$sql="select * from ". PREFIX . "_request_conditions where request_id='".$id."' order by Id";
+	$result=$AVE_DB->Query($sql);
+	$find='';
+	while ($mfa = $result->FetchArray())
+	{
+		$find.=($find>'' ? $mfa['condition_join'] : '')."(t0.rubric_field_id = '".$mfa['condition_field_id']."'";
+		switch ($mfa['condition_compare'])
+		{
+			case  '<': $find.=" AND t0.field_value < '".$mfa['condition_value']."')"; break;
+			case  '>': $find.=" AND t0.field_value > '".$mfa['condition_value']."')"; break;
+			case '<=': $find.=" AND t0.field_value <= '".$mfa['condition_value']."')";; break;
+			case '>=': $find.=" AND t0.field_value >= '".$mfa['condition_value']."')";break;
+			case '==': $find.=" AND t0.field_value = '".$mfa['condition_value']."')"; break;
+			case '!=': $find.=" AND t0.field_value != '".$mfa['condition_value']."')"; break;
+			case '%%': $find.=" AND t0.field_value LIKE '%".$mfa['condition_value']."%')"; break;
+			case  '%': $find.=" AND t0.field_value LIKE '".$mfa['condition_value']."%')"; break;
+			case '--': $find.=" AND t0.field_value NOT LIKE '%".$mfa['condition_value']."%')";; break;
+			case '!-': $find.=" AND t0.field_value NOT LIKE '".$mfa['condition_value']."%')"; break;
+		}
+	}
+	return ($find>'' ? ' AND a.Id=t0.document_id AND ('.$find.')' : '');
+}
+
 /**
  * Обработка тэга запроса.
  * Возвращает список документов удовлетворяющих параметрам запроса
@@ -238,7 +264,7 @@ function request_parse($id)
 			? $row_ab->request_where_cond
 			: request_get_condition_sql_string($row_ab->Id);
 		$where_cond = str_replace('%%PREFIX%%', PREFIX, $where_cond);
-
+		$where_cond = request_get_where($id);
 		if ($row_ab->request_show_pagination == 1)
 		{
 			if (!empty($AVE_Core->install_modules['comment']->Status))
@@ -246,6 +272,7 @@ function request_parse($id)
 				$num = $AVE_DB->Query("
 					SELECT COUNT(*)
 					FROM " . PREFIX . "_documents AS a
+					".($where_cond>'' ? ",".PREFIX ."_document_fields AS t0" : '')."
 					WHERE
 						a.Id != '1'
 					AND a.Id != '" . PAGE_NOT_FOUND_ID . "'
@@ -262,6 +289,7 @@ function request_parse($id)
 				$num = $AVE_DB->Query("
 					SELECT COUNT(*)
 					FROM " . PREFIX . "_documents AS a
+					".($where_cond>'' ? ",".PREFIX ."_document_fields AS t0" : '')."
 					WHERE
 						a.Id != '1'
 					AND a.Id != '" . PAGE_NOT_FOUND_ID . "'
@@ -295,7 +323,7 @@ function request_parse($id)
 		if (!empty($AVE_Core->install_modules['comment']->Status))
 		{
 			$q = $AVE_DB->Query("
-				SELECT
+				SELECT DISTINCT 
 					a.Id,
 					a.document_title,
 					a.document_alias,
@@ -308,6 +336,7 @@ function request_parse($id)
 				LEFT JOIN
 					" . PREFIX . "_modul_comment_info AS b
 						ON b.document_id = a.Id
+					".($where_cond>'' ? ",".PREFIX ."_document_fields AS t0" : '')."
 				WHERE
 					a.Id != '1'
 				AND a.Id != '" . PAGE_NOT_FOUND_ID . "'
@@ -325,7 +354,7 @@ function request_parse($id)
 		else
 		{
 			$q = $AVE_DB->Query("
-				SELECT
+				SELECT DISTINCT 
 					a.Id,
 					a.document_title,
 					a.document_alias,
@@ -334,6 +363,7 @@ function request_parse($id)
 					a.document_published
 				FROM
 					" . PREFIX . "_documents AS a
+					".($where_cond>'' ? ",".PREFIX ."_document_fields AS t0" : '')."
 				WHERE
 					a.Id != '1'
 				AND a.Id != '" . PAGE_NOT_FOUND_ID . "'
@@ -343,6 +373,7 @@ function request_parse($id)
 				AND a.document_status != '0'
 				" . $where_cond . "
 				" . $doctime . "
+				".($where_cond>'' ? ' GROUP BY a.Id' : '')."
 				ORDER BY " . $request_order_by . " " . $request_asc_desc . "
 				LIMIT " . $start . "," . $limit
 			);
