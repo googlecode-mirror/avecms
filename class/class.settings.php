@@ -115,7 +115,8 @@ class AVE_Settings
 				prev_label        = '" . $this->_clearCode($_REQUEST['prev_label']) . "',
 				date_format       = '" . $_REQUEST['date_format'] . "',
 				time_format       = '" . $_REQUEST['time_format'] . "',
-				use_doctime       = '" . intval($_REQUEST['use_doctime']) . "'
+				use_doctime       = '" . intval($_REQUEST['use_doctime']) . "',
+				use_editor       = '" . intval($_REQUEST['use_editor']) . "'
 			WHERE
 				Id = 1
 		");
