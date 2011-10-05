@@ -1,3 +1,25 @@
+{if $smarty.session.use_editor == 1}
+	<!-- css -->
+	<link rel="stylesheet" href="{$ABS_PATH}admin/redactor/elrte/css/elrte.min.css" type="text/css" media="screen" charset="utf-8">
+	<link rel="stylesheet" href="{$ABS_PATH}admin/redactor/elfinder/css/elfinder.full.css" type="text/css" media="screen" charset="utf-8">
+	<link rel="stylesheet" href="{$ABS_PATH}admin/redactor/elfinder/css/theme.css" type="text/css" media="screen" charset="utf-8"></link>
+	<!-- translation messages -->
+	<script src="{$ABS_PATH}admin/redactor/elrte/js/elrte.min.js" type="text/javascript" charset="utf-8"></script>
+	<script src="{$ABS_PATH}admin/redactor/elrte/js/i18n/elrte.ru.js" type="text/javascript" charset="utf-8"></script>
+	
+	<!-- elfinder -->
+	<script src="{$ABS_PATH}admin/redactor/elfinder/js/elfinder.full.js" type="text/javascript" charset="utf-8"></script>
+	<script src="{$ABS_PATH}admin/redactor/elfinder/js/i18n/elfinder.ru.js" type="text/javascript" charset="utf-8"></script>
+	<script src="{$ABS_PATH}admin/redactor/elfinder/js/jquery.dialogelfinder.js" type="text/javascript" charset="utf-8"></script>
+	
+	<script type="text/javascript" src="{$tpl_dir}/js/rle.js"></script>	
+{/if}
+	
+{if $smarty.session.use_editor == 2}	
+	<script language="Javascript" src="{$ABS_PATH}admin/redactor/innova/scripts/language/ru-RU/editor_lang.js" charset="utf-8"></script>
+  <script language=JavaScript src='{$ABS_PATH}admin/redactor/innova/scripts/innovaeditor.js' charset="utf-8"></script>	
+{/if}	
+
 <script type="text/javascript">
 {*
 function insertHTML(ed, code) {ldelim}
