@@ -1,0 +1,1 @@
+<li><a {if $smarty.request.do=='browser'}class="active" {/if}href="index.php?do=finder&cp={$sess}">Ôאיכמגûי לוםוהזונ</a></li>
