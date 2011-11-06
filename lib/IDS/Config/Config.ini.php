@@ -4,7 +4,6 @@
 
 ; General configuration settings
 
-; !!!DO NOT PLACE THIS FILE INSIDE THE WEB-ROOT IF DATABASE CONNECTION DATA WAS ADDED!!!
 
 [General]
 
@@ -25,15 +24,17 @@
     
     ; define which fields contain html and need preparation before 
     ; hitting the PHPIDS rules (new in PHPIDS 0.5)
-    html[]          = POST.__wysiwyg
+    ;html[]          = POST.__wysiwyg
     
     ; define which fields contain JSON data and should be treated as such 
     ; for fewer false positives (new in PHPIDS 0.5.3)
-    json[]          = POST.__jsondata
+    ;json[]          = POST.__jsondata
 
     ; define which fields shouldn't be monitored (a[b]=c should be referenced via a.b)
     exceptions[]    = GET.__utmz
     exceptions[]    = GET.__utmc
+
+    ; you can use regular expressions for wildcard exceptions - example: /.*foo/i
 
     ; PHPIDS should run with PHP 5.1.2 but this is untested - set 
     ; this value to force compatibilty with minor versions
@@ -52,7 +53,7 @@
     ; see documentation
     recipients[]    = test@test.com.invalid
     subject         = "PHPIDS detected an intrusion attempt!"
-    header			= "From: <PHPIDS> info@php-ids.org"
+    header			= "From: <PHPIDS> info@phpids.org"
     envelope        = ""
     safemode        = true
     urlencode       = true

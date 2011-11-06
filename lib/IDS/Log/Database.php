@@ -5,7 +5,7 @@
  * 
  * Requirements: PHP5, SimpleXML
  *
- * Copyright (c) 2008 PHPIDS group (http://php-ids.org)
+ * Copyright (c) 2008 PHPIDS group (https://phpids.org)
  *
  * PHPIDS is free software; you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
@@ -44,7 +44,9 @@ require_once 'IDS/Log/Interface.php';
       `name` varchar(128) NOT null,
       `value` text NOT null,
       `page` varchar(255) NOT null,
+      `tags` varchar(128) NOT null,
       `ip` varchar(15) NOT null,
+      `ip2` varchar(15) NOT null,
       `impact` int(11) unsigned NOT null,
       `origin` varchar(15) NOT null,
       `created` datetime NOT null,
@@ -142,6 +144,7 @@ class IDS_Log_Database implements IDS_Log_Interface
      * @param mixed $config IDS_Init instance | array
      * 
      * @return void
+     * @throws PDOException if a db error occurred
      */
     protected function __construct($config) 
     {
@@ -159,12 +162,11 @@ class IDS_Log_Database implements IDS_Log_Interface
             $this->table    = $config['table'];
         }
 
-        // determine correct IP address
-        if ($_SERVER['REMOTE_ADDR'] != '127.0.0.1') {
-            $this->ip = $_SERVER['REMOTE_ADDR'];
-        } elseif (isset($_SERVER['HTTP_X_FORWARDED_FOR'])) {
-            $this->ip = $_SERVER['HTTP_X_FORWARDED_FOR'];
-        }
+        // determine correct IP address and concat them if necessary
+        $this->ip  = $_SERVER['REMOTE_ADDR'];
+        $this->ip2 = isset($_SERVER['HTTP_X_FORWARDED_FOR']) 
+            ? $_SERVER['HTTP_X_FORWARDED_FOR'] 
+            : '';
 
         try {
             $this->handle = new PDO(
@@ -178,7 +180,9 @@ class IDS_Log_Database implements IDS_Log_Interface
                     name,
                     value,
                     page,
+                    tags,
                     ip,
+                    ip2,
                     impact,
                     origin,
                     created
@@ -187,7 +191,9 @@ class IDS_Log_Database implements IDS_Log_Interface
                     :name,
                     :value,
                     :page,
+                    :tags,
                     :ip,
+                    :ip2,
                     :impact,
                     :origin,
                     now()
@@ -195,7 +201,7 @@ class IDS_Log_Database implements IDS_Log_Interface
             ');
 
         } catch (PDOException $e) {
-            die('PDOException: ' . $e->getMessage());
+            throw new PDOException('PDOException: ' . $e->getMessage());
         }
     }
 
@@ -205,8 +211,8 @@ class IDS_Log_Database implements IDS_Log_Interface
      * This method allows the passed argument to be either an instance of IDS_Init or
      * an array.
      *
-     * @param mixed $config IDS_Init | array
-     * @param string the class name to use
+     * @param  mixed  $config    IDS_Init | array
+     * @param  string $classname the class name to use
      * 
      * @return object $this
      */
@@ -256,15 +262,19 @@ class IDS_Log_Database implements IDS_Log_Interface
         foreach ($data as $event) {
             $page = isset($_SERVER['REQUEST_URI']) ? $_SERVER['REQUEST_URI'] : '';
             $ip   = $this->ip;
+            $ip2  = $this->ip2;
             
             $name   = $event->getName();
             $value  = $event->getValue();
             $impact = $event->getImpact();
+            $tags   = implode(', ', $event->getTags());
 
             $this->statement->bindParam('name', $name);
             $this->statement->bindParam('value', $value);
             $this->statement->bindParam('page', $page);
+            $this->statement->bindParam('tags', $tags);
             $this->statement->bindParam('ip', $ip);
+            $this->statement->bindParam('ip2', $ip2);
             $this->statement->bindParam('impact', $impact);
             $this->statement->bindParam('origin', $_SERVER['SERVER_ADDR']);
 

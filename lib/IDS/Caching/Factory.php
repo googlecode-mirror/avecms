@@ -5,7 +5,7 @@
  * 
  * Requirements: PHP5, SimpleXML
  *
- * Copyright (c) 2008 PHPIDS group (http://php-ids.org)
+ * Copyright (c) 2008 PHPIDS group (https://phpids.org)
  *
  * PHPIDS is free software; you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
@@ -54,8 +54,8 @@ class IDS_Caching
     /**
      * Factory method
      *
-     * @param array  $init the IDS_Init object
-     * @param string $type the caching type
+     * @param  object $init the IDS_Init object
+     * @param  string $type the caching type
      * 
      * @return object the caching facility
      */

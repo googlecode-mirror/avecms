@@ -5,7 +5,7 @@
  *
  * Requirements: PHP5, SimpleXML
  *
- * Copyright (c) 2008 PHPIDS group (http://php-ids.org)
+ * Copyright (c) 2008 PHPIDS group (https://phpids.org)
  *
  * PHPIDS is free software; you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
@@ -234,12 +234,13 @@ class IDS_Monitor
      */
     public function run()
     {
+        
         if (!empty($this->request)) {
             foreach ($this->request as $key => $value) {
                 $this->_iterate($key, $value);
             }
         }
-
+         
         return $this->getReport();
     }
 
@@ -286,9 +287,10 @@ class IDS_Monitor
      */
     private function _detect($key, $value)
     {
-        
+
         // define the pre-filter
-        $prefilter = '/[^\w\s\/@!?\.]+|(?:\.\/)|(?:@@\w+)/';
+        $prefilter = '/[^\w\s\/@!?\.]+|(?:\.\/)|(?:@@\w+)' 
+            . '|(?:\+ADw)|(?:union\s+select)/i';
         
         // to increase performance, only start detection if value
         // isn't alphanumeric
@@ -301,17 +303,32 @@ class IDS_Monitor
                 return false;
             }
         }
-
+        
         // check if this field is part of the exceptions
-        if (is_array($this->exceptions)
-            && in_array($key, $this->exceptions, true)) {
-            return false;
+        if (is_array($this->exceptions)) {
+            foreach($this->exceptions as $exception) {
+                $matches = array();
+                if(preg_match('/(\/.*\/[^eE]*)$/', $exception, $matches)) {
+                    if(isset($matches[1]) && preg_match($matches[1], $key)) {
+                        return false;
+                    } 
+                } else {
+                    if($exception === $key) {
+                        return false;
+                    }
+                }
+            }
         }
 
         // check for magic quotes and remove them if necessary
         if (function_exists('get_magic_quotes_gpc')
             && get_magic_quotes_gpc()) {
             $value = stripslashes($value);
+        }
+        if(function_exists('get_magic_quotes_gpc')
+            && !get_magic_quotes_gpc() 
+            && version_compare(PHP_VERSION, '5.3.0', '>=')) {
+            $value = preg_replace('/\\\(["\'\/])/im', '$1', $value);
         }
 
         // if html monitoring is enabled for this field - then do it!
@@ -371,6 +388,7 @@ class IDS_Monitor
      * @param  mixed $key
      * @param  mixed $value
      * @since  0.5
+     * @throws Exception
      *
      * @return array
      */
@@ -403,6 +421,9 @@ class IDS_Monitor
                 ' the path is correct'
             );
         }
+
+        $value = preg_replace('/[\x0b-\x0c]/', ' ', $value);
+        $key = preg_replace('/[\x0b-\x0c]/', ' ', $key);   
 
         $purified_value = $this->htmlpurifier->purify($value);
         $purified_key   = $this->htmlpurifier->purify($key);
@@ -474,34 +495,50 @@ class IDS_Monitor
          */
         $purified = preg_replace('/\s+alt="[^"]*"/m', null, $purified);
         $purified = preg_replace('/=?\s*"\s*"/m', null, $purified);
-
+        $original = preg_replace('/\s+alt="[^"]*"/m', null, $original);
         $original = preg_replace('/=?\s*"\s*"/m', null, $original);
-        $original = preg_replace('/\s+alt=?/m', null, $original);
+        $original = preg_replace('/style\s*=\s*([^"])/m', 'style = "$1', $original);
+        
+        # deal with oversensitive CSS normalization
+        $original = preg_replace('/(?:([\w\-]+:)+\s*([^;]+;\s*))/m', '$1$2', $original);
+        
+        # strip whitespace between tags
+        $original = trim(preg_replace('/>\s*</m', '><', $original));
+        $purified = trim(preg_replace('/>\s*</m', '><', $purified));
+        
+        $original = preg_replace(
+            '/(=\s*(["\'`])[^>"\'`]*>[^>"\'`]*["\'`])/m', 'alt$1', $original
+        );
 
-        // check which string is longer
-        $length = (strlen($original) - strlen($purified));
+        // no purified html is left
+        if (!$purified) {
+            return $original;
+        }
+        
+        // calculate the diff length
+        $length = mb_strlen($original) - mb_strlen($purified);
+
         /*
          * Calculate the difference between the original html input
          * and the purified string.
          */
-        if ($length > 0) {
-            $array_2 = str_split($original);
-            $array_1 = str_split($purified);
-        } else {
-            $array_1 = str_split($original);
-            $array_2 = str_split($purified);
-        }
-        foreach ($array_2 as $key => $value) {
-            if ($value !== $array_1[$key]) {
-                $array_1   = array_reverse($array_1);
-                $array_1[] = $value;
-                $array_1   = array_reverse($array_1);
+        $array_1 = preg_split('/(?<!^)(?!$)/u', html_entity_decode(urldecode($original)));
+        $array_2 = preg_split('/(?<!^)(?!$)/u', $purified);
+
+        // create an array containing the single character differences
+        $differences = array();
+        foreach ($array_1 as $key => $value) {
+            if (!isset($array_2[$key]) || $value !== $array_2[$key]) {
+                $differences[] = $value;
             }
         }
 
         // return the diff - ready to hit the converter and the rules
-        $diff = trim(join('', array_reverse(
-            (array_slice($array_1, 0, $length)))));
+        if(intval($length) <= 10) {
+            $diff = trim(join('', $differences));
+        } else {
+            $diff = mb_substr(trim(join('', $differences)), 0, strlen($original));
+        }
 
         // clean up spaces between tag delimiters
         $diff = preg_replace('/>\s*</m', '><', $diff);
@@ -510,7 +547,7 @@ class IDS_Monitor
         $diff = preg_replace('/[^<](iframe|script|embed|object' .
             '|applet|base|img|style)/m', '<$1', $diff);
 
-        if ($original == $purified && !$redux) {
+        if (mb_strlen($diff) < 4) {
             return null;
         }
 
@@ -537,14 +574,14 @@ class IDS_Monitor
             array_walk_recursive($tmp_value, array($this, '_jsonConcatContents'));
             $value = $this->tmpJsonString;
         } else {
-        	$this->tmpJsonString .=  " " . $tmp_value . "\n";
+            $this->tmpJsonString .=  " " . $tmp_value . "\n";
         }
 
         if($tmp_key && is_array($tmp_key) || is_object($tmp_key)) {
             array_walk_recursive($tmp_key, array($this, '_jsonConcatContents'));
             $key = $this->tmpJsonString;
         } else {
-        	$this->tmpJsonString .=  " " . $tmp_key . "\n";
+            $this->tmpJsonString .=  " " . $tmp_key . "\n";
         }
 
         return array($key, $value);
@@ -565,9 +602,9 @@ class IDS_Monitor
         if(is_string($key) && is_string($value)) {
             $this->tmpJsonString .=  $key . " " . $value . "\n";
         } else {
-        	$this->_jsonDecodeValues(
-        		json_encode($key), json_encode($value)
-        	);
+            $this->_jsonDecodeValues(
+                json_encode($key), json_encode($value)
+            );
         }
     }
 
@@ -682,7 +719,8 @@ class IDS_Monitor
     /**
      * Adds a value to the json array
      *
-     * @since 0.5.3
+     * @param  string the value containing JSON data
+     * @since  0.5.3
      *
      * @return void
      */

@@ -5,7 +5,7 @@
  *
  * Requirements: PHP5, SimpleXML
  *
- * Copyright (c) 2008 PHPIDS group (http://php-ids.org)
+ * Copyright (c) 2008 PHPIDS group (https://phpids.org)
  *
  * PHPIDS is free software; you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
@@ -223,7 +223,7 @@ class IDS_Report implements Countable, IteratorAggregate
      * IDS_Event object the IteratorAggregate is implemented. One can easily
      * use foreach() to iterate through all stored IDS_Event objects.
      *
-     * @return Iterator
+     * @return ArrayObject the event collection
      */
     public function getIterator()
     {

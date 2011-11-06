@@ -5,7 +5,7 @@
  * 
  * Requirements: PHP5, SimpleXML
  *
- * Copyright (c) 2008 PHPIDS group (http://php-ids.org)
+ * Copyright (c) 2008 PHPIDS group (https://phpids.org)
  *
  * PHPIDS is free software; you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
@@ -91,10 +91,9 @@ class IDS_Caching_Memcached implements IDS_Caching_Interface
     /**
      * Constructor
      *
-     * @param string $type caching type
-     * @param array  $init the IDS_Init object
+     * @param  string $type caching type
+     * @param  array  $init the IDS_Init object
      * 
-     * @throws Exception if necessary files aren't writeable
      * @return void
      */
     public function __construct($type, $init) 
@@ -109,8 +108,8 @@ class IDS_Caching_Memcached implements IDS_Caching_Interface
     /**
      * Returns an instance of this class
      *
-     * @param string $type caching type
-     * @param array  $init the IDS_Init object
+     * @param  string $type caching type
+     * @param  object $init the IDS_Init object
      * 
      * @return object $this
      */
@@ -127,9 +126,8 @@ class IDS_Caching_Memcached implements IDS_Caching_Interface
     /**
      * Writes cache data
      *
-     * @param array $data the caching data
+     * @param  array $data the caching data
      * 
-     * @throws Exception if necessary files aren't writeable
      * @return object $this
      */
     public function setCache(array $data) 
