@@ -5,7 +5,7 @@
  * 
  * Requirements: PHP5, SimpleXML
  *
- * Copyright (c) 2008 PHPIDS group (http://php-ids.org)
+ * Copyright (c) 2008 PHPIDS group (https://phpids.org)
  *
  * PHPIDS is free software; you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
@@ -83,6 +83,7 @@ class IDS_Filter
     /**
      * Constructor
      *
+     * @param integer $id          filter id
      * @param mixed   $rule        filter rule
      * @param string  $description filter description
      * @param array   $tags        list of tags
@@ -92,7 +93,7 @@ class IDS_Filter
      */
     public function __construct($id, $rule, $description, array $tags, $impact) 
     {
-    	$this->id          = $id;
+        $this->id          = $id;
         $this->rule        = $rule;
         $this->tags        = $tags;
         $this->impact      = $impact;
@@ -173,7 +174,7 @@ class IDS_Filter
      */
     public function getId() 
     {
-    	return $this->id;
+        return $this->id;
     }
 }
 

@@ -5,7 +5,7 @@
  * 
  * Requirements: PHP5, SimpleXML
  *
- * Copyright (c) 2008 PHPIDS group (http://php-ids.org)
+ * Copyright (c) 2008 PHPIDS group (https://phpids.org)
  *
  * PHPIDS is free software; you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
@@ -106,7 +106,7 @@ class IDS_Caching_Database implements IDS_Caching_Interface
      * Connects to database.
      *
      * @param string $type caching type
-     * @param array  $init the IDS_Init object
+     * @param object $init the IDS_Init object
      * 
      * @return void
      */
@@ -121,8 +121,9 @@ class IDS_Caching_Database implements IDS_Caching_Interface
     /**
      * Returns an instance of this class
      *
-     * @param string $type caching type
-     * @param array  $init the IDS_Init object
+     * @static
+     * @param  string $type caching type
+     * @param  object $init the IDS_Init object
      * 
      * @return object $this
      */
@@ -193,7 +194,7 @@ class IDS_Caching_Database implements IDS_Caching_Interface
             }
 
         } catch (PDOException $e) {
-            die('PDOException: ' . $e->getMessage());
+            throw new PDOException('PDOException: ' . $e->getMessage());
         }
         return false;
     }
@@ -201,7 +202,8 @@ class IDS_Caching_Database implements IDS_Caching_Interface
     /**
      * Connect to database and return a handle
      *
-     * @return object dbh
+     * @return object PDO
+     * @throws Exception if connection parameters are faulty
      * @throws PDOException if a db error occurred
      */
     private function _connect() 
@@ -226,11 +228,11 @@ class IDS_Caching_Database implements IDS_Caching_Interface
                 $this->config['password']
             );
             $handle->setAttribute(
-            	PDO::MYSQL_ATTR_USE_BUFFERED_QUERY, true
+                PDO::MYSQL_ATTR_USE_BUFFERED_QUERY, true
             );
 
         } catch (PDOException $e) {
-            die('PDOException: ' . $e->getMessage());
+            throw new PDOException('PDOException: ' . $e->getMessage());
         }
         return $handle;
     }
@@ -241,7 +243,7 @@ class IDS_Caching_Database implements IDS_Caching_Interface
      * @param object $handle the database handle
      * @param array  $data   the caching data
      * 
-     * @return object dbh
+     * @return object PDO
      * @throws PDOException if a db error occurred
      */    
     private function _write($handle, $data) 
@@ -275,7 +277,7 @@ class IDS_Caching_Database implements IDS_Caching_Interface
             }
     
         } catch (PDOException $e) {
-            die('PDOException: ' . $e->getMessage());
+            throw new PDOException('PDOException: ' . $e->getMessage());
         }    
     }
 }
