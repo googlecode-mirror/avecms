@@ -20,8 +20,8 @@ $().ready(function() {
 			modal : true, 
 			title : 'Ôאיכמגûי לוםוהזונ',
 			getFileCallback : function(files, fm) {
-				$("#"+id).val(files['url'].slice(1)); 
-				$("#imm_"+id).html("<img src="+files['url']+">");
+				$("#img_feld__"+id).val(files['url'].slice(1)); 
+				$("#images_feld_"+id).html("<img src="+files['url']+">");
 			},
 			commandsOptions : {
 				getfile : {

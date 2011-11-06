@@ -121,6 +121,7 @@ ini_set('url_rewriter.tags',        '');
 
 require(BASE_DIR . '/inc/config.php');
 require(BASE_DIR . '/functions/func.common.php');
+require(BASE_DIR . '/functions/func.fields.php');
 require(BASE_DIR . '/functions/func.login.php');
 require(BASE_DIR . '/functions/func.pagination.php');
 if (!defined('ACP'))

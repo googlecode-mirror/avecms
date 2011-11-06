@@ -157,30 +157,6 @@ function get_ave_tags($srcfile)
 	return null;
 }
 
-function get_field_type()
-{
-	global $AVE_Template;
-
-	$AVE_Template->config_load(BASE_DIR . '/admin/lang/' . $_SESSION['admin_language'] . '/fields.txt', 'fields');
-	$felder_vars = $AVE_Template->get_config_vars();
-
-	$felder = array(
-		array('id' => 'kurztext',  'name' => $felder_vars['FIELD_TEXT']),
-		array('id' => 'langtext',  'name' => $felder_vars['FIELD_TEXTAREA']),
-		array('id' => 'smalltext', 'name' => $felder_vars['FIELD_TEXTAREA_S']),
-		array('id' => 'dropdown',  'name' => $felder_vars['FIELD_DROPDOWN']),
-		array('id' => 'bild',      'name' => $felder_vars['FIELD_IMAGE']),
-		array('id' => 'download',  'name' => $felder_vars['FIELD_FILE']),
-		array('id' => 'link',      'name' => $felder_vars['FIELD_LINK']),
-		array('id' => 'video_avi', 'name' => $felder_vars['FIELD_VIDEO_AVI']),
-		array('id' => 'video_wmf', 'name' => $felder_vars['FIELD_VIDEO_WMF']),
-		array('id' => 'video_wmv', 'name' => $felder_vars['FIELD_VIDEO_WMV']),
-		array('id' => 'video_mov', 'name' => $felder_vars['FIELD_VIDEO_MOV']),
-		array('id' => 'flash',     'name' => $felder_vars['FIELD_FLASH'])
-	);
-
-	return $felder;
-}
 
 function get_all_templates()
 {

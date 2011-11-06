@@ -14,12 +14,13 @@
  * @param int $id	идентификатор запроса
  * @return string
  */
-function request_get_condition_sql_string($id)
+ function request_get_condition_sql_string($id)
 {
 	global $AVE_DB, $AVE_Core;
 
 	$from = array();
 	$where = array();
+	$where1=array();
 	$retval = '';
 	$i = 0;
 
@@ -49,7 +50,8 @@ function request_get_condition_sql_string($id)
 		{
 			if (!($val != '' && isset($_SESSION['val_' . $fid]) && in_array($val, $_SESSION['val_' . $fid]))) continue;
 
-			if ($i) $from[] = "JOIN %%PREFIX%%_document_fields AS t$i ON t$i.document_id = t0.document_id";
+			if ($i) $from[] = "%%PREFIX%%_document_fields AS t$i";
+			if ($i) $where1[] = "t$i.document_id = t0.document_id";
 
 			$where[] = "t$i.rubric_field_id = $fid AND t$i.field_value = '$val'";
 
@@ -63,7 +65,8 @@ function request_get_condition_sql_string($id)
 
 		if (isset($_POST['req_' . $id]) && isset($_POST['req_' . $id][$fid])) continue;
 
-		if ($i) $from[] = "JOIN %%PREFIX%%_document_fields AS t$i ON t$i.document_id = t0.document_id";
+		if ($i) $from[] = "%%PREFIX%%_document_fields AS t$i";
+		if ($i) $where1[] = "t$i.document_id = t0.document_id";
 
 		$val = $row_ak->condition_value;
 
@@ -86,9 +89,11 @@ function request_get_condition_sql_string($id)
 
 	if (!empty($where))
 	{
-		$from = ' FROM %%PREFIX%%_document_fields AS t0 ' . implode(' ', $from);
-		$where = ' WHERE ' . (($i) ? implode(' AND ', $where) : '(' . implode(') OR(', $where) . ')');
-		$retval = 'AND a.Id = ANY(SELECT t0.document_id' . $from . $where . ')';
+		$from = ' %%PREFIX%%_document_fields AS t0 '.($from ? ', ' : '') . implode(', ', $from);
+		$where1 = implode(' AND ', $where1);
+		$where =  (($i) ? implode(' AND ', $where) : '(' . implode(') OR (', $where) . ')');
+		if($where1)$where='('.$where1.') AND ('.$where.')';
+		$retval = serialize(array('from'=>$from,'where'=>' AND ((a.Id=t0.document_id) AND '.$where.') '));
 	}
 
 	if (defined('ACP'))
@@ -123,55 +128,13 @@ function request_get_document_field($rubric_id, $document_id, $maxlength = '')
 	$field_value = trim($document_fields[$rubric_id]['field_value']);
 	if ($field_value == '' && $document_fields[$rubric_id]['tpl_req_empty']) return '';
 
-//	if ($maxlength != 'more')
-//	{
-//		$field_value = strip_tags($field_value, '<br /><strong><em><p><i>');
-//	}
-
-	switch ($document_fields[$rubric_id]['rubric_field_type'])
-	{
-		case 'bild' :
-			$field_value = clean_php($field_value);
-			$field_param = explode('|', $field_value);
-			$field_param[1] = isset($field_param[1]) ? $field_param[1] : '';
-			if ($document_fields[$rubric_id]['tpl_req_empty'])
-			{
-				$field_value = '<img src="' . ABS_PATH . $field_param[0] . '" alt="' . $field_param[1] . '" border="0" />';
-			}
-			else
-			{
-				$field_value = preg_replace('/\[tag:parametr:(\d+)\]/ie', '@$field_param[\\1]', $document_fields[$rubric_id]['rubric_field_template_request']);
-			}
-			$maxlength = '';
-			break;
-
-		case 'link' :
-			$field_value = clean_php($field_value);
-			$field_param = explode('|', $field_value);
-			if (empty($field_param[1])) $field_param[1] = $field_param[0];
-			if ($document_fields[$rubric_id]['tpl_req_empty'])
-			{
-				$field_value = " <a target=\"_self\" href=\"" . ABS_PATH . $field_param[0] . "\">" . $field_param[1] . "</a>";
-			}
-			else
-			{
-				$field_value = preg_replace('/\[tag:parametr:(\d+)\]/ie', '@$field_param[\\1]', $document_fields[$rubric_id]['rubric_field_template_request']);
-			}
-			$maxlength = '';
-			break;
-
-		case 'langtext' :
-		case 'smalltext' :
-			break;
-
-		default:
-			$field_value = clean_php($field_value);
-			$field_param = explode('|', $field_value);
-			$field_value = $field_param[0];
-			$field_value = str_replace('"', '&quot;', $field_value);
-			break;
+	$func='get_field_'.$document_fields[$rubric_id]['rubric_field_type'];
+	if(is_callable($func)) {
+		$field_value=$func($field_value,'req',$field_id,$rubric_field_template,$tpl_field_empty,$maxlength,$document_fields,$rubric_id);
+	} else {
+		$field_value=get_field_default($field_value,'req',$field_id,$rubric_field_template,$tpl_field_empty,$maxlength,$document_fields,$rubric_id);
 	}
-
+	
 	if ($maxlength != '')
 	{
 		if ($maxlength == 'more')
@@ -184,7 +147,7 @@ function request_get_document_field($rubric_id, $document_id, $maxlength = '')
 			if ($maxlength < 0)
 			{
 				$field_value = str_replace(array("\r\n","\n","\r"), " ", $field_value);
-				$field_value = strip_tags($field_value);
+				$field_value = strip_tags($field_value, '<a>');
 				$field_value = preg_replace('/  +/', ' ', $field_value);
 				$field_value = trim($field_value);
 				$maxlength = abs($maxlength);
@@ -193,38 +156,7 @@ function request_get_document_field($rubric_id, $document_id, $maxlength = '')
 		}
 	}
 
-	if (!$document_fields[$rubric_id]['tpl_req_empty'])
-	{
-		$field_value = preg_replace('/\[tag:parametr:(\d+)\]/ie', '@$field_param[\\1]', $document_fields[$rubric_id]['rubric_field_template_request']);
-	}
-
 	return $field_value;
-}
-
-
-function request_get_where($id){
-	global $AVE_DB, $AVE_Core;
-	$sql="select * from ". PREFIX . "_request_conditions where request_id='".$id."' order by Id";
-	$result=$AVE_DB->Query($sql);
-	$find='';
-	while ($mfa = $result->FetchArray())
-	{
-		$find.=($find>'' ? $mfa['condition_join'] : '')."(t0.rubric_field_id = '".$mfa['condition_field_id']."'";
-		switch ($mfa['condition_compare'])
-		{
-			case  '<': $find.=" AND t0.field_value < '".$mfa['condition_value']."')"; break;
-			case  '>': $find.=" AND t0.field_value > '".$mfa['condition_value']."')"; break;
-			case '<=': $find.=" AND t0.field_value <= '".$mfa['condition_value']."')";; break;
-			case '>=': $find.=" AND t0.field_value >= '".$mfa['condition_value']."')";break;
-			case '==': $find.=" AND t0.field_value = '".$mfa['condition_value']."')"; break;
-			case '!=': $find.=" AND t0.field_value != '".$mfa['condition_value']."')"; break;
-			case '%%': $find.=" AND t0.field_value LIKE '%".$mfa['condition_value']."%')"; break;
-			case  '%': $find.=" AND t0.field_value LIKE '".$mfa['condition_value']."%')"; break;
-			case '--': $find.=" AND t0.field_value NOT LIKE '%".$mfa['condition_value']."%')";; break;
-			case '!-': $find.=" AND t0.field_value NOT LIKE '".$mfa['condition_value']."%')"; break;
-		}
-	}
-	return ($find>'' ? ' AND a.Id=t0.document_id AND ('.$find.')' : '');
 }
 
 /**
@@ -261,43 +193,47 @@ function request_parse($id)
 			? ("AND a.document_published <= " . time() . " AND (a.document_expire = 0 OR a.document_expire >= " . time() . ")") : '';
 
 		$where_cond = (empty($_POST['req_' . $id]) && empty($_SESSION['doc_' . $AVE_Core->curentdoc->Id]['req_' . $id]))
-			? $row_ab->request_where_cond
-			: request_get_condition_sql_string($row_ab->Id);
-		$where_cond = str_replace('%%PREFIX%%', PREFIX, $where_cond);
-		$where_cond = request_get_where($id);
+			? unserialize($row_ab->request_where_cond)
+			: unserialize(request_get_condition_sql_string($row_ab->Id));
+				
+		$where_cond['from'] = str_replace('%%PREFIX%%', PREFIX, $where_cond['from']);
+		$where_cond['where'] = str_replace('%%PREFIX%%', PREFIX, $where_cond['where']);
+		
 		if ($row_ab->request_show_pagination == 1)
 		{
 			if (!empty($AVE_Core->install_modules['comment']->Status))
 			{
+				
 				$num = $AVE_DB->Query("
 					SELECT COUNT(*)
 					FROM " . PREFIX . "_documents AS a
-					".($where_cond>'' ? ",".PREFIX ."_document_fields AS t0" : '')."
+					".($where_cond['from'] ? ', '.$where_cond['from'] : '')."
 					WHERE
 						a.Id != '1'
 					AND a.Id != '" . PAGE_NOT_FOUND_ID . "'
 					AND a.Id != '" . $AVE_Core->curentdoc->Id . "'
 					AND a.rubric_id = '" . $row_ab->rubric_id . "'
 					AND a.document_deleted != '1'
-					AND a.document_status != '0'
-					" . $where_cond . "
+					AND a.document_status = '1'
+					" . $where_cond['where'] . "
 					" . $doctime . "
 				")->GetCell();
+				
 			}
 			else
 			{
 				$num = $AVE_DB->Query("
 					SELECT COUNT(*)
 					FROM " . PREFIX . "_documents AS a
-					".($where_cond>'' ? ",".PREFIX ."_document_fields AS t0" : '')."
+					".($where_cond['from'] ? ', '.$where_cond['from'] : '')."
 					WHERE
 						a.Id != '1'
 					AND a.Id != '" . PAGE_NOT_FOUND_ID . "'
 					AND a.Id != '" . $AVE_Core->curentdoc->Id . "'
 					AND a.rubric_id = '" . $row_ab->rubric_id . "'
 					AND a.document_deleted != '1'
-					AND a.document_status != '0'
-					" . $where_cond . "
+					AND a.document_status = '1'
+					" . $where_cond['where'] . "
 					" . $doctime . "
 				")->GetCell();
 			}
@@ -323,7 +259,7 @@ function request_parse($id)
 		if (!empty($AVE_Core->install_modules['comment']->Status))
 		{
 			$q = $AVE_DB->Query("
-				SELECT DISTINCT 
+				SELECT
 					a.Id,
 					a.document_title,
 					a.document_alias,
@@ -332,19 +268,19 @@ function request_parse($id)
 					a.document_published,
 					COUNT(b.document_id) AS nums
 				FROM
+					".($where_cond['from'] ? $where_cond['from'].', ' : '')."
 					" . PREFIX . "_documents AS a
 				LEFT JOIN
 					" . PREFIX . "_modul_comment_info AS b
 						ON b.document_id = a.Id
-					".($where_cond>'' ? ",".PREFIX ."_document_fields AS t0" : '')."
 				WHERE
 					a.Id != '1'
 				AND a.Id != '" . PAGE_NOT_FOUND_ID . "'
 				AND a.Id != '" . $AVE_Core->curentdoc->Id . "'
 				AND a.rubric_id = '" . $row_ab->rubric_id . "'
 				AND a.document_deleted != '1'
-				AND a.document_status != '0'
-				" . $where_cond . "
+				AND a.document_status = '1'
+				" . $where_cond['where'] . "
 				" . $doctime . "
 				GROUP BY a.Id
 				ORDER BY " . $request_order_by . " " . $request_asc_desc . "
@@ -354,7 +290,7 @@ function request_parse($id)
 		else
 		{
 			$q = $AVE_DB->Query("
-				SELECT DISTINCT 
+				SELECT
 					a.Id,
 					a.document_title,
 					a.document_alias,
@@ -363,17 +299,16 @@ function request_parse($id)
 					a.document_published
 				FROM
 					" . PREFIX . "_documents AS a
-					".($where_cond>'' ? ",".PREFIX ."_document_fields AS t0" : '')."
+					".($where_cond['from'] ? ', '.$where_cond['from'] : '')."
 				WHERE
 					a.Id != '1'
 				AND a.Id != '" . PAGE_NOT_FOUND_ID . "'
 				AND a.Id != '" . $AVE_Core->curentdoc->Id . "'
 				AND a.rubric_id = '" . $row_ab->rubric_id . "'
 				AND a.document_deleted != '1'
-				AND a.document_status != '0'
-				" . $where_cond . "
+				AND a.document_status = '1'
+				" . $where_cond['where'] . "
 				" . $doctime . "
-				".($where_cond>'' ? ' GROUP BY a.Id' : '')."
 				ORDER BY " . $request_order_by . " " . $request_asc_desc . "
 				LIMIT " . $start . "," . $limit
 			);

@@ -60,6 +60,12 @@ define('CACHE_LIFETIME', 60*60*24*0);
 // имя домена используемое для cookie
 //define('COOKIE_DOMAIN', '.ave209.ru');
 
+//Yandex MAP API REY
+define('YANDEX_MAP_API_KEY', '');
+
+//GOOGLE MAP API REY
+define('GOOGLE_MAP_API_KEY', '');
+
 define('APP_NAME', 'AVE.cms');
 define('APP_VERSION', '2.09RC1');
 define('APP_INFO', APP_NAME . ' ' . APP_VERSION . ' &copy; 2008-2010 <a target="_blank" href="http://www.overdoze.ru/">Overdoze.Ru</a>');
