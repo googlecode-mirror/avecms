@@ -155,205 +155,11 @@ class AVE_Document
 	{
 		global $AVE_Template;
 
-		// Определяем пустое изображение
-		$img_pixel = 'templates/' . $_SESSION['admin_theme'] . '/images/blanc.gif';
 		$field = '';
 
-		switch ($field_type)
-		{
-			// Правила формирования однострочного поля (input)
-			case 'kurztext' :
-				$field  = '<a name="' . $field_id . '"></a>';
-				$field .= '<input class="docm" id="feld_' . $field_id . '" type="text" style="width:' . $this->_field_width . '" name="feld[' . $field_id . ']" value="' . htmlspecialchars($field_value, ENT_QUOTES) . '"> ';
-				break;
-
-			// Правила формирования многострочного поля (textarea или FCKEditor в зависимости от настроек)
-			case 'langtext' :
-				if (isset($_COOKIE['no_wysiwyg']) && $_COOKIE['no_wysiwyg'] == 1)
-				{
-					$field  = '<a name="' . $field_id . '"></a>';
-					$field .= '<textarea style="width:' . $this->_textarea_width . ';height:' . $this->_textarea_height . '" name="feld[' . $field_id . ']">' . $field_value . '</textarea>';
-				}
-				else
-				{
-					switch (get_settings('use_editor')) {
-					case '0': // стандартный редактор
-						$oFCKeditor = new FCKeditor('feld[' . $field_id . ']') ;
-						$oFCKeditor->Height = $this->_textarea_height;
-						$oFCKeditor->Value  = $field_value;
-						$field  = $oFCKeditor->Create($field_id);
-						break;
-						
-					case '1': // Elrte и Elfinder 
-						$field  = '<a name="' . $field_id . '"></a>';
-						$field  .='<textarea style="width:' . $this->_textarea_width . ';height:' . $this->_textarea_height . '" name="feld[' . $field_id . ']" class="editor">' . $field_value . '</textarea></div>';
-						break;
-						
-					case '2': // Innova
-						$field  = '<a name="' . $field_id . '"></a>';
-						$field  .='<textarea style="width:' . $this->_textarea_width . ';height:' . $this->_textarea_height . '" name="feld[' . $field_id . ']" Id="editor[' . $field_id . ']">' . $field_value . '</textarea></div>';
-						$field  .='<script>
-						var oEdit' . $field_id . ' = new InnovaEditor("oEdit' . $field_id . '");  
-						oEdit' . $field_id . '.cmdAssetManager="modalDialogShow(\"/admin/redactor/innova/assetmanager/assetmanager.php\",640,445);";
-						oEdit' . $field_id . '.width="' . $this->_textarea_width_small . '";
-						oEdit' . $field_id . '.height="' . $this->_textarea_height_small . '";
-						oEdit' . $field_id . '.REPLACE("editor[' . $field_id . ']");</script>';
-						break;	
-					}
-				}
-				break;
-
-			// Правила формирования упрощенного многострочного поля (textarea или FCKEditor в зависимости от настроек)
-			case 'smalltext' :
-				if (isset($_COOKIE['no_wysiwyg']) && $_COOKIE['no_wysiwyg'] == 1)
-				{
-					$field  = "<a name=\"" . $field_id . "\"></a>";
-					$field .= "<textarea style=\"width:" . $this->_textarea_width_small . "; height:" . $this->_textarea_height_small . "\"  name=\"feld[" . $field_id . "]\">" . $field_value . "</textarea>";
-				}
-				else
-				{
-					switch (get_settings('use_editor')) {
-					case '0': // стандартный редактор
-						$oFCKeditor = new FCKeditor('feld[' . $field_id . ']') ;
-						$oFCKeditor->Height = $this->_textarea_height_small;
-						$oFCKeditor->Value  = $field_value;
-						$oFCKeditor->ToolbarSet = 'cpengine_small';
-						$field = $oFCKeditor->Create($field_id);
-						break;
-						
-					case '1': // Elrte и Elfinder 
-						$field  = "<a name=\"" . $field_id . "\"></a>";
-						$field .= "<textarea style=\"width:" . $this->_textarea_width_small . "; height:" . $this->_textarea_height_small . "\"  name=\"feld[" . $field_id . "]\" class=\"small-editor\">" . $field_value . "</textarea>";
-						break;
-						
-					case '2': // Innova
-						$field  = '<a name="' . $field_id . '"></a>';
-						$field .= "<textarea style=\"width:" . $this->_textarea_width_small . "; height:" . $this->_textarea_height_small . "\"  name=\"feld[" . $field_id . "]\" Id=\"small-editor[" . $field_id . "]\">" . $field_value . "</textarea>";
-						$field  .='<script>
-							var oEdit' . $field_id . ' = new InnovaEditor("oEdit' . $field_id . '");  
-							oEdit' . $field_id . '.cmdAssetManager="modalDialogShow(\"/admin/redactor/innova/assetmanager/assetmanager.php\",640,445);";
-							oEdit' . $field_id . '.width="' . $this->_textarea_width_small . '";
-							oEdit' . $field_id . '.height="' . $this->_textarea_height_small . '";
-							oEdit' . $field_id . '.REPLACE("small-editor[' . $field_id . ']");</script>';
-						break;		
-					}
-				}
-				break;
-
-//			case 'created' :
-//				$field_value = (isset($_REQUEST['action']) && $_REQUEST['action'] == 'new') ? strftime(TIME_FORMAT) : $field_value;
-//				$field_value = pretty_date($field_value, $_SESSION['user_language']);
-//				if (isset($_REQUEST['action']) && $_REQUEST['action'] == 'new')
-//				{
-//					$field  = "<a name=\"" . $field_id . "\"></a>";
-//					$field .= "<input id=\"feld_" . $field_id . "\" type=\"text\" style=\"width:" . $this->_field_width . "\" name=\"feld[" . $field_id . "]\" value=\"" . htmlspecialchars($field_value, ENT_QUOTES) . "\">";
-//				}
-//				else
-//				{
-//					$field  = "<a name=\"" . $field_id . "\"></a>";
-//					$field .= "<input id=\"feld_" . $field_id . "\" type=\"text\" style=\"width:" . $this->_field_width . "\" name=\"feld[" . $field_id . "]\" value=\"" . htmlspecialchars($field_value, ENT_QUOTES) . "\">&nbsp;";
-//					$field .= "<input type=\"button\" value=\"Текущая дата\" class=\"button\" onclick=\"insert_now_date('feld_" . $field_id . "');\" />";
-//				}
-//				break;
-//
-//			case 'author':
-//				$field_value = (isset($_REQUEST['action']) && $_REQUEST['action'] == 'new') ? $_SESSION['user_name'] : $field_value;
-//				$field  = "<a name=\"" . $field_id . "\"></a>";
-//				$field .= "<input id=\"feld_" . $field_id . "\" type=\"text\" style=\"width:" . $this->_field_width . "\" name=\"feld[" . $field_id . "]\" value=\"" . htmlspecialchars($field_value, ENT_QUOTES) . "\"> ";
-//				break;
-//
-			// Правила формирования поля типа Изображение
-			case 'bild' :
-			case 'bild_links' :
-			case 'bild_rechts' :
-				$massiv = explode('|', $field_value);
-				$field  = "<a name=\"" . $field_id . "\"></a>";
-				//$field .= "<div id=\"feld_" . $field_id . "\"><img id=\"_img_feld__" . $field_id . "\" src=\"" . (!empty($field_value) ? '../index.php?thumb=' . htmlspecialchars($massiv[0], ENT_QUOTES) : $img_pixel) . "\" alt=\"" . (isset($massiv[1]) ? htmlspecialchars($massiv[1], ENT_QUOTES) : '') . "\" border=\"0\" /></div>";
-				//$field .= "<div style=\"display:none\" id=\"span_feld__" . $field_id . "\">&nbsp;</div>" . (!empty($field_value) ? "<br />" : '');
-				$field .= "<div id=\"imm_img_feld__" . $field_id . "\"><img id=\"_img_feld__" . $field_id . "\" src=\"" . (!empty($field_value) ? '../' . htmlspecialchars($massiv[0], ENT_QUOTES) : $img_pixel) . "\" alt=\"" . (isset($massiv[1]) ? htmlspecialchars($massiv[1], ENT_QUOTES) : '') . "\" border=\"0\" /></div><br>";
-				switch (get_settings('use_editor')) {
-					case '0': // стандартный редактор
-					case '2':
-						$field .= "<div id=\"feld_" . $field_id . "\"><img id=\"_img_feld__" . $field_id . "\" src=\"" . (!empty($field_value) ? '../index.php?thumb=' . htmlspecialchars($massiv[0], ENT_QUOTES) : $img_pixel) . "\" alt=\"" . (isset($massiv[1]) ? htmlspecialchars($massiv[1], ENT_QUOTES) : '') . "\" border=\"0\" /></div>";
-						$field .= "<div style=\"display:none\" id=\"span_feld__" . $field_id . "\">&nbsp;</div>" . (!empty($field_value) ? "<br />" : '');
-						$field .= "<input type=\"text\" style=\"width:" . $this->_field_width . "\" name=\"feld[" . $field_id . "]\" value=\"" . htmlspecialchars($field_value, ENT_QUOTES) . "\" id=\"img_feld__" . $field_id . "\" />&nbsp;";
-						$field .= "<input value=\"" . $AVE_Template->get_config_vars('MAIN_OPEN_MEDIAPATH') . "\" class=\"button\" type=\"button\" onclick=\"cp_imagepop('img_feld__" . $field_id . "', '', '', '0');\" />";
-						break;
-				
-					case '1': // Elrte и Elfinder 
-						$field .= "<input class=\"docm finder\" type=\"text\" style=\"width:" . $this->_field_width . "\" name=\"feld[" . $field_id . "]\" value=\"" . htmlspecialchars($field_value, ENT_QUOTES) . "\" id=\"img_feld__" . $field_id . "\"/>&nbsp;";
-						$field .= "<span class=\"button dialog_images\" rel=\"img_feld__" . $field_id . "\">" . $AVE_Template->get_config_vars('MAIN_OPEN_MEDIAPATH') . "</span>";
-						break;
-				}	
-				break;
-
-			// Правила формирования поля типа Код языка программирования
-			case 'javascript' :
-			case 'php' :
-			case 'code' :
-			case 'html' :
-			case 'js' :
-				$field  = "<a name=\"" . $field_id . "\"></a>";
-				$field .= "<textarea id=\"feld_" . $field_id . "\" style=\"width:" . $this->_textarea_width . "; height:" . $this->_textarea_height . "\"  name=\"feld[" . $field_id . "]\">" . $field_value . "</textarea>";
-				break;
-
-			// Правила формирования поля для Flash ролика или какой-либо анимации
-			case 'flash' :
-				$field  = "<a name=\"" . $field_id . "\"></a>";
-				$field .= "<div style=\"display:none\" id=\"feld_" . $field_id . "\"><img style=\"display:none\" id=\"_img_feld__" . $field_id . "\" src=\"". (!empty($field_value) ? htmlspecialchars($field_value, ENT_QUOTES) : $img_pixel) . "\" alt=\"\" border=\"0\" /></div>";
-				$field .= "<div style=\"display:none\" id=\"span_feld__" . $field_id . "\"></div>";
-				$field .= "<input type=\"text\" style=\"width:" . $this->_field_width . "\" name=\"feld[" . $field_id . "]\" value=\"" . htmlspecialchars($field_value, ENT_QUOTES) . "\" id=\"img_feld__" . $field_id . "\" />&nbsp;";
-				$field .= "<input value=\"" . $AVE_Template->get_config_vars('MAIN_OPEN_MEDIAPATH') . "\" class=\"button\" type=\"button\" onclick=\"cp_imagepop('img_feld__" . $field_id . "', '', '', '0');\" />";
-				$field .= '<input style="margin-left:5px" class="button" type="button" value="?" onmouseover="return overlib(\'' . $AVE_Template->get_config_vars('DOC_FLASH_TYPE_HELP') . '\',ABOVE,WIDTH,300);" onmouseout="nd();" style="cursor: help;">';
-				break;
-
-			// Правила формирования поля типа Файл
-			case 'download' :
-				$field  = "<div style=\"\" id=\"feld_" . $field_id . "\"><a name=\"" . $field_id . "\"></a>";
-				$field .= "<div style=\"display:none\" id=\"feld_" . $field_id . "\">";
-				$field .= "<img style=\"display:none\" id=\"_img_feld__" . $field_id . "\" src=\"" . (!empty($field_value) ? htmlspecialchars($field_value, ENT_QUOTES) : $img_pixel) . "\" alt=\"\" border=\"0\" /></div>";
-				$field .= "<div style=\"display:none\" id=\"span_feld__" . $field_id . "\"></div>";
-				$field .= "<input type=\"text\" style=\"width:" . $this->_field_width . "\" name=\"feld[" . $field_id . "]\" value=\"" . htmlspecialchars($field_value, ENT_QUOTES) . "\" id=\"img_feld__" . $field_id . "\" />&nbsp;";
-				$field .= "<input value=\"" . $AVE_Template->get_config_vars('MAIN_OPEN_MEDIAPATH') . "\" class=\"button\" type=\"button\" onclick=\"cp_imagepop('img_feld__" . $field_id . "', '', '', '0');\" />";
-				$field .= '<input style="margin-left:5px" class="button" type="button" value="?" onmouseover="return overlib(\'' . $AVE_Template->get_config_vars('DOC_FILE_TYPE_HELP') . '\',ABOVE,WIDTH,300);" onmouseout="nd();" style="cursor: help;">';
-				$field .= '</div>';
-				break;
-
-			// Правила формирования поля типа Видео-файл
-			case 'video_avi' :
-			case 'video_wmf' :
-			case 'video_wmv' :
-			case 'video_mov' :
-				$field  = "<div style=\"\" id=\"feld_" . $field_id . "\"><a name=\"" . $field_id . "\"></a>";
-				$field .= "<div style=\"display:none\" id=\"feld_" . $field_id . "\"><img style=\"display:none\" id=\"_img_feld__" . $field_id . "\" src=\"". (!empty($field_value) ? htmlspecialchars($field_value, ENT_QUOTES) : $img_pixel) . "\" alt=\"\" border=\"0\" /></div>";
-				$field .= "<div style=\"display:none\" id=\"span_feld__" . $field_id . "\"></div>";
-				$field .= "<input type=\"text\" style=\"width:" . $this->_field_width . "\" name=\"feld[" . $field_id . "]\" value=\"" . htmlspecialchars($field_value, ENT_QUOTES) . "\" id=\"img_feld__" . $field_id . "\" />&nbsp;";
-				$field .= "<input value=\"" . $AVE_Template->get_config_vars('MAIN_OPEN_MEDIAPATH') . "\" class=\"button\" type=\"button\" onclick=\"cp_imagepop('img_feld__" . $field_id . "', '', '', '0');\" />";
-				$field .= '<input style="margin-left:5px" class="button" type="button" value="?" onmouseover="return overlib(\'' . $AVE_Template->get_config_vars('DOC_VIDEO_TYPE_HELP') . '\',ABOVE,WIDTH,300);" onmouseout="nd();" style="cursor: help;">';
-				$field .= '</div>';
-				break;
-
-			// Правила формирования поля типа Выпадающий список
-			case 'dropdown' :
-				$items = explode(',', $dropdown);
-				$field = "<select name=\"feld[" . $field_id . "]\">";
-				$cnt = sizeof($items);
-				for ($i=0;$i<$cnt;$i++)
-				{
-					$field .= "<option value=\"" . htmlspecialchars($items[$i], ENT_QUOTES) . "\"" . ((trim($field_value) == trim($items[$i])) ? " selected=\"selected\"" : "") . ">" . htmlspecialchars($items[$i], ENT_QUOTES) . "</option>";
-				}
-				$field .= "</select>";
-				break;
-
-			// Правила формирования поля типа Ссылка
-			case 'link' :
-			case 'link_ex' :
-				$field  = "<a name=\"" . $field_id . "\"></a>";
-				$field .= "<input id=\"feld_" . $field_id . "\" type=\"text\" style=\"width:" . $this->_field_width . "\" name=\"feld[" . $field_id . "]\" value=\"" . htmlspecialchars($field_value, ENT_QUOTES) . "\">&nbsp;";
-				$field .= "<input value=\"" . $AVE_Template->get_config_vars('MAIN_BROWSE_DOCUMENTS') . "\" class=\"button\" type=\"button\" onclick=\"openLinkWin('feld_" . $field_id . "', 'feld_" . $field_id . "');\" />";
-				break;
-		}
-
+		$func='get_field_'.$field_type;
+		if(!is_callable($func)) $func='get_field_default';
+		$field=$func($field_value,'edit',$field_id,'',0,$x,0,0,$dropdown);
 		return $field;
 	}
 
@@ -767,10 +573,10 @@ class AVE_Document
 					$innavi = check_permission_acp('navigation_new') ? '&innavi=1' : '';
 
 					// Определяем статус документа
-					$document_status = (int)$_REQUEST['document_status'];
+					$document_status = !empty($_REQUEST['document_status']) ? (int)$_REQUEST['document_status'] : '0';
 
 					// Если статус документа не определен
-					if (empty($document_status))
+					if (empty($document_status) && $_SESSION['user_group'] != 1)
 					{
 						$innavi = '';
 						@reset($_POST);
@@ -787,8 +593,7 @@ class AVE_Document
 							}
 						}
 						$text = strip_tags($newtext);
-						
-						if ($_SESSION['user_group'] != 1) {
+
 						// Получаем e-mail адрес из общих настроек системы
 						$system_mail = get_settings('mail_from');
 						$system_mail_name = get_settings('mail_from_name');
@@ -804,7 +609,7 @@ class AVE_Document
 							$AVE_Template->get_config_vars('DOC_MAIL_SUBJECT_CHECK'),
 							$system_mail,
 							$system_mail_name,
-							'text'							
+							'text'
 						);
 
 						// Отправляем уведомление автору, о том что документ находится на проверке
@@ -817,9 +622,8 @@ class AVE_Document
 							$AVE_Template->get_config_vars('DOC_MAIL_SUBJECT_USER'),
 							$system_mail,
 							$system_mail_name,
-							'text'							
+							'text'
 						);
-						}
 					}
 
 					if (! ((isset($_SESSION[$rubric_id . '_newnow']) && $_SESSION[$rubric_id . '_newnow'] == 1)
@@ -886,27 +690,37 @@ class AVE_Document
 						{
 							continue;
 						}
-
-						// Если запрещено использование php кода, тогда обнуляем данные поля
-						if (!check_permission('document_php'))
-						{
-							if (is_php_code($fld_val)) $fld_val = '';
+						if(is_array($fld_val)){
+							foreach($fld_val as $k=>$v){
+								if(!check_permission('document_php'))if (is_php_code($v)) $v = '';
+								$v = clean_no_print_char($v);
+								$v = pretty_chars($v);
+								$fld_val[$k]=$v;
+							}
 						}
+						else
+						{
+							// Если запрещено использование php кода, тогда обнуляем данные поля
+							if (!check_permission('document_php'))
+							{
+								if (is_php_code($fld_val)) $fld_val = '';
+							}
 
-						// Убираем из текста непчатбемые символы
-						$fld_val = clean_no_print_char($fld_val);
-						$fld_val = pretty_chars($fld_val);
-
+							// Убираем из текста непчатбемые символы
+							$fld_val = clean_no_print_char($fld_val);
+							$fld_val = pretty_chars($fld_val);
+						}
 						// Выполняем запрос к БД на добавление нового поля с его содержимым
-						$AVE_DB->Query("
+						$sql="
 							INSERT
 							INTO " . PREFIX . "_document_fields
 							SET
 								rubric_field_id    = '" . $fld_id . "',
 								document_id        = '" . $iid . "',
-								field_value        = '" . $fld_val . "',
+								field_value        = '" . (is_array($fld_val) ? serialize($fld_val) : $fld_val) . "',
 								document_in_search = '" . $suche . "'
-						");
+						";
+						$AVE_DB->Query($sql);
 					}
 
 					header('Location:index.php?do=docs&action=after&document_id=' . $iid . '&rubric_id=' . $rubric_id . '&cp=' . SESSION . $innavi);
@@ -1087,30 +901,40 @@ class AVE_Document
 
 							if (!$row_df) continue;
 
-							if ($row_df->document_in_search == $suche && $row_df->field_value == pretty_chars(stripslashes($fld_val))) continue;
+							//if ($row_df->document_in_search == $suche && $row_df->field_value == pretty_chars(stripslashes($fld_val))) continue;
 
 							// Если запрещено использование php-кода в полях, пропускаем это поле
+						if(is_array($fld_val)){
+							foreach($fld_val as $k=>$v){
+								if(!check_permission('document_php'))if (is_php_code($v)) $v = '';
+								$v = clean_no_print_char($v);
+								$v = pretty_chars($v);
+								$fld_val[$k]=$v;
+							}
+						}
+						else
+						{
+							// Если запрещено использование php кода, тогда обнуляем данные поля
 							if (!check_permission('document_php'))
 							{
-								if (is_php_code($fld_val)) continue;
+								if (is_php_code($fld_val)) $fld_val = '';
 							}
 
-							// Удаляем непечатаемые символы
+							// Убираем из текста непчатбемые символы
 							$fld_val = clean_no_print_char($fld_val);
 							$fld_val = pretty_chars($fld_val);
-
+						}
 							// Выполняем запрос к БД на сохранение изменений в таблице полей документов
 							$AVE_DB->Query("
 								UPDATE " . PREFIX . "_document_fields
 								SET
-									field_value = '" . $fld_val . "' ,
+									field_value = '" . (is_array($fld_val) ? serialize($fld_val) : $fld_val) . "' ,
 									document_in_search  = '" . $suche . "'
 								WHERE
 									Id = '" . $fld_id . "'
 							");
 						}
 					}
-
 					// Очищаем кэш шаблона
 					$AVE_DB->Query("
 						DELETE
@@ -1121,7 +945,6 @@ class AVE_Document
 					// Сохраняем системное сообщение в журнал
 					reportLog($_SESSION['user_name'] . ' - отредактировал документ (' . $document_id . ')', 2, 2);
 				}
-
 				if(isset($_REQUEST['closeafter']) && $_REQUEST['closeafter']==1) {
 					echo "<script>window.opener.location.reload(); window.close();</script>";
 				} else {					
@@ -1185,7 +1008,7 @@ class AVE_Document
 							doc.Id AS df_id,
 							rub.*,
 							rubric_field_default,
-							field_value
+							doc.field_value
 						FROM " . PREFIX . "_rubric_fields AS rub
 						LEFT JOIN " . PREFIX . "_document_fields AS doc ON rubric_field_id = rub.Id
 						WHERE document_id = '" . $document_id . "'

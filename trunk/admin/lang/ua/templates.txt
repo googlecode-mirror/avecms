@@ -37,6 +37,7 @@ TEMPLATES_LOAD_INFO    = "Будь ласка, виберіть зі списку файл із готовою структу
 TEMPLATES_EXIST        = "Вибачте, але шаблон з такою назвою вже існує"
 TEMPLATES_NO_NAME      = "Будь ласка, вкажіть назву шаблону"
 TEMPLATES_ALL          = "Список шаблонів"
+TEMPLATES_CSS_NAME          = "Список css файлов"
 
 TEMPLATES_TAGS         = "Тег"
 TEMPLATES_TAG_DESC     = "Опис тегу"

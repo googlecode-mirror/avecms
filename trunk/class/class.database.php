@@ -53,7 +53,7 @@ class AVE_DB_Result
 	 */
 	function FetchArray()
 	{
-		return @mysql_fetch_array($this->_result);
+		return @mysqli_fetch_array($this->_result);
 	}
 
 	/**
@@ -65,7 +65,7 @@ class AVE_DB_Result
 	 */
 	function FetchAssocArray()
 	{
-		return @mysql_fetch_assoc($this->_result);
+		return @mysqli_fetch_assoc($this->_result);
 	}
 
 	/**
@@ -76,7 +76,7 @@ class AVE_DB_Result
 	 */
 	function FetchRow()
 	{
-		return @mysql_fetch_object($this->_result);
+		return @mysqli_fetch_object($this->_result);
 	}
 
 	/**
@@ -89,7 +89,8 @@ class AVE_DB_Result
 	{
 		if ($this->NumRows())
 		{
-			return @mysql_result($this->_result, 0);
+			$a=@mysqli_fetch_row($this->_result);
+			return $a[0];
 		}
 		return false;
 	}
@@ -104,7 +105,7 @@ class AVE_DB_Result
 	 */
 	function DataSeek($id = 0)
 	{
-		return @mysql_data_seek($this->_result, $id);
+		return @mysqli_data_seek($this->_result, $id);
 	}
 
 	/**
@@ -115,7 +116,7 @@ class AVE_DB_Result
 	 */
 	function NumRows()
 	{
-		return @mysql_num_rows($this->_result);
+		return @mysqli_num_rows($this->_result);
 	}
 
 
@@ -127,7 +128,7 @@ class AVE_DB_Result
 	 */
 	function NumFields()
 	{
-		return mysql_num_fields($this->_result);
+		return mysqli_num_fields($this->_result);
 	}
 
 	/**
@@ -139,7 +140,11 @@ class AVE_DB_Result
 	 */
 	function FieldName($i)
 	{
-		return mysql_field_name($this->_result, $i);
+		//return mysql_field_name($this->_result, $i);
+		
+		mysqli_field_seek($this->_result, $i);
+		$field = mysqli_fetch_field($this->_result);
+		return $field->name;
 	}
 
 	/**
@@ -150,7 +155,7 @@ class AVE_DB_Result
 	 */
 	function Close()
 	{
-		$r = @mysql_free_result($this->_result);
+		$r = @mysqli_free_result($this->_result);
 		unset($this);
 		return $r;
 	}
@@ -204,37 +209,37 @@ class AVE_DB
 	function AVE_DB($host, $user, $pass, $db)
 	{
 		// Пытаемся установить соединение с БД
-		if (! $this->_handle = @mysql_connect($host, $user, $pass))
+		if (! $this->_handle = @mysqli_connect($host, $user, $pass))
 		{
 			$this->_error('connect');
 			exit;
 		}
 
 		// Пытаемся выбрать БД
- 		if (! @mysql_select_db($db, $this->_handle))
+ 		if (! @mysqli_select_db($this->_handle,$db))
 		{
 			$this->_error('select');
 			exit;
 		}
 
 		// Устанавливаем кодировку
-		if (function_exists('mysql_set_charset'))
+/*		if (function_exists('mysqli_set_charset'))
 		{
-			mysql_set_charset('cp1251', $this->_handle);
+			mysqli_set_charset($this->_handle, 'cp1251');
 		}
-		else
+		else*/
 		{
-			mysql_query("SET NAMES 'cp1251'");
+			mysqli_query($this->_handle,"SET NAMES 'cp1251'");
 		}
 
 		// Определяем профилирование
 		if (defined('PROFILING') && PROFILING)
 		{
-//			mysql_query("QUERY_CACHE_TYPE = OFF");
-//			mysql_query("FLUSH TABLES");
-			if (mysql_query("SET PROFILING_HISTORY_SIZE = 100"))
+//			mysqli_query($this->_handle, "QUERY_CACHE_TYPE = OFF");
+//			mysqli_query($this->_handle, "FLUSH TABLES");
+			if (mysqli_query($this->_handle, "SET PROFILING_HISTORY_SIZE = 100"))
 			{
-				mysql_query("SET PROFILING = 1");
+				mysqli_query($this->_handle,"SET PROFILING = 1");
 			}
 			else
 			{
@@ -287,7 +292,7 @@ class AVE_DB
 		}
 		else
 		{
-			$my_error = mysql_error();
+			$my_error = mysqli_error($this->_handle);
 
 			reportLog('SQL ERROR: ' . $my_error . PHP_EOL
 					. "\t\tQUERY: " . stripslashes($query) . PHP_EOL
@@ -334,16 +339,37 @@ class AVE_DB
 	 */
 	function Query($query)
 	{
-//		$this->_time_exec[] = microtime();
-		$res = @mysql_query($query, $this->_handle);
-//		$this->_time_exec[] = microtime();
-//		$this->_query_list[] = $query;
+		$this->_time_exec[] = microtime();
+		$res = @mysqli_query($this->_handle,$query);
+		$this->_time_exec[] = microtime();
+		$this->_query_list[] = $query;
 		if (!$res) $this->_error('query', $query);
 
 		return new AVE_DB_Result($res);
 	}
 
 	/**
+	 * Метод, предназначенный для выполнения запроса к MySQL и возвращение результата в виде асоциативного массива с поддержкой кеша
+	 *
+	 * @param string $query - текст SQL-запроса
+	 * @param integer $TTL - время жизни кеша
+	 * @return array - асоциативный массив с результом запроса
+	 * @access public
+	 */
+	function GetArrayFromQuery($query,$TTL=0){
+		$result=Array();
+		$cache_file=md5($query);
+		$cache_dir=BASE_DIR.'/cache/sql/'.substr($cache_file,0,2).'/'.substr($cache_file,2,2).'/'.substr($cache_file,4,2).'/';
+		if(!file_exists($cache_dir))mkdir($cache_dir,0777,true);
+		if(!(file_exists($cache_dir.$cache_file)AND(@time()-@filemtime($cache_dir.$cache_file)<$TTL))){
+			$res=$this->Query($query);
+			while ($mfa=$res->FetchArray())$result[]=$mfa;
+			file_put_contents($cache_dir.$cache_file,serialize($result));
+		}
+		$result=unserialize(file_get_contents($cache_dir.$cache_file));
+		return $result;
+	}
+	 /**
 	 * Метод, предназначенный для экранирования специальных символов в строках для использования в выражениях SQL
 	 *
 	 * @param mixed $value - обрабатываемое значение
@@ -370,7 +396,7 @@ class AVE_DB
 	 */
 	function InsertId()
 	{
-		return mysql_insert_id($this->_handle);
+		return mysqli_insert_id($this->_handle);
 	}
 
 	/**
@@ -460,8 +486,8 @@ class AVE_DB
 		{
 			$list = "<table width=\"100%\">"
 				. "\n\t<col width=\"20\">\n\t<col width=\"70\">";
-			$result = mysql_query("SHOW PROFILES");
-			while (list($qid, $qtime, $qstring) = @mysql_fetch_row($result))
+			$result = mysqli_query($this->_handle, "SHOW PROFILES");
+			while (list($qid, $qtime, $qstring) = @mysqli_fetch_row($result))
 			{
 				$time += $qtime;
 			    $list .= "\n\t<tr>\n\t\t<td><strong>"
@@ -471,12 +497,12 @@ class AVE_DB
 			    	. "</strong></td>\n\t\t<td><strong>"
 			    	. $qstring
 			    	. "</strong></td>\n\t</tr>";
-			    $res = mysql_query("
+			    $res = mysqli_query($this->_handle, "
 			    	SELECT STATE, FORMAT(DURATION, 6) AS DURATION
 			    	FROM INFORMATION_SCHEMA.PROFILING
 			    	WHERE QUERY_ID = " . $qid
 			    );
-				while (list($state, $duration) = @mysql_fetch_row($res))
+				while (list($state, $duration) = @mysqli_fetch_row($res))
 				{
 				    $list .= "\n\t<tr>\n\t\t<td>&nbsp;</td><td>"
 				    	. number_format($duration * 1, 6, ',', '')
@@ -485,7 +511,7 @@ class AVE_DB
 			}
 			$time = number_format($time * 1, 6, ',', '');
 			$list .= "\n</table>";
-			$count = @mysql_num_rows($result);
+			$count = @mysqli_num_rows($result);
 		}
 
 		switch ($type)
@@ -506,7 +532,7 @@ class AVE_DB
 	 */
 	function mysql_version()
 	{
-		return  mysql_get_server_info($this->_handle);
+		return  mysqli_get_server_info($this->_handle);
 	}
 }
 

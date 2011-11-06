@@ -85,6 +85,21 @@ function check_name() {ldelim}
 {/if}<br />
 <br />
 
+
+<table width="100%" border="0" cellpadding="8" cellspacing="1" class="tableborder">
+	<tr class="tableheader">
+		<td width="10">{#TEMPLATES_CSS_NAME#}</td>
+	</tr>
+		{foreach from=$css_files item=css_files}
+			<tr style="background-color: #eff3eb;" onmouseover="this.style.backgroundColor='#dae0d8';" onmouseout="this.style.backgroundColor='#eff3eb';">
+				<td>
+					<a title="Редактировать CSS файл" href="index.php?do=templates&amp;action=edit_css&amp;sub=edit&amp;name_file={$css_files}&amp;cp={$sess}">{$css_files}</a>
+				</td>
+			</tr>
+		{/foreach}	
+	</table>
+
+
 <div class="iconHelpSegmentBox">
 	<div class="segmentBoxHeader"><div class="segmentBoxTitle">&nbsp;</div></div>
 	<div class="segmentBoxContent">

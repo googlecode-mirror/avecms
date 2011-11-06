@@ -59,6 +59,25 @@ switch ($_REQUEST['action'])
 	case'':
 		if (check_permission_acp('template'))
 		{
+			
+			// для работы с css файлами
+			$dir = BASE_DIR.'/templates/'.DEFAULT_THEME_FOLDER.'/css/';
+			if($handle = opendir($dir))
+			{
+				$css_files = Array(); 
+				while (false !== ($file = readdir($handle)))
+				{
+					if ($file != "." && $file != ".." && substr($file,-3) == 'css')
+					{
+					  if(!is_dir($dir."/".$file))
+						$css_files[] = $file;
+					}
+				}
+				closedir($handle);
+			} 
+			$AVE_Template->assign('css_files', $css_files);
+			// для работы с css файлами
+			
 			$items   = array();
 			$num_tpl = $AVE_DB->Query("
 				SELECT COUNT(*)
@@ -267,6 +286,44 @@ switch ($_REQUEST['action'])
 		}
 		break;
 
+	case 'edit_css':
+		if (check_permission_acp('template_edit'))
+		{
+			$_REQUEST['sub'] = (!isset($_REQUEST['sub'])) ? '' : $_REQUEST['sub'];
+			switch ($_REQUEST['sub'])
+			{
+			
+				case 'save':					
+					$dir = BASE_DIR.'/templates/'.DEFAULT_THEME_FOLDER.'/css/'.$_REQUEST['name_file'];
+					$_REQUEST['code_text'] = str_ireplace(array('<style>','</style>'), "", $_REQUEST['code_text']);
+					
+					$check_code = stripcslashes($_REQUEST['code_text']);
+					
+					if (is_php_code($check_code))
+					{
+						reportLog($_SESSION['user_name'] . ' - пытался использовать PHP в css файле (' . stripslashes($_REQUEST['name_file']) . ')', 2, 2);
+						header('Location:index.php?do=templates');
+						exit;
+					}
+					
+					file_put_contents($dir, trim($check_code));	
+					reportLog($_SESSION['user_name'] . ' - отредактировал файл (' . stripslashes($dir) . ')', 2, 2);
+					header('Location:index.php?do=templates');
+					exit;
+					break;
+					
+				default:
+					$dir = BASE_DIR.'/templates/'.DEFAULT_THEME_FOLDER.'/css/'.stripslashes($_REQUEST['name_file']);
+					$code_text = file_get_contents($dir);
+					$formaction = "index.php?do=templates&action=edit_css&sub=save&name_file=".stripslashes($_REQUEST['name_file']);
+					$AVE_Template->assign('formaction', $formaction);
+					$AVE_Template->assign('code_text', $code_text);
+					break;	
+			}
+			$AVE_Template->assign('content', $AVE_Template->fetch('templates/edit_css.tpl'));
+		}
+		break;
+		
 	case 'multi':
 		if (check_permission_acp('template_multi'))
 		{

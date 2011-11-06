@@ -61,7 +61,7 @@ function document_get_field($field_id)
 
 	$tpl_field_empty = $document_fields[$field_id]['tpl_field_empty'];
 
-	if ($field_value == '' && $tpl_field_empty) return '<!-- EMPTY -->';
+	if ($field_value == '' && $tpl_field_empty) return '';
 
 	$field_type = $document_fields[$field_id]['rubric_field_type'];
 
@@ -70,153 +70,10 @@ function document_get_field($field_id)
 //	$field_value = parse_hide($field_value);
 //	$field_value = ($length != '') ? truncate_text($field_value, $length, 'Е', true) : $field_value;
 
-	switch ($field_type)
-	{
-		case 'kurztext' :
-			$field_value = htmlspecialchars($field_value, ENT_QUOTES);
-			$field_value = pretty_chars($field_value);
-			$field_value = clean_php($field_value);
-			$field_value = str_replace('"', '&quot;', $field_value);
-			if (!$tpl_field_empty)
-			{
-				$field_param = explode('|', $field_value);
-				$field_value = preg_replace('/\[tag:parametr:(\d+)\]/ie', '@$field_param[\\1]', $rubric_field_template);
-			}
-			break;
-
-		case 'langtext' :
-		case 'smalltext' :
-			$field_value = document_pagination($field_value);
-			$field_value = pretty_chars($field_value);
-			if (!$tpl_field_empty)
-			{
-				$field_param = explode('|', $field_value);
-				$field_value = preg_replace('/\[tag:parametr:(\d+)\]/ie', '@$field_param[\\1]', $rubric_field_template);
-			}
-			break;
-
-		case 'dropdown' :
-			$field_value = clean_php($field_value);
-			if (!$tpl_field_empty)
-			{
-				$field_param = explode('|', $field_value);
-				$field_value = preg_replace('/\[tag:parametr:(\d+)\]/ie', '@$field_param[\\1]', $rubric_field_template);
-			}
-			break;
-
-		case 'bild' :
-			$field_value = clean_php($field_value);
-			$field_param = explode('|', $field_value);
-			if ($tpl_field_empty)
-			{
-				$field_value = '<img alt="' . (isset($field_param[1]) ? $field_param[1] : '')
-					. '" src="' . ABS_PATH . $field_param[0] . '" border="0" />';
-			}
-			else
-			{
-				$field_value = preg_replace('/\[tag:parametr:(\d+)\]/ie', '@$field_param[\\1]', $rubric_field_template);
-			}
-			break;
-
-		case 'download' :
-			$field_value = clean_php($field_value);
-			$field_param = explode('|', $field_value);
-			if ($tpl_field_empty)
-			{
-				$field_value = (!empty($field_param[1]) ? $field_param[1] . '<br />' : '')
-					. '<form method="get" target="_blank" action="' . ABS_PATH . $field_param[0]
-					. '"><input class="button" type="submit" value="—качать" /></form>';
-			}
-			else
-			{
-				$field_value = preg_replace('/\[tag:parametr:(\d+)\]/ie', '@$field_param[\\1]', $rubric_field_template);
-			}
-			break;
-
-		case 'link' :
-			$field_value = clean_php($field_value);
-			$field_param = explode('|', $field_value);
-			$field_param[1] = empty($field_param[1]) ? $field_param[0] : $field_param[1];
-			if ($tpl_field_empty)
-			{
-				$field_value = ' <a target="_self" href="' . ABS_PATH . $field_param[0] . '">' . $field_param[1] . '</a>';
-			}
-			else
-			{
-				$field_value = preg_replace('/\[tag:parametr:(\d+)\]/ie', '@$field_param[\\1]', $rubric_field_template);
-			}
-			break;
-
-		case 'video_avi' :
-		case 'video_wmf' :
-		case 'video_wmv' :
-			$field_value = clean_php($field_value);
-			$field_param = explode('|', $field_value);
-			$field_param[1] = (!empty($field_param[1]) && is_numeric($field_param[1])) ? $field_param[1] : 470;
-			$field_param[2] = (!empty($field_param[2]) && is_numeric($field_param[2])) ? $field_param[2] : 320;
-			if ($tpl_field_empty)
-			{
-				$field_value = '<object id="MediaPlayer" classid="CLSID:6BF52A52-394A-11d3-B153-00C04F79FAA6" '
-					. 'codebase="http://activex.microsoft.com/activex/controls/mplayer/en/nsmp2inf.cab#Version=6,4,7,1112" height="'
-						. $field_param[2] . '" width="' . $field_param[1] . '">'
-					. '<param name="animationatStart" value="false">'
-					. '<param name="autostart" value="false">'
-					. '<param name="url" value="' . ABS_PATH . $field_param[0] . '">'
-					. '<param name="volume" value="-200">'
-					. '<embed type="application/x-mplayer2" pluginspage="http://www.microsoft.com/Windows/MediaPlayer/" name="MediaPlayer" src="'
-						. ABS_PATH . $field_param[0] . '" autostart="0" displaysize="0" showcontrols="1" showdisplay="0" showtracker="1" showstatusbar="1" height="'
-						. $field_param[2] . '" width="' . $field_param[1] . '">'
-					. '</object>';
-			}
-			else
-			{
-				$field_value = preg_replace('/\[tag:parametr:(\d+)\]/ie', '@$field_param[\\1]', $rubric_field_template);
-			}
-			break;
-
-		case 'video_mov' :
-			$field_value = clean_php($field_value);
-			$field_param = explode('|', $field_value);
-			$field_param[1] = (!empty($field_param[1]) && is_numeric($field_param[1])) ? $field_param[1] : 470;
-			$field_param[2] = (!empty($field_param[2]) && is_numeric($field_param[2])) ? $field_param[2] : 320;
-			if ($tpl_field_empty)
-			{
-				$field_value = '<object classid="clsid:02BF25D5-8C17-4B23-BC80-D3488ABDDC6B" width="' . $field_param[1]
-						. '" height="' . $field_param[2] . '" codebase="http://www.apple.com/qtactivex/qtplugin.cab">'
-					. '<param name="src" value="' . ABS_PATH . $field_param[0] . '">'
-					. '<param name="autoplay" value="false">'
-					. '<param name="controller" value="true">'
-					. '<param name="target" value="myself">'
-					. '<param name="type" value="video/quicktime">'
-					. '<embed target="myself" src="' . ABS_PATH . $field_param[0] . '" width="' . $field_param[1] . '" height="' . $field_param[2]
-						. '" autoplay="false" controller="true" type="video/quicktime" pluginspage="http://www.apple.com/quicktime/download/">'
-					. '</embed>'
-					. '</object>';
-			}
-			else
-			{
-				$field_value = preg_replace('/\[tag:parametr:(\d+)\]/ie', '@$field_param[\\1]', $rubric_field_template);
-			}
-			break;
-
-		case 'flash' :
-			$field_value = clean_php($field_value);
-			$field_param = explode('|', $field_value);
-			$field_param[1] = (!empty($field_param[1]) && is_numeric($field_param[1])) ? $field_param[1] : 470;
-			$field_param[2] = (!empty($field_param[2]) && is_numeric($field_param[2])) ? $field_param[2] : 320;
-			if ($tpl_field_empty)
-			{
-				$field_value = '<embed scale="exactfit" width="' . $field_param[1] . '" height="' . $field_param[2]
-					. '" type="application/x-shockwave-flash" pluginspage="http://www.macromedia.com/go/getflashplayer" src="'
-					. ABS_PATH . $field_param[0] . '" play="true" loop="true" menu="true"></embed>';
-			}
-			else
-			{
-				$field_value = preg_replace('/\[tag:parametr:(\d+)\]/ie', '@$field_param[\\1]', $rubric_field_template);
-			}
-			break;
-	}
-
+	$func='get_field_'.$field_type;
+	if(!is_callable($func)) $func='get_field_default';
+	$field_value=$func($field_value,'doc',$field_id,$rubric_field_template,$tpl_field_empty);
+	
 	if (isset($_SESSION['user_adminmode']) && $_SESSION['user_adminmode'] == 1)
 	{
 		$wysmode = false;
@@ -229,11 +86,8 @@ function document_get_field($field_id)
 
 		if ($wysmode)
 		{
-			$field_value .= "<a href=\"javascript:;\" onclick=\"window.open('" . ABS_PATH
-				. "admin/index.php?do=docs&action=edit&closeafter=1&rubric_id=" . RUB_ID . "&Id=" . ((int)$_REQUEST['id'])
-				. "&pop=1&feld=" . $document_fields[$field_id]['Id'] . "#" . $document_fields[$field_id]['Id']
-				. "','EDIT','left=0,top=0,width=950,height=700,scrollbars=1');\">"
-				. "<img style=\"vertical-align:middle\" src=\"" . ABS_PATH . "inc/stdimage/edit.gif\" border=\"0\" alt=\"\" /></a>";
+			$field_value .= '<a href="javascript:;" onclick=window.open("'.ABS_PATH.'admin/index.php?do=docs&action=edit&closeafter=1&RubrikId=' . RUB_ID . '&Id=' . ((int)$_REQUEST['id'])
+				. '&pop=1&feld=' . $document_fields[$field_id]['Id'] . '#' . $document_fields[$field_id]['Id'] . '","EDIT","left=0,top=0,width=1300,height=900,scrollbars=1");><img style="vertical-align:middle" src="' . ABS_PATH . 'inc/stdimage/edit.gif" border="0" alt="" /></a>';
 			if ($field_type == 'bild')
 			{
 				$field_value =	'<p style="width:100%;float:left;border:1px dashed #ccc;border-top:0px;line-heigth:0.1em;padding:3px">'
@@ -266,7 +120,7 @@ function document_get_field_value($field_id, $length = 0)
 
 	if ($field_value != '')
 	{
-//		$field_value = strip_tags($field_value, "<br /><strong><em><p><i>");
+	$field_value = strip_tags($field_value, "<br /><strong><em><p><i>");
 
 		if (is_numeric($length) && $length != 0)
 		{
