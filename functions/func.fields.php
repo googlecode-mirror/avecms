@@ -490,7 +490,7 @@ function get_field_video_avi($field_value,$type,$field_id='',$rubric_field_templ
 	switch ($type)
 	{
 		case 'edit' :
-			$res=get_field_mov($field_value,$type,$field_id,$rubric_field_template,$tpl_field_empty,$maxlength);
+			$res=get_field_video_mov($field_value,$type,$field_id,$rubric_field_template,$tpl_field_empty,$maxlength);
 			break;
 		case 'doc' :
 			$field_value = clean_php($field_value);
@@ -530,10 +530,10 @@ function get_field_video_wmf($field_value,$type,$field_id='',$rubric_field_templ
 	switch ($type)
 	{
 		case 'edit' :
-			$res=get_field_mov($field_value,$type,$field_id,$rubric_field_template,$tpl_field_empty,$maxlength);
+			$res=get_field_video_mov($field_value,$type,$field_id,$rubric_field_template,$tpl_field_empty,$maxlength);
 			break;
 		case 'doc' :
-			$res=get_field_avi($field_value,$type,$field_id,$rubric_field_template,$tpl_field_empty,$maxlength);
+			$res=get_field_video_avi($field_value,$type,$field_id,$rubric_field_template,$tpl_field_empty,$maxlength);
 			break;
 
 		case 'req' :
@@ -548,10 +548,10 @@ function get_field_video_wmv($field_value,$type,$field_id='',$rubric_field_templ
 	switch ($type)
 	{
 		case 'edit' :
-			$res=get_field_mov($field_value,$type,$field_id,$rubric_field_template,$tpl_field_empty,$maxlength);
+			$res=get_field_video_mov($field_value,$type,$field_id,$rubric_field_template,$tpl_field_empty,$maxlength);
 			break;
 		case 'doc' :
-			$res=get_field_avi($field_value,$type,$field_id,$rubric_field_template,$tpl_field_empty,$maxlength);
+			$res=get_field_video_avi($field_value,$type,$field_id,$rubric_field_template,$tpl_field_empty,$maxlength);
 			break;
 
 		case 'req' :
