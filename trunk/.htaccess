@@ -2,6 +2,8 @@ Options -Indexes +FollowSymLinks
 
 #AddDefaultCharset windows-1251
 
+php_value error_reporting E_NONE
+
 <FilesMatch "\.(class|functions|inc|modules|templates|templates_c|cache|lib)$">
     Order allow,deny
 </FilesMatch>

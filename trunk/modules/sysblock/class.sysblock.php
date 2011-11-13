@@ -94,11 +94,11 @@ class Sysblock
 			$row['sysblock_text'] = '';
 		}
 
-		$oFCKeditor = new FCKeditor('sysblock_text');
+		/*$oFCKeditor = new FCKeditor('sysblock_text');
 		$oFCKeditor->Height = '400';
 		$oFCKeditor->ToolbarSet = 'Simple';
 		$oFCKeditor->Value = $row['sysblock_text'];
-		$row['sysblock_text'] = $oFCKeditor->Create();
+		$row['sysblock_text'] = $oFCKeditor->Create();*/
 
 		$AVE_Template->assign($row);
 		$AVE_Template->assign('content', $AVE_Template->fetch($tpl_dir . 'admin_edit.tpl'));

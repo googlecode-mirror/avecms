@@ -269,7 +269,8 @@ INSERT INTO `%%PRFX%%_templates` VALUES
 
 INSERT INTO `%%PRFX%%_user_groups` VALUES
   (1, 'Администраторы', '1', '0', '', 'alles'),
-  (2, 'Анонимные пользователи', '1', '0', '', '');#inst#
+  (2, 'Анонимные пользователи', '1', '0', '', ''),
+  (4, 'Зарегистрированные', '1', '0', '', '');#inst#
 
 INSERT INTO `%%PRFX%%_users` VALUES
   (1, '%%PASS%%', '%%EMAIL%%', '%%STRASSE%%', '%%HNR%%', '%%PLZ%%', '%%ORT%%', '%%FON%%', '', '', '%%VORNAME%%', '%%NACHNAME%%', '%%USERNAME%%', 1, '', '%%ZEIT%%', '1', '%%ZEIT%%', 'ru', '', '0', '0', '0', '0', '', '', '', '%%SALT%%', '', 0);

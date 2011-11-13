@@ -585,7 +585,6 @@ function reportLog($meldung, $typ = 0, $rub = 0)
 
 function get_document_fields($document_id)
 {  
-    header('Content-Type: text/html; charset=windows-1251');
 	global $AVE_DB, $request_documents;
 
 	static $document_fields = array();
@@ -594,7 +593,7 @@ function get_document_fields($document_id)
 
 	if (!isset ($document_fields[$document_id]))
 	{
-		if (!empty($request_documents) && is_array($request_documents))
+		/*if (!empty($request_documents) && is_array($request_documents))
 		{
 			$documents = array_combine($request_documents, $request_documents);
 			$documents = array_diff_key($documents, $document_fields);
@@ -609,6 +608,10 @@ function get_document_fields($document_id)
 
 			$where = "WHERE doc_field.document_id = '" . $document_id . "'";
 		}
+		*/
+		
+		$document_fields[$document_id] = false;
+		$where = "WHERE doc_field.document_id = '" . $document_id . "'";
 
 		$sql = $AVE_DB->Query("
 			SELECT

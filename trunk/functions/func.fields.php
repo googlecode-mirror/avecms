@@ -1,32 +1,7 @@
 <?php
 // Определяем пустое изображение
 $img_pixel = 'templates/' . $_SESSION['admin_theme'] . '/images/blanc.gif';
-function get_field_type()
-{
-	global $AVE_Template;
 
-	$AVE_Template->config_load(BASE_DIR . '/admin/lang/' . $_SESSION['admin_language'] . '/fields.txt', 'fields');
-	$felder_vars = $AVE_Template->get_config_vars();
-
-	$felder = array(
-		array('id' => 'kurztext',  'name' => $felder_vars['FIELD_TEXT']),
-		array('id' => 'langtext',  'name' => $felder_vars['FIELD_TEXTAREA']),
-		array('id' => 'smalltext', 'name' => $felder_vars['FIELD_TEXTAREA_S']),
-		array('id' => 'dropdown',  'name' => $felder_vars['FIELD_DROPDOWN']),
-		array('id' => 'bild',      'name' => $felder_vars['FIELD_IMAGE']),
-		array('id' => 'download',  'name' => $felder_vars['FIELD_FILE']),
-		array('id' => 'link',      'name' => $felder_vars['FIELD_LINK']),
-		array('id' => 'video_avi', 'name' => $felder_vars['FIELD_VIDEO_AVI']),
-		array('id' => 'video_wmf', 'name' => $felder_vars['FIELD_VIDEO_WMF']),
-		array('id' => 'video_wmv', 'name' => $felder_vars['FIELD_VIDEO_WMV']),
-		array('id' => 'video_mov', 'name' => $felder_vars['FIELD_VIDEO_MOV']),
-		array('id' => 'flash',     'name' => $felder_vars['FIELD_FLASH']),
-		array('id' => 'bild_multi',     'name' => 'Multi Image'),
-		array('id' => 'gps',     'name' => 'GPS Координаты')
-	);
-
-	return $felder;
-}
 function get_field_default($field_value,$type,$field_id='',$rubric_field_template='',$tpl_field_empty=0,&$maxlength = '',$document_fields=0,$rubric_id=0,$dropdown=''){
 	global $AVE_Template, $AVE_Core, $AVE_Document;
 	$res=0;
@@ -54,13 +29,12 @@ function get_field_default($field_value,$type,$field_id='',$rubric_field_templat
 		case 'req' :
 			$field_value = clean_php($field_value);
 			$field_param = explode('|', $field_value);
-			$field_value = strip_tags($field_param[0], "<a><br><p>");
-			//$field_value = str_replace('"', '&quot;', $field_value);
-			$res=$field_value;
+			$field_param[1] = isset($field_param[1]) ? $field_param[1] : '';
+			$field_value = preg_replace('/\[tag:parametr:(\d+)\]/ie', '@$field_param[\\1]', $document_fields[$rubric_id]['rubric_field_template_request']);	
+			$res=$field_value;	
 			break;
 	}
 	return ($res ? $res : $field_value);
-			
 }
 
 function get_field_kurztext($field_value,$type,$field_id='',$rubric_field_template='',$tpl_field_empty=0,&$maxlength = '',$document_fields=0,$rubric_id=0,$dropdown=''){
@@ -87,8 +61,11 @@ function get_field_kurztext($field_value,$type,$field_id='',$rubric_field_templa
 			$res=$field_value;
 			break;
 			case 'req' :
-				$res=get_field_default($field_value,$type,$field_id,$rubric_field_template,$tpl_field_empty,$maxlength);
+				$res=get_field_default($field_value,$type,$field_id,$rubric_field_template,$tpl_field_empty,$maxlength,$document_fields,$rubric_id);
 			break;
+		case 'name' :
+			$res='FIELD_TEXT';
+		break;
 	}
 	return ($res ? $res : $field_value);
 }
@@ -141,8 +118,11 @@ function get_field_smalltext($field_value,$type,$field_id='',$rubric_field_templ
 			$res=$field_value;
 			break;
 		case 'req' :
-				$res=get_field_default($field_value,$type,$field_id,$rubric_field_template,$tpl_field_empty,$maxlength);
+				$res=get_field_default($field_value,$type,$field_id,$rubric_field_template,$tpl_field_empty,$maxlength,$document_fields,$rubric_id);
 			break;
+		case 'name' :
+			$res='FIELD_TEXTAREA_S';
+		break;
 	}
 	return ($res ? $res : $field_value);
 
@@ -185,11 +165,14 @@ function get_field_langtext($field_value,$type,$field_id='',$rubric_field_templa
 				$res=$field;
 			break;
 		case 'doc' :
-			$res=get_field_smalltext($field_value,$type,$field_id,$rubric_field_template,$tpl_field_empty,$maxlength);
+			$res=get_field_smalltext($field_value,$type,$field_id,$rubric_field_template,$tpl_field_empty,$maxlength,$document_fields,$rubric_id);
 			break;
 		case 'req' :
-				$res=get_field_default($field_value,$type,$field_id,$rubric_field_template,$tpl_field_empty,$maxlength);
+				$res=get_field_default($field_value,$type,$field_id,$rubric_field_template,$tpl_field_empty,$maxlength,$document_fields,$rubric_id);
 			break;
+		case 'name' :
+			$res='FIELD_TEXTAREA';
+		break;
 	}
 	return ($res ? $res : $field_value);
 }
@@ -218,8 +201,6 @@ function get_field_bild($field_value,$type,$field_id='',$rubric_field_template='
 						$field .= "<span class=\"button dialog_images\" rel=\"". $field_id ."\">" . $AVE_Template->get_config_vars('MAIN_OPEN_MEDIAPATH') . "</span>";
 						break;
 				}	
-				
-				
 				$res=$field;
 				break;
 		case 'doc' :
@@ -251,6 +232,9 @@ function get_field_bild($field_value,$type,$field_id='',$rubric_field_template='
 			$maxlength = '';
 			$res=$field_value;
 			break;
+		case 'name' :
+			$res='FIELD_IMAGE';
+		break;
 	}	
 	return ($res ? $res : $field_value);
 }
@@ -282,8 +266,11 @@ function get_field_dropdown($field_value,$type,$field_id='',$rubric_field_templa
 			$res=$field_value;
 			break;
 			case 'req' :
-				$res=get_field_default($field_value,$type,$field_id,$rubric_field_template,$tpl_field_empty,$maxlength);
+				$res=get_field_default($field_value,$type,$field_id,$rubric_field_template,$tpl_field_empty,$maxlength,$document_fields,$rubric_id);
 			break;
+		case 'name' :
+			$res='FIELD_DROPDOWN';
+		break;
 	
 	}
 	return ($res ? $res : $field_value);
@@ -304,9 +291,12 @@ function get_field_code($field_value,$type,$field_id='',$rubric_field_template='
 			$res=$field_value;
 			break;
 			case 'req' :
-				$res=get_field_default($field_value,$type,$field_id,$rubric_field_template,$tpl_field_empty,$maxlength);
+				$res=get_field_default($field_value,$type,$field_id,$rubric_field_template,$tpl_field_empty,$maxlength,$document_fields,$rubric_id);
 			break;
 	
+		case 'name' :
+			$res='FIELD_CODE';
+		break;
 	}
 	return ($res ? $res : $field_value);
 }
@@ -352,6 +342,9 @@ function get_field_link($field_value,$type,$field_id='',$rubric_field_template='
 			$maxlength = '';
 			$res=$field_value;
 			break;
+		case 'name' :
+			$res='FIELD_LINK';
+		break;
 	
 	}
 	return ($res ? $res : $field_value);
@@ -390,8 +383,11 @@ function get_field_flash($field_value,$type,$field_id='',$rubric_field_template=
 			$res=$field_value;
 			break;
 			case 'req' :
-				$res=get_field_default($field_value,$type,$field_id,$rubric_field_template,$tpl_field_empty,$maxlength);
+				$res=get_field_default($field_value,$type,$field_id,$rubric_field_template,$tpl_field_empty,$maxlength,$document_fields,$rubric_id);
 			break;
+		case 'name' :
+			$res='FIELD_FLASH';
+		break;
 	
 	}
 	return ($res ? $res : $field_value);
@@ -430,8 +426,11 @@ function get_field_download($field_value,$type,$field_id='',$rubric_field_templa
 			$res=$field_value;
 			break;
 			case 'req' :
-				$res=get_field_default($field_value,$type,$field_id,$rubric_field_template,$tpl_field_empty,$maxlength);
+				$res=get_field_default($field_value,$type,$field_id,$rubric_field_template,$tpl_field_empty,$maxlength,$document_fields,$rubric_id);
 			break;
+		case 'name' :
+			$res='FIELD_DOWNLOAD';
+		break;
 	
 	}
 	return ($res ? $res : $field_value);
@@ -480,8 +479,11 @@ function get_field_video_mov($field_value,$type,$field_id='',$rubric_field_templ
 			break;
 	
 			case 'req' :
-				$res=get_field_default($field_value,$type,$field_id,$rubric_field_template,$tpl_field_empty,$maxlength);
+				$res=get_field_default($field_value,$type,$field_id,$rubric_field_template,$tpl_field_empty,$maxlength,$document_fields,$rubric_id);
 			break;
+		case 'name' :
+			$res='FIELD_VIDEO_MOV';
+		break;
 	}
 	return ($res ? $res : $field_value);
 }
@@ -518,8 +520,11 @@ function get_field_video_avi($field_value,$type,$field_id='',$rubric_field_templ
 			$res=$field_value;
 			break;
 			case 'req' :
-				$res=get_field_default($field_value,$type,$field_id,$rubric_field_template,$tpl_field_empty,$maxlength);
+				$res=get_field_default($field_value,$type,$field_id,$rubric_field_template,$tpl_field_empty,$maxlength,$document_fields,$rubric_id);
 			break;
+		case 'name' :
+			$res='FIELD_VIDEO_AVI';
+		break;
 
 	}
 	return ($res ? $res : $field_value);
@@ -537,9 +542,13 @@ function get_field_video_wmf($field_value,$type,$field_id='',$rubric_field_templ
 			break;
 
 		case 'req' :
-				$res=get_field_default($field_value,$type,$field_id,$rubric_field_template,$tpl_field_empty,$maxlength);
+				$res=get_field_default($field_value,$type,$field_id,$rubric_field_template,$tpl_field_empty,$maxlength,$document_fields,$rubric_id);
 			break;
+		case 'name' :
+			$res='FIELD_VIDEO_WMF';
+		break;
 	}
+	
 	return ($res ? $res : $field_value);
 }
 
@@ -555,8 +564,11 @@ function get_field_video_wmv($field_value,$type,$field_id='',$rubric_field_templ
 			break;
 
 		case 'req' :
-				$res=get_field_default($field_value,$type,$field_id,$rubric_field_template,$tpl_field_empty,$maxlength);
+				$res=get_field_default($field_value,$type,$field_id,$rubric_field_template,$tpl_field_empty,$maxlength,$document_fields,$rubric_id);
 			break;
+		case 'name' :
+			$res='FIELD_VIDEO_WMV';
+		break;
 	}
 	return ($res ? $res : $field_value);
 }
@@ -733,8 +745,11 @@ google.maps.event.addDomListener(window, "load", initialize);
 			break;
 
 		case 'req' :
-				$res=get_field_default($field_value,$type,$field_id,$rubric_field_template,$tpl_field_empty,$maxlength);
+				$res=get_field_default($field_value,$type,$field_id,$rubric_field_template,$tpl_field_empty,$maxlength,$document_fields,$rubric_id);
 			break;
+		case 'name' :
+			$res='FIELD_GPS';
+		break;
 	}
 	return ($res ? $res : $field_value);
 }
@@ -891,20 +906,29 @@ BLOCK;
 			$res=$res;	
 			$maxlength='';
 			break;
+		case 'name' :
+			$res='FIELD_BILD_MULTI';
+		break;
 	}
 	return ($res ? $res : $field_value);
 			
 }
 
-
-function get_field_default1($field_value,$type,$field_id='',$rubric_field_template='',$tpl_field_empty=0,&$maxlength = '',$document_fields=0,$rubric_id=0,$dropdown=''){
-	global $AVE_Template, $AVE_Core, $AVE_Document;
+function get_field_docfromrub($field_value,$type,$field_id='',$rubric_field_template='',$tpl_field_empty=0,&$maxlength = '',$document_fields=0,$rubric_id=0,$dropdown=''){
+	global $AVE_DB,$AVE_Template, $AVE_Core, $AVE_Document;
 	$res=0;
 	switch ($type)
 	{
 		case 'edit' :
 				$field  = '<a name="' . $field_id . '"></a>';
-				$field .= '<input id="feld_' . $field_id . '" type="text" style="width:' . $AVE_Document->_field_width . '" name="feld[' . $field_id . ']" value="' . htmlspecialchars($field_value, ENT_QUOTES) . '"> ';
+				$sql="SELECT Id,document_title from ". PREFIX ."_documents WHERE rubric_id='".$dropdown."' ORDER BY document_title ASC";
+				$res=$AVE_DB->Query($sql);
+				$field = "<select name=\"feld[" . $field_id . "]\">";
+				while($row = $res->FetchRow()){
+					$field.="<option value=\"" . htmlspecialchars($row->Id, ENT_QUOTES) . "\"" . ((trim($field_value) == trim($row->Id)) ? " selected=\"selected\"" : "") . ">" . htmlspecialchars($row->document_title, ENT_QUOTES) . "</option>";
+				}
+				$field .= "</select>";
+				
 				$res=$field;
 			break;
 
@@ -922,15 +946,54 @@ function get_field_default1($field_value,$type,$field_id='',$rubric_field_templa
 			break;
 
 			case 'req' :
+			/*
 			$field_value = clean_php($field_value);
 			$field_param = explode('|', $field_value);
 			$field_value = $field_param[0];
 			$field_value = str_replace('"', '&quot;', $field_value);
 			$res=$field_value;
+			*/
+			
+			
+			$res=get_field_default($field_value,$type,$field_id,$rubric_field_template,$tpl_field_empty,$maxlength,$document_fields,$rubric_id);
+
 			break;
+		case 'name' :
+			$res='FIELD_DOCFROMRUB';
+		break;
 	}
 	return ($res ? $res : $field_value);
 			
+}
+
+
+if(file_exists(BASE_DIR . '/functions/user.fields.php'))
+	require(BASE_DIR . '/functions/user.fields.php');
+
+function get_field_type()
+{
+	global $AVE_Template;
+	static $felder;
+	if(is_array($felder))return $felder;
+	$arr = get_defined_functions();
+
+	$AVE_Template->config_load(BASE_DIR . '/admin/lang/' . $_SESSION['admin_language'] . '/fields.txt', 'fields');
+	$felder_vars = $AVE_Template->get_config_vars();
+	$felder=Array();
+	foreach($arr['user'] as $k=>$v)
+	{
+		if(trim(substr($v,0,strlen('get_field_')))=='get_field_')
+		{
+			$d='';
+			$name=@$v('','name','','',0,$d);
+			$id=substr($v,strlen ('get_field_'));
+			if($name!=false && is_string($name))$felder[]=array('id' => $id,'name' => ($felder_vars[$name] ? $felder_vars[$name] : $name));
+		}	
+	}
+/*	$felder = array(
+	);
+*/
+	return $felder;
 }
 
 ?>

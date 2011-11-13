@@ -5,8 +5,6 @@
  *
  * @package AVE.cms
  * @subpackage module_SysBlock
- * @author Mad Den
- * @since 2.07
  * @filesource
  */
 
@@ -17,7 +15,7 @@ if (defined('ACP'))
     $modul['ModulName'] = 'Системные блоки';
     $modul['ModulPfad'] = 'sysblock';
     $modul['ModulVersion'] = '1.1';
-    $modul['description'] = 'Данный модуль предназначен для вывода системных блоков с произвольным содержимым в шаблоне или документе.<br /><br />Можно использовать PHP и тэги модулей<br /><br />Для вывода результатов используйте системный тег<br /><strong>[mod_sysblock:XXX]</strong>';
+    $modul['Beschreibung'] = 'Данный модуль предназначен для вывода системных блоков с произвольным содержимым в шаблоне или документе.<br /><br />Можно использовать PHP и тэги модулей<br /><br />Для вывода результатов используйте системный тег<br /><strong>[mod_sysblock:XXX]</strong>';
     $modul['Autor'] = 'Mad Den';
     $modul['MCopyright'] = '&copy; 2008 Overdoze Team';
     $modul['Status'] = 1;
@@ -41,13 +39,20 @@ function mod_sysblock($sysblock_id)
 
 	if (is_numeric($sysblock_id))
 	{
-		$return = $AVE_DB->Query("
-			SELECT sysblock_text
-			FROM " . PREFIX . "_modul_sysblock
-			WHERE id = '" . $sysblock_id . "'
-			LIMIT 1
-		")->GetCell();
-
+		
+        $cache_file=BASE_DIR.'/cache/sysblock-'.$sysblock_id.'.cache';
+        if(!file_exists(dirname($cache_file))) mkdir(dirname($cache_file),0766,true);
+        if(file_exists($cache_file)) {
+            $return=file_get_contents($cache_file);
+       } else {
+            $return = $AVE_DB->Query("
+                SELECT sysblock_text
+                FROM " . PREFIX . "_modul_sysblock
+                WHERE id = '" . $sysblock_id . "'
+                LIMIT 1
+            ")->GetCell();
+            file_put_contents($cache_file,$return);
+        } 
 		eval ('?>' . $return . '<?');
 	}
 }
@@ -57,8 +62,7 @@ function mod_sysblock($sysblock_id)
  */
 if (defined('ACP') && !empty($_REQUEST['moduleaction']))
 {
-	if (! (is_file(BASE_DIR . '/modules/sysblock/class.sysblock.php') &&
-		@require_once(BASE_DIR . '/modules/sysblock/class.sysblock.php'))) module_error();
+	if (! @require_once(BASE_DIR . '/modules/sysblock/class.sysblock.php')) module_error();
 
 	$tpl_dir   = BASE_DIR . '/modules/sysblock/templates/';
 	$lang_file = BASE_DIR . '/modules/sysblock/lang/' . $_SESSION['user_language'] . '.txt';
@@ -68,19 +72,22 @@ if (defined('ACP') && !empty($_REQUEST['moduleaction']))
 	switch ($_REQUEST['moduleaction'])
 	{
 		case '1':
-			Sysblock::sysblockList($tpl_dir);
+			sysblock::sysblockList($tpl_dir);
 			break;
 
 		case 'del':
-			Sysblock::sysblockDelete($_REQUEST['id']);
+			sysblock::sysblockDelete($_REQUEST['id']);
+			if(isset($_REQUEST['id'])) unlink(BASE_DIR.'/cache/sysblock-'.$_REQUEST['id'].'.cache'); 
 			break;
 
 		case 'edit':
-			Sysblock::sysblockEdit(isset($_REQUEST['id']) ? $_REQUEST['id'] : null, $tpl_dir);
+			sysblock::sysblockEdit(isset($_REQUEST['id']) ? $_REQUEST['id'] : null, $tpl_dir);
+			if(isset($_REQUEST['id'])) unlink(BASE_DIR.'/cache/sysblock-'.$_REQUEST['id'].'.cache'); 
 			break;
 
 		case 'saveedit':
-			Sysblock::sysblockSave(isset($_REQUEST['id']) ? $_REQUEST['id'] : null);
+			sysblock::sysblockSave(isset($_REQUEST['id']) ? $_REQUEST['id'] : null);
+			if(isset($_REQUEST['id'])) unlink(BASE_DIR.'/cache/sysblock-'.$_REQUEST['id'].'.cache'); 
 			break;
 	}
 }

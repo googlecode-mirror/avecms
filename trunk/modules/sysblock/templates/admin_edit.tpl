@@ -1,3 +1,5 @@
+<script src="{$ABS_PATH}admin/codemirror/js/codemirror.js" type="text/javascript"></script>
+
 <div class="pageHeaderTitle" style="padding-top:7px">
 	<div class="h_module">&nbsp;</div>
     <div class="HeaderTitle">
@@ -27,7 +29,11 @@
 		</tr>
 
 		<tr>
-			<td class="second">{$sysblock_text}</td>
+			<td class="second">			
+				<div class="coder_in">
+					<textarea  id="coder_sours" id="sysblock_text" name="sysblock_text" cols="120" rows="30">{$sysblock_text}</textarea>
+				</div>
+			</td>
 		</tr>
 
 		<tr>
@@ -42,3 +48,4 @@
 		</tr>
 	</table>
 </form>
+<script src="{$ABS_PATH}admin/codemirror/config.js" type="text/javascript"></script>

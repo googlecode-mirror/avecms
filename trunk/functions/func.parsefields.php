@@ -8,9 +8,9 @@
  */
 
 /**
- * Постраничная навигация документа
+ * РџРѕСЃС‚СЂР°РЅРёС‡РЅР°СЏ РЅР°РІРёРіР°С†РёСЏ РґРѕРєСѓРјРµРЅС‚Р°
  *
- * @param string $text	текст многострочной части документа
+ * @param string $text	С‚РµРєСЃС‚ РјРЅРѕРіРѕСЃС‚СЂРѕС‡РЅРѕР№ С‡Р°СЃС‚Рё РґРѕРєСѓРјРµРЅС‚Р°
  * @return string
  */
 function document_pagination($text)
@@ -42,9 +42,9 @@ function document_pagination($text)
 }
 
 /**
- * Формирование поля документа в соответствии с шаблоном отображения
+ * Р¤РѕСЂРјРёСЂРѕРІР°РЅРёРµ РїРѕР»СЏ РґРѕРєСѓРјРµРЅС‚Р° РІ СЃРѕРѕС‚РІРµС‚СЃС‚РІРёРё СЃ С€Р°Р±Р»РѕРЅРѕРј РѕС‚РѕР±СЂР°Р¶РµРЅРёСЏ
  *
- * @param int $field_id	идентификатор поля
+ * @param int $field_id	РёРґРµРЅС‚РёС„РёРєР°С‚РѕСЂ РїРѕР»СЏ
  * @return string
  */
 function document_get_field($field_id)
@@ -68,7 +68,7 @@ function document_get_field($field_id)
 	$rubric_field_template = trim($document_fields[$field_id]['rubric_field_template']);
 
 //	$field_value = parse_hide($field_value);
-//	$field_value = ($length != '') ? truncate_text($field_value, $length, '…', true) : $field_value;
+//	$field_value = ($length != '') ? truncate_text($field_value, $length, 'вЂ¦', true) : $field_value;
 
 	$func='get_field_'.$field_type;
 	if(!is_callable($func)) $func='get_field_default';
@@ -101,13 +101,13 @@ function document_get_field($field_id)
 }
 
 /**
- * Функция получения содержимого поля для обработки в шаблоне рубрики
+ * Р¤СѓРЅРєС†РёСЏ РїРѕР»СѓС‡РµРЅРёСЏ СЃРѕРґРµСЂР¶РёРјРѕРіРѕ РїРѕР»СЏ РґР»СЏ РѕР±СЂР°Р±РѕС‚РєРё РІ С€Р°Р±Р»РѕРЅРµ СЂСѓР±СЂРёРєРё
  *
- * @param int $field_id	идентификатор поля, для [tag:fld:12] $field_id = 12
- * @param int $length	необязательный параметр,
- * 						количество возвращаемых символов содержимого поля.
- * 						если данный параметр указать со знаком минус
- * 						содержимое поля будет очищено от HTML-тэгов.
+ * @param int $field_id	РёРґРµРЅС‚РёС„РёРєР°С‚РѕСЂ РїРѕР»СЏ, РґР»СЏ [tag:fld:12] $field_id = 12
+ * @param int $length	РЅРµРѕР±СЏР·Р°С‚РµР»СЊРЅС‹Р№ РїР°СЂР°РјРµС‚СЂ,
+ * 						РєРѕР»РёС‡РµСЃС‚РІРѕ РІРѕР·РІСЂР°С‰Р°РµРјС‹С… СЃРёРјРІРѕР»РѕРІ СЃРѕРґРµСЂР¶РёРјРѕРіРѕ РїРѕР»СЏ.
+ * 						РµСЃР»Рё РґР°РЅРЅС‹Р№ РїР°СЂР°РјРµС‚СЂ СѓРєР°Р·Р°С‚СЊ СЃРѕ Р·РЅР°РєРѕРј РјРёРЅСѓСЃ
+ * 						СЃРѕРґРµСЂР¶РёРјРѕРµ РїРѕР»СЏ Р±СѓРґРµС‚ РѕС‡РёС‰РµРЅРѕ РѕС‚ HTML-С‚СЌРіРѕРІ.
  * @return string
  */
 function document_get_field_value($field_id, $length = 0)
@@ -131,7 +131,7 @@ function document_get_field_value($field_id, $length = 0)
 				$field_value = trim($field_value);
 				$length = abs($length);
 			}
-			$field_value = truncate_text($field_value, $length, '…', true);
+			$field_value = truncate_text($field_value, $length, 'вЂ¦', true);
 		}
 	}
 
