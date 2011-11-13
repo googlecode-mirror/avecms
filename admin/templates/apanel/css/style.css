@@ -1133,14 +1133,14 @@ em {
 #noticeAreaLogin a {
 	padding:8px 11px 11px 46px;
 	float:left;
-	background:transparent url(../images/util/website-manager.jpg) no-repeat 2px 1px;
+	background:transparent url(../images/util/website-manager.jpg) no-repeat 2px 2px;
 	margin-left:4px;
 	display:block;
 }
 #noticeAreaLogin a:hover {
 	padding:8px 11px 11px 46px;
 	float: left;
-	background:transparent url(../images/util/website-manager.jpg) no-repeat 2px -37px;
+	background:transparent url(../images/util/website-manager.jpg) no-repeat 2px -36px;
 	margin-left:4px;
 	display:block;
 }
@@ -1148,14 +1148,14 @@ em {
 #noticeAreaProfileSection {
 	padding:8px 11px 11px 46px;
 	float: left;
-	background:transparent url(../images/util/user.jpg) no-repeat 2px 1px;
+	background:transparent url(../images/util/user.jpg) no-repeat 2px 2px;
 	margin-left:4px;
 }
 
 #noticeAreaReturnToSite {
 	padding:8px 11px 11px 46px;
 	float:left;
-	background:transparent url(../images/util/user-website.jpg) no-repeat 2px 0px;
+	background:transparent url(../images/util/user-website.jpg) no-repeat 2px 2px;
 	margin-left:4px;
 	display:block;
 }
@@ -1163,14 +1163,14 @@ em {
 .noticeAreaHelp a {
 	padding:8px 11px 11px 28px;
 	float:right;
-	background:transparent url(../images/util/help.jpg) no-repeat 2px 1px;
+	background:transparent url(../images/util/help.jpg) no-repeat 2px 2px;
 	margin-left:4px;
 	display:block;
 }
 .noticeAreaHelp a:hover {
 	padding:8px 11px 11px 28px;
 	float: right;
-	background:transparent url(../images/util/help.jpg) no-repeat 2px -37px;
+	background:transparent url(../images/util/help.jpg) no-repeat 2px -36px;
 	margin-left:4px;
 	display:block;
 }

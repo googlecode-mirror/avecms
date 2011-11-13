@@ -46,8 +46,7 @@
 		{include file="../eula/ru.tpl"}
 	</div>
 	<form action="install.php" method="post" enctype="multipart/form-data" name="s" id="s" onSubmit="return defaultagree(this)">
-		<input name="agreecheck" type="checkbox" onClick="agreesubmit(this)" />
-		<span class="small">{$la.lizagree}</span>
+		<label><input name="agreecheck" type="checkbox" onClick="agreesubmit(this)" />&nbsp;<span class="small">{$la.lizagree}</span></label>
 		<input name="force" type="hidden" id="force" value="{$smarty.request.force|escape|stripslashes}" />
 		<input name="step" type="hidden" id="step" value="2" />
 		<div align="center" class="go_buttons">

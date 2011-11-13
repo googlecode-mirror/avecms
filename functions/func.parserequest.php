@@ -7,6 +7,20 @@
  * @filesource
  */
 
+
+/**
+ * Возвращает исполненный php код в переменную
+ *
+ * @param int $id	идентификатор запроса
+ * @return string
+ */
+function eval2var( $expression ) {
+	ob_start();
+	eval( $expression );
+	$content = ob_get_clean();
+	return $content;
+}
+ 
 /**
  * Обработка условий запроса.
  * Возвращает строку условий в SQL-формате
@@ -20,7 +34,6 @@
 
 	$from = array();
 	$where = array();
-	$where1=array();
 	$retval = '';
 	$i = 0;
 
@@ -44,56 +57,64 @@
 		WHERE request_id = '" . $id . "'
 	");
 
+	//Насколько я понял это чтото было сделано для динамческого запроса ... тогда почему только на сравнение по '='?
 	if (!empty($_POST['req_' . $id]) && is_array($_POST['req_' . $id]))
 	{
 		foreach ($_POST['req_' . $id] as $fid => $val)
 		{
 			if (!($val != '' && isset($_SESSION['val_' . $fid]) && in_array($val, $_SESSION['val_' . $fid]))) continue;
 
-			if ($i) $from[] = "%%PREFIX%%_document_fields AS t$i";
-			if ($i) $where1[] = "t$i.document_id = t0.document_id";
-
-			$where[] = "t$i.rubric_field_id = $fid AND t$i.field_value = '$val'";
+			if ($i) $from[] = "%%PREFIX%%_document_fields AS t$i, ";
+			$where[] = "((t$i.document_id = t0.document_id)AND(t$i.rubric_field_id = $fid AND t$i.field_value = '$val'))";
 
 			++$i;
 		}
 	}
-
+        $i=1;
+		$vvv='';
 	while ($row_ak = $sql_ak->FetchRow())
 	{
 		$fid = $row_ak->condition_field_id;
 
 		if (isset($_POST['req_' . $id]) && isset($_POST['req_' . $id][$fid])) continue;
 
-		if ($i) $from[] = "%%PREFIX%%_document_fields AS t$i";
-		if ($i) $where1[] = "t$i.document_id = t0.document_id";
 
 		$val = $row_ak->condition_value;
+		
+		if($val>''){
+			$val = addcslashes ($val, "'");
+			if ($i) $from[] = "<?php \$vv=eval2var(' ?>$val<? '); echo \$vv>'' ? \"%%PREFIX%%_document_fields AS t$i,  \" : ''; ?>";
+			$vvv.="$val";
+			switch ($row_ak->condition_compare)
+			{
+				
+				case  'N<': $where[] = "<?php \$vv=eval2var(' ?>$val<? '); echo \$vv>'' ? \" ((t$i.document_id = a.id)AND(t$i.rubric_field_id = $fid AND CAST(t$i.field_value AS UNSIGNED) < '\$vv')) \" : ''; ?>"; break;
+				case  'N>': $where[] = "<?php \$vv=eval2var(' ?>$val<? '); echo \$vv>'' ? \" ((t$i.document_id = a.id)AND(t$i.rubric_field_id = $fid AND CAST(t$i.field_value AS UNSIGNED) > '\$vv')) \" : ''; ?>"; break;
+				case 'N<=': $where[] = "<?php \$vv=eval2var(' ?>$val<? '); echo \$vv>'' ? \" ((t$i.document_id = a.id)AND(t$i.rubric_field_id = $fid AND CAST(t$i.field_value AS UNSIGNED) <= '\$vv')) \" : ''; ?>"; break;
+				case 'N>=': $where[] = "<?php \$vv=eval2var(' ?>$val<? '); echo \$vv>'' ? \" ((t$i.document_id = a.id)AND(t$i.rubric_field_id = $fid AND CAST(t$i.field_value AS UNSIGNED) >= '\$vv')) \" : ''; ?>"; break;
 
-		switch ($row_ak->condition_compare)
-		{
-			case  '<': $where[] = "t$i.rubric_field_id = $fid AND t$i.field_value < '$val'"; break;
-			case  '>': $where[] = "t$i.rubric_field_id = $fid AND t$i.field_value > '$val'"; break;
-			case '<=': $where[] = "t$i.rubric_field_id = $fid AND t$i.field_value <= '$val'"; break;
-			case '>=': $where[] = "t$i.rubric_field_id = $fid AND t$i.field_value >= '$val'"; break;
-			case '==': $where[] = "t$i.rubric_field_id = $fid AND t$i.field_value = '$val'"; break;
-			case '!=': $where[] = "t$i.rubric_field_id = $fid AND t$i.field_value != '$val'"; break;
-			case '%%': $where[] = "t$i.rubric_field_id = $fid AND t$i.field_value LIKE '%$val%'"; break;
-			case  '%': $where[] = "t$i.rubric_field_id = $fid AND t$i.field_value LIKE '$val%'"; break;
-			case '--': $where[] = "t$i.rubric_field_id = $fid AND t$i.field_value NOT LIKE '%$val%'"; break;
-			case '!-': $where[] = "t$i.rubric_field_id = $fid AND t$i.field_value NOT LIKE '$val%'"; break;
+				case  '<': $where[] = "<?php \$vv=eval2var(' ?>$val<? '); echo \$vv>'' ? \" ((t$i.document_id = a.id)AND(t$i.rubric_field_id = $fid AND UPPER(t$i.field_value) < UPPER('\$vv'))) \" : ''; ?>"; break;
+				case  '>': $where[] = "<?php \$vv=eval2var(' ?>$val<? '); echo \$vv>'' ? \" ((t$i.document_id = a.id)AND(t$i.rubric_field_id = $fid AND UPPER(t$i.field_value) > UPPER('\$vv'))) \" : ''; ?>"; break;
+				case '<=': $where[] = "<?php \$vv=eval2var(' ?>$val<? '); echo \$vv>'' ? \" ((t$i.document_id = a.id)AND(t$i.rubric_field_id = $fid AND UPPER(t$i.field_value) <= UPPER('\$vv'))) \" : ''; ?>"; break;
+				case '>=': $where[] = "<?php \$vv=eval2var(' ?>$val<? '); echo \$vv>'' ? \" ((t$i.document_id = a.id)AND(t$i.rubric_field_id = $fid AND UPPER(t$i.field_value) >= UPPER('\$vv'))) \" : ''; ?>"; break;
+
+				case '==': $where[] = "<?php \$vv=eval2var(' ?>$val<? '); echo \$vv>'' ? \" ((t$i.document_id = a.id)AND(t$i.rubric_field_id = $fid AND UPPER(t$i.field_value) = UPPER('\$vv'))) \" : ''; ?>"; break;
+				case '!=': $where[] = "<?php \$vv=eval2var(' ?>$val<? '); echo \$vv>'' ? \" ((t$i.document_id = a.id)AND(t$i.rubric_field_id = $fid AND UPPER(t$i.field_value) != UPPER('\$vv')) \" : ''; ?>"; break;
+				case '%%': $where[] = "<?php \$vv=eval2var(' ?>$val<? '); echo \$vv>'' ? \" ((t$i.document_id = a.id)AND(t$i.rubric_field_id = $fid AND UPPER(t$i.field_value) LIKE UPPER('%\$vv%'))) \" : ''; ?>"; break;
+				case  '%': $where[] = "<?php \$vv=eval2var(' ?>$val<? '); echo \$vv>'' ? \" ((t$i.document_id = a.id)AND(t$i.rubric_field_id = $fid AND UPPER(t$i.field_value) LIKE UPPER('\$vv%'))) \" : ''; ?>"; break;
+				case '--': $where[] = "<?php \$vv=eval2var(' ?>$val<? '); echo \$vv>'' ? \" ((t$i.document_id = a.id)AND(t$i.rubric_field_id = $fid AND UPPER(t$i.field_value) NOT LIKE UPPER('%\$vv%'))) \" : ''; ?>"; break;
+				case '!-': $where[] = "<?php \$vv=eval2var(' ?>$val<? '); echo \$vv>'' ? \" ((t$i.document_id = a.id)AND(t$i.rubric_field_id = $fid AND UPPER(t$i.field_value) NOT LIKE UPPER('\$vv%'))) \" : ''; ?>"; break;
+			}
+
+			if ($i || $row_ak->condition_join == 'AND') ++$i;
 		}
-
-		if ($i || $row_ak->condition_join == 'AND') ++$i;
 	}
 
 	if (!empty($where))
 	{
-		$from = ' %%PREFIX%%_document_fields AS t0 '.($from ? ', ' : '') . implode(', ', $from);
-		$where1 = implode(' AND ', $where1);
-		$where =  (($i) ? implode(' AND ', $where) : '(' . implode(') OR (', $where) . ')');
-		if($where1)$where='('.$where1.') AND ('.$where.')';
-		$retval = serialize(array('from'=>$from,'where'=>' AND ((a.Id=t0.document_id) AND '.$where.') '));
+		$from = implode(' ', $from);
+		$where =  (($i) ? implode(' AND ', $where) : '(' . implode(') OR(', $where) . ')');
+		$retval = serialize(array('from'=>$from,'where'=>"<?php echo (trim(eval2var(' ?>$vvv<? '))>'' ? \" AND  \" :\"\") ?>".$where));
 	}
 
 	if (defined('ACP'))
@@ -107,6 +128,8 @@
 
 	return $retval;
 }
+
+ 
 
 /**
  * Функция обработки тэгов полей с использованием шаблонов
@@ -128,13 +151,18 @@ function request_get_document_field($rubric_id, $document_id, $maxlength = '')
 	$field_value = trim($document_fields[$rubric_id]['field_value']);
 	if ($field_value == '' && $document_fields[$rubric_id]['tpl_req_empty']) return '';
 
+//	if ($maxlength != 'more')
+//	{
+//		$field_value = strip_tags($field_value, '<br /><strong><em><p><i>');
+//	}
+
 	$func='get_field_'.$document_fields[$rubric_id]['rubric_field_type'];
-	if(is_callable($func)) {
-		$field_value=$func($field_value,'req',$field_id,$rubric_field_template,$tpl_field_empty,$maxlength,$document_fields,$rubric_id);
-	} else {
-		$field_value=get_field_default($field_value,'req',$field_id,$rubric_field_template,$tpl_field_empty,$maxlength,$document_fields,$rubric_id);
-	}
-	
+	if(is_callable($func)){
+			$field_value=$func($field_value,'req',"","","",$maxlength,$document_fields,$rubric_id);
+		}else{
+			$field_value=get_field_default($field_value,'req',"","","",$maxlength,$document_fields,$rubric_id);
+		}
+
 	if ($maxlength != '')
 	{
 		if ($maxlength == 'more')
@@ -147,7 +175,7 @@ function request_get_document_field($rubric_id, $document_id, $maxlength = '')
 			if ($maxlength < 0)
 			{
 				$field_value = str_replace(array("\r\n","\n","\r"), " ", $field_value);
-				$field_value = strip_tags($field_value, '<a>');
+				$field_value = strip_tags($field_value, "<a>");
 				$field_value = preg_replace('/  +/', ' ', $field_value);
 				$field_value = trim($field_value);
 				$maxlength = abs($maxlength);
@@ -156,6 +184,11 @@ function request_get_document_field($rubric_id, $document_id, $maxlength = '')
 		}
 	}
 
+/*	if (!$document_fields[$rubric_id]['tpl_req_empty'])
+	{
+		$field_value = preg_replace('/\[tag:parametr:(\d+)\]/ie', '@$field_param[\\1]', $document_fields[$rubric_id]['rubric_field_template_request']);
+	}
+*/
 	return $field_value;
 }
 
@@ -195,47 +228,48 @@ function request_parse($id)
 		$where_cond = (empty($_POST['req_' . $id]) && empty($_SESSION['doc_' . $AVE_Core->curentdoc->Id]['req_' . $id]))
 			? unserialize($row_ab->request_where_cond)
 			: unserialize(request_get_condition_sql_string($row_ab->Id));
-				
 		$where_cond['from'] = str_replace('%%PREFIX%%', PREFIX, $where_cond['from']);
 		$where_cond['where'] = str_replace('%%PREFIX%%', PREFIX, $where_cond['where']);
+		
+		// было во всех запросах убрано
+		// AND a.Id != '" . $AVE_Core->curentdoc->Id . "'
 		
 		if ($row_ab->request_show_pagination == 1)
 		{
 			if (!empty($AVE_Core->install_modules['comment']->Status))
 			{
-				
-				$num = $AVE_DB->Query("
+				$num = $AVE_DB->Query( eval2var( " ?> 
 					SELECT COUNT(*)
-					FROM " . PREFIX . "_documents AS a
-					".($where_cond['from'] ? ', '.$where_cond['from'] : '')."
+					FROM 
+					".($where_cond['from'] ? $where_cond['from'] : '')."
+					" . PREFIX . "_documents AS a
 					WHERE
 						a.Id != '1'
 					AND a.Id != '" . PAGE_NOT_FOUND_ID . "'
-					AND a.Id != '" . $AVE_Core->curentdoc->Id . "'
 					AND a.rubric_id = '" . $row_ab->rubric_id . "'
 					AND a.document_deleted != '1'
-					AND a.document_status = '1'
+					AND a.document_status != '0'
 					" . $where_cond['where'] . "
 					" . $doctime . "
-				")->GetCell();
-				
+				<?php " ) )->GetCell();
 			}
 			else
 			{
-				$num = $AVE_DB->Query("
+				$num = $AVE_DB->Query( eval2var( " ?>
 					SELECT COUNT(*)
-					FROM " . PREFIX . "_documents AS a
-					".($where_cond['from'] ? ', '.$where_cond['from'] : '')."
+					FROM 
+					".($where_cond['from'] ? $where_cond['from'] : '')."
+					" . PREFIX . "_documents AS a
 					WHERE
 						a.Id != '1'
 					AND a.Id != '" . PAGE_NOT_FOUND_ID . "'
-					AND a.Id != '" . $AVE_Core->curentdoc->Id . "'
+					
 					AND a.rubric_id = '" . $row_ab->rubric_id . "'
 					AND a.document_deleted != '1'
-					AND a.document_status = '1'
+					AND a.document_status != '0'
 					" . $where_cond['where'] . "
 					" . $doctime . "
-				")->GetCell();
+				<?php " ) )->GetCell();
 			}
 
 			$seiten = ceil($num / $limit);
@@ -258,7 +292,7 @@ function request_parse($id)
 
 		if (!empty($AVE_Core->install_modules['comment']->Status))
 		{
-			$q = $AVE_DB->Query("
+			$q = $AVE_DB->Query( eval2var( " ?>
 				SELECT
 					a.Id,
 					a.document_title,
@@ -268,7 +302,7 @@ function request_parse($id)
 					a.document_published,
 					COUNT(b.document_id) AS nums
 				FROM
-					".($where_cond['from'] ? $where_cond['from'].', ' : '')."
+					".($where_cond['from'] ? $where_cond['from'] : '')."
 					" . PREFIX . "_documents AS a
 				LEFT JOIN
 					" . PREFIX . "_modul_comment_info AS b
@@ -276,20 +310,19 @@ function request_parse($id)
 				WHERE
 					a.Id != '1'
 				AND a.Id != '" . PAGE_NOT_FOUND_ID . "'
-				AND a.Id != '" . $AVE_Core->curentdoc->Id . "'
 				AND a.rubric_id = '" . $row_ab->rubric_id . "'
 				AND a.document_deleted != '1'
-				AND a.document_status = '1'
+				AND a.document_status != '0'
 				" . $where_cond['where'] . "
 				" . $doctime . "
 				GROUP BY a.Id
 				ORDER BY " . $request_order_by . " " . $request_asc_desc . "
-				LIMIT " . $start . "," . $limit
-			);
+				LIMIT " . $start . "," . $limit .
+			" <?php " ) );
 		}
 		else
 		{
-			$q = $AVE_DB->Query("
+			$q = $AVE_DB->Query( eval2var( " ?>
 				SELECT
 					a.Id,
 					a.document_title,
@@ -298,20 +331,19 @@ function request_parse($id)
 					a.document_count_view,
 					a.document_published
 				FROM
+					".($where_cond['from'] ? $where_cond['from'] : '')."
 					" . PREFIX . "_documents AS a
-					".($where_cond['from'] ? ', '.$where_cond['from'] : '')."
 				WHERE
 					a.Id != '1'
 				AND a.Id != '" . PAGE_NOT_FOUND_ID . "'
-				AND a.Id != '" . $AVE_Core->curentdoc->Id . "'
 				AND a.rubric_id = '" . $row_ab->rubric_id . "'
 				AND a.document_deleted != '1'
-				AND a.document_status = '1'
+				AND a.document_status != '0'
 				" . $where_cond['where'] . "
 				" . $doctime . "
 				ORDER BY " . $request_order_by . " " . $request_asc_desc . "
-				LIMIT " . $start . "," . $limit
-			);
+				LIMIT " . $start . "," . $limit .
+			" <?php " ) );
 		}
 
 		if ($q->NumRows() > 0)
@@ -352,6 +384,7 @@ function request_parse($id)
 			$items .= preg_replace('/\[tag:rfld:(\d+)]\[(more|[0-9-]+)]/e', "request_get_document_field(\"$1\", $row->Id, \"$2\")", $item_template);
 			$items = str_replace('[tag:link]', $link, $items);
 			$items = str_replace('[tag:docid]', $row->Id, $items);
+			$items = str_replace('[tag:doctitle]', $row->document_title, $items);
 			$items = str_replace('[tag:docdate]', pretty_date(strftime(DATE_FORMAT, $row->document_published)), $items);
 			$items = str_replace('[tag:doctime]', pretty_date(strftime(TIME_FORMAT, $row->document_published)), $items);
 			$items = str_replace('[tag:docauthor]', get_username_by_id($row->document_author_id), $items);
@@ -372,7 +405,6 @@ function request_parse($id)
 
 		$return = $AVE_Core->coreModuleTagParse($return);
 	}
-
 	return $return;
 }
 
@@ -397,6 +429,7 @@ function request_parse($id)
  */
 function request_get_document_field_value($rubric_id, $document_id, $maxlength = 0)
 {
+
 	if (!is_numeric($rubric_id) || $rubric_id < 1 || !is_numeric($document_id) || $document_id < 1) return '';
 
 	$document_fields = get_document_fields($document_id);

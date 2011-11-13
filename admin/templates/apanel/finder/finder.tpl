@@ -6,6 +6,6 @@
 	
 	<script type="text/javascript" src="{$tpl_dir}/js/rle.js"></script>	
 	
-	<h1>Ôאיכמגûי לוםוהזונ</h1>	
+	<h1>Ôאיכמגûי לוםוהזונ</h1>	<br><br>
 	
 	<div id="finder">finder</div> 
