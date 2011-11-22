@@ -15,8 +15,8 @@ ob_start();
 define('BASE_DIR', str_replace("\\", "/", dirname(dirname(__FILE__))));
 
 define('MEDIAPATH', 'uploads');
-$max_size = 128; // максимальный размер миниатюры
-define('TH_PREF', 'thumbnail/th_' . $max_size . '_'); // префикс миниатюр
+$max_size = 128; // РјР°РєСЃРёРјР°Р»СЊРЅС‹Р№ СЂР°Р·РјРµСЂ РјРёРЅРёР°С‚СЋСЂС‹
+define('TH_PREF', 'thumbnail/th_' . $max_size . '_'); // РїСЂРµС„РёРєСЃ РјРёРЅРёР°С‚СЋСЂ
 
 define('UPDIR', BASE_DIR . '/' . MEDIAPATH);
 
@@ -36,7 +36,7 @@ if (isset($_REQUEST['thumb']) && $_REQUEST['thumb']==1)
 
 	$img->output();
 
-	// Проверяем наличие папки для миниатюр и если её нет - создаём
+	// РџСЂРѕРІРµСЂСЏРµРј РЅР°Р»РёС‡РёРµ РїР°РїРєРё РґР»СЏ РјРёРЅРёР°С‚СЋСЂ Рё РµСЃР»Рё РµС‘ РЅРµС‚ - СЃРѕР·РґР°С‘Рј
 	if (! file_exists(UPDIR . $img_dir . '/thumbnail'))
 	{
 		$oldumask = umask(0);
@@ -101,7 +101,7 @@ if ($_REQUEST['action']=='upload2')
 				$d_name = $expl[0] . date('dhi'). '.' . $expl[1];
 			}
 
-			reportLog($_SESSION['user_name'] . ' - загрузил изображение в ('. stripslashes($_REQUEST['pfad']) . $d_name. ')', 2, 2);
+			reportLog($_SESSION['user_name'] . ' - Р·Р°РіСЂСѓР·РёР» РёР·РѕР±СЂР°Р¶РµРЅРёРµ РІ ('. stripslashes($_REQUEST['pfad']) . $d_name. ')', 2, 2);
 
 			@move_uploaded_file($d_tmp, UPDIR . $_REQUEST['pfad'] . $d_name);
 			@chmod(UPDIR . $_REQUEST['pfad'] . $d_name, 0777);
@@ -183,7 +183,7 @@ if ($_REQUEST['action']=='delfile')
 		if (@unlink(UPDIR . $_REQUEST['file']))
 		{
 			$error = 0;
-			reportLog($_SESSION['user_name'] . ' - удалил изображение (' . stripslashes($_REQUEST['file'])  . ')', 2, 2);
+			reportLog($_SESSION['user_name'] . ' - СѓРґР°Р»РёР» РёР·РѕР±СЂР°Р¶РµРЅРёРµ (' . stripslashes($_REQUEST['file'])  . ')', 2, 2);
 
 			$img_path = $_REQUEST['file'];
 			$namepos = strrpos($img_path, '/');
@@ -294,7 +294,7 @@ if ($_REQUEST['action']=='list' || $_REQUEST['done']==1)
 
 	if (!empty($_REQUEST['newdir']) && !$new_dir_created && !file_exists($new_dir))
 	{
-		echo '<script>alert("Ошибка! Невозможно создать директорию на сервере. Пожалуйста, проверьте ваши настройки.");</script>';
+		echo '<script>alert("РћС€РёР±РєР°! РќРµРІРѕР·РјРѕР¶РЅРѕ СЃРѕР·РґР°С‚СЊ РґРёСЂРµРєС‚РѕСЂРёСЋ РЅР° СЃРµСЂРІРµСЂРµ. РџРѕР¶Р°Р»СѓР№СЃС‚Р°, РїСЂРѕРІРµСЂСЊС‚Рµ РІР°С€Рё РЅР°СЃС‚СЂРѕР№РєРё.");</script>';
 	}
 
 	$AVE_Template->assign('unable_delete', $unable_delete);
