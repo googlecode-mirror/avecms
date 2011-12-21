@@ -833,11 +833,11 @@ class AVE_Core
 	{
 		global $AVE_DB;
 
-		$get_url = iconv("UTF-8", "WINDOWS-1251//IGNORE//TRANSLIT", rawurldecode($get_url));
-		$get_url = substr($get_url, strlen(ABS_PATH));
-		if (substr($get_url, - strlen(URL_SUFF)) == URL_SUFF)
+		$get_url = rawurldecode($get_url);
+		$get_url = mb_substr($get_url, strlen(ABS_PATH));
+		if (mb_substr($get_url, - strlen(URL_SUFF)) == URL_SUFF)
 		{
-			$get_url = substr($get_url, 0, - strlen(URL_SUFF));
+			$get_url = mb_substr($get_url, 0, - strlen(URL_SUFF));
 		}
 
 		// Разбиваем строку пароаметров на отдельные части

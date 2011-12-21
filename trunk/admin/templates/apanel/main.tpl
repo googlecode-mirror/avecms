@@ -36,7 +36,6 @@
       <div id="noticeAreaReturnToSite"> <a target="_blank" href="../index.php?module=login&action=wys_adm&sub=off"><strong>{#MAIN_LINK_SITE#}</strong></a><br />
         <a target="_blank" href="../index.php?module=login&action=wys_adm&sub=on">{#MAIN_LINK_SITE_GO#}</a>
       </div>
-      <div class="noticeAreaHelp"> <a target="_blank" id="noticeHelpIcon" href="http://www.avecms.ru/index.php?help={$smarty.get.do|escape|default:'main'}&action={$smarty.get.action|escape|default:'no'}&mod={$smarty.get.mod|escape|default:'no'}&moduleaction={$smarty.get.moduleaction|escape|default:'no'}" title="РџРѕРјРѕС‰СЊ РїРѕ РґР°РЅРЅРѕРјСѓ СЂР°Р·РґРµР»Сѓ.">&nbsp;<br /></a>
       </div>
     </td>
   </tr>

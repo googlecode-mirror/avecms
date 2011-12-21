@@ -211,7 +211,7 @@ function get_editable_module()
 
 function get_mime_type($file)
 {
-	$file_extension = strtolower(substr(strrchr($file, '.'), 1));
+	$file_extension = strtolower(mb_substr(strrchr($file, '.'), 1));
 
 	switch ($file_extension)
 	{

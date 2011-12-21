@@ -73,23 +73,23 @@
 			$vvv.="$val";
 			switch ($row_ak->condition_compare)
 			{
-				case  'N<': $where[] = "<?php \$vv=eval2var(' ?>$val<? '); echo \$vv>'' ? \" ((t$i.document_id = a.id)AND(t$i.rubric_field_id = $fid AND t$i.field_number_value < '\$vv')) \" : ''; ?>"; break;
-				case  'N>': $where[] = "<?php \$vv=eval2var(' ?>$val<? '); echo \$vv>'' ? \" ((t$i.document_id = a.id)AND(t$i.rubric_field_id = $fid AND t$i.field_number_value > '\$vv')) \" : ''; ?>"; break;
-				case 'N<=': $where[] = "<?php \$vv=eval2var(' ?>$val<? '); echo \$vv>'' ? \" ((t$i.document_id = a.id)AND(t$i.rubric_field_id = $fid AND t$i.field_number_value <= '\$vv')) \" : ''; ?>"; break;
-				case 'N>=': $where[] = "<?php \$vv=eval2var(' ?>$val<? '); echo \$vv>'' ? \" ((t$i.document_id = a.id)AND(t$i.rubric_field_id = $fid AND t$i.field_number_value >= '\$vv')) \" : ''; ?>"; break;
-				case 'N==': $where[] = "<?php \$vv=eval2var(' ?>$val<? '); echo \$vv>'' ? \" ((t$i.document_id = a.id)AND(t$i.rubric_field_id = $fid AND t$i.field_number_value = '\$vv')) \" : ''; ?>"; break;
+				case  'N<': $where[] = "<?php \$vv=eval2var(' ?>$val<? '); echo \$vv>'' ? \"  ".$row_ak->condition_join."((t$i.document_id = a.id)AND(t$i.rubric_field_id = $fid AND t$i.field_number_value < '\$vv')) \" : ''; ?>"; break;
+				case  'N>': $where[] = "<?php \$vv=eval2var(' ?>$val<? '); echo \$vv>'' ? \"  ".$row_ak->condition_join."((t$i.document_id = a.id)AND(t$i.rubric_field_id = $fid AND t$i.field_number_value > '\$vv')) \" : ''; ?>"; break;
+				case 'N<=': $where[] = "<?php \$vv=eval2var(' ?>$val<? '); echo \$vv>'' ? \"  ".$row_ak->condition_join."((t$i.document_id = a.id)AND(t$i.rubric_field_id = $fid AND t$i.field_number_value <= '\$vv')) \" : ''; ?>"; break;
+				case 'N>=': $where[] = "<?php \$vv=eval2var(' ?>$val<? '); echo \$vv>'' ? \"  ".$row_ak->condition_join."((t$i.document_id = a.id)AND(t$i.rubric_field_id = $fid AND t$i.field_number_value >= '\$vv')) \" : ''; ?>"; break;
+				case 'N==': $where[] = "<?php \$vv=eval2var(' ?>$val<? '); echo \$vv>'' ? \" ".$row_ak->condition_join."((t$i.document_id = a.id)AND(t$i.rubric_field_id = $fid AND t$i.field_number_value = '\$vv')) \" : ''; ?>"; break;
 
-				case  '<': $where[] = "<?php \$vv=eval2var(' ?>$val<? '); echo \$vv>'' ? \" ((t$i.document_id = a.id)AND(t$i.rubric_field_id = $fid AND UPPER(t$i.field_value) < UPPER('\$vv'))) \" : ''; ?>"; break;
-				case  '>': $where[] = "<?php \$vv=eval2var(' ?>$val<? '); echo \$vv>'' ? \" ((t$i.document_id = a.id)AND(t$i.rubric_field_id = $fid AND UPPER(t$i.field_value) > UPPER('\$vv'))) \" : ''; ?>"; break;
-				case '<=': $where[] = "<?php \$vv=eval2var(' ?>$val<? '); echo \$vv>'' ? \" ((t$i.document_id = a.id)AND(t$i.rubric_field_id = $fid AND UPPER(t$i.field_value) <= UPPER('\$vv'))) \" : ''; ?>"; break;
-				case '>=': $where[] = "<?php \$vv=eval2var(' ?>$val<? '); echo \$vv>'' ? \" ((t$i.document_id = a.id)AND(t$i.rubric_field_id = $fid AND UPPER(t$i.field_value) >= UPPER('\$vv'))) \" : ''; ?>"; break;
+				case  '<': $where[] = "<?php \$vv=eval2var(' ?>$val<? '); echo \$vv>'' ? \" ".$row_ak->condition_join."((t$i.document_id = a.id)AND(t$i.rubric_field_id = $fid AND UPPER(t$i.field_value) < UPPER('\$vv'))) \" : ''; ?>"; break;
+				case  '>': $where[] = "<?php \$vv=eval2var(' ?>$val<? '); echo \$vv>'' ? \" ".$row_ak->condition_join."((t$i.document_id = a.id)AND(t$i.rubric_field_id = $fid AND UPPER(t$i.field_value) > UPPER('\$vv'))) \" : ''; ?>"; break;
+				case '<=': $where[] = "<?php \$vv=eval2var(' ?>$val<? '); echo \$vv>'' ? \" ".$row_ak->condition_join."((t$i.document_id = a.id)AND(t$i.rubric_field_id = $fid AND UPPER(t$i.field_value) <= UPPER('\$vv'))) \" : ''; ?>"; break;
+				case '>=': $where[] = "<?php \$vv=eval2var(' ?>$val<? '); echo \$vv>'' ? \" ".$row_ak->condition_join."((t$i.document_id = a.id)AND(t$i.rubric_field_id = $fid AND UPPER(t$i.field_value) >= UPPER('\$vv'))) \" : ''; ?>"; break;
 
-				case '==': $where[] = "<?php \$vv=eval2var(' ?>$val<? '); echo \$vv>'' ? \" ((t$i.document_id = a.id)AND(t$i.rubric_field_id = $fid AND UPPER(t$i.field_value) = UPPER('\$vv'))) \" : ''; ?>"; break;
-				case '!=': $where[] = "<?php \$vv=eval2var(' ?>$val<? '); echo \$vv>'' ? \" ((t$i.document_id = a.id)AND(t$i.rubric_field_id = $fid AND UPPER(t$i.field_value) != UPPER('\$vv')) \" : ''; ?>"; break;
-				case '%%': $where[] = "<?php \$vv=eval2var(' ?>$val<? '); echo \$vv>'' ? \" ((t$i.document_id = a.id)AND(t$i.rubric_field_id = $fid AND UPPER(t$i.field_value) LIKE UPPER('%\$vv%'))) \" : ''; ?>"; break;
-				case  '%': $where[] = "<?php \$vv=eval2var(' ?>$val<? '); echo \$vv>'' ? \" ((t$i.document_id = a.id)AND(t$i.rubric_field_id = $fid AND UPPER(t$i.field_value) LIKE UPPER('\$vv%'))) \" : ''; ?>"; break;
-				case '--': $where[] = "<?php \$vv=eval2var(' ?>$val<? '); echo \$vv>'' ? \" ((t$i.document_id = a.id)AND(t$i.rubric_field_id = $fid AND UPPER(t$i.field_value) NOT LIKE UPPER('%\$vv%'))) \" : ''; ?>"; break;
-				case '!-': $where[] = "<?php \$vv=eval2var(' ?>$val<? '); echo \$vv>'' ? \" ((t$i.document_id = a.id)AND(t$i.rubric_field_id = $fid AND UPPER(t$i.field_value) NOT LIKE UPPER('\$vv%'))) \" : ''; ?>"; break;
+				case '==': $where[] = "<?php \$vv=eval2var(' ?>$val<? '); echo \$vv>'' ? \" ".$row_ak->condition_join."((t$i.document_id = a.id)AND(t$i.rubric_field_id = $fid AND UPPER(t$i.field_value) = UPPER('\$vv'))) \" : ''; ?>"; break;
+				case '!=': $where[] = "<?php \$vv=eval2var(' ?>$val<? '); echo \$vv>'' ? \" ".$row_ak->condition_join."((t$i.document_id = a.id)AND(t$i.rubric_field_id = $fid AND UPPER(t$i.field_value) != UPPER('\$vv')) \" : ''; ?>"; break;
+				case '%%': $where[] = "<?php \$vv=eval2var(' ?>$val<? '); echo \$vv>'' ? \" ".$row_ak->condition_join."((t$i.document_id = a.id)AND(t$i.rubric_field_id = $fid AND UPPER(t$i.field_value) LIKE UPPER('%\$vv%'))) \" : ''; ?>"; break;
+				case  '%': $where[] = "<?php \$vv=eval2var(' ?>$val<? '); echo \$vv>'' ? \" (".$row_ak->condition_join."(t$i.document_id = a.id)AND(t$i.rubric_field_id = $fid AND UPPER(t$i.field_value) LIKE UPPER('\$vv%'))) \" : ''; ?>"; break;
+				case '--': $where[] = "<?php \$vv=eval2var(' ?>$val<? '); echo \$vv>'' ? \" ".$row_ak->condition_join."((t$i.document_id = a.id)AND(t$i.rubric_field_id = $fid AND UPPER(t$i.field_value) NOT LIKE UPPER('%\$vv%'))) \" : ''; ?>"; break;
+				case '!-': $where[] = "<?php \$vv=eval2var(' ?>$val<? '); echo \$vv>'' ? \" ".$row_ak->condition_join."((t$i.document_id = a.id)AND(t$i.rubric_field_id = $fid AND UPPER(t$i.field_value) NOT LIKE UPPER('\$vv%'))) \" : ''; ?>"; break;
 			}
 
 			if ($i || $row_ak->condition_join == 'AND') ++$i;
@@ -99,8 +99,9 @@
 	if (!empty($where))
 	{
 		$from = implode(' ', $from);
-		$where =  (($i) ? implode(' AND ', $where) : '(' . implode(') OR(', $where) . ')');
-		$retval = serialize(array('from'=>$from,'where'=>"<?php echo (trim(eval2var(' ?>$vvv<? '))>'' ? \" AND  \" :\"\") ?>".$where));
+		//$where =  (($i) ? implode(' AND ', $where) : '(' . implode(') OR(', $where) . ')');
+		$where =  implode($where);
+		$retval = serialize(array('from'=>$from,'where'=>"<?php echo (trim(eval2var(' ?>$vvv<? '))>'' ? \" AND(1=1)  \" :\"\") ?>".$where));
 	}
 
 	if (defined('ACP'))
@@ -284,7 +285,7 @@ function request_parse($id)
 
 		if (!empty($AVE_Core->install_modules['comment']->Status))
 		{
-			$q = $AVE_DB->Query( eval2var( " ?>
+			$q =  " ?>
 				SELECT
 					a.Id,
 					a.document_title,
@@ -310,11 +311,11 @@ function request_parse($id)
 				GROUP BY a.Id
 				ORDER BY " . $request_order_by . " " . $request_asc_desc . "
 				LIMIT " . $start . "," . $limit .
-			" <?php " ),$ttl,'rub_'.$row_ab->rubric_id);
+			" <?php ";
 		}
 		else
 		{
-			$q = $AVE_DB->Query( eval2var( " ?>
+			$q =  " ?>
 				SELECT
 					a.Id,
 					a.document_title,
@@ -336,9 +337,10 @@ function request_parse($id)
 				" . $doctime . "
 				ORDER BY " . $request_order_by . " " . $request_asc_desc . "
 				LIMIT " . $start . "," . $limit .
-			" <?php " ),$ttl,'rub_'.$row_ab->rubric_id);
+			" <?php ";
 		}
-
+		$q=eval2var($q);
+		$q=$AVE_DB->Query($q,$ttl,'rub_'.$row_ab->rubric_id);
 		if ($q->NumRows() > 0)
 		{
 			$main_template = preg_replace('/\[tag:if_empty](.*?)\[\/tag:if_empty]/si', '', $main_template);
@@ -377,8 +379,8 @@ function request_parse($id)
 			if(!file_exists($cachefile_docid))
 				{
 					$item = preg_replace('/\[tag:rfld:(\d+)]\[(more|esc|[0-9-]+)]/e', "request_get_document_field(\"$1\", $row->Id, \"$2\")", $item_template);
-					if(!file_exists(dirname($cachefile_docid)))mkdir(dirname($cachefile_docid),0777,true);
-					file_put_contents($cachefile_docid,$item);
+					//if(!file_exists(dirname($cachefile_docid)))mkdir(dirname($cachefile_docid),0777,true);
+					//file_put_contents($cachefile_docid,$item);
 				}
 				else
 				{

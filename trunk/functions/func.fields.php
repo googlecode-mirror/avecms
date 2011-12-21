@@ -778,7 +778,7 @@ function field_image_multi_add(field_id, field_value, img_path, alt){
 		element=document.createElement("div");
 		element.id=img_id;
 		element.innerHTML=html;
-		document.getElementById("feld_{$field_id}").appendChild(element);
+		document.getElementById("feld_"+field_id).appendChild(element);
 }
 
 function field_image_multi_delete(field_id, id){
