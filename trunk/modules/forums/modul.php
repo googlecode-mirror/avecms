@@ -4,10 +4,10 @@ if(!defined('BASE_DIR')) exit;
 
 if (defined('ACP'))
 {
-    $modul['ModulName'] = 'Форумы';
+    $modul['ModulName'] = 'Р¤РѕСЂСѓРјС‹';
     $modul['ModulPfad'] = 'forums';
     $modul['ModulVersion'] = '1.2';
-    $modul['description'] = 'Система форумов для cpengine, разработанная компанией dream4';
+    $modul['description'] = 'РЎРёСЃС‚РµРјР° С„РѕСЂСѓРјРѕРІ РґР»СЏ cpengine, СЂР°Р·СЂР°Р±РѕС‚Р°РЅРЅР°СЏ РєРѕРјРїР°РЅРёРµР№ dream4';
     $modul['Autor'] = 'Bj&ouml;rn Wunderlich';
     $modul['MCopyright'] = '&copy; 2006 dream4';
     $modul['Status'] = 1;
@@ -15,7 +15,7 @@ if (defined('ACP'))
     $modul['ModulTemplate'] = 1;
     $modul['AdminEdit'] = 1;
     $modul['ModulFunktion'] = null;
-    $modul['CpEngineTagTpl'] = '<b>Ссылка:</b> <a target="_blank" href="../index.php?module=forums">index.php?module=forums</a>';
+    $modul['CpEngineTagTpl'] = '<b>РЎСЃС‹Р»РєР°:</b> <a target="_blank" href="../index.php?module=forums">index.php?module=forums</a>';
     $modul['CpEngineTag'] = null;
     $modul['CpPHPTag'] = null;
 }
@@ -54,7 +54,7 @@ if( (isset($_REQUEST['module']) && $_REQUEST['module'] == 'forums') || (isset($_
 	if (empty($_REQUEST['show'])) $_REQUEST['show'] = 'showforums';
 
 	//=======================================================
-	// Паблик
+	// РџР°Р±Р»РёРє
 	//=======================================================
 	if (!defined('ACP') && isset($_REQUEST['module']) && $_REQUEST['module'] == 'forums')
 	{
@@ -291,7 +291,7 @@ if( (isset($_REQUEST['module']) && $_REQUEST['module'] == 'forums') || (isset($_
 
 
 	//=======================================================
-	// Админка
+	// РђРґРјРёРЅРєР°
 	//=======================================================
 	if(defined('ACP')
 		&& !empty($_REQUEST['moduleaction'])

@@ -19,7 +19,7 @@ h2,h3,h4                        {display:inline}
 
 @media screen {
 /* -----------------------------
- =основные
+ =РѕСЃРЅРѕРІРЅС‹Рµ
 ----------------------------- */
 *                               {margin:0;padding:0}
 html                            {height:100%}
@@ -71,7 +71,7 @@ small, .small                   {font-size:11px}
 
 
 /* -----------------------------
- =разметка
+ =СЂР°Р·РјРµС‚РєР°
 ----------------------------- */
 #div_a                          {background:url(../images/gr_01.png) repeat-x 0 -105px;width:100%;text-align:center;padding-bottom:106px}
 #div_c                          {width:1000px;text-align:left;background:url(../images/fon_logo.jpg) no-repeat 10px -86px;margin:auto}
@@ -97,7 +97,7 @@ small, .small                   {font-size:11px}
 
 
 /* -----------------------------
- =вертикальное меню
+ =РІРµСЂС‚РёРєР°Р»СЊРЅРѕРµ РјРµРЅСЋ
 ----------------------------- */
 .menu_v                         {width:100%;margin-bottom:10px}
 .menu_v ul                      {display:block;margin:0;padding:0;overflow:hidden}
@@ -118,7 +118,7 @@ small, .small                   {font-size:11px}
 
 
 /* -----------------------------
- =хлебные крошки
+ =С…Р»РµР±РЅС‹Рµ РєСЂРѕС€РєРё
 ----------------------------- */
 .breadcrumb                     {float:left;position:absolute;left:310px;top:13px;z-index:30}
 .breadcrumb ul                  {display:inline;font-size:11px}
@@ -135,7 +135,7 @@ small, .small                   {font-size:11px}
 
 
 /* -----------------------------
- =горизонтальное меню
+ =РіРѕСЂРёР·РѕРЅС‚Р°Р»СЊРЅРѕРµ РјРµРЅСЋ
 ----------------------------- */
 .menu_h                         {width:690px;display:block;line-height:normal;height:36px;background:url(../images/top_menu_buttons.png) no-repeat 690px top;padding-right:20px;overflow:hidden}
 .menu_h ul                      {display:inline;list-style:none;margin:0;padding:0}
@@ -156,7 +156,7 @@ small, .small                   {font-size:11px}
 
 
 /* -----------------------------
- =основное содержимое
+ =РѕСЃРЅРѕРІРЅРѕРµ СЃРѕРґРµСЂР¶РёРјРѕРµ
 ----------------------------- */
 #content                        {float:right;min-height:227px;width:667px;position:relative;padding:20px 15px 10px 35px}
 #content .bull                  {font-size:14px;color:#ccc}
@@ -169,7 +169,7 @@ small, .small                   {font-size:11px}
 
 
 /* -----------------------------
- =блоки левой колонки
+ =Р±Р»РѕРєРё Р»РµРІРѕР№ РєРѕР»РѕРЅРєРё
 ----------------------------- */
 .searchbox                      {background:url(../images/module-left.png) no-repeat left bottom;text-align:left;clear:both;padding:0 0 25px 15px;font-size:11px}
 .searchbox h3                   {display:block;font-size:14px;font-weight:700;color:#789E3A;border-bottom:1px solid #CCC;padding-bottom:3px}
@@ -180,7 +180,7 @@ small, .small                   {font-size:11px}
 
 
 /* -----------------------------
- =прочее
+ =РїСЂРѕС‡РµРµ
 ----------------------------- */
 .noborder                       {background:none;border-width:0}
 .micro                          {color:#DDD;font-size:9px}
@@ -199,7 +199,7 @@ small, .small                   {font-size:11px}
 
 
 /* -----------------------------
- =POPUP блок
+ =POPUP Р±Р»РѕРє
 ----------------------------- */
 #body_popup                     {font-size:11px;text-align:left;background-color:#fff;padding:10px;margin:8px}
 #module_intro                   {color:#999}
@@ -213,14 +213,14 @@ small, .small                   {font-size:11px}
 
 
 /* -----------------------------
- =модуль Вопрос-ответ
+ =РјРѕРґСѓР»СЊ Р’РѕРїСЂРѕСЃ-РѕС‚РІРµС‚
 ----------------------------- */
 .mod_faq_quest                  {cursor:pointer;color:#5E7C2D;text-decoration:underline}
 .mod_faq_ans                    {display:block;margin:5px 0;padding:10px 10px 10px 15px;font-size:11px;color:#666;border-top:0 solid #799F3B;border-right:0 solid #799F3B;border-bottom:0 solid #799F3B;border-left:3px solid #799F3B;background:#E8E8E8}
 
 
 /* -----------------------------
- =Модуль Поиск
+ =РњРѕРґСѓР»СЊ РџРѕРёСЃРє
 ----------------------------- */
 .mod_search_text                {color:#000;padding:8px}
 .mod_search_footernavi          {border-bottom:0 solid #ccc;margin-bottom:5px;padding:2px}
@@ -231,7 +231,7 @@ small, .small                   {font-size:11px}
 
 
 /* -----------------------------
- =модуль Галерея
+ =РјРѕРґСѓР»СЊ Р“Р°Р»РµСЂРµСЏ
 ----------------------------- */
 .mod_gal_imgcontainer           {float:left;border:1px solid #ddd;margin:3px;padding:0}
 .mod_gal_header                 {color:#333;background-color:#F4F4F4;border-bottom:1px solid #ddd;padding:5px}
@@ -240,7 +240,7 @@ small, .small                   {font-size:11px}
 
 
 /* -----------------------------
- =модуль Комментарии
+ =РјРѕРґСѓР»СЊ РљРѕРјРјРµРЅС‚Р°СЂРёРё
 ----------------------------- */
 .mod_comment_box                {margin:0 0 5px 0}
 .mod_comment_ans_box            {padding:0 0 0 60px;background:url(../images/answer.gif) no-repeat 20px top}
@@ -253,7 +253,7 @@ small, .small                   {font-size:11px}
 
 
 /* -----------------------------
- =навигация по страницам
+ =РЅР°РІРёРіР°С†РёСЏ РїРѕ СЃС‚СЂР°РЅРёС†Р°Рј
 ----------------------------- */
 .page_navigation,
 a.page_navigation               {color:#fff;border:1px solid #709536;background-color:#709536;text-decoration:none;padding:1px 4px;display:inline-block}
@@ -263,7 +263,7 @@ a.page_navigation:hover         {background-color:#A8D060}
 
 
 /* -----------------------------
- =всплывающая подсказка
+ =РІСЃРїР»С‹РІР°СЋС‰Р°СЏ РїРѕРґСЃРєР°Р·РєР°
 ----------------------------- */
 .popup span                     {display:none}
 .popup:hover                    {position:relative;display:inline}
@@ -271,7 +271,7 @@ a.page_navigation:hover         {background-color:#A8D060}
 
 
 /* -----------------------------
- =модуль Опросы
+ =РјРѕРґСѓР»СЊ РћРїСЂРѕСЃС‹
 ----------------------------- */
 .mod_poll_table                 {background:#DEDEDE;padding:5px}
 .mod_poll_comments              {border:1px solid #DEDEDE;margin:5px;padding:5px}
@@ -280,7 +280,7 @@ a.page_navigation:hover         {background-color:#A8D060}
 
 
 /* -----------------------------
- =модуль Загрузки
+ =РјРѕРґСѓР»СЊ Р—Р°РіСЂСѓР·РєРё
 ----------------------------- */
 #mod_download                                 {}
 #mod_download h1                              {}
@@ -329,7 +329,7 @@ a.page_navigation:hover         {background-color:#A8D060}
 
 
 /* -----------------------------
- =модуль Форумы
+ =РјРѕРґСѓР»СЊ Р¤РѕСЂСѓРјС‹
 ----------------------------- */
 #forums_pop                     {text-align:left;margin:5px}
 .forum_attachment_box           {border:1px inset #dedede;margin:10px;padding:3px}
@@ -364,7 +364,7 @@ a.forum_topicheader:hover       {color:#fff;font-weight:700;text-decoration:none
 
 
 /* -----------------------------
- =модуль Контакты
+ =РјРѕРґСѓР»СЊ РљРѕРЅС‚Р°РєС‚С‹
 ----------------------------- */
 #mod_contact_box                {position:relative;padding:15px}
 #mod_contact_box label          {font-style:italic}
@@ -376,7 +376,7 @@ a.forum_topicheader:hover       {color:#fff;font-weight:700;text-decoration:none
 
 
 /* -----------------------------
- =модуль Магазин
+ =РјРѕРґСѓР»СЊ РњР°РіР°Р·РёРЅ
 ----------------------------- */
 .mod_shop_header                {position:relative}
 .mod_shop_header h2             {color:#eec00a}
@@ -458,7 +458,7 @@ a.forum_topicheader:hover       {color:#fff;font-weight:700;text-decoration:none
 
 
 /* -----------------------------
- =анонсы новостей
+ =Р°РЅРѕРЅСЃС‹ РЅРѕРІРѕСЃС‚РµР№
 ----------------------------- */
 .news_ticker                    {float:left;margin:8px 0 24px 0;width:667px}
 .news_ticker dl                 {float:left;width:667px;margin:0;padding:8px 0;display:inline}
@@ -489,7 +489,7 @@ a.forum_topicheader:hover       {color:#fff;font-weight:700;text-decoration:none
 
 
 /* -----------------------------
- =OVERLIB-Контейнер (Всплывающая подсказка)
+ =OVERLIB-РљРѕРЅС‚РµР№РЅРµСЂ (Р’СЃРїР»С‹РІР°СЋС‰Р°СЏ РїРѕРґСЃРєР°Р·РєР°)
 ----------------------------- */
 .overlib_body                   {font-size:11px;background-color:#eee;color:#789e3a;text-align:left;padding:8px 0 3px 8px;border:1px solid #999}
 .overlib_body input             {margin-bottom:5px}
@@ -507,7 +507,7 @@ a.forum_topicheader:hover       {color:#fff;font-weight:700;text-decoration:none
 
 
 /* -----------------------------
- =Яндекс сервер
+ =РЇРЅРґРµРєСЃ СЃРµСЂРІРµСЂ
 ----------------------------- */
 table.search                        {background:#fc0;margin-top:.5em}
 table.search td.arr                 {padding:0;background-image:url(../images/arr-t.gif);background-repeat:no-repeat}

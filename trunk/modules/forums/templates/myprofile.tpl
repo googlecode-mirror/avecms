@@ -28,7 +28,7 @@
 	{$r.BenutzerName|stripslashes}
 	{else}
 	<input name="BenutzerName" type="text" id="BenutzerName" value="{$r.BenutzerName|stripslashes}" size="40">
-	{if $changenick_once==1}Kann nur 1 x ge‰ndert werden!{/if}
+	{if $changenick_once==1}Kann nur 1 x ge–¥ndert werden!{/if}
 	{/if}
 
 	</td>

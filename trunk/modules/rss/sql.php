@@ -1,7 +1,7 @@
 <?php
 
 /**
- * AVE.cms - Модуль RSS
+ * AVE.cms - РњРѕРґСѓР»СЊ RSS
  *
  * @package AVE.cms
  * @subpackage module_RSS
@@ -10,7 +10,7 @@
  */
 
 /**
- * mySQL-запросы для установки, обновления и удаления модуля
+ * mySQL-Р·Р°РїСЂРѕСЃС‹ РґР»СЏ СѓСЃС‚Р°РЅРѕРІРєРё, РѕР±РЅРѕРІР»РµРЅРёСЏ Рё СѓРґР°Р»РµРЅРёСЏ РјРѕРґСѓР»СЏ
  */
 
 $modul_sql_install = array();
@@ -30,7 +30,7 @@ $modul_sql_install[] = "CREATE TABLE CPPREFIX_modul_rss (
   `rss_item_on_page` tinyint(1) unsigned NOT NULL,
   `rss_description_lenght` smallint(3) unsigned NOT NULL,
   PRIMARY KEY  (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=cp1251;";
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 
 $modul_sql_update[] = "UPDATE CPPREFIX_module SET CpEngineTag = '" . $modul['CpEngineTag'] . "', CpPHPTag = '" . $modul['CpPHPTag'] . "', Version = '" . $modul['ModulVersion'] . "' WHERE ModulPfad = '" . $modul['ModulPfad'] . "' LIMIT 1;";
 

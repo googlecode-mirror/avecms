@@ -1,7 +1,7 @@
 <?php
 
 /**
- * AVE.cms - Ìîäóëü Àâòîðèçàöèÿ
+ * AVE.cms - ÐœÐ¾Ð´ÑƒÐ»ÑŒ ÐÐ²Ñ‚Ð¾Ñ€Ð¸Ð·Ð°Ñ†Ð¸Ñ
  *
  * @package AVE.cms
  * @subpackage module_Login
@@ -10,7 +10,7 @@
  */
 
 /**
- * mySQL-çàïðîñû äëÿ óñòàíîâêè, îáíîâëåíèÿ è óäàëåíèÿ ìîäóëÿ
+ * mySQL-Ð·Ð°Ð¿Ñ€Ð¾ÑÑ‹ Ð´Ð»Ñ ÑƒÑÑ‚Ð°Ð½Ð¾Ð²ÐºÐ¸, Ð¾Ð±Ð½Ð¾Ð²Ð»ÐµÐ½Ð¸Ñ Ð¸ ÑƒÐ´Ð°Ð»ÐµÐ½Ð¸Ñ Ð¼Ð¾Ð´ÑƒÐ»Ñ
  */
 
 $modul_sql_install = array();
@@ -30,7 +30,7 @@ $modul_sql_install[] = "CREATE TABLE CPPREFIX_modul_login (
   login_require_firstname enum('0','1') NOT NULL default '0',
   login_require_lastname enum('0','1') NOT NULL default '0',
   PRIMARY KEY  (Id)
-) ENGINE=MyISAM DEFAULT CHARSET=cp1251;";
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 
 $modul_sql_install[] = "INSERT INTO CPPREFIX_modul_login VALUES (1, 'email', 1, 1, 'domain.ru', 'name@domain.ru',0,0,0);";
 

@@ -1,12 +1,12 @@
 <table align="center" cellpadding="0" cellspacing="0" width="98%">
         <tr>
             <td align="center"  class="mod_download_dlbox">
-               <h2>Взнос на открытие файла</h2>
+               <h2>Р’Р·РЅРѕСЃ РЅР° РѕС‚РєСЂС‹С‚РёРµ С„Р°Р№Р»Р°</h2>
             </td>
         </tr>
         <tr>
             <td align="center">
-			         Взнос на открытие файла {$file_name} {$fs} -- <a href="{$back_link}">Вернуться к файлу</a> --
+			         Р’Р·РЅРѕСЃ РЅР° РѕС‚РєСЂС‹С‚РёРµ С„Р°Р№Р»Р° {$file_name} {$fs} -- <a href="{$back_link}">Р’РµСЂРЅСѓС‚СЊСЃСЏ Рє С„Р°Р№Р»Сѓ</a> --
             </td>
         </tr>
     </table>

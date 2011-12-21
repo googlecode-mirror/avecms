@@ -31,6 +31,7 @@ function user_login($login, $password, $attach_ip = 0, $keep_in = 0, $sleep = 0)
 		LIMIT 1
 	")->FetchRow();
 
+
 	if (! (isset($row->password) && $row->password == md5(md5($password . $row->salt)))) return 2;
 	if ($row->status != '1') return 3;
 
@@ -82,10 +83,10 @@ function user_logout()
 {
 	global $cookie_domain;
 
-	// уничтожаем куку
+	// СѓРЅРёС‡С‚РѕР¶Р°РµРј РєСѓРєСѓ
 	@setcookie('auth', '', 0, ABS_PATH, $cookie_domain);
 
-	// уничтожаем сессию
+	// СѓРЅРёС‡С‚РѕР¶Р°РµРј СЃРµСЃСЃРёСЋ
 	@session_destroy();
 	session_unset();
 	$_SESSION = array();
@@ -104,8 +105,8 @@ function auth_sessions()
 		$referer = (trim($referer['host']) === $_SERVER['SERVER_NAME']);
 	}
 
-	// Если не наш REFERER или изменился IP-адрес
-	// сверяем данные сессии с данными базы данных
+	// Р•СЃР»Рё РЅРµ РЅР°С€ REFERER РёР»Рё РёР·РјРµРЅРёР»СЃСЏ IP-Р°РґСЂРµСЃ
+	// СЃРІРµСЂСЏРµРј РґР°РЅРЅС‹Рµ СЃРµСЃСЃРёРё СЃ РґР°РЅРЅС‹РјРё Р±Р°Р·С‹ РґР°РЅРЅС‹С…
 	if ($referer === false || $_SESSION['user_ip'] != $_SERVER['REMOTE_ADDR'])
 	{
 		$verified = $AVE_DB->Query("
@@ -138,7 +139,7 @@ function auth_cookie()
 
 	if (! (isset($auth['id']) && is_numeric($auth['id'])))
 	{
-		// уничтожаем куку
+		// СѓРЅРёС‡С‚РѕР¶Р°РµРј РєСѓРєСѓ
 		@setcookie('auth', '', 0, ABS_PATH, $cookie_domain);
 
 		return false;
@@ -191,9 +192,9 @@ function auth_cookie()
 }
 
 /**
- * Удаление профиля пользователя на сайте и на форуме
+ * РЈРґР°Р»РµРЅРёРµ РїСЂРѕС„РёР»СЏ РїРѕР»СЊР·РѕРІР°С‚РµР»СЏ РЅР° СЃР°Р№С‚Рµ Рё РЅР° С„РѕСЂСѓРјРµ
  *
- * @param string $user_id идентификатор пользователя
+ * @param string $user_id РёРґРµРЅС‚РёС„РёРєР°С‚РѕСЂ РїРѕР»СЊР·РѕРІР°С‚РµР»СЏ
  */
 function user_delete($user_id)
 {

@@ -1,10 +1,10 @@
 <?php
 
 /**
- * AVE.cms - Ìîäóëü Êîíòàêòû
+ * AVE.cms - ÐœÐ¾Ð´ÑƒÐ»ÑŒ ÐšÐ¾Ð½Ñ‚Ð°ÐºÑ‚Ñ‹
  *
- * Äàííûé ôàéë ÿâëÿåòñÿ ÷àñòüþ ìîäóëÿ "Êîíòàêòû" è ñîäåðæèò mySQL-çàïðîñû
- * ê áàçå äàííûõ ïðè îïåðàöèõ óñòàíîâêè, îáíîâëåíèÿ è óäàëåíèÿ ìîäóëÿ ÷åðåç Ïàíåëü óïðàâëåíèÿ.
+ * Ð”Ð°Ð½Ð½Ñ‹Ð¹ Ñ„Ð°Ð¹Ð» ÑÐ²Ð»ÑÐµÑ‚ÑÑ Ñ‡Ð°ÑÑ‚ÑŒÑŽ Ð¼Ð¾Ð´ÑƒÐ»Ñ "ÐšÐ¾Ð½Ñ‚Ð°ÐºÑ‚Ñ‹" Ð¸ ÑÐ¾Ð´ÐµÑ€Ð¶Ð¸Ñ‚ mySQL-Ð·Ð°Ð¿Ñ€Ð¾ÑÑ‹
+ * Ðº Ð±Ð°Ð·Ðµ Ð´Ð°Ð½Ð½Ñ‹Ñ… Ð¿Ñ€Ð¸ Ð¾Ð¿ÐµÑ€Ð°Ñ†Ð¸Ñ… ÑƒÑÑ‚Ð°Ð½Ð¾Ð²ÐºÐ¸, Ð¾Ð±Ð½Ð¾Ð²Ð»ÐµÐ½Ð¸Ñ Ð¸ ÑƒÐ´Ð°Ð»ÐµÐ½Ð¸Ñ Ð¼Ð¾Ð´ÑƒÐ»Ñ Ñ‡ÐµÑ€ÐµÐ· ÐŸÐ°Ð½ÐµÐ»ÑŒ ÑƒÐ¿Ñ€Ð°Ð²Ð»ÐµÐ½Ð¸Ñ.
  *
  * @package AVE.cms
  * @subpackage module_Contact
@@ -29,12 +29,12 @@ $modul_sql_install[] = "CREATE TABLE CPPREFIX_modul_contacts (
   `contact_form_antispam` enum('1','0') NOT NULL default '1',
   `contact_form_max_upload` mediumint(5) unsigned NOT NULL default '500',
   `contact_form_subject_show` enum('1','0') NOT NULL default '1',
-  `contact_form_subject_default` varchar(255) NOT NULL default 'Ñîîáùåíèå',
+  `contact_form_subject_default` varchar(255) NOT NULL default 'Ð¡Ð¾Ð¾Ð±Ñ‰ÐµÐ½Ð¸Ðµ',
   `contact_form_allow_group` varchar(255) NOT NULL default '1,2,3,4',
   `contact_form_send_copy` enum('1','0') NOT NULL default '1',
   `contact_form_message_noaccess` text NOT NULL,
   PRIMARY KEY  (`Id`)
-) ENGINE=MyISAM PACK_KEYS=0 DEFAULT CHARSET=cp1251;";
+) ENGINE=MyISAM PACK_KEYS=0 DEFAULT CHARSET=utf8;";
 
 $modul_sql_install[] = "CREATE TABLE CPPREFIX_modul_contact_fields (
   `Id` int(10) unsigned NOT NULL auto_increment,
@@ -51,7 +51,7 @@ $modul_sql_install[] = "CREATE TABLE CPPREFIX_modul_contact_fields (
   `contact_field_max_chars` varchar(20) NOT NULL,
   `contact_field_value` varchar(255) NOT NULL,
   PRIMARY KEY  (`Id`)
-) ENGINE=MyISAM DEFAULT CHARSET=cp1251;";
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 
 $modul_sql_install[] = "CREATE TABLE CPPREFIX_modul_contact_info (
   `Id` int(10) unsigned NOT NULL auto_increment,
@@ -68,15 +68,15 @@ $modul_sql_install[] = "CREATE TABLE CPPREFIX_modul_contact_info (
   `contact_form_out_message` longtext NOT NULL,
   `contact_form_out_attachment` tinytext NOT NULL,
   PRIMARY KEY  (`Id`)
-) ENGINE=MyISAM DEFAULT CHARSET=cp1251;";
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 
-$modul_sql_install[] = "INSERT INTO `CPPREFIX_modul_contacts` VALUES (1, 'Îáðàòíàÿ Ñâÿçü', 5000, 'youremail@yourdomain.ru', '', '1', 120, '0', '', '1,2,3,4', '0', 'Ó Âàñ íåäîñòàòî÷íî ïðàâ äëÿ èñïîëüçîâàíèÿ ýòîé ôîðìû.');";
+$modul_sql_install[] = "INSERT INTO `CPPREFIX_modul_contacts` VALUES (1, 'ÐžÐ±Ñ€Ð°Ñ‚Ð½Ð°Ñ Ð¡Ð²ÑÐ·ÑŒ', 5000, 'youremail@yourdomain.ru', '', '1', 120, '0', '', '1,2,3,4', '0', 'Ð£ Ð’Ð°Ñ Ð½ÐµÐ´Ð¾ÑÑ‚Ð°Ñ‚Ð¾Ñ‡Ð½Ð¾ Ð¿Ñ€Ð°Ð² Ð´Ð»Ñ Ð¸ÑÐ¿Ð¾Ð»ÑŒÐ·Ð¾Ð²Ð°Ð½Ð¸Ñ ÑÑ‚Ð¾Ð¹ Ñ„Ð¾Ñ€Ð¼Ñ‹.');";
 
-$modul_sql_install[] = "INSERT INTO `CPPREFIX_modul_contact_fields` VALUES (1, 1, 'textfield', 5, 'Ñîîáùåíèå', '1', '', '1', 698, '1', 'anysymbol', '', '');";
-$modul_sql_install[] = "INSERT INTO `CPPREFIX_modul_contact_fields` VALUES (2, 1, 'dropdown', 50, 'Êàê Âû îöåíèòå íàø ñàéò?', '0', 'Ïëîõî,Ñðåäíå,Ñóïåð,Î÷åíü ìåãà êðóòî', '1', 200, '1', 'anysymbol', '', '');";
-$modul_sql_install[] = "INSERT INTO `CPPREFIX_modul_contact_fields` VALUES (3, 1, 'fileupload', 50, 'Ïðèêðåïèòü ôàéë', '1', '', '1', 600, '1', 'anysymbol', '', '');";
-$modul_sql_install[] = "INSERT INTO `CPPREFIX_modul_contact_fields` VALUES (4, 1, 'fileupload', 50, 'Ïðèêðåïèòü ôàéë', '0', '', '1', 600, '1', 'anysymbol', '', '');";
-$modul_sql_install[] = "INSERT INTO `CPPREFIX_modul_contact_fields` VALUES (5, 1, 'checkbox', 55, '×åêáîêñ', '1', '×åêáîêñ äåô', '1', 300, '1', 'anysymbol', '', 'Íå çàïîëíåíî îáÿçàòåëüíîå ïîëå');";
+$modul_sql_install[] = "INSERT INTO `CPPREFIX_modul_contact_fields` VALUES (1, 1, 'textfield', 5, 'Ð¡Ð¾Ð¾Ð±Ñ‰ÐµÐ½Ð¸Ðµ', '1', '', '1', 698, '1', 'anysymbol', '', '');";
+$modul_sql_install[] = "INSERT INTO `CPPREFIX_modul_contact_fields` VALUES (2, 1, 'dropdown', 50, 'ÐšÐ°Ðº Ð’Ñ‹ Ð¾Ñ†ÐµÐ½Ð¸Ñ‚Ðµ Ð½Ð°Ñˆ ÑÐ°Ð¹Ñ‚?', '0', 'ÐŸÐ»Ð¾Ñ…Ð¾,Ð¡Ñ€ÐµÐ´Ð½Ðµ,Ð¡ÑƒÐ¿ÐµÑ€,ÐžÑ‡ÐµÐ½ÑŒ Ð¼ÐµÐ³Ð° ÐºÑ€ÑƒÑ‚Ð¾', '1', 200, '1', 'anysymbol', '', '');";
+$modul_sql_install[] = "INSERT INTO `CPPREFIX_modul_contact_fields` VALUES (3, 1, 'fileupload', 50, 'ÐŸÑ€Ð¸ÐºÑ€ÐµÐ¿Ð¸Ñ‚ÑŒ Ñ„Ð°Ð¹Ð»', '1', '', '1', 600, '1', 'anysymbol', '', '');";
+$modul_sql_install[] = "INSERT INTO `CPPREFIX_modul_contact_fields` VALUES (4, 1, 'fileupload', 50, 'ÐŸÑ€Ð¸ÐºÑ€ÐµÐ¿Ð¸Ñ‚ÑŒ Ñ„Ð°Ð¹Ð»', '0', '', '1', 600, '1', 'anysymbol', '', '');";
+$modul_sql_install[] = "INSERT INTO `CPPREFIX_modul_contact_fields` VALUES (5, 1, 'checkbox', 55, 'Ð§ÐµÐºÐ±Ð¾ÐºÑ', '1', 'Ð§ÐµÐºÐ±Ð¾ÐºÑ Ð´ÐµÑ„', '1', 300, '1', 'anysymbol', '', 'ÐÐµ Ð·Ð°Ð¿Ð¾Ð»Ð½ÐµÐ½Ð¾ Ð¾Ð±ÑÐ·Ð°Ñ‚ÐµÐ»ÑŒÐ½Ð¾Ðµ Ð¿Ð¾Ð»Ðµ');";
 
 
 $modul_sql_update[] = "UPDATE CPPREFIX_module SET CpEngineTag = '" . $modul['CpEngineTag'] . "', CpPHPTag = '" . $modul['CpPHPTag'] . "', Version = '" . $modul['ModulVersion'] . "' WHERE ModulPfad = '" . $modul['ModulPfad'] . "' LIMIT 1;";

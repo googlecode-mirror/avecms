@@ -1,7 +1,7 @@
 <?php
 
 /**
- * AVE.cms - Модуль Гостевая книга
+ * AVE.cms - РњРѕРґСѓР»СЊ Р“РѕСЃС‚РµРІР°СЏ РєРЅРёРіР°
  *
  * @package AVE.cms
  * @subpackage module_Guestbook
@@ -12,24 +12,36 @@ if (!defined('BASE_DIR')) exit;
 
 if (defined('ACP'))
 {
-	$modul['ModulName'] = 'Гостевая книга';
+	$modul['ModulName'] = 'Р“РѕСЃС‚РµРІР°СЏ РєРЅРёРіР°';
 	$modul['ModulPfad'] = 'guestbook';
-	$modul['ModulVersion'] = '1.0';
-	$modul['description'] = 'Модуль для организации на Вашем сайте интерактивного общения между пользователями.';
+	$modul['ModulVersion'] = '1.1';
+	$modul['description'] = 'РњРѕРґСѓР»СЊ РґР»СЏ РѕСЂРіР°РЅРёР·Р°С†РёРё РЅР° Р’Р°С€РµРј СЃР°Р№С‚Рµ РёРЅС‚РµСЂР°РєС‚РёРІРЅРѕРіРѕ РѕР±С‰РµРЅРёСЏ РјРµР¶РґСѓ РїРѕР»СЊР·РѕРІР°С‚РµР»СЏРјРё.';
 	$modul['Autor'] = 'Arcanum (arcanum@php.su)';
-	$modul['MCopyright'] = '&copy; 2007 (Участник команды overdoze.ru)';
+	$modul['MCopyright'] = '&copy; 2007 (РЈС‡Р°СЃС‚РЅРёРє РєРѕРјР°РЅРґС‹ overdoze.ru)';
 	$modul['Status'] = 1;
-	$modul['IstFunktion'] = 0;
+	$modul['IstFunktion'] = 1;
 	$modul['AdminEdit'] = 1;
 	$modul['ModulTemplate'] = 1;
-	$modul['ModulFunktion'] = null;
-	$modul['CpEngineTagTpl'] = '<b>Ссылка:</b> <a target="_blank" href="../index.php?module=guestbook">index.php?module=guestbook</a>';
-	$modul['CpEngineTag'] = null;
-	$modul['CpPHPTag'] = null;
+	$modul['ModulFunktion'] = 'mod_guestbook';
+	$modul['CpEngineTagTpl'] = '<b>РЎСЃС‹Р»РєР°:</b> <a target="_blank" href="../index.php?module=guestbook">index.php?module=guestbook</a> РёР»Рё <b>С‚РµРі</b>: [mod_guestbook]';
+    $modul['CpEngineTag'] = '#\\\[mod_guestbook]#'; // РЎР°Рј СЃРёСЃС‚РµРјРЅС‹Р№ С‚РµРі, РєРѕС‚РѕСЂС‹Р№ Р±СѓРґРµС‚ РёСЃРїРѕР»СЊР·РѕРІР°С‚СЊСЃСЏ РІ С€Р°Р±Р»РѕРЅР°С…
+    $modul['CpPHPTag'] = '<?php mod_guestbook(); ?>';  // PHP-РєРѕРґ, РєРѕС‚РѕСЂС‹Р№ Р±СѓРґРµС‚ РІС‹Р·РІР°РЅ РІРјРµСЃС‚Рѕ СЃРёСЃС‚РµРјРЅРѕРіРѕ С‚РµРіР°, РїСЂРё РїР°СЂСЃРёРЅРіРµ С€Р°Р±Р»РѕРЅР°
 }
 
+
+function mod_guestbook()
+{
+	require_once (BASE_DIR . '/functions/func.modulglobals.php');
+	set_modul_globals('guestbook');
+	
+	require_once (BASE_DIR . '/modules/guestbook/class.guest.php');
+	$Guest = new Guest;
+	$Guest->guestbookShow("standalone");
+}
+
+
 //=======================================================
-// Все функции управления в публичной части
+// Р’СЃРµ С„СѓРЅРєС†РёРё СѓРїСЂР°РІР»РµРЅРёСЏ РІ РїСѓР±Р»РёС‡РЅРѕР№ С‡Р°СЃС‚Рё
 //=======================================================
 if (!defined('ACP') && isset ($_REQUEST['module']) && $_REQUEST['module'] == 'guestbook')
 {
@@ -43,7 +55,7 @@ if (!defined('ACP') && isset ($_REQUEST['module']) && $_REQUEST['module'] == 'gu
 
 	switch ($_REQUEST['action'])
 	{
-		//Если в запросе пришел параметр на создание нового сообщения, тогда
+		//Р•СЃР»Рё РІ Р·Р°РїСЂРѕСЃРµ РїСЂРёС€РµР» РїР°СЂР°РјРµС‚СЂ РЅР° СЃРѕР·РґР°РЅРёРµ РЅРѕРІРѕРіРѕ СЃРѕРѕР±С‰РµРЅРёСЏ, С‚РѕРіРґР°
 		case 'new' :
 			$Guest->guestbookPostNew();
 			break;
@@ -56,7 +68,7 @@ if (!defined('ACP') && isset ($_REQUEST['module']) && $_REQUEST['module'] == 'gu
 }
 
 //=======================================================
-// Управление модулем в Панели управления
+// РЈРїСЂР°РІР»РµРЅРёРµ РјРѕРґСѓР»РµРј РІ РџР°РЅРµР»Рё СѓРїСЂР°РІР»РµРЅРёСЏ
 //=======================================================
 if (defined('ACP') && !empty($_REQUEST['moduleaction']))
 {

@@ -57,6 +57,9 @@ $allowed = array('index',   'start',    'templates',  'rubs', 'user', 'finder',
 				 'modules', 'settings', 'dbsettings'
 );
 $do = (!empty($_REQUEST['do']) && in_array($_REQUEST['do'], $allowed)) ? $_REQUEST['do'] : 'start';
+
+// после переноса на svn будет доступна возможность сверить версию ревизии прямо в админке
+//include(BASE_DIR . '/lib/subversion/work_svn.php');
 include(BASE_DIR . '/admin/' . $do . '.php');
 
 if (defined('NOPERM')) $AVE_Template->assign('content', $config_vars['MAIN_NO_PERMISSION']);
@@ -66,7 +69,7 @@ if (defined('NOPERM')) $AVE_Template->assign('content', $config_vars['MAIN_NO_PE
 $tpl = (isset($_REQUEST['pop']) && $_REQUEST['pop'] == 1) ? 'pop.tpl' : 'main.tpl';
 $AVE_Template->display($tpl);
 
-// ����������
+// Статистика
 if (defined('PROFILING') && PROFILING) echo get_statistic(1, 1, 1, 1);
 
 ?>

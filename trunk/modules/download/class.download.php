@@ -23,7 +23,7 @@ class Download {
 
 	function secureRequest()
 	{
-		if(isset($_REQUEST['c'])) $_REQUEST['c'] = preg_replace("/[^_A-Za-zА-Яа-яЁёЇЄІїєі0-9]/", '', $_REQUEST['c']);
+		if(isset($_REQUEST['c'])) $_REQUEST['c'] = preg_replace("/[^_A-Za-zРђ-РЇР°-СЏРЃС‘Р‡Р„Р†С—С”С–0-9]/", '', $_REQUEST['c']);
 		if(isset($_REQUEST['categ'])) $_REQUEST['categ'] = preg_replace('/\D/', '', $_REQUEST['categ']);
 		if(isset($_REQUEST['parent'])) $_REQUEST['parent'] = preg_replace('/\D/', '', $_REQUEST['parent']);
 		if(isset($_REQUEST['navop'])) $_REQUEST['navop'] = preg_replace('/\D/', '', $_REQUEST['navop']);
@@ -32,20 +32,20 @@ class Download {
 	}
 
 	//=======================================================
-	// Ersetzt Zeichen fьr die Umschreibung der Kategorie in
-	// den Links fьr MOD_REWRITE
+	// Ersetzt Zeichen fСЊr die Umschreibung der Kategorie in
+	// den Links fСЊr MOD_REWRITE
 	//=======================================================
 	function replaceWild($text)
 	{
 /*
-		$text = str_replace('ь', 'ue', $text);
-		$text = str_replace('Ь', 'Ue', $text);
-		$text = str_replace('ц', 'oe', $text);
-		$text = str_replace('Ц', 'Oe', $text);
-		$text = str_replace('д', 'ae', $text);
-		$text = str_replace('Д', 'Ae', $text);
+		$text = str_replace('СЊ', 'ue', $text);
+		$text = str_replace('Р¬', 'Ue', $text);
+		$text = str_replace('С†', 'oe', $text);
+		$text = str_replace('Р¦', 'Oe', $text);
+		$text = str_replace('Рґ', 'ae', $text);
+		$text = str_replace('Р”', 'Ae', $text);
 		$text = str_replace(array('&', '&amp;'), 'and', $text);
-		$text = preg_replace("/[^+_A-Za-zА-Яа-яЁёЇЄІїєі0-9]/", "_", $text);
+		$text = preg_replace("/[^+_A-Za-zРђ-РЇР°-СЏРЃС‘Р‡Р„Р†С—С”С–0-9]/", "_", $text);
 */
 		$text = prepare_url($text);
 		return $text;
@@ -58,28 +58,28 @@ class Download {
 	{
 		return $text;
 /*
-		$text = str_replace('ь', '&uuml;', $text);
-		$text = str_replace('Ь', '&Uuml;', $text);
-		$text = str_replace('ц', '&ouml;', $text);
-		$text = str_replace('Ц', '&Ouml;', $text);
-		$text = str_replace('д', '&auml;', $text);
-		$text = str_replace('Д', '&Auml;', $text);
+		$text = str_replace('СЊ', '&uuml;', $text);
+		$text = str_replace('Р¬', '&Uuml;', $text);
+		$text = str_replace('С†', '&ouml;', $text);
+		$text = str_replace('Р¦', '&Ouml;', $text);
+		$text = str_replace('Рґ', '&auml;', $text);
+		$text = str_replace('Р”', '&Auml;', $text);
 		$text = str_replace(' & ', ' &amp; ', $text);
-		$text = str_replace('»', '&raquo;', $text);
-		$text = str_replace('«', '&laquo;', $text);
+		$text = str_replace('В»', '&raquo;', $text);
+		$text = str_replace('В«', '&laquo;', $text);
 		$text = str_replace('>', '&gt;', $text);
 		$text = str_replace('<', '&lt;', $text);
-		$text = str_replace('Я', '&szlig;', $text);
-		$text = str_replace('Ђ', '&euro;', $text);
-		$text = str_replace('©', '&copy;', $text);
-		$text = str_replace('®', '&reg;', $text);
-		$text = str_replace('™', '&#8482;', $text);
+		$text = str_replace('РЇ', '&szlig;', $text);
+		$text = str_replace('Р‚', '&euro;', $text);
+		$text = str_replace('В©', '&copy;', $text);
+		$text = str_replace('В®', '&reg;', $text);
+		$text = str_replace('в„ў', '&#8482;', $text);
 		return $text;
 */
 	}
 
 	//=======================================================
-	// Aktuelle URL zerlegen unter Berьcksichtigung
+	// Aktuelle URL zerlegen unter BerСЊcksichtigung
 	// von mod_rewrite
 	//=======================================================
 	function localRedir()
@@ -94,7 +94,7 @@ class Download {
 	}
 
 	//=======================================================
-	// Funktion zum kьrzen ьberlanger Wцrter (Spam)
+	// Funktion zum kСЊrzen СЊberlanger WС†rter (Spam)
 	//=======================================================
 	function cutLongWords($comment_text)
 	{
@@ -138,7 +138,7 @@ class Download {
 	}
 
 	//=======================================================
-	// Erzeugt die Downloadkatregorien fьr die Ьbersicht
+	// Erzeugt die Downloadkatregorien fСЊr die Р¬bersicht
 	//=======================================================
 	function getCategoriesSimple($id, $prefix, $entries=0, $admin=0, $dropdown=0, $itid='')
 	{
@@ -218,7 +218,7 @@ class Download {
 			$result_link = $this->DL_Rewrite("index.php?module=download&amp;categ={$item->Id}&amp;parent={$item->parent_id}&amp;navop=" . $this->getParentDownloadCateg($item->Id) . "&amp;c=" . $this->replaceWild($item->KatName));
 			if ($item->parent_id == 0) return "<a class='mod_download_navi' href='".$this->DL_Rewrite("index.php?module=download")."'>".$GLOBALS['mod']['config_vars']['PageName']."</a>".$GLOBALS['mod']['config_vars']['PageSep']."<a class='mod_download_navi' href='$result_link'>" . $item->KatName . "</a>" . ($result ? $GLOBALS['mod']['config_vars']['PageSep'] : '') . $result;
 
-			// Daten des darьberliegenden Bereiches
+			// Daten des darСЊberliegenden Bereiches
 //			$parent = $this->getCategory($item->parent_id);
 //			$result_link = $this->DL_Rewrite("index.php?module=download&amp;categ={$item->Id}&amp;parent=$item->parent_id&amp;navop=" . $this->getParentDownloadCateg($item->Id) . "&amp;c=" . $this->replaceWild($item->KatName));
 
@@ -263,7 +263,7 @@ class Download {
 		   echo $buffer;
 		   flush();
 		   if ($retbytes) {
-			   $cnt += strlen($buffer);
+			   $cnt += mb_strlen($buffer);
 		   }
 	   }
 		   $status = fclose($handle);
@@ -312,7 +312,7 @@ class Download {
 		{
 			case 'myRequest':
 				echo "showDiv||";
-				echo 'Есть! соединение установлено<br />';
+				echo 'Р•СЃС‚СЊ! СЃРѕРµРґРёРЅРµРЅРёРµ СѓСЃС‚Р°РЅРѕРІР»РµРЅРѕ<br />';
 				break;
 
 			case 'mail':
@@ -348,10 +348,10 @@ class Download {
 
 		foreach ($_POST as $fieldname => $fieldvalue)
 		{
-			$fieldvalue = str_replace(" ", "", strtolower($fieldvalue));
+			$fieldvalue = str_replace(" ", "", mb_strtolower($fieldvalue));
 			foreach ($spamwords_db as  $stopwords)
 			{
-				$stopwords = chop(strtolower($stopwords));
+				$stopwords = chop(mb_strtolower($stopwords));
 				$pattern = "/" . preg_quote($stopwords) . "/";
 
 				// echo "$fieldname ---> $fieldvalue --->  $pattern <br>";
@@ -496,7 +496,7 @@ class Download {
 						'$file_id',
 						'" . time() . "',
 						'" . addslashes($_POST['title']) . "',
-						'" . substr(addslashes($_POST['comment_text']),0, $this->_maxCommentLength) . "',
+						'" . mb_substr(addslashes($_POST['comment_text']),0, $this->_maxCommentLength) . "',
 						'" . addslashes($_POST['Name']). "',
 						'" . addslashes($_POST['email']) . "',
 						'" . $_SERVER['REMOTE_ADDR'] . "',
@@ -532,7 +532,7 @@ class Download {
 				$MailText = $GLOBALS['mod']['config_vars']['Recommend_Text'];
 				$MailText = str_replace("%N%", "\n", $MailText);
 				$MailText = str_replace('%EMAIL%', $_POST['myEmail'], $MailText);
-				$MailText = str_replace('%BENUTZER%', substr($_POST['myName'],0,25), $MailText);
+				$MailText = str_replace('%BENUTZER%', mb_substr($_POST['myName'],0,25), $MailText);
 				$MailText = str_replace('%URL%', $File_URL, $MailText);
 				send_mail(
 					$_POST['email'],
@@ -731,14 +731,14 @@ class Download {
 
 			if($row->Pay > 0) {
 				if (empty($_SESSION['user_id'])){
-					$GLOBALS['AVE_Template']->assign('PayLinkText', "оплатить <span style=\"font-size: 70%; color: red\">(не зарегистрирован!)</span>");
+					$GLOBALS['AVE_Template']->assign('PayLinkText', "РѕРїР»Р°С‚РёС‚СЊ <span style=\"font-size: 70%; color: red\">(РЅРµ Р·Р°СЂРµРіРёСЃС‚СЂРёСЂРѕРІР°РЅ!)</span>");
 					$GLOBALS['AVE_Template']->assign('PayLink',  "javascript:void(0);\" onClick=\"window.open('".$this->DL_Rewrite("index.php?module=download&amp;action=toreg&amp;file_id={$file_id}&amp;pop=1&amp;theme_folder=" . THEME_FOLDER)."','DlPop','width=600,height=300,top=0,left=0,location=no,scrollbars=1');");
 				} else {
 					if ($row->Excl_Pay==1 && $row->Excl_Chk==1) {
-						$GLOBALS['AVE_Template']->assign('PayLinkText', "оплатить <span style=\"font-size: 70%; color: red\">(заблокировано!)</span>");
+						$GLOBALS['AVE_Template']->assign('PayLinkText', "РѕРїР»Р°С‚РёС‚СЊ <span style=\"font-size: 70%; color: red\">(Р·Р°Р±Р»РѕРєРёСЂРѕРІР°РЅРѕ!)</span>");
 						$GLOBALS['AVE_Template']->assign('PayLink',  "javascript:void(0);\" onClick=\"window.open('".$this->DL_Rewrite("index.php?module=download&amp;action=get_denied&amp;file_id={$file_id}&amp;pop=1&amp;theme_folder=" . THEME_FOLDER)."','DlPop','width=600,height=300,top=0,left=0,location=no,scrollbars=1');");
 					} else {
-						$GLOBALS['AVE_Template']->assign('PayLinkText', "оплатить");
+						$GLOBALS['AVE_Template']->assign('PayLinkText', "РѕРїР»Р°С‚РёС‚СЊ");
 						$GLOBALS['AVE_Template']->assign('PayLink',  $this->DL_Rewrite("index.php?module=download&amp;action=pay&amp;file_id={$file_id}&amp;pop=0&amp;theme_folder=" . THEME_FOLDER));
 					}
 				}
@@ -765,7 +765,7 @@ class Download {
 		if ($wm_status=='s') {
 			$wm_script="window.open('".$this->DL_Rewrite("index.php?module=download&amp;action={$get_link}&amp;file_id={$file_id}&amp;pop=1&amp;theme_folder=" . THEME_FOLDER)."','DlPop','width=600,height=300,top=0,left=0,location=no,scrollbars=1');";
 		} elseif ($wm_status=='f') {
-			$wm_script="alert('Процесс оплаты закончился неудачно');";
+			$wm_script="alert('РџСЂРѕС†РµСЃСЃ РѕРїР»Р°С‚С‹ Р·Р°РєРѕРЅС‡РёР»СЃСЏ РЅРµСѓРґР°С‡РЅРѕ');";
 		}
 		$GLOBALS['AVE_Template']->assign('wm_script', $wm_script);
 
@@ -776,10 +776,10 @@ class Download {
 
   function _sec_format($seconds)
 	{
-	$units = array("день|дня|дней" => 86400, "час|часа|часов" => 3600, "минута|минуты|минут" =>60, "секунда|секунды|секунд" => 1);
+	$units = array("РґРµРЅСЊ|РґРЅСЏ|РґРЅРµР№" => 86400, "С‡Р°СЃ|С‡Р°СЃР°|С‡Р°СЃРѕРІ" => 3600, "РјРёРЅСѓС‚Р°|РјРёРЅСѓС‚С‹|РјРёРЅСѓС‚" =>60, "СЃРµРєСѓРЅРґР°|СЃРµРєСѓРЅРґС‹|СЃРµРєСѓРЅРґ" => 1);
 	if($seconds < 1)
 	{
-		return "< 1 секунды";
+		return "< 1 СЃРµРєСѓРЅРґС‹";
 	} else {
 		$show = FALSE;
 		$ausgabe = "";
@@ -795,9 +795,9 @@ class Download {
 			{
 				if (($t > 4) && ($t < 21)) {
 					$ausgabe .= $t." ".$mn.", ";
-			  } elseif (substr($t, -1) == 1){
+			  } elseif (mb_substr($t, -1) == 1){
 					$ausgabe .= $t." ".$s.", ";
-				} elseif(substr($t, -1) <5) {
+				} elseif(mb_substr($t, -1) <5) {
 					$ausgabe .= $t." ".$pl.", ";
 				} else {
 					$ausgabe .= $t." ".$mn.", ";
@@ -806,7 +806,7 @@ class Download {
 			}
 
 		}
-		$ausgabe = substr($ausgabe, 0, strlen($ausgabe)-2);
+		$ausgabe = mb_substr($ausgabe, 0, mb_strlen($ausgabe)-2);
 		return $ausgabe;
 		}
 	}
@@ -874,7 +874,7 @@ class Download {
 
 		$error = false;
 		//=======================================================
-		//Пользователь не имеет доступа
+		//РџРѕР»СЊР·РѕРІР°С‚РµР»СЊ РЅРµ РёРјРµРµС‚ РґРѕСЃС‚СѓРїР°
 		//=======================================================
 		if (!@in_array($group_ids, $g_array))
 		{
@@ -883,7 +883,7 @@ class Download {
 		}
 
 		//=======================================================
-		// Файл не был найден
+		// Р¤Р°Р№Р» РЅРµ Р±С‹Р» РЅР°Р№РґРµРЅ
 		//=======================================================
 		if(!is_object($row) || ($row->Methode=='local' && !file_exists(BASE_DIR . '/modules/download/files/' . $row->Pfad) || empty($row->Pfad)) )
 		{
@@ -1227,7 +1227,7 @@ class Download {
 	}
 
 	//=======================================================
-	// Downloadьbersicht
+	// DownloadСЊbersicht
 	//=======================================================
 	function overView()
 	{
@@ -1284,17 +1284,17 @@ class Download {
 		return $categs;
 	}
 
-  //функция стыковки с платежными системами, по желанию заказчика пока только WM
+  //С„СѓРЅРєС†РёСЏ СЃС‚С‹РєРѕРІРєРё СЃ РїР»Р°С‚РµР¶РЅС‹РјРё СЃРёСЃС‚РµРјР°РјРё, РїРѕ Р¶РµР»Р°РЅРёСЋ Р·Р°РєР°Р·С‡РёРєР° РїРѕРєР° С‚РѕР»СЊРєРѕ WM
 	function addMoney($file_id){
     include_once('config.php');
-    //Заполняем дескрипшен "за что?"
+    //Р—Р°РїРѕР»РЅСЏРµРј РґРµСЃРєСЂРёРїС€РµРЅ "Р·Р° С‡С‚Рѕ?"
 		$sql_v = $GLOBALS['AVE_DB']->Query("SELECT * FROM " . PREFIX . "_modul_download_files WHERE Id = '$file_id'");
 		$row_v = $sql_v->FetchRow();
 
 		$sum = $this->checkPay($file_id,$_SESSION['user_id']);
 		$diff = max(0 + $row_v->Pay - $sum,0);
 
-		//Работа с порядковым номером
+		//Р Р°Р±РѕС‚Р° СЃ РїРѕСЂСЏРґРєРѕРІС‹Рј РЅРѕРјРµСЂРѕРј
 		$dat = BASE_DIR . "/modules/download/data/num.dat";
 		$num = 0;
 
@@ -1302,7 +1302,7 @@ class Download {
 
 
 
-		$GLOBALS['AVE_Template']->assign('pay_descr', 'Взнос на открытие закачки файла: '.$row_v->Name);
+		$GLOBALS['AVE_Template']->assign('pay_descr', 'Р’Р·РЅРѕСЃ РЅР° РѕС‚РєСЂС‹С‚РёРµ Р·Р°РєР°С‡РєРё С„Р°Р№Р»Р°: '.$row_v->Name);
 		$GLOBALS['AVE_Template']->assign('pay_num', $num);
 		$GLOBALS['AVE_Template']->assign('wm_purse', $row_v->Pay_val==0?$wmz_purse:$wmr_purse);
 		$GLOBALS['AVE_Template']->assign('file_id', $row_v->Id);
@@ -1335,7 +1335,7 @@ class Download {
 		$row_v = $sql_v->FetchRow();
 
 		$GLOBALS['AVE_Template']->assign('file_name', $row_v->Name);
-		$GLOBALS['AVE_Template']->assign('fs', " выполнен. Спасибо за участие!!!");
+		$GLOBALS['AVE_Template']->assign('fs', " РІС‹РїРѕР»РЅРµРЅ. РЎРїР°СЃРёР±Рѕ Р·Р° СѓС‡Р°СЃС‚РёРµ!!!");
 		$GLOBALS['AVE_Template']->assign('back_link', "index.php?module=download&action=showfile&file_id=".$file_id."&categ= ".$_GET['categ']."&r=11177");
 
 		define('MODULE_CONTENT', $GLOBALS['AVE_Template']->fetch($GLOBALS['mod']['tpl_dir'] . 'success.tpl'));
@@ -1354,7 +1354,7 @@ class Download {
 		$row_v = $sql_v->FetchRow();
 
 		$GLOBALS['AVE_Template']->assign('file_name', $row_v->Name);
-		$GLOBALS['AVE_Template']->assign('fs', " не выполнен. ");
+		$GLOBALS['AVE_Template']->assign('fs', " РЅРµ РІС‹РїРѕР»РЅРµРЅ. ");
 		$GLOBALS['AVE_Template']->assign('back_link', "index.php?module=download&action=showfile&file_id=".$file_id."&categ= ".$_GET['categ']."&r=11177");
 
 		define('MODULE_CONTENT', $GLOBALS['AVE_Template']->fetch($GLOBALS['mod']['tpl_dir'] . 'success.tpl'));
@@ -1384,9 +1384,9 @@ class Download {
 			$sql = $GLOBALS['AVE_DB']->Query("SELECT firstname,lastname FROM " . PREFIX . "_users WHERE Id = '" .$_SESSION['user_id']. "'");
 			$row = $sql->FetchRow();
 			if(!empty($row)) {
-				$user = substr($row->firstname,0,1) . "." . $row->lastname;
+				$user = mb_substr($row->firstname,0,1) . "." . $row->lastname;
 			} else {
-				$user = 'гость';
+				$user = 'РіРѕСЃС‚СЊ';
 			}
 			$GLOBALS['AVE_Template']->assign('user',$user);
 
@@ -1394,7 +1394,7 @@ class Download {
 			if ($val == 0) {
 				$GLOBALS['AVE_Template']->assign('val','$');
 			} else {
-				$GLOBALS['AVE_Template']->assign('val','руб');
+				$GLOBALS['AVE_Template']->assign('val','СЂСѓР±');
 			}
 			define('MODULE_CONTENT', $GLOBALS['AVE_Template']->fetch($GLOBALS['mod']['tpl_dir'] . 'nouserpay.tpl'));
 			$pName = (isset($_GET['categ']) && $_GET['categ'] != '') ? pretty_chars(strip_tags($topNav)) : $GLOBALS['mod']['config_vars']['PageName'] . $GLOBALS['mod']['config_vars']['PageSep'] . $GLOBALS['mod']['config_vars']['PageOverview'];

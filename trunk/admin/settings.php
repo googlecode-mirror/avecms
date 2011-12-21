@@ -34,9 +34,20 @@ switch($_REQUEST['action'])
 					$AVE_Settings->settingsShow();
 					break;
 
+				case 'case':
+					$AVE_Template->config_load(
+						BASE_DIR . '/admin/lang/' . $_SESSION['admin_language'] . '/settings.txt',
+						'settings'
+					);
+					$AVE_Settings->settingsCase();
+					break;	
+					
 				case 'save':
-					$AVE_Settings->settingsSave();
-
+					if ($_REQUEST['dop']) {
+						$AVE_Settings->settingsCase();
+					} else {
+						$AVE_Settings->settingsSave();
+					}	
 					header('Location:index.php?do=settings&saved=1&cp=' . SESSION);
 					exit;
 					break;
@@ -57,8 +68,11 @@ switch($_REQUEST['action'])
 					break;
 
 				case 'clearcache':
-					$AVE_Template->templateCacheClear();
-					$AVE_Template->templateCompiledTemplateClear();
+					if ($_REQUEST['templateCacheClear']) $AVE_Template->templateCacheClear();
+					if ($_REQUEST['templateCompiledTemplateClear']) $AVE_Template->templateCompiledTemplateClear();
+					if ($_REQUEST['moduleCacheClear']) $AVE_Template->moduleCacheClear();
+					if ($_REQUEST['sqlCacheClear']) $AVE_Template->sqlCacheClear();
+					if ($_REQUEST['sessionClear']) $AVE_Template->sessionClear();
 					exit;
 			}
 		}

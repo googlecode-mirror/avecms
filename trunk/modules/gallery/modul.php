@@ -1,7 +1,7 @@
 <?php
 
 /**
- * AVE.cms - Модуль Галерея
+ * AVE.cms - РњРѕРґСѓР»СЊ Р“Р°Р»РµСЂРµСЏ
  *
  * @package AVE.cms
  * @subpackage module_Gallery
@@ -13,26 +13,26 @@ if(!defined('BASE_DIR')) exit;
 
 if (defined('ACP'))
 {
-    $modul['ModulName'] = 'Галерея';
+    $modul['ModulName'] = 'Р“Р°Р»РµСЂРµСЏ';
     $modul['ModulPfad'] = 'gallery';
     $modul['ModulVersion'] = '2.2';
-    $modul['description'] = 'Gallery + Watermark + Lightbox + Lightview Внимание! У директории /modules/gallery/uploads/ должны быть права на запись!<br />Вы можете ограничить количество выводимых изображений, указав после Gallery-ID следующее: -3 (в этом случае количество будет ограничено тремя изображениями на страницу)';
+    $modul['description'] = 'Gallery + Watermark + Lightbox + Lightview Р’РЅРёРјР°РЅРёРµ! РЈ РґРёСЂРµРєС‚РѕСЂРёРё /modules/gallery/uploads/ РґРѕР»Р¶РЅС‹ Р±С‹С‚СЊ РїСЂР°РІР° РЅР° Р·Р°РїРёСЃСЊ!<br />Р’С‹ РјРѕР¶РµС‚Рµ РѕРіСЂР°РЅРёС‡РёС‚СЊ РєРѕР»РёС‡РµСЃС‚РІРѕ РІС‹РІРѕРґРёРјС‹С… РёР·РѕР±СЂР°Р¶РµРЅРёР№, СѓРєР°Р·Р°РІ РїРѕСЃР»Рµ Gallery-ID СЃР»РµРґСѓСЋС‰РµРµ: -3 (РІ СЌС‚РѕРј СЃР»СѓС‡Р°Рµ РєРѕР»РёС‡РµСЃС‚РІРѕ Р±СѓРґРµС‚ РѕРіСЂР°РЅРёС‡РµРЅРѕ С‚СЂРµРјСЏ РёР·РѕР±СЂР°Р¶РµРЅРёСЏРјРё РЅР° СЃС‚СЂР°РЅРёС†Сѓ)';
     $modul['Autor'] = 'cron';
     $modul['MCopyright'] = '&copy; 2008 Overdoze Team';
     $modul['Status'] = 1;
     $modul['IstFunktion'] = 1;
     $modul['AdminEdit'] = 1;
     $modul['ModulFunktion'] = 'mod_gallery';
-    $modul['CpEngineTagTpl'] = '[mod_gallery:XXX<em>-Лимит</em>]';
+    $modul['CpEngineTagTpl'] = '[mod_gallery:XXX<em>-Р›РёРјРёС‚</em>]';
     $modul['CpEngineTag'] = '#\\\[mod_gallery:([\\\d-]+)]#';
     $modul['CpPHPTag'] = "<?php mod_gallery(''$1''); ?>";
 }
 
 /**
- * Функция вывода галереи
+ * Р¤СѓРЅРєС†РёСЏ РІС‹РІРѕРґР° РіР°Р»РµСЂРµРё
  *
- * @param string $gallery_id идентификатор галереи
- * и опционально количество изображений на странице
+ * @param string $gallery_id РёРґРµРЅС‚РёС„РёРєР°С‚РѕСЂ РіР°Р»РµСЂРµРё
+ * Рё РѕРїС†РёРѕРЅР°Р»СЊРЅРѕ РєРѕР»РёС‡РµСЃС‚РІРѕ РёР·РѕР±СЂР°Р¶РµРЅРёР№ РЅР° СЃС‚СЂР°РЅРёС†Рµ
  */
 function mod_gallery($gallery_id)
 {
@@ -78,7 +78,7 @@ if (!defined('ACP') && isset($_REQUEST['module']) && $_REQUEST['module'] == 'gal
 }
 
 //=======================================================
-// Действия в админ-панели
+// Р”РµР№СЃС‚РІРёСЏ РІ Р°РґРјРёРЅ-РїР°РЅРµР»Рё
 //=======================================================
 if (defined('ACP') && !empty($_REQUEST['moduleaction']))
 {
@@ -92,30 +92,30 @@ if (defined('ACP') && !empty($_REQUEST['moduleaction']))
 
 	switch($_REQUEST['moduleaction'])
 	{
-		case '1': // Просмотр списка галерей
+		case '1': // РџСЂРѕСЃРјРѕС‚СЂ СЃРїРёСЃРєР° РіР°Р»РµСЂРµР№
 			$gallery->galleryListShow($tpl_dir);
 			break;
 
-		case 'add': // Добавить изображения в галерею
+		case 'add': // Р”РѕР±Р°РІРёС‚СЊ РёР·РѕР±СЂР°Р¶РµРЅРёСЏ РІ РіР°Р»РµСЂРµСЋ
 			define('IMAGE_TOOLBOX_DEFAULT_JPEG_QUALITY', 75);
 			include_once(BASE_DIR . '/class/class.thumbnail.php');
 			$Image_Toolbox = new Image_Toolbox;
 			$gallery->galleryImageUploadForm($tpl_dir, intval($_REQUEST['id']));
 			break;
 
-		case 'showimages': // Просмотр изображений галереи
+		case 'showimages': // РџСЂРѕСЃРјРѕС‚СЂ РёР·РѕР±СЂР°Р¶РµРЅРёР№ РіР°Р»РµСЂРµРё
 			$gallery->galleryImageListShow($tpl_dir, intval($_REQUEST['id']));
 			break;
 
-		case 'new': // Создать новую галерею
+		case 'new': // РЎРѕР·РґР°С‚СЊ РЅРѕРІСѓСЋ РіР°Р»РµСЂРµСЋ
 			$gallery->galleryNew();
 			break;
 
-		case 'delgallery': // Удаление галереи
+		case 'delgallery': // РЈРґР°Р»РµРЅРёРµ РіР°Р»РµСЂРµРё
 			$gallery->galleryDelete(intval($_REQUEST['id']));
 			break;
 
-		case 'editgallery': // Редактирование галереи
+		case 'editgallery': // Р РµРґР°РєС‚РёСЂРѕРІР°РЅРёРµ РіР°Р»РµСЂРµРё
 			$gallery->galleryEdit($tpl_dir, intval($_REQUEST['id']));
 			break;
 	}

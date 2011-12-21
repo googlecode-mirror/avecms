@@ -1,10 +1,10 @@
 <?php
 
 /**
- * AVE.cms - Ìîäóëü Ñòàòèñòèêà
+ * AVE.cms - ÐœÐ¾Ð´ÑƒÐ»ÑŒ Ð¡Ñ‚Ð°Ñ‚Ð¸ÑÑ‚Ð¸ÐºÐ°
  *
- * Äàííûé ôàéë ÿâëÿåòñÿ ÷àñòüþ ìîäóëÿ "Ñòàòèñòèêà" è ñîäåðæèò mySQL-çàïðîñû
- * ê áàçå äàííûõ ïðè îïåðàöèõ óñòàíîâêè, îáíîâëåíèÿ è óäàëåíèÿ ìîäóëÿ ÷åðåç Ïàíåëü óïðàâëåíèÿ.
+ * Ð”Ð°Ð½Ð½Ñ‹Ð¹ Ñ„Ð°Ð¹Ð» ÑÐ²Ð»ÑÐµÑ‚ÑÑ Ñ‡Ð°ÑÑ‚ÑŒÑŽ Ð¼Ð¾Ð´ÑƒÐ»Ñ "Ð¡Ñ‚Ð°Ñ‚Ð¸ÑÑ‚Ð¸ÐºÐ°" Ð¸ ÑÐ¾Ð´ÐµÑ€Ð¶Ð¸Ñ‚ mySQL-Ð·Ð°Ð¿Ñ€Ð¾ÑÑ‹
+ * Ðº Ð±Ð°Ð·Ðµ Ð´Ð°Ð½Ð½Ñ‹Ñ… Ð¿Ñ€Ð¸ Ð¾Ð¿ÐµÑ€Ð°Ñ†Ð¸Ñ… ÑƒÑÑ‚Ð°Ð½Ð¾Ð²ÐºÐ¸, Ð¾Ð±Ð½Ð¾Ð²Ð»ÐµÐ½Ð¸Ñ Ð¸ ÑƒÐ´Ð°Ð»ÐµÐ½Ð¸Ñ Ð¼Ð¾Ð´ÑƒÐ»Ñ Ñ‡ÐµÑ€ÐµÐ· ÐŸÐ°Ð½ÐµÐ»ÑŒ ÑƒÐ¿Ñ€Ð°Ð²Ð»ÐµÐ½Ð¸Ñ.
  *
  * @package AVE.cms
  * @subpackage module_Counter
@@ -23,7 +23,7 @@ $modul_sql_install[] = "CREATE TABLE CPPREFIX_modul_counter (
   `id` smallint(3) unsigned NOT NULL auto_increment,
   `counter_title` char(50) NOT NULL,
   PRIMARY KEY  (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=cp1251;";
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 
 $modul_sql_install[] = "CREATE TABLE CPPREFIX_modul_counter_info (
   `id` int(11) unsigned NOT NULL auto_increment,
@@ -37,10 +37,10 @@ $modul_sql_install[] = "CREATE TABLE CPPREFIX_modul_counter_info (
   PRIMARY KEY  (`id`),
   KEY `counter_expire_time` (`counter_expire_time`, `counter_id`),
   KEY `counter_id` (`counter_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=cp1251;";
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 
-$modul_sql_install[] = "INSERT INTO CPPREFIX_modul_counter VALUES (1, 'Îñíîâíîé ñ÷åò÷èê');";
-$modul_sql_install[] = "INSERT INTO CPPREFIX_modul_counter VALUES (2, 'Äîïîëíèòåëüíûé ñ÷åò÷èê');";
+$modul_sql_install[] = "INSERT INTO CPPREFIX_modul_counter VALUES (1, 'ÐžÑÐ½Ð¾Ð²Ð½Ð¾Ð¹ ÑÑ‡ÐµÑ‚Ñ‡Ð¸Ðº');";
+$modul_sql_install[] = "INSERT INTO CPPREFIX_modul_counter VALUES (2, 'Ð”Ð¾Ð¿Ð¾Ð»Ð½Ð¸Ñ‚ÐµÐ»ÑŒÐ½Ñ‹Ð¹ ÑÑ‡ÐµÑ‚Ñ‡Ð¸Ðº');";
 
 $modul_sql_update[] = "UPDATE CPPREFIX_module SET CpEngineTag = '" . $modul['CpEngineTag'] . "', CpPHPTag = '" . $modul['CpPHPTag'] . "', Version = '" . $modul['ModulVersion'] . "' WHERE ModulPfad = '" . $modul['ModulPfad'] . "' LIMIT 1;";
 ?>

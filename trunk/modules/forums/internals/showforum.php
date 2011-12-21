@@ -23,7 +23,7 @@ $forum_result = $GLOBALS['AVE_DB']->Query("SELECT  id, status, title, password, 
 // link: neue kategorie
 $newcatlink = "index.php?p=newcategory&amp;pid=" . $fid;
 
-// es wurde eine falsche fid übergeben
+// es wurde eine falsche fid ÑŒbergeben
 if ($forum_result->NumRows() < 1)
 {
 	header("Location:index.php?module=forums");

@@ -98,7 +98,7 @@
 												<a {if $df->description}title="{$df->description|escape}"{/if} href="{$df->link}">{$df->title}</a>
 											</strong>
 										</td>
-										<td class="mod_shop_basket_row">Без ограничений</td>
+										<td class="mod_shop_basket_row">Р‘РµР· РѕРіСЂР°РЅРёС‡РµРЅРёР№</td>
 										<td class="mod_shop_basket_row">{$df->size} kb</td>
 										<td align="right" class="mod_shop_basket_row">
 											<a href="{$df->link}"><img src="{$shop_images}download.gif" alt="" border="0" /></a>
@@ -116,45 +116,45 @@
 
 {if $smarty.request.print!=1}
 	<div class="grid_4">
-		<!-- Правое меню -->
+		<!-- РџСЂР°РІРѕРµ РјРµРЅСЋ -->
 		<div class="box menu">
 			<h2><a href="#" id="toggle-section-menu">{#ProductOverview#}</a></h2>
 			<div class="block" id="section-menu">{$ShopNavi}</div>
 		</div>
 
-		<!-- Блок авторизации -->
+		<!-- Р‘Р»РѕРє Р°РІС‚РѕСЂРёР·Р°С†РёРё -->
 		<div class="box">
 			<h2> <a href="#" id="toggle-login-forms">{#UserPanel#}</a> </h2>
 			<div class="block" id="login-forms">{$UserPanel}</div>
 		</div>
 
-		<!-- Блок поиска по магазину -->
+		<!-- Р‘Р»РѕРє РїРѕРёСЃРєР° РїРѕ РјР°РіР°Р·РёРЅСѓ -->
 		<div class="box">
 			<h2><a href="#" id="toggle-shop-search">{#ProductSearch#}</a></h2>
 			<div class="block" id="shop-search">{$Search}</div>
 		</div>
 
-		<!-- Блок корзины -->
+		<!-- Р‘Р»РѕРє РєРѕСЂР·РёРЅС‹ -->
 		<div class="box">
 			<h2><a href="#" id="toggle-shopbasket">{#ShopBasket#}</a></h2>
 			<div class="block" id="shopbasket">{$Basket}</div>
 		</div>
 
 		{if $smarty.session.user_id}
-			<!-- Блок обработанных заказов -->
+			<!-- Р‘Р»РѕРє РѕР±СЂР°Р±РѕС‚Р°РЅРЅС‹С… Р·Р°РєР°Р·РѕРІ -->
 			<div class="box">
 				<h2><a href="#" id="toggle-myordersbox">{#MyOrders#}</a></h2>
 				<div class="block" id="myordersbox">{$MyOrders}</div>
 			</div>
 		{/if}
 
-		<!-- Блок информации -->
+		<!-- Р‘Р»РѕРє РёРЅС„РѕСЂРјР°С†РёРё -->
 		<div class="box">
 			<h2><a href="#" id="toggle-shopinfobox">{#Infopage#}</a></h2>
 			<div class="block" id="shopinfobox">{$InfoBox}</div>
 		</div>
 
-		<!-- Блок популярных товаров -->
+		<!-- Р‘Р»РѕРє РїРѕРїСѓР»СЏСЂРЅС‹С… С‚РѕРІР°СЂРѕРІ -->
 		<div class="box">
 			<h2><a href="#" id="toggle-shoppopprods">{#Topseller#}</a></h2>
 			<div class="block" id="shoppopprods">{$Topseller}</div>

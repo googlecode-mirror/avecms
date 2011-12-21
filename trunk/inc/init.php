@@ -10,7 +10,7 @@
 if (!defined('BASE_DIR')) exit;
 
 /**
- * Удаление глобальных массивов
+ * РЈРґР°Р»РµРЅРёРµ РіР»РѕР±Р°Р»СЊРЅС‹С… РјР°СЃСЃРёРІРѕРІ
  *
  */
 function unsetGlobals()
@@ -35,11 +35,11 @@ if (isset($HTTP_POST_VARS))
 }
 
 /**
- * Слешевание (для глобальных массивов)
- * рекурсивно обрабатывает вложенные массивы
+ * РЎР»РµС€РµРІР°РЅРёРµ (РґР»СЏ РіР»РѕР±Р°Р»СЊРЅС‹С… РјР°СЃСЃРёРІРѕРІ)
+ * СЂРµРєСѓСЂСЃРёРІРЅРѕ РѕР±СЂР°Р±Р°С‚С‹РІР°РµС‚ РІР»РѕР¶РµРЅРЅС‹Рµ РјР°СЃСЃРёРІС‹
  *
- * @param array $array обрабатываемый массив
- * @return array обработанный массив
+ * @param array $array РѕР±СЂР°Р±Р°С‚С‹РІР°РµРјС‹Р№ РјР°СЃСЃРёРІ
+ * @return array РѕР±СЂР°Р±РѕС‚Р°РЅРЅС‹Р№ РјР°СЃСЃРёРІ
  */
 function add_slashes($array)
 {
@@ -80,13 +80,13 @@ function set_host()
 {
 	if (isset($_SERVER['HTTP_HOST']))
 	{
-		// Все символы $_SERVER['HTTP_HOST'] приводим к строчным и проверяем
-		// на наличие запрещённых символов в соответствии с RFC 952 и RFC 2181.
+		// Р’СЃРµ СЃРёРјРІРѕР»С‹ $_SERVER['HTTP_HOST'] РїСЂРёРІРѕРґРёРј Рє СЃС‚СЂРѕС‡РЅС‹Рј Рё РїСЂРѕРІРµСЂСЏРµРј
+		// РЅР° РЅР°Р»РёС‡РёРµ Р·Р°РїСЂРµС‰С‘РЅРЅС‹С… СЃРёРјРІРѕР»РѕРІ РІ СЃРѕРѕС‚РІРµС‚СЃС‚РІРёРё СЃ RFC 952 Рё RFC 2181.
 		$_SERVER['HTTP_HOST'] = strtolower($_SERVER['HTTP_HOST']);
 		if (!preg_match('/^\[?(?:[a-z0-9-:\]_]+\.?)+$/', $_SERVER['HTTP_HOST']))
 		{
-			// $_SERVER['HTTP_HOST'] не соответствует спецификациям.
-			// Возможно попытка взлома, даём отлуп статусом 400.
+			// $_SERVER['HTTP_HOST'] РЅРµ СЃРѕРѕС‚РІРµС‚СЃС‚РІСѓРµС‚ СЃРїРµС†РёС„РёРєР°С†РёСЏРј.
+			// Р’РѕР·РјРѕР¶РЅРѕ РїРѕРїС‹С‚РєР° РІР·Р»РѕРјР°, РґР°С‘Рј РѕС‚Р»СѓРї СЃС‚Р°С‚СѓСЃРѕРј 400.
 			header('HTTP/1.1 400 Bad Request');
 			exit;
 		}
@@ -119,6 +119,7 @@ ini_set('session.use_only_cookies', 1);
 ini_set('session.use_trans_sid',    0);
 ini_set('url_rewriter.tags',        '');
 
+mb_internal_encoding("UTF-8"); // РїРµСЂРµРєР»СЋС‡РµРЅРёРµ РґР»СЏ РЅРѕСЂРјР°Р»СЊРЅРѕР№ СЂР°Р±РѕС‚С‹ СЃ СЂСѓСЃСЃРєРёРјРё Р±СѓРєРІР°РјРё РІ РЅРµРєРѕС‚РѕСЂС‹С… С„СѓРЅРєС†РёСЏС…
 require(BASE_DIR . '/inc/config.php');
 require(BASE_DIR . '/functions/func.common.php');
 require(BASE_DIR . '/functions/func.login.php');
@@ -142,7 +143,7 @@ function set_cookie_domain($cookie_domain = '')
 		$cookie_domain = htmlspecialchars($_SERVER['HTTP_HOST'], ENT_QUOTES);
 	}
 
-	// Удаляем ведущие www. и номер порта в имени домена для использования в cookie.
+	// РЈРґР°Р»СЏРµРј РІРµРґСѓС‰РёРµ www. Рё РЅРѕРјРµСЂ РїРѕСЂС‚Р° РІ РёРјРµРЅРё РґРѕРјРµРЅР° РґР»СЏ РёСЃРїРѕР»СЊР·РѕРІР°РЅРёСЏ РІ cookie.
 	$cookie_domain = ltrim($cookie_domain, '.');
 	if (strpos($cookie_domain, 'www.') === 0)
 	{
@@ -151,8 +152,8 @@ function set_cookie_domain($cookie_domain = '')
 	$cookie_domain = explode(':', $cookie_domain);
 	$cookie_domain = '.'. $cookie_domain[0];
 
-	// В соответствии с RFC 2109, имя домена для cookie должно быть второго или более уровня.
-	// Для хостов 'localhost' или указанных IP-адресом имя домена для cookie не устанавливается.
+	// Р’ СЃРѕРѕС‚РІРµС‚СЃС‚РІРёРё СЃ RFC 2109, РёРјСЏ РґРѕРјРµРЅР° РґР»СЏ cookie РґРѕР»Р¶РЅРѕ Р±С‹С‚СЊ РІС‚РѕСЂРѕРіРѕ РёР»Рё Р±РѕР»РµРµ СѓСЂРѕРІРЅСЏ.
+	// Р”Р»СЏ С…РѕСЃС‚РѕРІ 'localhost' РёР»Рё СѓРєР°Р·Р°РЅРЅС‹С… IP-Р°РґСЂРµСЃРѕРј РёРјСЏ РґРѕРјРµРЅР° РґР»СЏ cookie РЅРµ СѓСЃС‚Р°РЅР°РІР»РёРІР°РµС‚СЃСЏ.
 	if (count(explode('.', $cookie_domain)) > 2 && !is_numeric(str_replace('.', '', $cookie_domain)))
 	{
 		ini_set('session.cookie_domain', $cookie_domain);
@@ -162,13 +163,13 @@ function set_cookie_domain($cookie_domain = '')
 }
 set_cookie_domain();
 
-if (SESSION_SAVE_HANDLER)
+if (!SESSION_SAVE_HANDLER)
 {
-	require(BASE_DIR . '/functions/func.session.php');
+	require(BASE_DIR . '/functions/func.session.userfiles.php');
 }
 else
 {
-	ini_set('session.save_handler', 'files');
+	require(BASE_DIR . '/functions/func.session.php');
 }
 
 //session_name('SESS'. md5($session_name));
@@ -185,19 +186,18 @@ if (isset($_REQUEST['action']) && $_REQUEST['action'] == 'logout')
 	exit;
 }
 
-// для параноиков
-//require(BASE_DIR . '/inc/ids.php');
-
+// РґР»СЏ РїР°СЂР°РЅРѕРёРєРѕРІ
+require(BASE_DIR . '/inc/ids.php');
 require(BASE_DIR . '/class/class.database.php');
 
 if (!defined('ACPL') && !auth_sessions())
 {
 	if (!auth_cookie())
 	{
-		// чистим данные авторизации в сессии
+		// С‡РёСЃС‚РёРј РґР°РЅРЅС‹Рµ Р°РІС‚РѕСЂРёР·Р°С†РёРё РІ СЃРµСЃСЃРёРё
 		unset($_SESSION['user_id'], $_SESSION['user_pass']);
 
-		// считаем пользователя Гостем
+		// СЃС‡РёС‚Р°РµРј РїРѕР»СЊР·РѕРІР°С‚РµР»СЏ Р“РѕСЃС‚РµРј
 		$_SESSION['user_group'] = 2;
 		$_SESSION['user_name'] = get_username();
 		define('UID', 0);
@@ -206,10 +206,10 @@ if (!defined('ACPL') && !auth_sessions())
 	}
 }
 
-// Заглушка пока нет поддержки многоязычности
+// Р—Р°РіР»СѓС€РєР° РїРѕРєР° РЅРµС‚ РїРѕРґРґРµСЂР¶РєРё РјРЅРѕРіРѕСЏР·С‹С‡РЅРѕСЃС‚Рё
 $_SESSION['user_language'] = DEFAULT_LANGUAGE;
 
-// Эксперимент с кэшированием
+// Р­РєСЃРїРµСЂРёРјРµРЅС‚ СЃ РєСЌС€РёСЂРѕРІР°РЅРёРµРј
 if (!defined('ACP') && empty($_POST) && !isset($_REQUEST['module']) && UGROUP == 2 && CACHE_LIFETIME)
 {
 	require(BASE_DIR . '/lib/Cache/Lite/Output.php');
@@ -253,7 +253,7 @@ function set_locale()
 			break;
 
 		case 'ru':
-			@setlocale(LC_ALL, 'ru_RU.CP1251', 'rus_RUS.CP1251', 'Russian_Russia.1251', 'russian');
+			@setlocale(LC_ALL, 'ru_RU.UTF-8', 'rus_RUS.UTF-8', 'russian');
 			break;
 
 		default:

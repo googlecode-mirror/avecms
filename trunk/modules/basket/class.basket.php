@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Êëàññ ðàáîòû ñ Êîðçèíîé
+ * ÐšÐ»Ð°ÑÑ Ñ€Ð°Ð±Ð¾Ñ‚Ñ‹ Ñ ÐšÐ¾Ñ€Ð·Ð¸Ð½Ð¾Ð¹
  *
  * @package AVE.cms
  * @subpackage module_Basket
@@ -11,19 +11,19 @@ class ModulBasket
 {
 
 /**
- *	ÑÂÎÉÑÒÂÀ
+ *	Ð¡Ð’ÐžÐ™Ð¡Ð¢Ð’Ð
  */
 
 /**
- *	ÂÍÓÒÐÅÍÍÈÅ ÌÅÒÎÄÛ
+ *	Ð’ÐÐ£Ð¢Ð Ð•ÐÐÐ˜Ð• ÐœÐ•Ð¢ÐžÐ”Ð«
  */
 
 /**
- *	ÂÍÅØÍÈÅ ÌÅÒÎÄÛ
+ *	Ð’ÐÐ•Ð¨ÐÐ˜Ð• ÐœÐ•Ð¢ÐžÐ”Ð«
  */
 
 	/**
-	 * Ïîëó÷èòü ñïèñîê òîâàðîâ â êîðçèíå
+	 * ÐŸÐ¾Ð»ÑƒÑ‡Ð¸Ñ‚ÑŒ ÑÐ¿Ð¸ÑÐ¾Ðº Ñ‚Ð¾Ð²Ð°Ñ€Ð¾Ð² Ð² ÐºÐ¾Ñ€Ð·Ð¸Ð½Ðµ
 	 *
 	 */
 	function getBasket()
@@ -58,15 +58,15 @@ class ModulBasket
 	}
 
 	/**
-	 * Äîáàâèòü òîâàð â êîðçèíó
+	 * Ð”Ð¾Ð±Ð°Ð²Ð¸Ñ‚ÑŒ Ñ‚Ð¾Ð²Ð°Ñ€ Ð² ÐºÐ¾Ñ€Ð·Ð¸Ð½Ñƒ
 	 *
-	 * @param int $product_id	èäåíòèôèêàòîð òîâàðà
-	 * 							(èäåíòèôèêàòîð äîêóìåíòà ñ àòðèáóòàìè òîâàðà)
-	 * @param int $name_id		èäåíòèôèêàòîð íàèìåíîâàíèÿ òîâàðà
-	 * 							(èäåíòèôèêàòîð ïîëÿ ðóáðèêè äëÿ íàèìåíîâàíèÿ)
-	 * @param int $price_id		èäåíòèôèêàòîð öåíû òîâàðà
-	 * 							(èäåíòèôèêàòîð ïîëÿ ðóáðèêè äëÿ öåíû)
-	 * @param int $quantity		êîëè÷åñòâî äîáàâëÿåìûõ â êîðçèíó òîâàðîâ
+	 * @param int $product_id	Ð¸Ð´ÐµÐ½Ñ‚Ð¸Ñ„Ð¸ÐºÐ°Ñ‚Ð¾Ñ€ Ñ‚Ð¾Ð²Ð°Ñ€Ð°
+	 * 							(Ð¸Ð´ÐµÐ½Ñ‚Ð¸Ñ„Ð¸ÐºÐ°Ñ‚Ð¾Ñ€ Ð´Ð¾ÐºÑƒÐ¼ÐµÐ½Ñ‚Ð° Ñ Ð°Ñ‚Ñ€Ð¸Ð±ÑƒÑ‚Ð°Ð¼Ð¸ Ñ‚Ð¾Ð²Ð°Ñ€Ð°)
+	 * @param int $name_id		Ð¸Ð´ÐµÐ½Ñ‚Ð¸Ñ„Ð¸ÐºÐ°Ñ‚Ð¾Ñ€ Ð½Ð°Ð¸Ð¼ÐµÐ½Ð¾Ð²Ð°Ð½Ð¸Ñ Ñ‚Ð¾Ð²Ð°Ñ€Ð°
+	 * 							(Ð¸Ð´ÐµÐ½Ñ‚Ð¸Ñ„Ð¸ÐºÐ°Ñ‚Ð¾Ñ€ Ð¿Ð¾Ð»Ñ Ñ€ÑƒÐ±Ñ€Ð¸ÐºÐ¸ Ð´Ð»Ñ Ð½Ð°Ð¸Ð¼ÐµÐ½Ð¾Ð²Ð°Ð½Ð¸Ñ)
+	 * @param int $price_id		Ð¸Ð´ÐµÐ½Ñ‚Ð¸Ñ„Ð¸ÐºÐ°Ñ‚Ð¾Ñ€ Ñ†ÐµÐ½Ñ‹ Ñ‚Ð¾Ð²Ð°Ñ€Ð°
+	 * 							(Ð¸Ð´ÐµÐ½Ñ‚Ð¸Ñ„Ð¸ÐºÐ°Ñ‚Ð¾Ñ€ Ð¿Ð¾Ð»Ñ Ñ€ÑƒÐ±Ñ€Ð¸ÐºÐ¸ Ð´Ð»Ñ Ñ†ÐµÐ½Ñ‹)
+	 * @param int $quantity		ÐºÐ¾Ð»Ð¸Ñ‡ÐµÑÑ‚Ð²Ð¾ Ð´Ð¾Ð±Ð°Ð²Ð»ÑÐµÐ¼Ñ‹Ñ… Ð² ÐºÐ¾Ñ€Ð·Ð¸Ð½Ñƒ Ñ‚Ð¾Ð²Ð°Ñ€Ð¾Ð²
 	 */
 	function basketProductAdd($product_id = 0, $name_id = 0, $price_id = 0, $quantity = 1)
 	{
@@ -136,7 +136,7 @@ class ModulBasket
 	}
 
 	/**
-	 * Óäàëèòü òîâàð èç êîðçèíû
+	 * Ð£Ð´Ð°Ð»Ð¸Ñ‚ÑŒ Ñ‚Ð¾Ð²Ð°Ñ€ Ð¸Ð· ÐºÐ¾Ñ€Ð·Ð¸Ð½Ñ‹
 	 *
 	 * @param int $product_id
 	 */
@@ -153,7 +153,7 @@ class ModulBasket
 	}
 
 	/**
-	 * Ïåðåñ÷åò êîðçèíû
+	 * ÐŸÐµÑ€ÐµÑÑ‡ÐµÑ‚ ÐºÐ¾Ñ€Ð·Ð¸Ð½Ñ‹
 	 *
 	 * @param array $quantity
 	 * @param array $delete
@@ -166,7 +166,7 @@ class ModulBasket
 
 		$session_id = session_id();
 
-		// Èçìåíÿåì â êîðçèíå êîëè÷åñòâà òîâàðîâ
+		// Ð˜Ð·Ð¼ÐµÐ½ÑÐµÐ¼ Ð² ÐºÐ¾Ñ€Ð·Ð¸Ð½Ðµ ÐºÐ¾Ð»Ð¸Ñ‡ÐµÑÑ‚Ð²Ð° Ñ‚Ð¾Ð²Ð°Ñ€Ð¾Ð²
 		if (isset($quantity) && is_array($quantity))
 		{
 			foreach ($quantity as $product_id => $product_quantity)
@@ -174,7 +174,7 @@ class ModulBasket
 				$product_id = (int)$product_id;
 				if (!is_numeric($product_quantity)) continue;
 				$product_quantity = (int)$product_quantity;
-				// åñëè êîëè÷åñòâî ðàâíî 0 - óäàëÿåì òîâàð èç êîðçèíû
+				// ÐµÑÐ»Ð¸ ÐºÐ¾Ð»Ð¸Ñ‡ÐµÑÑ‚Ð²Ð¾ Ñ€Ð°Ð²Ð½Ð¾ 0 - ÑƒÐ´Ð°Ð»ÑÐµÐ¼ Ñ‚Ð¾Ð²Ð°Ñ€ Ð¸Ð· ÐºÐ¾Ñ€Ð·Ð¸Ð½Ñ‹
 				if ($product_quantity === 0) $delete[$product_id] = 1;
 				if (isset($delete[$product_id])) continue;
 
@@ -189,7 +189,7 @@ class ModulBasket
 			}
 		}
 
-		// Óäàëÿåì ïîìå÷åííûå òîâàðû
+		// Ð£Ð´Ð°Ð»ÑÐµÐ¼ Ð¿Ð¾Ð¼ÐµÑ‡ÐµÐ½Ð½Ñ‹Ðµ Ñ‚Ð¾Ð²Ð°Ñ€Ñ‹
 		foreach ($delete as $product_id => $val)
 		{
 			$AVE_DB->Query("
@@ -202,7 +202,7 @@ class ModulBasket
 	}
 
 	/**
-	 * Îòïðàâêà çàêàçà
+	 * ÐžÑ‚Ð¿Ñ€Ð°Ð²ÐºÐ° Ð·Ð°ÐºÐ°Ð·Ð°
 	 *
 	 */
 	function basketOrderSend()
@@ -230,13 +230,13 @@ class ModulBasket
 		$customer['description'] = isset($_REQUEST['description']) ? trim(stripslashes($_REQUEST['description'])) : '';
 		if ($customer['description'] !== '') $customer['description'] = preg_replace('/[^\x20-\xFF]|[><]/', '', $customer['description']);
 
-		// Ïåðåäàåì â øàáëîí èíôîðìàöèþ î çàêàç÷èêå
+		// ÐŸÐµÑ€ÐµÐ´Ð°ÐµÐ¼ Ð² ÑˆÐ°Ð±Ð»Ð¾Ð½ Ð¸Ð½Ñ„Ð¾Ñ€Ð¼Ð°Ñ†Ð¸ÑŽ Ð¾ Ð·Ð°ÐºÐ°Ð·Ñ‡Ð¸ÐºÐµ
 		$AVE_Template->assign('customer', $customer);
 
-		// Ôîðìèðóåì òåëî ïèñüìà
+		// Ð¤Ð¾Ñ€Ð¼Ð¸Ñ€ÑƒÐµÐ¼ Ñ‚ÐµÐ»Ð¾ Ð¿Ð¸ÑÑŒÐ¼Ð°
 		$mail_body = $AVE_Template->fetch(BASE_DIR . '/modules/basket/templates/mail_text.tpl');
 
-		// Åñëè çàêàç÷èê óêàçàë E-mail - îòïðàâëÿåì ïèñüìî çàêàç÷èêó
+		// Ð•ÑÐ»Ð¸ Ð·Ð°ÐºÐ°Ð·Ñ‡Ð¸Ðº ÑƒÐºÐ°Ð·Ð°Ð» E-mail - Ð¾Ñ‚Ð¿Ñ€Ð°Ð²Ð»ÑÐµÐ¼ Ð¿Ð¸ÑÑŒÐ¼Ð¾ Ð·Ð°ÐºÐ°Ð·Ñ‡Ð¸ÐºÑƒ
 		if ($customer['email'])
 		{
 			send_mail(
@@ -250,7 +250,7 @@ class ModulBasket
 			);
 		}
 
-		// Ïèñüìî àäìèíèñòðàòîðó
+		// ÐŸÐ¸ÑÑŒÐ¼Ð¾ Ð°Ð´Ð¼Ð¸Ð½Ð¸ÑÑ‚Ñ€Ð°Ñ‚Ð¾Ñ€Ñƒ
 		send_mail(
 			get_settings('mail_from'),
 			$mail_body,
@@ -261,7 +261,7 @@ class ModulBasket
 			'html'
 		);
 
-		// Óäàëÿåì çàêàç èç êîðçèíû
+		// Ð£Ð´Ð°Ð»ÑÐµÐ¼ Ð·Ð°ÐºÐ°Ð· Ð¸Ð· ÐºÐ¾Ñ€Ð·Ð¸Ð½Ñ‹
 		$AVE_DB->Query("
 			DELETE
 			FROM " . PREFIX . "_modul_basket

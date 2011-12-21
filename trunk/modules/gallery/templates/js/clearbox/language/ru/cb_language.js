@@ -4,15 +4,15 @@
 
 var
 
-	CB_NavTextPrv='назад',											// text of previous image
-	CB_NavTextNxt='вперёд',											// text of next image
-	CB_NavTextFull='размер изображения',							// text of original size (only at pictures)
-	CB_NavTextOpen='открыть в новом окне браузера',					// text of open in a new browser window
-	CB_NavTextDL='скачать',											// text of download picture or any other content
-	CB_NavTextClose='закрыть clearbox',								// text of close CB
-	CB_NavTextStart='запустить слайдшоу',							// text of start slideshow
-	CB_NavTextStop='остановить слайдшоу',							// text of stop slideshow
-	CB_NavTextRotR='повернуть изображение на 90 градусов в право',	// text of rotation right
-	CB_NavTextRotL='повернуть изображение на 90 градусов в лево'	// text of rotation left
+	CB_NavTextPrv='РЅР°Р·Р°Рґ',											// text of previous image
+	CB_NavTextNxt='РІРїРµСЂС‘Рґ',											// text of next image
+	CB_NavTextFull='СЂР°Р·РјРµСЂ РёР·РѕР±СЂР°Р¶РµРЅРёСЏ',							// text of original size (only at pictures)
+	CB_NavTextOpen='РѕС‚РєСЂС‹С‚СЊ РІ РЅРѕРІРѕРј РѕРєРЅРµ Р±СЂР°СѓР·РµСЂР°',					// text of open in a new browser window
+	CB_NavTextDL='СЃРєР°С‡Р°С‚СЊ',											// text of download picture or any other content
+	CB_NavTextClose='Р·Р°РєСЂС‹С‚СЊ clearbox',								// text of close CB
+	CB_NavTextStart='Р·Р°РїСѓСЃС‚РёС‚СЊ СЃР»Р°Р№РґС€РѕСѓ',							// text of start slideshow
+	CB_NavTextStop='РѕСЃС‚Р°РЅРѕРІРёС‚СЊ СЃР»Р°Р№РґС€РѕСѓ',							// text of stop slideshow
+	CB_NavTextRotR='РїРѕРІРµСЂРЅСѓС‚СЊ РёР·РѕР±СЂР°Р¶РµРЅРёРµ РЅР° 90 РіСЂР°РґСѓСЃРѕРІ РІ РїСЂР°РІРѕ',	// text of rotation right
+	CB_NavTextRotL='РїРѕРІРµСЂРЅСѓС‚СЊ РёР·РѕР±СЂР°Р¶РµРЅРёРµ РЅР° 90 РіСЂР°РґСѓСЃРѕРІ РІ Р»РµРІРѕ'	// text of rotation left
 
 ;

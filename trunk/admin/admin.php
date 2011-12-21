@@ -20,14 +20,14 @@ require(BASE_DIR . '/admin/init.php');
 
 if (isset($_REQUEST['do']) && $_REQUEST['do'] == 'logout')
 {
-	// Завершение работы в админке
-	reportLog($_SESSION['user_name'] . ' - закончил сеанс в Панели управления', 2, 2);
+	// Р—Р°РІРµСЂС€РµРЅРёРµ СЂР°Р±РѕС‚С‹ РІ Р°РґРјРёРЅРєРµ
+	reportLog($_SESSION['user_name'] . ' - Р·Р°РєРѕРЅС‡РёР» СЃРµР°РЅСЃ РІ РџР°РЅРµР»Рё СѓРїСЂР°РІР»РµРЅРёСЏ', 2, 2);
 	@session_destroy();
 	header('Location:admin.php');
 }
 
-//// Если в сессии нет темы оформления или языка
-//// и в запросе нет действия - отправляем на форму авторизации
+//// Р•СЃР»Рё РІ СЃРµСЃСЃРёРё РЅРµС‚ С‚РµРјС‹ РѕС„РѕСЂРјР»РµРЅРёСЏ РёР»Рё СЏР·С‹РєР°
+//// Рё РІ Р·Р°РїСЂРѕСЃРµ РЅРµС‚ РґРµР№СЃС‚РІРёСЏ - РѕС‚РїСЂР°РІР»СЏРµРј РЅР° С„РѕСЂРјСѓ Р°РІС‚РѕСЂРёР·Р°С†РёРё
 //if  (!isset($_REQUEST['action']) &&
 //	(!isset($_SESSION['admin_theme']) || !isset($_SESSION['admin_language'])))
 //{
@@ -37,7 +37,7 @@ if (isset($_REQUEST['do']) && $_REQUEST['do'] == 'logout')
 
 if (isset($_REQUEST['action']) && $_REQUEST['action'] == 'login')
 {
-	// Авторизация
+	// РђРІС‚РѕСЂРёР·Р°С†РёСЏ
 	if (!empty($_POST['user_login']) && !empty($_POST['user_pass']))
 	{
 		if (true === user_login($_POST['user_login'], $_POST['user_pass'], 1))
@@ -50,12 +50,12 @@ if (isset($_REQUEST['action']) && $_REQUEST['action'] == 'login')
             }
 
             reportLog($_SESSION['user_name']
-            			. ' - начал сеанс в Панели управления', 2, 2);
+            			. ' - РЅР°С‡Р°Р» СЃРµР°РЅСЃ РІ РџР°РЅРµР»Рё СѓРїСЂР°РІР»РµРЅРёСЏ', 2, 2);
 
             header('Location:index.php');
             exit;
 		}
-        reportLog('Ошибка при входе в Панель управления - '
+        reportLog('РћС€РёР±РєР° РїСЂРё РІС…РѕРґРµ РІ РџР°РЅРµР»СЊ СѓРїСЂР°РІР»РµРЅРёСЏ - '
         			. stripslashes($_POST['user_login']) . ' / '
         			. stripslashes($_POST['user_pass']), 2, 2);
 

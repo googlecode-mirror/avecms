@@ -188,7 +188,7 @@ $opts = array(
 		array(
 			// 'id' => 'x5',
 			'driver'  => 'LocalFileSystem',   // driver for accessing file system (REQUIRED)
-			'path'    => '../../../../uploads/',         // path to files (REQUIRED)
+			'path'    => '../../../../uploads',         // path to files (REQUIRED)
 			'URL'     => '/uploads/', // URL to files (REQUIRED)
 			'alias'  => 'File system',
 			'disabled' => array(),

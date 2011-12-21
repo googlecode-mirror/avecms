@@ -372,7 +372,7 @@ function tag_list(){
 function tag_url(){
 	var FoundErrors = '';
 	var enterURL = prompt(text_enter_url, "http://");
-	var enterTITLE = prompt(text_enter_url_name, "Õ‡Á‚‡ÌËÂ Ò‡ÈÚ‡");
+	var enterTITLE = prompt(text_enter_url_name, "–ù–∞–∑–≤–∞–Ω–∏–µ —Å–∞–π—Ç–∞");
 	if (!enterURL){
 		FoundErrors += " "+error_no_url;
 	}
@@ -437,8 +437,8 @@ function doInsert(ktag,kctag,once){
 			isClose = true;
 		}
 		// obj_ta.value += ktag;
-		// Fix f¸r Mozilla:
-		// F¸gt Tag an der gew¸nschten position ein!
+		// Fix f—år Mozilla:
+		// F—ågt Tag an der gew—ånschten position ein!
 		var tarea = document.getElementById('post');
 		var selEnd = tarea.selectionEnd;
 		var txtLen = tarea.value.length;

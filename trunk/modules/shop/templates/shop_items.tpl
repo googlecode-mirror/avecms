@@ -6,10 +6,10 @@
 {else}
 	{assign var="cols" value=1}
 
-	<!-- íàâèãàöèÿ -->
+	<!-- Ð½Ð°Ð²Ð¸Ð³Ð°Ñ†Ð¸Ñ -->
 	{if $page_nav}{$page_nav}{else}<div class="clear">&nbsp;</div>{/if}
 
-	<!-- òîâàðû ñïèñîê -->
+	<!-- Ñ‚Ð¾Ð²Ð°Ñ€Ñ‹ ÑÐ¿Ð¸ÑÐ¾Ðº -->
 	{foreach from=$ShopArticles item=i name=items}
 		{assign var="newtr" value=$newtr+1}
 		<div class="mod_shop_container_1">
@@ -43,9 +43,9 @@
 
 				<small>
 					{if $i->Hersteller_Name != ''}
-						{#Manufacturer#} <a href="{$i->Hersteller_Link}">{$i->Hersteller_Name}</a>&nbsp;•&nbsp;
+						{#Manufacturer#} <a href="{$i->Hersteller_Link}">{$i->Hersteller_Name}</a>&nbsp;â€¢&nbsp;
 					{/if}
-					{#ArtNr#} <em>{$i->ArtNr}</em>&nbsp;•&nbsp;
+					{#ArtNr#} <em>{$i->ArtNr}</em>&nbsp;â€¢&nbsp;
 					{#Release#} <em>{$i->Erschienen|date_format:#DateFormatRelease#}</em>
 				</small>
 			</div>
@@ -53,14 +53,14 @@
 			<div class="grid_2 omega">
 				<div class="mod_shop_price_box">
 					{if $i->PreisDiff > 0}
-						<!-- Ñòîèìñîòü ïîäñâå÷åíà -->
-						<div class="mod_shop_price_new">{num_format val=$i->Preis} {$Currency}<img src="/templates/ave/modules/shop/shop_scell.gif" width="27" height="27" alt="Ñòàðàÿ öåíà {$i->PreisListe} {$Currency}" /></div>
+						<!-- Ð¡Ñ‚Ð¾Ð¸Ð¼ÑÐ¾Ñ‚ÑŒ Ð¿Ð¾Ð´ÑÐ²ÐµÑ‡ÐµÐ½Ð° -->
+						<div class="mod_shop_price_new">{num_format val=$i->Preis} {$Currency}<img src="/templates/ave/modules/shop/shop_scell.gif" width="27" height="27" alt="Ð¡Ñ‚Ð°Ñ€Ð°Ñ Ñ†ÐµÐ½Ð° {$i->PreisListe} {$Currency}" /></div>
 					{else}
-						<!-- Ñòîèìñîòü  -->
+						<!-- Ð¡Ñ‚Ð¾Ð¸Ð¼ÑÐ¾Ñ‚ÑŒ  -->
 						<div class="mod_shop_price_big">{num_format val=$i->Preis} {$Currency}</div>
 					{/if}
 
-					<!-- Ñòîèìîñòü â àëüòåðíàòèâíîé âàëþòå -->
+					<!-- Ð¡Ñ‚Ð¾Ð¸Ð¼Ð¾ÑÑ‚ÑŒ Ð² Ð°Ð»ÑŒÑ‚ÐµÑ€Ð½Ð°Ñ‚Ð¸Ð²Ð½Ð¾Ð¹ Ð²Ð°Ð»ÑŽÑ‚Ðµ -->
 					{if $i->PreisW2 && $ZeigeWaehrung2=='1'}<div class="mod_shop_ust">{num_format val=$i->PreisW2} {$Currency2}</div>{/if}
 
 					{if $i->Prozwertung > 0}
@@ -91,6 +91,6 @@
 		{if !$smarty.foreach.items.last}<hr />{/if}
 	{/foreach}
 
-	<!-- íàâèãàöèÿ -->
+	<!-- Ð½Ð°Ð²Ð¸Ð³Ð°Ñ†Ð¸Ñ -->
 	{if $page_nav}{$page_nav}{/if}
 {/if}

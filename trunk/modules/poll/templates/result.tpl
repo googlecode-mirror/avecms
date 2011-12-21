@@ -147,7 +147,7 @@ $(document).ready(function() {ldelim}
 
 			<div class="p_input">
 				<p>
-					<label>Заголовок</label>
+					<label>Р—Р°РіРѕР»РѕРІРѕРє</label>
 					<input type="text" name="comment_title" id="post_title" class="inputfield" size="80" value="{$smarty.post.comment_title|escape|stripslashes}" />
 				</p>
 			</div>

@@ -77,7 +77,7 @@ eval("{$wm_script}");
           <td width="180" class="dl_nt_second"><strong>{#Price#}</strong>:</td>
           <td class="dl_nt_second">
           	{if $row->Pay != ''}
-          		{$row->Pay}{if $row->Pay_val!=0} Û·.{else} ${/if}
+          		{$row->Pay}{if $row->Pay_val!=0} —Ä—É–±.{else} ${/if}
           	{else}
           		{#NoPrice#}
           	{/if} <a href="{$PayLink}"><font size="2">{#Pay#}</font></a></td>

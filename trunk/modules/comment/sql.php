@@ -1,10 +1,10 @@
 <?php
 
 /**
- * AVE.cms - Ìîäóëü Êîììåíòàðèè
+ * AVE.cms - ÐœÐ¾Ð´ÑƒÐ»ÑŒ ÐšÐ¾Ð¼Ð¼ÐµÐ½Ñ‚Ð°Ñ€Ð¸Ð¸
  *
- * Äàííûé ôàéë ÿâëÿåòñÿ ÷àñòüþ ìîäóëÿ "Êîììåíòàðèè" è ñîäåðæèò mySQL-çàïðîñû
- * ê áàçå äàííûõ ïðè îïåðàöèõ óñòàíîâêè, îáíîâëåíèÿ è óäàëåíèÿ ìîäóëÿ ÷åðåç Ïàíåëü óïðàâëåíèÿ.
+ * Ð”Ð°Ð½Ð½Ñ‹Ð¹ Ñ„Ð°Ð¹Ð» ÑÐ²Ð»ÑÐµÑ‚ÑÑ Ñ‡Ð°ÑÑ‚ÑŒÑŽ Ð¼Ð¾Ð´ÑƒÐ»Ñ "ÐšÐ¾Ð¼Ð¼ÐµÐ½Ñ‚Ð°Ñ€Ð¸Ð¸" Ð¸ ÑÐ¾Ð´ÐµÑ€Ð¶Ð¸Ñ‚ mySQL-Ð·Ð°Ð¿Ñ€Ð¾ÑÑ‹
+ * Ðº Ð±Ð°Ð·Ðµ Ð´Ð°Ð½Ð½Ñ‹Ñ… Ð¿Ñ€Ð¸ Ð¾Ð¿ÐµÑ€Ð°Ñ†Ð¸Ñ… ÑƒÑÑ‚Ð°Ð½Ð¾Ð²ÐºÐ¸, Ð¾Ð±Ð½Ð¾Ð²Ð»ÐµÐ½Ð¸Ñ Ð¸ ÑƒÐ´Ð°Ð»ÐµÐ½Ð¸Ñ Ð¼Ð¾Ð´ÑƒÐ»Ñ Ñ‡ÐµÑ€ÐµÐ· ÐŸÐ°Ð½ÐµÐ»ÑŒ ÑƒÐ¿Ñ€Ð°Ð²Ð»ÐµÐ½Ð¸Ñ.
  *
  * @package AVE.cms
  * @subpackage module_Comment
@@ -27,7 +27,7 @@ $modul_sql_install[] = "CREATE TABLE `CPPREFIX_modul_comments` (
   `comment_active` enum('1','0') NOT NULL default '1',
   `comment_use_antispam` enum('1','0') NOT NULL default '1',
   PRIMARY KEY  (`Id`)
-) ENGINE=MyISAM DEFAULT CHARSET=cp1251;";
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 
 $modul_sql_install[] = "CREATE TABLE `CPPREFIX_modul_comment_info` (
   `Id` int(10) unsigned NOT NULL auto_increment,
@@ -48,7 +48,7 @@ $modul_sql_install[] = "CREATE TABLE `CPPREFIX_modul_comment_info` (
   KEY `document_id` (`document_id`),
   KEY `parent_id` (`parent_id`),
   KEY `comment_status` (`comment_status`)
-) ENGINE=MyISAM DEFAULT CHARSET=cp1251 PACK_KEYS=0;";
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 PACK_KEYS=0;";
 
 $modul_sql_install[] = "INSERT INTO `CPPREFIX_modul_comments` VALUES (1, 1000, '1,3', '0', '1', '1');";
 

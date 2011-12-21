@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Êëàññ ðàáîòû ñ ðàññûëêàìè
+ * ÐšÐ»Ð°ÑÑ Ñ€Ð°Ð±Ð¾Ñ‚Ñ‹ Ñ Ñ€Ð°ÑÑÑ‹Ð»ÐºÐ°Ð¼Ð¸
  *
  * @package AVE.cms
  * @subpackage module_Newsletter
@@ -12,13 +12,13 @@
 class Newsletter
 {
 	/**
-	 * Ìåòîä ñîçäàíèÿ îáúåêòà FCKeditor
+	 * ÐœÐµÑ‚Ð¾Ð´ ÑÐ¾Ð·Ð´Ð°Ð½Ð¸Ñ Ð¾Ð±ÑŠÐµÐºÑ‚Ð° FCKeditor
 	 *
-	 * @param string $val		çíà÷åíèå ïîëÿ ââîäà
-	 * @param int $height		âûñîòà ïîëÿ ââîäà
-	 * @param string $name		íàèìåíîâàíèå ïîëÿ ââîäà
-	 * @param string $toolbar	ïàíåëü óïðàâëåíèÿ
-	 * @return object			îáúåêò FCKeditor
+	 * @param string $val		Ð·Ð½Ð°Ñ‡ÐµÐ½Ð¸Ðµ Ð¿Ð¾Ð»Ñ Ð²Ð²Ð¾Ð´Ð°
+	 * @param int $height		Ð²Ñ‹ÑÐ¾Ñ‚Ð° Ð¿Ð¾Ð»Ñ Ð²Ð²Ð¾Ð´Ð°
+	 * @param string $name		Ð½Ð°Ð¸Ð¼ÐµÐ½Ð¾Ð²Ð°Ð½Ð¸Ðµ Ð¿Ð¾Ð»Ñ Ð²Ð²Ð¾Ð´Ð°
+	 * @param string $toolbar	Ð¿Ð°Ð½ÐµÐ»ÑŒ ÑƒÐ¿Ñ€Ð°Ð²Ð»ÐµÐ½Ð¸Ñ
+	 * @return object			Ð¾Ð±ÑŠÐµÐºÑ‚ FCKeditor
 	 */
 	function _newsletterFckObjectCreate($val, $height = 300, $name, $toolbar = 'Default')
 	{
@@ -32,10 +32,10 @@ class Newsletter
 	}
 
 	/**
-	 * Ìåòîä çàãðóçêè ïðèêðåïë¸ííûõ ôàéëîâ
+	 * ÐœÐµÑ‚Ð¾Ð´ Ð·Ð°Ð³Ñ€ÑƒÐ·ÐºÐ¸ Ð¿Ñ€Ð¸ÐºÑ€ÐµÐ¿Ð»Ñ‘Ð½Ð½Ñ‹Ñ… Ñ„Ð°Ð¹Ð»Ð¾Ð²
 	 *
-	 * @param int $maxupload	ìàêñèìàëüíîå ðàçìåð ïðèêðåïë¸ííûõ ôàéëîâ â Kb
-	 * @return array			ìàññèâ èì¸í ïðèêðåïë¸ííûõ ôàéëîâ
+	 * @param int $maxupload	Ð¼Ð°ÐºÑÐ¸Ð¼Ð°Ð»ÑŒÐ½Ð¾Ðµ Ñ€Ð°Ð·Ð¼ÐµÑ€ Ð¿Ñ€Ð¸ÐºÑ€ÐµÐ¿Ð»Ñ‘Ð½Ð½Ñ‹Ñ… Ñ„Ð°Ð¹Ð»Ð¾Ð² Ð² Kb
+	 * @return array			Ð¼Ð°ÑÑÐ¸Ð² Ð¸Ð¼Ñ‘Ð½ Ð¿Ñ€Ð¸ÐºÑ€ÐµÐ¿Ð»Ñ‘Ð½Ð½Ñ‹Ñ… Ñ„Ð°Ð¹Ð»Ð¾Ð²
 	 */
 	function _newsletterFileUpload($maxupload = 1000)
 	{
@@ -49,7 +49,7 @@ class Newsletter
 			{
 				if ($_FILES['upfile']['tmp_name'][$i] != "")
 				{
-					$d_name = strtolower(ltrim(rtrim($_FILES['upfile']['name'][$i])));
+					$d_name = mb_strtolower(ltrim(rtrim($_FILES['upfile']['name'][$i])));
 					$d_name = str_replace(" ", "", $d_name);
 					$d_tmp = $_FILES['upfile']['tmp_name'][$i];
 
@@ -73,10 +73,10 @@ class Newsletter
 	}
 
 	/**
-	 * Ìåòîä ôîðìèðîâàíèÿ óíèêàëüíîãî èìåíè ôàéëà
+	 * ÐœÐµÑ‚Ð¾Ð´ Ñ„Ð¾Ñ€Ð¼Ð¸Ñ€Ð¾Ð²Ð°Ð½Ð¸Ñ ÑƒÐ½Ð¸ÐºÐ°Ð»ÑŒÐ½Ð¾Ð³Ð¾ Ð¸Ð¼ÐµÐ½Ð¸ Ñ„Ð°Ð¹Ð»Ð°
 	 *
-	 * @param string $file	èìÿ ôàéëà
-	 * @return string		óíèêàëüíîå èìÿ ôàéëà
+	 * @param string $file	Ð¸Ð¼Ñ Ñ„Ð°Ð¹Ð»Ð°
+	 * @return string		ÑƒÐ½Ð¸ÐºÐ°Ð»ÑŒÐ½Ð¾Ðµ Ð¸Ð¼Ñ Ñ„Ð°Ð¹Ð»Ð°
 	 */
 	function _newsletterFileRename($file)
 	{
@@ -89,9 +89,9 @@ class Newsletter
 	}
 
 	/**
-	 * Ìåòîä ïîëó÷åíèÿ ïðèêðåïë¸ííîãî ôàéëà
+	 * ÐœÐµÑ‚Ð¾Ð´ Ð¿Ð¾Ð»ÑƒÑ‡ÐµÐ½Ð¸Ñ Ð¿Ñ€Ð¸ÐºÑ€ÐµÐ¿Ð»Ñ‘Ð½Ð½Ð¾Ð³Ð¾ Ñ„Ð°Ð¹Ð»Ð°
 	 *
-	 * @param string $file	èìÿ ôàéëà
+	 * @param string $file	Ð¸Ð¼Ñ Ñ„Ð°Ð¹Ð»Ð°
 	 */
 	function _newsletterFileGet($file)
 	{
@@ -118,9 +118,9 @@ class Newsletter
 	}
 
 	/**
-	 * Âûâîä ñïèñêà ðàññûëîê
+	 * Ð’Ñ‹Ð²Ð¾Ð´ ÑÐ¿Ð¸ÑÐºÐ° Ñ€Ð°ÑÑÑ‹Ð»Ð¾Ðº
 	 *
-	 * @param string $tpl_dir	ïóòü ê äèðåêòîðèè ñ øàáëîíàìè ìîäóëÿ
+	 * @param string $tpl_dir	Ð¿ÑƒÑ‚ÑŒ Ðº Ð´Ð¸Ñ€ÐµÐºÑ‚Ð¾Ñ€Ð¸Ð¸ Ñ ÑˆÐ°Ð±Ð»Ð¾Ð½Ð°Ð¼Ð¸ Ð¼Ð¾Ð´ÑƒÐ»Ñ
 	 */
 	function newsletterList($tpl_dir)
 	{
@@ -131,7 +131,7 @@ class Newsletter
 
 		if (!empty($_REQUEST['q']))
 		{
-			$query = preg_replace('/[^ +_A-Za-zÀ-ßà-ÿ¨¸¯ª²¿º³0-9-]/s', '', $_REQUEST['q']);
+			$query = preg_replace('/[^ +_A-Za-zÐ-Ð¯Ð°-ÑÐÑ‘Ð‡Ð„Ð†Ñ—Ñ”Ñ–0-9-]/s', '', $_REQUEST['q']);
 			$db_extra = " WHERE newsletter_title LIKE '%{$query}%' OR newsletter_message LIKE '%{$query}%' ";
 			$nav_string = "&q={$query}";
 		}
@@ -185,11 +185,11 @@ class Newsletter
 	}
 
 	/**
-	 * Ìåòîä îòîáðàæåíèÿ ðàññûëêè
+	 * ÐœÐµÑ‚Ð¾Ð´ Ð¾Ñ‚Ð¾Ð±Ñ€Ð°Ð¶ÐµÐ½Ð¸Ñ Ñ€Ð°ÑÑÑ‹Ð»ÐºÐ¸
 	 *
-	 * @param string $tpl_dir	ïóòü ê äèðåêòîðèè ñ øàáëîíàìè ìîäóëÿ
-	 * @param int $id			èäåíòèôèêàòîð ðàññûëêè
-	 * @param string $format	ôîðìàò ðàññûëàåìûõ ïèñåì {text|html}
+	 * @param string $tpl_dir	Ð¿ÑƒÑ‚ÑŒ Ðº Ð´Ð¸Ñ€ÐµÐºÑ‚Ð¾Ñ€Ð¸Ð¸ Ñ ÑˆÐ°Ð±Ð»Ð¾Ð½Ð°Ð¼Ð¸ Ð¼Ð¾Ð´ÑƒÐ»Ñ
+	 * @param int $id			Ð¸Ð´ÐµÐ½Ñ‚Ð¸Ñ„Ð¸ÐºÐ°Ñ‚Ð¾Ñ€ Ñ€Ð°ÑÑÑ‹Ð»ÐºÐ¸
+	 * @param string $format	Ñ„Ð¾Ñ€Ð¼Ð°Ñ‚ Ñ€Ð°ÑÑÑ‹Ð»Ð°ÐµÐ¼Ñ‹Ñ… Ð¿Ð¸ÑÐµÐ¼ {text|html}
 	 */
 	function newsletterShow($tpl_dir, $id, $format = 'text')
 	{
@@ -211,9 +211,9 @@ class Newsletter
 	}
 
 	/**
-	 * Ìåòîä ñîçäàíèÿ íîâîé ðàññûëêè
+	 * ÐœÐµÑ‚Ð¾Ð´ ÑÐ¾Ð·Ð´Ð°Ð½Ð¸Ñ Ð½Ð¾Ð²Ð¾Ð¹ Ñ€Ð°ÑÑÑ‹Ð»ÐºÐ¸
 	 *
-	 * @param string $tpl_dir	ïóòü ê äèðåêòîðèè ñ øàáëîíàìè ìîäóëÿ
+	 * @param string $tpl_dir	Ð¿ÑƒÑ‚ÑŒ Ðº Ð´Ð¸Ñ€ÐµÐºÑ‚Ð¾Ñ€Ð¸Ð¸ Ñ ÑˆÐ°Ð±Ð»Ð¾Ð½Ð°Ð¼Ð¸ Ð¼Ð¾Ð´ÑƒÐ»Ñ
 	 */
 	function newsletterNew($tpl_dir)
 	{
@@ -328,7 +328,7 @@ class Newsletter
 	}
 
 	/**
-	 * Ìåòîä óäàëåíèÿ ðàññûëêè
+	 * ÐœÐµÑ‚Ð¾Ð´ ÑƒÐ´Ð°Ð»ÐµÐ½Ð¸Ñ Ñ€Ð°ÑÑÑ‹Ð»ÐºÐ¸
 	 *
 	 */
 	function newsletterDelete()

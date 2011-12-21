@@ -5,12 +5,12 @@
       <td>
         <label>{$items.titel} </label>
         <select name="req_{$request_id}[{$selname}]">
-          <option value=''>Все</option>
+          <option value=''>Р’СЃРµ</option>
           {html_options values=$items.options output=$items.options selected=$items.selected}
         </select>
       </td>
 {/foreach}
-      <td><input type="submit" class="button" value="Отфильтровать" /></td>
+      <td><input type="submit" class="button" value="РћС‚С„РёР»СЊС‚СЂРѕРІР°С‚СЊ" /></td>
     </tr>
   </table>
 </form>

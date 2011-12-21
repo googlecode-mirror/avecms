@@ -1,26 +1,26 @@
 {if $excl_pay==1}
 	{if $excl_chk==1}
-	  <p>Ошибка! У вас нет прав на загрузку этого файла.</p>
+	  <p>РћС€РёР±РєР°! РЈ РІР°СЃ РЅРµС‚ РїСЂР°РІ РЅР° Р·Р°РіСЂСѓР·РєСѓ СЌС‚РѕРіРѕ С„Р°Р№Р»Р°.</p>
 	{else}
 		{if $pay_sum==0 || $diff==0}
-			<p>Внимание:Вам не требуется оплачивать данный файл. Вы можете загрузить его, вернувшись на страницу <a href="index.php?module=download&action=showfile&file_id={$file_id}&categ={$cat_id}">назад</a>.</p>
+			<p>Р’РЅРёРјР°РЅРёРµ:Р’Р°Рј РЅРµ С‚СЂРµР±СѓРµС‚СЃСЏ РѕРїР»Р°С‡РёРІР°С‚СЊ РґР°РЅРЅС‹Р№ С„Р°Р№Р». Р’С‹ РјРѕР¶РµС‚Рµ Р·Р°РіСЂСѓР·РёС‚СЊ РµРіРѕ, РІРµСЂРЅСѓРІС€РёСЃСЊ РЅР° СЃС‚СЂР°РЅРёС†Сѓ <a href="index.php?module=download&action=showfile&file_id={$file_id}&categ={$cat_id}">РЅР°Р·Р°Рґ</a>.</p>
 		{else}
 			<form name="pay" method="post" action="https://merchant.webmoney.ru/lmi/payment.asp" id="pay">
       	<table align="center" cellpadding="0" cellspacing="0" width="98%">
           <tr>
               <td align="center"  class="mod_download_dlbox">
-                 <h2>Взнос на открытие файла</h2>
+                 <h2>Р’Р·РЅРѕСЃ РЅР° РѕС‚РєСЂС‹С‚РёРµ С„Р°Р№Р»Р°</h2>
               </td>
           </tr>
           <tr>
               <td align="center"><br><br>
 				        {if $diff<>$pay_sum}
-					      	Взнос составляет {$diff} {$pay_val}. Внимание:До этого вы уже оплатили часть стоимости данного файла.
-                                                                               Если Вы видите это сообщение, то это означает, что стоимость этого файла 
-                                                                               была изменена после Вашей последней оплаты и Вам необходимо доплатить лишь разницу в стоимости.
+					      	Р’Р·РЅРѕСЃ СЃРѕСЃС‚Р°РІР»СЏРµС‚ {$diff} {$pay_val}. Р’РЅРёРјР°РЅРёРµ:Р”Рѕ СЌС‚РѕРіРѕ РІС‹ СѓР¶Рµ РѕРїР»Р°С‚РёР»Рё С‡Р°СЃС‚СЊ СЃС‚РѕРёРјРѕСЃС‚Рё РґР°РЅРЅРѕРіРѕ С„Р°Р№Р»Р°.
+                                                                               Р•СЃР»Рё Р’С‹ РІРёРґРёС‚Рµ СЌС‚Рѕ СЃРѕРѕР±С‰РµРЅРёРµ, С‚Рѕ СЌС‚Рѕ РѕР·РЅР°С‡Р°РµС‚, С‡С‚Рѕ СЃС‚РѕРёРјРѕСЃС‚СЊ СЌС‚РѕРіРѕ С„Р°Р№Р»Р° 
+                                                                               Р±С‹Р»Р° РёР·РјРµРЅРµРЅР° РїРѕСЃР»Рµ Р’Р°С€РµР№ РїРѕСЃР»РµРґРЅРµР№ РѕРїР»Р°С‚С‹ Рё Р’Р°Рј РЅРµРѕР±С…РѕРґРёРјРѕ РґРѕРїР»Р°С‚РёС‚СЊ Р»РёС€СЊ СЂР°Р·РЅРёС†Сѓ РІ СЃС‚РѕРёРјРѕСЃС‚Рё.
 					      	<input type="hidden" name="LMI_PAYMENT_AMOUNT" value="{$diff}"><br>
 				        {else}
-					      	Взнос составляет {$pay_sum} {$pay_val}.
+					      	Р’Р·РЅРѕСЃ СЃРѕСЃС‚Р°РІР»СЏРµС‚ {$pay_sum} {$pay_val}.
 					      	<input type="hidden" name="LMI_PAYMENT_AMOUNT" value="{$pay_sum}"><br>
 				        {/if}
 								<br><input type="hidden" name="LMI_PAYMENT_DESC" value="{$pay_descr}">
@@ -35,7 +35,7 @@
           </tr>
           <tr>
               <td align="center">
-					<input type="submit" value="Оплатить">
+					<input type="submit" value="РћРїР»Р°С‚РёС‚СЊ">
               </td>
           </tr>
        </table>
@@ -44,19 +44,19 @@
 	{/if}
 {elseif $pay_type==0}
 	{if $pay_sum==0}
-		<p>Внимание:Вам не требуется оплачивать данный файл. Вы можете загрузить его, вернувшись на страницу <a href="index.php?module=download&action=showfile&file_id={$file_id}&categ={$cat_id}">назад</a>.</p>
+		<p>Р’РЅРёРјР°РЅРёРµ:Р’Р°Рј РЅРµ С‚СЂРµР±СѓРµС‚СЃСЏ РѕРїР»Р°С‡РёРІР°С‚СЊ РґР°РЅРЅС‹Р№ С„Р°Р№Р». Р’С‹ РјРѕР¶РµС‚Рµ Р·Р°РіСЂСѓР·РёС‚СЊ РµРіРѕ, РІРµСЂРЅСѓРІС€РёСЃСЊ РЅР° СЃС‚СЂР°РЅРёС†Сѓ <a href="index.php?module=download&action=showfile&file_id={$file_id}&categ={$cat_id}">РЅР°Р·Р°Рґ</a>.</p>
 	{else}
 		<form name="pay" method="post" action="https://merchant.webmoney.ru/lmi/payment.asp" id="pay">
     	<table align="center" cellpadding="0" cellspacing="0" width="98%">
         <tr>
             <td align="center"  class="mod_download_dlbox">
-               <h2>Взнос на открытие файла</h2>
+               <h2>Р’Р·РЅРѕСЃ РЅР° РѕС‚РєСЂС‹С‚РёРµ С„Р°Р№Р»Р°</h2>
             </td>
         </tr>
         <tr>
             <td align="center"><br><br>
-			        Стоимость файла составляет {$pay_sum} {$pay_val}.<br><br>
-			        Взнос <input type="text" name="LMI_PAYMENT_AMOUNT" value="{$pay_sum}" onblur="if (this.value>{$pay_sum}) this.value={$pay_sum};"> {$pay_val}<br>
+			        РЎС‚РѕРёРјРѕСЃС‚СЊ С„Р°Р№Р»Р° СЃРѕСЃС‚Р°РІР»СЏРµС‚ {$pay_sum} {$pay_val}.<br><br>
+			        Р’Р·РЅРѕСЃ <input type="text" name="LMI_PAYMENT_AMOUNT" value="{$pay_sum}" onblur="if (this.value>{$pay_sum}) this.value={$pay_sum};"> {$pay_val}<br>
 							<br><input type="hidden" name="LMI_PAYMENT_DESC" value="{$pay_descr}">
 							<input type="hidden" name="LMI_PAYMENT_NO" value="{$pay_num}">
 							<input type="hidden" name="LMI_PAYEE_PURSE" value="{$wm_purse}">
@@ -69,7 +69,7 @@
         </tr>
         <tr>
             <td align="center">
-				<input type="submit" value="Оплатить">
+				<input type="submit" value="РћРїР»Р°С‚РёС‚СЊ">
             </td>
         </tr>
      </table>
@@ -77,24 +77,24 @@
 	{/if}
 {elseif $pay_type==1}
 	{if $pay_sum==0 || $diff==0}
-		<p>Внимание:Вам не требуется оплачивать данный файл. Вы можете загрузить его, вернувшись на страницу<a href="index.php?module=download&action=showfile&file_id={$file_id}&categ={$cat_id}">назад</a>.</p>
+		<p>Р’РЅРёРјР°РЅРёРµ:Р’Р°Рј РЅРµ С‚СЂРµР±СѓРµС‚СЃСЏ РѕРїР»Р°С‡РёРІР°С‚СЊ РґР°РЅРЅС‹Р№ С„Р°Р№Р». Р’С‹ РјРѕР¶РµС‚Рµ Р·Р°РіСЂСѓР·РёС‚СЊ РµРіРѕ, РІРµСЂРЅСѓРІС€РёСЃСЊ РЅР° СЃС‚СЂР°РЅРёС†Сѓ<a href="index.php?module=download&action=showfile&file_id={$file_id}&categ={$cat_id}">РЅР°Р·Р°Рґ</a>.</p>
 	{else}
 		<form name="pay" method="post" action="https://merchant.webmoney.ru/lmi/payment.asp" id="pay">
     	<table align="center" cellpadding="0" cellspacing="0" width="98%">
         <tr>
             <td align="center"  class="mod_download_dlbox">
-               <h2>Взнос на открытие файла</h2>
+               <h2>Р’Р·РЅРѕСЃ РЅР° РѕС‚РєСЂС‹С‚РёРµ С„Р°Р№Р»Р°</h2>
             </td>
         </tr>
         <tr>
             <td align="center"><br><br>
 			        {if $diff<>$pay_sum}
-				      	Взнос составляет {$diff} {$pay_val}. Внимание:До этого вы уже оплатили часть стоимости данного файла.
-                                                                         Если Вы видите это сообщение, то это означает, что стоимость этого файла 
-                                                                         была изменена после Вашей последней оплаты и Вам необходимо доплатить лишь разницу в стоимости.
+				      	Р’Р·РЅРѕСЃ СЃРѕСЃС‚Р°РІР»СЏРµС‚ {$diff} {$pay_val}. Р’РЅРёРјР°РЅРёРµ:Р”Рѕ СЌС‚РѕРіРѕ РІС‹ СѓР¶Рµ РѕРїР»Р°С‚РёР»Рё С‡Р°СЃС‚СЊ СЃС‚РѕРёРјРѕСЃС‚Рё РґР°РЅРЅРѕРіРѕ С„Р°Р№Р»Р°.
+                                                                         Р•СЃР»Рё Р’С‹ РІРёРґРёС‚Рµ СЌС‚Рѕ СЃРѕРѕР±С‰РµРЅРёРµ, С‚Рѕ СЌС‚Рѕ РѕР·РЅР°С‡Р°РµС‚, С‡С‚Рѕ СЃС‚РѕРёРјРѕСЃС‚СЊ СЌС‚РѕРіРѕ С„Р°Р№Р»Р° 
+                                                                         Р±С‹Р»Р° РёР·РјРµРЅРµРЅР° РїРѕСЃР»Рµ Р’Р°С€РµР№ РїРѕСЃР»РµРґРЅРµР№ РѕРїР»Р°С‚С‹ Рё Р’Р°Рј РЅРµРѕР±С…РѕРґРёРјРѕ РґРѕРїР»Р°С‚РёС‚СЊ Р»РёС€СЊ СЂР°Р·РЅРёС†Сѓ РІ СЃС‚РѕРёРјРѕСЃС‚Рё.
 				      	<input type="hidden" name="LMI_PAYMENT_AMOUNT" value="{$diff}"><br>
 			        {else}
-				      	Взнос составляет {$pay_sum} {$pay_val}.
+				      	Р’Р·РЅРѕСЃ СЃРѕСЃС‚Р°РІР»СЏРµС‚ {$pay_sum} {$pay_val}.
 				      	<input type="hidden" name="LMI_PAYMENT_AMOUNT" value="{$pay_sum}"><br>
 			        {/if}
 							<br><input type="hidden" name="LMI_PAYMENT_DESC" value="{$pay_descr}">
@@ -109,7 +109,7 @@
         </tr>
         <tr>
             <td align="center">
-				<input type="submit" value="Оплатить">
+				<input type="submit" value="РћРїР»Р°С‚РёС‚СЊ">
             </td>
         </tr>
      </table>

@@ -4,10 +4,10 @@ if(!defined('BASE_DIR')) exit;
 
 if (defined('ACP'))
 {
-    $modul['ModulName'] = "Тестовый модуль";
+    $modul['ModulName'] = "РўРµСЃС‚РѕРІС‹Р№ РјРѕРґСѓР»СЊ";
     $modul['ModulPfad'] = "example";
     $modul['ModulVersion'] = "1.0";
-    $modul['description'] = "Данный модуль предназначен для того, чтобы показать как сделать запрос и вывести его в шаблоне. Результат запроса кешируются средствами Smarty.<BR /><BR />Для вывода результатов используйте системный тег <strong>[mod_example]</strong>";
+    $modul['description'] = "Р”Р°РЅРЅС‹Р№ РјРѕРґСѓР»СЊ РїСЂРµРґРЅР°Р·РЅР°С‡РµРЅ РґР»СЏ С‚РѕРіРѕ, С‡С‚РѕР±С‹ РїРѕРєР°Р·Р°С‚СЊ РєР°Рє СЃРґРµР»Р°С‚СЊ Р·Р°РїСЂРѕСЃ Рё РІС‹РІРµСЃС‚Рё РµРіРѕ РІ С€Р°Р±Р»РѕРЅРµ. Р РµР·СѓР»СЊС‚Р°С‚ Р·Р°РїСЂРѕСЃР° РєРµС€РёСЂСѓСЋС‚СЃСЏ СЃСЂРµРґСЃС‚РІР°РјРё Smarty.<BR /><BR />Р”Р»СЏ РІС‹РІРѕРґР° СЂРµР·СѓР»СЊС‚Р°С‚РѕРІ РёСЃРїРѕР»СЊР·СѓР№С‚Рµ СЃРёСЃС‚РµРјРЅС‹Р№ С‚РµРі <strong>[mod_example]</strong>";
     $modul['Autor'] = "censored!";
     $modul['MCopyright'] = "&copy; 2008 Overdoze Team";
     $modul['Status'] = 1;
@@ -23,15 +23,15 @@ function mod_example()
 {
 	global $AVE_DB, $AVE_Template;
 
-	$tpl_dir = BASE_DIR . '/modules/example/templates/'; // Указываем путь до шаблона
+	$tpl_dir = BASE_DIR . '/modules/example/templates/'; // РЈРєР°Р·С‹РІР°РµРј РїСѓС‚СЊ РґРѕ С€Р°Р±Р»РѕРЅР°
 	$AVE_Template->caching = true;
-	$AVE_Template->cache_lifetime = 86400; // Время жизни кэша (1 день)
-//	$AVE_Template->cache_dir = BASE_DIR . '/cache/example'; // Папка для создания кэша
+	$AVE_Template->cache_lifetime = 86400; // Р’СЂРµРјСЏ Р¶РёР·РЅРё РєСЌС€Р° (1 РґРµРЅСЊ)
+//	$AVE_Template->cache_dir = BASE_DIR . '/cache/example'; // РџР°РїРєР° РґР»СЏ СЃРѕР·РґР°РЅРёСЏ РєСЌС€Р°
 
-	// Если нету в кэше, то выполняем запрос
+	// Р•СЃР»Рё РЅРµС‚Сѓ РІ РєСЌС€Рµ, С‚Рѕ РІС‹РїРѕР»РЅСЏРµРј Р·Р°РїСЂРѕСЃ
 	if (!$AVE_Template->is_cached('example.tpl'))
 	{
-		// Проверяем, есть ли папка для кэша, если нет (первый раз) — создаем
+		// РџСЂРѕРІРµСЂСЏРµРј, РµСЃС‚СЊ Р»Рё РїР°РїРєР° РґР»СЏ РєСЌС€Р°, РµСЃР»Рё РЅРµС‚ (РїРµСЂРІС‹Р№ СЂР°Р·) вЂ” СЃРѕР·РґР°РµРј
 		if (!is_file($AVE_Template->cache_dir))
 		{
 			$oldumask = umask(0);
@@ -40,7 +40,7 @@ function mod_example()
 		}
 
 		$example = array();
-		// Запрос трех последних документов (ссылка и название) из рубрики с ID 2 и с сортировкой ID по убыванию
+		// Р—Р°РїСЂРѕСЃ С‚СЂРµС… РїРѕСЃР»РµРґРЅРёС… РґРѕРєСѓРјРµРЅС‚РѕРІ (СЃСЃС‹Р»РєР° Рё РЅР°Р·РІР°РЅРёРµ) РёР· СЂСѓР±СЂРёРєРё СЃ ID 2 Рё СЃ СЃРѕСЂС‚РёСЂРѕРІРєРѕР№ ID РїРѕ СѓР±С‹РІР°РЅРёСЋ
 		$sql = $AVE_DB->Query("
 			SELECT
 				Id,
@@ -60,14 +60,14 @@ function mod_example()
 			$row->document_alias = rewrite_link('index.php?id=' . $row->Id . '&amp;doc=' . (empty($row->document_alias) ? prepare_url($row->document_title) : $row->document_alias));
 			array_push($example, $row);
 		}
-		// Закрываем соединение
+		// Р—Р°РєСЂС‹РІР°РµРј СЃРѕРµРґРёРЅРµРЅРёРµ
 		$sql->Close();
 
-		// Назначаем переменную example для использования в шаблоне
+		// РќР°Р·РЅР°С‡Р°РµРј РїРµСЂРµРјРµРЅРЅСѓСЋ example РґР»СЏ РёСЃРїРѕР»СЊР·РѕРІР°РЅРёСЏ РІ С€Р°Р±Р»РѕРЅРµ
 		$AVE_Template->assign('example', $example);
 	}
 
-	// Выводим шаблон example.tpl
+	// Р’С‹РІРѕРґРёРј С€Р°Р±Р»РѕРЅ example.tpl
 	$AVE_Template->display($tpl_dir . 'example.tpl');
 	$AVE_Template->caching = false;
 }

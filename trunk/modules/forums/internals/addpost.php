@@ -269,7 +269,7 @@ else
 			SET
 				" . $attachments . "
 				title       = '" . $title . "',
-				message     = '" . $message . " \n[size=2]Отредактировано: " . date("d.m.Y, H:i:s") . "[/size]',
+				message     = '" . $message . " \n[size=2]РћС‚СЂРµРґР°РєС‚РёСЂРѕРІР°РЅРѕ: " . date("d.m.Y, H:i:s") . "[/size]',
 				use_bbcode  = '" . $disable_bbcode . "',
 				use_smilies = '" . $disable_smilies . "',
 				use_sig     = '" . $use_sig . "'
@@ -403,7 +403,7 @@ else
 
 		$datum = date("d.m.Y H:i");
 		// ================================================================
-		// <<-- wenn im admin empfaenger fьr jeden post eingetragen wurden,
+		// <<-- wenn im admin empfaenger fСЊr jeden post eingetragen wurden,
 		//      werden hier nun die mails versendet. -->>
 		// ================================================================
 		if ($_POST['action'] != "edit")

@@ -78,7 +78,7 @@ if(isset($_POST['doupdate']) && $_POST['doupdate'] == 1)
 	$muster_email = '/^[\w.-]+@[a-z0-9.-]+\.(?:[a-z]{2}|com|org|net|edu|gov|mil|biz|info|mobi|name|aero|asia|jobs|museum)$/i';
 
 	//=======================================================
-	// Benutzername prüfen
+	// Benutzername prÑŒfen
 	//=======================================================
 	if((isset($_POST['BenutzerName'])) && ($this->checkIfUserName(addslashes($_POST['BenutzerName']),addslashes($_SESSION['forum_user_name']))))
   {
@@ -92,7 +92,7 @@ if(isset($_POST['doupdate']) && $_POST['doupdate'] == 1)
 	}
 
 	//=======================================================
-	// E-Mail prüfen
+	// E-Mail prÑŒfen
 	//=======================================================
 	if(!empty($_POST['email']) && $this->checkIfUserEmail($_POST['email'], $_SESSION['forum_user_email']))
 	{
@@ -217,8 +217,8 @@ if(isset($_POST['doupdate']) && $_POST['doupdate'] == 1)
 			$avatar = '';
 		}
 
-		// Prüfen, ob Benutzername mehr als 1 mal geändert wurde und ob er das
-		// recht hat, diesen zu ändern
+		// PrÑŒfen, ob Benutzername mehr als 1 mal geÐ´ndert wurde und ob er das
+		// recht hat, diesen zu Ð´ndern
 		$BC = '';
 		$sql = $GLOBALS['AVE_DB']->Query("SELECT BenutzerName,BenutzerNameChanged FROM " . PREFIX . "_modul_forum_userprofile WHERE BenutzerId = '" . $_SESSION['user_id'] . "'");
 		$row = $sql->FetchRow();

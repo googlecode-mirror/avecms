@@ -1,7 +1,7 @@
 <?php
 
 /**
- * AVE.cms - Модуль Вопрос-Ответ
+ * AVE.cms - РњРѕРґСѓР»СЊ Р’РѕРїСЂРѕСЃ-РћС‚РІРµС‚
  *
  * @package AVE.cms
  * @subpackage module_FAQ
@@ -12,10 +12,10 @@ if (!defined('BASE_DIR')) exit;
 
 if (defined('ACP'))
 {
-    $modul['ModulName'] = 'Вопрос/ответ';
+    $modul['ModulName'] = 'Р’РѕРїСЂРѕСЃ/РѕС‚РІРµС‚';
     $modul['ModulPfad'] = 'faq';
     $modul['ModulVersion'] = '1.0';
-    $modul['description'] = 'Модуль создания раширенной справочной системы на основе тегов.';
+    $modul['description'] = 'РњРѕРґСѓР»СЊ СЃРѕР·РґР°РЅРёСЏ СЂР°С€РёСЂРµРЅРЅРѕР№ СЃРїСЂР°РІРѕС‡РЅРѕР№ СЃРёСЃС‚РµРјС‹ РЅР° РѕСЃРЅРѕРІРµ С‚РµРіРѕРІ.';
     $modul['Autor'] = 'Freeon';
     $modul['MCopyright'] = '&copy; 2007-2008 Overdoze Team';
     $modul['Status'] = 1;
@@ -28,24 +28,24 @@ if (defined('ACP'))
 }
 
 /**
- * Обработка тэга модуля
+ * РћР±СЂР°Р±РѕС‚РєР° С‚СЌРіР° РјРѕРґСѓР»СЏ
  *
- * @param int $id идентификатор рубрики вопросов и ответов
+ * @param int $id РёРґРµРЅС‚РёС„РёРєР°С‚РѕСЂ СЂСѓР±СЂРёРєРё РІРѕРїСЂРѕСЃРѕРІ Рё РѕС‚РІРµС‚РѕРІ
  */
 function mod_faq($id)
 {
 	global $AVE_Template;
 
-	$AVE_Template->caching = 1;         // Включаем кеширование
-	$AVE_Template->cache_lifetime = -1; // Неограниченное время жизни кэша
-//	$AVE_Template->cache_dir .= '/faq'; // Папка для кеша модуля
+	$AVE_Template->caching = 1;         // Р’РєР»СЋС‡Р°РµРј РєРµС€РёСЂРѕРІР°РЅРёРµ
+	$AVE_Template->cache_lifetime = -1; // РќРµРѕРіСЂР°РЅРёС‡РµРЅРЅРѕРµ РІСЂРµРјСЏ Р¶РёР·РЅРё РєСЌС€Р°
+//	$AVE_Template->cache_dir .= '/faq'; // РџР°РїРєР° РґР»СЏ РєРµС€Р° РјРѕРґСѓР»СЏ
 
-	$tpl_dir = BASE_DIR . '/modules/faq/templates/'; // Путь к шаблону модуля
+	$tpl_dir = BASE_DIR . '/modules/faq/templates/'; // РџСѓС‚СЊ Рє С€Р°Р±Р»РѕРЅСѓ РјРѕРґСѓР»СЏ
 
-	// Если нету в кеше, то начинаем обрабатывать
+	// Р•СЃР»Рё РЅРµС‚Сѓ РІ РєРµС€Рµ, С‚Рѕ РЅР°С‡РёРЅР°РµРј РѕР±СЂР°Р±Р°С‚С‹РІР°С‚СЊ
 	if (!$AVE_Template->is_cached($tpl_dir . 'show_faq.tpl', $id))
 	{
-		// Проверяем, есть ли папка для кеша, если нет (первый раз) — создаем
+		// РџСЂРѕРІРµСЂСЏРµРј, РµСЃС‚СЊ Р»Рё РїР°РїРєР° РґР»СЏ РєРµС€Р°, РµСЃР»Рё РЅРµС‚ (РїРµСЂРІС‹Р№ СЂР°Р·) вЂ” СЃРѕР·РґР°РµРј
 		if (!is_dir($AVE_Template->cache_dir))
 		{
 			$oldumask = umask(0);
@@ -60,11 +60,11 @@ function mod_faq($id)
 
 	echo rewrite_link($AVE_Template->fetch($tpl_dir . 'show_faq.tpl', $id));
 
-	$AVE_Template->caching = false; // Отключаем кеширование
+	$AVE_Template->caching = false; // РћС‚РєР»СЋС‡Р°РµРј РєРµС€РёСЂРѕРІР°РЅРёРµ
 }
 
 /**
- * Администрирование
+ * РђРґРјРёРЅРёСЃС‚СЂРёСЂРѕРІР°РЅРёРµ
  */
 if (defined('ACP') && !empty($_REQUEST['moduleaction']))
 {

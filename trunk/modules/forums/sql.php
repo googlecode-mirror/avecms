@@ -31,7 +31,7 @@ $modul_sql_install[] = "CREATE TABLE CPPREFIX_modul_forum_allowed_files (
   filetype varchar(200) NOT NULL default '',
   filesize int(10) unsigned NOT NULL default '0',
   PRIMARY KEY  (id)
-) ENGINE=MyISAM DEFAULT CHARSET=cp1251;";
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 
 
 $modul_sql_install[] = "INSERT INTO CPPREFIX_modul_forum_allowed_files VALUES ('', 'text/html', 250);";
@@ -53,7 +53,7 @@ $modul_sql_install[] = "CREATE TABLE CPPREFIX_modul_forum_attachment (
   PRIMARY KEY  (id),
   KEY filename (filename),
   FULLTEXT KEY filename_2 (filename)
-) ENGINE=MyISAM DEFAULT CHARSET=cp1251;";
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 
 $modul_sql_install[] = "CREATE TABLE CPPREFIX_modul_forum_category (
   id int(11) NOT NULL auto_increment,
@@ -70,7 +70,7 @@ $modul_sql_install[] = "CREATE TABLE CPPREFIX_modul_forum_category (
   KEY id_2 (id),
   KEY title_4 (title),
   FULLTEXT KEY title_2 (title)
-) ENGINE=MyISAM DEFAULT CHARSET=cp1251;";
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 
 $modul_sql_install[] = "CREATE TABLE CPPREFIX_modul_forum_forum (
   id int(11) unsigned NOT NULL auto_increment,
@@ -105,7 +105,7 @@ $modul_sql_install[] = "CREATE TABLE CPPREFIX_modul_forum_forum (
   KEY status_2 (`status`),
   KEY position_3 (position),
   FULLTEXT KEY title_2 (title)
-) ENGINE=MyISAM DEFAULT CHARSET=cp1251;";
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 
 $modul_sql_install[] = "CREATE TABLE CPPREFIX_modul_forum_groupavatar (
   Id int(10) unsigned NOT NULL auto_increment,
@@ -113,7 +113,7 @@ $modul_sql_install[] = "CREATE TABLE CPPREFIX_modul_forum_groupavatar (
   IstStandard tinyint(1) unsigned NOT NULL default '1',
   StandardAvatar varchar(255) NOT NULL default '',
   PRIMARY KEY  (Id)
-) ENGINE=MyISAM DEFAULT CHARSET=cp1251;";
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 
 $modul_sql_install[] = "INSERT INTO CPPREFIX_modul_forum_groupavatar VALUES (1, 1, 1, '');";
 $modul_sql_install[] = "INSERT INTO CPPREFIX_modul_forum_groupavatar VALUES (2, 2, 1, '');";
@@ -135,7 +135,7 @@ $modul_sql_install[] = "CREATE TABLE CPPREFIX_modul_forum_grouppermissions (
   MAX_EDIT_PERIOD smallint(4) unsigned NOT NULL default '672',
   PRIMARY KEY  (Id),
   UNIQUE KEY user_group (user_group)
-) ENGINE=MyISAM DEFAULT CHARSET=cp1251;";
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 
 $modul_sql_install[] = "INSERT INTO CPPREFIX_modul_forum_grouppermissions VALUES (1, 1, 'own_avatar|canpn|accessforums|cansearch|last24|userprofile|changenick', 45056, 120, 120, 1, 100, 50000, 10000, 10, 1440);";
 $modul_sql_install[] = "INSERT INTO CPPREFIX_modul_forum_grouppermissions VALUES (2, 2, 'accessforums|cansearch|last24|userprofile', 0, 0, 0, 1, 0, 0, 5000, 3, 0);";
@@ -150,19 +150,19 @@ $modul_sql_install[] = "CREATE TABLE CPPREFIX_modul_forum_ignorelist (
   Grund varchar(255) default NULL,
   Datum int(14) unsigned NOT NULL default '0',
   PRIMARY KEY  (Id)
-) ENGINE=MyISAM DEFAULT CHARSET=cp1251;";
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 
 $modul_sql_install[] = "CREATE TABLE CPPREFIX_modul_forum_mods (
   forum_id int(11) NOT NULL default '0',
   user_id int(11) NOT NULL default '0'
-) ENGINE=MyISAM DEFAULT CHARSET=cp1251;";
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 
 $modul_sql_install[] = "CREATE TABLE CPPREFIX_modul_forum_permissions (
   forum_id int(11) NOT NULL default '0',
   group_id int(11) NOT NULL default '0',
   permissions varchar(255) default NULL,
   PRIMARY KEY  (forum_id,group_id)
-) ENGINE=MyISAM DEFAULT CHARSET=cp1251;";
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 
 $modul_sql_install[] = "CREATE TABLE CPPREFIX_modul_forum_pn (
   pnid int(11) unsigned NOT NULL auto_increment,
@@ -179,7 +179,7 @@ $modul_sql_install[] = "CREATE TABLE CPPREFIX_modul_forum_pn (
   forward enum('yes','no') NOT NULL default 'no',
   PRIMARY KEY  (pnid),
   KEY id (pnid)
-) ENGINE=MyISAM DEFAULT CHARSET=cp1251;";
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 
 $modul_sql_install[] = "CREATE TABLE CPPREFIX_modul_forum_post (
   id bigint(20) unsigned NOT NULL auto_increment,
@@ -204,7 +204,7 @@ $modul_sql_install[] = "CREATE TABLE CPPREFIX_modul_forum_post (
   KEY topic_id_2 (topic_id),
   KEY datum_2 (datum),
   FULLTEXT KEY title_2 (title)
-) ENGINE=MyISAM DEFAULT CHARSET=cp1251;";
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 
 $modul_sql_install[] = "CREATE TABLE CPPREFIX_modul_forum_posticons (
   id int(11) NOT NULL auto_increment,
@@ -212,7 +212,7 @@ $modul_sql_install[] = "CREATE TABLE CPPREFIX_modul_forum_posticons (
   active tinyint(1) NOT NULL default '1',
   path varchar(55) NOT NULL default '',
   PRIMARY KEY  (id)
-) ENGINE=MyISAM DEFAULT CHARSET=cp1251;";
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 
 $modul_sql_install[] = "INSERT INTO CPPREFIX_modul_forum_posticons VALUES (1, 1, 1, 'icon1.gif');";
 $modul_sql_install[] = "INSERT INTO CPPREFIX_modul_forum_posticons VALUES (2, 2, 1, 'icon2.gif');";
@@ -234,14 +234,14 @@ $modul_sql_install[] = "CREATE TABLE CPPREFIX_modul_forum_rank (
   title varchar(100) NOT NULL default '',
   count int(11) NOT NULL default '0',
   PRIMARY KEY  (id)
-) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=cp1251;";
+) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;";
 
-$modul_sql_install[] = "INSERT INTO CPPREFIX_modul_forum_rank VALUES (1, 'Новичок', 1);";
-$modul_sql_install[] = "INSERT INTO CPPREFIX_modul_forum_rank VALUES (2, 'Иногда пишет', 100);";
-$modul_sql_install[] = "INSERT INTO CPPREFIX_modul_forum_rank VALUES (3, 'Советник', 600);";
-$modul_sql_install[] = "INSERT INTO CPPREFIX_modul_forum_rank VALUES (4, 'Эксперт', 1000);";
-$modul_sql_install[] = "INSERT INTO CPPREFIX_modul_forum_rank VALUES (5, 'Живет здесь', 5000);";
-$modul_sql_install[] = "INSERT INTO CPPREFIX_modul_forum_rank VALUES (6, 'Писатель', 200);";
+$modul_sql_install[] = "INSERT INTO CPPREFIX_modul_forum_rank VALUES (1, 'РќРѕРІРёС‡РѕРє', 1);";
+$modul_sql_install[] = "INSERT INTO CPPREFIX_modul_forum_rank VALUES (2, 'РРЅРѕРіРґР° РїРёС€РµС‚', 100);";
+$modul_sql_install[] = "INSERT INTO CPPREFIX_modul_forum_rank VALUES (3, 'РЎРѕРІРµС‚РЅРёРє', 600);";
+$modul_sql_install[] = "INSERT INTO CPPREFIX_modul_forum_rank VALUES (4, 'Р­РєСЃРїРµСЂС‚', 1000);";
+$modul_sql_install[] = "INSERT INTO CPPREFIX_modul_forum_rank VALUES (5, 'Р–РёРІРµС‚ Р·РґРµСЃСЊ', 5000);";
+$modul_sql_install[] = "INSERT INTO CPPREFIX_modul_forum_rank VALUES (6, 'РџРёСЃР°С‚РµР»СЊ', 200);";
 
 $modul_sql_install[] = "CREATE TABLE CPPREFIX_modul_forum_rating (
   topic_id int(11) NOT NULL default '0',
@@ -249,7 +249,7 @@ $modul_sql_install[] = "CREATE TABLE CPPREFIX_modul_forum_rating (
   ip text NOT NULL,
   uid text NOT NULL,
   PRIMARY KEY  (topic_id)
-) ENGINE=MyISAM DEFAULT CHARSET=cp1251;";
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 
 $modul_sql_install[] = "CREATE TABLE CPPREFIX_modul_forum_settings (
   boxwidthcomm int(10) unsigned NOT NULL default '300',
@@ -269,7 +269,7 @@ $modul_sql_install[] = "CREATE TABLE CPPREFIX_modul_forum_settings (
   UNIQUE KEY boxwidthforums (boxwidthforums),
   UNIQUE KEY maxlengthword (maxlengthword),
   UNIQUE KEY maxlines (maxlines)
-) ENGINE=MyISAM DEFAULT CHARSET=cp1251;";
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 
 $modul_sql_install[] = "INSERT INTO CPPREFIX_modul_forum_settings VALUES (300, 300, 50, 150, 'Arschloch,Ficken,Drecksau', '***', '<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">\r\n<html xmlns=\"http://www.w3.org/1999/xhtml\">\r\n<head>\r\n<meta http-equiv=\"Content-Type\" content=\"text/html; charset=windows-1251\" />', '" . $_SESSION['user_email'] . "', '" . $_SESSION['user_name'] . "', 1, 1, 1, 1);";
 
@@ -280,7 +280,7 @@ $modul_sql_install[] = "CREATE TABLE CPPREFIX_modul_forum_smileys (
   code varchar(15) NOT NULL default '',
   path varchar(55) NOT NULL default '',
   PRIMARY KEY  (id)
-) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=cp1251;";
+) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;";
 
 $modul_sql_install[] = "INSERT INTO CPPREFIX_modul_forum_smileys VALUES ('', 14, 1, ';)', 'wink.gif');";
 $modul_sql_install[] = "INSERT INTO CPPREFIX_modul_forum_smileys VALUES ('', 13, 1, ':eek:', 'eek.gif');";
@@ -323,14 +323,14 @@ $modul_sql_install[] = "CREATE TABLE CPPREFIX_modul_forum_topic (
   KEY title (title),
   KEY id_2 (id),
   KEY title_2 (title)
-) ENGINE=MyISAM PACK_KEYS=0 AUTO_INCREMENT=1 DEFAULT CHARSET=cp1251;";
+) ENGINE=MyISAM PACK_KEYS=0 AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;";
 
 $modul_sql_install[] = "CREATE TABLE CPPREFIX_modul_forum_topic_read (
   Usr int(11) NOT NULL default '0',
   Topic int(11) NOT NULL default '0',
   ReadOn timestamp NOT NULL,
   PRIMARY KEY  (Usr,Topic)
-) ENGINE=MyISAM DEFAULT CHARSET=cp1251;";
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 
 $modul_sql_install[] = "CREATE TABLE CPPREFIX_modul_forum_useronline (
   ip varchar(25) NOT NULL default '0',
@@ -339,7 +339,7 @@ $modul_sql_install[] = "CREATE TABLE CPPREFIX_modul_forum_useronline (
   uname varchar(255) NOT NULL default '',
   invisible varchar(10) NOT NULL default '',
   UNIQUE KEY ip (ip)
-) ENGINE=MyISAM DEFAULT CHARSET=cp1251;";
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 
 $modul_sql_install[] = "CREATE TABLE CPPREFIX_modul_forum_userprofile (
   Id int(14) unsigned NOT NULL auto_increment,
@@ -374,14 +374,14 @@ $modul_sql_install[] = "CREATE TABLE CPPREFIX_modul_forum_userprofile (
   Geschlecht enum('male','female') NOT NULL default 'male',
   PRIMARY KEY  (Id),
   UNIQUE KEY BenutzerId (BenutzerId)
-) ENGINE=MyISAM PACK_KEYS=0 AUTO_INCREMENT=1 DEFAULT CHARSET=cp1251;";
+) ENGINE=MyISAM PACK_KEYS=0 AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;";
 
 
-$modul_sql_install[] = "INSERT INTO CPPREFIX_modul_forum_category VALUES (1, 'Демонстрационная категория', 1, 0, 'Категория для демонстрации работы форумов', '1,2,3,4,5,6,7,8,9');";
-$modul_sql_install[] = "INSERT INTO CPPREFIX_modul_forum_forum VALUES (1, 'Общий форум', 1, NULL, 'Здесь можно говорить обо всем', 0, '2008-05-10 11:45:16', 0, '1,2,3,4,5,6,7,8,9', 1, '', '', NULL, 1, 0, 0, '', '');";
-$modul_sql_install[] = "INSERT INTO CPPREFIX_modul_forum_forum VALUES (2, 'Мир вокруг нас', 1, NULL, 'Форум о событиях на планете земля.', 0, NULL, 0, '1,2,3,4,5,6,7,8,9', 1, '', '', NULL, 2, 0, 0, '', '');";
-$modul_sql_install[] = "INSERT INTO CPPREFIX_modul_forum_topic VALUES (1, 'Добро пожаловать!', 0, 3, NULL, 1, NULL, 0, '2008-05-10 11:45:16', 1, 1, '', 0, '".date("Y-m-d H:i:s")."', NULL, 1, '".time()."');";
-$modul_sql_install[] = "INSERT INTO CPPREFIX_modul_forum_post VALUES (1, '', 1, '".date("Y-m-d H:i:s")."', 1, 1, 1, 1, 'Мы приветствуем Вас в наших форумах!\r\nОбщайтесь в удовольствие.', '', 1);";
+$modul_sql_install[] = "INSERT INTO CPPREFIX_modul_forum_category VALUES (1, 'Р”РµРјРѕРЅСЃС‚СЂР°С†РёРѕРЅРЅР°СЏ РєР°С‚РµРіРѕСЂРёСЏ', 1, 0, 'РљР°С‚РµРіРѕСЂРёСЏ РґР»СЏ РґРµРјРѕРЅСЃС‚СЂР°С†РёРё СЂР°Р±РѕС‚С‹ С„РѕСЂСѓРјРѕРІ', '1,2,3,4,5,6,7,8,9');";
+$modul_sql_install[] = "INSERT INTO CPPREFIX_modul_forum_forum VALUES (1, 'РћР±С‰РёР№ С„РѕСЂСѓРј', 1, NULL, 'Р—РґРµСЃСЊ РјРѕР¶РЅРѕ РіРѕРІРѕСЂРёС‚СЊ РѕР±Рѕ РІСЃРµРј', 0, '2008-05-10 11:45:16', 0, '1,2,3,4,5,6,7,8,9', 1, '', '', NULL, 1, 0, 0, '', '');";
+$modul_sql_install[] = "INSERT INTO CPPREFIX_modul_forum_forum VALUES (2, 'РњРёСЂ РІРѕРєСЂСѓРі РЅР°СЃ', 1, NULL, 'Р¤РѕСЂСѓРј Рѕ СЃРѕР±С‹С‚РёСЏС… РЅР° РїР»Р°РЅРµС‚Рµ Р·РµРјР»СЏ.', 0, NULL, 0, '1,2,3,4,5,6,7,8,9', 1, '', '', NULL, 2, 0, 0, '', '');";
+$modul_sql_install[] = "INSERT INTO CPPREFIX_modul_forum_topic VALUES (1, 'Р”РѕР±СЂРѕ РїРѕР¶Р°Р»РѕРІР°С‚СЊ!', 0, 3, NULL, 1, NULL, 0, '2008-05-10 11:45:16', 1, 1, '', 0, '".date("Y-m-d H:i:s")."', NULL, 1, '".time()."');";
+$modul_sql_install[] = "INSERT INTO CPPREFIX_modul_forum_post VALUES (1, '', 1, '".date("Y-m-d H:i:s")."', 1, 1, 1, 1, 'РњС‹ РїСЂРёРІРµС‚СЃС‚РІСѓРµРј Р’Р°СЃ РІ РЅР°С€РёС… С„РѕСЂСѓРјР°С…!\r\nРћР±С‰Р°Р№С‚РµСЃСЊ РІ СѓРґРѕРІРѕР»СЊСЃС‚РІРёРµ.', '', 1);";
 $modul_sql_install[] = "INSERT INTO CPPREFIX_modul_forum_rating VALUES (1, '', '', '');";
 $modul_sql_install[] = "INSERT INTO CPPREFIX_modul_forum_permissions VALUES (1, 1, '1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1');";
 $modul_sql_install[] = "INSERT INTO CPPREFIX_modul_forum_permissions VALUES (1, 2, '1,1,1,1,0,0,0,0,,,,,,,,,,,,,,');";

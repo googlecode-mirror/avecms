@@ -28,7 +28,7 @@
 			<tbody>
 				<tr>
 					<td valign="top" height="150">
-						<!-- Àäðåñ äîñòàâêè çàêàçà -->
+						<!-- ÐÐ´Ñ€ÐµÑ Ð´Ð¾ÑÑ‚Ð°Ð²ÐºÐ¸ Ð·Ð°ÐºÐ°Ð·Ð° -->
 						{if $smarty.session.billing_company!=''}<strong>{$smarty.session.billing_company}</strong><br />{/if}
 						{if $smarty.session.billing_company_reciever!=''}<em>{$smarty.session.billing_company_reciever}</em><br />{/if}
 						{$smarty.session.billing_firstname} {$smarty.session.billing_lastname}<br />
@@ -53,7 +53,7 @@
 			<tbody>
 				<tr>
 					<td valign="top" height="150">
-						<!-- Àäðåñ äîñòàâêè ñ÷åòà -->
+						<!-- ÐÐ´Ñ€ÐµÑ Ð´Ð¾ÑÑ‚Ð°Ð²ÐºÐ¸ ÑÑ‡ÐµÑ‚Ð° -->
 						{if $smarty.session.shipping_firstname=='' || $smarty.session.shipping_lastname==''}
 							{#SameAsShipping#}
 						{else}
@@ -73,7 +73,7 @@
 	<div class="clear"></div>
 
 	<div class="grid_12 alpha omega tablebox">
-		<!-- Òàáëèöà çàêàçàííûõ òîâàðîâ -->
+		<!-- Ð¢Ð°Ð±Ð»Ð¸Ñ†Ð° Ð·Ð°ÐºÐ°Ð·Ð°Ð½Ð½Ñ‹Ñ… Ñ‚Ð¾Ð²Ð°Ñ€Ð¾Ð² -->
 		<table width="100%" border="1">
 			<colgroup>
 				<col>
@@ -123,7 +123,7 @@
 				{/foreach}
 			</tbody>
 		</table>
-		<!-- /Òàáëèöà çàêàçàííûõ òîâàðîâ -->
+		<!-- /Ð¢Ð°Ð±Ð»Ð¸Ñ†Ð° Ð·Ð°ÐºÐ°Ð·Ð°Ð½Ð½Ñ‹Ñ… Ñ‚Ð¾Ð²Ð°Ñ€Ð¾Ð² -->
 	</div>
 	<div class="clear"></div>
 
@@ -132,7 +132,7 @@
 			<table width="100%">
 				<tr>
 					<td align="center" valign="middle" height="161">
-						<!-- Êóïîí íà ñêèäêó -->
+						<!-- ÐšÑƒÐ¿Ð¾Ð½ Ð½Ð° ÑÐºÐ¸Ð´ÐºÑƒ -->
 						{if $couponcodes==1}
 							{if $smarty.session.CouponCode > 0}
 								<div style="padding:0 10px;"><h4>{#CouponcodeOk#}</h4></div><br />
@@ -143,14 +143,14 @@
 								<input class="absmiddle" type="image" src="{$shop_images}coupon_ok.gif" alt="{#ButtonCouponSend#}" />
 							{/if}
 						{/if}
-						<!-- /Êóïîí íà ñêèäêó -->
+						<!-- /ÐšÑƒÐ¿Ð¾Ð½ Ð½Ð° ÑÐºÐ¸Ð´ÐºÑƒ -->
 					</td>
 				</tr>
 			</table>
 		</div>
 
 		<div class="grid_8 omega tablebox">
-			<!-- Ñâîäíàÿ èíôîðìàöèÿ î çàêàçå -->
+			<!-- Ð¡Ð²Ð¾Ð´Ð½Ð°Ñ Ð¸Ð½Ñ„Ð¾Ñ€Ð¼Ð°Ñ†Ð¸Ñ Ð¾ Ð·Ð°ÐºÐ°Ð·Ðµ -->
 			<table width="100%">
 				{cycle values='<tr class="odd">,<tr>'}
 					<td>{#ShippingMethod#}</td>
@@ -224,7 +224,7 @@
 					{/foreach}
 				{/if}
 			</table>
-			<!-- /Ñâîäíàÿ èíôîðìàöèÿ î çàêàçå -->
+			<!-- /Ð¡Ð²Ð¾Ð´Ð½Ð°Ñ Ð¸Ð½Ñ„Ð¾Ñ€Ð¼Ð°Ñ†Ð¸Ñ Ð¾ Ð·Ð°ÐºÐ°Ð·Ðµ -->
 		</div>
 		<div class="clear"></div>
 
@@ -243,7 +243,7 @@
 				<tbody>
 					<tr>
 						<td>
-							<!-- Ëèöåíçèîííîå ñîãëàøåíèå -->
+							<!-- Ð›Ð¸Ñ†ÐµÐ½Ð·Ð¸Ð¾Ð½Ð½Ð¾Ðµ ÑÐ¾Ð³Ð»Ð°ÑˆÐµÐ½Ð¸Ðµ -->
 							<div class="input" style="width:98%;height:120px;overflow:auto" name="Agb">{$ShopAgb}</div>
 						</td>
 					</tr>
@@ -262,7 +262,7 @@
 				<tbody>
 					<tr>
 						<td>
-							<!-- Êîììåíòàðèé ê çàêàçó -->
+							<!-- ÐšÐ¾Ð¼Ð¼ÐµÐ½Ñ‚Ð°Ñ€Ð¸Ð¹ Ðº Ð·Ð°ÐºÐ°Ð·Ñƒ -->
 							<textarea class="mod_shop_inputfields" style="width:98%;height:120px" name="Msg">{$smarty.request.Msg|escape:html|stripslashes}</textarea>
 						</td>
 					</tr>
@@ -295,45 +295,45 @@
 
 {if $smarty.request.print!=1}
 	<div class="grid_4">
-		<!-- Ïðàâîå ìåíþ -->
+		<!-- ÐŸÑ€Ð°Ð²Ð¾Ðµ Ð¼ÐµÐ½ÑŽ -->
 		<div class="box menu">
 			<h2><a href="#" id="toggle-section-menu">{#ProductOverview#}</a></h2>
 			<div class="block" id="section-menu">{$ShopNavi}</div>
 		</div>
 
-		<!-- Áëîê àâòîðèçàöèè -->
+		<!-- Ð‘Ð»Ð¾Ðº Ð°Ð²Ñ‚Ð¾Ñ€Ð¸Ð·Ð°Ñ†Ð¸Ð¸ -->
 		<div class="box">
 			<h2> <a href="#" id="toggle-login-forms">{#UserPanel#}</a> </h2>
 			<div class="block" id="login-forms">{$UserPanel}</div>
 		</div>
 
-		<!-- Áëîê ïîèñêà ïî ìàãàçèíó -->
+		<!-- Ð‘Ð»Ð¾Ðº Ð¿Ð¾Ð¸ÑÐºÐ° Ð¿Ð¾ Ð¼Ð°Ð³Ð°Ð·Ð¸Ð½Ñƒ -->
 		<div class="box">
 			<h2><a href="#" id="toggle-shop-search">{#ProductSearch#}</a></h2>
 			<div class="block" id="shop-search">{$Search}</div>
 		</div>
 
-		<!-- Áëîê êîðçèíû -->
+		<!-- Ð‘Ð»Ð¾Ðº ÐºÐ¾Ñ€Ð·Ð¸Ð½Ñ‹ -->
 		<div class="box">
 			<h2><a href="#" id="toggle-shopbasket">{#ShopBasket#}</a></h2>
 			<div class="block" id="shopbasket">{$Basket}</div>
 		</div>
 
 		{if $smarty.session.user_id}
-			<!-- Áëîê îáðàáîòàííûõ çàêàçîâ -->
+			<!-- Ð‘Ð»Ð¾Ðº Ð¾Ð±Ñ€Ð°Ð±Ð¾Ñ‚Ð°Ð½Ð½Ñ‹Ñ… Ð·Ð°ÐºÐ°Ð·Ð¾Ð² -->
 			<div class="box">
 				<h2><a href="#" id="toggle-myordersbox">{#MyOrders#}</a></h2>
 				<div class="block" id="myordersbox">{$MyOrders}</div>
 			</div>
 		{/if}
 
-		<!-- Áëîê èíôîðìàöèè -->
+		<!-- Ð‘Ð»Ð¾Ðº Ð¸Ð½Ñ„Ð¾Ñ€Ð¼Ð°Ñ†Ð¸Ð¸ -->
 		<div class="box">
 			<h2><a href="#" id="toggle-shopinfobox">{#Infopage#}</a></h2>
 			<div class="block" id="shopinfobox">{$InfoBox}</div>
 		</div>
 
-		<!-- Áëîê ïîïóëÿðíûõ òîâàðîâ -->
+		<!-- Ð‘Ð»Ð¾Ðº Ð¿Ð¾Ð¿ÑƒÐ»ÑÑ€Ð½Ñ‹Ñ… Ñ‚Ð¾Ð²Ð°Ñ€Ð¾Ð² -->
 		<div class="box">
 			<h2><a href="#" id="toggle-shoppopprods">{#Topseller#}</a></h2>
 			<div class="block" id="shoppopprods">{$Topseller}</div>

@@ -5,7 +5,7 @@
 	{* Geben Sie hier an, in wie vielen Spalten die Artikel nebeneinander angezeigt werden sollen. Empfohlen: 1 *}
 	{assign var="cols" value=2}
 
-	{* постраничная навигация *}
+	{* РїРѕСЃС‚СЂР°РЅРёС‡РЅР°СЏ РЅР°РІРёРіР°С†РёСЏ *}
 	{if $page_nav}{$page_nav}{/if}
 
 	<table border="0" cellpadding="0" cellspacing="0">
@@ -62,6 +62,6 @@
 		</tr>
 	</table>
 
-	{* постраничная навигация *}
+	{* РїРѕСЃС‚СЂР°РЅРёС‡РЅР°СЏ РЅР°РІРёРіР°С†РёСЏ *}
 	{if $page_nav}{$page_nav}{/if}
 {/if}

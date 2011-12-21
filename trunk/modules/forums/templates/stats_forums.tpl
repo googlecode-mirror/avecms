@@ -1,7 +1,7 @@
 <!--<link href="../../../templates/cp/css/forum.css" rel="stylesheet" type="text/css" />-->
 <table width="100%" border="0" cellpadding="5" cellspacing="1" class="forum_tableborder">
   <tr>
-    <td colspan="2" class="forum_header"><strong>Статистика форума </strong></td>
+    <td colspan="2" class="forum_header"><strong>РЎС‚Р°С‚РёСЃС‚РёРєР° С„РѕСЂСѓРјР° </strong></td>
   </tr>
   <tr>
     <td class="forum_info_icon"><img src="{$forum_images}forum/stats.gif" alt="" /></td>
@@ -35,7 +35,7 @@
 </table> </td>
   </tr>
   <tr>
-    <td colspan="2" class="forum_header"><strong>Пользователи на сайте </strong></td>
+    <td colspan="2" class="forum_header"><strong>РџРѕР»СЊР·РѕРІР°С‚РµР»Рё РЅР° СЃР°Р№С‚Рµ </strong></td>
   </tr>
   <tr>
     <td class="forum_info_icon">&nbsp;</td>

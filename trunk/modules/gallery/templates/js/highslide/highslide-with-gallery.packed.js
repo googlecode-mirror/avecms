@@ -2,7 +2,7 @@
 Name:    Highslide JS
 Version: 4.1.5 (June 26 2009)
 Config:  default +slideshow +positioning +transitions +viewport +thumbstrip +packed
-Author:  Torstein Hønsi
+Author:  Torstein HÑˆnsi
 Support: http://highslide.com/support
 
 Licence:

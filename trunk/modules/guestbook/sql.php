@@ -1,7 +1,7 @@
 <?php
 
 /**
- * AVE.cms - Модуль Гостевая книга
+ * AVE.cms - РњРѕРґСѓР»СЊ Р“РѕСЃС‚РµРІР°СЏ РєРЅРёРіР°
  *
  * @package AVE.cms
  * @subpackage module_Guestbook
@@ -9,7 +9,7 @@
  */
 
 /**
- * mySQL-запросы для установки, обновления и удаления модуля
+ * mySQL-Р·Р°РїСЂРѕСЃС‹ РґР»СЏ СѓСЃС‚Р°РЅРѕРІРєРё, РѕР±РЅРѕРІР»РµРЅРёСЏ Рё СѓРґР°Р»РµРЅРёСЏ РјРѕРґСѓР»СЏ
  */
 
 $modul_sql_install = array();
@@ -29,11 +29,12 @@ $modul_sql_install[] = "CREATE TABLE `CPPREFIX_modul_guestbook` (
   `guestbook_need_approve` enum('1','0') NOT NULL default '1',
   `guestbook_use_bbcode` enum('1','0') NOT NULL default '1',
   PRIMARY KEY  (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=cp1251;";
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 
 $modul_sql_install[] = "CREATE TABLE `CPPREFIX_modul_guestbook_post` (
   `id` int(10) unsigned NOT NULL auto_increment,
   `guestbook_post_author_name` varchar(25) NOT NULL default '',
+  `guestbook_post_document` mediumint(5) NOT NULL default '0',
   `guestbook_post_author_email` varchar(100) NOT NULL default '',
   `guestbook_post_author_web` varchar(100) NOT NULL default '',
   `guestbook_post_author_ip` varchar(15) NOT NULL default '',
@@ -42,7 +43,7 @@ $modul_sql_install[] = "CREATE TABLE `CPPREFIX_modul_guestbook_post` (
   `guestbook_post_approve` enum('0','1') NOT NULL default '0',
   `guestbook_post_created` int(10) unsigned NOT NULL default '0',
   PRIMARY KEY  (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=cp1251 PACK_KEYS=0;";
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 PACK_KEYS=0;";
 
 $modul_sql_install[] = "INSERT INTO `CPPREFIX_modul_guestbook` VALUES (1, '1', 0, '1', 'info@domain.tld', 1500, '1', '1');";
 

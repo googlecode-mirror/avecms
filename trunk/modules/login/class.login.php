@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Класс работы с модулем Авторизация
+ * РљР»Р°СЃСЃ СЂР°Р±РѕС‚С‹ СЃ РјРѕРґСѓР»РµРј РђРІС‚РѕСЂРёР·Р°С†РёСЏ
  *
  * @package AVE.cms
  * @subpackage module_Login
@@ -12,84 +12,84 @@ class Login
 {
 
 /**
- *	СВОЙСТВА
+ *	РЎР’РћР™РЎРўР’Рђ
  */
 
 	/**
-	 * Время защитной паузы при авторизации в секундах
+	 * Р’СЂРµРјСЏ Р·Р°С‰РёС‚РЅРѕР№ РїР°СѓР·С‹ РїСЂРё Р°РІС‚РѕСЂРёР·Р°С†РёРё РІ СЃРµРєСѓРЅРґР°С…
 	 *
 	 * @var int
 	 */
 	var $_sleep = 1;
 
 	/**
-	 * Идентификатор группы пользователей для зарегистрированных пользователей
+	 * РРґРµРЅС‚РёС„РёРєР°С‚РѕСЂ РіСЂСѓРїРїС‹ РїРѕР»СЊР·РѕРІР°С‚РµР»РµР№ РґР»СЏ Р·Р°СЂРµРіРёСЃС‚СЂРёСЂРѕРІР°РЅРЅС‹С… РїРѕР»СЊР·РѕРІР°С‚РµР»РµР№
 	 *
 	 * @var int
 	 */
 	var $_newuser_group = 4;
 
 	/**
-	 * Путь к директории с шаблонами модуля
+	 * РџСѓС‚СЊ Рє РґРёСЂРµРєС‚РѕСЂРёРё СЃ С€Р°Р±Р»РѕРЅР°РјРё РјРѕРґСѓР»СЏ
 	 *
 	 * @var string
 	 */
 	var $_tpl_dir;
 
 	/**
-	 * Путь к языковому файлу
+	 * РџСѓС‚СЊ Рє СЏР·С‹РєРѕРІРѕРјСѓ С„Р°Р№Р»Сѓ
 	 *
 	 * @var string
 	 */
 	var $_lang_file;
 
 	/**
-	 * Регулярное выражение для проверки непечатаемых и нежелательных символов
+	 * Р РµРіСѓР»СЏСЂРЅРѕРµ РІС‹СЂР°Р¶РµРЅРёРµ РґР»СЏ РїСЂРѕРІРµСЂРєРё РЅРµРїРµС‡Р°С‚Р°РµРјС‹С… Рё РЅРµР¶РµР»Р°С‚РµР»СЊРЅС‹С… СЃРёРјРІРѕР»РѕРІ
 	 *
 	 * @var string
 	 */
 	var $_regex = '/[^\x20-\xFF]|[><]/';
 
 	/**
-	 * Регулярное выражение для проверки даты
+	 * Р РµРіСѓР»СЏСЂРЅРѕРµ РІС‹СЂР°Р¶РµРЅРёРµ РґР»СЏ РїСЂРѕРІРµСЂРєРё РґР°С‚С‹
 	 *
 	 * @var string
 	 */
 	var $_regex_geb = '#(0[1-9]|[12][0-9]|3[01])([[:punct:]| ])(0[1-9]|1[012])\2(19|20)\d\d#';
 
 	/**
-	 * Регулярное выражение для проверки e-Mail
+	 * Р РµРіСѓР»СЏСЂРЅРѕРµ РІС‹СЂР°Р¶РµРЅРёРµ РґР»СЏ РїСЂРѕРІРµСЂРєРё e-Mail
 	 *
 	 * @var string
 	 */
 	var $_regex_email = '/^[\w.-]+@[a-z0-9.-]+\.(?:[a-z]{2}|com|org|net|edu|gov|mil|biz|info|mobi|name|aero|asia|jobs|museum)$/i';
 
 	/**
-	 * Ссылка на страницу после регистрации без проверок
+	 * РЎСЃС‹Р»РєР° РЅР° СЃС‚СЂР°РЅРёС†Сѓ РїРѕСЃР»Рµ СЂРµРіРёСЃС‚СЂР°С†РёРё Р±РµР· РїСЂРѕРІРµСЂРѕРє
 	 *
 	 * @var string
 	 */
 	var $_reg_now = 'index.php?module=login&action=profile';
 
 	/**
-	 * Ссылка на страницу после регистрации с проверкой Email
+	 * РЎСЃС‹Р»РєР° РЅР° СЃС‚СЂР°РЅРёС†Сѓ РїРѕСЃР»Рµ СЂРµРіРёСЃС‚СЂР°С†РёРё СЃ РїСЂРѕРІРµСЂРєРѕР№ Email
 	 *
 	 * @var string
 	 */
 	var $_reg_email = 'index.php?module=login&action=register&sub=registerfinal';
 
 	/**
-	 * Ссылка на страницу после регистрации с проверкой администратором
+	 * РЎСЃС‹Р»РєР° РЅР° СЃС‚СЂР°РЅРёС†Сѓ РїРѕСЃР»Рµ СЂРµРіРёСЃС‚СЂР°С†РёРё СЃ РїСЂРѕРІРµСЂРєРѕР№ Р°РґРјРёРЅРёСЃС‚СЂР°С‚РѕСЂРѕРј
 	 *
 	 * @var string
 	 */
 	var $_reg_admin = 'index.php?module=login&action=register&sub=thankadmin';
 
 	/**
-	 * Конструктор
+	 * РљРѕРЅСЃС‚СЂСѓРєС‚РѕСЂ
 	 *
-	 * @param string $tpl_dir путь к директории с шаблонами модуля
-	 * @param string $lang_file путь к языковому файлу
+	 * @param string $tpl_dir РїСѓС‚СЊ Рє РґРёСЂРµРєС‚РѕСЂРёРё СЃ С€Р°Р±Р»РѕРЅР°РјРё РјРѕРґСѓР»СЏ
+	 * @param string $lang_file РїСѓС‚СЊ Рє СЏР·С‹РєРѕРІРѕРјСѓ С„Р°Р№Р»Сѓ
 	 * @return Login
 	 */
 	function Login($tpl_dir, $lang_file)
@@ -99,14 +99,14 @@ class Login
 	}
 
 /**
- *	ВНУТРЕННИЕ МЕТОДЫ
+ *	Р’РќРЈРўР Р•РќРќРР• РњР•РўРћР”Р«
  */
 
 	/**
-	 * Получение параметра настройки модуля Авторизация
+	 * РџРѕР»СѓС‡РµРЅРёРµ РїР°СЂР°РјРµС‚СЂР° РЅР°СЃС‚СЂРѕР№РєРё РјРѕРґСѓР»СЏ РђРІС‚РѕСЂРёР·Р°С†РёСЏ
 	 *
-	 * @param string $field название параметра
-	 * @return mixed значение параметра или массив параметров если не указан $field
+	 * @param string $field РЅР°Р·РІР°РЅРёРµ РїР°СЂР°РјРµС‚СЂР°
+	 * @return mixed Р·РЅР°С‡РµРЅРёРµ РїР°СЂР°РјРµС‚СЂР° РёР»Рё РјР°СЃСЃРёРІ РїР°СЂР°РјРµС‚СЂРѕРІ РµСЃР»Рё РЅРµ СѓРєР°Р·Р°РЅ $field
 	 */
 	function _loginSettingsGet($field = '')
 	{
@@ -129,9 +129,9 @@ class Login
 	}
 
 	/**
-	 * Получение параметра "Обязательное поле" для формы авторизации
+	 * РџРѕР»СѓС‡РµРЅРёРµ РїР°СЂР°РјРµС‚СЂР° "РћР±СЏР·Р°С‚РµР»СЊРЅРѕРµ РїРѕР»Рµ" РґР»СЏ С„РѕСЂРјС‹ Р°РІС‚РѕСЂРёР·Р°С†РёРё
 	 *
-	 * @param string $field название поля БД в котором хранится параметр
+	 * @param string $field РЅР°Р·РІР°РЅРёРµ РїРѕР»СЏ Р‘Р” РІ РєРѕС‚РѕСЂРѕРј С…СЂР°РЅРёС‚СЃСЏ РїР°СЂР°РјРµС‚СЂ
 	 * @return boolean
 	 */
 	function _loginFieldIsRequired($field)
@@ -140,7 +140,7 @@ class Login
 	}
 
 	/**
-	 * Передать в Smarty признаки обязательных полей
+	 * РџРµСЂРµРґР°С‚СЊ РІ Smarty РїСЂРёР·РЅР°РєРё РѕР±СЏР·Р°С‚РµР»СЊРЅС‹С… РїРѕР»РµР№
 	 *
 	 */
 	function _loginRequiredFieldFetch()
@@ -162,9 +162,9 @@ class Login
 	}
 
 	/**
-	 * Проверка наличия учетной записи с указанным email
+	 * РџСЂРѕРІРµСЂРєР° РЅР°Р»РёС‡РёСЏ СѓС‡РµС‚РЅРѕР№ Р·Р°РїРёСЃРё СЃ СѓРєР°Р·Р°РЅРЅС‹Рј email
 	 *
-	 * @param string $email проверяемый email
+	 * @param string $email РїСЂРѕРІРµСЂСЏРµРјС‹Р№ email
 	 * @return boolean
 	 */
 	function _loginEmailExistCheck($email)
@@ -181,9 +181,9 @@ class Login
 	}
 
 	/**
-	 * Проверка наличия учетной записи с проверяемым именем пользователя
+	 * РџСЂРѕРІРµСЂРєР° РЅР°Р»РёС‡РёСЏ СѓС‡РµС‚РЅРѕР№ Р·Р°РїРёСЃРё СЃ РїСЂРѕРІРµСЂСЏРµРјС‹Рј РёРјРµРЅРµРј РїРѕР»СЊР·РѕРІР°С‚РµР»СЏ
 	 *
-	 * @param string $user_name проверяемое имя пользователя
+	 * @param string $user_name РїСЂРѕРІРµСЂСЏРµРјРѕРµ РёРјСЏ РїРѕР»СЊР·РѕРІР°С‚РµР»СЏ
 	 * @return boolean
 	 */
 	function _loginUserNameExistsCheck($user_name)
@@ -201,7 +201,7 @@ class Login
 	}
 
 	/**
-	 * Проверка наличия в черном списке email
+	 * РџСЂРѕРІРµСЂРєР° РЅР°Р»РёС‡РёСЏ РІ С‡РµСЂРЅРѕРј СЃРїРёСЃРєРµ email
 	 *
 	 * @param unknown_type $email
 	 * @return unknown
@@ -216,9 +216,9 @@ class Login
 	}
 
 	/**
-	 * Проверка наличия в черном списке доменного имени
+	 * РџСЂРѕРІРµСЂРєР° РЅР°Р»РёС‡РёСЏ РІ С‡РµСЂРЅРѕРј СЃРїРёСЃРєРµ РґРѕРјРµРЅРЅРѕРіРѕ РёРјРµРЅРё
 	 *
-	 * @param string $email email доменное имя которого надо проверить
+	 * @param string $email email РґРѕРјРµРЅРЅРѕРµ РёРјСЏ РєРѕС‚РѕСЂРѕРіРѕ РЅР°РґРѕ РїСЂРѕРІРµСЂРёС‚СЊ
 	 * @return boolean
 	 */
 	function _loginEmailDomainInBlacklistCheck($email = '')
@@ -232,11 +232,11 @@ class Login
 	}
 
 /**
- *	ВНЕШНИЕ МЕТОДЫ
+ *	Р’РќР•РЁРќРР• РњР•РўРћР”Р«
  */
 
 	/**
-	 * Форма авторизации
+	 * Р¤РѕСЂРјР° Р°РІС‚РѕСЂРёР·Р°С†РёРё
 	 *
 	 */
 	function loginLoginformShow()
@@ -251,7 +251,7 @@ class Login
 	}
 
 	/**
-	 * Панель пользователя
+	 * РџР°РЅРµР»СЊ РїРѕР»СЊР·РѕРІР°С‚РµР»СЏ
 	 *
 	 */
 	function loginUserpanelShow()
@@ -264,7 +264,7 @@ class Login
 	}
 
 	/**
-	 * Выход из системы
+	 * Р’С‹С…РѕРґ РёР· СЃРёСЃС‚РµРјС‹
 	 *
 	 */
 	function loginUserLogout()
@@ -284,7 +284,7 @@ class Login
 	}
 
 	/**
-	 * Авторизация пользователя
+	 * РђРІС‚РѕСЂРёР·Р°С†РёСЏ РїРѕР»СЊР·РѕРІР°С‚РµР»СЏ
 	 *
 	 */
 	function loginUserLogin()
@@ -339,7 +339,7 @@ class Login
 	}
 
 	/**
-	 * Регистрация новой учетной записи пользователя
+	 * Р РµРіРёСЃС‚СЂР°С†РёСЏ РЅРѕРІРѕР№ СѓС‡РµС‚РЅРѕР№ Р·Р°РїРёСЃРё РїРѕР»СЊР·РѕРІР°С‚РµР»СЏ
 	 *
 	 */
 	function loginNewUserRegister()
@@ -384,7 +384,7 @@ class Login
 													  ? trim($_POST['reg_email_return'])
 													  : '';
 
-						// ЛОГИН
+						// Р›РћР“РРќ
 						if (empty($_POST['user_name']))
 						{
 							$error[] = $AVE_Template->get_config_vars('LOGIN_WRONG_L_EMPTY');
@@ -431,12 +431,12 @@ class Login
 							}
 						}
 
-						// ПАРОЛЬ
+						// РџРђР РћР›Р¬
 						if (empty($_POST['reg_pass']))
 						{
 							$error[] = $AVE_Template->get_config_vars('LOGIN_WRONG_PASS');
 						}
-						elseif (strlen($_POST['reg_pass']) < 5)
+						elseif (mb_strlen($_POST['reg_pass']) < 5)
 						{
 							$error[] = $AVE_Template->get_config_vars('LOGIN_WRONG_SHORT_PASS');
 						}
@@ -445,7 +445,7 @@ class Login
 							$error[] = $AVE_Template->get_config_vars('LOGIN_WRONG_SYM_PASS');
 						}
 
-						// ИМЯ
+						// РРњРЇ
 						if ($this->_loginFieldIsRequired('login_require_firstname') && empty($_POST['reg_firstname']))
 						{
 							$error[] = $AVE_Template->get_config_vars('LOGIN_WRONG_FN_EMPTY');
@@ -455,7 +455,7 @@ class Login
 							$error[] = $AVE_Template->get_config_vars('LOGIN_WRONG_FIRSTNAME');
 						}
 
-						// ФАМИЛИЯ
+						// Р¤РђРњРР›РРЇ
 						if ($this->_loginFieldIsRequired('login_require_lastname') && empty($_POST['reg_lastname']))
 						{
 							$error[] = $AVE_Template->get_config_vars('LOGIN_WRONG_LN_EMPTY');
@@ -465,7 +465,7 @@ class Login
 							$error[] = $AVE_Template->get_config_vars('LOGIN_WRONG_LASTNAME');
 						}
 
-						// КАПЧА
+						// РљРђРџР§Рђ
 						if (defined("ANTISPAM"))
 						{
 							if (empty($_POST['reg_secure']))
@@ -667,7 +667,7 @@ class Login
 	}
 
 	/**
-	 * Восстановление пароля
+	 * Р’РѕСЃСЃС‚Р°РЅРѕРІР»РµРЅРёРµ РїР°СЂРѕР»СЏ
 	 *
 	 */
 	function loginUserPasswordReminder()
@@ -782,7 +782,7 @@ class Login
 	}
 
 	/**
-	 * Изменение пароля
+	 * РР·РјРµРЅРµРЅРёРµ РїР°СЂРѕР»СЏ
 	 *
 	 */
 	function loginUserPasswordChange()
@@ -822,7 +822,7 @@ class Login
 			{
 				$error[] = $AVE_Template->get_config_vars('LOGIN_EMPTY_NEW_PASS');
 			}
-			elseif (strlen($_POST['new_pass']) < 5)
+			elseif (mb_strlen($_POST['new_pass']) < 5)
 			{
 				$error[] = $AVE_Template->get_config_vars('LOGIN_WRONG_SHORT_PASS');
 			}
@@ -866,7 +866,7 @@ class Login
 	}
 
 	/**
-	 * Удаление учетной записи пользователя
+	 * РЈРґР°Р»РµРЅРёРµ СѓС‡РµС‚РЅРѕР№ Р·Р°РїРёСЃРё РїРѕР»СЊР·РѕРІР°С‚РµР»СЏ
 	 *
 	 */
 	function loginUserAccountDelete()
@@ -901,7 +901,7 @@ class Login
 	}
 
 	/**
-	 * Управление учетной записью пользователя
+	 * РЈРїСЂР°РІР»РµРЅРёРµ СѓС‡РµС‚РЅРѕР№ Р·Р°РїРёСЃСЊСЋ РїРѕР»СЊР·РѕРІР°С‚РµР»СЏ
 	 *
 	 */
 	function loginUserProfileEdit()
@@ -1057,7 +1057,7 @@ class Login
 	}
 
 	/**
-	 * Управление модулем Авторизации
+	 * РЈРїСЂР°РІР»РµРЅРёРµ РјРѕРґСѓР»РµРј РђРІС‚РѕСЂРёР·Р°С†РёРё
 	 *
 	 */
 	function loginSettingsEdit()

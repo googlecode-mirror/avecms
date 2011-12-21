@@ -4,15 +4,15 @@
 
 var
 
-	CB_NavTextPrv='elızı',					// text of previous image
-	CB_NavTextNxt='kˆvetkezı',				// text of next image
-	CB_NavTextFull='teljes mÈret˚ kÈp megtekintÈse',	// text of original size (only at pictures)
-	CB_NavTextOpen='megnyit·s a bˆngÈszıben',		// text of open content in a new browser window
-	CB_NavTextDL='letˆltÈs',				// text of download picture or any other content
-	CB_NavTextClose='clearbox ablak bez·r·sa',		// text of close CB
-	CB_NavTextStart='slideshow elindÌt·sa',			// text of start slideshow
-	CB_NavTextStop='slideshow meg·llÌt·sa',			// text of stop slideshow
-	CB_NavTextRotR='kÈp elforgat·sa jobbra 90 fokkal',	// text of rotation right
-	CB_NavTextRotL='kÈp elforgat·sa balra 90 fokkal'	// text of rotation left
+	CB_NavTextPrv='el—Öz—Ö',					// text of previous image
+	CB_NavTextNxt='k—Üvetkez—Ö',				// text of next image
+	CB_NavTextFull='teljes m–πret—ã k–πp megtekint–πse',	// text of original size (only at pictures)
+	CB_NavTextOpen='megnyit–±s a b—Üng–πsz—Öben',		// text of open content in a new browser window
+	CB_NavTextDL='let—Ült–πs',				// text of download picture or any other content
+	CB_NavTextClose='clearbox ablak bez–±r–±sa',		// text of close CB
+	CB_NavTextStart='slideshow elind–Ωt–±sa',			// text of start slideshow
+	CB_NavTextStop='slideshow meg–±ll–Ωt–±sa',			// text of stop slideshow
+	CB_NavTextRotR='k–πp elforgat–±sa jobbra 90 fokkal',	// text of rotation right
+	CB_NavTextRotL='k–πp elforgat–±sa balra 90 fokkal'	// text of rotation left
 
 ;

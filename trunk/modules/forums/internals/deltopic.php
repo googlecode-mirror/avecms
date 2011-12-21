@@ -83,7 +83,7 @@ if($NOOUT != 1)
    	$this->Cpengine_Board_SetLastPost($Board_ID);
 
 	//=========================================================
-	// Thema gelöscht, weiterleiten...
+	// Thema gelÑ†scht, weiterleiten...
 	//=========================================================
 	header("Location:index.php?module=forums&show=showforum&fid=" . $_REQUEST['fid']);
 	exit;

@@ -9,14 +9,14 @@
 	MSN:			pyro(at)radiomax(dot)hu
 	support forum 1:	http://www.sg.hu/listazas.php3?id=1172325655
 
-	LICENSZ FELTÉTELEK:
+	LICENSZ FELTĞ™TELEK:
 
-	A clearbox szabadon felhasználható bármilyen nem kereskedelmi jellegû honlapon, 
-	tehát azokon amelyek nem kereskedelmi tevékenységet folytató cégek, vállalatok 
-	oldalai; nem tartalmaznak kereskedelmi jellegû szolgáltatást vagy termék(ek) 
-	eladás(á)t, illetve reklámozás(á)t. A kereskedelmi jellegû honlapokon való 
-	felhasználásáról érdeklõdj a készítõnél! A clearbox forráskódja nem módosítható. 
-	A clearbox a készítõ beleegyezése nélkül pénzért harmadik félnek tovább nem adható!
+	A clearbox szabadon felhasznĞ±lhatÑƒ bĞ±rmilyen nem kereskedelmi jellegÑ‹ honlapon, 
+	tehĞ±t azokon amelyek nem kereskedelmi tevĞ¹kenysĞ¹get folytatÑƒ cĞ¹gek, vĞ±llalatok 
+	oldalai; nem tartalmaznak kereskedelmi jellegÑ‹ szolgĞ±ltatĞ±st vagy termĞ¹k(ek) 
+	eladĞ±s(Ğ±)t, illetve reklĞ±mozĞ±s(Ğ±)t. A kereskedelmi jellegÑ‹ honlapokon valÑƒ 
+	felhasznĞ±lĞ±sĞ±rÑƒl Ğ¹rdeklÑ…dj a kĞ¹szĞ½tÑ…nĞ¹l! A clearbox forrĞ±skÑƒdja nem mÑƒdosĞ½thatÑƒ. 
+	A clearbox a kĞ¹szĞ½tÑ… beleegyezĞ¹se nĞ¹lkÑŒl pĞ¹nzĞ¹rt harmadik fĞ¹lnek tovĞ±bb nem adhatÑƒ!
 
 	LICENSE:
 

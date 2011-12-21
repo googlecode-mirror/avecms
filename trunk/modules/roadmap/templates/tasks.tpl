@@ -20,7 +20,7 @@
 <p>
 <table width = "100%" border="0" cellpadding="0" cellspacing="0">
   <tr>
-      <td class="mod_roadmap_topheader" align="center">¹</td>
+      <td class="mod_roadmap_topheader" align="center">â„–</td>
       <td class="mod_roadmap_topheader" align="center">{#ROADMAP_DESCRIPTION#}</td>
       <td class="mod_roadmap_topheader" align="center">{#ROADMAP_DATE_CREATE#}</td>
       <td class="mod_roadmap_topheader" align="center">{#ROADMAP_OWNER#}</td>

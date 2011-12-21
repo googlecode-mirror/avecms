@@ -8,7 +8,7 @@ $printlink = get_redirect_link('print')."&amp;print=1";
 $post_count_extra = "";
 $post_query_extra = "";
 
-// alle postings für einen thread anzeigen
+// alle postings fÑŒr einen thread anzeigen
 if ( isset($_GET['toid']) && $_GET['toid'] != "" )
 {
 	// gibt es den topic und das posting ueberhaupt schon
@@ -185,7 +185,7 @@ if ( isset($_GET['toid']) && $_GET['toid'] != "" )
 		}
 
 		// ======================================================
-		// alle beiträge holen
+		// alle beitrÐ´ge holen
 		$post_count = "SELECT
 			id
 		FROM " .
@@ -366,7 +366,7 @@ if ( isset($_GET['toid']) && $_GET['toid'] != "" )
 
 		$GLOBALS['AVE_Template']->assign('files', $Attach);
 
-		// anzahl der besichtigungen erhöhen
+		// anzahl der besichtigungen erhÑ†hen
 		$increment_query = $GLOBALS['AVE_DB']->Query("UPDATE " . PREFIX . "_modul_forum_topic SET views = views + 1 WHERE id = '" . addslashes($_REQUEST['toid']). "'");
 
 		// daten des aktuellen topics holen

@@ -64,7 +64,7 @@
       <td><input name="allbox" type="checkbox" id="d" onclick="selall();" value="" /></td>
       <td><a class="header" href="index.php?do=modules&action=modedit&mod=download&moduleaction=overview&cp={$sess}&recordset={$smarty.request.recordset|default:$recordset}&sort={if $smarty.request.sort=='name_desc'}name_asc{else}name_desc{/if}{$search_string}{$search_categ_string}{$aktiv_categ_string}">{#DlTitle#}</a></td>
       <td><a class="header" href="index.php?do=modules&action=modedit&mod=download&moduleaction=overview&cp={$sess}&recordset={$smarty.request.recordset|default:$recordset}&sort={if $smarty.request.sort=='categ_desc'}categ_asc{else}categ_desc{/if}{$search_string}{$search_categ_string}{$aktiv_categ_string}">{#DlCateg#}</a></td>
-      <td><a class="header" href="index.php?do=modules&action=modedit&mod=download&moduleaction=overview&cp={$sess}&recordset={$smarty.request.recordset|default:$recordset}&sort={if $smarty.request.sort=='categ_desc'}categ_asc{else}categ_desc{/if}{$search_string}{$search_categ_string}{$aktiv_categ_string}">Остаток платежа</a></td>
+      <td><a class="header" href="index.php?do=modules&action=modedit&mod=download&moduleaction=overview&cp={$sess}&recordset={$smarty.request.recordset|default:$recordset}&sort={if $smarty.request.sort=='categ_desc'}categ_asc{else}categ_desc{/if}{$search_string}{$search_categ_string}{$aktiv_categ_string}">РћСЃС‚Р°С‚РѕРє РїР»Р°С‚РµР¶Р°</a></td>
       <td><a class="header" href="index.php?do=modules&action=modedit&mod=download&moduleaction=overview&cp={$sess}&recordset={$smarty.request.recordset|default:$recordset}&sort={if $smarty.request.sort=='download_desc'}download_asc{else}download_desc{/if}{$search_string}{$search_categ_string}{$aktiv_categ_string}">{#DlDownloads#}</a></td>
       <td align="center"><a class="header" href="index.php?do=modules&action=modedit&mod=download&moduleaction=overview&cp={$sess}&recordset={$smarty.request.recordset|default:$recordset}&sort={if $smarty.request.sort=='datum_desc'}datum_asc{else}datum_desc{/if}{$search_string}{$search_categ_string}{$aktiv_categ_string}">{#DlCreated#}</a></td>
       <td align="center"><a class="header" href="index.php?do=modules&action=modedit&mod=download&moduleaction=overview&cp={$sess}&recordset={$smarty.request.recordset|default:$recordset}&sort={if $smarty.request.sort=='geaendert_desc'}geaendert_asc{else}geaendert_desc{/if}{$search_string}{$search_categ_string}{$aktiv_categ_string}">{#DLChanged#}</a></td>
@@ -88,7 +88,7 @@
 {/foreach}
 </select>
 	  </td>
-	    <td width="1%" align="center" nowrap="nowrap">{$i->Pay} {if $i->Pay_val == 0}${else}руб.{/if}</td>
+	    <td width="1%" align="center" nowrap="nowrap">{$i->Pay} {if $i->Pay_val == 0}${else}СЂСѓР±.{/if}</td>
 
       <td width="1%" align="center" nowrap="nowrap">{$i->Downloads}</td>
       <td width="1%" nowrap="nowrap"><span class="itcen">{$i->Datum|date_format:$TIME_FORMAT|pretty_date}</span>

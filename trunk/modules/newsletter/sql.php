@@ -1,7 +1,7 @@
 <?php
 
 /**
- * AVE.cms - Ìîäóëü Ðàññûëêè
+ * AVE.cms - ÐœÐ¾Ð´ÑƒÐ»ÑŒ Ð Ð°ÑÑÑ‹Ð»ÐºÐ¸
  *
  * @package AVE.cms
  * @subpackage module_Newsletter
@@ -11,7 +11,7 @@
  */
 
 /**
- * mySQL-çàïðîñû äëÿ óñòàíîâêè, îáíîâëåíèÿ è óäàëåíèÿ ìîäóëÿ
+ * mySQL-Ð·Ð°Ð¿Ñ€Ð¾ÑÑ‹ Ð´Ð»Ñ ÑƒÑÑ‚Ð°Ð½Ð¾Ð²ÐºÐ¸, Ð¾Ð±Ð½Ð¾Ð²Ð»ÐµÐ½Ð¸Ñ Ð¸ ÑƒÐ´Ð°Ð»ÐµÐ½Ð¸Ñ Ð¼Ð¾Ð´ÑƒÐ»Ñ
  */
 
 $modul_sql_install = array();
@@ -29,7 +29,7 @@ $modul_sql_install[] = "CREATE TABLE CPPREFIX_modul_newsletter (
   newsletter_groups text NOT NULL,
   newsletter_attach tinytext NOT NULL,
   PRIMARY KEY  (id)
-) ENGINE=MyISAM DEFAULT CHARSET=cp1251;";
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 
 $modul_sql_update[] = "UPDATE CPPREFIX_module SET CpEngineTag = '" . $modul['CpEngineTag'] . "', CpPHPTag = '" . $modul['CpPHPTag'] . "', Version = '" . $modul['ModulVersion'] . "' WHERE ModulPfad = '" . $modul['ModulPfad'] . "' LIMIT 1;";
 

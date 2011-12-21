@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Класс работы с модулем Вопрос-Ответ
+ * РљР»Р°СЃСЃ СЂР°Р±РѕС‚С‹ СЃ РјРѕРґСѓР»РµРј Р’РѕРїСЂРѕСЃ-РћС‚РІРµС‚
  *
  * @package AVE.cms
  * @subpackage module_FAQ
@@ -11,9 +11,9 @@
 class Faq
 {
 	/**
-	 * Вывод списка рубрик
+	 * Р’С‹РІРѕРґ СЃРїРёСЃРєР° СЂСѓР±СЂРёРє
 	 *
-	 * @param string $tpl_dir	путь к директории с шаблонами модуля
+	 * @param string $tpl_dir	РїСѓС‚СЊ Рє РґРёСЂРµРєС‚РѕСЂРёРё СЃ С€Р°Р±Р»РѕРЅР°РјРё РјРѕРґСѓР»СЏ
 	 */
 	public static function faqList($tpl_dir)
 	{
@@ -28,7 +28,7 @@ class Faq
 	}
 
 	/**
-	 * Создание новой рубрики
+	 * РЎРѕР·РґР°РЅРёРµ РЅРѕРІРѕР№ СЂСѓР±СЂРёРєРё
 	 *
 	 */
 	public static function faqNew()
@@ -37,7 +37,7 @@ class Faq
 
 		if (isset($_POST['new_faq_title']) && trim($_POST['new_faq_title']))
 		{
-			$AVE_DB->Query("INSERT INTO " . PREFIX . "_modul_faq SET id = '', faq_title = '" . substr($_POST['new_faq_title'], 0, 100) . "', faq_description = '" . substr($_POST['new_faq_desc'], 0, 255) . "'");
+			$AVE_DB->Query("INSERT INTO " . PREFIX . "_modul_faq SET id = '', faq_title = '" . mb_substr($_POST['new_faq_title'], 0, 100) . "', faq_description = '" . mb_substr($_POST['new_faq_desc'], 0, 255) . "'");
 		}
 
 		header("Location:index.php?do=modules&action=modedit&mod=faq&moduleaction=1&cp=" . SESSION);
@@ -45,9 +45,9 @@ class Faq
 	}
 
 	/**
-	 * Удаление рубрики вместе с вопросами и ответами
+	 * РЈРґР°Р»РµРЅРёРµ СЂСѓР±СЂРёРєРё РІРјРµСЃС‚Рµ СЃ РІРѕРїСЂРѕСЃР°РјРё Рё РѕС‚РІРµС‚Р°РјРё
 	 *
-	 * @param string $tpl_dir	путь к директории с шаблонами модуля
+	 * @param string $tpl_dir	РїСѓС‚СЊ Рє РґРёСЂРµРєС‚РѕСЂРёРё СЃ С€Р°Р±Р»РѕРЅР°РјРё РјРѕРґСѓР»СЏ
 	 */
 	public static function faqDelete($tpl_dir)
 	{
@@ -66,9 +66,9 @@ class Faq
 	}
 
 	/**
-	 * Запись изменений в наименованиях и описаниях рубрик
+	 * Р—Р°РїРёСЃСЊ РёР·РјРµРЅРµРЅРёР№ РІ РЅР°РёРјРµРЅРѕРІР°РЅРёСЏС… Рё РѕРїРёСЃР°РЅРёСЏС… СЂСѓР±СЂРёРє
 	 *
-	 * @param string $tpl_dir	путь к директории с шаблонами модуля
+	 * @param string $tpl_dir	РїСѓС‚СЊ Рє РґРёСЂРµРєС‚РѕСЂРёРё СЃ С€Р°Р±Р»РѕРЅР°РјРё РјРѕРґСѓР»СЏ
 	 */
 	public static function faqListSave($tpl_dir)
 	{
@@ -78,7 +78,7 @@ class Faq
 		{
 			if (is_numeric($id) && $id > 0 && trim($faq_title))
 			{
-				$AVE_DB->Query("UPDATE " . PREFIX . "_modul_faq SET faq_title = '" . substr($faq_title, 0, 100) . "', faq_description = '" . substr($_POST['faq_description'][$id], 0, 255) . "' WHERE id = '" . $id . "'");
+				$AVE_DB->Query("UPDATE " . PREFIX . "_modul_faq SET faq_title = '" . mb_substr($faq_title, 0, 100) . "', faq_description = '" . mb_substr($_POST['faq_description'][$id], 0, 255) . "' WHERE id = '" . $id . "'");
 
 				$AVE_Template->clear_cache($tpl_dir . 'show_faq.tpl', $id);
 			}
@@ -89,9 +89,9 @@ class Faq
 	}
 
 	/**
-	 * Вывод списка вопросов и ответов определённой рубрики
+	 * Р’С‹РІРѕРґ СЃРїРёСЃРєР° РІРѕРїСЂРѕСЃРѕРІ Рё РѕС‚РІРµС‚РѕРІ РѕРїСЂРµРґРµР»С‘РЅРЅРѕР№ СЂСѓР±СЂРёРєРё
 	 *
-	 * @param string $tpl_dir	путь к директории с шаблонами модуля
+	 * @param string $tpl_dir	РїСѓС‚СЊ Рє РґРёСЂРµРєС‚РѕСЂРёРё СЃ С€Р°Р±Р»РѕРЅР°РјРё РјРѕРґСѓР»СЏ
 	 */
 	public static function faqQuestionList($tpl_dir)
 	{
@@ -112,9 +112,9 @@ class Faq
 	}
 
 	/**
-	 * Вывод формы редактирования вопроса и ответа на него
+	 * Р’С‹РІРѕРґ С„РѕСЂРјС‹ СЂРµРґР°РєС‚РёСЂРѕРІР°РЅРёСЏ РІРѕРїСЂРѕСЃР° Рё РѕС‚РІРµС‚Р° РЅР° РЅРµРіРѕ
 	 *
-	 * @param string $tpl_dir	путь к директории с шаблонами модуля
+	 * @param string $tpl_dir	РїСѓС‚СЊ Рє РґРёСЂРµРєС‚РѕСЂРёРё СЃ С€Р°Р±Р»РѕРЅР°РјРё РјРѕРґСѓР»СЏ
 	 */
 	public static function faqQuestionEdit($tpl_dir)
 	{
@@ -147,9 +147,9 @@ class Faq
 	}
 
 	/**
-	 * Запись нового или изменённого вопроса и ответа на него
+	 * Р—Р°РїРёСЃСЊ РЅРѕРІРѕРіРѕ РёР»Рё РёР·РјРµРЅС‘РЅРЅРѕРіРѕ РІРѕРїСЂРѕСЃР° Рё РѕС‚РІРµС‚Р° РЅР° РЅРµРіРѕ
 	 *
-	 * @param string $tpl_dir	путь к директории с шаблонами модуля
+	 * @param string $tpl_dir	РїСѓС‚СЊ Рє РґРёСЂРµРєС‚РѕСЂРёРё СЃ С€Р°Р±Р»РѕРЅР°РјРё РјРѕРґСѓР»СЏ
 	 */
 	public static function faqQuestionSave($tpl_dir)
 	{
@@ -180,9 +180,9 @@ class Faq
 	}
 
 	/**
-	 * Удаление вопроса и ответа на него
+	 * РЈРґР°Р»РµРЅРёРµ РІРѕРїСЂРѕСЃР° Рё РѕС‚РІРµС‚Р° РЅР° РЅРµРіРѕ
 	 *
-	 * @param string $tpl_dir	путь к директории с шаблонами модуля
+	 * @param string $tpl_dir	РїСѓС‚СЊ Рє РґРёСЂРµРєС‚РѕСЂРёРё СЃ С€Р°Р±Р»РѕРЅР°РјРё РјРѕРґСѓР»СЏ
 	 */
 	public static function faqQuestionDelete($tpl_dir)
 	{
@@ -205,9 +205,9 @@ class Faq
 	}
 
 	/**
-	 * Вывод модуля вопросов и ответов в публичной части
+	 * Р’С‹РІРѕРґ РјРѕРґСѓР»СЏ РІРѕРїСЂРѕСЃРѕРІ Рё РѕС‚РІРµС‚РѕРІ РІ РїСѓР±Р»РёС‡РЅРѕР№ С‡Р°СЃС‚Рё
 	 *
-	 * @param int $id	идентификатор рубрики вопросов и ответов
+	 * @param int $id	РёРґРµРЅС‚РёС„РёРєР°С‚РѕСЂ СЂСѓР±СЂРёРєРё РІРѕРїСЂРѕСЃРѕРІ Рё РѕС‚РІРµС‚РѕРІ
 	 */
 	public static function faqShow($id)
 	{

@@ -80,7 +80,7 @@ class CSVReader
 		$commas = array(',', ';', chr(0), "\r", "\r\n", "\n", "\"");
 
 		// walk through data
-		for ($i=0; $i<strlen($data); $i++)
+		for ($i=0; $i<mb_strlen($data); $i++)
 		{
 			$lastc = $i == 0 ? chr(0) : $data[$i-1];
 			$c = $data[$i];

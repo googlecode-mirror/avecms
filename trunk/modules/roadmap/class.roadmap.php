@@ -6,7 +6,7 @@ class Roadmap
 	var $_limit = 15;
 
 	/**
-	 * Административная часть (проекты)
+	 * РђРґРјРёРЅРёСЃС‚СЂР°С‚РёРІРЅР°СЏ С‡Р°СЃС‚СЊ (РїСЂРѕРµРєС‚С‹)
 	 */
 
 	function roadmapProjectList($tpl_dir)
@@ -80,7 +80,7 @@ class Roadmap
 				");
 				$project_id = $AVE_DB->InsertId();
 
-				reportLog($_SESSION['user_name'] . ' - добавил новый проект ' . $project_id, 2, 2);
+				reportLog($_SESSION['user_name'] . ' - РґРѕР±Р°РІРёР» РЅРѕРІС‹Р№ РїСЂРѕРµРєС‚ ' . $project_id, 2, 2);
 
 				echo '<script>window.opener.location.reload(); self.close();</script>';
 				break;
@@ -122,7 +122,7 @@ class Roadmap
 						id = '" . $project_id . "'
 				");
 
-				reportLog($_SESSION['user_name'] . ' - отредактировал проект ' . $project_id, 2, 2);
+				reportLog($_SESSION['user_name'] . ' - РѕС‚СЂРµРґР°РєС‚РёСЂРѕРІР°Р» РїСЂРѕРµРєС‚ ' . $project_id, 2, 2);
 
 				echo '<script>window.opener.location.reload(); self.close();</script>';
 				break;
@@ -135,14 +135,14 @@ class Roadmap
 
 		$AVE_DB->Query("DELETE FROM " . PREFIX . "_modul_roadmap WHERE id = '" . $project_id . "'");
 
-		reportLog($_SESSION['user_name'] . ' - удалил проект ' . $project_id, 2, 2);
+		reportLog($_SESSION['user_name'] . ' - СѓРґР°Р»РёР» РїСЂРѕРµРєС‚ ' . $project_id, 2, 2);
 
 		header('Location:index.php?do=modules&action=modedit&mod=roadmap&moduleaction=1&cp=' . SESSION);
 		exit;
 	}
 
 	/**
-	 * Административная часть (задачи)
+	 * РђРґРјРёРЅРёСЃС‚СЂР°С‚РёРІРЅР°СЏ С‡Р°СЃС‚СЊ (Р·Р°РґР°С‡Рё)
 	 */
 
 	function roadmapTaskList($tpl_dir, $project_id, $status)
@@ -226,7 +226,7 @@ class Roadmap
 						priority    = '" . $_REQUEST['priority'] . "'
 				");
 
-				reportLog($_SESSION['user_name'] . ' - добавил новую задачу', '2', '2');
+				reportLog($_SESSION['user_name'] . ' - РґРѕР±Р°РІРёР» РЅРѕРІСѓСЋ Р·Р°РґР°С‡Сѓ', '2', '2');
 
 				echo '<script>window.opener.location.reload(); self.close();</script>';
 				break;
@@ -270,7 +270,7 @@ class Roadmap
 						Id = '" . $task_id . "'
 				");
 
-				reportLog($_SESSION['user_name'] . ' - отредактировал задачу ' . $task_id, 2, 2);
+				reportLog($_SESSION['user_name'] . ' - РѕС‚СЂРµРґР°РєС‚РёСЂРѕРІР°Р» Р·Р°РґР°С‡Сѓ ' . $task_id, 2, 2);
 
 				echo '<script>window.opener.location.reload(); self.close();</script>';
 				break;
@@ -287,14 +287,14 @@ class Roadmap
 
 		$AVE_DB->Query("DELETE FROM " . PREFIX . "_modul_roadmap_tasks WHERE id = '" . $task_id . "'");
 
-		reportLog($_SESSION['user_name'] . ' - удалил задачу ' . $task_id, 2, 2);
+		reportLog($_SESSION['user_name'] . ' - СѓРґР°Р»РёР» Р·Р°РґР°С‡Сѓ ' . $task_id, 2, 2);
 
 		header('Location:index.php?do=modules&action=modedit&mod=roadmap&moduleaction=show_tasks&id={$project_id}&closed={$status}&cp=' . SESSION);
 		exit;
 	}
 
 	/**
-	 * Публичная часть
+	 * РџСѓР±Р»РёС‡РЅР°СЏ С‡Р°СЃС‚СЊ
 	 */
 
 	function roadmapProjectShow($tpl_dir)

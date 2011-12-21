@@ -17,7 +17,7 @@
 <p><em>{#BASKET_ORDER_FORM_TIP#}</em></p>
 
 <form method="post" action="index.php?module=basket&action=send">
-{* раскомментировать при желании отображать список заказанных товаров
+{* СЂР°СЃРєРѕРјРјРµРЅС‚РёСЂРѕРІР°С‚СЊ РїСЂРё Р¶РµР»Р°РЅРёРё РѕС‚РѕР±СЂР°Р¶Р°С‚СЊ СЃРїРёСЃРѕРє Р·Р°РєР°Р·Р°РЅРЅС‹С… С‚РѕРІР°СЂРѕРІ
 	<table width="100%" border="1" cellpadding="0" cellspacing="0">
 		<colgroup>
 			<col width="40">
@@ -29,7 +29,7 @@
 
 		<thead>
 			<tr>
-				<th>№</th>
+				<th>в„–</th>
 				<th>{#BASKET_PRODUCT_NAME#}</th>
 				<th>{#BASKET_PRODUCT_QUANTITY#}</th>
 				<th>{#BASKET_PRODUCT_PRICE#}</th>

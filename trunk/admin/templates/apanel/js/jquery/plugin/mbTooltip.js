@@ -14,7 +14,7 @@ http://www.gnu.org/licenses/gpl.html
 /*
 * mbTooltip jquery plug in
 * developed by Matteo Bicocchi on JQuery
-* © 2002-2009 Open Lab srl, Matteo Bicocchi
+* Â© 2002-2009 Open Lab srl, Matteo Bicocchi
 * www.open-lab.com - info@open-lab.com
 * version 1.7
 * tested on: Explorer, FireFox and Chrome for PC

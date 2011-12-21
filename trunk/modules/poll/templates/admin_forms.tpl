@@ -32,7 +32,7 @@
 
 			<td><input type="text" value="[mod_poll:{$item->id}]" size="15" readonly=""></td>
 
-			<td class="time">c {$item->poll_start|date_format:$TIME_FORMAT|pretty_date} по {$item->poll_end|date_format:$TIME_FORMAT|pretty_date}</td>
+			<td class="time">c {$item->poll_start|date_format:$TIME_FORMAT|pretty_date} РїРѕ {$item->poll_end|date_format:$TIME_FORMAT|pretty_date}</td>
 
 			<td>{if $item->sum_hits == ''}0{else}{$item->sum_hits}{/if} / <a href="javascript:void(0);" onclick="cp_pop('index.php?do=modules&action=modedit&mod=poll&moduleaction=comments&cp={$sess}&id={$item->id}&pop=1','850','750','1','modpolledit');">{$item->comments}</a></td>
 

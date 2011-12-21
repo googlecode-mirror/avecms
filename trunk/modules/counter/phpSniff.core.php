@@ -108,7 +108,7 @@ class phpSniff_core
         {   return $this->_browser_info;
         }
         else
-        {   return $this->_browser_info[strtolower($p)];
+        {   return $this->_browser_info[mb_strtolower($p)];
         }
     }
 	
@@ -189,10 +189,10 @@ class phpSniff_core
     function _perform_browser_search ($data)
     {   $search = array();
 		$search['phrase'] 		= isset($data[0]) ? $data[0] : '';
-		$search['name']   		= isset($data[1]) ? strtolower($data[1]) : '';
+		$search['name']   		= isset($data[1]) ? mb_strtolower($data[1]) : '';
 		$search['maj_ver']   	= isset($data[2]) ? $data[2] : '';
 		$search['min_ver']   	= isset($data[3]) ? $data[3] : '';
-		$search['direction']	= isset($data[4]) ? strtolower($data[4]) : '';
+		$search['direction']	= isset($data[4]) ? mb_strtolower($data[4]) : '';
 		
         $looking_for = $search['maj_ver'].$search['min_ver'];
         if($search['name'] == 'aol' || $search['name'] == 'webtv')
@@ -272,7 +272,7 @@ class phpSniff_core
                 else $v .= $v2;
             // update browser info container array
             if(empty($v)) $v = 'win';
-            $this->_set_browser('os',strtolower($v));
+            $this->_set_browser('os',mb_strtolower($v));
             $this->_set_browser('platform','win');
         }
         //  look for amiga OS
@@ -425,7 +425,7 @@ class phpSniff_core
     }
 
     function _get_short_name ($long_name)
-    {   return $this->_browsers[strtolower($long_name)];
+    {   return $this->_browsers[mb_strtolower($long_name)];
     }
 
     // medianes :: new test cookie routine
@@ -447,7 +447,7 @@ class phpSniff_core
                 $QS=getenv('QUERY_STRING');
                 $script_path=getenv('PATH_INFO')?getenv('PATH_INFO'):getenv('SCRIPT_NAME');
                 if(is_integer($pos=strpos(strrev($script_path),"php.xedni/"))&&!$pos) {
-                    $script_path=strrev(substr(strrev($script_path),9));
+                    $script_path=strrev(mb_substr(strrev($script_path),9));
                 }
                 $location='http://'.getenv('SERVER_NAME').$script_path.($QS==''?'':'?'.$QS);
                 header("Location: $location");
@@ -533,15 +533,15 @@ class phpSniff_core
 	}
 	
 	function _set_browser ($k,$v)
-    {   $this->_browser_info[strtolower($k)] = strtolower($v);
+    {   $this->_browser_info[mb_strtolower($k)] = mb_strtolower($v);
     }
 	
 	function _set_feature ($k)
-    {   $this->_feature_set[strtolower($k)] = !$this->_feature_set[strtolower($k)];
+    {   $this->_feature_set[mb_strtolower($k)] = !$this->_feature_set[mb_strtolower($k)];
     }
 	
 	function _set_quirk ($k)
-    {   $this->_quirks[strtolower($k)] = true;
+    {   $this->_quirks[mb_strtolower($k)] = true;
     }
 }
 ?>

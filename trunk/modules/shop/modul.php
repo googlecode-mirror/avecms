@@ -4,10 +4,10 @@ if (!defined('BASE_DIR')) exit;
 
 if (defined('ACP'))
 {
-	$modul['ModulName'] = 'Магазин';
+	$modul['ModulName'] = 'РњР°РіР°Р·РёРЅ';
 	$modul['ModulPfad'] = 'shop';
 	$modul['ModulVersion'] = '1.4';
-	$modul['description'] = 'Модуль электронного магазина';
+	$modul['description'] = 'РњРѕРґСѓР»СЊ СЌР»РµРєС‚СЂРѕРЅРЅРѕРіРѕ РјР°РіР°Р·РёРЅР°';
 	$modul['Autor'] = "Bj&ouml;rn Wunderlich";
 	$modul['MCopyright'] = "&copy; 2006 ";
 	$modul['Status'] = 1;
@@ -15,7 +15,7 @@ if (defined('ACP'))
 	$modul['ModulTemplate'] = 1;
 	$modul['AdminEdit'] = 1;
 	$modul['ModulFunktion'] = null;
-	$modul['CpEngineTagTpl'] = '<b>Ссылка:</b> <a target="_blank" href="../index.php?module=shop">index.php?module=shop</a>';
+	$modul['CpEngineTagTpl'] = '<b>РЎСЃС‹Р»РєР°:</b> <a target="_blank" href="../index.php?module=shop">index.php?module=shop</a>';
 	$modul['CpEngineTag'] = null;
 	$modul['CpPHPTag'] = null;
 }

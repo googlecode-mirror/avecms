@@ -1,14 +1,14 @@
 @charset "windows-1251";
 
 /* -----------------------------
- =модуль Магазин
+ =РјРѕРґСѓР»СЊ РњР°РіР°Р·РёРЅ
 ----------------------------- */
 .mod_shop_newprod_box table						{background:#fff; border:none; margin:0;}
-.mod_shop_newprod_box td						{background:#fff; border:none; padding-bottom:10px; width:100px;}/* здесь ширина ячейки в выводе категорий товаров. кол-во в строке надо правитьв файле /modules/shop/templates/shop_tree.tpl */
+.mod_shop_newprod_box td						{background:#fff; border:none; padding-bottom:10px; width:100px;}/* Р·РґРµСЃСЊ С€РёСЂРёРЅР° СЏС‡РµР№РєРё РІ РІС‹РІРѕРґРµ РєР°С‚РµРіРѕСЂРёР№ С‚РѕРІР°СЂРѕРІ. РєРѕР»-РІРѕ РІ СЃС‚СЂРѕРєРµ РЅР°РґРѕ РїСЂР°РІРёС‚СЊРІ С„Р°Р№Р»Рµ /modules/shop/templates/shop_tree.tpl */
 .mod_shop_newprod_box img						{margin-bottom:5px;}
 .mod_shop_newprod_box h3						{border:none;}
 .mod_shop_price_small							{color:#333; display:block; font-size:1.2em; font-style:normal; font-variant:normal; font-weight:bold; padding-top:5px;}
-.mod_shop_container_adv img						{border:1px solid #ccc; height:200px; margin:0; padding:0; width:698px;}/* здесь ширина и высота картинки баннера */
+.mod_shop_container_adv img						{border:1px solid #ccc; height:200px; margin:0; padding:0; width:698px;}/* Р·РґРµСЃСЊ С€РёСЂРёРЅР° Рё РІС‹СЃРѕС‚Р° РєР°СЂС‚РёРЅРєРё Р±Р°РЅРЅРµСЂР° */
 .mod_shop_container_1							{margin:0; position:relative;}
 .mod_shop_container_1 h3						{border:none; font-size:18px; font-weight:normal;}
 .mod_shop_container_1 p							{font-size:11px;}
@@ -93,7 +93,7 @@
 .mod_shop_orders_failed							{background:#f00; border:1px solid #fff; height:1em; width:1em;}
 
 /* -----------------------------
- =модуль Форумы
+ =РјРѕРґСѓР»СЊ Р¤РѕСЂСѓРјС‹
 ----------------------------- */
 #forums_content									{margin-top:2em;}
 #forums_content table							{border-collapse:separate; border-spacing:1px;}
@@ -143,7 +143,7 @@ a.forum_topicheader:hover						{color:#fff; font-weight:bold; text-decoration:no
 .forum_pn_unread								{color:#f00; font-weight:bold; text-decoration:blink;}
 
 /* -----------------------------
- =модуль Загрузки
+ =РјРѕРґСѓР»СЊ Р—Р°РіСЂСѓР·РєРё
 ----------------------------- */
 #mod_download									{}
 #mod_download h1								{}

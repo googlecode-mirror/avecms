@@ -5,7 +5,7 @@
 </div><br />
 
 <div class="infobox">
-	» <a href="index.php?do=modules&action=modedit&mod=sysblock&moduleaction=edit&cp={$sess}">{#SYSBLOCK_ADD#}</a>
+	Â» <a href="index.php?do=modules&action=modedit&mod=sysblock&moduleaction=edit&cp={$sess}">{#SYSBLOCK_ADD#}</a>
 </div><br />
 
 {if ! $sysblocks}

@@ -96,10 +96,10 @@
 							<br />
 							{$post->poster->avatar}<br />
 						{/if}
-						<p>{if $post->poster->uid == $topic->uid && !$smarty.foreach.postings.first}Автор темы<br />{/if}</p>
-						Сообщений: {$post->poster->user_posts}
+						<p>{if $post->poster->uid == $topic->uid && !$smarty.foreach.postings.first}РђРІС‚РѕСЂ С‚РµРјС‹<br />{/if}</p>
+						РЎРѕРѕР±С‰РµРЅРёР№: {$post->poster->user_posts}
 						<br />
-						Дата регистрации: {$post->poster->regdate|date_format:$smarty.config.DateFormatMemberSince}
+						Р”Р°С‚Р° СЂРµРіРёСЃС‚СЂР°С†РёРё: {$post->poster->regdate|date_format:$smarty.config.DateFormatMemberSince}
 					{/if}
 				 	</small>
 				{else}

@@ -35,7 +35,7 @@ function sess_open($save_path, $session_name)
 		die;
 	}
 
-	@mysql_query("SET NAMES 'cp1251'", $sess_dblink);
+	@mysql_query("SET NAMES 'utf-8'", $sess_dblink);
 
 	return true;
 }

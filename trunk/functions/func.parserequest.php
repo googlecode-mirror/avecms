@@ -6,26 +6,12 @@
  * @package AVE.cms
  * @filesource
  */
-
-
-/**
- * Возвращает исполненный php код в переменную
- *
- * @param int $id	идентификатор запроса
- * @return string
- */
-function eval2var( $expression ) {
-	ob_start();
-	eval( $expression );
-	$content = ob_get_clean();
-	return $content;
-}
  
 /**
- * Обработка условий запроса.
- * Возвращает строку условий в SQL-формате
+ * РћР±СЂР°Р±РѕС‚РєР° СѓСЃР»РѕРІРёР№ Р·Р°РїСЂРѕСЃР°.
+ * Р’РѕР·РІСЂР°С‰Р°РµС‚ СЃС‚СЂРѕРєСѓ СѓСЃР»РѕРІРёР№ РІ SQL-С„РѕСЂРјР°С‚Рµ
  *
- * @param int $id	идентификатор запроса
+ * @param int $id	РёРґРµРЅС‚РёС„РёРєР°С‚РѕСЂ Р·Р°РїСЂРѕСЃР°
  * @return string
  */
  function request_get_condition_sql_string($id)
@@ -57,7 +43,7 @@ function eval2var( $expression ) {
 		WHERE request_id = '" . $id . "'
 	");
 
-	//Насколько я понял это чтото было сделано для динамческого запроса ... тогда почему только на сравнение по '='?
+	//РќР°СЃРєРѕР»СЊРєРѕ СЏ РїРѕРЅСЏР» СЌС‚Рѕ С‡С‚РѕС‚Рѕ Р±С‹Р»Рѕ СЃРґРµР»Р°РЅРѕ РґР»СЏ РґРёРЅР°РјС‡РµСЃРєРѕРіРѕ Р·Р°РїСЂРѕСЃР° ... С‚РѕРіРґР° РїРѕС‡РµРјСѓ С‚РѕР»СЊРєРѕ РЅР° СЃСЂР°РІРЅРµРЅРёРµ РїРѕ '='?
 	if (!empty($_POST['req_' . $id]) && is_array($_POST['req_' . $id]))
 	{
 		foreach ($_POST['req_' . $id] as $fid => $val)
@@ -87,11 +73,11 @@ function eval2var( $expression ) {
 			$vvv.="$val";
 			switch ($row_ak->condition_compare)
 			{
-				
-				case  'N<': $where[] = "<?php \$vv=eval2var(' ?>$val<? '); echo \$vv>'' ? \" ((t$i.document_id = a.id)AND(t$i.rubric_field_id = $fid AND CAST(t$i.field_value AS UNSIGNED) < '\$vv')) \" : ''; ?>"; break;
-				case  'N>': $where[] = "<?php \$vv=eval2var(' ?>$val<? '); echo \$vv>'' ? \" ((t$i.document_id = a.id)AND(t$i.rubric_field_id = $fid AND CAST(t$i.field_value AS UNSIGNED) > '\$vv')) \" : ''; ?>"; break;
-				case 'N<=': $where[] = "<?php \$vv=eval2var(' ?>$val<? '); echo \$vv>'' ? \" ((t$i.document_id = a.id)AND(t$i.rubric_field_id = $fid AND CAST(t$i.field_value AS UNSIGNED) <= '\$vv')) \" : ''; ?>"; break;
-				case 'N>=': $where[] = "<?php \$vv=eval2var(' ?>$val<? '); echo \$vv>'' ? \" ((t$i.document_id = a.id)AND(t$i.rubric_field_id = $fid AND CAST(t$i.field_value AS UNSIGNED) >= '\$vv')) \" : ''; ?>"; break;
+				case  'N<': $where[] = "<?php \$vv=eval2var(' ?>$val<? '); echo \$vv>'' ? \" ((t$i.document_id = a.id)AND(t$i.rubric_field_id = $fid AND t$i.field_number_value < '\$vv')) \" : ''; ?>"; break;
+				case  'N>': $where[] = "<?php \$vv=eval2var(' ?>$val<? '); echo \$vv>'' ? \" ((t$i.document_id = a.id)AND(t$i.rubric_field_id = $fid AND t$i.field_number_value > '\$vv')) \" : ''; ?>"; break;
+				case 'N<=': $where[] = "<?php \$vv=eval2var(' ?>$val<? '); echo \$vv>'' ? \" ((t$i.document_id = a.id)AND(t$i.rubric_field_id = $fid AND t$i.field_number_value <= '\$vv')) \" : ''; ?>"; break;
+				case 'N>=': $where[] = "<?php \$vv=eval2var(' ?>$val<? '); echo \$vv>'' ? \" ((t$i.document_id = a.id)AND(t$i.rubric_field_id = $fid AND t$i.field_number_value >= '\$vv')) \" : ''; ?>"; break;
+				case 'N==': $where[] = "<?php \$vv=eval2var(' ?>$val<? '); echo \$vv>'' ? \" ((t$i.document_id = a.id)AND(t$i.rubric_field_id = $fid AND t$i.field_number_value = '\$vv')) \" : ''; ?>"; break;
 
 				case  '<': $where[] = "<?php \$vv=eval2var(' ?>$val<? '); echo \$vv>'' ? \" ((t$i.document_id = a.id)AND(t$i.rubric_field_id = $fid AND UPPER(t$i.field_value) < UPPER('\$vv'))) \" : ''; ?>"; break;
 				case  '>': $where[] = "<?php \$vv=eval2var(' ?>$val<? '); echo \$vv>'' ? \" ((t$i.document_id = a.id)AND(t$i.rubric_field_id = $fid AND UPPER(t$i.field_value) > UPPER('\$vv'))) \" : ''; ?>"; break;
@@ -132,12 +118,12 @@ function eval2var( $expression ) {
  
 
 /**
- * Функция обработки тэгов полей с использованием шаблонов
- * в соответствии с типом поля
+ * Р¤СѓРЅРєС†РёСЏ РѕР±СЂР°Р±РѕС‚РєРё С‚СЌРіРѕРІ РїРѕР»РµР№ СЃ РёСЃРїРѕР»СЊР·РѕРІР°РЅРёРµРј С€Р°Р±Р»РѕРЅРѕРІ
+ * РІ СЃРѕРѕС‚РІРµС‚СЃС‚РІРёРё СЃ С‚РёРїРѕРј РїРѕР»СЏ
  *
- * @param int $rubric_id	идентификатор рубрики
- * @param int $document_id	идентификатор документа
- * @param int $maxlength	максимальное количество символов обрабатываемого поля
+ * @param int $rubric_id	РёРґРµРЅС‚РёС„РёРєР°С‚РѕСЂ СЂСѓР±СЂРёРєРё
+ * @param int $document_id	РёРґРµРЅС‚РёС„РёРєР°С‚РѕСЂ РґРѕРєСѓРјРµРЅС‚Р°
+ * @param int $maxlength	РјР°РєСЃРёРјР°Р»СЊРЅРѕРµ РєРѕР»РёС‡РµСЃС‚РІРѕ СЃРёРјРІРѕР»РѕРІ РѕР±СЂР°Р±Р°С‚С‹РІР°РµРјРѕРіРѕ РїРѕР»СЏ
  * @return string
  */
 function request_get_document_field($rubric_id, $document_id, $maxlength = '')
@@ -165,10 +151,17 @@ function request_get_document_field($rubric_id, $document_id, $maxlength = '')
 
 	if ($maxlength != '')
 	{
-		if ($maxlength == 'more')
-		{
+		if ($maxlength == 'more' || $maxlength == 'esc')
+		{	
+			if($maxlength == 'more')
+			{
 				$teaser = explode('<a name="more"></a>', $field_value);
 				$field_value = $teaser[0];
+			}
+			else
+			{
+				$field_value = addslashes($field_value);
+			}
 		}
 		else
 		{
@@ -180,7 +173,7 @@ function request_get_document_field($rubric_id, $document_id, $maxlength = '')
 				$field_value = trim($field_value);
 				$maxlength = abs($maxlength);
 			}
-			$field_value = substr($field_value, 0, $maxlength) . ((strlen($field_value) > $maxlength) ? '... ' : '');
+			$field_value = mb_substr($field_value, 0, $maxlength) . ((strlen($field_value) > $maxlength) ? '... ' : '');
 		}
 	}
 
@@ -193,11 +186,11 @@ function request_get_document_field($rubric_id, $document_id, $maxlength = '')
 }
 
 /**
- * Обработка тэга запроса.
- * Возвращает список документов удовлетворяющих параметрам запроса
- * оформленный с использованием шаблона
+ * РћР±СЂР°Р±РѕС‚РєР° С‚СЌРіР° Р·Р°РїСЂРѕСЃР°.
+ * Р’РѕР·РІСЂР°С‰Р°РµС‚ СЃРїРёСЃРѕРє РґРѕРєСѓРјРµРЅС‚РѕРІ СѓРґРѕРІР»РµС‚РІРѕСЂСЏСЋС‰РёС… РїР°СЂР°РјРµС‚СЂР°Рј Р·Р°РїСЂРѕСЃР°
+ * РѕС„РѕСЂРјР»РµРЅРЅС‹Р№ СЃ РёСЃРїРѕР»СЊР·РѕРІР°РЅРёРµРј С€Р°Р±Р»РѕРЅР°
  *
- * @param int $id	идентификатор запроса
+ * @param int $id	РёРґРµРЅС‚РёС„РёРєР°С‚РѕСЂ Р·Р°РїСЂРѕСЃР°
  * @return string
  */
 function request_parse($id)
@@ -216,24 +209,23 @@ function request_parse($id)
 
 	if (is_object($row_ab))
 	{
+		$ttl=(int)$row_ab->request_cache_lifetime;
 		$limit = ($row_ab->request_items_per_page < 1) ? 1 : $row_ab->request_items_per_page;
 		$main_template = $row_ab->request_template_main;
 		$item_template = $row_ab->request_template_item;
 		$request_order_by = $row_ab->request_order_by;
 		$request_asc_desc = $row_ab->request_asc_desc;
 
-		$doctime = get_settings('use_doctime')
-			? ("AND a.document_published <= " . time() . " AND (a.document_expire = 0 OR a.document_expire >= " . time() . ")") : '';
+ 		$doctime = get_settings('use_doctime') 
+ 		        	? ("AND a.document_published <= UNIX_TIMESTAMP() AND
+ 		         	(a.document_expire = 0 OR a.document_expire >=UNIX_TIMESTAMP())") : '';
 
 		$where_cond = (empty($_POST['req_' . $id]) && empty($_SESSION['doc_' . $AVE_Core->curentdoc->Id]['req_' . $id]))
 			? unserialize($row_ab->request_where_cond)
 			: unserialize(request_get_condition_sql_string($row_ab->Id));
 		$where_cond['from'] = str_replace('%%PREFIX%%', PREFIX, $where_cond['from']);
 		$where_cond['where'] = str_replace('%%PREFIX%%', PREFIX, $where_cond['where']);
-		
-		// было во всех запросах убрано
-		// AND a.Id != '" . $AVE_Core->curentdoc->Id . "'
-		
+				
 		if ($row_ab->request_show_pagination == 1)
 		{
 			if (!empty($AVE_Core->install_modules['comment']->Status))
@@ -251,7 +243,7 @@ function request_parse($id)
 					AND a.document_status != '0'
 					" . $where_cond['where'] . "
 					" . $doctime . "
-				<?php " ) )->GetCell();
+				<?php " ),$ttl,'rub_'.$row_ab->rubric_id)->GetCell();
 			}
 			else
 			{
@@ -269,7 +261,7 @@ function request_parse($id)
 					AND a.document_status != '0'
 					" . $where_cond['where'] . "
 					" . $doctime . "
-				<?php " ) )->GetCell();
+				<?php " ),$ttl,'rub_'.$row_ab->rubric_id)->GetCell();
 			}
 
 			$seiten = ceil($num / $limit);
@@ -318,7 +310,7 @@ function request_parse($id)
 				GROUP BY a.Id
 				ORDER BY " . $request_order_by . " " . $request_asc_desc . "
 				LIMIT " . $start . "," . $limit .
-			" <?php " ) );
+			" <?php " ),$ttl,'rub_'.$row_ab->rubric_id);
 		}
 		else
 		{
@@ -336,6 +328,7 @@ function request_parse($id)
 				WHERE
 					a.Id != '1'
 				AND a.Id != '" . PAGE_NOT_FOUND_ID . "'
+				
 				AND a.rubric_id = '" . $row_ab->rubric_id . "'
 				AND a.document_deleted != '1'
 				AND a.document_status != '0'
@@ -343,7 +336,7 @@ function request_parse($id)
 				" . $doctime . "
 				ORDER BY " . $request_order_by . " " . $request_asc_desc . "
 				LIMIT " . $start . "," . $limit .
-			" <?php " ) );
+			" <?php " ),$ttl,'rub_'.$row_ab->rubric_id);
 		}
 
 		if ($q->NumRows() > 0)
@@ -380,16 +373,27 @@ function request_parse($id)
 		$items = '';
 		foreach ($rows as $row)
 		{
+			$cachefile_docid=BASE_DIR.'/cache/sql/doc_'.$row->Id.'/request-'.$id.'.cache';
+			if(!file_exists($cachefile_docid))
+				{
+					$item = preg_replace('/\[tag:rfld:(\d+)]\[(more|esc|[0-9-]+)]/e', "request_get_document_field(\"$1\", $row->Id, \"$2\")", $item_template);
+					if(!file_exists(dirname($cachefile_docid)))mkdir(dirname($cachefile_docid),0777,true);
+					file_put_contents($cachefile_docid,$item);
+				}
+				else
+				{
+					$item=file_get_contents($cachefile_docid);
+				}
 			$link = rewrite_link('index.php?id=' . $row->Id . '&amp;doc=' . (empty($row->document_alias) ? prepare_url($row->document_title) : $row->document_alias));
-			$items .= preg_replace('/\[tag:rfld:(\d+)]\[(more|[0-9-]+)]/e', "request_get_document_field(\"$1\", $row->Id, \"$2\")", $item_template);
-			$items = str_replace('[tag:link]', $link, $items);
-			$items = str_replace('[tag:docid]', $row->Id, $items);
-			$items = str_replace('[tag:doctitle]', $row->document_title, $items);
-			$items = str_replace('[tag:docdate]', pretty_date(strftime(DATE_FORMAT, $row->document_published)), $items);
-			$items = str_replace('[tag:doctime]', pretty_date(strftime(TIME_FORMAT, $row->document_published)), $items);
-			$items = str_replace('[tag:docauthor]', get_username_by_id($row->document_author_id), $items);
-			$items = str_replace('[tag:docviews]', $row->document_count_view, $items);
-			$items = str_replace('[tag:doccomments]', isset($row->nums) ? $row->nums : '', $items);
+			$item = str_replace('[tag:link]', $link, $item);
+			$item = str_replace('[tag:docid]', $row->Id, $item);
+			$item = str_replace('[tag:doctitle]', $row->document_title, $item);
+			$item = str_replace('[tag:docdate]', pretty_date(strftime(DATE_FORMAT, $row->document_published)), $item);
+			$item = str_replace('[tag:doctime]', pretty_date(strftime(TIME_FORMAT, $row->document_published)), $item);
+			$item = str_replace('[tag:docauthor]', get_username_by_id($row->document_author_id), $item);
+			$item = str_replace('[tag:docviews]', $row->document_count_view, $item);
+			$item = str_replace('[tag:doccomments]', isset($row->nums) ? $row->nums : '', $item);
+			$items .= $item;
 		}
 
 		$main_template = str_replace('[tag:pages]', $page_nav, $main_template);
@@ -409,9 +413,9 @@ function request_parse($id)
 }
 
 /**
- * Функция получения содержимого поля для обработки в шаблоне запроса
+ * Р¤СѓРЅРєС†РёСЏ РїРѕР»СѓС‡РµРЅРёСЏ СЃРѕРґРµСЂР¶РёРјРѕРіРѕ РїРѕР»СЏ РґР»СЏ РѕР±СЂР°Р±РѕС‚РєРё РІ С€Р°Р±Р»РѕРЅРµ Р·Р°РїСЂРѕСЃР°
  * <pre>
- * Пример использования в шаблоне:
+ * РџСЂРёРјРµСЂ РёСЃРїРѕР»СЊР·РѕРІР°РЅРёСЏ РІ С€Р°Р±Р»РѕРЅРµ:
  *   <li>
  *     <?php
  *      $r = request_get_document_field_value(12, [tag:docid]);
@@ -420,11 +424,11 @@ function request_parse($id)
  *   </li>
  * </pre>
  *
- * @param int $rubric_id	идентификатор поля, для [tag:rfld:12][150] $rubric_id = 12
- * @param int $document_id	идентификатор документа к которому принадлежит поле.
- * @param int $maxlength	необязательный параметр, количество возвращаемых символов.
- * 							Если данный параметр указать со знаком минус
- * 							содержимое поля будет очищено от HTML-тэгов.
+ * @param int $rubric_id	РёРґРµРЅС‚РёС„РёРєР°С‚РѕСЂ РїРѕР»СЏ, РґР»СЏ [tag:rfld:12][150] $rubric_id = 12
+ * @param int $document_id	РёРґРµРЅС‚РёС„РёРєР°С‚РѕСЂ РґРѕРєСѓРјРµРЅС‚Р° Рє РєРѕС‚РѕСЂРѕРјСѓ РїСЂРёРЅР°РґР»РµР¶РёС‚ РїРѕР»Рµ.
+ * @param int $maxlength	РЅРµРѕР±СЏР·Р°С‚РµР»СЊРЅС‹Р№ РїР°СЂР°РјРµС‚СЂ, РєРѕР»РёС‡РµСЃС‚РІРѕ РІРѕР·РІСЂР°С‰Р°РµРјС‹С… СЃРёРјРІРѕР»РѕРІ.
+ * 							Р•СЃР»Рё РґР°РЅРЅС‹Р№ РїР°СЂР°РјРµС‚СЂ СѓРєР°Р·Р°С‚СЊ СЃРѕ Р·РЅР°РєРѕРј РјРёРЅСѓСЃ
+ * 							СЃРѕРґРµСЂР¶РёРјРѕРµ РїРѕР»СЏ Р±СѓРґРµС‚ РѕС‡РёС‰РµРЅРѕ РѕС‚ HTML-С‚СЌРіРѕРІ.
  * @return string
  */
 function request_get_document_field_value($rubric_id, $document_id, $maxlength = 0)
@@ -447,24 +451,24 @@ function request_get_document_field_value($rubric_id, $document_id, $maxlength =
 		if ($maxlength < 0)
 		{
 			$field_value = str_replace(array("\r\n", "\n", "\r"), ' ', $field_value);
-			$field_value = strip_tags($field_value);
+			$field_value = strip_tags($field_value, "<a>");
 			$field_value = preg_replace('/  +/', ' ', $field_value);
 			$maxlength = abs($maxlength);
 		}
-		$field_value = substr($field_value, 0, $maxlength) . (strlen($field_value) > $maxlength ? '... ' : '');
+		$field_value = mb_substr($field_value, 0, $maxlength) . (strlen($field_value) > $maxlength ? '... ' : '');
 	}
 
 	return $field_value;
 }
 
 /**
- * Функция формирования выпадающих списков
- * для управления условиями запроса в публичной части
+ * Р¤СѓРЅРєС†РёСЏ С„РѕСЂРјРёСЂРѕРІР°РЅРёСЏ РІС‹РїР°РґР°СЋС‰РёС… СЃРїРёСЃРєРѕРІ
+ * РґР»СЏ СѓРїСЂР°РІР»РµРЅРёСЏ СѓСЃР»РѕРІРёСЏРјРё Р·Р°РїСЂРѕСЃР° РІ РїСѓР±Р»РёС‡РЅРѕР№ С‡Р°СЃС‚Рё
  *
- * @param string $dropdown_ids	идентификаторы полей
- * 								типа выпадающий список указанные через запятую
- * @param int $rubric_id		идентификатор рубрики
- * @param int $request_id		идентификатор запроса
+ * @param string $dropdown_ids	РёРґРµРЅС‚РёС„РёРєР°С‚РѕСЂС‹ РїРѕР»РµР№
+ * 								С‚РёРїР° РІС‹РїР°РґР°СЋС‰РёР№ СЃРїРёСЃРѕРє СѓРєР°Р·Р°РЅРЅС‹Рµ С‡РµСЂРµР· Р·Р°РїСЏС‚СѓСЋ
+ * @param int $rubric_id		РёРґРµРЅС‚РёС„РёРєР°С‚РѕСЂ СЂСѓР±СЂРёРєРё
+ * @param int $request_id		РёРґРµРЅС‚РёС„РёРєР°С‚РѕСЂ Р·Р°РїСЂРѕСЃР°
  * @return string
  */
 function request_get_dropdown($dropdown_ids, $rubric_id, $request_id)
@@ -486,7 +490,7 @@ function request_get_dropdown($dropdown_ids, $rubric_id, $request_id)
 		WHERE Id IN(" . $dropdown_ids . ")
 		AND rubric_id = '" . $rubric_id . "'
 		AND rubric_field_type = 'dropdown'
-	");
+	",-1,'rub_'.$rubric_id);
 	while ($row = $sql->FetchRow())
 	{
 		$dropdown['titel'] = $row->rubric_field_title;

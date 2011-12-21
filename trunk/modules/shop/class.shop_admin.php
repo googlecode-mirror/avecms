@@ -10,9 +10,9 @@ class Shop
 	var $_expander = '---';
 
 	/**
-	 * Стартовая страница административной части
+	 * РЎС‚Р°СЂС‚РѕРІР°СЏ СЃС‚СЂР°РЅРёС†Р° Р°РґРјРёРЅРёСЃС‚СЂР°С‚РёРІРЅРѕР№ С‡Р°СЃС‚Рё
 	 *
-	 * @param string $tpl_dir путь к папке с шаблонами
+	 * @param string $tpl_dir РїСѓС‚СЊ Рє РїР°РїРєРµ СЃ С€Р°Р±Р»РѕРЅР°РјРё
 	 */
 	function shopStart($tpl_dir)
 	{
@@ -48,7 +48,7 @@ class Shop
 	}
 
 	//=======================================================
-	// Rezensionen / Bewertungen (Рецензии / Оценки)
+	// Rezensionen / Bewertungen (Р РµС†РµРЅР·РёРё / РћС†РµРЅРєРё)
 	//=======================================================
 	function getRez($limit='')
 	{
@@ -84,10 +84,10 @@ class Shop
 	}
 
 	/**
-	 * Настройки Магазина
+	 * РќР°СЃС‚СЂРѕР№РєРё РњР°РіР°Р·РёРЅР°
 	 *
-	 * @param string $param название параметра
-	 * @return mixed значение запрошенного параметра
+	 * @param string $param РЅР°Р·РІР°РЅРёРµ РїР°СЂР°РјРµС‚СЂР°
+	 * @return mixed Р·РЅР°С‡РµРЅРёРµ Р·Р°РїСЂРѕС€РµРЅРЅРѕРіРѕ РїР°СЂР°РјРµС‚СЂР°
 	 */
 	function _getShopSetting($param)
 	{
@@ -106,11 +106,11 @@ class Shop
 	}
 
 	//=======================================================
-	// Dateiendung ermitteln (Определение типа файла по расширению)
+	// Dateiendung ermitteln (РћРїСЂРµРґРµР»РµРЅРёРµ С‚РёРїР° С„Р°Р№Р»Р° РїРѕ СЂР°СЃС€РёСЂРµРЅРёСЋ)
 	//=======================================================
 	function getEndung($file)
 	{
-		$Endg = substr(strtolower($file),-4);
+		$Endg = mb_substr(mb_strtolower($file),-4);
 		switch ($Endg)
 		{
 			case '.jpg':
@@ -170,7 +170,7 @@ class Shop
 				$row->Img = "<img src=\"../modules/shop/thumb.php?file=$row->Bild&amp;type=$type&amp;xwidth=" . $this->_getShopSetting('Topsellerbilder') . "\" alt=\"\" border=\"\" />";
 			}
 
-			$row->TextKurz = $row->Img . substr(strip_tags($row->TextKurz,'<b>,<strong>,<em>,<i>'), 0, 250) . '...';
+			$row->TextKurz = $row->Img . mb_substr(strip_tags($row->TextKurz,'<b>,<strong>,<em>,<i>'), 0, 250) . '...';
 			$row->Detaillink = 'index.php?module=shop&amp;action=product_detail&amp;product_id=' . $row->Id . '&amp;categ=' . $row->KatId . '&amp;navop=' . getParentShopcateg($row->KatId);
 			array_push($topSeller, $row);
 		}
@@ -179,7 +179,7 @@ class Shop
 	}
 
 	//=======================================================
-	// Downloads einlesen (Файлы для скачивания)
+	// Downloads einlesen (Р¤Р°Р№Р»С‹ РґР»СЏ СЃРєР°С‡РёРІР°РЅРёСЏ)
 	//=======================================================
 	function fetchEsdFiles()
 	{
@@ -228,7 +228,7 @@ class Shop
 	}
 
 	//=======================================================
-	// Funktion zum umbenennen einer Datei (Функция переименовывания файлов)
+	// Funktion zum umbenennen einer Datei (Р¤СѓРЅРєС†РёСЏ РїРµСЂРµРёРјРµРЅРѕРІС‹РІР°РЅРёСЏ С„Р°Р№Р»РѕРІ)
 	//=======================================================
 	function renameFile($file)
 	{
@@ -240,7 +240,7 @@ class Shop
 	}
 
 	//=======================================================
-	// Einen Hersteller auslesen (Выборка производителей)
+	// Einen Hersteller auslesen (Р’С‹Р±РѕСЂРєР° РїСЂРѕРёР·РІРѕРґРёС‚РµР»РµР№)
 	//=======================================================
 	function _fetchManufacturer($Hersteller)
 	{
@@ -369,7 +369,7 @@ class Shop
 	}
 
 	//=======================================================
-	// Versand - Zeiten (Сроки доставки)
+	// Versand - Zeiten (РЎСЂРѕРєРё РґРѕСЃС‚Р°РІРєРё)
 	//=======================================================
 	function shippingTime()
 	{
@@ -390,7 +390,7 @@ class Shop
 	}
 
 	//=======================================================
-	// Steuersдtze (Налоги)
+	// SteuersРґtze (РќР°Р»РѕРіРё)
 	//=======================================================
 	function vatZones($tpl_dir)
 	{
@@ -421,7 +421,7 @@ class Shop
 						Id = '" . $id . "'
 				");
 			}
-			// Lцschen
+			// LС†schen
 			if (isset($_POST['Del']) && $_POST['Del'] >= 1)
 			{
 				foreach ($_POST['Del'] as $id => $Del)
@@ -440,7 +440,7 @@ class Shop
 	}
 
 	//=======================================================
-	// Datei - Downloads fьr einen Artikel (Файл - загрузки для товара)
+	// Datei - Downloads fСЊr einen Artikel (Р¤Р°Р№Р» - Р·Р°РіСЂСѓР·РєРё РґР»СЏ С‚РѕРІР°СЂР°)
 	//=======================================================
 	function esdDownloads($tpl_dir)
 	{
@@ -545,7 +545,7 @@ class Shop
 	}
 
 	//=======================================================
-	// Dateiupload-Funktion (Функция загрузки файлов)
+	// Dateiupload-Funktion (Р¤СѓРЅРєС†РёСЏ Р·Р°РіСЂСѓР·РєРё С„Р°Р№Р»РѕРІ)
 	//=======================================================
 	function uploadFile($maxupload=4000)
 	{
@@ -559,7 +559,7 @@ class Shop
 			{
 				if ($_FILES['upfile']['tmp_name'][$i] != "")
 				{
-					$d_name = strtolower(ltrim(rtrim($_FILES['upfile']['name'][$i])));
+					$d_name = mb_strtolower(ltrim(rtrim($_FILES['upfile']['name'][$i])));
 					$d_name = str_replace(" ","", $d_name);
 					$d_tmp = $_FILES['upfile']['tmp_name'][$i];
 
@@ -677,7 +677,7 @@ class Shop
 
 	//=======================================================
 	//=======================================================
-	// Bestellungen (ЗАКАЗЫ)
+	// Bestellungen (Р—РђРљРђР—Р«)
 	//=======================================================
 	//=======================================================
 	function ZahlungsArt($id)
@@ -723,7 +723,7 @@ class Shop
 		");
 		$row = $sql->FetchRow();
 
-		return (is_object($row) ? (substr($row->firstname,0,1) . '. ' . $row->lastname) : '');
+		return (is_object($row) ? (mb_substr($row->firstname,0,1) . '. ' . $row->lastname) : '');
 	}
 
 	function mailPage($tpl_dir,$orderid)
@@ -757,7 +757,7 @@ class Shop
 			$UploadSize = @ini_get('upload_max_filesize');
 			$PostSize = @ini_get('post_max_size');
 
-			if (strtolower(@ini_get('file_uploads')) == 'off' || @ini_get('file_uploads') == 0)	$AVE_Template->assign('no_uploads', 1);
+			if (mb_strtolower(@ini_get('file_uploads')) == 'off' || @ini_get('file_uploads') == 0)	$AVE_Template->assign('no_uploads', 1);
 
 			$AVE_Template->assign('UploadSize', (($PostSize < $UploadSize) ? $PostSize : $UploadSize) );
 			$AVE_Template->assign('row', $row);
@@ -776,7 +776,7 @@ class Shop
 		");
 		$row = $sql->FetchRow();
 
-		return (is_object($row) ? ((strlen($row->ArtName)>60) ? substr($row->ArtName, 0, 60) . '...' : $row->ArtName) : '');
+		return (is_object($row) ? ((mb_strlen($row->ArtName)>60) ? mb_substr($row->ArtName, 0, 60) . '...' : $row->ArtName) : '');
 	}
 
 	function varCategory($id)
@@ -819,7 +819,7 @@ class Shop
 	}
 
 	//=======================================================
-	// Alle Bestellungen (Все заказы)
+	// Alle Bestellungen (Р’СЃРµ Р·Р°РєР°Р·С‹)
 	//=======================================================
 	function showOrders($tpl_dir)
 	{
@@ -844,7 +844,7 @@ class Shop
 			reset ($_POST);
 			while (list($key,/*$val*/) = each($_POST))
 			{
-				if (substr($key,0,7) == "orders_")
+				if (mb_substr($key,0,7) == "orders_")
 				{
 					$aktid = str_replace("orders_","",$key);
 					$AVE_DB->Query("
@@ -999,7 +999,7 @@ class Shop
 			$row['VersandArt'] = $this->VersandArt($row['VersandId']);
 			$row['Gesamt'] = number_format($row['Gesamt'],'2',',','.');
 			$row['BenId'] = (is_numeric($row['Benutzer'])) ? $row['Benutzer'] : '';
-			$row['Benutzer'] = (is_numeric($row['Benutzer']) && ($row['Benutzer']>0) ) ? '<a href="javascript:void(0);" onclick="cp_pop(\'index.php?do=user&action=edit&Id=' . $row['Benutzer'] . '&cp=' . SESSION . '&pop=1\')">' . ( strlen($this->getUserName($row['Benutzer']))< 3 ? $row['Benutzer'] : $this->getUserName($row['Benutzer'])) . '</a>' : '<b>' . $row['Benutzer'] . '</b>';
+			$row['Benutzer'] = (is_numeric($row['Benutzer']) && ($row['Benutzer']>0) ) ? '<a href="javascript:void(0);" onclick="cp_pop(\'index.php?do=user&action=edit&Id=' . $row['Benutzer'] . '&cp=' . SESSION . '&pop=1\')">' . ( mb_strlen($this->getUserName($row['Benutzer']))< 3 ? $row['Benutzer'] : $this->getUserName($row['Benutzer'])) . '</a>' : '<b>' . $row['Benutzer'] . '</b>';
 			$row['BenutzerMail'] = '<a href="javascript:void(0);" onclick="cp_pop(\'index.php?do=modules&action=modedit&mod=shop&moduleaction=mailpage&OrderId=' . $row['Id'] . '&cp=' . SESSION . '&pop=1\')">E-Mail</a>';
 
 			array_push($Orders, $row);
@@ -1067,7 +1067,7 @@ class Shop
 				}
 			}
 
-			// Mail an Kдufer senden
+			// Mail an KРґufer senden
 			if (isset($_REQUEST['SendMail']) && $_REQUEST['SendMail'] == 1)
 			{
 				$_POST['Message'] = str_replace("%%ORDER_NUMBER%%", $row->Id, $_POST['Message']);
@@ -1122,7 +1122,7 @@ class Shop
 	}
 
 	//=======================================================
-	// Kategorien (Категории)
+	// Kategorien (РљР°С‚РµРіРѕСЂРёРё)
 	//=======================================================
 
 	// Neue Kategorie
@@ -1138,10 +1138,10 @@ class Shop
 
 			if (!empty($_FILES['Bild']['tmp_name']))
 			{
-				$name = str_replace(array(' ', '+','-'),'_',strtolower($_FILES['Bild']['name']));
+				$name = str_replace(array(' ', '+','-'),'_',mb_strtolower($_FILES['Bild']['name']));
 				$name = preg_replace("/__+/", "_", $name);
 //				$temp = $_FILES['Bild']['tmp_name'];
-//				$endung = strtolower(substr($name, -3));
+//				$endung = mb_strtolower(mb_substr($name, -3));
 				$fupload_name = $name;
 
 				if (in_array($_FILES['Bild']['type'], $this->_allowed_images))
@@ -1205,10 +1205,10 @@ class Shop
 
 			if (!empty($_FILES['Bild']['tmp_name']))
 			{
-				$name = str_replace(array(' ', '+','-'),'_',strtolower($_FILES['Bild']['name']));
+				$name = str_replace(array(' ', '+','-'),'_',mb_strtolower($_FILES['Bild']['name']));
 				$name = preg_replace("/__+/", "_", $name);
 //				$temp = $_FILES['Bild']['tmp_name'];
-//				$endung = strtolower(substr($name, -3));
+//				$endung = mb_strtolower(mb_substr($name, -3));
 				$fupload_name = $name;
 
 				if (in_array($_FILES['Bild']['type'], $this->_allowed_images))
@@ -1265,7 +1265,7 @@ class Shop
 		$AVE_Template->assign('content', $AVE_Template->fetch($tpl_dir . 'shop_categ_edit.tpl'));
 	}
 
-	// Lцschaufruf
+	// LС†schaufruf
 	function delCategCall($id)
 	{
 		$this->delCateg($id);
@@ -1274,7 +1274,7 @@ class Shop
 		exit;
 	}
 
-	// Lцschfunktion von Kategorien
+	// LС†schfunktion von Kategorien
 	function delCateg($id)
 	{
 		global $AVE_DB;
@@ -1327,7 +1327,7 @@ class Shop
 	}
 
 	//=======================================================
-	// Gutschein - Codes (Купоны на скидку)
+	// Gutschein - Codes (РљСѓРїРѕРЅС‹ РЅР° СЃРєРёРґРєСѓ)
 	//=======================================================
 	function getOrderDate($id)
 	{
@@ -1368,7 +1368,7 @@ class Shop
 	{
 		global $AVE_DB, $AVE_Template;
 
-		// Lцschen
+		// LС†schen
 		if (isset($_REQUEST['sub']) && $_REQUEST['sub'] == 'save')
 		{
 			if (isset($_POST['Del']) && $_POST['Del'] >= 1)
@@ -1465,7 +1465,7 @@ class Shop
 	}
 
 	//=======================================================
-	// Produkte anzeigen (Последние поступления)
+	// Produkte anzeigen (РџРѕСЃР»РµРґРЅРёРµ РїРѕСЃС‚СѓРїР»РµРЅРёСЏ)
 	//=======================================================
 	function lastArticles()
 	{
@@ -1749,7 +1749,7 @@ class Shop
 //	}
 
 	//=======================================================
-	// Shop - Navi erzeugen (Магазин - Навигация по категориям)
+	// Shop - Navi erzeugen (РњР°РіР°Р·РёРЅ - РќР°РІРёРіР°С†РёСЏ РїРѕ РєР°С‚РµРіРѕСЂРёСЏРј)
 	//=======================================================
 	function getCategoriesSimple($id, $prefix, &$entries, $admin=0, $dropdown=0)
 	{
@@ -1793,7 +1793,7 @@ class Shop
 	}
 
 	//=======================================================
-	// Shop - Navi (Магазин - Навигация)
+	// Shop - Navi (РњР°РіР°Р·РёРЅ - РќР°РІРёРіР°С†РёСЏ)
 	//=======================================================
 	function fetchShopNavi($noprint='')
 	{
@@ -1821,7 +1821,7 @@ class Shop
 	}
 
 	//=======================================================
-	// Funktion zum Auslesen der Lдnder (Выборка списка стран)
+	// Funktion zum Auslesen der LРґnder (Р’С‹Р±РѕСЂРєР° СЃРїРёСЃРєР° СЃС‚СЂР°РЅ)
 	//=======================================================
 	function displayCountries()
 	{
@@ -1843,7 +1843,7 @@ class Shop
 
 	//=======================================================
 	// Funktion zum Auslesen der Versandkosten einer Versandart
-	// (Функция расчета стоимости пересылки в зависимости от вида отправки)
+	// (Р¤СѓРЅРєС†РёСЏ СЂР°СЃС‡РµС‚Р° СЃС‚РѕРёРјРѕСЃС‚Рё РїРµСЂРµСЃС‹Р»РєРё РІ Р·Р°РІРёСЃРёРјРѕСЃС‚Рё РѕС‚ РІРёРґР° РѕС‚РїСЂР°РІРєРё)
 	//=======================================================
 	function displayShippingCost($arr = '', $vid = '')
 	{
@@ -1884,7 +1884,7 @@ class Shop
 	}
 
 	//=======================================================
-	// Funktion zum Auslesen der Versandarten (Выборка видов отправки)
+	// Funktion zum Auslesen der Versandarten (Р’С‹Р±РѕСЂРєР° РІРёРґРѕРІ РѕС‚РїСЂР°РІРєРё)
 	//=======================================================
 	function displayShipper()
 	{
@@ -1902,7 +1902,7 @@ class Shop
 	}
 
 	//=======================================================
-	// Funktion zum Auslesen der Gruppen (Выборка групп пользователей)
+	// Funktion zum Auslesen der Gruppen (Р’С‹Р±РѕСЂРєР° РіСЂСѓРїРї РїРѕР»СЊР·РѕРІР°С‚РµР»РµР№)
 	//=======================================================
 	function displayGroups()
 	{
@@ -1920,7 +1920,7 @@ class Shop
 	}
 
 	//=======================================================
-	// Versandarten (Виды отправки)
+	// Versandarten (Р’РёРґС‹ РѕС‚РїСЂР°РІРєРё)
 	//=======================================================
 	function shopShipper($tpl_dir)
 	{
@@ -2028,7 +2028,7 @@ class Shop
 	}
 
 	//=======================================================
-	// Versandkosten bearbeiten (Стоимость пересылки)
+	// Versandkosten bearbeiten (РЎС‚РѕРёРјРѕСЃС‚СЊ РїРµСЂРµСЃС‹Р»РєРё)
 	//=======================================================
 	function editshipperCost($tpl_dir)
 	{
@@ -2037,7 +2037,7 @@ class Shop
 		$close_window = true;
 		if (isset($_REQUEST['sub']) && $_REQUEST['sub'] == 'save')
 		{
-			// Einzelne lцschen
+			// Einzelne lС†schen
 			if (isset($_POST['Del']) && count($_POST['Del']) >= 1)
 			{
 				foreach ($_POST['Del'] as $id => $Del)
@@ -2111,7 +2111,7 @@ class Shop
 	}
 
 	//=======================================================
-	// Einstellungen E-Mail (Установки E-mail)
+	// Einstellungen E-Mail (РЈСЃС‚Р°РЅРѕРІРєРё E-mail)
 	//=======================================================
 	function emailSettings($tpl_dir)
 	{
@@ -2149,7 +2149,7 @@ class Shop
 	}
 
 	//=======================================================
-	// Einstellungen (Настройки)
+	// Einstellungen (РќР°СЃС‚СЂРѕР№РєРё)
 	//=======================================================
 	function Settings($tpl_dir)
 	{
@@ -2279,7 +2279,7 @@ class Shop
 	}
 
 	//=======================================================
-	// Hilfeseiten bearbeiten (Страница помощи)
+	// Hilfeseiten bearbeiten (РЎС‚СЂР°РЅРёС†Р° РїРѕРјРѕС‰Рё)
 	//=======================================================
 	function helpPages($tpl_dir)
 	{
@@ -2349,10 +2349,10 @@ class Shop
 	}
 
 	//=======================================================
-	// Versandkosten (Стоимость пересылки)
+	// Versandkosten (РЎС‚РѕРёРјРѕСЃС‚СЊ РїРµСЂРµСЃС‹Р»РєРё)
 	//=======================================================
 
-	// Versandart lцschen
+	// Versandart lС†schen
 	function deleteMethod($id)
 	{
 		global $AVE_DB;
@@ -2484,7 +2484,7 @@ class Shop
 	}
 
 	//=======================================================
-	// Versandzeiten (Срок доставки)
+	// Versandzeiten (РЎСЂРѕРє РґРѕСЃС‚Р°РІРєРё)
 	//=======================================================
 	function displaySt()
 	{
@@ -2552,7 +2552,7 @@ class Shop
 	}
 
 	//=======================================================
-	// Produkt - Varianten (Товар - Варианты)
+	// Produkt - Varianten (РўРѕРІР°СЂ - Р’Р°СЂРёР°РЅС‚С‹)
 	//=======================================================
 	function displayVariantCategories()
 	{
@@ -2659,7 +2659,7 @@ class Shop
 	}
 
 	//=======================================================
-	// Produkte (Товар)
+	// Produkte (РўРѕРІР°СЂ)
 	//=======================================================
 	function displayProducts($tpl_dir)
 	{
@@ -2709,7 +2709,7 @@ class Shop
 					}
 				}
 
-				if (substr($key,0,12) == "shopartikel_" && $dbAct != '')
+				if (mb_substr($key,0,12) == "shopartikel_" && $dbAct != '')
 				{
 					$aktid = str_replace("shopartikel_","",$key);
 					if ($dbAct == 'del')
@@ -2742,7 +2742,7 @@ class Shop
 	}
 
 	//=======================================================
-	// Einheiten (Единицы)
+	// Einheiten (Р•РґРёРЅРёС†С‹)
 	//=======================================================
 	function Units($tpl_dir)
 	{
@@ -2763,7 +2763,7 @@ class Shop
 				");
 			}
 
-			// Einzelne EInheit lцschen
+			// Einzelne EInheit lС†schen
 			if (isset($_POST['Del']) && $_POST['Del'] >= 1)
 			{
 				foreach ($_POST['Del'] as $id => $Del)
@@ -2809,7 +2809,7 @@ class Shop
 	}
 
 	//=======================================================
-	// Hersteller (Производитель)
+	// Hersteller (РџСЂРѕРёР·РІРѕРґРёС‚РµР»СЊ)
 	//=======================================================
 	function Manufacturer($tpl_dir)
 	{
@@ -2831,7 +2831,7 @@ class Shop
 				");
 			}
 
-			// Hersteller lцschen
+			// Hersteller lС†schen
 			if (isset($_POST['Del']) && $_POST['Del'] >= 1)
 			{
 				foreach ($_POST['Del'] as $id => $Del)
@@ -2878,7 +2878,7 @@ class Shop
 	}
 
 	//=======================================================
-	// Produktvarianten zuweisen (Варианты товаров)
+	// Produktvarianten zuweisen (Р’Р°СЂРёР°РЅС‚С‹ С‚РѕРІР°СЂРѕРІ)
 	//=======================================================
 	function prouctVars($tpl_dir,$product_id,$kat_id)
 	{
@@ -2925,7 +2925,7 @@ class Shop
 				}
 			}
 
-			// Varianten - Positionen lцschen
+			// Varianten - Positionen lС†schen
 			if (!empty($_POST['Del']))
 			{
 				foreach ($_POST['Del'] as $id => $Name)
@@ -2969,13 +2969,13 @@ class Shop
 	}
 
 	//=======================================================
-	// Produkt bearbeiten (Редактирование товара)
+	// Produkt bearbeiten (Р РµРґР°РєС‚РёСЂРѕРІР°РЅРёРµ С‚РѕРІР°СЂР°)
 	//=======================================================
 	/**
-	 * Редактировать товар
+	 * Р РµРґР°РєС‚РёСЂРѕРІР°С‚СЊ С‚РѕРІР°СЂ
 	 *
-	 * @param string $tpl_dir путь к шаблонам модуля авторизации
-	 * @param int $id идентификатор товара
+	 * @param string $tpl_dir РїСѓС‚СЊ Рє С€Р°Р±Р»РѕРЅР°Рј РјРѕРґСѓР»СЏ Р°РІС‚РѕСЂРёР·Р°С†РёРё
+	 * @param int $id РёРґРµРЅС‚РёС„РёРєР°С‚РѕСЂ С‚РѕРІР°СЂР°
 	 */
 	function editProduct($tpl_dir,$id)
 	{
@@ -2991,10 +2991,10 @@ class Shop
 			if (!empty($_FILES['Bild']['tmp_name']))
 			{
 				$upload_dir = BASE_DIR . '/modules/shop/uploads/';
-				$name = str_replace(array(' ', '+','-'),'_',strtolower($_FILES['Bild']['name']));
+				$name = str_replace(array(' ', '+','-'),'_',mb_strtolower($_FILES['Bild']['name']));
 				$name = preg_replace("/__+/", "_", $name);
 //				$temp = $_FILES['Bild']['tmp_name'];
-				$endung = strtolower(substr($name, -3));
+				$endung = mb_strtolower(mb_substr($name, -3));
 				$fupload_name = $name;
 
 				if (in_array($_FILES['Bild']['type'], $this->_allowed_images))
@@ -3010,7 +3010,7 @@ class Shop
 					@move_uploaded_file($_FILES['Bild']['tmp_name'], $upload_dir . $fupload_name);
 					@chmod($upload_dir . $fupload_name, 0777);
 
-					// Altes Bild lцschen
+					// Altes Bild lС†schen
 					@unlink($upload_dir . $_REQUEST['del_old']);
 
 					$DbNewImage = "Bild = '" . $fupload_name . "', Bild_Typ = '" . $endung . "',";
@@ -3031,7 +3031,7 @@ class Shop
 				for ($i=0;$i<count(@$_FILES['file']['tmp_name']);$i++)
 				{
 //					$size = $_FILES['file']['size'][$i];
-					$name = str_replace(array(' ', '+','-'),'_',strtolower($_FILES['file']['name'][$i]));
+					$name = str_replace(array(' ', '+','-'),'_',mb_strtolower($_FILES['file']['name'][$i]));
 					$name = preg_replace("/__+/", "_", $name);
 //					$temp = $_FILES['file']['tmp_name'][$i];
 					$fupload_name = $name;
@@ -3056,7 +3056,7 @@ class Shop
 				}
 			}
 
-			// Eventuelle Bilder lцschen
+			// Eventuelle Bilder lС†schen
 			if (isset($_POST['del_multi']) && count($_POST['del_multi']) >= 1)
 			{
 				$upload_dir = BASE_DIR . '/modules/shop/uploads/';
@@ -3203,10 +3203,10 @@ class Shop
 	}
 
 	/**
-	 * Проверка артикула товара на уникальность
+	 * РџСЂРѕРІРµСЂРєР° Р°СЂС‚РёРєСѓР»Р° С‚РѕРІР°СЂР° РЅР° СѓРЅРёРєР°Р»СЊРЅРѕСЃС‚СЊ
 	 *
-	 * @param string $artnumber артикул
-	 * @return boolean true - артикул уникален, false - артикул уже используется
+	 * @param string $artnumber Р°СЂС‚РёРєСѓР»
+	 * @return boolean true - Р°СЂС‚РёРєСѓР» СѓРЅРёРєР°Р»РµРЅ, false - Р°СЂС‚РёРєСѓР» СѓР¶Рµ РёСЃРїРѕР»СЊР·СѓРµС‚СЃСЏ
 	 */
 	function _checkArtNumber($artnumber)
 	{
@@ -3226,9 +3226,9 @@ class Shop
 	}
 
 	/**
-	 * Добавить новый товар
+	 * Р”РѕР±Р°РІРёС‚СЊ РЅРѕРІС‹Р№ С‚РѕРІР°СЂ
 	 *
-	 * @param string $tpl_dir путь к шаблонам
+	 * @param string $tpl_dir РїСѓС‚СЊ Рє С€Р°Р±Р»РѕРЅР°Рј
 	 */
 	function newProduct($tpl_dir)
 	{
@@ -3272,10 +3272,10 @@ class Shop
 				if (!empty($_FILES['Bild']['tmp_name']))
 				{
 					$upload_dir = BASE_DIR . '/modules/shop/uploads/';
-					$name = str_replace(array(' ', '+', '-'), '_', strtolower($_FILES['Bild']['name']));
+					$name = str_replace(array(' ', '+', '-'), '_', mb_strtolower($_FILES['Bild']['name']));
 					$name = preg_replace("/__+/", "_", $name);
 //					$temp = $_FILES['Bild']['tmp_name'];
-//					$endung = strtolower(substr($name, -3));
+//					$endung = mb_strtolower(mb_substr($name, -3));
 					$fupload_name = $name;
 
 					if (in_array($_FILES['Bild']['type'], $this->_allowed_images))
@@ -3304,7 +3304,7 @@ class Shop
 					for ($i=0;$i<count(@$_FILES['file']['tmp_name']);$i++)
 					{
 //						$size = $_FILES['file']['size'][$i];
-						$name = str_replace(array(' ', '+','-'),'_',strtolower($_FILES['file']['name'][$i]));
+						$name = str_replace(array(' ', '+','-'),'_',mb_strtolower($_FILES['file']['name'][$i]));
 						$name = preg_replace("/__+/", "_", $name);
 //						$temp = $_FILES['file']['tmp_name'][$i];
 						$fupload_name = $name;
@@ -3335,7 +3335,7 @@ class Shop
 						Preis           = '" . $this->kReplace(chop($_POST['Preis'])) . "',
 						PreisListe      = '" . $this->kReplace(chop($_POST['PreisListe'])) . "',
 						Bild            = '" . $DbImage . "',
-						Bild_Typ        = '" . (!empty($DbImage) ? substr($_FILES['Bild']['name'], -3) : '') . "',
+						Bild_Typ        = '" . (!empty($DbImage) ? mb_substr($_FILES['Bild']['name'], -3) : '') . "',
 						TextKurz        = '" . chop($_POST['TextKurz']) . "',
 						TextLang        = '" . chop($_POST['TextLang']) . "',
 						Gewicht         = '" . $this->kReplace(chop($_POST['Gewicht'])) . "',
@@ -3411,7 +3411,7 @@ class Shop
 	}
 
 	//=======================================================
-	// Export (Экспорт)
+	// Export (Р­РєСЃРїРѕСЂС‚)
 	//=======================================================
 	function dataExport($tpl_dir)
 	{
@@ -3480,7 +3480,7 @@ class Shop
 	}
 
 	//=======================================================
-	// Kunden-Downloads (wie Koobi) (Загрузки клиента как в Koobi)
+	// Kunden-Downloads (wie Koobi) (Р—Р°РіСЂСѓР·РєРё РєР»РёРµРЅС‚Р° РєР°Рє РІ Koobi)
 	//=======================================================
 	function listFiles()
 	{
@@ -3547,7 +3547,7 @@ class Shop
 							");
 						}
 
-						// Lцschen
+						// LС†schen
 						if (isset($_POST['Del']) && $_POST['Del']>=0)
 						{
 							foreach ($_POST['Del'] as $id => $post)
@@ -3650,7 +3650,7 @@ class Shop
 	}
 
 	//=======================================================
-	// Staffelpreise (Цены на количестве)
+	// Staffelpreise (Р¦РµРЅС‹ РЅР° РєРѕР»РёС‡РµСЃС‚РІРµ)
 	//=======================================================
 	function staffelPreise($tpl_dir)
 	{
@@ -3725,7 +3725,7 @@ class Shop
 	}
 
 	//=======================================================
-	// Fьr den Import von Benutzern aus Koobi (Импорт пользователей из Koobi)
+	// FСЊr den Import von Benutzern aus Koobi (РРјРїРѕСЂС‚ РїРѕР»СЊР·РѕРІР°С‚РµР»РµР№ РёР· Koobi)
 	//=======================================================
 	function dream4_userImport($Prefix = '', $Truncate = '')
 	{

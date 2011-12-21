@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Класс работы с Гостевой книгой
+ * РљР»Р°СЃСЃ СЂР°Р±РѕС‚С‹ СЃ Р“РѕСЃС‚РµРІРѕР№ РєРЅРёРіРѕР№
  *
  * @package AVE.cms
  * @subpackage module_Guestbook
@@ -10,10 +10,10 @@
 class Guest
 {
 	/**
-	 * Получение параметра настройки модуля Гостевая книга
+	 * РџРѕР»СѓС‡РµРЅРёРµ РїР°СЂР°РјРµС‚СЂР° РЅР°СЃС‚СЂРѕР№РєРё РјРѕРґСѓР»СЏ Р“РѕСЃС‚РµРІР°СЏ РєРЅРёРіР°
 	 *
-	 * @param string $field название параметра
-	 * @return mixed значение параметра или массив параметров если не указан $field
+	 * @param string $field РЅР°Р·РІР°РЅРёРµ РїР°СЂР°РјРµС‚СЂР°
+	 * @return mixed Р·РЅР°С‡РµРЅРёРµ РїР°СЂР°РјРµС‚СЂР° РёР»Рё РјР°СЃСЃРёРІ РїР°СЂР°РјРµС‚СЂРѕРІ РµСЃР»Рё РЅРµ СѓРєР°Р·Р°РЅ $field
 	 */
 	function _guestbookSettingsGet($field = '')
 	{
@@ -36,7 +36,7 @@ class Guest
 	}
 
 	/**
-	 * Метод генерации списка для отображения (по 5 страниц, по 10 страниц и т.д.)
+	 * РњРµС‚РѕРґ РіРµРЅРµСЂР°С†РёРё СЃРїРёСЃРєР° РґР»СЏ РѕС‚РѕР±СЂР°Р¶РµРЅРёСЏ (РїРѕ 5 СЃС‚СЂР°РЅРёС†, РїРѕ 10 СЃС‚СЂР°РЅРёС† Рё С‚.Рґ.)
 	 *
 	 * @return array
 	 */
@@ -52,7 +52,7 @@ class Guest
 	}
 
 	/**
-	 * Еще одна обрабтка bbCode
+	 * Р•С‰Рµ РѕРґРЅР° РѕР±СЂР°Р±С‚РєР° bbCode
 	 *
 	 * @param string $text
 	 * @return string
@@ -67,7 +67,7 @@ class Guest
 	}
 
 	/**
-	 * Метод вывода сообщения (Сообщение добавлено, Защита от спама, Неверный код и т.д.)
+	 * РњРµС‚РѕРґ РІС‹РІРѕРґР° СЃРѕРѕР±С‰РµРЅРёСЏ (РЎРѕРѕР±С‰РµРЅРёРµ РґРѕР±Р°РІР»РµРЅРѕ, Р—Р°С‰РёС‚Р° РѕС‚ СЃРїР°РјР°, РќРµРІРµСЂРЅС‹Р№ РєРѕРґ Рё С‚.Рґ.)
 	 *
 	 * @param string $msg
 	 * @param string $goto
@@ -77,29 +77,34 @@ class Guest
 	{
 		global $AVE_Template, $mod;
 
-		$goto = ($goto == '') ? 'index.php?module=guestbook' : $goto;
-		$msg = str_replace('%%GoTo%%', $goto, $msg);
+		//$goto = ($goto == '') ? 'index.php?module=guestbook' : $goto;
+		$msg = str_replace('%%GoTo%%', get_referer_link(), $msg);
 		$AVE_Template->assign('theme_folder', THEME_FOLDER);
-		$AVE_Template->assign('GoTo', $goto);
+		$AVE_Template->assign('GoTo', get_referer_link());
 		$AVE_Template->assign('content', $msg);
+		
 		$tpl_out = $AVE_Template->fetch($mod['tpl_dir'] . 'redirect.tpl');
 		echo $tpl_out;
 		exit;
 	}
 
 	/**
-	 * Вывод гостевой книги в публичной части
+	 * Р’С‹РІРѕРґ РіРѕСЃС‚РµРІРѕР№ РєРЅРёРіРё РІ РїСѓР±Р»РёС‡РЅРѕР№ С‡Р°СЃС‚Рё
 	 *
 	 */
-	function guestbookShow()
+	function guestbookShow($type="")
 	{
 		global $AVE_DB, $AVE_Template, $mod;
+
+		if ($type == "standalone") {
+			$document = get_current_document_id();
+		}	
 
 		$_REQUEST['pp'] = (!empty ($_REQUEST['pp']) && is_numeric($_REQUEST['pp'])) ? $_REQUEST['pp'] : '10';
 		if (empty ($_REQUEST['sort'])) $_REQUEST['sort'] = 'asc';
 		if ($_REQUEST['sort'] != 'asc') $_REQUEST['sort'] = 'desc';
 
-		// Если надо использовать защиту от спама - проверяем наличие библиотеки GD и функции вывода текста на изображение
+		// Р•СЃР»Рё РЅР°РґРѕ РёСЃРїРѕР»СЊР·РѕРІР°С‚СЊ Р·Р°С‰РёС‚Сѓ РѕС‚ СЃРїР°РјР° - РїСЂРѕРІРµСЂСЏРµРј РЅР°Р»РёС‡РёРµ Р±РёР±Р»РёРѕС‚РµРєРё GD Рё С„СѓРЅРєС†РёРё РІС‹РІРѕРґР° С‚РµРєСЃС‚Р° РЅР° РёР·РѕР±СЂР°Р¶РµРЅРёРµ
 		if ($this->_guestbookSettingsGet('guestbook_antispam') == 1 && @ extension_loaded('gd') == 1 && function_exists('imagettftext'))
 		{
 			$AVE_Template->assign('use_code', 1);
@@ -110,34 +115,42 @@ class Guest
 		$AVE_Template->assign('ascsel', ($_REQUEST['sort'] == 'asc')  ? 'selected="selected"' : '');
 		$AVE_Template->assign('pps_array', $this->_guestbookPostPerSiteGet());
 
-		// Если разрешено использовать bbCode, передаем в шаблон разрешение
+		// Р•СЃР»Рё СЂР°Р·СЂРµС€РµРЅРѕ РёСЃРїРѕР»СЊР·РѕРІР°С‚СЊ bbCode, РїРµСЂРµРґР°РµРј РІ С€Р°Р±Р»РѕРЅ СЂР°Р·СЂРµС€РµРЅРёРµ
 		if ($this->_guestbookSettingsGet('guestbook_use_bbcode') == 1)
 		{
 			$AVE_Template->assign('use_bbcode', 1);
 		}
 
-		// Получаем количество сообщений и формируем постраничную навигацию
+		// РџРѕР»СѓС‡Р°РµРј РєРѕР»РёС‡РµСЃС‚РІРѕ СЃРѕРѕР±С‰РµРЅРёР№ Рё С„РѕСЂРјРёСЂСѓРµРј РїРѕСЃС‚СЂР°РЅРёС‡РЅСѓСЋ РЅР°РІРёРіР°С†РёСЋ
 		$inserts = array();
 		$num = $AVE_DB->Query("
 			SELECT COUNT(*)
 			FROM " . PREFIX . "_modul_guestbook_post
-			WHERE guestbook_post_approve = '1'
+			WHERE guestbook_post_approve = '1' AND
+			guestbook_post_document = '".$document."'
 		")->GetCell();
 
 		if ($num > $_REQUEST['pp'])
 		{
-			$page_nav = " <a class=\"page_navigation\" href=\"index.php?module=guestbook&amp;pp=" . $_REQUEST['pp'] . "&amp;sort=" . $_REQUEST['sort'] . "&amp;page={s}\">{t}</a> ";
+			
+			if ($document) {
+				$page_nav = " <a class=\"page_navigation\" href=\"index.php?id=".$document."&amp;pp=" . $_REQUEST['pp'] . "&amp;sort=" . $_REQUEST['sort'] . "&amp;page={s}\">{t}</a> ";
+			} else {
+				$page_nav = " <a class=\"page_navigation\" href=\"index.php?module=guestbook&amp;pp=" . $_REQUEST['pp'] . "&amp;sort=" . $_REQUEST['sort'] . "&amp;page={s}\">{t}</a> ";
+			}
+			
 			$page_nav = get_pagination(ceil($num / $_REQUEST['pp']), 'page', $page_nav);
 			$AVE_Template->assign('pages', $page_nav);
 		}
 
 		$start = get_current_page() * $_REQUEST['pp'] - $_REQUEST['pp'];
 
-		// Получаем список всех сообщений и передаем их в шаблон для вывода
+		// РџРѕР»СѓС‡Р°РµРј СЃРїРёСЃРѕРє РІСЃРµС… СЃРѕРѕР±С‰РµРЅРёР№ Рё РїРµСЂРµРґР°РµРј РёС… РІ С€Р°Р±Р»РѕРЅ РґР»СЏ РІС‹РІРѕРґР°
 		$sql = $AVE_DB->Query("
 			SELECT *
 			FROM " . PREFIX . "_modul_guestbook_post
-			WHERE guestbook_post_approve = '1'
+			WHERE guestbook_post_approve = '1'AND
+			guestbook_post_document = '".$document."'
 			ORDER BY id " . $_REQUEST['sort'] . "
 			LIMIT " . $start . "," . $_REQUEST['pp']
 		);
@@ -161,18 +174,24 @@ class Guest
 
 		$AVE_Template->assign('comments_array', $inserts);
 		$AVE_Template->assign('allcomments', $num);
-		define('MODULE_CONTENT', $AVE_Template->fetch($mod['tpl_dir'] . 'guestbook.tpl'));
+		
+		if ($type == "standalone") {
+			$AVE_Template->assign('document', $document);
+			$AVE_Template->display($mod['tpl_dir'] . 'guestbook.tpl');
+		} else {
+			define('MODULE_CONTENT', $AVE_Template->fetch($mod['tpl_dir'] . 'guestbook.tpl'));
+		}
 	}
 
 	/**
-	 * Новое сообщение
+	 * РќРѕРІРѕРµ СЃРѕРѕР±С‰РµРЅРёРµ
 	 *
 	 */
 	function guestbookPostNew()
 	{
 		global $AVE_DB, $mod;
 
-		// Если надо проверяем защитный код
+		// Р•СЃР»Рё РЅР°РґРѕ РїСЂРѕРІРµСЂСЏРµРј Р·Р°С‰РёС‚РЅС‹Р№ РєРѕРґ
 		if ($this->_guestbookSettingsGet('guestbook_antispam') == 1)
 		{
 			if (! (isset($_SESSION['captcha_keystring']) && isset($_POST['securecode'])
@@ -184,7 +203,7 @@ class Guest
 			unset($_SESSION['captcha_keystring']);
 		}
 
-		// Проверяем время между добавлением сообщений (защита от спама)
+		// РџСЂРѕРІРµСЂСЏРµРј РІСЂРµРјСЏ РјРµР¶РґСѓ РґРѕР±Р°РІР»РµРЅРёРµРј СЃРѕРѕР±С‰РµРЅРёР№ (Р·Р°С‰РёС‚Р° РѕС‚ СЃРїР°РјР°)
 		if ($this->_guestbookSettingsGet('guestbook_antispam_time') > 0 && !$error)
 		{
 			$last_post_created = $AVE_DB->Query("
@@ -205,7 +224,7 @@ class Guest
 			}
 		}
 
-		if (strlen(trim($_POST['text'])) < 10)
+		if (mb_strlen(trim($_POST['text'])) < 10)
 		{
 			$this->_guestbookMessageShow($mod['config_vars']['GUEST_SMALL_TEXT']);
 		}
@@ -221,24 +240,25 @@ class Guest
 			$text_thankyou = $mod['config_vars']['GUEST_THANKS'];
 		}
 
-		$text = substr($_POST['text'], 0, $this->_guestbookSettingsGet('guestbook_post_max_length'));
+		$text = mb_substr($_POST['text'], 0, $this->_guestbookSettingsGet('guestbook_post_max_length'));
 
 		$AVE_DB->Query("
 			INSERT
 			INTO " . PREFIX . "_modul_guestbook_post
 			SET
 				id                          = '',
-				guestbook_post_author_name  = '" . substr($_REQUEST['author'], 0, 25) . "',
-				guestbook_post_author_email = '" . substr($_REQUEST['email'], 0, 100) . "',
-				guestbook_post_author_web   = '" . substr($_REQUEST['web'], 0, 100) . "',
+				guestbook_post_author_name  = '" . mb_substr($_REQUEST['author'], 0, 25) . "',
+				guestbook_post_document  = '" . (int)$_REQUEST['document']. "',
+				guestbook_post_author_email = '" . mb_substr($_REQUEST['email'], 0, 100) . "',
+				guestbook_post_author_web   = '" . mb_substr($_REQUEST['web'], 0, 100) . "',
 				guestbook_post_author_ip    = '" . getenv('REMOTE_ADDR') . "',
-				guestbook_post_author_sity  = '" . substr($_REQUEST['sity'], 0, 100) . "',
+				guestbook_post_author_sity  = '" . mb_substr($_REQUEST['sity'], 0, 100) . "',
 				guestbook_post_text         = '" . $text . "',
 				guestbook_post_approve      = '" . $entry_now . "',
 				guestbook_post_created      = '" . time() . "'
 		");
 
-		// Отправляем сообщение администратору на E-mail
+		// РћС‚РїСЂР°РІР»СЏРµРј СЃРѕРѕР±С‰РµРЅРёРµ Р°РґРјРёРЅРёСЃС‚СЂР°С‚РѕСЂСѓ РЅР° E-mail
 		if ($this->_guestbookSettingsGet('guestbook_send_copy') == 1)
 		{
 			send_mail(
@@ -255,9 +275,9 @@ class Guest
 	}
 
 	/**
-	 * Метод управления настройками модуля
+	 * РњРµС‚РѕРґ СѓРїСЂР°РІР»РµРЅРёСЏ РЅР°СЃС‚СЂРѕР№РєР°РјРё РјРѕРґСѓР»СЏ
 	 *
-	 * @param string $tpl_dir путь к папке с шаблонами
+	 * @param string $tpl_dir РїСѓС‚СЊ Рє РїР°РїРєРµ СЃ С€Р°Р±Р»РѕРЅР°РјРё
 	 */
 	function guestbookSettingsEdit($tpl_dir)
 	{
@@ -282,8 +302,8 @@ class Guest
 
 			case '' :
 			default :
-				// Если в запросе не пришел параметр на сохранение, тогда
-				// получаем все настройки для модуля и передаем их в шаблон
+				// Р•СЃР»Рё РІ Р·Р°РїСЂРѕСЃРµ РЅРµ РїСЂРёС€РµР» РїР°СЂР°РјРµС‚СЂ РЅР° СЃРѕС…СЂР°РЅРµРЅРёРµ, С‚РѕРіРґР°
+				// РїРѕР»СѓС‡Р°РµРј РІСЃРµ РЅР°СЃС‚СЂРѕР№РєРё РґР»СЏ РјРѕРґСѓР»СЏ Рё РїРµСЂРµРґР°РµРј РёС… РІ С€Р°Р±Р»РѕРЅ
 				$AVE_Template->assign('settings', $this->_guestbookSettingsGet());
 
 				if (empty ($_REQUEST['sort'])) $_REQUEST['sort'] = 'asc';
@@ -291,10 +311,10 @@ class Guest
 
 				$limit = (!empty ($_REQUEST['pp']) && is_numeric($_REQUEST['pp'])) ? $_REQUEST['pp'] : '15';
 
-				// Получеам количество сообщений
+				// РџРѕР»СѓС‡РµР°Рј РєРѕР»РёС‡РµСЃС‚РІРѕ СЃРѕРѕР±С‰РµРЅРёР№
 				$num = $AVE_DB->Query("SELECT COUNT(*) FROM " . PREFIX . "_modul_guestbook_post")->GetCell();
 
-				// Формируем навигацию между сообщениями
+				// Р¤РѕСЂРјРёСЂСѓРµРј РЅР°РІРёРіР°С†РёСЋ РјРµР¶РґСѓ СЃРѕРѕР±С‰РµРЅРёСЏРјРё
 				if ($num > $limit)
 				{
 					$page_nav = " <a class=\"page_navigation\" href=\"index.php?do=modules&action=modedit&mod=guestbook&moduleaction=1&cp=" . SESSION . "&pp=" . $limit . "&sort=" . $_REQUEST['sort'] . "&page={s}\">{t}</a> ";
@@ -304,7 +324,7 @@ class Guest
 
 				$start = get_current_page() * $limit - $limit;
 
-				//Получаем сообщения которые будут выведены в зависимости от страницы
+				//РџРѕР»СѓС‡Р°РµРј СЃРѕРѕР±С‰РµРЅРёСЏ РєРѕС‚РѕСЂС‹Рµ Р±СѓРґСѓС‚ РІС‹РІРµРґРµРЅС‹ РІ Р·Р°РІРёСЃРёРјРѕСЃС‚Рё РѕС‚ СЃС‚СЂР°РЅРёС†С‹
 				$sql = $AVE_DB->Query("
 					SELECT *
 					FROM " . PREFIX . "_modul_guestbook_post
@@ -324,7 +344,7 @@ class Guest
 	}
 
 	/**
-	 * Метод управления сообщениями (активация, удаление и т.д.)
+	 * РњРµС‚РѕРґ СѓРїСЂР°РІР»РµРЅРёСЏ СЃРѕРѕР±С‰РµРЅРёСЏРјРё (Р°РєС‚РёРІР°С†РёСЏ, СѓРґР°Р»РµРЅРёРµ Рё С‚.Рґ.)
 	 *
 	 */
 	function guestbookPostEdit()

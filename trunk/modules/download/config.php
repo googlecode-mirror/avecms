@@ -1,8 +1,8 @@
 <?php
 $wmz_purse     = "Zxxxx";
-$wmz_secretkey = "xxxxxxxxxx_ïðîèçâîëüíûé íàáîð ñèìâîëîâ èäåíòè÷íûé çàäàííîìó â ìåð÷àíòå xxxxxxxxx";
+$wmz_secretkey = "xxxxxxxxxx_Ð¿Ñ€Ð¾Ð¸Ð·Ð²Ð¾Ð»ÑŒÐ½Ñ‹Ð¹ Ð½Ð°Ð±Ð¾Ñ€ ÑÐ¸Ð¼Ð²Ð¾Ð»Ð¾Ð² Ð¸Ð´ÐµÐ½Ñ‚Ð¸Ñ‡Ð½Ñ‹Ð¹ Ð·Ð°Ð´Ð°Ð½Ð½Ð¾Ð¼Ñƒ Ð² Ð¼ÐµÑ€Ñ‡Ð°Ð½Ñ‚Ðµ xxxxxxxxx";
 $wmr_purse     = "Rxxxx";
-$wmr_secretkey = "xxxxxxxxxx_ïðîèçâîëüíûé íàáîð ñèìâîëîâ èäåíòè÷íûé çàäàííîìó â ìåð÷àíòå xxxxxxxxx";
+$wmr_secretkey = "xxxxxxxxxx_Ð¿Ñ€Ð¾Ð¸Ð·Ð²Ð¾Ð»ÑŒÐ½Ñ‹Ð¹ Ð½Ð°Ð±Ð¾Ñ€ ÑÐ¸Ð¼Ð²Ð¾Ð»Ð¾Ð² Ð¸Ð´ÐµÐ½Ñ‚Ð¸Ñ‡Ð½Ñ‹Ð¹ Ð·Ð°Ð´Ð°Ð½Ð½Ð¾Ð¼Ñƒ Ð² Ð¼ÐµÑ€Ñ‡Ð°Ð½Ñ‚Ðµ xxxxxxxxx";
 
 $host   = "localhost";
 $db     = "name_db";

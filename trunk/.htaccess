@@ -1,6 +1,6 @@
 Options -Indexes +FollowSymLinks
 
-#AddDefaultCharset windows-1251
+AddDefaultCharset utf-8
 
 php_value error_reporting E_NONE
 

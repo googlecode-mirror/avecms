@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Класс работы с галереями
+ * РљР»Р°СЃСЃ СЂР°Р±РѕС‚С‹ СЃ РіР°Р»РµСЂРµСЏРјРё
  *
  * @package AVE.cms
  * @subpackage module_Gallery
@@ -12,52 +12,52 @@ class Gallery
 {
 
 /**
- *	СВОЙСТВА
+ *	РЎР’РћР™РЎРўР’Рђ
  */
 
 	/**
-	 * Количество галерей в списке
+	 * РљРѕР»РёС‡РµСЃС‚РІРѕ РіР°Р»РµСЂРµР№ РІ СЃРїРёСЃРєРµ
 	 *
 	 * @var int
 	 */
 	var $_limit_galleries = 10;
 
 	/**
-	 * Количество изображений при просмотре в админке
+	 * РљРѕР»РёС‡РµСЃС‚РІРѕ РёР·РѕР±СЂР°Р¶РµРЅРёР№ РїСЂРё РїСЂРѕСЃРјРѕС‚СЂРµ РІ Р°РґРјРёРЅРєРµ
 	 *
 	 * @var int
 	 */
 	var $_admin_limit_images = 10;
 
 	/**
-	 * Количество изображений по умолчанию при выводе галереи в публичной части
+	 * РљРѕР»РёС‡РµСЃС‚РІРѕ РёР·РѕР±СЂР°Р¶РµРЅРёР№ РїРѕ СѓРјРѕР»С‡Р°РЅРёСЋ РїСЂРё РІС‹РІРѕРґРµ РіР°Р»РµСЂРµРё РІ РїСѓР±Р»РёС‡РЅРѕР№ С‡Р°СЃС‚Рё
 	 *
 	 * @var int
 	 */
 	var $_default_limit_images = 15;
 
 	/**
-	 * Разрешенные типы файлов
+	 * Р Р°Р·СЂРµС€РµРЅРЅС‹Рµ С‚РёРїС‹ С„Р°Р№Р»РѕРІ
 	 *
 	 * @var array
 	 */
 	var $_allowed_type = array('.jpg','jpeg','.jpe','.gif','.png','.avi','.mov','.wmv','.wmf');
 
 /**
- *	ВНЕШНИЕ МЕТОДЫ
+ *	Р’РќР•РЁРќРР• РњР•РўРћР”Р«
  */
 
 	/**
-	 * ФУНКЦИИ ПУБЛИЧНОЙ ЧАСТИ
+	 * Р¤РЈРќРљР¦РР РџРЈР‘Р›РР§РќРћР™ Р§РђРЎРўР
 	 */
 
 	/**
-	 * Вывод галереи
+	 * Р’С‹РІРѕРґ РіР°Р»РµСЂРµРё
 	 *
-	 * @param string $tpl_dir - путь к папке с шаблонами модуля
-	 * @param int $gallery_id - идентификатор галереи
-	 * @param int $lim - количество изображений на странице
-	 * @param int $ext - признак вывода всех изображений галереи
+	 * @param string $tpl_dir - РїСѓС‚СЊ Рє РїР°РїРєРµ СЃ С€Р°Р±Р»РѕРЅР°РјРё РјРѕРґСѓР»СЏ
+	 * @param int $gallery_id - РёРґРµРЅС‚РёС„РёРєР°С‚РѕСЂ РіР°Р»РµСЂРµРё
+	 * @param int $lim - РєРѕР»РёС‡РµСЃС‚РІРѕ РёР·РѕР±СЂР°Р¶РµРЅРёР№ РЅР° СЃС‚СЂР°РЅРёС†Рµ
+	 * @param int $ext - РїСЂРёР·РЅР°Рє РІС‹РІРѕРґР° РІСЃРµС… РёР·РѕР±СЂР°Р¶РµРЅРёР№ РіР°Р»РµСЂРµРё
 	 */
 	function galleryShow($tpl_dir, $gallery_id, $lim, $ext = 0)
 	{
@@ -160,7 +160,7 @@ class Gallery
 			array_push($images, $row);
 		}
 
-		// Постраничная навигация
+		// РџРѕСЃС‚СЂР°РЅРёС‡РЅР°СЏ РЅР°РІРёРіР°С†РёСЏ
 		if ($num > $limit)
 		{
 			$page_nav = ' <a class="pnav" href="index.php?id=' . $AVE_Core->curentdoc->Id
@@ -182,10 +182,10 @@ class Gallery
 	}
 
 	/**
-	 * Вывод одиночного изображения
+	 * Р’С‹РІРѕРґ РѕРґРёРЅРѕС‡РЅРѕРіРѕ РёР·РѕР±СЂР°Р¶РµРЅРёСЏ
 	 *
-	 * @param string $tpl_dir - путь к папке с шаблонами модуля
-	 * @param int $image_id - идентификатор изображения
+	 * @param string $tpl_dir - РїСѓС‚СЊ Рє РїР°РїРєРµ СЃ С€Р°Р±Р»РѕРЅР°РјРё РјРѕРґСѓР»СЏ
+	 * @param int $image_id - РёРґРµРЅС‚РёС„РёРєР°С‚РѕСЂ РёР·РѕР±СЂР°Р¶РµРЅРёСЏ
 	 */
 	function galleryImageShow($tpl_dir, $image_id)
 	{
@@ -235,14 +235,14 @@ class Gallery
 	}
 
 	/**
-	 * ФУНКЦИИ АДМИНИСТРАТИВНОЙ ЧАСТИ
+	 * Р¤РЈРќРљР¦РР РђР”РњРРќРРЎРўР РђРўРР’РќРћР™ Р§РђРЎРўР
 	 */
 
 	/**
-	 * Просмотр изображений галереи в админке
+	 * РџСЂРѕСЃРјРѕС‚СЂ РёР·РѕР±СЂР°Р¶РµРЅРёР№ РіР°Р»РµСЂРµРё РІ Р°РґРјРёРЅРєРµ
 	 *
-	 * @param string $tpl_dir - путь к папке с шаблонами модуля
-	 * @param int $gallery_id - идентификатор галереи
+	 * @param string $tpl_dir - РїСѓС‚СЊ Рє РїР°РїРєРµ СЃ С€Р°Р±Р»РѕРЅР°РјРё РјРѕРґСѓР»СЏ
+	 * @param int $gallery_id - РёРґРµРЅС‚РёС„РёРєР°С‚РѕСЂ РіР°Р»РµСЂРµРё
 	 */
 	function galleryImageListShow($tpl_dir, $gallery_id)
 	{
@@ -336,10 +336,10 @@ class Gallery
 	}
 
 	/**
-	 * Загрузка изображений в галерею
+	 * Р—Р°РіСЂСѓР·РєР° РёР·РѕР±СЂР°Р¶РµРЅРёР№ РІ РіР°Р»РµСЂРµСЋ
 	 *
-	 * @param string $tpl_dir - путь к папке с шаблонами модуля
-	 * @param int $gallery_id - идентификатор галереи
+	 * @param string $tpl_dir - РїСѓС‚СЊ Рє РїР°РїРєРµ СЃ С€Р°Р±Р»РѕРЅР°РјРё РјРѕРґСѓР»СЏ
+	 * @param int $gallery_id - РёРґРµРЅС‚РёС„РёРєР°С‚РѕСЂ РіР°Р»РµСЂРµРё
 	 */
 	function galleryImageUploadForm($tpl_dir, $gallery_id)
 	{
@@ -388,8 +388,8 @@ class Gallery
 					{
 						if ($file != '.' && $file != '..')
 						{
-							$image_title = substr($file, 0, -4);
-							$upload_file_ext = strtolower(substr($file, -4));
+							$image_title = mb_substr($file, 0, -4);
+							$upload_file_ext = mb_strtolower(mb_substr($file, -4));
 							$upload_filename = prepare_fname($image_title) . $upload_file_ext;
 
 							while (file_exists($upload_dir . $upload_filename))
@@ -439,8 +439,8 @@ class Gallery
 			$count_files = sizeof(@$_FILES['file']['tmp_name']);
 			for ($i=0;$i<$count_files;$i++)
 			{
-				$upload_file_ext = strtolower(substr($_FILES['file']['name'][$i], -4));
-				$upload_filename = prepare_fname(substr($_FILES['file']['name'][$i], 0, -4)) . $upload_file_ext;
+				$upload_file_ext = mb_strtolower(mb_substr($_FILES['file']['name'][$i], -4));
+				$upload_filename = prepare_fname(mb_substr($_FILES['file']['name'][$i], 0, -4)) . $upload_file_ext;
 
 				if (!empty($upload_filename))
 				{
@@ -500,9 +500,9 @@ class Gallery
 	}
 
 	/**
-	 * Вывод списка галерей
+	 * Р’С‹РІРѕРґ СЃРїРёСЃРєР° РіР°Р»РµСЂРµР№
 	 *
-	 * @param string $tpl_dir - путь к папке с шаблонами модуля
+	 * @param string $tpl_dir - РїСѓС‚СЊ Рє РїР°РїРєРµ СЃ С€Р°Р±Р»РѕРЅР°РјРё РјРѕРґСѓР»СЏ
 	 */
 	function galleryListShow($tpl_dir)
 	{
@@ -559,7 +559,7 @@ class Gallery
 	}
 
 	/**
-	 * Создание галереи
+	 * РЎРѕР·РґР°РЅРёРµ РіР°Р»РµСЂРµРё
 	 *
 	 */
 	function galleryNew()
@@ -624,10 +624,10 @@ class Gallery
 	}
 
 	/**
-	 * Редактирование галереи
+	 * Р РµРґР°РєС‚РёСЂРѕРІР°РЅРёРµ РіР°Р»РµСЂРµРё
 	 *
-	 * @param string $tpl_dir - путь к папке с шаблонами модуля
-	 * @param int $gallery_id - идентификатор галереи
+	 * @param string $tpl_dir - РїСѓС‚СЊ Рє РїР°РїРєРµ СЃ С€Р°Р±Р»РѕРЅР°РјРё РјРѕРґСѓР»СЏ
+	 * @param int $gallery_id - РёРґРµРЅС‚РёС„РёРєР°С‚РѕСЂ РіР°Р»РµСЂРµРё
 	 */
 	function galleryEdit($tpl_dir, $gallery_id)
 	{
@@ -639,13 +639,13 @@ class Gallery
 			$gallery_folder = prepare_fname(stripslashes($_REQUEST['gallery_folder']));
 
 			if (empty($_REQUEST['gallery_title']))
-			{ // не указано имя галереи
+			{ // РЅРµ СѓРєР°Р·Р°РЅРѕ РёРјСЏ РіР°Р»РµСЂРµРё
 				$AVE_Template->assign('empty_gallery_title', 1);
 				$_REQUEST['gallery_title'] = $_REQUEST['gallery_title_old'];
 			}
 
 			if ($_REQUEST['thumb_width_old'] != $_REQUEST['gallery_thumb_width'])
-			{ // изменён размер миниатюр - удаляем миниатюры
+			{ // РёР·РјРµРЅС‘РЅ СЂР°Р·РјРµСЂ РјРёРЅРёР°С‚СЋСЂ - СѓРґР°Р»СЏРµРј РјРёРЅРёР°С‚СЋСЂС‹
 				$folder = rtrim(BASE_DIR . '/modules/gallery/uploads/' . $gallery_folder_old, '/') . '/';
 				$sql = $AVE_DB->Query("
 					SELECT image_filename
@@ -659,7 +659,7 @@ class Gallery
 			}
 
 			if ($gallery_folder_old != $gallery_folder)
-			{ // изменен путь к файлам галереи - перемещаем в новое место
+			{ // РёР·РјРµРЅРµРЅ РїСѓС‚СЊ Рє С„Р°Р№Р»Р°Рј РіР°Р»РµСЂРµРё - РїРµСЂРµРјРµС‰Р°РµРј РІ РЅРѕРІРѕРµ РјРµСЃС‚Рѕ
 				$this->_galleryImageMove($gallery_id, $gallery_folder_old, $gallery_folder);
 			}
 
@@ -696,9 +696,9 @@ class Gallery
 	}
 
 	/**
-	 * Удаление галереи
+	 * РЈРґР°Р»РµРЅРёРµ РіР°Р»РµСЂРµРё
 	 *
-	 * @param int $gallery_id - идентификатор галереи
+	 * @param int $gallery_id - РёРґРµРЅС‚РёС„РёРєР°С‚РѕСЂ РіР°Р»РµСЂРµРё
 	 */
 	function galleryDelete($gallery_id)
 	{
@@ -748,11 +748,11 @@ class Gallery
 	}
 
 /**
- *	ВНУТРЕННИЕ МЕТОДЫ
+ *	Р’РќРЈРўР Р•РќРќРР• РњР•РўРћР”Р«
  */
 
 	/**
-	 * тип видео-файла по расширению
+	 * С‚РёРї РІРёРґРµРѕ-С„Р°Р№Р»Р° РїРѕ СЂР°СЃС€РёСЂРµРЅРёСЋ
 	 *
 	 * @param string $ext
 	 * @return string
@@ -772,7 +772,7 @@ class Gallery
 	}
 
 	/**
-	 * тип файла по расширению
+	 * С‚РёРї С„Р°Р№Р»Р° РїРѕ СЂР°СЃС€РёСЂРµРЅРёСЋ
 	 *
 	 * @param string $ext
 	 * @return string
@@ -797,9 +797,9 @@ class Gallery
 	}
 
 	/**
-	 * Формирование уникального имени файла
+	 * Р¤РѕСЂРјРёСЂРѕРІР°РЅРёРµ СѓРЅРёРєР°Р»СЊРЅРѕРіРѕ РёРјРµРЅРё С„Р°Р№Р»Р°
 	 *
-	 * @param string $file_name - имя файла
+	 * @param string $file_name - РёРјСЏ С„Р°Р№Р»Р°
 	 * @return string
 	 */
 	function _galleryImageRename($file_name)
@@ -811,11 +811,11 @@ class Gallery
 	}
 
 	/**
-	 * Изменение размеров и наложение водяного знака при загрузке изображений
+	 * РР·РјРµРЅРµРЅРёРµ СЂР°Р·РјРµСЂРѕРІ Рё РЅР°Р»РѕР¶РµРЅРёРµ РІРѕРґСЏРЅРѕРіРѕ Р·РЅР°РєР° РїСЂРё Р·Р°РіСЂСѓР·РєРµ РёР·РѕР±СЂР°Р¶РµРЅРёР№
 	 *
-	 * @param string $upload_dir - путь к папке для загрузки
-	 * @param string $upload_filename - имя загружаемого файла
-	 * @param string $watermark_file_name - имя файла водяного знака
+	 * @param string $upload_dir - РїСѓС‚СЊ Рє РїР°РїРєРµ РґР»СЏ Р·Р°РіСЂСѓР·РєРё
+	 * @param string $upload_filename - РёРјСЏ Р·Р°РіСЂСѓР¶Р°РµРјРѕРіРѕ С„Р°Р№Р»Р°
+	 * @param string $watermark_file_name - РёРјСЏ С„Р°Р№Р»Р° РІРѕРґСЏРЅРѕРіРѕ Р·РЅР°РєР°
 	 */
 	function _galleryImageRebuild($upload_dir, $upload_filename, $watermark_file_name = '')
 	{
@@ -845,14 +845,14 @@ class Gallery
 
 		$Image_Toolbox->newImage($upload_dir . $upload_filename);
 
-		// Изменяем размер
+		// РР·РјРµРЅСЏРµРј СЂР°Р·РјРµСЂ
 		if ($need_resize)
 		{
 			$Image_Toolbox->newOutputSize((int)$width, (int)$height);
 			$need_save = true;
 		}
 
-		// Добавляем водяной знак
+		// Р”РѕР±Р°РІР»СЏРµРј РІРѕРґСЏРЅРѕР№ Р·РЅР°Рє
 		if (!empty($watermark_file_name))
 		{
 			$watermark_file = dirname(__FILE__) . '/' . $watermark_file_name;
@@ -877,11 +877,11 @@ class Gallery
 	}
 
 	/**
-	 * Перемещение изображений галереи
+	 * РџРµСЂРµРјРµС‰РµРЅРёРµ РёР·РѕР±СЂР°Р¶РµРЅРёР№ РіР°Р»РµСЂРµРё
 	 *
-	 * @param int $gallery_id - идентификатор галереи
-	 * @param string $source_folder - директория источник
-	 * @param string $destination_folder - директория назначения
+	 * @param int $gallery_id - РёРґРµРЅС‚РёС„РёРєР°С‚РѕСЂ РіР°Р»РµСЂРµРё
+	 * @param string $source_folder - РґРёСЂРµРєС‚РѕСЂРёСЏ РёСЃС‚РѕС‡РЅРёРє
+	 * @param string $destination_folder - РґРёСЂРµРєС‚РѕСЂРёСЏ РЅР°Р·РЅР°С‡РµРЅРёСЏ
 	 */
 	function _galleryImageMove($gallery_id, $source_folder = '', $destination_folder = '')
 	{

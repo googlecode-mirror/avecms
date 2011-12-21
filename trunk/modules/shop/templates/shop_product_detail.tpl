@@ -8,13 +8,13 @@
 		<div class="grid_12 alpha omega">
 			<div class="grid_8 alpha mod_shop_table">
 				<table border="0" cellspacing="0">
-					<!-- ‡Á‰ÂÎ˚ -->
+					<!-- —Ä–∞–∑–¥–µ–ª—ã -->
 					<tr>
 						<td class="tdleft">{#ShopRazdel#}:</td>
 						<td>{include file="$mod_dir/shop/templates/shop_topnav.tpl"}</td>
 					</tr>
 
-					<!-- ÂÒÎË ÌÓ‚‡ˇ ˆÂÌ‡ -->
+					<!-- –µ—Å–ª–∏ –Ω–æ–≤–∞—è —Ü–µ–Ω–∞ -->
 					{if $row->PreisDiff > 0}
 						<tr>
 							<td class="tdleft">
@@ -28,21 +28,21 @@
 						</tr>
 					{/if}
 
-					<!-- ÓÒÌÓ‚Ì‡ˇ ˆÂÌ‡ -->
+					<!-- –æ—Å–Ω–æ–≤–Ω–∞—è —Ü–µ–Ω–∞ -->
 					<tr>
 						<td class="tdleft">{#OurPrice#}</td>
 						<td><div class="mod_shop_price_big"> {num_format val=$row->Preis} {$Currency}</div> </td>
 					</tr>
 
-					<!-- ˆÂÌ‡ ‚ ‰Û„ÓÈ ‚‡Î˛ÚÂ -->
+					<!-- —Ü–µ–Ω–∞ –≤ –¥—Ä—É–≥–æ–π –≤–∞–ª—é—Ç–µ -->
 					{if $row->PreisW2 && $ZeigeWaehrung2=='1'}
 						<tr>
-							<td class="tdleft">{#OurPrice#} ‚ {$Currency2}</td>
+							<td class="tdleft">{#OurPrice#} –≤ {$Currency2}</td>
 							<td>{num_format val=$row->PreisW2} {$Currency2}</td>
 						</tr>
 					{/if}
 
-					<!-- —ÚÓËÏÓÒÚ¸ Á‡ 1 -->
+					<!-- –°—Ç–æ–∏–º–æ—Å—Ç—å –∑–∞ 1 -->
 					{if $row->Einheit_Preis}
 						<tr>
 							<td class="tdleft">{$row->Einheit|replace:'.00':''} {$row->Einheit_Art} {#UnitIncluded#} {$row->Einheit_Art_S}:</td>
@@ -50,7 +50,7 @@
 						</tr>
 					{/if}
 
-					<!-- —ÚÓËÏÓÒÚ¸ Ò Õƒ— -->
+					<!-- –°—Ç–æ–∏–º–æ—Å—Ç—å —Å –ù–î–° -->
 					{if $row->ZeigeNetto==1 && $row->Preis_USt>0 && $row->NettoAnzeigen==1}
 						<tr>
 							<td class="tdleft">{#IncludeMwSt#}</td>
@@ -58,7 +58,7 @@
 						</tr>
 					{/if}
 
-					<!-- ˆÂÌ‡ ÓÔÚÓ‚ËÍ‡Ï -->
+					<!-- —Ü–µ–Ω–∞ –æ–ø—Ç–æ–≤–∏–∫–∞–º -->
 					{if $StPrices}
 						<tr>
 							<td class="tdleft">{#StPrices#}:</td>
@@ -81,18 +81,18 @@
 						</tr>
 					{/if}
 
-					<!-- ÙÓÏ‡ ÔÓÍÛÔÍË ÚÓ‚‡‡ -->
+					<!-- —Ñ–æ—Ä–º–∞ –ø–æ–∫—É–ø–∫–∏ —Ç–æ–≤–∞—Ä–∞ -->
 					{if $row->Lager < 1 }
-						<!-- Ì‡ÎË˜ËÂ -->
+						<!-- –Ω–∞–ª–∏—á–∏–µ -->
 						<tr>
-							<td class="tdleft">Õ‡ÎË˜ËÂ</td>
+							<td class="tdleft">–ù–∞–ª–∏—á–∏–µ</td>
 							<td>
 								<div class="mod_shop_preorder_warn">{#PreOrderMsgF#}</div>
 							</td>
 						</tr>
 					{else}
 						<form method="post" action="{$row->AddToLink}">
-							<!-- ‚‡Ë‡ÌÚ˚ ÚÓ‚‡‡ -->
+							<!-- –≤–∞—Ä–∏–∞–Ω—Ç—ã —Ç–æ–≤–∞—Ä–∞ -->
 							{if $Variants}
 								<tr>
 									<td class="tdleft">{#ProductVars#}</td>
@@ -117,7 +117,7 @@
 								</tr>
 							{/if}
 
-							<!-- ÍÌÓÔÍË ÔÓÍÛÔÍË Ë Ò‡‚ÌÂÌËˇ -->
+							<!-- –∫–Ω–æ–ø–∫–∏ –ø–æ–∫—É–ø–∫–∏ –∏ —Å—Ä–∞–≤–Ω–µ–Ω–∏—è -->
 							<tr>
 								<td class="tdleft">{#PreOrderMsgY#}:</td>
 								<td>
@@ -143,9 +143,9 @@
 							</tr>
 						</form>
 					{/if}
-					<!-- /ÙÓÏ‡ ÔÓÍÛÔÍË ÚÓ‚‡‡ -->
+					<!-- /—Ñ–æ—Ä–º–∞ –ø–æ–∫—É–ø–∫–∏ —Ç–æ–≤–∞—Ä–∞ -->
 
-					<!-- ÔÓËÁ‚Ó‰ËÚÂÎ¸ -->
+					<!-- –ø—Ä–æ–∏–∑–≤–æ–¥–∏—Ç–µ–ª—å -->
 					{if $row->Hersteller_Name != ''}
 						<tr>
 							<td class="tdleft">{#Manufacturer#}</td>
@@ -167,7 +167,7 @@
 						</tr>
 					{/if}
 
-					<!-- ƒÓÒÚ‡‚Í‡ -->
+					<!-- –î–æ—Å—Ç–∞–≤–∫–∞ -->
 					{if $row->Versandfertig}
 						<tr>
 							<td class="tdleft">{#Shippingmethod#}</td>
@@ -175,26 +175,26 @@
 						</tr>
 					{/if}
 
-					<!-- ¿ÚËÍÛÎ -->
+					<!-- –ê—Ä—Ç–∏–∫—É–ª -->
 					<tr>
 						<td class="tdleft">{#ArtNr#}</td>
 						<td>{$row->ArtNr}</td>
 					</tr>
 
-					<!-- ƒ‡Ú‡ Ì‡˜‡Î‡ ÔÓ‰‡ÊË -->
+					<!-- –î–∞—Ç–∞ –Ω–∞—á–∞–ª–∞ –ø—Ä–æ–¥–∞–∂–∏ -->
 					<tr>
 						<td class="tdleft">{#Release#}</td>
 						<td>{$row->Erschienen|date_format:#DateFormatRelease#}</td>
 					</tr>
 
-					<!-- –ÂÈÚËÌ„Ë -->
+					<!-- –†–µ–π—Ç–∏–Ω–≥–∏ -->
 					<tr>
 						<td class="tdleft">{#CommentsVotesCut#}</td>
 						<td>
 							{if $rez->Proz<1}
 								{#CommentsNull#}
 							{else}
-								<img class="absmiddle" src="{$shop_images}{$rez->Proz}.gif" alt="" />&nbsp;&nbsp;ó&nbsp;&nbsp;
+								<img class="absmiddle" src="{$shop_images}{$rez->Proz}.gif" alt="" />&nbsp;&nbsp;‚Äî&nbsp;&nbsp;
 							{/if}
 							{#CommentsCount#}&nbsp;
 							<a href="#rezNew">{$rez->Anz}</a>
@@ -204,7 +204,7 @@
 			</div><!-- end grid_8 -->
 
 			<div class="grid_4 omega">
-				<!--  ‡ÚËÌÍË ÚÓ‚‡‡ -->
+				<!-- –ö–∞—Ä—Ç–∏–Ω–∫–∏ —Ç–æ–≤–∞—Ä–∞ -->
 				<div class="mod_shop_img_box" id="photos">
 					{if $row->BildFehler!=1}
 						<a class="image"href="modules/shop/uploads/{$row->Bild}" title="{$row->ArtName|truncate:100|stripslashes|escape:html}"><img style="float:left;" src="modules/shop/uploads/{$row->Bild}" border="0" width="200" alt="{$row->ArtName|truncate:175|stripslashes|escape:html}" /></a>
@@ -222,7 +222,7 @@
 		</div><!-- end grid_12 -->
 		<div class="clear"></div>
 
-		<!-- ŒÔËÒ‡ÌËÂ ÚÓ‚‡‡ Ë ı‡‡ÍÚÂËÒÚËÍË -->
+		<!-- –û–ø–∏—Å–∞–Ω–∏–µ —Ç–æ–≤–∞—Ä–∞ –∏ —Ö–∞—Ä–∞–∫—Ç–µ—Ä–∏—Å—Ç–∏–∫–∏ -->
 		<div class="tab-container">
 			<div class="tab-header">
 				<div class="tab-handle">{#Description#}</div>
@@ -269,12 +269,12 @@
 		</div>
 		<div class="clear"></div>
 
-		<!-- ¿Ì‡ÎÓ„Ë˜Ì˚Â ÔÓ‰ÛÍÚ˚ -->
+		<!-- –ê–Ω–∞–ª–æ–≥–∏—á–Ω—ã–µ –ø—Ä–æ–¥—É–∫—Ç—ã -->
 		{if $equalProducts}
 			{include file="$mod_dir/shop/templates/shop_equal_products.tpl"}
 		{/if}
 
-		<!-- ÙÓÏ‡ ÓÚÔ‡‚ÍË ÂˆÂÌÁËË-->
+		<!-- —Ñ–æ—Ä–º–∞ –æ—Ç–ø—Ä–∞–≤–∫–∏ —Ä–µ—Ü–µ–Ω–∑–∏–∏-->
 		{if $AllowComments && ($Comments || $CanComment)}
 			<a name="rezNew"></a>
 			<h3>{#ArticleComments#}</h3>
@@ -341,11 +341,11 @@
 				</div>
 			{/if}
 
-			<!-- Ò‡ÏË ÂˆÂÌÁËË-->
+			<!-- —Å–∞–º–∏ —Ä–µ—Ü–µ–Ω–∑–∏–∏-->
 			{foreach from=$Comments item=c}
 				<table width="100%" border="0" cellspacing="0" cellpadding="0" class="mod_comment_box">
 					<tr>
-						<td class="mod_comment_header">{$c->Datum|date_format:#DateFormatRelease#} ÓÒÚ‡‚ËÎ ÂˆÂÌÁË˛ {$c->title|stripslashes} </td>
+						<td class="mod_comment_header">{$c->Datum|date_format:#DateFormatRelease#} –æ—Å—Ç–∞–≤–∏–ª —Ä–µ—Ü–µ–Ω–∑–∏—é {$c->title|stripslashes} </td>
 					</tr>
 					<tr>
 						<td class="mod_comment_text">{$c->comment_text|stripslashes}</td>
@@ -362,45 +362,45 @@
 
 {if $smarty.request.print!=1}
 	<div class="grid_4">
-		<!-- œ‡‚ÓÂ ÏÂÌ˛ -->
+		<!-- –ü—Ä–∞–≤–æ–µ –º–µ–Ω—é -->
 		<div class="box menu">
 			<h2><a href="#" id="toggle-section-menu">{#ProductOverview#}</a></h2>
 			<div class="block" id="section-menu">{$ShopNavi}</div>
 		</div>
 
-		<!-- ¡ÎÓÍ ‡‚ÚÓËÁ‡ˆËË -->
+		<!-- –ë–ª–æ–∫ –∞–≤—Ç–æ—Ä–∏–∑–∞—Ü–∏–∏ -->
 		<div class="box">
 			<h2> <a href="#" id="toggle-login-forms">{#UserPanel#}</a> </h2>
 			<div class="block" id="login-forms">{$UserPanel}</div>
 		</div>
 
-		<!-- ¡ÎÓÍ ÔÓËÒÍ‡ ÔÓ Ï‡„‡ÁËÌÛ -->
+		<!-- –ë–ª–æ–∫ –ø–æ–∏—Å–∫–∞ –ø–æ –º–∞–≥–∞–∑–∏–Ω—É -->
 		<div class="box">
 			<h2><a href="#" id="toggle-shop-search">{#ProductSearch#}</a></h2>
 			<div class="block" id="shop-search">{$Search}</div>
 		</div>
 
-		<!-- ¡ÎÓÍ ÍÓÁËÌ˚ -->
+		<!-- –ë–ª–æ–∫ –∫–æ—Ä–∑–∏–Ω—ã -->
 		<div class="box">
 			<h2><a href="#" id="toggle-shopbasket">{#ShopBasket#}</a></h2>
 			<div class="block" id="shopbasket">{$Basket}</div>
 		</div>
 
 		{if $smarty.session.user_id}
-			<!-- ¡ÎÓÍ Ó·‡·ÓÚ‡ÌÌ˚ı Á‡Í‡ÁÓ‚ -->
+			<!-- –ë–ª–æ–∫ –æ–±—Ä–∞–±–æ—Ç–∞–Ω–Ω—ã—Ö –∑–∞–∫–∞–∑–æ–≤ -->
 			<div class="box">
 				<h2><a href="#" id="toggle-myordersbox">{#MyOrders#}</a></h2>
 				<div class="block" id="myordersbox">{$MyOrders}</div>
 			</div>
 		{/if}
 
-		<!-- ¡ÎÓÍ ËÌÙÓÏ‡ˆËË -->
+		<!-- –ë–ª–æ–∫ –∏–Ω—Ñ–æ—Ä–º–∞—Ü–∏–∏ -->
 		<div class="box">
 			<h2><a href="#" id="toggle-shopinfobox">{#Infopage#}</a></h2>
 			<div class="block" id="shopinfobox">{$InfoBox}</div>
 		</div>
 
-		<!-- ¡ÎÓÍ ÔÓÔÛÎˇÌ˚ı ÚÓ‚‡Ó‚ -->
+		<!-- –ë–ª–æ–∫ –ø–æ–ø—É–ª—è—Ä–Ω—ã—Ö —Ç–æ–≤–∞—Ä–æ–≤ -->
 		<div class="box">
 			<h2><a href="#" id="toggle-shoppopprods">{#Topseller#}</a></h2>
 			<div class="block" id="shoppopprods">{$Topseller}</div>

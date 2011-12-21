@@ -9,13 +9,13 @@
 
 if(!defined("ADDTOPIC")) exit;
 //=======================================================
-// forum id überprüfen
+// forum id ÑŒberprÑŒfen
 //=======================================================
 $forum_result = $GLOBALS['AVE_DB']->Query("SELECT title, status FROM " . PREFIX . "_modul_forum_forum WHERE id = '" . $_POST['fid'] . "'");
 $forum = $forum_result->FetchRow();
 
 //=======================================================
-// es wurde eine falsche fid übergeben
+// es wurde eine falsche fid ÑŒbergeben
 //=======================================================
 if ($forum_result->NumRows() < 1)
 {
@@ -343,7 +343,7 @@ if ( count($error_array) || (isset($_REQUEST['preview']) && $_REQUEST['preview']
 		$exsubject = ($opened==2) ? " - " . $GLOBALS['mod']['config_vars']['HaveToModerate'] : "";
 
 		//=======================================================
-		// E-Mails an Forum-Empfänger (Admin-Bereich) senden
+		// E-Mails an Forum-EmpfÐ´nger (Admin-Bereich) senden
 		//=======================================================
 		foreach ($mails as $send_mail)
 		{

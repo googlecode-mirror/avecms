@@ -4,7 +4,7 @@ class Poll
 {
 
 /**
- *	СВОЙСТВА
+ *	РЎР’РћР™РЎРўР’Рђ
  */
 
 	var $_adminlimit = 5;
@@ -13,7 +13,7 @@ class Poll
 	var $_antispam = 0;
 
 /**
- *	ВНУТРЕННИЕ МЕТОДЫ
+ *	Р’РќРЈРўР Р•РќРќРР• РњР•РўРћР”Р«
  */
 
 	function _pollLinkRewrite($string)
@@ -22,19 +22,19 @@ class Poll
 	}
 
 /**
- *	ВНЕШНИЕ МЕТОДЫ
+ *	Р’РќР•РЁРќРР• РњР•РўРћР”Р«
  */
 
 	/**
-	 * Методы публичной части
+	 * РњРµС‚РѕРґС‹ РїСѓР±Р»РёС‡РЅРѕР№ С‡Р°СЃС‚Рё
 	 */
 
 	/**
-	 * Отображение опроса (вывод тэгами)
+	 * РћС‚РѕР±СЂР°Р¶РµРЅРёРµ РѕРїСЂРѕСЃР° (РІС‹РІРѕРґ С‚СЌРіР°РјРё)
 	 *
-	 * @param string $tpl_dir	путь к папке с шаблонами модуля
-	 * @param string $lang_file	путь к языковому файлу модуля
-	 * @param int $pid			идентификатор опроса
+	 * @param string $tpl_dir	РїСѓС‚СЊ Рє РїР°РїРєРµ СЃ С€Р°Р±Р»РѕРЅР°РјРё РјРѕРґСѓР»СЏ
+	 * @param string $lang_file	РїСѓС‚СЊ Рє СЏР·С‹РєРѕРІРѕРјСѓ С„Р°Р№Р»Сѓ РјРѕРґСѓР»СЏ
+	 * @param int $pid			РёРґРµРЅС‚РёС„РёРєР°С‚РѕСЂ РѕРїСЂРѕСЃР°
 	 */
 	function pollShow($tpl_dir, $lang_file, $pid)
 	{
@@ -116,9 +116,9 @@ class Poll
 	}
 
 	/**
-	 * Учет результатов опроса
+	 * РЈС‡РµС‚ СЂРµР·СѓР»СЊС‚Р°С‚РѕРІ РѕРїСЂРѕСЃР°
 	 *
-	 * @param int $pid	идентификатор опроса
+	 * @param int $pid	РёРґРµРЅС‚РёС„РёРєР°С‚РѕСЂ РѕРїСЂРѕСЃР°
 	 */
 	function pollVote($pid)
 	{
@@ -174,11 +174,11 @@ class Poll
 	}
 
 	/**
-	 * Подробная информация и статистика опроса, комментарии пользователей
+	 * РџРѕРґСЂРѕР±РЅР°СЏ РёРЅС„РѕСЂРјР°С†РёСЏ Рё СЃС‚Р°С‚РёСЃС‚РёРєР° РѕРїСЂРѕСЃР°, РєРѕРјРјРµРЅС‚Р°СЂРёРё РїРѕР»СЊР·РѕРІР°С‚РµР»РµР№
 	 *
-	 * @param string $tpl_dir	путь к папке с шаблонами модуля
-	 * @param string $lang_file	путь к языковому файлу модуля
-	 * @param int $pid			идентификатор опроса
+	 * @param string $tpl_dir	РїСѓС‚СЊ Рє РїР°РїРєРµ СЃ С€Р°Р±Р»РѕРЅР°РјРё РјРѕРґСѓР»СЏ
+	 * @param string $lang_file	РїСѓС‚СЊ Рє СЏР·С‹РєРѕРІРѕРјСѓ С„Р°Р№Р»Сѓ РјРѕРґСѓР»СЏ
+	 * @param int $pid			РёРґРµРЅС‚РёС„РёРєР°С‚РѕСЂ РѕРїСЂРѕСЃР°
 	 */
 	function pollResultShow($tpl_dir, $lang_file, $pid)
 	{
@@ -312,10 +312,10 @@ class Poll
 	}
 
 	/**
-	 * Список завершенных и действующих опросов
+	 * РЎРїРёСЃРѕРє Р·Р°РІРµСЂС€РµРЅРЅС‹С… Рё РґРµР№СЃС‚РІСѓСЋС‰РёС… РѕРїСЂРѕСЃРѕРІ
 	 *
-	 * @param string $tpl_dir	путь к папке с шаблонами модуля
-	 * @param string $lang_file	путь к языковому файлу модуля
+	 * @param string $tpl_dir	РїСѓС‚СЊ Рє РїР°РїРєРµ СЃ С€Р°Р±Р»РѕРЅР°РјРё РјРѕРґСѓР»СЏ
+	 * @param string $lang_file	РїСѓС‚СЊ Рє СЏР·С‹РєРѕРІРѕРјСѓ С„Р°Р№Р»Сѓ РјРѕРґСѓР»СЏ
 	 */
 	function pollArchiveShow($tpl_dir, $lang_file)
 	{
@@ -394,11 +394,11 @@ class Poll
 	}
 
 	/**
-	 * Метод отображения комментариев
+	 * РњРµС‚РѕРґ РѕС‚РѕР±СЂР°Р¶РµРЅРёСЏ РєРѕРјРјРµРЅС‚Р°СЂРёРµРІ
 	 *
-	 * @param string $tpl_dir	путь к папке с шаблонами модуля
-	 * @param string $lang_file	путь к языковому файлу модуля
-	 * @param ini $pid			идентификатор опроса
+	 * @param string $tpl_dir	РїСѓС‚СЊ Рє РїР°РїРєРµ СЃ С€Р°Р±Р»РѕРЅР°РјРё РјРѕРґСѓР»СЏ
+	 * @param string $lang_file	РїСѓС‚СЊ Рє СЏР·С‹РєРѕРІРѕРјСѓ С„Р°Р№Р»Сѓ РјРѕРґСѓР»СЏ
+	 * @param ini $pid			РёРґРµРЅС‚РёС„РёРєР°С‚РѕСЂ РѕРїСЂРѕСЃР°
 	 * @param string $theme
 	 * @param string $errors
 	 * @param string $text
@@ -438,11 +438,11 @@ class Poll
 	}
 
 	/**
-	 * Метод создания нового комментария
+	 * РњРµС‚РѕРґ СЃРѕР·РґР°РЅРёСЏ РЅРѕРІРѕРіРѕ РєРѕРјРјРµРЅС‚Р°СЂРёСЏ
 	 *
-	 * @param string $tpl_dir	путь к папке с шаблонами модуля
-	 * @param string $lang_file	путь к языковому файлу модуля
-	 * @param int $pid			идентификатор опроса
+	 * @param string $tpl_dir	РїСѓС‚СЊ Рє РїР°РїРєРµ СЃ С€Р°Р±Р»РѕРЅР°РјРё РјРѕРґСѓР»СЏ
+	 * @param string $lang_file	РїСѓС‚СЊ Рє СЏР·С‹РєРѕРІРѕРјСѓ С„Р°Р№Р»Сѓ РјРѕРґСѓР»СЏ
+	 * @param int $pid			РёРґРµРЅС‚РёС„РёРєР°С‚РѕСЂ РѕРїСЂРѕСЃР°
 	 */
 	function pollCommentNew($pid)
 	{
@@ -461,11 +461,11 @@ class Poll
 			$comment_text = $_POST['comment_text'];
 		}
 
-		$text = (strlen($comment_text) > $this->_commentwords)
-			? substr($comment_text, 0, $this->_commentwords) . '...'
+		$text = (mb_strlen($comment_text) > $this->_commentwords)
+			? mb_substr($comment_text, 0, $this->_commentwords) . '...'
 			: $comment_text;
 
-		if (strlen($text) <= 10)   $errors[] = $AVE_Template->get_config_vars('POLL_ENTER_TEXT');
+		if (mb_strlen($text) <= 10)   $errors[] = $AVE_Template->get_config_vars('POLL_ENTER_TEXT');
 		if (empty($comment_title)) $errors[] = $AVE_Template->get_config_vars('POLL_ENTER_TITLE');
 
 		if ($this->_antispam == 1)
@@ -515,14 +515,14 @@ class Poll
 	}
 
 	/**
-	 * Методы административной части
+	 * РњРµС‚РѕРґС‹ Р°РґРјРёРЅРёСЃС‚СЂР°С‚РёРІРЅРѕР№ С‡Р°СЃС‚Рё
 	 */
 
 	/**
-	 * Метод вывода списка опросов
+	 * РњРµС‚РѕРґ РІС‹РІРѕРґР° СЃРїРёСЃРєР° РѕРїСЂРѕСЃРѕРІ
 	 *
-	 * @param string $tpl_dir	путь к папке с шаблонами модуля
-	 * @param string $lang_file	путь к языковому файлу модуля
+	 * @param string $tpl_dir	РїСѓС‚СЊ Рє РїР°РїРєРµ СЃ С€Р°Р±Р»РѕРЅР°РјРё РјРѕРґСѓР»СЏ
+	 * @param string $lang_file	РїСѓС‚СЊ Рє СЏР·С‹РєРѕРІРѕРјСѓ С„Р°Р№Р»Сѓ РјРѕРґСѓР»СЏ
 	 */
 	function pollList($tpl_dir, $lang_file)
 	{
@@ -574,10 +574,10 @@ class Poll
 	}
 
 	/**
-	 * Метод создания нового опроса
+	 * РњРµС‚РѕРґ СЃРѕР·РґР°РЅРёСЏ РЅРѕРІРѕРіРѕ РѕРїСЂРѕСЃР°
 	 *
-	 * @param string $tpl_dir	путь к папке с шаблонами модуля
-	 * @param string $lang_file	путь к языковому файлу модуля
+	 * @param string $tpl_dir	РїСѓС‚СЊ Рє РїР°РїРєРµ СЃ С€Р°Р±Р»РѕРЅР°РјРё РјРѕРґСѓР»СЏ
+	 * @param string $lang_file	РїСѓС‚СЊ Рє СЏР·С‹РєРѕРІРѕРјСѓ С„Р°Р№Р»Сѓ РјРѕРґСѓР»СЏ
 	 */
 	function pollNew($tpl_dir, $lang_file)
 	{
@@ -629,7 +629,7 @@ class Poll
 				");
 				$iid = $AVE_DB->InsertId();
 
-				reportLog($_SESSION['user_name'] . ' - добавил новый опрос (' . stripslashes($_REQUEST['poll_name']) . ')', 2, 2);
+				reportLog($_SESSION['user_name'] . ' - РґРѕР±Р°РІРёР» РЅРѕРІС‹Р№ РѕРїСЂРѕСЃ (' . stripslashes($_REQUEST['poll_name']) . ')', 2, 2);
 
 				header('Location:index.php?do=modules&action=modedit&mod=poll&moduleaction=edit&id=' . $iid . '&pop=1&cp=' . SESSION);
 				exit;
@@ -637,9 +637,9 @@ class Poll
 	}
 
 	/**
-	 * Метод записи вариантов ответа нового опроса
+	 * РњРµС‚РѕРґ Р·Р°РїРёСЃРё РІР°СЂРёР°РЅС‚РѕРІ РѕС‚РІРµС‚Р° РЅРѕРІРѕРіРѕ РѕРїСЂРѕСЃР°
 	 *
-	 * @param int $pid	идентификатор опроса
+	 * @param int $pid	РёРґРµРЅС‚РёС„РёРєР°С‚РѕСЂ РѕРїСЂРѕСЃР°
 	 */
 	function pollNewItemSave($pid)
 	{
@@ -660,18 +660,18 @@ class Poll
 			");
 		}
 
-		reportLog($_SESSION['user_name'] . ' - добавил новый вариант ответа (' . ($_REQUEST['item_title']) . ') для опроса', 2, 2);
+		reportLog($_SESSION['user_name'] . ' - РґРѕР±Р°РІРёР» РЅРѕРІС‹Р№ РІР°СЂРёР°РЅС‚ РѕС‚РІРµС‚Р° (' . ($_REQUEST['item_title']) . ') РґР»СЏ РѕРїСЂРѕСЃР°', 2, 2);
 
 		header('Location:index.php?do=modules&action=modedit&mod=poll&moduleaction=edit&id=' . $pid . '&pop=1&cp=' . SESSION);
 		exit;
 	}
 
 	/**
-	 * Метод редактирования опроса
+	 * РњРµС‚РѕРґ СЂРµРґР°РєС‚РёСЂРѕРІР°РЅРёСЏ РѕРїСЂРѕСЃР°
 	 *
-	 * @param string $tpl_dir	путь к папке с шаблонами модуля
-	 * @param string $lang_file	путь к языковому файлу модуля
-	 * @param int $pid			идентификатор опроса
+	 * @param string $tpl_dir	РїСѓС‚СЊ Рє РїР°РїРєРµ СЃ С€Р°Р±Р»РѕРЅР°РјРё РјРѕРґСѓР»СЏ
+	 * @param string $lang_file	РїСѓС‚СЊ Рє СЏР·С‹РєРѕРІРѕРјСѓ С„Р°Р№Р»Сѓ РјРѕРґСѓР»СЏ
+	 * @param int $pid			РёРґРµРЅС‚РёС„РёРєР°С‚РѕСЂ РѕРїСЂРѕСЃР°
 	 */
 	function pollEdit($tpl_dir, $lang_file, $pid)
 	{
@@ -721,9 +721,9 @@ class Poll
 	}
 
 	/**
-	 * Метод записи изменений в опросе
+	 * РњРµС‚РѕРґ Р·Р°РїРёСЃРё РёР·РјРµРЅРµРЅРёР№ РІ РѕРїСЂРѕСЃРµ
 	 *
-	 * @param int $pid	идентификатор опроса
+	 * @param int $pid	РёРґРµРЅС‚РёС„РёРєР°С‚РѕСЂ РѕРїСЂРѕСЃР°
 	 */
 	function pollSave($pid)
 	{
@@ -779,9 +779,9 @@ class Poll
 	}
 
 	/**
-	 * Метод удаления опроса
+	 * РњРµС‚РѕРґ СѓРґР°Р»РµРЅРёСЏ РѕРїСЂРѕСЃР°
 	 *
-	 * @param int $pid	идентификатор опроса
+	 * @param int $pid	РёРґРµРЅС‚РёС„РёРєР°С‚РѕСЂ РѕРїСЂРѕСЃР°
 	 */
 	function pollDelete($pid)
 	{
@@ -803,18 +803,18 @@ class Poll
 			WHERE poll_id = '" . $pid . "'
 		");
 
-		reportLog($_SESSION['user_name'] . ' - удалил опрос (' . $pid . ')', 2, 2);
+		reportLog($_SESSION['user_name'] . ' - СѓРґР°Р»РёР» РѕРїСЂРѕСЃ (' . $pid . ')', 2, 2);
 
 		header('Location:index.php?do=modules&action=modedit&mod=poll&moduleaction=1&cp=' . SESSION);
 		exit;
 	}
 
 	/**
-	 * Метод управления комментариями к опросам
+	 * РњРµС‚РѕРґ СѓРїСЂР°РІР»РµРЅРёСЏ РєРѕРјРјРµРЅС‚Р°СЂРёСЏРјРё Рє РѕРїСЂРѕСЃР°Рј
 	 *
-	 * @param string $tpl_dir	путь к папке с шаблонами модуля
-	 * @param string $lang_file	путь к языковому файлу модуля
-	 * @param int $pid			идентификатор опроса
+	 * @param string $tpl_dir	РїСѓС‚СЊ Рє РїР°РїРєРµ СЃ С€Р°Р±Р»РѕРЅР°РјРё РјРѕРґСѓР»СЏ
+	 * @param string $lang_file	РїСѓС‚СЊ Рє СЏР·С‹РєРѕРІРѕРјСѓ С„Р°Р№Р»Сѓ РјРѕРґСѓР»СЏ
+	 * @param int $pid			РёРґРµРЅС‚РёС„РёРєР°С‚РѕСЂ РѕРїСЂРѕСЃР°
 	 */
 	function pollCommentEdit($tpl_dir, $lang_file, $pid)
 	{
@@ -877,11 +877,11 @@ class Poll
 	}
 
 	/**
-	 * Формитрование метки времени по данным полученным из выпадающих списков
-	 * сформированных Smarty {html_select_date} и {html_select_time}
+	 * Р¤РѕСЂРјРёС‚СЂРѕРІР°РЅРёРµ РјРµС‚РєРё РІСЂРµРјРµРЅРё РїРѕ РґР°РЅРЅС‹Рј РїРѕР»СѓС‡РµРЅРЅС‹Рј РёР· РІС‹РїР°РґР°СЋС‰РёС… СЃРїРёСЃРєРѕРІ
+	 * СЃС„РѕСЂРјРёСЂРѕРІР°РЅРЅС‹С… Smarty {html_select_date} Рё {html_select_time}
 	 *
-	 * @param string $date имя массива с значениями даты
-	 * @param string $time имя массива с значениями времени
+	 * @param string $date РёРјСЏ РјР°СЃСЃРёРІР° СЃ Р·РЅР°С‡РµРЅРёСЏРјРё РґР°С‚С‹
+	 * @param string $time РёРјСЏ РјР°СЃСЃРёРІР° СЃ Р·РЅР°С‡РµРЅРёСЏРјРё РІСЂРµРјРµРЅРё
 	 * @return unknown timestamp
 	 */
 	function _mktime($date = '', $time = '')

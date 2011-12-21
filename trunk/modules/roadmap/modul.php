@@ -4,10 +4,10 @@ if (!defined('BASE_DIR')) exit;
 
 if (defined('ACP'))
 {
-    $modul['ModulName'] = 'Карта проектов';
+    $modul['ModulName'] = 'РљР°СЂС‚Р° РїСЂРѕРµРєС‚РѕРІ';
     $modul['ModulPfad'] = 'roadmap';
     $modul['ModulVersion'] = '1.0';
-    $modul['description'] = 'Данный модуль предназначен для организации карты проектов с текущими задачами. Вы можете создавать неограниченное количество проектов с неограниченным количеством задач. Все проекты с вложенными задачами могут быть отображены в публичной части сайта.';
+    $modul['description'] = 'Р”Р°РЅРЅС‹Р№ РјРѕРґСѓР»СЊ РїСЂРµРґРЅР°Р·РЅР°С‡РµРЅ РґР»СЏ РѕСЂРіР°РЅРёР·Р°С†РёРё РєР°СЂС‚С‹ РїСЂРѕРµРєС‚РѕРІ СЃ С‚РµРєСѓС‰РёРјРё Р·Р°РґР°С‡Р°РјРё. Р’С‹ РјРѕР¶РµС‚Рµ СЃРѕР·РґР°РІР°С‚СЊ РЅРµРѕРіСЂР°РЅРёС‡РµРЅРЅРѕРµ РєРѕР»РёС‡РµСЃС‚РІРѕ РїСЂРѕРµРєС‚РѕРІ СЃ РЅРµРѕРіСЂР°РЅРёС‡РµРЅРЅС‹Рј РєРѕР»РёС‡РµСЃС‚РІРѕРј Р·Р°РґР°С‡. Р’СЃРµ РїСЂРѕРµРєС‚С‹ СЃ РІР»РѕР¶РµРЅРЅС‹РјРё Р·Р°РґР°С‡Р°РјРё РјРѕРіСѓС‚ Р±С‹С‚СЊ РѕС‚РѕР±СЂР°Р¶РµРЅС‹ РІ РїСѓР±Р»РёС‡РЅРѕР№ С‡Р°СЃС‚Рё СЃР°Р№С‚Р°.';
     $modul['Autor'] = 'Arcanum';
     $modul['MCopyright'] = '&copy; 2007-2008 Overdoze.Ru';
     $modul['Status'] = 1;
@@ -15,7 +15,7 @@ if (defined('ACP'))
     $modul['ModulTemplate'] = 1;
     $modul['AdminEdit'] = 1;
     $modul['ModulFunktion'] = null;
-    $modul['CpEngineTagTpl'] = '<b>Ссылка:</b> <a target="_blank" href="../index.php?module=roadmap">index.php?module=roadmap</a>';
+    $modul['CpEngineTagTpl'] = '<b>РЎСЃС‹Р»РєР°:</b> <a target="_blank" href="../index.php?module=roadmap">index.php?module=roadmap</a>';
     $modul['CpEngineTag'] = null;
     $modul['CpPHPTag'] = null;
 }
@@ -43,7 +43,7 @@ if (!defined('ACP') && isset($_REQUEST['module']) && $_REQUEST['module'] == 'roa
 			break;
 	}
 
-	define('MODULE_SITE', 'Карта проектов');
+	define('MODULE_SITE', 'РљР°СЂС‚Р° РїСЂРѕРµРєС‚РѕРІ');
 }
 
 if (defined('ACP') && !empty($_REQUEST['moduleaction']))

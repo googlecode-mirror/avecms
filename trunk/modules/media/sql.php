@@ -1,7 +1,7 @@
 <?php
 
 /**
- * AVE.cms - Ìîäóëü Áàííåðû
+ * AVE.cms - ÐœÐ¾Ð´ÑƒÐ»ÑŒ Ð‘Ð°Ð½Ð½ÐµÑ€Ñ‹
  *
  * @package AVE.cms
  * @subpackage module_Banner
@@ -10,7 +10,7 @@
  */
 
 /**
- * mySQL-çàïðîñû äëÿ óñòàíîâêè, îáíîâëåíèÿ è óäàëåíèÿ ìîäóëÿ
+ * mySQL-Ð·Ð°Ð¿Ñ€Ð¾ÑÑ‹ Ð´Ð»Ñ ÑƒÑÑ‚Ð°Ð½Ð¾Ð²ÐºÐ¸, Ð¾Ð±Ð½Ð¾Ð²Ð»ÐµÐ½Ð¸Ñ Ð¸ ÑƒÐ´Ð°Ð»ÐµÐ½Ð¸Ñ Ð¼Ð¾Ð´ÑƒÐ»Ñ
  */
 
 $modul_sql_install = array();
@@ -24,7 +24,7 @@ $modul_sql_install[] = "CREATE TABLE `CPPREFIX_modul_banner_categories` (
   `Id` smallint(3) unsigned NOT NULL auto_increment,
   `banner_category_name` char(100) NOT NULL default '',
   PRIMARY KEY  (`Id`)
-) ENGINE=MyISAM DEFAULT CHARSET=cp1251;";
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 
 $modul_sql_install[] = "CREATE TABLE `CPPREFIX_modul_banners` (
   `Id` mediumint(5) unsigned NOT NULL auto_increment,
@@ -46,13 +46,13 @@ $modul_sql_install[] = "CREATE TABLE `CPPREFIX_modul_banners` (
   `banner_height` smallint(3) unsigned NOT NULL default '0',
   PRIMARY KEY  (`Id`),
   KEY `banner_category_id` (`banner_category_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=cp1251;";
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 
-$modul_sql_install[] = "INSERT INTO `CPPREFIX_modul_banner_categories` VALUES ('1', 'Êàòàãîðèÿ 1');";
-$modul_sql_install[] = "INSERT INTO `CPPREFIX_modul_banner_categories` VALUES ('2', 'Êàòåãîðèÿ 2');";
+$modul_sql_install[] = "INSERT INTO `CPPREFIX_modul_banner_categories` VALUES ('1', 'ÐšÐ°Ñ‚Ð°Ð³Ð¾Ñ€Ð¸Ñ 1');";
+$modul_sql_install[] = "INSERT INTO `CPPREFIX_modul_banner_categories` VALUES ('2', 'ÐšÐ°Ñ‚ÐµÐ³Ð¾Ñ€Ð¸Ñ 2');";
 
-$modul_sql_install[] = "INSERT INTO `CPPREFIX_modul_banners` VALUES ('', '1', 'banner.jpg', 'http://www.overdoze.ru', '1', 'Overdoze-Banner', '0', '0', 'Ñêðèïòû CMS, áåñïëàòíûå øàáëîíû, ôîðóì è ïîääåðæêà ðàçðàáîò÷èêîâ', '0', '0', '0', '0', '1', '_self', '0', '0');";
-$modul_sql_install[] = "INSERT INTO `CPPREFIX_modul_banners` VALUES ('', '1', 'banner2.gif', 'http://www.google.de', '1', 'Google-Banner', '0', '0', 'Ïîñåòèòå ñàéò Google', '0', '0', '0', '0', '1', '_blank', '0', '0');";
+$modul_sql_install[] = "INSERT INTO `CPPREFIX_modul_banners` VALUES ('', '1', 'banner.jpg', 'http://www.overdoze.ru', '1', 'Overdoze-Banner', '0', '0', 'Ð¡ÐºÑ€Ð¸Ð¿Ñ‚Ñ‹ CMS, Ð±ÐµÑÐ¿Ð»Ð°Ñ‚Ð½Ñ‹Ðµ ÑˆÐ°Ð±Ð»Ð¾Ð½Ñ‹, Ñ„Ð¾Ñ€ÑƒÐ¼ Ð¸ Ð¿Ð¾Ð´Ð´ÐµÑ€Ð¶ÐºÐ° Ñ€Ð°Ð·Ñ€Ð°Ð±Ð¾Ñ‚Ñ‡Ð¸ÐºÐ¾Ð²', '0', '0', '0', '0', '1', '_self', '0', '0');";
+$modul_sql_install[] = "INSERT INTO `CPPREFIX_modul_banners` VALUES ('', '1', 'banner2.gif', 'http://www.google.de', '1', 'Google-Banner', '0', '0', 'ÐŸÐ¾ÑÐµÑ‚Ð¸Ñ‚Ðµ ÑÐ°Ð¹Ñ‚ Google', '0', '0', '0', '0', '1', '_blank', '0', '0');";
 
 $modul_sql_update[] = "UPDATE CPPREFIX_module SET CpEngineTag = '" . $modul['CpEngineTag'] . "', CpPHPTag = '" . $modul['CpPHPTag'] . "', Version = '" . $modul['ModulVersion'] . "' WHERE ModulPfad = '" . BANNER_DIR . "' LIMIT 1;";
 

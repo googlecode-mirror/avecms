@@ -53,6 +53,13 @@ function openLinkWindow(target,doc) {ldelim}
 				</a>
 			</div>
 		</td>
+		<td class="second">
+			<div id="otherLinks">
+				<a href="index.php?do=settings&amp;sub=case&amp;cp={$sess}">
+					<div class="taskTitle">{#SETTINGS_CASE_TITLE#}</div>
+				</a>
+			</div>
+		</td>
 	</tr>
 </table>
 
@@ -238,7 +245,33 @@ function openLinkWindow(target,doc) {ldelim}
 			<td>{#SETTINGS_PAGE_PREV#}</td>
 			<td><input name="prev_label" type="text" id="prev_label" style="width:550px" value="{$row.prev_label|stripslashes}" size="100" /></td>
 		</tr>
-
+		{foreach from=$CMS_CONFIG item=def key=_var}
+		<tr>
+			<td>{$def.DESCR}->{$_var}</td>
+			{if $def.TYPE=="dropdown"}
+				<td><select name="GLOB[{$_var}]"/>
+					{foreach from=$def.VARIANT item=elem}
+						<option value="{$elem}" 
+							{php}
+								echo (constant($this->_tpl_vars['_var'])==$this->_tpl_vars['elem'] ? 'selected' :'' );
+							{/php}>{$elem}</option>
+					{/foreach}
+				</select></td>
+			{/if}
+			{if $def.TYPE=="string"}
+				<td><input name="GLOB[{$_var}]" type="text" id="{$_var}" style="width:550px" value="{php} echo(constant  ($this->_tpl_vars['_var']));{/php}" size="100" /></td>
+			{/if}
+			{if $def.TYPE=="integer"}
+				<td><input name="GLOB[{$_var}]" type="text" id="{$_var}" style="width:550px" value="{php} echo(constant  ($this->_tpl_vars['_var']));{/php}" size="100" /></td>
+			{/if}
+			{if $def.TYPE=="bool"}
+				<td>
+				<input type="radio" name="GLOB[{$_var}]" value="1" {php} echo(constant($this->_tpl_vars['_var']) ? 'checked' : "");{/php} />{#SETTINGS_YES#}&nbsp;
+				<input type="radio" name="GLOB[{$_var}]" value="0" {php} echo(constant($this->_tpl_vars['_var']) ? '' : "checked");{/php} />{#SETTINGS_NO#}
+				</td>
+			{/if}
+		</tr>
+		{/foreach}
 	</table><br />
 
 	<input type="submit" class="button" value="{#SETTINGS_BUTTON_SAVE#}" />

@@ -1,6 +1,6 @@
 <form action='index.php' method='get'>
 	<input type='text' name='pattern' size='30' value='{$smarty.get.pattern|escape|stripslashes}' />
-	<input class='button' type='submit' value='Íàéòè' />
+	<input class='button' type='submit' value='ÐÐ°Ð¹Ñ‚Ð¸' />
 	<input type='hidden' name='module' value='forums' />
 	<input type='hidden' name='show' value='search' />
 	<input name='search_post' type='hidden' value='1' />

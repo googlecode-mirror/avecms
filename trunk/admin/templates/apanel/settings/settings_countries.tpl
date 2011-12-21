@@ -16,6 +16,13 @@
 				</a>
 			</div>
 		</td>
+		<td class="second">
+			<div id="otherLinks">
+				<a href="index.php?do=settings&amp;cp={$sess}">
+					<div class="taskTitle">{#SETTINGS_MAIN_SETTINGS#}</div>
+				</a>
+			</div>
+		</td>		
 	</tr>
 </table>
 
