@@ -8,8 +8,8 @@
  */
 
 define('APP_NAME', 'AVE.cms');
-define('APP_VERSION', '2.09RC1');
-define('APP_INFO', APP_NAME . ' ' . APP_VERSION . ' &copy; 2008-2010 <a target="_blank" href="http://www.overdoze.ru/">Overdoze.Ru</a>');
+define('APP_VERSION', '2.09RC2');
+define('APP_INFO', APP_NAME . ' ' . APP_VERSION . ' &copy; 2008-2011 <a target="_blank" href="http://www.overdoze.ru/">Overdoze.Ru</a>');
 
 $GLOBALS['CMS_CONFIG']['REWRITE_MODE']=Array('DESCR' =>'Использовать ЧПУ<br> Адреса вида index.php будут преобразованы в /home/','default'=>true,'TYPE'=>'bool','VARIANT'=>''); 
 $GLOBALS['CMS_CONFIG']['TRANSLIT_URL']=Array('DESCR' =>'Использовать транслит в ЧПУ <br> адреса вида /страница/ поменяються на /page/','default'=>true,'TYPE'=>'bool','VARIANT'=>''); 
