@@ -1,7 +1,7 @@
 <?php
 
 /**
- * AVE.cms - Ìîäóëü Àðõèâ íîâîñòåé
+ * AVE.cms - ÐœÐ¾Ð´ÑƒÐ»ÑŒ ÐÑ€Ñ…Ð¸Ð² Ð½Ð¾Ð²Ð¾ÑÑ‚ÐµÐ¹
  *
  * @package AVE.cms
  * @subpackage module_Newsarchive
@@ -11,7 +11,7 @@
  */
 
 /**
- * mySQL-çàïðîñû äëÿ óñòàíîâêè, îáíîâëåíèÿ è óäàëåíèÿ ìîäóëÿ
+ * mySQL-Ð·Ð°Ð¿Ñ€Ð¾ÑÑ‹ Ð´Ð»Ñ ÑƒÑÑ‚Ð°Ð½Ð¾Ð²ÐºÐ¸, Ð¾Ð±Ð½Ð¾Ð²Ð»ÐµÐ½Ð¸Ñ Ð¸ ÑƒÐ´Ð°Ð»ÐµÐ½Ð¸Ñ Ð¼Ð¾Ð´ÑƒÐ»Ñ
  */
 
 $modul_sql_install = array();
@@ -27,7 +27,7 @@ $modul_sql_install[] = "CREATE TABLE CPPREFIX_modul_newsarchive (
   `newsarchive_show_days` enum('1','0') NOT NULL default '1',
   `newsarchive_show_empty` enum('1','0') NOT NULL default '1',
   PRIMARY KEY  (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=cp1251;";
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 
 $modul_sql_update[] = "UPDATE CPPREFIX_module SET CpEngineTag = '" . $modul['CpEngineTag'] . "', CpPHPTag = '" . $modul['CpPHPTag'] . "', Version = '" . $modul['ModulVersion'] . "' WHERE ModulPfad = '" . $modul['ModulPfad'] . "' LIMIT 1;";
 

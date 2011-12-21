@@ -1,4 +1,4 @@
-/* _______________________ ÃÓ‰ÛÎ¸ "‘ÓÛÏ" _______________________ */
+/* _______________________ –ú–æ–¥—É–ª—å "–§–æ—Ä—É–º" _______________________ */
 #forums_pop                 {margin:5px; text-align:left}
 .forum_attachment_box       {border:1px inset #dedede; margin:10px; padding:3px}
 .forum_small                {font-size:11px}
@@ -39,12 +39,12 @@ a.forum_topicheader:hover   {color:#fff; font-weight:bold; text-decoration:none}
 /* ---------- Forumbeschreibung ---------- */
 .f_info_comment             {font-size:11px}
 
-/* ---------- Linke und Rechte Zeilenfarbe Beitr‰ge ---------- */
+/* ---------- Linke und Rechte Zeilenfarbe Beitr–¥ge ---------- */
 .forum_post_first           {background-color:#f1f1f1}
 .forum_post_second          {background-color:#fafafa}
 .forum_topic_topheader      {background-color:#fafafa}
 
-/* ---------- Fuﬂbereich Beitr‰ge  ---------- */
+/* ---------- Fu–Øbereich Beitr–¥ge  ---------- */
 .forum_post_footer          {background-color:#e9e9e9}
 
 /* ---------- Kopfbereich Forumtabellen  ---------- */
@@ -63,7 +63,7 @@ a.forum_topicheader:hover   {color:#fff; font-weight:bold; text-decoration:none}
 /* ---------- Tabellenspalte Forum anzeigen/schliessen (+ / -) ---------- */
 .forum_toggle               {width:20px; background-color:#dedede}
 
-/* ---------- Formatierung Tabellen Foren¸bersicht & Box "Profil, Passwort ‰ndern..."  ---------- */
+/* ---------- Formatierung Tabellen Foren—åbersicht & Box "Profil, Passwort –¥ndern..."  ---------- */
 .forum_frame                {background-color:#fff; margin-bottom:1px}
 
 /* ---------- Navigationsbaum  ---------- */
@@ -81,7 +81,7 @@ a.forum_topicheader:hover   {color:#fff; font-weight:bold; text-decoration:none}
 /* ---------- Benutzer-Signatur ---------- */
 .user_sig                   {padding-top:4px}
 
-/* ---------- Linie ‹ber Benutzer-Signatur ---------- */
+/* ---------- Linie –¨ber Benutzer-Signatur ---------- */
 .user_sig_bar               {color:#ccc; padding-top:4px}
 
 .forum_pn_unread            {color:#f00; font-weight:bold; text-decoration:blink}

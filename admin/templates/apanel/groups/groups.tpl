@@ -29,7 +29,7 @@ function check_name() {ldelim}
 </form>
 {/if}
 
-<h4>Список групп</h4>
+<h4>РЎРїРёСЃРѕРє РіСЂСѓРїРї</h4>
 <table width="100%" border="0" cellspacing="1" cellpadding="8" class="tableborder">
 	<tr>
 		<td class="tableheader">{#UGROUP_ID#}</td>

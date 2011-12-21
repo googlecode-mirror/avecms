@@ -8,11 +8,45 @@
  */
 
 /**
- * Вычисление разницы между двумя метками времени
+ * Р РµРєСѓСЂСЃРёРІРЅРѕ С‡РёСЃС‚РёС‚ РґРёСЂРµРєС‚РѕСЂРёСЋ
  *
- * @param string $a начальная метка
- * @param string $b конечная метка
- * @return int время между метками
+ * @param $dir	Р”РёСЂРµРєС‚РѕСЂРёСЏ
+ * @return bool
+ */
+ 
+function rrmdir($dir) {
+	if (is_dir($dir)) {
+		$objects = scandir($dir);
+		foreach ($objects as $object) {
+			if ($object != "." && $object != "..") {
+				if (filetype($dir."/".$object) == "dir") rrmdir($dir."/".$object); else unlink($dir."/".$object);
+			}
+		}
+		reset($objects);
+		rmdir($dir);
+	}
+} 		
+
+ 
+/**
+ * Р’РѕР·РІСЂР°С‰Р°РµС‚ РёСЃРїРѕР»РЅРµРЅРЅС‹Р№ php РєРѕРґ РІ РїРµСЂРµРјРµРЅРЅСѓСЋ
+ *
+ * @param int $id	РёРґРµРЅС‚РёС„РёРєР°С‚РѕСЂ Р·Р°РїСЂРѕСЃР°
+ * @return string
+ */
+function eval2var( $expression ) {
+	ob_start();
+	eval( $expression );
+	$content = ob_get_clean();
+	return $content;
+}
+
+/**
+ * Р’С‹С‡РёСЃР»РµРЅРёРµ СЂР°Р·РЅРёС†С‹ РјРµР¶РґСѓ РґРІСѓРјСЏ РјРµС‚РєР°РјРё РІСЂРµРјРµРЅРё
+ *
+ * @param string $a РЅР°С‡Р°Р»СЊРЅР°СЏ РјРµС‚РєР°
+ * @param string $b РєРѕРЅРµС‡РЅР°СЏ РјРµС‚РєР°
+ * @return int РІСЂРµРјСЏ РјРµР¶РґСѓ РјРµС‚РєР°РјРё
  */
 function microtime_diff($a, $b)
 {
@@ -22,13 +56,13 @@ function microtime_diff($a, $b)
 }
 
 /**
- * Регистронезависимый вариант функции strpos
- * Возвращает числовую позицию первого вхождения needle в строке haystack.
+ * Р РµРіРёСЃС‚СЂРѕРЅРµР·Р°РІРёСЃРёРјС‹Р№ РІР°СЂРёР°РЅС‚ С„СѓРЅРєС†РёРё strpos
+ * Р’РѕР·РІСЂР°С‰Р°РµС‚ С‡РёСЃР»РѕРІСѓСЋ РїРѕР·РёС†РёСЋ РїРµСЂРІРѕРіРѕ РІС…РѕР¶РґРµРЅРёСЏ needle РІ СЃС‚СЂРѕРєРµ haystack.
  *
- * @param unknown_type $haystack проверяемая строка
- * @param unknown_type $needle искомая подстрока
- * @param unknown_type $offset с какого символа в haystack начинать поиск.
- * @return int числовая позиция
+ * @param unknown_type $haystack РїСЂРѕРІРµСЂСЏРµРјР°СЏ СЃС‚СЂРѕРєР°
+ * @param unknown_type $needle РёСЃРєРѕРјР°СЏ РїРѕРґСЃС‚СЂРѕРєР°
+ * @param unknown_type $offset СЃ РєР°РєРѕРіРѕ СЃРёРјРІРѕР»Р° РІ haystack РЅР°С‡РёРЅР°С‚СЊ РїРѕРёСЃРє.
+ * @return int С‡РёСЃР»РѕРІР°СЏ РїРѕР·РёС†РёСЏ
  */
 if (!function_exists("stripos"))
 {
@@ -39,10 +73,10 @@ if (!function_exists("stripos"))
 }
 
 /**
- * Форматирование числа
+ * Р¤РѕСЂРјР°С‚РёСЂРѕРІР°РЅРёРµ С‡РёСЃР»Р°
  *
- * @param array $param значение и параметры
- * @return string отформатированное значение
+ * @param array $param Р·РЅР°С‡РµРЅРёРµ Рё РїР°СЂР°РјРµС‚СЂС‹
+ * @return string РѕС‚С„РѕСЂРјР°С‚РёСЂРѕРІР°РЅРЅРѕРµ Р·РЅР°С‡РµРЅРёРµ
  */
 function num_format($param)
 {
@@ -51,11 +85,11 @@ function num_format($param)
 }
 
 /**
- * Проверка начинается ли строка с указанной подстроки
+ * РџСЂРѕРІРµСЂРєР° РЅР°С‡РёРЅР°РµС‚СЃСЏ Р»Рё СЃС‚СЂРѕРєР° СЃ СѓРєР°Р·Р°РЅРЅРѕР№ РїРѕРґСЃС‚СЂРѕРєРё
  *
- * @param string $str проверяемая строка
- * @param string $in подстрока
- * @return boolean результат проверки
+ * @param string $str РїСЂРѕРІРµСЂСЏРµРјР°СЏ СЃС‚СЂРѕРєР°
+ * @param string $in РїРѕРґСЃС‚СЂРѕРєР°
+ * @return boolean СЂРµР·СѓР»СЊС‚Р°С‚ РїСЂРѕРІРµСЂРєРё
  */
 function start_with($str, $in)
 {
@@ -63,10 +97,10 @@ function start_with($str, $in)
 }
 
 /**
- * Проверка прав пользователя
+ * РџСЂРѕРІРµСЂРєР° РїСЂР°РІ РїРѕР»СЊР·РѕРІР°С‚РµР»СЏ
  *
- * @param string $action проверяемое право
- * @return boolean результат проверки
+ * @param string $action РїСЂРѕРІРµСЂСЏРµРјРѕРµ РїСЂР°РІРѕ
+ * @return boolean СЂРµР·СѓР»СЊС‚Р°С‚ РїСЂРѕРІРµСЂРєРё
  */
 function check_permission($action)
 {
@@ -89,10 +123,10 @@ function clean_no_print_char($text)
 }
 
 /**
- * Очистка текста от програмного кода
+ * РћС‡РёСЃС‚РєР° С‚РµРєСЃС‚Р° РѕС‚ РїСЂРѕРіСЂР°РјРЅРѕРіРѕ РєРѕРґР°
  *
- * @param string $text исходный текст
- * @return string очищенный текст
+ * @param string $text РёСЃС…РѕРґРЅС‹Р№ С‚РµРєСЃС‚
+ * @return string РѕС‡РёС‰РµРЅРЅС‹Р№ С‚РµРєСЃС‚
  */
 function clean_php($text)
 {
@@ -100,39 +134,39 @@ function clean_php($text)
 }
 
 /**
- * Вывод системного сообщения
+ * Р’С‹РІРѕРґ СЃРёСЃС‚РµРјРЅРѕРіРѕ СЃРѕРѕР±С‰РµРЅРёСЏ
  *
- * @param string $message сообщение
+ * @param string $message СЃРѕРѕР±С‰РµРЅРёРµ
  */
 function display_notice($message)
 {
-	echo '<div style="background-color:#ff6;padding:5px;border:1px solid #f00;color:#f00;text-align:center;"><b>Системное сообщение: </b>' . $message . '</div>';
+	echo '<div class="display_notice"><b>РЎРёСЃС‚РµРјРЅРѕРµ СЃРѕРѕР±С‰РµРЅРёРµ: </b>' . $message . '</div>';
 }
 
 /**
- * Сообщение о запрете распечатки страницы
+ * РЎРѕРѕР±С‰РµРЅРёРµ Рѕ Р·Р°РїСЂРµС‚Рµ СЂР°СЃРїРµС‡Р°С‚РєРё СЃС‚СЂР°РЅРёС†С‹
  *
  */
 function print_error()
 {
-	display_notice('Запрашиваемая страница не может быть распечатана.');
+	display_notice('Р—Р°РїСЂР°С€РёРІР°РµРјР°СЏ СЃС‚СЂР°РЅРёС†Р° РЅРµ РјРѕР¶РµС‚ Р±С‹С‚СЊ СЂР°СЃРїРµС‡Р°С‚Р°РЅР°.');
 	exit;
 }
 
 /**
- * Сообщение о проблемах доступа к файлам модуля
+ * РЎРѕРѕР±С‰РµРЅРёРµ Рѕ РїСЂРѕР±Р»РµРјР°С… РґРѕСЃС‚СѓРїР° Рє С„Р°Р№Р»Р°Рј РјРѕРґСѓР»СЏ
  *
  */
 function module_error()
 {
-	display_notice('Запрашиваемый модуль не может быть загружен.');
+	display_notice('Р—Р°РїСЂР°С€РёРІР°РµРјС‹Р№ РјРѕРґСѓР»СЊ РЅРµ РјРѕР¶РµС‚ Р±С‹С‚СЊ Р·Р°РіСЂСѓР¶РµРЅ.');
 	exit;
 }
 
 /**
- * Получение основных настроек
+ * РџРѕР»СѓС‡РµРЅРёРµ РѕСЃРЅРѕРІРЅС‹С… РЅР°СЃС‚СЂРѕРµРє
  *
- * @param string $field параметр настройки, если не указан - все параметры
+ * @param string $field РїР°СЂР°РјРµС‚СЂ РЅР°СЃС‚СЂРѕР№РєРё, РµСЃР»Рё РЅРµ СѓРєР°Р·Р°РЅ - РІСЃРµ РїР°СЂР°РјРµС‚СЂС‹
  * @return mixed
  */
 function get_settings($field = '')
@@ -161,7 +195,7 @@ function get_navigations($navi_id = '')
 	{
 		$navigations = array();
 
-		$sql = $AVE_DB->Query("SELECT * FROM " . PREFIX . "_navigation");
+		$sql = $AVE_DB->Query("SELECT * FROM " . PREFIX . "_navigation",-1);
 
 		while ($row = $sql->FetchRow())
 		{
@@ -176,9 +210,9 @@ function get_navigations($navi_id = '')
 }
 
 /**
- * Проверка прав доступа к навигации по группе пользователя
+ * РџСЂРѕРІРµСЂРєР° РїСЂР°РІ РґРѕСЃС‚СѓРїР° Рє РЅР°РІРёРіР°С†РёРё РїРѕ РіСЂСѓРїРїРµ РїРѕР»СЊР·РѕРІР°С‚РµР»СЏ
  *
- * @param int $id идентификатор меню навигации
+ * @param int $id РёРґРµРЅС‚РёС„РёРєР°С‚РѕСЂ РјРµРЅСЋ РЅР°РІРёРіР°С†РёРё
  * @return boolean
  */
 function check_navi_permission($id)
@@ -194,11 +228,11 @@ function check_navi_permission($id)
 }
 
 /**
- * Обработка парного тэга [tag:hide:X,X]...[/tag:hide] (скрытый текст)
- * Заменяет скрываемый текст в зависимости от группы пользователя
+ * РћР±СЂР°Р±РѕС‚РєР° РїР°СЂРЅРѕРіРѕ С‚СЌРіР° [tag:hide:X,X]...[/tag:hide] (СЃРєСЂС‹С‚С‹Р№ С‚РµРєСЃС‚)
+ * Р—Р°РјРµРЅСЏРµС‚ СЃРєСЂС‹РІР°РµРјС‹Р№ С‚РµРєСЃС‚ РІ Р·Р°РІРёСЃРёРјРѕСЃС‚Рё РѕС‚ РіСЂСѓРїРїС‹ РїРѕР»СЊР·РѕРІР°С‚РµР»СЏ
  *
- * @param string $data обрабатываемый текст
- * @return string обработанный текст
+ * @param string $data РѕР±СЂР°Р±Р°С‚С‹РІР°РµРјС‹Р№ С‚РµРєСЃС‚
+ * @return string РѕР±СЂР°Р±РѕС‚Р°РЅРЅС‹Р№ С‚РµРєСЃС‚
  */
 function parse_hide($data)
 {
@@ -215,9 +249,9 @@ function parse_hide($data)
 }
 
 /**
- * Получить идентификатор текущего документа
+ * РџРѕР»СѓС‡РёС‚СЊ РёРґРµРЅС‚РёС„РёРєР°С‚РѕСЂ С‚РµРєСѓС‰РµРіРѕ РґРѕРєСѓРјРµРЅС‚Р°
  *
- * @return int идентификатор текущего документа
+ * @return int РёРґРµРЅС‚РёС„РёРєР°С‚РѕСЂ С‚РµРєСѓС‰РµРіРѕ РґРѕРєСѓРјРµРЅС‚Р°
  */
 function get_current_document_id()
 {
@@ -227,7 +261,7 @@ function get_current_document_id()
 }
 
 /**
- * Формирование URL редиректа
+ * Р¤РѕСЂРјРёСЂРѕРІР°РЅРёРµ URL СЂРµРґРёСЂРµРєС‚Р°
  *
  * @return string URL
  */
@@ -266,9 +300,9 @@ function get_redirect_link($exclude = '')
 }
 
 /**
- * Ссылка на главную страницу
+ * РЎСЃС‹Р»РєР° РЅР° РіР»Р°РІРЅСѓСЋ СЃС‚СЂР°РЅРёС†Сѓ
  *
- * @return string ссылка
+ * @return string СЃСЃС‹Р»РєР°
  */
 function get_home_link()
 {
@@ -276,9 +310,9 @@ function get_home_link()
 }
 
 /**
- * Формирование хлебных крошек
+ * Р¤РѕСЂРјРёСЂРѕРІР°РЅРёРµ С…Р»РµР±РЅС‹С… РєСЂРѕС€РµРє
  *
- * @return string ссылка
+ * @return string СЃСЃС‹Р»РєР°
  */
 function get_breadcrumb()
 {
@@ -287,10 +321,10 @@ function get_breadcrumb()
 	$crumb = array();
 	$curent_document = get_current_document_id();
 	
-	$bread_crumb = "<a href=\"".get_home_link()."\">Главная</a>&nbsp;&rarr;&nbsp;";
+	$bread_crumb = "<a href=\"".get_home_link()."\">Р“Р»Р°РІРЅР°СЏ</a>&nbsp;&rarr;&nbsp;";
 	if ($curent_document == 1|| $curent_document == 2) $noprint = 1;
 	
-	$sql_document = $AVE_DB->Query("SELECT document_title, document_parent FROM " . PREFIX . "_documents WHERE Id = '".$curent_document."'");
+	$sql_document = $AVE_DB->Query("SELECT document_title, document_parent FROM " . PREFIX . "_documents WHERE Id = '".$curent_document."'",-1,'doc_'.$curent_document);
 	$row_document = $sql_document->fetchrow();
 	$current->document_title = $row_document->document_title;
 		
@@ -299,12 +333,12 @@ function get_breadcrumb()
 		$current->document_parent = $row_document->document_parent;
 
 		 while ($current->document_parent != 0) {
-			$sql_doc = $AVE_DB->Query("SELECT Id, document_alias, document_title, document_parent FROM " . PREFIX . "_documents WHERE Id = '".$current->document_parent."'");
+			$sql_doc = $AVE_DB->Query("SELECT Id, document_alias, document_title, document_parent FROM " . PREFIX . "_documents WHERE Id = '".$current->document_parent."'",-1,'doc_'.$current->document_parent);
 			$row_doc = $sql_doc->fetchrow();
 			$current->document_parent = $row_doc->document_parent;
 			
 			if ($row_doc->document_parent == $row_doc->Id) {
-				echo "Ошибка! Вы указали в качестве родительского документа текущий документ.<br>";
+				echo "РћС€РёР±РєР°! Р’С‹ СѓРєР°Р·Р°Р»Рё РІ РєР°С‡РµСЃС‚РІРµ СЂРѕРґРёС‚РµР»СЊСЃРєРѕРіРѕ РґРѕРєСѓРјРµРЅС‚Р° С‚РµРєСѓС‰РёР№ РґРѕРєСѓРјРµРЅС‚.<br>";
 				$current->document_parent = 1;
 			}
 			
@@ -331,9 +365,9 @@ function get_breadcrumb()
 }
 
 /**
- * Ссылка на страницу версии для печати
+ * РЎСЃС‹Р»РєР° РЅР° СЃС‚СЂР°РЅРёС†Сѓ РІРµСЂСЃРёРё РґР»СЏ РїРµС‡Р°С‚Рё
  *
- * @return string ссылка
+ * @return string СЃСЃС‹Р»РєР°
  */
 function get_print_link()
 {
@@ -453,22 +487,22 @@ function convert_entity($matches, $destroy = true)
 }
 
 /**
- * Замена некоторых символов на их сущности
- * замена и исправление HTML-тэгов
+ * Р—Р°РјРµРЅР° РЅРµРєРѕС‚РѕСЂС‹С… СЃРёРјРІРѕР»РѕРІ РЅР° РёС… СЃСѓС‰РЅРѕСЃС‚Рё
+ * Р·Р°РјРµРЅР° Рё РёСЃРїСЂР°РІР»РµРЅРёРµ HTML-С‚СЌРіРѕРІ
  *
  * @param unknown_type $s
  * @return unknown
  */
 function pretty_chars($s)
 {
-	return preg_replace(array("'©'"   , "'®'"  , "'<b>'i"  , "'</b>'i"  , "'<i>'i", "'</i>'i", "'<br>'i", "'<br/>'i"),
+	return preg_replace(array("'В©'"   , "'В®'"  , "'<b>'i"  , "'</b>'i"  , "'<i>'i", "'</i>'i", "'<br>'i", "'<br/>'i"),
 						array('&copy;', '&reg;', '<strong>', '</strong>', '<em>'  , '</em>'  , '<br />' , '<br />'), $s);
 }
 
 /**
- * Транслитерация
+ * РўСЂР°РЅСЃР»РёС‚РµСЂР°С†РёСЏ
  *
- * @param string $st строка для транслитерации
+ * @param string $st СЃС‚СЂРѕРєР° РґР»СЏ С‚СЂР°РЅСЃР»РёС‚РµСЂР°С†РёРё
  * @return string
  */
 function translit_string($st)
@@ -482,20 +516,20 @@ function translit_string($st)
 //	$st = preg_replace('/&#x([0-9a-f]{1,7});/ei', 'chr(hexdec("\\1"))', $st);
 //	$st = preg_replace('/&#([0-9]{1,7});/e', 'chr("\\1")', $st);
 //
-	$st = strtr ($st, array('ье'=>'ye', 'ъе'=>'ye', 'ьи'=>'yi',  'ъи'=>'yi',
-							'ъо'=>'yo', 'ьо'=>'yo', 'ё'=>'yo',   'ю'=>'yu',
-							'я'=>'ya',  'ж'=>'zh',  'х'=>'kh',   'ц'=>'ts',
-							'ч'=>'ch',  'ш'=>'sh',  'щ'=>'shch', 'ъ'=>'',
-							'ь'=>'',    'ї'=>'yi',  'є'=>'ye')
+	$st = strtr($st, array('СЊРµ'=>'ye', 'СЉРµ'=>'ye', 'СЊРё'=>'yi',  'СЉРё'=>'yi',
+							'СЉРѕ'=>'yo', 'СЊРѕ'=>'yo', 'С‘'=>'yo',   'СЋ'=>'yu',
+							'СЏ'=>'ya',  'Р¶'=>'zh',  'С…'=>'kh',   'С†'=>'ts',
+							'С‡'=>'ch',  'С€'=>'sh',  'С‰'=>'shch', 'СЉ'=>'',
+							'СЊ'=>'',    'С—'=>'yi',  'С”'=>'ye')
 	);
-	$st = strtr($st,'абвгдезийклмнопрстуфыэі',
+	$st = strtr($st,'Р°Р±РІРіРґРµР·РёР№РєР»РјРЅРѕРїСЂСЃС‚СѓС„С‹СЌС–',
 					'abvgdeziyklmnoprstufyei');
 
 	return trim($st, '-');
 }
 
 /**
- * Подготовка URL
+ * РџРѕРґРіРѕС‚РѕРІРєР° URL
  *
  * @param string $st
  * @return string
@@ -504,22 +538,92 @@ function prepare_url($st)
 {
 	$st = strip_tags($st);
 
-	$st = strtr($st,'ABCDEFGHIJKLMNOPQRSTUVWXYZАБВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЬЪЫЭЮЯЇЄІ',
-					'abcdefghijklmnopqrstuvwxyzабвгдеёжзийклмнопрстуфхцчшщьъыэюяїєі');
+    $table = array(
+                'Рђ' => 'A',
+                'Р‘' => 'B',
+                'Р’' => 'V',
+                'Р“' => 'G',
+                'Р”' => 'D',
+                'Р•' => 'E',
+                'РЃ' => 'YO',
+                'Р–' => 'ZH',
+                'Р—' => 'Z',
+                'Р' => 'I',
+                'Р™' => 'J',
+                'Рљ' => 'K',
+                'Р›' => 'L',
+                'Рњ' => 'M',
+                'Рќ' => 'N',
+                'Рћ' => 'O',
+                'Рџ' => 'P',
+                'Р ' => 'R',
+                'РЎ' => 'S',
+                'Рў' => 'T',
+                'РЈ' => 'U',
+                'Р¤' => 'F',
+                'РҐ' => 'H',
+                'Р¦' => 'C',
+                'Р§' => 'CH',
+                'РЁ' => 'SH',
+                'Р©' => 'CSH',
+                'Р¬' => '',
+                'Р«' => 'Y',
+                'РЄ' => '',
+                'Р­' => 'E',
+                'Р®' => 'YU',
+                'РЇ' => 'YA',
 
-	if (defined('TRANSLIT_URL') && TRANSLIT_URL) $st = translit_string(trim($st));
+                'Р°' => 'a',
+                'Р±' => 'b',
+                'РІ' => 'v',
+                'Рі' => 'g',
+                'Рґ' => 'd',
+                'Рµ' => 'e',
+                'С‘' => 'yo',
+                'Р¶' => 'zh',
+                'Р·' => 'z',
+                'Рё' => 'i',
+                'Р№' => 'j',
+                'Рє' => 'k',
+                'Р»' => 'l',
+                'Рј' => 'm',
+                'РЅ' => 'n',
+                'Рѕ' => 'o',
+                'Рї' => 'p',
+                'СЂ' => 'r',
+                'СЃ' => 's',
+                'С‚' => 't',
+                'Сѓ' => 'u',
+                'С„' => 'f',
+                'С…' => 'h',
+                'С†' => 'c',
+                'С‡' => 'ch',
+                'С€' => 'sh',
+                'С‰' => 'csh',
+                'СЊ' => '',
+                'С‹' => 'y',
+                'СЉ' => '',
+                'СЌ' => 'e',
+                'СЋ' => 'yu',
+                'СЏ' => 'ya',
+    );
+
+    $st = str_replace(array_keys($table),  array_values($table), $st); 
+    
+	if (defined('TRANSLIT_URL') && TRANSLIT_URL) $st = translit_string(trim(strtolower($st)));
 
 	$st = preg_replace(
-		array('/^[\/-]+|[\/-]+$|^[\/_]+|[\/_]+$|[^a-zа-яёїєі0-9\/_-]/', '/--+/', '/-*\/+-*/', '/\/\/+/'),
+		array('/^[\/-]+|[\/-]+$|^[\/_]+|[\/_]+$|[^a-zР°-СЏA-ZРђ-РЇ0-9\/_-]/', '/--+/', '/-*\/+-*/', '/\/\/+/'),
 		array('-',                                                      '-',     '/',         '/'),
 		$st
 	);
 
 	return trim($st, '-');
+	
 }
 
 /**
- * Подготовка имени файла или директории
+ * РџРѕРґРіРѕС‚РѕРІРєР° РёРјРµРЅРё С„Р°Р№Р»Р° РёР»Рё РґРёСЂРµРєС‚РѕСЂРёРё
  *
  * @param string $st
  * @return string
@@ -528,9 +632,9 @@ function prepare_fname($st)
 {
 	$st = strip_tags($st);
 
-	$st = strtr($st,'ABCDEFGHIJKLMNOPQRSTUVWXYZАБВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЬЪЫЭЮЯЇЄІ',
-					'abcdefghijklmnopqrstuvwxyzабвгдеёжзийклмнопрстуфхцчшщьъыэюяїєі');
-
+	$st = strtr($st,'ABCDEFGHIJKLMNOPQRSTUVWXYZРђР‘Р’Р“Р”Р•РЃР–Р—РР™РљР›РњРќРћРџР РЎРўРЈР¤РҐР¦Р§РЁР©Р¬РЄР«Р­Р®РЇ',
+					'abcdefghijklmnopqrstuvwxyzР°Р±РІРіРґРµС‘Р¶Р·РёР№РєР»РјРЅРѕРїСЂСЃС‚СѓС„С…С†С‡С€С‰СЊСЉС‹СЌСЋСЏ');
+			
 	$st = translit_string(trim($st));
 
 	$st = preg_replace(array('/[^a-z0-9_-]/', '/--+/'), '-', $st);
@@ -539,16 +643,16 @@ function prepare_fname($st)
 }
 
 /**
- * Формирование ЧПУ для документов
+ * Р¤РѕСЂРјРёСЂРѕРІР°РЅРёРµ Р§РџРЈ РґР»СЏ РґРѕРєСѓРјРµРЅС‚РѕРІ
  *
- * @param string $s ссылка или текст с ссылками
+ * @param string $s СЃСЃС‹Р»РєР° РёР»Рё С‚РµРєСЃС‚ СЃ СЃСЃС‹Р»РєР°РјРё
  * @return string
  */
 function rewrite_link($s)
 {
 	if (!REWRITE_MODE) return $s;
 
-	$doc_regex = '/index.php(?:\?)id=(?:[0-9]+)&(?:amp;)*doc='.(TRANSLIT_URL ? '([a-z0-9\/_-]+)' : '([a-zа-яёїєі0-9\/_-]+)');
+	$doc_regex = '/index.php(?:\?)id=(?:[0-9]+)&(?:amp;)*doc='.(TRANSLIT_URL ? '([a-z0-9\/_-]+)' : '([a-zР°-СЏС‘С—С”С–0-9\/_-]+)');
 	$page_regex = '&(?:amp;)*(artpage|apage|page)=([{s}0-9]+)';
 
 	$s = preg_replace($doc_regex.$page_regex.$page_regex.$page_regex.'/', ABS_PATH.'$1/$2-$3/$4-$5/$6-$7'.URL_SUFF, $s);
@@ -584,7 +688,7 @@ function reportLog($meldung, $typ = 0, $rub = 0)
 }
 
 function get_document_fields($document_id)
-{  
+{
 	global $AVE_DB, $request_documents;
 
 	static $document_fields = array();
@@ -593,23 +697,6 @@ function get_document_fields($document_id)
 
 	if (!isset ($document_fields[$document_id]))
 	{
-		/*if (!empty($request_documents) && is_array($request_documents))
-		{
-			$documents = array_combine($request_documents, $request_documents);
-			$documents = array_diff_key($documents, $document_fields);
-
-			foreach ($documents as $id) $document_fields[$id] = false;
-
-			$where = "WHERE doc_field.document_id IN(" . implode(',', $documents) . ")";
-		}
-		else
-		{
-			$document_fields[$document_id] = false;
-
-			$where = "WHERE doc_field.document_id = '" . $document_id . "'";
-		}
-		*/
-		
 		$document_fields[$document_id] = false;
 		$where = "WHERE doc_field.document_id = '" . $document_id . "'";
 
@@ -632,7 +719,7 @@ function get_document_fields($document_id)
 				" . PREFIX . "_documents AS doc
 					ON doc.Id = doc_field.document_id
 			" . $where
-		);
+		,-1,'doc_'.$document_id);
 
 		while ($row = $sql->FetchAssocArray())
 		{
@@ -664,27 +751,28 @@ function get_document_fields($document_id)
 }
 
 /**
- * Формирование строки имени пользователя
- * При наличии всех параметров пытается сформировать строку <b>Имя Фамилия</b>
- * Если задать $short=1 - формирует короткую форму <b>И. Фамилия</b>
- * Когда отсутствует информация о Имени или Фамилии пытается сформировать
- * строку на основе имеющихся данных, а если данных нет вообще - выводит
- * имя анонимного пользователя которое задается в основных настройках системы.
+ * Р¤РѕСЂРјРёСЂРѕРІР°РЅРёРµ СЃС‚СЂРѕРєРё РёРјРµРЅРё РїРѕР»СЊР·РѕРІР°С‚РµР»СЏ
+ * РџСЂРё РЅР°Р»РёС‡РёРё РІСЃРµС… РїР°СЂР°РјРµС‚СЂРѕРІ РїС‹С‚Р°РµС‚СЃСЏ СЃС„РѕСЂРјРёСЂРѕРІР°С‚СЊ СЃС‚СЂРѕРєСѓ <b>РРјСЏ Р¤Р°РјРёР»РёСЏ</b>
+ * Р•СЃР»Рё Р·Р°РґР°С‚СЊ $short=1 - С„РѕСЂРјРёСЂСѓРµС‚ РєРѕСЂРѕС‚РєСѓСЋ С„РѕСЂРјСѓ <b>Р. Р¤Р°РјРёР»РёСЏ</b>
+ * РљРѕРіРґР° РѕС‚СЃСѓС‚СЃС‚РІСѓРµС‚ РёРЅС„РѕСЂРјР°С†РёСЏ Рѕ РРјРµРЅРё РёР»Рё Р¤Р°РјРёР»РёРё РїС‹С‚Р°РµС‚СЃСЏ СЃС„РѕСЂРјРёСЂРѕРІР°С‚СЊ
+ * СЃС‚СЂРѕРєСѓ РЅР° РѕСЃРЅРѕРІРµ РёРјРµСЋС‰РёС…СЃСЏ РґР°РЅРЅС‹С…, Р° РµСЃР»Рё РґР°РЅРЅС‹С… РЅРµС‚ РІРѕРѕР±С‰Рµ - РІС‹РІРѕРґРёС‚
+ * РёРјСЏ Р°РЅРѕРЅРёРјРЅРѕРіРѕ РїРѕР»СЊР·РѕРІР°С‚РµР»СЏ РєРѕС‚РѕСЂРѕРµ Р·Р°РґР°РµС‚СЃСЏ РІ РѕСЃРЅРѕРІРЅС‹С… РЅР°СЃС‚СЂРѕР№РєР°С… СЃРёСЃС‚РµРјС‹.
  *
- * @todo добавить параметр 'anonymous' в настройки
+ * @todo РґРѕР±Р°РІРёС‚СЊ РїР°СЂР°РјРµС‚СЂ 'anonymous' РІ РЅР°СЃС‚СЂРѕР№РєРё
  *
- * @param string $login логин пользователя
- * @param string $first_name имя пользователя
- * @param string $last_name фамилия пользователя
- * @param int $short {0|1} признак формирования короткой формы
+ * @param string $login Р»РѕРіРёРЅ РїРѕР»СЊР·РѕРІР°С‚РµР»СЏ
+ * @param string $first_name РёРјСЏ РїРѕР»СЊР·РѕРІР°С‚РµР»СЏ
+ * @param string $last_name С„Р°РјРёР»РёСЏ РїРѕР»СЊР·РѕРІР°С‚РµР»СЏ
+ * @param int $short {0|1} РїСЂРёР·РЅР°Рє С„РѕСЂРјРёСЂРѕРІР°РЅРёСЏ РєРѕСЂРѕС‚РєРѕР№ С„РѕСЂРјС‹
  * @return string
  */
 function get_username($login = '', $first_name = '', $last_name = '', $short = 1)
 {
 	if ($first_name != '' && $last_name != '')
 	{
-		if ($short == 1) $first_name = substr($first_name, 0, 1) . '.';
-		return ucfirst(strtolower($first_name)) . ' ' . ucfirst(strtolower($last_name));
+		//if ($short == 1) $first_name = substr($first_name, 0, 1) . '.';
+		//return ucfirst(strtolower($first_name)) . ' ' . ucfirst(strtolower($last_name));
+		return ucfirst(strtolower($login));
 	}
 	elseif ($first_name != '' && $last_name == '')
 	{
@@ -704,9 +792,9 @@ function get_username($login = '', $first_name = '', $last_name = '', $short = 1
 }
 
 /**
- * Возвращает имя пользователя по его идентификатору
+ * Р’РѕР·РІСЂР°С‰Р°РµС‚ РёРјСЏ РїРѕР»СЊР·РѕРІР°С‚РµР»СЏ РїРѕ РµРіРѕ РёРґРµРЅС‚РёС„РёРєР°С‚РѕСЂСѓ
  *
- * @param int $id - идентификатор пользователя
+ * @param int $id - РёРґРµРЅС‚РёС„РёРєР°С‚РѕСЂ РїРѕР»СЊР·РѕРІР°С‚РµР»СЏ
  * @return string
  */
 function get_username_by_id($id)
@@ -733,11 +821,11 @@ function get_username_by_id($id)
 }
 
 /**
- * Исправление форматирования даты
- * Функцию можно использовать в шаблонах Smarty как модификатор
+ * РСЃРїСЂР°РІР»РµРЅРёРµ С„РѕСЂРјР°С‚РёСЂРѕРІР°РЅРёСЏ РґР°С‚С‹
+ * Р¤СѓРЅРєС†РёСЋ РјРѕР¶РЅРѕ РёСЃРїРѕР»СЊР·РѕРІР°С‚СЊ РІ С€Р°Р±Р»РѕРЅР°С… Smarty РєР°Рє РјРѕРґРёС„РёРєР°С‚РѕСЂ
  *
- * @param string $string - дата отформатированная в соответствии с текущей локалью
- * @param string $language - язык
+ * @param string $string - РґР°С‚Р° РѕС‚С„РѕСЂРјР°С‚РёСЂРѕРІР°РЅРЅР°СЏ РІ СЃРѕРѕС‚РІРµС‚СЃС‚РІРёРё СЃ С‚РµРєСѓС‰РµР№ Р»РѕРєР°Р»СЊСЋ
+ * @param string $language - СЏР·С‹Рє
  * @return string
  */
 function pretty_date($string, $language = '')
@@ -759,27 +847,27 @@ function pretty_date($string, $language = '')
 
 		case 'ru':
 			$pretty = array(
-				'Январь'     =>'января',      'Февраль'    =>'февраля',     'Март'    =>'марта',
-				'Апрель'     =>'апреля',      'Май'        =>'мая',         'Июнь'    =>'июня',
-				'Июль'       =>'июля',        'Август'     =>'августа',     'Сентябрь'=>'сентября',
-				'Октябрь'    =>'октября',     'Ноябрь'     =>'ноября',      'Декабрь' =>'декабря',
+				'РЇРЅРІР°СЂСЊ'     =>'СЏРЅРІР°СЂСЏ',      'Р¤РµРІСЂР°Р»СЊ'    =>'С„РµРІСЂР°Р»СЏ',     'РњР°СЂС‚'    =>'РјР°СЂС‚Р°',
+				'РђРїСЂРµР»СЊ'     =>'Р°РїСЂРµР»СЏ',      'РњР°Р№'        =>'РјР°СЏ',         'РСЋРЅСЊ'    =>'РёСЋРЅСЏ',
+				'РСЋР»СЊ'       =>'РёСЋР»СЏ',        'РђРІРіСѓСЃС‚'     =>'Р°РІРіСѓСЃС‚Р°',     'РЎРµРЅС‚СЏР±СЂСЊ'=>'СЃРµРЅС‚СЏР±СЂСЏ',
+				'РћРєС‚СЏР±СЂСЊ'    =>'РѕРєС‚СЏР±СЂСЏ',     'РќРѕСЏР±СЂСЊ'     =>'РЅРѕСЏР±СЂСЏ',      'Р”РµРєР°Р±СЂСЊ' =>'РґРµРєР°Р±СЂСЏ',
 
-				'воскресенье'=>'Воскресенье', 'понедельник'=>'Понедельник', 'вторник' =>'Вторник',
-				'среда'      =>'Среда',       'четверг'    =>'Четверг',     'пятница' =>'Пятница',
-				'суббота'    =>'Суббота'
+				'РІРѕСЃРєСЂРµСЃРµРЅСЊРµ'=>'Р’РѕСЃРєСЂРµСЃРµРЅСЊРµ', 'РїРѕРЅРµРґРµР»СЊРЅРёРє'=>'РџРѕРЅРµРґРµР»СЊРЅРёРє', 'РІС‚РѕСЂРЅРёРє' =>'Р’С‚РѕСЂРЅРёРє',
+				'СЃСЂРµРґР°'      =>'РЎСЂРµРґР°',       'С‡РµС‚РІРµСЂРі'    =>'Р§РµС‚РІРµСЂРі',     'РїСЏС‚РЅРёС†Р°' =>'РџСЏС‚РЅРёС†Р°',
+				'СЃСѓР±Р±РѕС‚Р°'    =>'РЎСѓР±Р±РѕС‚Р°'
 			);
 			break;
 
 		case 'ua':
 			$pretty = array(
-				'Січень' =>'січня',  'Лютий'    =>'лютого',    'Березень'=>'березня',
-				'Квітень'=>'квітня', 'Травень'  =>'травня',    'Червень' =>'червня',
-				'Липень' =>'липня',  'Серпень'  =>'серпня',    'Вересень'=>'вересня',
-				'Жовтень'=>'жовтня', 'Листопад' =>'листопада', 'Грудень' =>'грудня',
+				'РЎС–С‡РµРЅСЊ' =>'СЃС–С‡РЅСЏ',  'Р›СЋС‚РёР№'    =>'Р»СЋС‚РѕРіРѕ',    'Р‘РµСЂРµР·РµРЅСЊ'=>'Р±РµСЂРµР·РЅСЏ',
+				'РљРІС–С‚РµРЅСЊ'=>'РєРІС–С‚РЅСЏ', 'РўСЂР°РІРµРЅСЊ'  =>'С‚СЂР°РІРЅСЏ',    'Р§РµСЂРІРµРЅСЊ' =>'С‡РµСЂРІРЅСЏ',
+				'Р›РёРїРµРЅСЊ' =>'Р»РёРїРЅСЏ',  'РЎРµСЂРїРµРЅСЊ'  =>'СЃРµСЂРїРЅСЏ',    'Р’РµСЂРµСЃРµРЅСЊ'=>'РІРµСЂРµСЃРЅСЏ',
+				'Р–РѕРІС‚РµРЅСЊ'=>'Р¶РѕРІС‚РЅСЏ', 'Р›РёСЃС‚РѕРїР°Рґ' =>'Р»РёСЃС‚РѕРїР°РґР°', 'Р“СЂСѓРґРµРЅСЊ' =>'РіСЂСѓРґРЅСЏ',
 
-				'неділя' =>'Неділя', 'понеділок'=>'Понеділок', 'вівторок'=>'Вівторок',
-				'середа' =>'Середа', 'четвер'   =>'Четвер',    "п'ятниця"=>"П'ятниця",
-				'субота' =>'Субота'
+				'РЅРµРґС–Р»СЏ' =>'РќРµРґС–Р»СЏ', 'РїРѕРЅРµРґС–Р»РѕРє'=>'РџРѕРЅРµРґС–Р»РѕРє', 'РІС–РІС‚РѕСЂРѕРє'=>'Р’С–РІС‚РѕСЂРѕРє',
+				'СЃРµСЂРµРґР°' =>'РЎРµСЂРµРґР°', 'С‡РµС‚РІРµСЂ'   =>'Р§РµС‚РІРµСЂ',    "Рї'СЏС‚РЅРёС†СЏ"=>"Рџ'СЏС‚РЅРёС†СЏ",
+				'СЃСѓР±РѕС‚Р°' =>'РЎСѓР±РѕС‚Р°'
 			);
 			break;
 
@@ -791,11 +879,11 @@ function pretty_date($string, $language = '')
 }
 
 /**
- * Формирование строки из случайных символов
+ * Р¤РѕСЂРјРёСЂРѕРІР°РЅРёРµ СЃС‚СЂРѕРєРё РёР· СЃР»СѓС‡Р°Р№РЅС‹С… СЃРёРјРІРѕР»РѕРІ
  *
- * @param int $length количество символов в строке
- * @param string $chars набор символов для формирования строки
- * @return string сформированная строка
+ * @param int $length РєРѕР»РёС‡РµСЃС‚РІРѕ СЃРёРјРІРѕР»РѕРІ РІ СЃС‚СЂРѕРєРµ
+ * @param string $chars РЅР°Р±РѕСЂ СЃРёРјРІРѕР»РѕРІ РґР»СЏ С„РѕСЂРјРёСЂРѕРІР°РЅРёСЏ СЃС‚СЂРѕРєРё
+ * @return string СЃС„РѕСЂРјРёСЂРѕРІР°РЅРЅР°СЏ СЃС‚СЂРѕРєР°
  */
 function make_random_string($length = 16, $chars = '')
 {
@@ -821,11 +909,11 @@ function get_statistic($t=0, $m=0, $q=0, $l=0)
 
 	$s = '';
 
-	if ($t) $s .= "\n<br>Время генерации: " . number_format(microtime_diff(START_MICROTIME, microtime()), 3, ',', ' ') . ' сек.';
-	if ($m && function_exists('memory_get_peak_usage')) $s .= "\n<br>Пиковое значение " . number_format(memory_get_peak_usage()/1024, 0, ',', ' ') . 'Kb';
-//	if ($q) $s .= "\n<br>Количество запросов: " . $AVE_DB->DBStatisticGet('count') . ' шт. за ' . number_format($AVE_DB->DBStatisticGet('time')*1000, 3, ',', '.') . ' мксек.';
+	if ($t) $s .= "\n<br>Р’СЂРµРјСЏ РіРµРЅРµСЂР°С†РёРё: " . number_format(microtime_diff(START_MICROTIME, microtime()), 3, ',', ' ') . ' СЃРµРє.';
+	if ($m && function_exists('memory_get_peak_usage')) $s .= "\n<br>РџРёРєРѕРІРѕРµ Р·РЅР°С‡РµРЅРёРµ " . number_format(memory_get_peak_usage()/1024, 0, ',', ' ') . 'Kb';
+//	if ($q) $s .= "\n<br>РљРѕР»РёС‡РµСЃС‚РІРѕ Р·Р°РїСЂРѕСЃРѕРІ: " . $AVE_DB->DBStatisticGet('count') . ' С€С‚. Р·Р° ' . number_format($AVE_DB->DBStatisticGet('time')*1000, 3, ',', '.') . ' РјРєСЃРµРє.';
 //	if ($l) $s .= "\n<br><div style=\"text-align:left;padding-left:30px\"><small><ol>" . $AVE_DB->DBStatisticGet('list') . '</ol></small></div>';
-	if ($q && !defined('SQL_PROFILING_DISABLE')) $s .= "\n<br>Количество запросов: " . $AVE_DB->DBProfilesGet('count') . ' шт. за ' . $AVE_DB->DBProfilesGet('time') . ' сек.';
+	if ($q && !defined('SQL_PROFILING_DISABLE')) $s .= "\n<br>РљРѕР»РёС‡РµСЃС‚РІРѕ Р·Р°РїСЂРѕСЃРѕРІ: " . $AVE_DB->DBProfilesGet('count') . ' С€С‚. Р·Р° ' . $AVE_DB->DBProfilesGet('time') . ' СЃРµРє.';
 	if ($l && !defined('SQL_PROFILING_DISABLE')) $s .= $AVE_DB->DBProfilesGet('list');
 
 	return $s;
@@ -837,14 +925,14 @@ function add_template_comment($tpl_source, &$smarty)
 }
 
 /**
- * Получения списка стран
+ * РџРѕР»СѓС‡РµРЅРёСЏ СЃРїРёСЃРєР° СЃС‚СЂР°РЅ
  *
- * @param int $status статус стран входящих в список
+ * @param int $status СЃС‚Р°С‚СѓСЃ СЃС‚СЂР°РЅ РІС…РѕРґСЏС‰РёС… РІ СЃРїРёСЃРѕРє
  * <ul>
- * <li>1 - активные страны</li>
- * <li>0 - неактивные страны</li>
+ * <li>1 - Р°РєС‚РёРІРЅС‹Рµ СЃС‚СЂР°РЅС‹</li>
+ * <li>0 - РЅРµР°РєС‚РёРІРЅС‹Рµ СЃС‚СЂР°РЅС‹</li>
  * </ul>
- * если не указано возвращает список стран без учета статуса
+ * РµСЃР»Рё РЅРµ СѓРєР°Р·Р°РЅРѕ РІРѕР·РІСЂР°С‰Р°РµС‚ СЃРїРёСЃРѕРє СЃС‚СЂР°РЅ Р±РµР· СѓС‡РµС‚Р° СЃС‚Р°С‚СѓСЃР°
  * @return array
  */
 function get_country_list($status = '')
@@ -854,11 +942,9 @@ function get_country_list($status = '')
 	$countries = array();
 	$sql = $AVE_DB->Query("
 		SELECT
-			Id,
-			LOWER(country_code) AS country_code,
+			country_code,
 			country_name,
-			country_status,
-			country_eu
+			country_status
 		FROM " . PREFIX . "_countries
 		" . (($status != '') ? "WHERE country_status = '" . $status . "'" : '') . "
 		ORDER BY country_name ASC
@@ -869,7 +955,7 @@ function get_country_list($status = '')
 }
 
 /**
- * Отправка e-Mail
+ * РћС‚РїСЂР°РІРєР° e-Mail
  *
  * @param string $to
  * @param string $text
@@ -878,6 +964,7 @@ function get_country_list($status = '')
  * @param string $from_name
  * @param string $content_type
  * @param string $attachments
+ * @param string $html
  */
 function send_mail($to, $text, $subject = '', $from = '', $from_name = '', $content_type = '', $attachments = '')
 {
@@ -894,7 +981,7 @@ function send_mail($to, $text, $subject = '', $from = '', $from_name = '', $cont
 
 	$PHPMailer = new PHPMailer;
 
-	$PHPMailer->CharSet     = 'windows-1251';
+	$PHPMailer->CharSet     = 'utf-8';
 	$PHPMailer->Mailer      = get_settings('mail_type');
 	$PHPMailer->ContentType = ($content_type == 'html') ? 'text/html' : (($content_type == 'text' || get_settings('mail_content_type') == 'text/plain') ? 'text/plain' : 'text/html');
 	$PHPMailer->WordWrap    = get_settings('mail_word_wrap');

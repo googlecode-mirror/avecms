@@ -627,7 +627,7 @@ class Forum
 	}
 
 	//=======================================================
-	// Themen lˆschen
+	// Themen l—Üschen
 	//=======================================================
 	function delTopics($tpl_dir)
 	{
@@ -676,7 +676,7 @@ class Forum
 				$result = $GLOBALS['AVE_DB']->Query($query);
 				if(!empty($_POST['preview']))
 				{
-					// Endg¸ltig lˆschen
+					// Endg—åltig l—Üschen
 					if(!empty($_POST['del_id']) && !empty($_POST['del_final']))
 					{
 						foreach($_POST['del_id'] as $Del => $id)
@@ -741,7 +741,7 @@ class Forum
 
 
 	//=======================================================
-	// Automatisches Update wenn f¸r Gruppe keine Rechte bestehen
+	// Automatisches Update wenn f—år Gruppe keine Rechte bestehen
 	//=======================================================
 	function AutoUpdatePerms()
 	{
@@ -834,11 +834,11 @@ class Forum
 	}
 
 	//=======================================================
-	// Benutzerr‰nge
+	// Benutzerr–¥nge
 	//=======================================================
 	function userRanks($tpl_dir)
 	{
-		// position lˆschen
+		// position l—Üschen
 		if(isset($_REQUEST['del_rank']) && $_REQUEST['del_rank']==1)
 		{
 			$GLOBALS['AVE_DB']->Query("DELETE FROM " . PREFIX . "_modul_forum_rank WHERE id = '" . $_GET['id'] . "'");
@@ -1132,7 +1132,7 @@ class Forum
 			exit;
 		}
 
-		// Lˆschen
+		// L—Üschen
 		if(isset($_REQUEST['del']) && $_REQUEST['del']==1)
 		{
 			$GLOBALS['AVE_DB']->Query("DELETE FROM " . PREFIX . "_modul_forum_allowed_files WHERE id = '" . $_GET['id'] . "'");
@@ -1291,13 +1291,13 @@ class Forum
 	}
 
 	//=======================================================
-	// Grˆsse umrechnen
+	// Gr—Üsse umrechnen
 	//=======================================================
 	function file_size($param)
 	{
 		$size = $param;
 		$size = $size*1024;
-		$sizes = Array(' ¡‡ÈÚ', ' ·', 'Ã·', '√·', '“·', 'œ·', '≈·');
+		$sizes = Array(' –ë–∞–π—Ç', '–ö–±', '–ú–±', '–ì–±', '–¢–±', '–ü–±', '–ï–±');
 		$ext = $sizes[0];
 		for ($i = 1; (($i < count($sizes)) && ($size >= 1024)); $i++)
 		{
@@ -1417,7 +1417,7 @@ class Forum
 	}
 
 	//=======================================================
-	// F¸r den Import von Benutzern aus Koobi
+	// F—år den Import von Benutzern aus Koobi
 	//=======================================================
 	function userImport($Prefix = '', $Truncate = '')
 	{

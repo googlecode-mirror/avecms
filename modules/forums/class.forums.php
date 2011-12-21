@@ -29,21 +29,21 @@ class Forum
 	var $_FontSizes = array("1","2","3","4","5","6","7");
 
 	var $_FontColors = array(
-		"#cccccc" => "—‚ÂÚÎÓ-ÒÂ˚È",
-		"#666666" => "“ÂÏÌÓ-ÒÂ˚È",
-		"#000000" => "◊ÂÌ˚È",
-		"#eec00a" => "∆ÂÎÚ˚È",
-		"#ff9900" => "Œ‡ÌÊÂ‚˚È",
-		"#ff0000" => " ‡ÒÌ˚È",
-		"#990000" => "“ÂÏÌÓ-Í‡ÒÌ˚È",
-		"#660000" => "“ÂÏÌÓ-ÍÓË˜ÌÂ‚˚È",
-		"#00ccff" => "—‚ÂÚÎÓ-„ÓÎÛ·ÓÈ",
-		"#003366" => "√ÓÎÛ·ÓÈ",
-		"#006600" => "«ÂÎÂÌ˚È",
-		"#ff33ff" => "Ã‡‰ÊÂÌÚ‡",
-		"#660099" => "ÀËÎÓ‚˚È",
-		"#ff66ff" => "–ÓÁÓ‚˚È",
-		"#663300" => " ÓË˜ÌÂ‚˚È"
+		"#cccccc" => "–°–≤–µ—Ç–ª–æ-—Å–µ—Ä—ã–π",
+		"#666666" => "–¢–µ–º–Ω–æ-—Å–µ—Ä—ã–π",
+		"#000000" => "–ß–µ—Ä–Ω—ã–π",
+		"#eec00a" => "–ñ–µ–ª—Ç—ã–π",
+		"#ff9900" => "–û—Ä–∞–Ω–∂–µ–≤—ã–π",
+		"#ff0000" => "–ö—Ä–∞—Å–Ω—ã–π",
+		"#990000" => "–¢–µ–º–Ω–æ-–∫—Ä–∞—Å–Ω—ã–π",
+		"#660000" => "–¢–µ–º–Ω–æ-–∫–æ—Ä–∏—á–Ω–µ–≤—ã–π",
+		"#00ccff" => "–°–≤–µ—Ç–ª–æ-–≥–æ–ª—É–±–æ–π",
+		"#003366" => "–ì–æ–ª—É–±–æ–π",
+		"#006600" => "–ó–µ–ª–µ–Ω—ã–π",
+		"#ff33ff" => "–ú–∞–¥–∂–µ–Ω—Ç–∞",
+		"#660099" => "–õ–∏–ª–æ–≤—ã–π",
+		"#ff66ff" => "–†–æ–∑–æ–≤—ã–π",
+		"#663300" => "–ö–æ—Ä–∏—á–Ω–µ–≤—ã–π"
 
 	);
 
@@ -63,7 +63,7 @@ class Forum
 		return $row->BenutzerName;
 	}
 	//=======================================================
-	// FORUM-‹BERSICHT
+	// FORUM-–¨BERSICHT
 	//=======================================================
 	function showForums()
 	{
@@ -188,7 +188,7 @@ class Forum
 	}
 
 	//=======================================================
-	// Form f¸r neuen Beitrag
+	// Form f—år neuen Beitrag
 	//=======================================================
 	function newTopic()
 	{
@@ -220,7 +220,7 @@ class Forum
 
 
 	//=======================================================
-	// Datei anh‰ngen
+	// Datei anh–¥ngen
 	//=======================================================
 	function attachFile()
 	{
@@ -264,7 +264,7 @@ class Forum
 	}
 
 	//=======================================================
-	// Erzeugt ein Array mit Schriftarten f¸r Formulare
+	// Erzeugt ein Array mit Schriftarten f—år Formulare
 	//=======================================================
 	function fontDropdown()
 	{
@@ -278,7 +278,7 @@ class Forum
 	}
 
 	//=======================================================
-	// Schriftgroesse f¸r Beitrag-Feld
+	// Schriftgroesse f—år Beitrag-Feld
 	//=======================================================
 	function sizeDropdown()
 	{
@@ -292,7 +292,7 @@ class Forum
 	}
 
 	//=======================================================
-	// Schriftfarbe f¸r Beitrag-Feld
+	// Schriftfarbe f—år Beitrag-Feld
 	//=======================================================
 	function colorDropdown()
 	{
@@ -307,7 +307,7 @@ class Forum
 
 	//=======================================================
 	// Listet Beitrags-Icons auf
-	// Icons m¸ssen sich in dem Themen-Verzeichnis befinden!
+	// Icons m—åssen sich in dem Themen-Verzeichnis befinden!
 	//=======================================================
 	function getPosticons($icon = "0")
 	{
@@ -387,7 +387,7 @@ class Forum
 		$smiliesw_ext .= '</tr></table>';
 
 		$more_s = $smiliesw_ext;
-		$smiliesw_ext_more = '<a id="more_s" href="javascript:void(0);" onmouseover="return overlib(\''.addslashes($more_s).'\',FIXX,elemX(elemObj(\'more_s\')),FIXY,elemY(elemObj(\'more_s\'))+20,TIMEOUT,4000,MOUSEOFF,NOCLOSE,WIDTH,600,STICKY);" onmouseout="nd();">¬ÒÂ ÒÏ‡ÈÎ˚...</a>';
+		$smiliesw_ext_more = '<a id="more_s" href="javascript:void(0);" onmouseover="return overlib(\''.addslashes($more_s).'\',FIXX,elemX(elemObj(\'more_s\')),FIXY,elemY(elemObj(\'more_s\'))+20,TIMEOUT,4000,MOUSEOFF,NOCLOSE,WIDTH,600,STICKY);" onmouseout="nd();">–í—Å–µ —Å–º–∞–π–ª—ã...</a>';
 		$smiliesw .= $smiliesw_ext_more;
 		return $smiliesw;
 	}
@@ -586,7 +586,7 @@ class Forum
 					SET
 						Id = '',
 						BenutzerId = '" . $row->Id . "',
-						BenutzerName = '". (($row->user_name!='') ? $row->user_name : substr($row->firstname,0,1) . '. ' . $row->lastname) . "',
+						BenutzerName = '". (($row->user_name!='') ? $row->user_name : mb_substr($row->firstname,0,1) . '. ' . $row->lastname) . "',
 						GroupIdMisc = '',
 						Beitraege = '',
 						ZeigeProfil = '1',
@@ -697,7 +697,7 @@ class Forum
 	{
 		if(isset($_POST['SendMail']) && $_POST['SendMail'] == 1 && UGROUP != 2)
 		{
-			// Pr¸fen, ob dieser User die E-Mail an den User senden darf
+			// Pr—åfen, ob dieser User die E-Mail an den User senden darf
 			$Absender = $_SESSION['forum_user_email'];
 			$Empfang = $_POST['ToUser'];
 
@@ -924,14 +924,14 @@ class Forum
 	}
 
 	//=======================================================
-	// Grˆsse umrechnen
+	// Gr—Üsse umrechnen
 	//=======================================================
 	function file_size($param)
 	{
 		global $AVE_DB;
 		$size = $param;
 		$size = $size*1024;
-		$sizes = Array(' ¡‡ÈÚ', ' ¡', 'Ã¡', '√¡', '“¡', 'P¡', 'E¡');
+		$sizes = Array(' –ë–∞–π—Ç', '–ö–ë', '–ú–ë', '–ì–ë', '–¢–ë', 'P–ë', 'E–ë');
 		$ext = $sizes[0];
 		for ($i = 1; (($i < count($sizes)) && ($size >= 1024)); $i++) {
 			$size = $size / 1024;
@@ -941,7 +941,7 @@ class Forum
 	}
 
 	//=======================================================
-	// Dateianhang-Grˆsse
+	// Dateianhang-Gr—Üsse
 	//=======================================================
 	function get_attachment_size($file)
 	{
@@ -1538,7 +1538,7 @@ class Forum
 	}
 
 	//=======================================================
-	// Letzte Beitr‰ge eines Forum auslesen
+	// Letzte Beitr–¥ge eines Forum auslesen
 	//=======================================================
 	function getLastPostings($id)
 	{
@@ -1981,7 +1981,7 @@ class Forum
 			$maxlines = $this->forumSettings('maxlines');
 		}
 
-		$lines = max(substr_count($text, "\n"), substr_count($text, "<br />"));
+		$lines = max(mb_substr_count($text, "\n"), mb_substr_count($text, "<br />"));
 		if ($lines > $maxlines AND $maxlines > 0){
 			$lines = $maxlines;
 		}
@@ -2028,14 +2028,14 @@ class Forum
 					$max_length_word = $c_mlength;
 					$tword = trim($words[$i]);
 					$tword = preg_replace("/\[(.*?)\]/si", "", $tword);
-					$displaybox = substr_count($tword, "http://") + substr_count($tword, "https://") + substr_count($tword, "www.") + substr_count($tword, "ftp://");
+					$displaybox = mb_substr_count($tword, "http://") + mb_substr_count($tword, "https://") + mb_substr_count($tword, "www.") + mb_substr_count($tword, "ftp://");
 					if($displaybox > 0) {
 						$max_length_word = 200;
 					}
-					if(strlen($tword)>$max_length_word) {
+					if(mb_strlen($tword)>$max_length_word) {
 						$words[$i] = chunk_split($words[$i], $max_length_word, "<br>");
-						$length = strlen($words[$i])-5;
-						$words[$i] = substr($words[$i],0,$length);
+						$length = mb_strlen($words[$i])-5;
+						$words[$i] = mb_substr($words[$i],0,$length);
 					}
 				}
 				$lines[$n] = implode(" ", $words);
@@ -2063,8 +2063,8 @@ class Forum
 		$text = preg_replace("#\[email=()?(.*?)\](.*?)\[/email\]#si", "<A HREF=\"mailto:\\2\">\\3</A>", $text);
 		$text = preg_replace("!\[(?i)img\]([_-a-zA-Z0-9:/\?\[\]=.@-]+)\[(?i)/img\]!", "<img src=\"\\1\" border=\"0\" alt=\"\" />", $text);
 		$text = preg_replace("!\[(?i)IMG\]([_-a-zA-Z0-9:/\?\[\]=.@-]+)\[(?i)/IMG\]!", "<img src=\"\\1\" border=\"0\" alt=\"\" />", $text);
-		$text = preg_replace("/\[code\](.*?)\[\/code\]/si",str_replace("%%boxtitle%%", ' Ó‰', $head).'\\1'.$foot, $text);
-		$text = preg_replace("!\[(?i)quote\]!", str_replace("%%boxtitle%%", '÷ËÚ‡Ú‡', $head_quote), $text);
+		$text = preg_replace("/\[code\](.*?)\[\/code\]/si",str_replace("%%boxtitle%%", '–ö–æ–¥', $head).'\\1'.$foot, $text);
+		$text = preg_replace("!\[(?i)quote\]!", str_replace("%%boxtitle%%", '–¶–∏—Ç–∞—Ç–∞', $head_quote), $text);
 		$text = preg_replace("!\[/(?i)quote\]!", $foot_quote, $text);
 		$text = preg_replace("/\[list\](.*?)\[\/list\]/si","<ul>\\1</ul>", $text);
 		$text = preg_replace("/\[list=(.*?)\](.*?)\[\/list\]/si","<ol type=\"\\1\">\\2</ol>", $text);
@@ -2233,7 +2233,7 @@ class Forum
 	}
 
 	// ================================================================
-	// downloadfunktion f¸r pn
+	// downloadfunktion f—år pn
 	// ================================================================
 	function downloadfile($datstring, $datname, $dattype, $extra = "0")
 	{
@@ -2241,7 +2241,7 @@ class Forum
 		header('Content-Type: ' . $dattype);
 		header('Expires: ' . gmdate('D, d M Y H:i:s') . ' GMT');
 		header('Content-Disposition: attachment; filename="' . $datname . '"');
-		if ($extra != 1) header('Content-Length: ' . strlen($datstring));
+		if ($extra != 1) header('Content-Length: ' . mb_strlen($datstring));
 		header('Cache-Control: must-revalidate, post-check=0, pre-check=0');
 		header('Pragma: public');
 		echo $datstring;
@@ -2282,7 +2282,7 @@ class Forum
 	}
 
 	//=======================================================
-	// Daten aus Koobi ¸bertragen
+	// Daten aus Koobi —åbertragen
 	//=======================================================
 	function importfromkoobi()
 	{
@@ -2292,7 +2292,7 @@ class Forum
 
 
 		//=======================================================
-	// Automatisches Update wenn f¸r Gruppe keine Rechte bestehen
+	// Automatisches Update wenn f—år Gruppe keine Rechte bestehen
 	//=======================================================
 	function AutoUpdatePerms()
 	{

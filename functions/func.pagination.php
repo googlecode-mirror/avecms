@@ -8,11 +8,11 @@
  */
 
 /**
- * Текущая страница
+ * РўРµРєСѓС‰Р°СЏ СЃС‚СЂР°РЅРёС†Р°
  *
- * @param string $type	тип постраничной навигации,
- * 						допустимые значения: page, apage, artpage
- * @return int			номер текущей страницы
+ * @param string $type	С‚РёРї РїРѕСЃС‚СЂР°РЅРёС‡РЅРѕР№ РЅР°РІРёРіР°С†РёРё,
+ * 						РґРѕРїСѓСЃС‚РёРјС‹Рµ Р·РЅР°С‡РµРЅРёСЏ: page, apage, artpage
+ * @return int			РЅРѕРјРµСЂ С‚РµРєСѓС‰РµР№ СЃС‚СЂР°РЅРёС†С‹
  */
 function get_current_page($type = 'page')
 {
@@ -24,14 +24,14 @@ function get_current_page($type = 'page')
 }
 
 /**
- * Постраничная навигация для запросов и модулей
+ * РџРѕСЃС‚СЂР°РЅРёС‡РЅР°СЏ РЅР°РІРёРіР°С†РёСЏ РґР»СЏ Р·Р°РїСЂРѕСЃРѕРІ Рё РјРѕРґСѓР»РµР№
  *
- * @param int $total_pages			количество страниц в документе
- * @param string $type				тип постраничной навигации,
- * 									допустимые значения: page, apage, artpage
- * @param string $template_label	шаблон метки навигации
- * @param string $navi_box			контейнер постраничной навигации
- * @return string					HTML-код постраничной навигации
+ * @param int $total_pages			РєРѕР»РёС‡РµСЃС‚РІРѕ СЃС‚СЂР°РЅРёС† РІ РґРѕРєСѓРјРµРЅС‚Рµ
+ * @param string $type				С‚РёРї РїРѕСЃС‚СЂР°РЅРёС‡РЅРѕР№ РЅР°РІРёРіР°С†РёРё,
+ * 									РґРѕРїСѓСЃС‚РёРјС‹Рµ Р·РЅР°С‡РµРЅРёСЏ: page, apage, artpage
+ * @param string $template_label	С€Р°Р±Р»РѕРЅ РјРµС‚РєРё РЅР°РІРёРіР°С†РёРё
+ * @param string $navi_box			РєРѕРЅС‚РµР№РЅРµСЂ РїРѕСЃС‚СЂР°РЅРёС‡РЅРѕР№ РЅР°РІРёРіР°С†РёРё
+ * @return string					HTML-РєРѕРґ РїРѕСЃС‚СЂР°РЅРёС‡РЅРѕР№ РЅР°РІРёРіР°С†РёРё
  */
 function get_pagination($total_pages, $type, $template_label, $navi_box = '')
 {
@@ -58,7 +58,7 @@ function get_pagination($total_pages, $type, $template_label, $navi_box = '')
 
 	if ($total_pages > 5 && $curent_page > 3)
 	{
-		$nav .= str_replace('{t}', $start_label, str_replace(array('&amp;'.$type.'={s}','&'.$type.'={s}','/'.$type.'-{s}'), '', $template_label));
+		$nav .= '<span class="hids">'.str_replace('{t}', $start_label, str_replace(array('&amp;'.$type.'={s}','&'.$type.'={s}','/'.$type.'-{s}'), '', $template_label)).'</span>';
 		if ($separator_label != '') $nav .= '<span>' . $separator_label . '</span>';
 	}
 
@@ -66,12 +66,14 @@ function get_pagination($total_pages, $type, $template_label, $navi_box = '')
 	{
 		if ($curent_page == 2)
 		{
-			$nav .= str_replace('{t}', $prev_label, str_replace(array('&amp;'.$type.'={s}','&'.$type.'={s}','/'.$type.'-{s}'), '', $template_label));
+			//$nav .= str_replace('{t}', $prev_label, str_replace(array('&amp;'.$type.'={s}','&'.$type.'={s}'), '', $template_label));
+			$nav .= '<!-- <span class="keypress">&larr; Ctrl</span> --><span class="page-back">'.str_replace('{t}', $prev_label, str_replace(array('&amp;'.$type.'={s}','&'.$type.'={s}','/'.$type.'-{s}'), '', $template_label)).'</span>';
 		}
 		else
 		{
-			$nav .= str_replace('{t}', $prev_label, str_replace('{s}', ($curent_page - 1), $template_label));
-		}
+			//$nav .= str_replace('{t}', $prev_label, str_replace('{s}', ($curent_page - 1), $template_label));
+			$nav .= '<!-- <span class="keypress">&larr; Ctrl</span> --><span class="page-back">'.str_replace('{t}', $prev_label, str_replace('{s}', ($curent_page - 1), $template_label)).'</span>';
+		}	
 	}
 
 //	while (list(,$val) = each($seiten))
@@ -81,12 +83,13 @@ function get_pagination($total_pages, $type, $template_label, $navi_box = '')
 		{
 			if ($curent_page == $val)
 			{
-				$nav .= str_replace(array('{s}', '{t}'), $val, '<span class="curent_page">' . $curent_page . '</span>');
+				$nav .= str_replace(array('{s}', '{t}'), $val, '<span class="page">' . $curent_page . '</span>');
 			}
 			else
 			{
 				if ($val == 1)
 				{
+				
 					$nav .= str_replace('{t}', $val, str_replace(array('&amp;'.$type.'={s}','&'.$type.'={s}','/'.$type.'-{s}'), '', $template_label));
 				}
 				else
@@ -99,18 +102,19 @@ function get_pagination($total_pages, $type, $template_label, $navi_box = '')
 
 	if ($curent_page < $total_pages)
 	{
-		$nav .= str_replace('{t}', $next_label, str_replace('{s}', ($curent_page + 1), $template_label));
+		//$nav .= str_replace('{t}', $next_label, str_replace('{s}', ($curent_page + 1), $template_label));
+		$nav .= '<span class="page-next">'.str_replace('{t}', $next_label, str_replace('{s}', ($curent_page + 1), $template_label)).'</span><!-- <span class="keypress">Ctrl &rarr;</span> -->';
 	}
 
 	if ($total_pages > 5 && ($curent_page < $total_pages-2))
 	{
 		if ($separator_label != '') $nav .= '<span>' . $separator_label . '</span>';
-		$nav .= str_replace('{t}', $end_label, str_replace('{s}', $total_pages, $template_label));
+		$nav .= '<span class="hids">'.str_replace('{t}', $end_label, str_replace('{s}', $total_pages, $template_label)).'</span>';
 	}
 
 	if ($nav != '')
 	{
-		if ($total_label != '') $nav = '<span class="pages">' . sprintf($total_label, $curent_page, $total_pages) . '</span> ' . $nav;
+		//if ($total_label != '') $nav = '<span class="pages">' . sprintf($total_label, $curent_page, $total_pages) . '</span> ' . $nav;
 		if ($navi_box != '') $nav = sprintf($navi_box, $nav);
 	}
 

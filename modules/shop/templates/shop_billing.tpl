@@ -26,7 +26,7 @@
 			{/if}
 
 			<div class="grid_6 alpha">
-				<!-- Таблица формы доставки товара -->
+				<!-- РўР°Р±Р»РёС†Р° С„РѕСЂРјС‹ РґРѕСЃС‚Р°РІРєРё С‚РѕРІР°СЂР° -->
 				<table width="100%">
 					<thead>
 						<tr>
@@ -77,7 +77,7 @@
 						<td class="mod_shop_basket_row_right">
 						{assign var=sl value=$smarty.request.country|upper|default:''}
 						<select name="country" id="l_land" style="width:180px" class="mod_shop_inputfields" onchange="document.process.submit();">
-							<option value="">Выберите страну </option>
+							<option value="">Р’С‹Р±РµСЂРёС‚Рµ СЃС‚СЂР°РЅСѓ </option>
 							{foreach from=$available_countries item=land}
 								{if in_array($land->country_code|upper,$shippingCountries)}
 									<option value="{$land->country_code|upper}"{if $sl==$land->country_code|upper} selected{/if}>{$land->country_name}</option>
@@ -90,7 +90,7 @@
 			</div>
 
 			<div class="grid_6 omega">
-				<!-- Таблица формы доставки счета -->
+				<!-- РўР°Р±Р»РёС†Р° С„РѕСЂРјС‹ РґРѕСЃС‚Р°РІРєРё СЃС‡РµС‚Р° -->
 				<table width="100%" border="0" cellpadding="3" cellspacing="1" class="mod_shop_basket_table">
 					<thead>
 						<tr>
@@ -132,7 +132,7 @@
 						<td class="mod_shop_basket_row_right">
 							{assign var=Rsl value=$smarty.request.RLand|upper|default:''}
 							<select name="RLand" id="ll_land" class="mod_shop_inputfields" style="width:180px">
-								<option value="">Выберите страну </option>
+								<option value="">Р’С‹Р±РµСЂРёС‚Рµ СЃС‚СЂР°РЅСѓ </option>
 								{foreach from=$available_countries item=land}
 									{if in_array($land->country_code|upper,$shippingCountries)}
 										<option value="{$land->country_code|upper}"{if $Rsl==$land->country_code|upper} selected{/if}>{$land->country_name}</option>
@@ -144,7 +144,7 @@
 				</table>
 			</div>
 
-			<!-- Таблица формы метода оплаты -->
+			<!-- РўР°Р±Р»РёС†Р° С„РѕСЂРјС‹ РјРµС‚РѕРґР° РѕРїР»Р°С‚С‹ -->
 			<table width="100%" class="tablebox">
 				<thead>
 					<tr>
@@ -180,7 +180,7 @@
 				{/if}
 			</table>
 
-			<!-- Таблица формы метода оплаты -->
+			<!-- РўР°Р±Р»РёС†Р° С„РѕСЂРјС‹ РјРµС‚РѕРґР° РѕРїР»Р°С‚С‹ -->
 			<table width="100%" border="0" cellpadding="3" cellspacing="1" class="mod_shop_basket_table">
 				<thead>
 					<tr>
@@ -246,45 +246,45 @@
 
 {if $smarty.request.print!=1}
 	<div class="grid_4">
-		<!-- Правое меню -->
+		<!-- РџСЂР°РІРѕРµ РјРµРЅСЋ -->
 		<div class="box menu">
 			<h2><a href="#" id="toggle-section-menu">{#ProductOverview#}</a></h2>
 			<div class="block" id="section-menu">{$ShopNavi}</div>
 		</div>
 
-		<!-- Блок авторизации -->
+		<!-- Р‘Р»РѕРє Р°РІС‚РѕСЂРёР·Р°С†РёРё -->
 		<div class="box">
 			<h2> <a href="#" id="toggle-login-forms">{#UserPanel#}</a> </h2>
 			<div class="block" id="login-forms">{$UserPanel}</div>
 		</div>
 
-		<!-- Блок поиска по магазину -->
+		<!-- Р‘Р»РѕРє РїРѕРёСЃРєР° РїРѕ РјР°РіР°Р·РёРЅСѓ -->
 		<div class="box">
 			<h2><a href="#" id="toggle-shop-search">{#ProductSearch#}</a></h2>
 			<div class="block" id="shop-search">{$Search}</div>
 		</div>
 
-		<!-- Блок корзины -->
+		<!-- Р‘Р»РѕРє РєРѕСЂР·РёРЅС‹ -->
 		<div class="box">
 			<h2><a href="#" id="toggle-shopbasket">{#ShopBasket#}</a></h2>
 			<div class="block" id="shopbasket">{$Basket}</div>
 		</div>
 
 		{if $smarty.session.user_id}
-			<!-- Блок обработанных заказов -->
+			<!-- Р‘Р»РѕРє РѕР±СЂР°Р±РѕС‚Р°РЅРЅС‹С… Р·Р°РєР°Р·РѕРІ -->
 			<div class="box">
 				<h2><a href="#" id="toggle-myordersbox">{#MyOrders#}</a></h2>
 				<div class="block" id="myordersbox">{$MyOrders}</div>
 			</div>
 		{/if}
 
-		<!-- Блок информации -->
+		<!-- Р‘Р»РѕРє РёРЅС„РѕСЂРјР°С†РёРё -->
 		<div class="box">
 			<h2><a href="#" id="toggle-shopinfobox">{#Infopage#}</a></h2>
 			<div class="block" id="shopinfobox">{$InfoBox}</div>
 		</div>
 
-		<!-- Блок популярных товаров -->
+		<!-- Р‘Р»РѕРє РїРѕРїСѓР»СЏСЂРЅС‹С… С‚РѕРІР°СЂРѕРІ -->
 		<div class="box">
 			<h2><a href="#" id="toggle-shoppopprods">{#Topseller#}</a></h2>
 			<div class="block" id="shoppopprods">{$Topseller}</div>

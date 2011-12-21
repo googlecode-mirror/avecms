@@ -17,7 +17,7 @@ var Lightview = {
     buttons: { opacity: { normal: 0.65, hover: 1 } },      // Opacity of inner buttons
     cyclic: false,                                         // Makes galleries cyclic, no end/begin.
     images: 'modules/gallery/templates/images/lightview/',                        // The directory of the images, from this file
-    imgNumberTemplate: 'Изображение #{position} из #{total}',    // Want a different language? change it here
+    imgNumberTemplate: 'РР·РѕР±СЂР°Р¶РµРЅРёРµ #{position} РёР· #{total}',    // Want a different language? change it here
     overlay: {                                             // Overlay
       background: '#000',                                  // Background color, Mac Firefox & Safari use overlay.png
       close: true,                                         // Overlay click closes the view

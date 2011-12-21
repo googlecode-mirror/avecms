@@ -2,7 +2,7 @@
 	require_once "config.php";
 
  	$test_str = "";
- 	if (substr(@$_REQUEST['LMI_PAYEE_PURSE'],0,1) == 'Z') {
+ 	if (mb_substr(@$_REQUEST['LMI_PAYEE_PURSE'],0,1) == 'Z') {
 	 	$fz = true;
  	} else {
 	 	$fz = false;
@@ -30,18 +30,18 @@
 	$pay_date=pretty_date(strftime(DATE_FORMAT), $_SESSION['user_language']);
 	$pay_userIP = @$_REQUEST['pay_userIP'];
 
-	if (!strlen($pay_userid)) $pay_userid="0";
-	if (!strlen($pay_amount) || !strlen($pay_fileid)) {
-	 	$str="Ошибка при записи платежа. Параметры:\n";
-	 	$str.="Кошелек продавца:".@$_REQUEST['LMI_PAYEE_PURSE']."\n";
-	 	$str.="Сумма платежа:".@$_REQUEST['LMI_PAYMENT_AMOUNT']."\n";
-	 	$str.="Номер платежа:".@$_REQUEST['LMI_PAYMENT_NO']."\n";
-	 	$str.="Тестовый режим:".@$_REQUEST['LMI_MODE']."\n";
-	 	$str.="Номер счета в системе WebMoney Transfer:".@$_REQUEST['LMI_SYS_INVS_NO']."\n";
-	 	$str.="Номер платежа в системе WebMoney Transfer:".@$_REQUEST['LMI_SYS_TRANS_NO']."\n";
-	 	$str.="Дата и время реального прохождения платежа:".@$_REQUEST['LMI_SYS_TRANS_DATE']."\n";
-	 	$str.="Кошелек покупателя:".@$_REQUEST['LMI_PAYER_PURSE']."\n";
-	 	$str.="WM-идентификатор покупателя:".@$_REQUEST['LMI_PAYER_WM']."\n";
+	if (!mb_strlen($pay_userid)) $pay_userid="0";
+	if (!mb_strlen($pay_amount) || !mb_strlen($pay_fileid)) {
+	 	$str="╨Л╨╕╨Б╨О╨Д┬а ╨З╨░╨Б ┬з┬а╨З╨Б╨▒╨Б ╨З┬л┬а╨▓╥Р┬ж┬а. ╨П┬а╨░┬а┬м╥Р╨▓╨░╨╗:\n";
+	 	$str.="╨Й┬о╨╕╥Р┬л╥Р╨Д ╨З╨░┬о┬д┬а╤Ю╨╢┬а:".@$_REQUEST['LMI_PAYEE_PURSE']."\n";
+	 	$str.="тАШ╨│┬м┬м┬а ╨З┬л┬а╨▓╥Р┬ж┬а:".@$_REQUEST['LMI_PAYMENT_AMOUNT']."\n";
+	 	$str.="╨М┬о┬м╥Р╨░ ╨З┬л┬а╨▓╥Р┬ж┬а:".@$_REQUEST['LMI_PAYMENT_NO']."\n";
+	 	$str.="тАЩ╥Р╨▒╨▓┬о╤Ю╨╗┬й ╨░╥Р┬ж╨Б┬м:".@$_REQUEST['LMI_MODE']."\n";
+	 	$str.="╨М┬о┬м╥Р╨░ ╨▒╨╖╥Р╨▓┬а ╤Ю ╨▒╨Б╨▒╨▓╥Р┬м╥Р WebMoney Transfer:".@$_REQUEST['LMI_SYS_INVS_NO']."\n";
+	 	$str.="╨М┬о┬м╥Р╨░ ╨З┬л┬а╨▓╥Р┬ж┬а ╤Ю ╨▒╨Б╨▒╨▓╥Р┬м╥Р WebMoney Transfer:".@$_REQUEST['LMI_SYS_TRANS_NO']."\n";
+	 	$str.="тАЮ┬а╨▓┬а ╨Б ╤Ю╨░╥Р┬м╨┐ ╨░╥Р┬а┬л╨╝┬н┬о╨И┬о ╨З╨░┬о╨╡┬о┬ж┬д╥Р┬н╨Б╨┐ ╨З┬л┬а╨▓╥Р┬ж┬а:".@$_REQUEST['LMI_SYS_TRANS_DATE']."\n";
+	 	$str.="╨Й┬о╨╕╥Р┬л╥Р╨Д ╨З┬о╨Д╨│╨З┬а╨▓╥Р┬л╨┐:".@$_REQUEST['LMI_PAYER_PURSE']."\n";
+	 	$str.="WM-╨Б┬д╥Р┬н╨▓╨Б╨┤╨Б╨Д┬а╨▓┬о╨░ ╨З┬о╨Д╨│╨З┬а╨▓╥Р┬л╨┐:".@$_REQUEST['LMI_PAYER_WM']."\n";
 	 	$str.="#\n";
 
   	$open = fopen("wm_error.log","a");

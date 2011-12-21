@@ -1,7 +1,7 @@
 <?php
 
 /**
- * AVE.cms - Ìîäóëü Ïîèñê
+ * AVE.cms - ÐœÐ¾Ð´ÑƒÐ»ÑŒ ÐŸÐ¾Ð¸ÑÐº
  *
  * @package AVE.cms
  * @subpackage module_Search
@@ -12,7 +12,7 @@ class Search
 {
 
 /**
- *	ÑÂÎÉÑÒÂÀ
+ *	Ð¡Ð’ÐžÐ™Ð¡Ð¢Ð’Ð
  */
 
 	var $_limit           = 15;
@@ -26,7 +26,7 @@ class Search
 	var $_not_like = "( (field_value NOT LIKE '%%%s%%') OR (field_value NOT LIKE '%%%s%%') )";
 
 /**
- *	ÂÍÓÒÐÅÍÍÈÅ ÌÅÒÎÄÛ
+ *	Ð’ÐÐ£Ð¢Ð Ð•ÐÐÐ˜Ð• ÐœÐ•Ð¢ÐžÐ”Ð«
  */
 
 	function _searchSpecialchars($string)
@@ -46,12 +46,12 @@ class Search
 		switch ($type)
 		{
 			case '-':
-				$word = $stemmer->stem_word(substr($word, 1));
+				$word = $stemmer->stem_word(mb_substr($word, 1));
 				$format_string = $this->_not_like;
 				break;
 
 			case '+':
-				$word = $stemmer->stem_word(substr($word, 1));
+				$word = $stemmer->stem_word(mb_substr($word, 1));
 				$format_string = $this->_like;
 				$this->_stem_words[] = $word;
 				break;
@@ -67,7 +67,7 @@ class Search
 	}
 
 /**
- *	ÂÍÅØÍÈÅ ÌÅÒÎÄÛ
+ *	Ð’ÐÐ•Ð¨ÐÐ˜Ð• ÐœÐ•Ð¢ÐžÐ”Ð«
  */
 
 	function searchResultGet($tpl_dir, $lang_file)
@@ -80,12 +80,12 @@ class Search
 
 		$stem_words = array();
 
-		$tmp = preg_replace('/[^\x20-\xFF]|[><!?.,;=—]/', ' ', $_GET['query']);
+		$tmp = preg_replace('/[^\x20-\xFF]|[><!?.,;=-]/', ' ', $_GET['query']);
 		$this->_search_string = trim(preg_replace('/  +/', ' ', stripslashes($tmp)));
 
-		if (strlen($this->_search_string) > 2)
+		if (mb_strlen($this->_search_string) > 2)
 		{
-			// ýêðàíèðîâàíèå äëÿ LIKE
+			// ÑÐºÑ€Ð°Ð½Ð¸Ñ€Ð¾Ð²Ð°Ð½Ð¸Ðµ Ð´Ð»Ñ LIKE
 			$tmp = str_replace('\\', '\\\\', $this->_search_string);
 			$tmp = addcslashes(addslashes($tmp), '%_');
 //			$tmp = preg_replace('/  +/', ' ', $tmp);
@@ -140,7 +140,7 @@ class Search
 
 				$num = $AVE_DB->Query("SELECT FOUND_ROWS()")->GetCell();
 
-				$sw  = addslashes(strtolower($this->_search_string));
+				$sw  = addslashes(mb_strtolower($this->_search_string));
 
 				$exist = $AVE_DB->Query("
 					SELECT 1

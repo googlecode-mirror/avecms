@@ -27,7 +27,7 @@
 		<tr>
 			<td class="mod_comment_header">
 				<div class="mod_comment_author">
-					<a name="{$c.Id}"></a>{#COMMENT_USER_ADD#} <a title="{#COMMENT_INFO#}" href="javascript:void(0);" onclick="popup('index.php?module=comment&action=postinfo&pop=1&Id={$c.Id}&theme={$theme}','comment','500','300','1');">{$c.comment_author_name}{*|stripslashes|escape:html*}</a> • {$c.comment_published}{if $smarty.const.UGROUP==1} • IP:{$c.comment_author_ip}{/if}
+					<a name="{$c.Id}"></a>{#COMMENT_USER_ADD#} <a title="{#COMMENT_INFO#}" href="javascript:void(0);" onclick="popup('index.php?module=comment&action=postinfo&pop=1&Id={$c.Id}&theme={$theme}','comment','500','300','1');">{$c.comment_author_name}{*|stripslashes|escape:html*}</a> â€¢ {$c.comment_published}{if $smarty.const.UGROUP==1} â€¢ IP:{$c.comment_author_ip}{/if}
 				</div>
 
 				<div class="mod_comment_icons">

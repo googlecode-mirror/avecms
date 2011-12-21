@@ -1,7 +1,7 @@
 <?php
 
 /**
- * AVE.cms - Модуль Корзина
+ * AVE.cms - РњРѕРґСѓР»СЊ РљРѕСЂР·РёРЅР°
  *
  * @package AVE.cms
  * @subpackage module_Basket
@@ -12,11 +12,11 @@ if (!defined('BASE_DIR')) exit;
 
 if (defined('ACP'))
 {
-	$modul['ModulName'] = 'Корзина';
+	$modul['ModulName'] = 'РљРѕСЂР·РёРЅР°';
 	$modul['ModulPfad'] = 'basket';
 	$modul['ModulVersion'] = '1.0';
-	$modul['description'] = 'Модуль позволяет организовать торговлю любыми товарами с использованием корзины и формы оформления заказа. Разместите системный тег <strong>[mod_basket]</strong> в нужном месте вашего шаблона сайта или содержимом документа.';
-	$modul['Autor'] = 'идея Repellent & BITMAP, реализация Yesvik';
+	$modul['description'] = 'РњРѕРґСѓР»СЊ РїРѕР·РІРѕР»СЏРµС‚ РѕСЂРіР°РЅРёР·РѕРІР°С‚СЊ С‚РѕСЂРіРѕРІР»СЋ Р»СЋР±С‹РјРё С‚РѕРІР°СЂР°РјРё СЃ РёСЃРїРѕР»СЊР·РѕРІР°РЅРёРµРј РєРѕСЂР·РёРЅС‹ Рё С„РѕСЂРјС‹ РѕС„РѕСЂРјР»РµРЅРёСЏ Р·Р°РєР°Р·Р°. Р Р°Р·РјРµСЃС‚РёС‚Рµ СЃРёСЃС‚РµРјРЅС‹Р№ С‚РµРі <strong>[mod_basket]</strong> РІ РЅСѓР¶РЅРѕРј РјРµСЃС‚Рµ РІР°С€РµРіРѕ С€Р°Р±Р»РѕРЅР° СЃР°Р№С‚Р° РёР»Рё СЃРѕРґРµСЂР¶РёРјРѕРј РґРѕРєСѓРјРµРЅС‚Р°.';
+	$modul['Autor'] = 'РёРґРµСЏ Repellent & BITMAP, СЂРµР°Р»РёР·Р°С†РёСЏ Yesvik';
 	$modul['MCopyright'] = '&copy; 2010 Overdoze Team';
 	$modul['Status'] = 1;
 	$modul['IstFunktion'] = 1;
@@ -28,14 +28,14 @@ if (defined('ACP'))
 }
 
 /**
- * Обработка тэга модуля
+ * РћР±СЂР°Р±РѕС‚РєР° С‚СЌРіР° РјРѕРґСѓР»СЏ
  *
  */
 function mod_basket()
 {
 	global $AVE_Template;
 
-	// Если выводится страница модуль Корзина - корзину не выводим
+	// Р•СЃР»Рё РІС‹РІРѕРґРёС‚СЃСЏ СЃС‚СЂР°РЅРёС†Р° РјРѕРґСѓР»СЊ РљРѕСЂР·РёРЅР° - РєРѕСЂР·РёРЅСѓ РЅРµ РІС‹РІРѕРґРёРј
 	if (isset($_REQUEST['module']) && $_REQUEST['module'] == 'basket') return;
 
 	require_once(BASE_DIR . '/modules/basket/class.basket.php');
@@ -72,7 +72,7 @@ if (!defined('ACP') && isset($_REQUEST['module']) && $_REQUEST['module'] == 'bas
 				header("Location:" . get_referer_link());
 			}
 			else
-			{   header('Content-Type: text/html; charset=windows-1251');
+			{   
 				$AVE_Template->display(BASE_DIR . '/modules/basket/templates/basket_show.tpl');
 			}
 			exit;
@@ -85,7 +85,7 @@ if (!defined('ACP') && isset($_REQUEST['module']) && $_REQUEST['module'] == 'bas
 				header("Location:" . get_referer_link());
 			}
 			else
-			{   header('Content-Type: text/html; charset=windows-1251');
+			{   
 				$AVE_Template->display(BASE_DIR . '/modules/basket/templates/basket_show.tpl');
 			}
 			exit;
@@ -104,7 +104,7 @@ if (!defined('ACP') && isset($_REQUEST['module']) && $_REQUEST['module'] == 'bas
 				header("Location:" . get_referer_link());
 			}
 			else
-			{   header('Content-Type: text/html; charset=windows-1251');
+			{   
 				$AVE_Template->display(BASE_DIR . '/modules/basket/templates/order_show.tpl');
 			}
 			exit;

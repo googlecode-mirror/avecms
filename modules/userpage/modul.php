@@ -4,10 +4,10 @@ if (!defined('BASE_DIR')) exit;
 
 if (defined('ACP'))
 {
-    $modul['ModulName'] = 'Профиль';
+    $modul['ModulName'] = 'РџСЂРѕС„РёР»СЊ';
     $modul['ModulPfad'] = 'userpage';
     $modul['ModulVersion'] = '1.0';
-    $modul['description'] = 'Расширенная пользовательская система, полностью интегрируемая в модуль форума. Пользовательский профиль дополнен личной гостевой книгой и может модифицироваться индивидуально задаваемыми полями.';
+    $modul['description'] = 'Р Р°СЃС€РёСЂРµРЅРЅР°СЏ РїРѕР»СЊР·РѕРІР°С‚РµР»СЊСЃРєР°СЏ СЃРёСЃС‚РµРјР°, РїРѕР»РЅРѕСЃС‚СЊСЋ РёРЅС‚РµРіСЂРёСЂСѓРµРјР°СЏ РІ РјРѕРґСѓР»СЊ С„РѕСЂСѓРјР°. РџРѕР»СЊР·РѕРІР°С‚РµР»СЊСЃРєРёР№ РїСЂРѕС„РёР»СЊ РґРѕРїРѕР»РЅРµРЅ Р»РёС‡РЅРѕР№ РіРѕСЃС‚РµРІРѕР№ РєРЅРёРіРѕР№ Рё РјРѕР¶РµС‚ РјРѕРґРёС„РёС†РёСЂРѕРІР°С‚СЊСЃСЏ РёРЅРґРёРІРёРґСѓР°Р»СЊРЅРѕ Р·Р°РґР°РІР°РµРјС‹РјРё РїРѕР»СЏРјРё.';
     $modul['Autor'] = 'Michael Ruhl';
     $modul['MCopyright'] = '&copy; 2007 ecombiz.de';
     $modul['Status'] = 1;
@@ -15,7 +15,7 @@ if (defined('ACP'))
     $modul['ModulTemplate'] = 1;
     $modul['AdminEdit'] = 1;
     $modul['ModulFunktion'] = null;
-    $modul['CpEngineTagTpl'] = '<b>Ссылка:</b> <a target="_blank" href="../index.php?module=userpage&action=show&uid=' . UID . '">index.php?module=userpage&action=show&uid=XXX</a>';
+    $modul['CpEngineTagTpl'] = '<b>РЎСЃС‹Р»РєР°:</b> <a target="_blank" href="../index.php?module=userpage&action=show&uid=' . UID . '">index.php?module=userpage&action=show&uid=XXX</a>';
     $modul['CpEngineTag'] = null;
     $modul['CpPHPTag'] = null;
 }
@@ -74,7 +74,7 @@ if (isset($_REQUEST['module']) && $_REQUEST['module'] == 'userpage' && isset($_R
 			$userpage->showContact($tpl_dir, $_REQUEST['method'], addslashes($_REQUEST['uid']), $_REQUEST['theme_folder']);
 			break;
 
-			// Eintrag lцschen
+			// Eintrag lС†schen
 		case 'del':
 			$userpage->del_guest($tpl_dir, addslashes($_REQUEST['gid']), addslashes($_REQUEST['uid']), $_REQUEST['page']);
 			break;

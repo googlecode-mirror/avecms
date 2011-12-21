@@ -1,112 +1,94 @@
 <?php
 
-/**
- * AVE.cms - Ìîäóëü Ïîèñê
- *
- * @package AVE.cms
- * @subpackage module_Search
- * @since 2.0
- * @filesource
- */
-class Lingua_Stem_Ru
-{
-	var $VERSION = "0.02";
-	var $Stem_Caching = 1;
-	var $Stem_Cache = array();
-	var $VOWEL = '/àåèîóûýþÿ/';
-	var $PERFECTIVEGROUND = '/((èâ|èâøè|èâøèñü|ûâ|ûâøè|ûâøèñü)|((?<=[àÿ])(â|âøè|âøèñü)))$/';
-	var $REFLEXIVE = '/(ñ[ÿü])$/';
-	var $ADJECTIVE = '/(åå|èå|ûå|îå|èìè|ûìè|åé|èé|ûé|îé|åì|èì|ûì|îì|åãî|îãî|åìó|îìó|èõ|ûõ|óþ|þþ|àÿ|ÿÿ|îþ|åþ)$/';
-	var $PARTICIPLE = '/((èâø|ûâø|óþù)|((?<=[àÿ])(åì|íí|âø|þù|ù)))$/';
-	var $VERB = '/((èëà|ûëà|åíà|åéòå|óéòå|èòå|èëè|ûëè|åé|óé|èë|ûë|èì|ûì|åí|èëî|ûëî|åíî|ÿò|óåò|óþò|èò|ûò|åíû|èòü|ûòü|èøü|óþ|þ)|((?<=[àÿ])(ëà|íà|åòå|éòå|ëè|é|ë|åì|í|ëî|íî|åò|þò|íû|òü|åøü|ííî)))$/';
-	var $NOUN = '/(à|åâ|îâ|èå|üå|å|èÿìè|ÿìè|àìè|åè|èè|è|èåé|åé|îé|èé|é|èÿì|ÿì|èåì|åì|àì|îì|î|ó|àõ|èÿõ|ÿõ|û|ü|èþ|üþ|þ|èÿ|üÿ|ÿ)$/';
-	var $RVRE = '/^(.*?[àåèîóûýþÿ])(.*)$/';
-	var $DERIVATIONAL = '/[^àåèîóûýþÿ][àåèîóûýþÿ]+[^àåèîóûýþÿ]+[àåèîóûýþÿ].*(?<=î)ñòü?$/';
+class Lingua_Stem_Ru {
 
-	function s(&$s, $re, $to)
-	{
-		$orig = $s;
-		$s = preg_replace($re, $to, $s);
+  var $VERSION = "0.02";
+  var $Stem_Caching = 1;
+  var $Stem_Cache = array();
+  var $VOWEL = '/Ð°ÐµÐ¸Ð¾ÑƒÑ‹ÑÑŽÑ/';
+  var $PERFECTIVEGROUND = '/((Ð¸Ð²|Ð¸Ð²ÑˆÐ¸|Ð¸Ð²ÑˆÐ¸ÑÑŒ|Ñ‹Ð²|Ñ‹Ð²ÑˆÐ¸|Ñ‹Ð²ÑˆÐ¸ÑÑŒ)|((?<=[Ð°Ñ])(Ð²|Ð²ÑˆÐ¸|Ð²ÑˆÐ¸ÑÑŒ)))$/';
+  var $REFLEXIVE = '/(Ñ[ÑÑŒ])$/';
+  var $ADJECTIVE = '/(ÐµÐµ|Ð¸Ðµ|Ñ‹Ðµ|Ð¾Ðµ|Ð¸Ð¼Ð¸|Ñ‹Ð¼Ð¸|ÐµÐ¹|Ð¸Ð¹|Ñ‹Ð¹|Ð¾Ð¹|ÐµÐ¼|Ð¸Ð¼|Ñ‹Ð¼|Ð¾Ð¼|ÐµÐ³Ð¾|Ð¾Ð³Ð¾|ÐµÐ¼Ñƒ|Ð¾Ð¼Ñƒ|Ð¸Ñ…|Ñ‹Ñ…|ÑƒÑŽ|ÑŽÑŽ|Ð°Ñ|ÑÑ|Ð¾ÑŽ|ÐµÑŽ)$/';
+  var $PARTICIPLE = '/((Ð¸Ð²Ñˆ|Ñ‹Ð²Ñˆ|ÑƒÑŽÑ‰)|((?<=[Ð°Ñ])(ÐµÐ¼|Ð½Ð½|Ð²Ñˆ|ÑŽÑ‰|Ñ‰)))$/';
+  var $VERB = '/((Ð¸Ð»Ð°|Ñ‹Ð»Ð°|ÐµÐ½Ð°|ÐµÐ¹Ñ‚Ðµ|ÑƒÐ¹Ñ‚Ðµ|Ð¸Ñ‚Ðµ|Ð¸Ð»Ð¸|Ñ‹Ð»Ð¸|ÐµÐ¹|ÑƒÐ¹|Ð¸Ð»|Ñ‹Ð»|Ð¸Ð¼|Ñ‹Ð¼|ÐµÐ½|Ð¸Ð»Ð¾|Ñ‹Ð»Ð¾|ÐµÐ½Ð¾|ÑÑ‚|ÑƒÐµÑ‚|ÑƒÑŽÑ‚|Ð¸Ñ‚|Ñ‹Ñ‚|ÐµÐ½Ñ‹|Ð¸Ñ‚ÑŒ|Ñ‹Ñ‚ÑŒ|Ð¸ÑˆÑŒ|ÑƒÑŽ|ÑŽ)|((?<=[Ð°Ñ])(Ð»Ð°|Ð½Ð°|ÐµÑ‚Ðµ|Ð¹Ñ‚Ðµ|Ð»Ð¸|Ð¹|Ð»|ÐµÐ¼|Ð½|Ð»Ð¾|Ð½Ð¾|ÐµÑ‚|ÑŽÑ‚|Ð½Ñ‹|Ñ‚ÑŒ|ÐµÑˆÑŒ|Ð½Ð½Ð¾)))$/';
+  var $NOUN = '/(Ð°|ÐµÐ²|Ð¾Ð²|Ð¸Ðµ|ÑŒÐµ|Ðµ|Ð¸ÑÐ¼Ð¸|ÑÐ¼Ð¸|Ð°Ð¼Ð¸|ÐµÐ¸|Ð¸Ð¸|Ð¸|Ð¸ÐµÐ¹|ÐµÐ¹|Ð¾Ð¹|Ð¸Ð¹|Ð¹|Ð¸ÑÐ¼|ÑÐ¼|Ð¸ÐµÐ¼|ÐµÐ¼|Ð°Ð¼|Ð¾Ð¼|Ð¾|Ñƒ|Ð°Ñ…|Ð¸ÑÑ…|ÑÑ…|Ñ‹|ÑŒ|Ð¸ÑŽ|ÑŒÑŽ|ÑŽ|Ð¸Ñ|ÑŒÑ|Ñ)$/';
+  var $RVRE = '/^(.*?[Ð°ÐµÐ¸Ð¾ÑƒÑ‹ÑÑŽÑ])(.*)$/';
+  var $DERIVATIONAL = '/[^Ð°ÐµÐ¸Ð¾ÑƒÑ‹ÑÑŽÑ][Ð°ÐµÐ¸Ð¾ÑƒÑ‹ÑÑŽÑ]+[^Ð°ÐµÐ¸Ð¾ÑƒÑ‹ÑÑŽÑ]+[Ð°ÐµÐ¸Ð¾ÑƒÑ‹ÑÑŽÑ].*(?<=Ð¾)ÑÑ‚ÑŒ?$/';
 
-		return $orig !== $s;
-	}
+  function s(&$s, $re, $to)
+  {
+      $orig = $s;
+      $s = preg_replace($re, $to, $s);
+      return $orig !== $s;
+  }
 
-	function m($s, $re)
-	{
-		return preg_match($re, $s);
-	}
+  function m($s, $re)
+  {
+      return preg_match($re, $s);
+  }
 
-	function stem_word($word)
-	{
-		$word = strtolower($word);
-		$word = strtr($word, '¸', 'å');
-		# Check against cache of stemmed words
-		if ($this->Stem_Caching && isset($this->Stem_Cache[$word]))
-		{
-			return $this->Stem_Cache[$word];
-		}
-		$stem = $word;
-		do {
-			if (!preg_match($this->RVRE, $word, $p)) break;
-			$start = $p[1];
-			$RV = $p[2];
-			if (!$RV) break;
+  function stem_word($word)
+  {
+      $word = mb_strtolower($word);
+      //$word = strtr($word, 'Ñ‘', 'Ðµ');
+      # Check against cache of stemmed words
+      if ($this->Stem_Caching && isset($this->Stem_Cache[$word])) {
+          return $this->Stem_Cache[$word];
+      }
+      $stem = $word;
+      do {
+        if (!preg_match($this->RVRE, $word, $p)) break;
+        $start = $p[1];
+        $RV = $p[2];
+        if (!$RV) break;
 
-			# Step 1
-			if (!$this->s($RV, $this->PERFECTIVEGROUND, ''))
-			{
-				$this->s($RV, $this->REFLEXIVE, '');
+        # Step 1
+        if (!$this->s($RV, $this->PERFECTIVEGROUND, '')) {
+            $this->s($RV, $this->REFLEXIVE, '');
 
-				if ($this->s($RV, $this->ADJECTIVE, ''))
-				{
-					$this->s($RV, $this->PARTICIPLE, '');
-				}
-				else
-				{
-					if (!$this->s($RV, $this->VERB, '')) $this->s($RV, $this->NOUN, '');
-				}
-			}
+            if ($this->s($RV, $this->ADJECTIVE, '')) {
+                $this->s($RV, $this->PARTICIPLE, '');
+            } else {
+                if (!$this->s($RV, $this->VERB, ''))
+                    $this->s($RV, $this->NOUN, '');
+            }
+        }
 
-			# Step 2
-			$this->s($RV, '/è$/', '');
+        # Step 2
+        $this->s($RV, '/Ð¸$/', '');
 
-			# Step 3
-			if ($this->m($RV, $this->DERIVATIONAL)) $this->s($RV, '/îñòü?$/', '');
+        # Step 3
+        if ($this->m($RV, $this->DERIVATIONAL))
+            $this->s($RV, '/Ð¾ÑÑ‚ÑŒ?$/', '');
 
-			# Step 4
-			if (!$this->s($RV, '/ü$/', ''))
-			{
-				$this->s($RV, '/åéøå?/', '');
-				$this->s($RV, '/íí$/', 'í');
-			}
+        # Step 4
+        if (!$this->s($RV, '/ÑŒ$/', '')) {
+            $this->s($RV, '/ÐµÐ¹ÑˆÐµ?/', '');
+            $this->s($RV, '/Ð½Ð½$/', 'Ð½');
+        }
 
-			$stem = $start.$RV;
-		} while(false);
+        $stem = $start.$RV;
+      } while(false);
+      if ($this->Stem_Caching) $this->Stem_Cache[$word] = $stem;
+      return $stem;
+  }
 
-		if ($this->Stem_Caching) $this->Stem_Cache[$word] = $stem;
+  function stem_caching($parm_ref)
+  {
+      $caching_level = @$parm_ref['-level'];
+      if ($caching_level) {
+          if (!$this->m($caching_level, '/^[012]$/')) {
+              die(__CLASS__ . "::stem_caching() - Legal values are '0','1' or '2'. '$caching_level' is not a legal value");
+          }
+          $this->Stem_Caching = $caching_level;
+      }
+      return $this->Stem_Caching;
+  }
 
-		return $stem;
-	}
-
-	function stem_caching($parm_ref)
-	{
-		$caching_level = @$parm_ref['-level'];
-		if ($caching_level)
-		{
-			if (!$this->m($caching_level, '/^[012]$/'))
-			{
-				die(__CLASS__ . "::stem_caching() - Legal values are '0','1' or '2'. '$caching_level' is not a legal value");
-			}
-			$this->Stem_Caching = $caching_level;
-		}
-
-		return $this->Stem_Caching;
-	}
-
-	function clear_stem_cache()
-	{
-		$this->Stem_Cache = array();
-	}
+  function clear_stem_cache()
+  {
+      $this->Stem_Cache = array();
+  }
 }
 
 ?>

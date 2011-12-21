@@ -796,11 +796,11 @@ class Cache_Lite
     {
         $result = $this->_write($data);
         if (is_object($result)) {
-            return $result; # We return the PEAR_Error object
+            return $result; #В We return the PEAR_Error object
         }
         $dataRead = $this->_read();
         if (is_object($dataRead)) {
-            return $dataRead; # We return the PEAR_Error object
+            return $dataRead; #В We return the PEAR_Error object
         }
         if ((is_bool($dataRead)) && (!$dataRead)) {
             return false; 

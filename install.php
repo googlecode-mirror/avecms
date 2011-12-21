@@ -196,9 +196,6 @@ switch ($_REQUEST['step'])
 
 			$ar = explode('#inst#', $db_structure);
 
-			@mysql_query("SET NAMES 'cp1251'");
-			@mysql_query("SET COLLATION_CONNECTION = 'cp1251_general_ci'");
-
 			foreach ($ar as $in)
 			{
 				@mysql_query($in);
@@ -261,11 +258,10 @@ switch ($_REQUEST['step'])
 
 			$ar = explode('#inst#', $dbin);
 
-			@mysql_query("SET NAMES 'cp1251'");
-			@mysql_query("SET COLLATION_CONNECTION = 'cp1251_general_ci'");
-
 			foreach ($ar as $in)
 			{
+				@mysql_query("SET NAMES 'utf8'");
+				@mysql_query("SET COLLATION_CONNECTION = 'utf8_general_ci'");
 				mysql_query($in);
 			}
 

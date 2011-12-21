@@ -2,13 +2,13 @@
 {if !$ShopArticles}
 	{#ErrorNoProductsHere#}
 {else}
-	{* постраничная навигация *}
+	{* РїРѕСЃС‚СЂР°РЅРёС‡РЅР°СЏ РЅР°РІРёРіР°С†РёСЏ *}
 	{if $page_nav}{$page_nav}{/if}
 
 	<table class="mod_shop_basket_table" border="0" cellpadding="0" cellspacing="1" width="100%" style="margin: 5px 0;">
 		<tr>
-			<th valign="top" class="mod_shop_basket_header">Наименование</th>
-			<th valign="top" class="mod_shop_basket_header">Цена</th>
+			<th valign="top" class="mod_shop_basket_header">РќР°РёРјРµРЅРѕРІР°РЅРёРµ</th>
+			<th valign="top" class="mod_shop_basket_header">Р¦РµРЅР°</th>
 		</tr>
 
 		{foreach from=$ShopArticles item=i}
@@ -23,6 +23,6 @@
 		{/foreach}
 	</table>
 
-	{* постраничная навигация *}
+	{* РїРѕСЃС‚СЂР°РЅРёС‡РЅР°СЏ РЅР°РІРёРіР°С†РёСЏ *}
 	{if $page_nav}{$page_nav}{/if}
 {/if}

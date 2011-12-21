@@ -42,7 +42,7 @@
 </form>
 
 {if $smarty.request.id != ''}
-	<h4>Добавить новый вопрос</h4>
+	<h4>Р”РѕР±Р°РІРёС‚СЊ РЅРѕРІС‹Р№ РІРѕРїСЂРѕСЃ</h4>
 	<form method="post" action="index.php?do=modules&action=modedit&mod=poll&moduleaction=save_new&cp={$sess}&id={$smarty.request.id|escape}&pop=1" name="new">
 		<table width="100%" border="0" cellpadding="8" cellspacing="1" class="tableborder">
 			<tr class="tableheader">

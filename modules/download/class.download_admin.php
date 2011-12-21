@@ -14,22 +14,22 @@ class Download {
 	{
 	  return $text;
 /*
-		$text = str_replace('ь', '&uuml;', $text);
-		$text = str_replace('Ь', '&Uuml;', $text);
-		$text = str_replace('ц', '&ouml;', $text);
-		$text = str_replace('Ц', '&Ouml;', $text);
-		$text = str_replace('д', '&auml;', $text);
-		$text = str_replace('Д', '&Auml;', $text);
+		$text = str_replace('СЊ', '&uuml;', $text);
+		$text = str_replace('Р¬', '&Uuml;', $text);
+		$text = str_replace('С†', '&ouml;', $text);
+		$text = str_replace('Р¦', '&Ouml;', $text);
+		$text = str_replace('Рґ', '&auml;', $text);
+		$text = str_replace('Р”', '&Auml;', $text);
 		$text = str_replace(' & ', ' &amp; ', $text);
-		$text = str_replace('»', '&raquo;', $text);
-		$text = str_replace('«', '&laquo;', $text);
+		$text = str_replace('В»', '&raquo;', $text);
+		$text = str_replace('В«', '&laquo;', $text);
 		$text = str_replace('>', '&gt;', $text);
 		$text = str_replace('<', '&lt;', $text);
-		$text = str_replace('Я', '&szlig;', $text);
-		$text = str_replace('Ђ', '&euro;', $text);
-		$text = str_replace('©', '&copy;', $text);
-		$text = str_replace('®', '&reg;', $text);
-		$text = str_replace('™', '&#8482;', $text);
+		$text = str_replace('РЇ', '&szlig;', $text);
+		$text = str_replace('Р‚', '&euro;', $text);
+		$text = str_replace('В©', '&copy;', $text);
+		$text = str_replace('В®', '&reg;', $text);
+		$text = str_replace('в„ў', '&#8482;', $text);
 		return $text;
 */
 	}
@@ -54,7 +54,7 @@ class Download {
 	}
 
 	//=======================================================
-	// Kategorien auslesen fьr Dropdown
+	// Kategorien auslesen fСЊr Dropdown
 	//=======================================================
 	function fetchCategs($noprint='')
 	{
@@ -165,9 +165,9 @@ class Download {
 
 			if(isset($_FILES) && $_FILES['Bild']['tmp_name'] != '')
 			{
-				$name = str_replace(array(' ', '+','-'),'',strtolower($_FILES['Bild']['name']));
+				$name = str_replace(array(' ', '+','-'),'',mb_strtolower($_FILES['Bild']['name']));
 				$temp = $_FILES['Bild']['tmp_name'];
-				$endung = strtolower(substr($name, -3));
+				$endung = mb_strtolower(mb_substr($name, -3));
 				$fupload_name = $name;
 
 				if(in_array($_FILES['Bild']['type'], $this->_allowed_images))
@@ -227,9 +227,9 @@ class Download {
 
 			if(isset($_FILES) && $_FILES['Bild']['tmp_name'] != '')
 			{
-				$name = str_replace(array(' ', '+','-'),'',strtolower($_FILES['Bild']['name']));
+				$name = str_replace(array(' ', '+','-'),'',mb_strtolower($_FILES['Bild']['name']));
 				$temp = $_FILES['Bild']['tmp_name'];
-				$endung = strtolower(substr($name, -3));
+				$endung = mb_strtolower(mb_substr($name, -3));
 				$fupload_name = $name;
 
 				if(in_array($_FILES['Bild']['type'], $this->_allowed_images))
@@ -276,7 +276,7 @@ class Download {
 
 	function UserGroups()
 	{
-		$sql = $GLOBALS['AVE_DB']->Query("SELECT * FROM " . PREFIX . "_user_groups ORDER BY user_group_name ASC");
+		$sql = $GLOBALS['AVE_DB']->Query("SELECT * FROM " . PREFIX . "_user_groups ORDER BY Name ASC");
 		$gruppen = array();
 		while($row = $sql->FetchRow())
 		{
@@ -286,7 +286,7 @@ class Download {
 	}
 
 	//=======================================================
-	// Lцschaufruf
+	// LС†schaufruf
 	//=======================================================
 	function delCategAll($id)
 	{
@@ -296,7 +296,7 @@ class Download {
 	}
 
 	//=======================================================
-	// Lцschfunktion von Kategorien
+	// LС†schfunktion von Kategorien
 	//=======================================================
 	function delCateg($id)
 	{
@@ -310,7 +310,7 @@ class Download {
 	}
 
 	//=======================================================
-	// Ьbersicht
+	// Р¬bersicht
 	//=======================================================
 	function overView($tpl_dir)
 	{
@@ -383,7 +383,7 @@ class Download {
 		// Es wird ein Such-String angegeben
 		if(isset($_REQUEST['dl_query']) && !empty($_REQUEST['dl_query']))
 		{
-			$_REQUEST['dl_query'] = preg_replace('/[^ _A-Za-zА-Яа-яЁёЇЄІїєі0-9]/', '', $_REQUEST['dl_query']);
+			$_REQUEST['dl_query'] = preg_replace('/[^ _A-Za-zРђ-РЇР°-СЏРЃС‘Р‡Р„Р†С—С”С–0-9]/', '', $_REQUEST['dl_query']);
 			$search = " AND Name LIKE '" . $_REQUEST['dl_query'] . "%' ";
 			$search_string = "&amp;dl_query=" . urlencode($_REQUEST['dl_query']);
 			$GLOBALS['AVE_Template']->assign('search_string', $search_string);
@@ -454,7 +454,7 @@ class Download {
 		$sql = $GLOBALS['AVE_DB']->Query("SELECT email,firstname,lastname FROM " . PREFIX . "_users WHERE Id = '{$id}'");
 		$row = $sql->FetchRow();
 
-		$Author = ($row->firstname == '') ? $row->email : substr($row->firstname,0,1) . '.' . $row->lastname;
+		$Author = ($row->firstname == '') ? $row->email : mb_substr($row->firstname,0,1) . '.' . $row->lastname;
 		return $Author;
 	}
 
@@ -524,9 +524,9 @@ class Download {
 			if(isset($_FILES['file_local']) && $_FILES['file_local']['tmp_name'] != '')
 			{
 				$upload_dir = BASE_DIR . '/modules/download/files/';
-				$name = str_replace(array(' ', '+','-'),'',strtolower($_FILES['file_local']['name']));
+				$name = str_replace(array(' ', '+','-'),'',mb_strtolower($_FILES['file_local']['name']));
 				$temp = $_FILES['file_local']['tmp_name'];
-				$endung = strtolower(substr($name, -3));
+				$endung = mb_strtolower(mb_substr($name, -3));
 				$fupload_name = $name;
 
 				if(file_exists($upload_dir . $fupload_name))
@@ -630,9 +630,9 @@ class Download {
 			if(isset($_FILES['file_local']) && $_FILES['file_local']['tmp_name'] != '')
 			{
 				$upload_dir = BASE_DIR . '/modules/download/files/';
-				$name = str_replace(array(' ', '+','-'),'',strtolower($_FILES['file_local']['name']));
+				$name = str_replace(array(' ', '+','-'),'',mb_strtolower($_FILES['file_local']['name']));
 				$temp = $_FILES['file_local']['tmp_name'];
-				$endung = strtolower(substr($name, -3));
+				$endung = mb_strtolower(mb_substr($name, -3));
 				$fupload_name = $name;
 
 				if(file_exists($upload_dir . $fupload_name))
@@ -739,7 +739,7 @@ class Download {
 	//=======================================================
 	function Systems($tpl_dir)
 	{
-		// Aktualisieren bzw. lцschen
+		// Aktualisieren bzw. lС†schen
 		if(isset($_REQUEST['sub']) && $_REQUEST['sub'] == 'save')
 		{
 			foreach($_POST['Del'] as $id => $del) $GLOBALS['AVE_DB']->Query("DELETE FROM " . PREFIX . "_modul_download_os WHERE Id = '{$id}'");
@@ -772,7 +772,7 @@ class Download {
 	//=======================================================
 	function Licenses($tpl_dir)
 	{
-		// Aktualisieren bzw. lцschen
+		// Aktualisieren bzw. lС†schen
 		if(isset($_REQUEST['sub']) && $_REQUEST['sub'] == 'save')
 		{
 			foreach($_POST['Del'] as $id => $del) $GLOBALS['AVE_DB']->Query("DELETE FROM " . PREFIX . "_modul_download_lizenzen WHERE Id = '{$id}'");
@@ -805,7 +805,7 @@ class Download {
 	//=======================================================
 	function Languages($tpl_dir)
 	{
-		// Aktualisieren bzw. lцschen
+		// Aktualisieren bzw. lС†schen
 		if(isset($_REQUEST['sub']) && $_REQUEST['sub'] == 'save')
 		{
 			foreach($_POST['Del'] as $id => $del) $GLOBALS['AVE_DB']->Query("DELETE FROM " . PREFIX . "_modul_download_sprachen WHERE Id = '{$id}'");
@@ -938,7 +938,7 @@ class Download {
 	}
 
 	//=======================================================
-	// Функция показывающая панель платежей
+	// Р¤СѓРЅРєС†РёСЏ РїРѕРєР°Р·С‹РІР°СЋС‰Р°СЏ РїР°РЅРµР»СЊ РїР»Р°С‚РµР¶РµР№
 	//=======================================================
 	function ShowPayHist($tpl_dir)
 	{

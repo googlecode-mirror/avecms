@@ -52,7 +52,7 @@ class Shop
 	var $_login_userpanel_tpl        = 'userpanel.tpl';
 
 	/**
-	 * œÓ‚ÂÍ‡ ÒÚ‡ÚÛÒ‡ Ã‡„‡ÁËÌ‡
+	 * –ü—Ä–æ–≤–µ—Ä–∫–∞ —Å—Ç–∞—Ç—É—Å–∞ –ú–∞–≥–∞–∑–∏–Ω–∞
 	 *
 	 */
 	function checkShop()
@@ -65,10 +65,10 @@ class Shop
 	}
 
 	/**
-	 * ‘ÓÏËÓ‚‡ÌËÂ Ë‰ÂÌÚËÙËÍ‡ÚÓ‡ Ú‡ÌÁ‡ÍˆËË
+	 * –§–æ—Ä–º–∏—Ä–æ–≤–∞–Ω–∏–µ –∏–¥–µ–Ω—Ç–∏—Ñ–∏–∫–∞—Ç–æ—Ä–∞ —Ç—Ä–∞–Ω–∑–∞–∫—Ü–∏–∏
 	 *
-	 * @param int $c ÍÓÎË˜ÂÒÚ‚Ó ÒËÏ‚ÓÎÓ‚ ‚ Ë‰ÂÌÚËÙËÍ‡ÚÓÂ
-	 * @return string Ë‰ÂÌÚËÙËÍ‡ÚÓ Ú‡ÌÁ‡ÍˆËË
+	 * @param int $c –∫–æ–ª–∏—á–µ—Å—Ç–≤–æ —Å–∏–º–≤–æ–ª–æ–≤ –≤ –∏–¥–µ–Ω—Ç–∏—Ñ–∏–∫–∞—Ç–æ—Ä–µ
+	 * @return string –∏–¥–µ–Ω—Ç–∏—Ñ–∏–∫–∞—Ç–æ—Ä —Ç—Ä–∞–Ω–∑–∞–∫—Ü–∏–∏
 	 */
 	function _transId($c = 0)
 	{
@@ -86,10 +86,10 @@ class Shop
 	}
 
 	/**
-	 * Œ˜ËÒÚÍ‡ ÚÂÍÒÚ‡
+	 * –û—á–∏—Å—Ç–∫–∞ —Ç–µ–∫—Å—Ç–∞
 	 *
-	 * @param string $text ÚÂÍÒÚ ÍÓÚÓ˚È Ì‡‰Ó Ó˜ËÒÚËÚ¸
-	 * @return string Ó˜Ë˘ÂÌÌ˚È ÚÂÍÒÚ
+	 * @param string $text —Ç–µ–∫—Å—Ç –∫–æ—Ç–æ—Ä—ã–π –Ω–∞–¥–æ –æ—á–∏—Å—Ç–∏—Ç—å
+	 * @return string –æ—á–∏—â–µ–Ω–Ω—ã–π —Ç–µ–∫—Å—Ç
 	 */
 	function _textReplace($text)
 	{
@@ -97,10 +97,10 @@ class Shop
 	}
 
 	/**
-	 * Õ‡ÒÚÓÈÍË Ã‡„‡ÁËÌ‡
+	 * –ù–∞—Å—Ç—Ä–æ–π–∫–∏ –ú–∞–≥–∞–∑–∏–Ω–∞
 	 *
-	 * @param string $param Ì‡Á‚‡ÌËÂ Ô‡‡ÏÂÚ‡
-	 * @return mixed ÁÌ‡˜ÂÌËÂ Á‡ÔÓ¯ÂÌÌÓ„Ó Ô‡‡ÏÂÚ‡
+	 * @param string $param –Ω–∞–∑–≤–∞–Ω–∏–µ –ø–∞—Ä–∞–º–µ—Ç—Ä–∞
+	 * @return mixed –∑–Ω–∞—á–µ–Ω–∏–µ –∑–∞–ø—Ä–æ—à–µ–Ω–Ω–æ–≥–æ –ø–∞—Ä–∞–º–µ—Ç—Ä–∞
 	 */
 	function _getShopSetting($param, $default_value = '')
 	{
@@ -119,7 +119,7 @@ class Shop
 	}
 
 	/**
-	 * ‘ÓÏËÓ‚‡ÌËÂ Ó·˘Ëı ÁÌ‡˜ÂÌËÈ ‰Îˇ ¯‡·ÎÓÌËÁ‡ÚÓ‡
+	 * –§–æ—Ä–º–∏—Ä–æ–≤–∞–Ω–∏–µ –æ–±—â–∏—Ö –∑–Ω–∞—á–µ–Ω–∏–π –¥–ª—è —à–∞–±–ª–æ–Ω–∏–∑–∞—Ç–æ—Ä–∞
 	 *
 	 */
 	function getTplSettings()
@@ -193,10 +193,10 @@ $AVE_Template->caching = 0;
 	}
 
 	/**
-	 * ¬˚·Ó ÒÎÛ˜‡ÈÌ˚Ï Ó·‡ÁÓÏ ·‡ÌÌÂ‡ ÔÂÁÂÌÚ‡ˆËË/ÒÔÂˆÔÂ‰ÎÓÊÂÌËˇ
+	 * –í—ã–±–æ—Ä —Å–ª—É—á–∞–π–Ω—ã–º –æ–±—Ä–∞–∑–æ–º –±–∞–Ω–Ω–µ—Ä–∞ –ø—Ä–µ–∑–µ–Ω—Ç–∞—Ü–∏–∏/—Å–ø–µ—Ü–ø—Ä–µ–¥–ª–æ–∂–µ–Ω–∏—è
 	 *
-	 * @param int $categ Ë‰ÂÌÚËÙËÍ‡ÚÓ Í‡ÚÂ„ÓËË
-	 * @return string HTML-ÍÓ‰ ‚˚‚Ó‰‡ ·‡ÌÌÂ‡ Ò „ËÔÂÒ˚ÎÍÓÈ Ì‡ ÂÍÎ‡ÏËÛÂÏ˚È ÚÓ‚‡
+	 * @param int $categ –∏–¥–µ–Ω—Ç–∏—Ñ–∏–∫–∞—Ç–æ—Ä –∫–∞—Ç–µ–≥–æ—Ä–∏–∏
+	 * @return string HTML-–∫–æ–¥ –≤—ã–≤–æ–¥–∞ –±–∞–Ω–Ω–µ—Ä–∞ —Å –≥–∏–ø–µ—Ä—Å—ã–ª–∫–æ–π –Ω–∞ —Ä–µ–∫–ª–∞–º–∏—Ä—É–µ–º—ã–π —Ç–æ–≤–∞—Ä
 	 */
 	function _randomOffer($categ = '')
 	{
@@ -234,16 +234,16 @@ $AVE_Template->caching = 0;
 	}
 
 	/**
-	 * ŒÔÂ‰ÂÎÂÌËÂ ÚËÔ‡ ËÁÓ·‡ÊÂÌËˇ ÔÓ ‡Ò¯ËÂÌË˛ Ù‡ÈÎ‡
-	 * (ÔÓ‰‰ÂÊË‚‡ÂÏ˚Â ÚËÔ˚ JPG, PNG, GIF)
+	 * –û–ø—Ä–µ–¥–µ–ª–µ–Ω–∏–µ —Ç–∏–ø–∞ –∏–∑–æ–±—Ä–∞–∂–µ–Ω–∏—è –ø–æ —Ä–∞—Å—à–∏—Ä–µ–Ω–∏—é —Ñ–∞–π–ª–∞
+	 * (–ø–æ–¥–¥–µ—Ä–∂–∏–≤–∞–µ–º—ã–µ —Ç–∏–ø—ã JPG, PNG, GIF)
 	 *
-	 * @param string $file ËÏˇ Ù‡ÈÎ‡-ËÁÓ·‡ÊÂÌËˇ
-	 * @return string ÚËÔ ËÁÓ·‡ÊÂÌËˇ,
-	 * 			false ÂÒÎË ÚËÔ ËÁÓ·‡ÊÂÌËˇ ÌÂ ÔÓ‰‰ÂÊË‚‡ÂÚÒˇ
+	 * @param string $file –∏–º—è —Ñ–∞–π–ª–∞-–∏–∑–æ–±—Ä–∞–∂–µ–Ω–∏—è
+	 * @return string —Ç–∏–ø –∏–∑–æ–±—Ä–∞–∂–µ–Ω–∏—è,
+	 * 			false –µ—Å–ª–∏ —Ç–∏–ø –∏–∑–æ–±—Ä–∞–∂–µ–Ω–∏—è –Ω–µ –ø–æ–¥–¥–µ—Ä–∂–∏–≤–∞–µ—Ç—Å—è
 	 */
 	function _getEndung($file)
 	{
-		switch (substr(strtolower($file), -4))
+		switch (mb_substr(mb_strtolower($file), -4))
 		{
 			case '.jpg':
 			case '.jpe':
@@ -269,9 +269,9 @@ $AVE_Template->caching = 0;
 	}
 
 	/**
-	 * œÓÔÛÎˇÌ˚Â ÚÓ‚‡˚
+	 * –ü–æ–ø—É–ª—è—Ä–Ω—ã–µ —Ç–æ–≤–∞—Ä—ã
 	 *
-	 * @return array ÒÔËÒÓÍ ÔÓÔÛÎˇÌ˚ı ÚÓ‚‡Ó‚
+	 * @return array —Å–ø–∏—Å–æ–∫ –ø–æ–ø—É–ª—è—Ä–Ω—ã—Ö —Ç–æ–≤–∞—Ä–æ–≤
 	 */
 	function _topSeller()
 	{
@@ -314,7 +314,7 @@ $AVE_Template->caching = 0;
 				$type = $this->_getEndung($row->Bild);
 				$row->Img = '<img src="modules/shop/thumb.php?file=' . $row->Bild . '&amp;type=' . $type . '&amp;xwidth=' . WidthTsThumb . '" alt="" border="" />';
 			}
-			$row->TextKurz = $row->Img . substr(strip_tags($row->TextKurz,'<b>,<strong>,<em>,<i>'), 0, 250) . '...';
+			$row->TextKurz = $row->Img . mb_substr(strip_tags($row->TextKurz,'<b>,<strong>,<em>,<i>'), 0, 250) . '...';
 			$row->Detaillink = $this->_shopRewrite(sprintf($this->_link_product_detail,
 				$row->Id,
 				$row->KatId,
@@ -327,7 +327,7 @@ $AVE_Template->caching = 0;
 	}
 
 	/**
-	 * ¬ÒÔÓÏÓ„‡ÚÂÎ¸Ì˚Â ÒÚ‡ÌËˆ˚ Ò ‡ÁÎË˜ÌÓÈ ËÌÙÓÏ‡ˆËÂÈ Ó Ã‡„‡ÁËÌÂ
+	 * –í—Å–ø–æ–º–æ–≥–∞—Ç–µ–ª—å–Ω—ã–µ —Å—Ç—Ä–∞–Ω–∏—Ü—ã —Å —Ä–∞–∑–ª–∏—á–Ω–æ–π –∏–Ω—Ñ–æ—Ä–º–∞—Ü–∏–µ–π –æ –ú–∞–≥–∞–∑–∏–Ω–µ
 	 *
 	 */
 	function getInfoPage()
@@ -380,7 +380,7 @@ $AVE_Template->caching = 0;
 	}
 
 	/**
-	 * —Ú‡ÌËˆ‡ Ò‡‚ÌÂÌËˇ ÚÓ‚‡Ó‚
+	 * –°—Ç—Ä–∞–Ω–∏—Ü–∞ —Å—Ä–∞–≤–Ω–µ–Ω–∏—è —Ç–æ–≤–∞—Ä–æ–≤
 	 *
 	 */
 	function myWishlist()
@@ -394,10 +394,10 @@ $AVE_Template->caching = 0;
 	}
 
 	/**
-	 * ¿‚ÚÓËÁ‡ˆËˇ ÔÓÎ¸ÁÓ‚‡ÚÂÎˇ
-	 * ÃŒƒ”À‹ ¿¬“Œ–»«¿÷»» ƒŒÀ∆≈Õ ¡€“‹ ”—“¿ÕŒ¬À≈Õ!!!
+	 * –ê–≤—Ç–æ—Ä–∏–∑–∞—Ü–∏—è –ø–æ–ª—å–∑–æ–≤–∞—Ç–µ–ª—è
+	 * –ú–û–î–£–õ–¨ –ê–í–¢–û–†–ò–ó–ê–¶–ò–ò –î–û–õ–ñ–ï–ù –ë–´–¢–¨ –£–°–¢–ê–ù–û–í–õ–ï–ù!!!
 	 *
-	 * @return string ÙÓÏ‡ ‡‚ÚÓËÁ‡ˆËË ËÎË Ô‡ÌÂÎ¸ ‡‚ÚÓËÁÓ‚‡ÌÌÓ„Ó ÔÓÎ¸ÁÓ‚‡ÚÂÎˇ
+	 * @return string —Ñ–æ—Ä–º–∞ –∞–≤—Ç–æ—Ä–∏–∑–∞—Ü–∏–∏ –∏–ª–∏ –ø–∞–Ω–µ–ª—å –∞–≤—Ç–æ—Ä–∏–∑–æ–≤–∞–Ω–Ω–æ–≥–æ –ø–æ–ª—å–∑–æ–≤–∞—Ç–µ–ª—è
 	 */
 	function _shopLogin()
 	{
@@ -415,11 +415,11 @@ $AVE_Template->caching = 0;
 	}
 
 	/**
-	 * ¬˚‚Ó‰ ÙÓÏ˚ ‡‚ÚÓËÁ‡ˆËË
+	 * –í—ã–≤–æ–¥ —Ñ–æ—Ä–º—ã –∞–≤—Ç–æ—Ä–∏–∑–∞—Ü–∏–∏
 	 *
-	 * @param string $tpl_dir ÔÛÚ¸ Í ¯‡·ÎÓÌ‡Ï ÏÓ‰ÛÎˇ ‡‚ÚÓËÁ‡ˆËË
-	 * @param string $lang_file ÔÛÚ¸ Í ˇÁ˚ÍÓ‚ÓÏÛ Ù‡ÈÎÛ ÏÓ‰ÛÎˇ ‡‚ÚÓËÁ‡ˆËË
-	 * @return string ÙÓÏ‡ ‡‚ÚÓËÁ‡ˆËË
+	 * @param string $tpl_dir –ø—É—Ç—å –∫ —à–∞–±–ª–æ–Ω–∞–º –º–æ–¥—É–ª—è –∞–≤—Ç–æ—Ä–∏–∑–∞—Ü–∏–∏
+	 * @param string $lang_file –ø—É—Ç—å –∫ —è–∑—ã–∫–æ–≤–æ–º—É —Ñ–∞–π–ª—É –º–æ–¥—É–ª—è –∞–≤—Ç–æ—Ä–∏–∑–∞—Ü–∏–∏
+	 * @return string —Ñ–æ—Ä–º–∞ –∞–≤—Ç–æ—Ä–∏–∑–∞—Ü–∏–∏
 	 */
 	function _displayLoginform($tpl_dir, $lang_file)
 	{
@@ -441,11 +441,11 @@ $AVE_Template->caching = 0;
 	}
 
 	/**
-	 * ¬˚‚Ó‰ Ô‡ÌÂÎË ‡‚ÚÓËÁÓ‚‡ÌÌÓ„Ó ÔÓÎ¸ÁÓ‚‡ÚÂÎˇ
+	 * –í—ã–≤–æ–¥ –ø–∞–Ω–µ–ª–∏ –∞–≤—Ç–æ—Ä–∏–∑–æ–≤–∞–Ω–Ω–æ–≥–æ –ø–æ–ª—å–∑–æ–≤–∞—Ç–µ–ª—è
 	 *
-	 * @param string $tpl_dir ÔÛÚ¸ Í ¯‡·ÎÓÌ‡Ï ÏÓ‰ÛÎˇ ‡‚ÚÓËÁ‡ˆËË
-	 * @param string $lang_file ÔÛÚ¸ Í ˇÁ˚ÍÓ‚ÓÏÛ Ù‡ÈÎÛ ÏÓ‰ÛÎˇ ‡‚ÚÓËÁ‡ˆËË
-	 * @return string ÙÓÏ‡ Ô‡ÌÂÎË ‡‚ÚÓËÁÓ‚‡ÌÌÓ„Ó ÔÓÎ¸ÁÓ‚‡ÚÂÎˇ
+	 * @param string $tpl_dir –ø—É—Ç—å –∫ —à–∞–±–ª–æ–Ω–∞–º –º–æ–¥—É–ª—è –∞–≤—Ç–æ—Ä–∏–∑–∞—Ü–∏–∏
+	 * @param string $lang_file –ø—É—Ç—å –∫ —è–∑—ã–∫–æ–≤–æ–º—É —Ñ–∞–π–ª—É –º–æ–¥—É–ª—è –∞–≤—Ç–æ—Ä–∏–∑–∞—Ü–∏–∏
+	 * @return string —Ñ–æ—Ä–º–∞ –ø–∞–Ω–µ–ª–∏ –∞–≤—Ç–æ—Ä–∏–∑–æ–≤–∞–Ω–Ω–æ–≥–æ –ø–æ–ª—å–∑–æ–≤–∞—Ç–µ–ª—è
 	 */
 	function _displayUserPanel($tpl_dir, $lang_file)
 	{
@@ -487,10 +487,10 @@ $AVE_Template->caching = 0;
 	}
 
 	/**
-	 * ‘ÓÏËÓ‚‡ÌËÂ ◊œ” ‰Îˇ ÏÓ‰ÛÎˇ Ã‡„‡ÁËÌ
+	 * –§–æ—Ä–º–∏—Ä–æ–≤–∞–Ω–∏–µ –ß–ü–£ –¥–ª—è –º–æ–¥—É–ª—è –ú–∞–≥–∞–∑–∏–Ω
 	 *
-	 * @param string $string Ó·‡·‡Ú˚‚‡ÂÏ˚È ÚÂÍÒÚ
-	 * @return string Ó·‡·ÓÚ‡ÌÌ˚È ÚÂÍÒÚ
+	 * @param string $string –æ–±—Ä–∞–±–∞—Ç—ã–≤–∞–µ–º—ã–π —Ç–µ–∫—Å—Ç
+	 * @return string –æ–±—Ä–∞–±–æ—Ç–∞–Ω–Ω—ã–π —Ç–µ–∫—Å—Ç
 	 */
 	function _shopRewrite($string)
 	{
@@ -500,7 +500,7 @@ $AVE_Template->caching = 0;
 	}
 
 	//=======================================================
-	// Alle Steuers‰tze anzeigen
+	// Alle Steuers–¥tze anzeigen
 	//=======================================================
 	function _showVatZones($unset='')
 	{
@@ -534,7 +534,7 @@ $AVE_Template->caching = 0;
 	}
 
 	//=======================================================
-	// Steuersatz - Session zur¸cksetzen
+	// Steuersatz - Session zur—åcksetzen
 	//=======================================================
 	function _resetVatZoneSessions()
 	{
@@ -558,7 +558,7 @@ $AVE_Template->caching = 0;
 	}
 
 	//=======================================================
-	// Downloads f¸r einen Kunden anzeigen
+	// Downloads f—år einen Kunden anzeigen
 	//=======================================================
 	// Downloadfunktion
 	function _cpReadFile($filename, $retbytes = true)
@@ -576,7 +576,7 @@ $AVE_Template->caching = 0;
 			$buffer = fread($handle, $chunksize);
 			echo $buffer;
 			flush();
-			if ($retbytes) $cnt += strlen($buffer);
+			if ($retbytes) $cnt += mb_strlen($buffer);
 		}
 		$status = fclose($handle);
 
@@ -586,7 +586,7 @@ $AVE_Template->caching = 0;
 	}
 
 	/**
-	 * —ÔËÒÓÍ Ù‡ÈÎÓ‚ ‰Îˇ Á‡„ÛÁÍË
+	 * –°–ø–∏—Å–æ–∫ —Ñ–∞–π–ª–æ–≤ –¥–ª—è –∑–∞–≥—Ä—É–∑–∫–∏
 	 *
 	 */
 	function myDownloads()
@@ -769,7 +769,7 @@ $AVE_Template->caching = 0;
 	}
 
 	/**
-	 * —ÔËÒÓÍ Á‡Í‡ÁÓ‚
+	 * –°–ø–∏—Å–æ–∫ –∑–∞–∫–∞–∑–æ–≤
 	 *
 	 */
 	function myOrders()
@@ -1225,9 +1225,9 @@ $AVE_Template->caching = 0;
 	}
 
 	/**
-	 * ‘ÓÏËÓ‚‡ÌËÂ ÒÔËÒÍ‡ ÓÚÓ·‡ÌÌ˚ı ‰Îˇ Ò‡‚ÌÂÌËˇ ÚÓ‚‡Ó‚
+	 * –§–æ—Ä–º–∏—Ä–æ–≤–∞–Ω–∏–µ —Å–ø–∏—Å–∫–∞ –æ—Ç–æ–±—Ä–∞–Ω–Ω—ã—Ö –¥–ª—è —Å—Ä–∞–≤–Ω–µ–Ω–∏—è —Ç–æ–≤–∞—Ä–æ–≤
 	 *
-	 * @return array ÒÔËÒÓÍ Ò‡‚ÌË‚‡ÂÏ˚ı ÚÓ‚‡Ó‚ Ë Ëı Ô‡‡ÏÂÚÓ‚
+	 * @return array —Å–ø–∏—Å–æ–∫ —Å—Ä–∞–≤–Ω–∏–≤–∞–µ–º—ã—Ö —Ç–æ–≤–∞—Ä–æ–≤ –∏ –∏—Ö –ø–∞—Ä–∞–º–µ—Ç—Ä–æ–≤
 	 */
 	function _showWishlist()
 	{
@@ -1306,7 +1306,7 @@ $AVE_Template->caching = 0;
 				$item->Val = $value;
 				$SummVars = '';
 
-				// mˆgliche Produkt - Varianten auslesen und Preis berechnen
+				// m—Ügliche Produkt - Varianten auslesen und Preis berechnen
 				$Vars = array();
 				if (!empty($vars))
 				{
@@ -1370,7 +1370,7 @@ $AVE_Template->caching = 0;
 				}
 				if (is_object($row))
 				{
-					// ›Ú‡ ÒÚÓÍ‡ ÌÛÊÌ‡ ‰Îˇ ÓÚÓ·‡ÊÂÌËˇ ÔÓÌÓ„Ó Ò‡‚ÌÂÌËˇ ‚ Á‡ÍÎ‡‰ÍÂ
+					// –≠—Ç–∞ —Å—Ç—Ä–æ–∫–∞ –Ω—É–∂–Ω–∞ –¥–ª—è –æ—Ç–æ–±—Ä–∞–∂–µ–Ω–∏—è –ø–æ–Ω–æ–≥–æ —Å—Ä–∞–≤–Ω–µ–Ω–∏—è –≤ –∑–∞–∫–ª–∞–¥–∫–µ
 					$item = $row;
 
 					$Einzelpreis = $row->Preis;
@@ -1407,8 +1407,8 @@ $AVE_Template->caching = 0;
 					$item->Hersteller_Logo = $this->_fetchManufacturer($row->Hersteller, 'Logo');
 					$item->DelLink = $this->_link_delete_item . $row->Id;
 
-					// Einzelpreis unter Ber¸cksichtigung von Kundengruppe und Varianten
-					// Summe unter Ber¸cksichtung der Anzahl
+					// Einzelpreis unter Ber—åcksichtigung von Kundengruppe und Varianten
+					// Summe unter Ber—åcksichtung der Anzahl
 					if ($value>1)
 					{
 						$item->EPreis = (($PayUSt != true) ? (($this->_getDiscountVal($this->_getNewPrice($key, $value, 0, $Einzelpreis))+$SummVarsE) / $this->_getVat($key)) : ($this->_getDiscountVal($this->_getNewPrice($key, $value, 0, $Einzelpreis))+$SummVarsE));
@@ -1427,7 +1427,7 @@ $AVE_Template->caching = 0;
 					$PreisGesamt += $item->EPreisSumme;
 					$GewichtGesamt += $item->Gewicht;
 
-					// Preis 2.W‰hrung
+					// Preis 2.W–¥hrung
 					if (defined('WaehrungSymbol2') && defined('Waehrung2') && defined('Waehrung2Multi'))
 					{
 						if ($value>1)
@@ -1452,7 +1452,7 @@ $AVE_Template->caching = 0;
 					{
 						$item->Vat = $this->_getVat($key,1);
 						$mu = explode('.', $item->Vat);
-						$multiplier = (strlen($mu[0]) == 1) ? '1.0' . $mu[0] . $mu[1] : '1.' . $mu[0] . $mu[1];
+						$multiplier = (mb_strlen($mu[0]) == 1) ? '1.0' . $mu[0] . $mu[1] : '1.' . $mu[0] . $mu[1];
 
 						$PreisNettoAll = $item->EPreisSumme / $multiplier;
 						$PreisNettoAll = $item->EPreisSumme - $PreisNettoAll;
@@ -1515,7 +1515,7 @@ $AVE_Template->caching = 0;
 				$item->Val = $value;
 				$SummVars = '';
 
-				// mˆgliche Produkt - Varianten auslesen und Preis berechnen
+				// m—Ügliche Produkt - Varianten auslesen und Preis berechnen
 				$Vars = array();
 				if (!empty($_SESSION['ProductVar'][$item->Id]))
 				{
@@ -1611,8 +1611,8 @@ $AVE_Template->caching = 0;
 				$item->Hersteller_Logo = $this->_fetchManufacturer($row->Hersteller, 'Logo');
 				$item->DelLink = $this->_link_delete_item . $row->Id;
 
-				// Einzelpreis unter Ber¸cksichtigung von Kundengruppe und Varianten
-				// Summe unter Ber¸cksichtung der Anzahl
+				// Einzelpreis unter Ber—åcksichtigung von Kundengruppe und Varianten
+				// Summe unter Ber—åcksichtung der Anzahl
 				if ($value>1)
 				{
 					$item->EPreis = (($PayUSt != true) ? (($this->_getDiscountVal($this->_getNewPrice($key, $value, 0, $Einzelpreis))+$SummVarsE) / $this->_getVat($key)) : ($this->_getDiscountVal($this->_getNewPrice($key, $value, 0, $Einzelpreis))+$SummVarsE));
@@ -1632,7 +1632,7 @@ $AVE_Template->caching = 0;
 				$PreisGesamt += $item->EPreisSumme;
 				$GewichtGesamt += $item->Gewicht;
 
-				// Preis 2.W‰hrung
+				// Preis 2.W–¥hrung
 				if (defined('WaehrungSymbol2') && defined('Waehrung2') && defined('Waehrung2Multi'))
 				{
 					if ($value>1)
@@ -1658,7 +1658,7 @@ $AVE_Template->caching = 0;
 				{
 					$item->Vat = $this->_getVat($key,1);
 					$mu = explode('.', $item->Vat);
-					@$multiplier = (strlen($mu[0]) == 1) ? '1.0' . $mu[0] . $mu[1] : '1.' . $mu[0] . $mu[1];
+					@$multiplier = (mb_strlen($mu[0]) == 1) ? '1.0' . $mu[0] . $mu[1] : '1.' . $mu[0] . $mu[1];
 
 					$PreisNettoAll = $item->EPreisSumme / $multiplier;
 					$PreisNettoAll = $item->EPreisSumme - $PreisNettoAll;
@@ -1673,7 +1673,7 @@ $AVE_Template->caching = 0;
 				$item = '';
 				$row = '';
 			}
-			// Eventuellen Kundengruppen - Rabatt ber¸cksichtigen!
+			// Eventuellen Kundengruppen - Rabatt ber—åcksichtigen!
 
 			$PreisVorher = '';
 
@@ -1683,7 +1683,7 @@ $AVE_Template->caching = 0;
 			$_SESSION['BasketOverall'] = $PreisGesamt;
 			$_SESSION['GewichtSumm'] = str_replace(',','.',$GewichtGesamt);;
 
-			// Gutscheincode lˆschen
+			// Gutscheincode l—Üschen
 			if (isset($_POST['couponcode_del']) && $_POST['couponcode_del'] == 1 && $this->_getShopSetting('GutscheinCodes') == 1)
 			{
 				unset($_SESSION['CouponCode']);
@@ -1726,7 +1726,7 @@ $AVE_Template->caching = 0;
 			}
 		}
 
-		// Muss der K‰ufer USt. zahlen?
+		// Muss der K–¥ufer USt. zahlen?
 		// ShipperId
 		$PayUSt = true;
 		if (isset($row_ieu) && is_object($row_ieu) && $row_ieu->country_eu == 2)
@@ -1835,9 +1835,9 @@ $AVE_Template->caching = 0;
 	}
 
 	/**
-	 * ƒÂÚ‡Î¸Ì‡ˇ ËÌÙÓÏ‡ˆËˇ Ó ÚÓ‚‡Â
+	 * –î–µ—Ç–∞–ª—å–Ω–∞—è –∏–Ω—Ñ–æ—Ä–º–∞—Ü–∏—è –æ —Ç–æ–≤–∞—Ä–µ
 	 *
-	 * @param int $product_id Ë‰ÂÌÚËÙËÍ‡ÚÓ ÚÓ‚‡‡
+	 * @param int $product_id –∏–¥–µ–Ω—Ç–∏—Ñ–∏–∫–∞—Ç–æ—Ä —Ç–æ–≤–∞—Ä–∞
 	 */
 	function showDetails($product_id)
 	{
@@ -1933,7 +1933,7 @@ $AVE_Template->caching = 0;
 		");
 		while ($row_bilder = $sql_bilder->FetchRow())
 		{
-			$bild_typ = strtolower(substr($row_bilder->Bild,-4));
+			$bild_typ = mb_strtolower(mb_substr($row_bilder->Bild,-4));
 			switch ($bild_typ)
 			{
 				case 'jpeg' :
@@ -2062,7 +2062,7 @@ $AVE_Template->caching = 0;
 				{
 					$_SESSION['Product'][$_REQUEST['product_id']] = $amount;
 
-					// Mˆgliche Varianten in Session
+					// M—Ügliche Varianten in Session
 					// Hier wird ein Produkt aus dem Wunschzettel abgelegt
 					if (!empty($_REQUEST['vars']))
 					{
@@ -2097,7 +2097,7 @@ $AVE_Template->caching = 0;
 					$row = $sql->FetchRow();
 					if (is_object($row) && $row->Id != '')
 					{
-						// Vorhandene Eintr‰ge auslesen und aktualisieren
+						// Vorhandene Eintr–¥ge auslesen und aktualisieren
 						$_SESSION['Product_Wishlist'] = unserialize($row->Inhalt);
 						$_SESSION['Product_Wishlist_Vars'] = unserialize($row->Inhalt_Vars);
 						$_SESSION['Product_Wishlist'][$_REQUEST['product_id']] = $amount;
@@ -2118,7 +2118,7 @@ $AVE_Template->caching = 0;
 					else
 					{
 						// Neu
-						// mˆgliche Varianten
+						// m—Ügliche Varianten
 						$Db_Vars = '';
 						if (isset($_POST['product_vars']) && is_array($_POST['product_vars']))
 						{
@@ -2164,7 +2164,7 @@ $AVE_Template->caching = 0;
 
 	//=======================================================
 	// Globale Produkt-Infos
-	// Wurd f¸r mehrere Ausgaben benˆtigt
+	// Wurd f—år mehrere Ausgaben ben—Ütigt
 	//=======================================================
 	function _globalProductInfo($row = '')
 	{
@@ -2175,7 +2175,7 @@ $AVE_Template->caching = 0;
 			$PayUSt = $this->_checkPayVat();
 
 			$mu = explode('.', $this->_getUstVal($row->UstZone));
-			@$multiplier = (strlen($mu[0]) == 1) ? '1.0' . $mu[0] . $mu[1] : '1.' . $mu[0] . $mu[1];
+			@$multiplier = (mb_strlen($mu[0]) == 1) ? '1.0' . $mu[0] . $mu[1] : '1.' . $mu[0] . $mu[1];
 
 			$row->Preis           = ($PayUSt == true) ? $this->_getDiscountVal($row->Preis) : ($this->_getDiscountVal($row->Preis) / $this->_getVat($row->Id));
 			$row->PreisListe_Raw  = $row->PreisListe;
@@ -2424,11 +2424,11 @@ $AVE_Template->caching = 0;
 //		$sql->Close();
 
 		$mu = explode('.', $row2->Wert);
-		@$multiplier = (strlen($mu[0]) == 1) ? '1.0' . $mu[0] . $mu[1] : '1.' . $mu[0] . $mu[1];
+		@$multiplier = (mb_strlen($mu[0]) == 1) ? '1.0' . $mu[0] . $mu[1] : '1.' . $mu[0] . $mu[1];
 
 		$vat = ($showPercent == 1) ? $row2->Wert : $multiplier;
 
-		return $vat;//echo "$row->Preis / 100 * $row2->Wert --> $vat Ä (Multi:$multiplier)<br>";
+		return $vat;//echo "$row->Preis / 100 * $row2->Wert --> $vat –Ç (Multi:$multiplier)<br>";
 	}
 
 	//=======================================================
@@ -2677,10 +2677,10 @@ $AVE_Template->caching = 0;
 		define('MODULE_SITE', $GLOBALS['mod']['config_vars']['PageName'] . $GLOBALS['mod']['config_vars']['PageSep'] . $GLOBALS['mod']['config_vars']['ShopBasket']);
 	}
 
-	/** ‘”Õ ÷»ﬂ Õ¿‘»√
-	 * œÓˆÂÌÚ ÒÍË‰ÍË Ì‡ ÚÓ‚‡˚ ‰Îˇ „ÛÔÔ˚ ÔÓÎ¸ÁÓ‚‡ÚÂÎˇ
+	/** –§–£–ù–ö–¶–ò–Ø –ù–ê–§–ò–ì
+	 * –ü—Ä–æ—Ü–µ–Ω—Ç —Å–∫–∏–¥–∫–∏ –Ω–∞ —Ç–æ–≤–∞—Ä—ã –¥–ª—è –≥—Ä—É–ø–ø—ã –ø–æ–ª—å–∑–æ–≤–∞—Ç–µ–ª—è
 	 *
-	 * @return float ÔÓˆÂÌÚ ÒÍË‰ÍË
+	 * @return float –ø—Ä–æ—Ü–µ–Ω—Ç —Å–∫–∏–¥–∫–∏
 	 */
 	function customerDiscount()
 	{
@@ -2707,10 +2707,10 @@ $AVE_Template->caching = 0;
 	}
 
 	/**
-	 * ÷ÂÌ‡ Ò Û˜ÂÚÓÏ ÒÍË‰ÍË ‰Îˇ ÚÂÍÛ˘ÂÈ „ÛÔÔ˚ ÔÓÎ¸ÁÓ‚‡ÚÂÎÂÈ
+	 * –¶–µ–Ω–∞ —Å —É—á–µ—Ç–æ–º —Å–∫–∏–¥–∫–∏ –¥–ª—è —Ç–µ–∫—É—â–µ–π –≥—Ä—É–ø–ø—ã –ø–æ–ª—å–∑–æ–≤–∞—Ç–µ–ª–µ–π
 	 *
-	 * @param float $val ˆÂÌ‡
-	 * @return float ˆÂÌ‡ Ò Û˜ÂÚÓÏ ÒÍË‰ÍË
+	 * @param float $val —Ü–µ–Ω–∞
+	 * @return float —Ü–µ–Ω–∞ —Å —É—á–µ—Ç–æ–º —Å–∫–∏–¥–∫–∏
 	 */
 	function _getDiscountVal($val)
 	{
@@ -2793,7 +2793,7 @@ $AVE_Template->caching = 0;
 						$_SESSION['user_pass']     = $password;
 						$_SESSION['user_email']    = addslashes($row->email);
 						$_SESSION['user_country']  = strtoupper($row->country);
-						$_SESSION['user_language'] = strtolower($row->country);
+						$_SESSION['user_language'] = mb_strtolower($row->country);
 						$_SESSION['user_ip']       = addslashes($_SERVER['REMOTE_ADDR']);
 
 //						$_SESSION['admin_theme'] = DEFAULT_ADMIN_THEME_FOLDER;
@@ -2883,7 +2883,7 @@ $AVE_Template->caching = 0;
 			$row->L = explode(',', $row->LaenderVersand);
 			if ($row->NurBeiGewichtNull == 1 && $_SESSION['GewichtSumm'] > '0.00')
 			{
-				// Versabdart anzeigen, die nur f¸r Downloads gedacht sind!
+				// Versabdart anzeigen, die nur f—år Downloads gedacht sind!
 			}
 			else
 			{
@@ -2965,7 +2965,7 @@ $AVE_Template->caching = 0;
 				$Versand = explode(',', $row->ErlaubteVersandarten);
 				$row->Kosten = $row->Kosten;
 
-				// Nur Zahlungsarten f¸r erlaubte Benutzergruppe ausgeben
+				// Nur Zahlungsarten f—år erlaubte Benutzergruppe ausgeben
 				if (in_array($_SESSION['ShipperId'], $Versand) && in_array($_POST['country'],$Laender) && in_array($_SESSION['user_group'], $user_group)) array_push($PaymentMethods, $row);
 			}
 		}
@@ -3004,7 +3004,7 @@ $AVE_Template->caching = 0;
 	}
 
 	//=======================================================
-	// Pr¸fung
+	// Pr—åfung
 	//=======================================================
 	function checkOut()
 	{
@@ -3019,7 +3019,7 @@ $AVE_Template->caching = 0;
 		$checkoutinfo = false;
 		$orderok = false;
 
-		// Formular auf fehlende Angaben ¸berpr¸fen
+		// Formular auf fehlende Angaben —åberpr—åfen
 		if (isset($_REQUEST['send']) && $_REQUEST['send'] == 1)
 		{
 			$errors = array();
@@ -3056,7 +3056,7 @@ $AVE_Template->caching = 0;
 			if (isset($_POST['shipping_zip'])) $_SESSION['shipping_zip'] = stripslashes($_POST['shipping_zip']);
 			if (isset($_POST['shipping_city'])) $_SESSION['shipping_city'] = stripslashes($_POST['shipping_city']);
 
-			// Es sind Fehler vorhanden. Benutzer wird zur¸ck geleitet!
+			// Es sind Fehler vorhanden. Benutzer wird zur—åck geleitet!
 			if (count($errors) > 0)
 			{
 				$errors = str_replace('+','_',urlencode(base64_encode(serialize($errors))));
@@ -3072,7 +3072,7 @@ $AVE_Template->caching = 0;
 			exit;
 		}
 
-		// Alles ausgef¸llt...
+		// Alles ausgef—ållt...
 		if (isset($_REQUEST['zusammenfassung']) && $_REQUEST['zusammenfassung'] == 1)
 		{
 			if (!empty($_SESSION['ShipperId']) && !empty($_SESSION['PaymentId']))
@@ -3183,7 +3183,7 @@ $AVE_Template->caching = 0;
 
 				$Kosten = $_SESSION['BasketSumm'];
 
-				$PluMin = substr($row->Kosten, 0, 1);
+				$PluMin = mb_substr($row->Kosten, 0, 1);
 				switch ($PluMin)
 				{
 					case '-':
@@ -3234,7 +3234,7 @@ $AVE_Template->caching = 0;
 			// Zusammenfassung
 			if ($checkoutinfo == true)
 			{
-				// œÓ‚ÂÍ‡ ÔËÌˇÚËˇ ÎËˆÂÌÁËÓÌÌÓ„Ó ÒÓ„Î‡¯ÂÌËˇ
+				// –ü—Ä–æ–≤–µ—Ä–∫–∞ –ø—Ä–∏–Ω—è—Ç–∏—è –ª–∏—Ü–µ–Ω–∑–∏–æ–Ω–Ω–æ–≥–æ —Å–æ–≥–ª–∞—à–µ–Ω–∏—è
 				if (isset($_REQUEST['sendorder']) && $_REQUEST['sendorder'] == 1 && isset($_REQUEST['agb_accept']) && $_REQUEST['agb_accept'] == 1)
 				{
 					$orderok = true;
@@ -3245,7 +3245,7 @@ $AVE_Template->caching = 0;
 					$orderok = false;
 				}
 
-				// ŒÚÍ‡Á ÓÚ ËÒÔÓÎ¸ÁÓ‚‡ÌËˇ ÍÛÔÔÓÌ‡ Ì‡ ÒÍË‰ÍÛ
+				// –û—Ç–∫–∞–∑ –æ—Ç –∏—Å–ø–æ–ª—å–∑–æ–≤–∞–Ω–∏—è –∫—É–ø–ø–æ–Ω–∞ –Ω–∞ —Å–∫–∏–¥–∫—É
 				if (isset($_POST['couponcode_del']) && $_POST['couponcode_del'] == 1 && $this->_getShopSetting('GutscheinCodes') == 1)
 				{
 					unset($_SESSION['CouponCode']);
@@ -3253,7 +3253,7 @@ $AVE_Template->caching = 0;
 					$AVE_Template->assign('NoAGB', 0);
 				}
 
-				// Œ·‡·ÓÚÍ‡ ‚‚Â‰∏ÌÌÓ„Ó ÌÓÏÂ‡ ÍÛÔÔÓÌ‡ Ì‡ ÒÍË‰ÍÛ
+				// –û–±—Ä–∞–±–æ—Ç–∫–∞ –≤–≤–µ–¥—ë–Ω–Ω–æ–≥–æ –Ω–æ–º–µ—Ä–∞ –∫—É–ø–ø–æ–Ω–∞ –Ω–∞ —Å–∫–∏–¥–∫—É
 				if (!empty($_REQUEST['couponcode']) && $this->_getShopSetting('GutscheinCodes') == 1)
 				{
 					$use_coupon = true;
@@ -3397,7 +3397,7 @@ $AVE_Template->caching = 0;
 						}
 					}
 
-					// Anzahl der K‰ufe im Artikel erhˆhen
+					// Anzahl der K–¥ufe im Artikel erh—Ühen
 					$arr = $_SESSION['Product'];
 					foreach ($arr as $key => $value)
 					{
@@ -3417,7 +3417,7 @@ $AVE_Template->caching = 0;
 					$AVE_Template->assign('OrderTime', time());
 					$AVE_Template->assign('VatZones', $this->_showVatZones());
 
-					// ÙÓÏËÛÂÏ ÚÂÍÒÚ˚ ÍÓÔËË Á‡Í‡Á‡ ‚ ÙÓÏ‡Ú‡ı HTML Ë Text
+					// —Ñ–æ—Ä–º–∏—Ä—É–µ–º —Ç–µ–∫—Å—Ç—ã –∫–æ–ø–∏–∏ –∑–∞–∫–∞–∑–∞ –≤ —Ñ–æ—Ä–º–∞—Ç–∞—Ö HTML –∏ Text
 					$mail_html = $AVE_Template->fetch($GLOBALS['mod']['tpl_dir'] . $this->_shop_orderconfirm_html_tpl);
 					$mail_text = $AVE_Template->fetch($GLOBALS['mod']['tpl_dir'] . $this->_shop_orderconfirm_text_tpl);
 					$mail_text = $this->_textReplace($mail_text);
@@ -3426,8 +3426,8 @@ $AVE_Template->caching = 0;
 
 					$BetreffBest = $this->_getShopSetting('BetreffBest');
 
-					// ŒÚÔ‡‚Í‡ ÍÓÔËË Á‡Í‡Á‡ ‡‰ËÌËÒÚ‡ÚÓÛ Ë ÍÎËÂÌÚÛ
-					// ‚ ‚˚·‡ÌÌÓÏ ÙÓÏ‡ÚÂ (Text ËÎË HTML)
+					// –û—Ç–ø—Ä–∞–≤–∫–∞ –∫–æ–ø–∏–∏ –∑–∞–∫–∞–∑–∞ –∞–¥–∏–Ω–∏—Å—Ç—Ä–∞—Ç–æ—Ä—É –∏ –∫–ª–∏–µ–Ω—Ç—É
+					// –≤ –≤—ã–±—Ä–∞–Ω–Ω–æ–º —Ñ–æ—Ä–º–∞—Ç–µ (Text –∏–ª–∏ HTML)
 					if ($this->_getShopSetting('EmailFormat') == 'html')
 					{
 						send_mail($EmpEmail,               $mail_html, $BetreffBest, $AbsEmail, $AbsName, 'html');
@@ -3439,7 +3439,7 @@ $AVE_Template->caching = 0;
 						send_mail($_SESSION['OrderEmail'], $mail_text, $BetreffBest, $AbsEmail, $AbsName, 'text');
 					}
 
-					// —Óı‡ÌˇÂÏ ÚÂÍÒÚ ÍÓÔËË Á‡Í‡Á‡ ‚ ÙÓÏ‡Ú‡ı HTML Ë Text
+					// –°–æ—Ö—Ä–∞–Ω—è–µ–º —Ç–µ–∫—Å—Ç –∫–æ–ø–∏–∏ –∑–∞–∫–∞–∑–∞ –≤ —Ñ–æ—Ä–º–∞—Ç–∞—Ö HTML –∏ Text
 					$AVE_DB->Query("
 						UPDATE " . PREFIX . "_modul_shop_bestellungen
 						SET
@@ -3466,7 +3466,7 @@ $AVE_Template->caching = 0;
 						if (file_exists(GATEWAY) && @include(GATEWAY)) exit;
 					}
 
-					// Wenn es keinen Zahlungs - Gateway gibt, Best‰tigungs - Seite anzeigen
+					// Wenn es keinen Zahlungs - Gateway gibt, Best–¥tigungs - Seite anzeigen
 					unset($_SESSION['Zwisumm']);
 					unset($_SESSION['BasketSumm']);
 					unset($_SESSION['BasketOverall']);

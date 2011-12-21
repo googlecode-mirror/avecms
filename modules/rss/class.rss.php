@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Êëàññ ðàáîòû ñ RSS-ëåíòàìè
+ * ÐšÐ»Ð°ÑÑ Ñ€Ð°Ð±Ð¾Ñ‚Ñ‹ Ñ RSS-Ð»ÐµÐ½Ñ‚Ð°Ð¼Ð¸
  *
  * @package AVE.cms
  * @subpackage module_RSS
@@ -11,9 +11,9 @@
 class Rss
 {
 	/**
-	 * Ñïèñîê RSS - ëåíò
+	 * Ð¡Ð¿Ð¸ÑÐ¾Ðº RSS - Ð»ÐµÐ½Ñ‚
 	 *
-	 * @param string $tpl_dir ïóòü ê ïàïêå ñ øàáëîíàìè
+	 * @param string $tpl_dir Ð¿ÑƒÑ‚ÑŒ Ðº Ð¿Ð°Ð¿ÐºÐµ Ñ ÑˆÐ°Ð±Ð»Ð¾Ð½Ð°Ð¼Ð¸
 	 */
 	public static function rssList($tpl_dir, $lang_file)
 	{
@@ -34,7 +34,7 @@ class Rss
 	}
 
 	/**
-	 * Ñîçäàíèå RSS - ëåíòû
+	 * Ð¡Ð¾Ð·Ð´Ð°Ð½Ð¸Ðµ RSS - Ð»ÐµÐ½Ñ‚Ñ‹
 	 *
 	 */
 	public static function rssNew()
@@ -63,10 +63,10 @@ class Rss
 	}
 
 	/**
-	 * Ðåäàêòèðîâàíèå RSS - ëåíòû
+	 * Ð ÐµÐ´Ð°ÐºÑ‚Ð¸Ñ€Ð¾Ð²Ð°Ð½Ð¸Ðµ RSS - Ð»ÐµÐ½Ñ‚Ñ‹
 	 *
-	 * @param string $tpl_dir	ïóòü ê ïàïêå ñ øàáëîíàìè
-	 * @param string $lang_file	ïóòü ê ÿçûêîâîìó ôàéëó
+	 * @param string $tpl_dir	Ð¿ÑƒÑ‚ÑŒ Ðº Ð¿Ð°Ð¿ÐºÐµ Ñ ÑˆÐ°Ð±Ð»Ð¾Ð½Ð°Ð¼Ð¸
+	 * @param string $lang_file	Ð¿ÑƒÑ‚ÑŒ Ðº ÑÐ·Ñ‹ÐºÐ¾Ð²Ð¾Ð¼Ñƒ Ñ„Ð°Ð¹Ð»Ñƒ
 	 */
 	public static function rssEdit($tpl_dir, $lang_file)
 	{
@@ -117,7 +117,7 @@ class Rss
 	}
 
 	/**
-	 * Çàïèñü íàñòðîåê
+	 * Ð—Ð°Ð¿Ð¸ÑÑŒ Ð½Ð°ÑÑ‚Ñ€Ð¾ÐµÐº
 	 *
 	 */
 	public static function rssSave()
@@ -144,7 +144,7 @@ class Rss
 	}
 
 	/**
-	 * Óäàëåíèå RSS - ëåíòû
+	 * Ð£Ð´Ð°Ð»ÐµÐ½Ð¸Ðµ RSS - Ð»ÐµÐ½Ñ‚Ñ‹
 	 *
 	 */
 	public static function rssDelete()

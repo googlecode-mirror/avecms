@@ -69,7 +69,7 @@ if (!empty($_REQUEST['sub']))
 			}
 
 			// ========================================================
-			// In den temporären Ordner kopieren
+			// In den temporÐ´ren Ordner kopieren
 			// ========================================================
 			if ($error == false)
 			{
@@ -81,7 +81,7 @@ if (!empty($_REQUEST['sub']))
 				}
 
 				// ========================================================
-				// Datei öffnen und Kopfzeile einlesen
+				// Datei Ñ†ffnen und Kopfzeile einlesen
 				// ========================================================
 				$fp = fopen($TempDir . '/CSVIMPORT_shop_' . $_SESSION['user_id'] . '_'.$fileid.'.txt', 'r');
 				$csv = new CSVReader($fp);
@@ -136,7 +136,7 @@ if (!empty($_REQUEST['sub']))
 			$error=false;
 			$TempDir = BASE_DIR . '/modules/shop/uploads/';
 			// ========================================================
-			// Nach temporärere Datei suchen...
+			// Nach temporÐ´rere Datei suchen...
 			// ========================================================
 			$fileid = preg_replace('/[^0-9a-zA-Z]*/', '', $_REQUEST['fileid']);
 			if (!file_exists($TempDir . '/CSVIMPORT_shop_' . $_SESSION['user_id'] . '_'.$fileid.'.txt'))
@@ -154,7 +154,7 @@ if (!empty($_REQUEST['sub']))
 			}
 
 			// ========================================================
-			// Datei öffnen
+			// Datei Ñ†ffnen
 			// ========================================================
 			$fp = fopen($TempDir . '/CSVIMPORT_shop_' . $_SESSION['user_id'] . '_'.$fileid.'.txt', 'r');
 			$csv = new CSVReader($fp);

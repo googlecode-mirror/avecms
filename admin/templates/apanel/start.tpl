@@ -1,13 +1,15 @@
 <script type="text/javascript" language="javascript">
 $(document).ready(function(){ldelim}
+
 	$('#cc').click(function(){ldelim}
 		$('#ccc').html('');
-		$.get('index.php?do=settings&sub=clearcache&cp={$sess}',
-		{ldelim}{rdelim},
-		function(){ldelim}
-			$('#cachesize').html('0');
-			$('#ccc').html('{#MAIN_CLEAR_CACHE_OK#}');
-		{rdelim})
+		
+		var param = $(".seesettings form").formSerialize();
+		
+		$.post(ave_path+'admin/index.php?do=settings&sub=clearcache&ajax=run', param, function(){ldelim}
+			$('#cachesize').html('0 Kb');
+			$('#ccc').html('Кэш очищен');
+		{rdelim});
 	{rdelim});
 
 	$("#loading")
@@ -16,6 +18,14 @@ $(document).ready(function(){ldelim}
 {rdelim});
 </script>
 
+	{if $log_svn}
+		<div class='update-nag'>Вышела новая версия <a href="http://www.overdoze.ru/index.php?module=forums" target="_blank">{$smarty.const.APP_VERSION}</a>! <a href="http://websvn.avecms.ru" target="_blank">Рекомендуется обновиться</a>.<br>
+			{foreach from=$log_svn item=log_svn}
+				№<a href="http://websvn.avecms.ru/revision.php?repname=AVE.cms+2.09&path=/trunk/&rev={$log_svn.version}&isdir=1" target="_blank">{$log_svn.version}</a> ({$log_svn.author}): {$log_svn.comment} <br>
+			{/foreach}
+		</div>
+	{/if}
+	
 <div class="pageHeaderTitle">
 	<div class="h_start">&nbsp;</div>
 	<div class="HeaderTitle">
@@ -256,7 +266,16 @@ $(document).ready(function(){ldelim}
 							<div class="ajax">
 								<div id="loading" style="display:none"><img src="{$tpl_dir}/js/jquery/images/ajax-loader-green.gif" border="0" /></div>
 								<span id="ccc"></span>
-							</div><br />
+							</div><br />	
+								<div class="seesettings">
+									<form style="clear:both; display:block; width:100%;">
+										<label class="cursor"><input name="templateCacheClear" type="checkbox" value="1" checked="checked">&nbsp;Шаблоны</label><br>
+										<label class="cursor"><input name="templateCompiledTemplateClear" type="checkbox" value="1" checked="checked">&nbsp;Страницы</label><br>
+										<label class="cursor"><input name="moduleCacheClear" type="checkbox" value="1" checked="checked">&nbsp;Модули</label><br> 
+										<label class="cursor"><input name="sqlCacheClear" type="checkbox" value="1" checked="checked">&nbsp;SQL запросы</label><br> 
+										<label class="cursor"><input name="sessionClear" type="checkbox" value="1">&nbsp;Сессии</label>
+									</form>
+								</div>
 							<br />
 						</div><br />
 					</td>

@@ -1,7 +1,7 @@
 <?php
 
 /**
- * AVE.cms - Ìîäóëü Ãàëåðåÿ.
+ * AVE.cms - ÐœÐ¾Ð´ÑƒÐ»ÑŒ Ð“Ð°Ð»ÐµÑ€ÐµÑ.
  *
  * @package AVE.cms
  * @subpackage module_Gallery
@@ -10,7 +10,7 @@
  */
 
 /**
- * mySQL-çàïðîñû äëÿ óñòàíîâêè, îáíîâëåíèÿ è óäàëåíèÿ ìîäóëÿ
+ * mySQL-Ð·Ð°Ð¿Ñ€Ð¾ÑÑ‹ Ð´Ð»Ñ ÑƒÑÑ‚Ð°Ð½Ð¾Ð²ÐºÐ¸, Ð¾Ð±Ð½Ð¾Ð²Ð»ÐµÐ½Ð¸Ñ Ð¸ ÑƒÐ´Ð°Ð»ÐµÐ½Ð¸Ñ Ð¼Ð¾Ð´ÑƒÐ»Ñ
  */
 
 $modul_sql_install = array();
@@ -41,7 +41,7 @@ $modul_sql_install[] = "CREATE TABLE `CPPREFIX_modul_gallery` (
   `gallery_script` text NOT NULL,
   `gallery_image_template` text NOT NULL,
   PRIMARY KEY  (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=cp1251 PACK_KEYS=0;";
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 PACK_KEYS=0;";
 
 $modul_sql_install[] = "CREATE TABLE `CPPREFIX_modul_gallery_images` (
   `id` int(10) unsigned NOT NULL auto_increment,
@@ -58,19 +58,19 @@ $modul_sql_install[] = "CREATE TABLE `CPPREFIX_modul_gallery_images` (
   KEY `image_date` (`image_date`),
   KEY `gallery_id` (`gallery_id`),
   KEY `image_title` (`image_title`)
-) ENGINE=MyISAM DEFAULT CHARSET=cp1251 PACK_KEYS=0;";
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 PACK_KEYS=0;";
 
-// äåìîäàííûå
-$modul_sql_install[] = "INSERT INTO `CPPREFIX_modul_gallery` VALUES (1, 'Äåìîíñòðàöèîííàÿ ãàëåðåÿ', 'Ýòà ãàëåðåÿ ñîçäàíà äëÿ îçíàêîìëåíèÿ ñ âîçìîæíîñòÿìè ìîäóëÿ', 1, 1250295071, 120, 4, '1', '1', '', 6, 4, 'watermark.gif', '', 'position', '', '');";
+// Ð´ÐµÐ¼Ð¾Ð´Ð°Ð½Ð½Ñ‹Ðµ
+$modul_sql_install[] = "INSERT INTO `CPPREFIX_modul_gallery` VALUES (1, 'Ð”ÐµÐ¼Ð¾Ð½ÑÑ‚Ñ€Ð°Ñ†Ð¸Ð¾Ð½Ð½Ð°Ñ Ð³Ð°Ð»ÐµÑ€ÐµÑ', 'Ð­Ñ‚Ð° Ð³Ð°Ð»ÐµÑ€ÐµÑ ÑÐ¾Ð·Ð´Ð°Ð½Ð° Ð´Ð»Ñ Ð¾Ð·Ð½Ð°ÐºÐ¾Ð¼Ð»ÐµÐ½Ð¸Ñ Ñ Ð²Ð¾Ð·Ð¼Ð¾Ð¶Ð½Ð¾ÑÑ‚ÑÐ¼Ð¸ Ð¼Ð¾Ð´ÑƒÐ»Ñ', 1, 1250295071, 120, 4, '1', '1', '', 6, 4, 'watermark.gif', '', 'position', '', '');";
 
-$modul_sql_install[] = "INSERT INTO `CPPREFIX_modul_gallery_images` VALUES (1, 1, 'crocodile.jpg', 1, 'Êðîêîäèë', '', '.jpg', 1250295071, 1);";
-$modul_sql_install[] = "INSERT INTO `CPPREFIX_modul_gallery_images` VALUES (2, 1, 'dolphin.jpg', 1, 'Äåëüôèí', '', '.jpg', 1250295071, 1);";
-$modul_sql_install[] = "INSERT INTO `CPPREFIX_modul_gallery_images` VALUES (3, 1, 'duck.jpg', 1, 'Óòêà', '', '.jpg', 1250295071, 1);";
-$modul_sql_install[] = "INSERT INTO `CPPREFIX_modul_gallery_images` VALUES (4, 1, 'eagle.jpg', 1, 'Îðåë', '', '.jpg', 1250295071, 7);";
-$modul_sql_install[] = "INSERT INTO `CPPREFIX_modul_gallery_images` VALUES (5, 1, 'jellyfish.jpg', 1, 'Ìåäóçû', '', '.jpg', 1250295071, 1);";
-$modul_sql_install[] = "INSERT INTO `CPPREFIX_modul_gallery_images` VALUES (6, 1, 'killer_whale.jpg', 1, 'Êàñàòêà', '', '.jpg', 1250295071, 6);";
-$modul_sql_install[] = "INSERT INTO `CPPREFIX_modul_gallery_images` VALUES (7, 1, 'leaf.jpg', 1, 'Ëèñò', '', '.jpg', 1250295071, 1);";
-$modul_sql_install[] = "INSERT INTO `CPPREFIX_modul_gallery_images` VALUES (8, 1, 'spider.jpg', 1, 'Ïàóê', '', '.jpg', 1250295071, 5);";
+$modul_sql_install[] = "INSERT INTO `CPPREFIX_modul_gallery_images` VALUES (1, 1, 'crocodile.jpg', 1, 'ÐšÑ€Ð¾ÐºÐ¾Ð´Ð¸Ð»', '', '.jpg', 1250295071, 1);";
+$modul_sql_install[] = "INSERT INTO `CPPREFIX_modul_gallery_images` VALUES (2, 1, 'dolphin.jpg', 1, 'Ð”ÐµÐ»ÑŒÑ„Ð¸Ð½', '', '.jpg', 1250295071, 1);";
+$modul_sql_install[] = "INSERT INTO `CPPREFIX_modul_gallery_images` VALUES (3, 1, 'duck.jpg', 1, 'Ð£Ñ‚ÐºÐ°', '', '.jpg', 1250295071, 1);";
+$modul_sql_install[] = "INSERT INTO `CPPREFIX_modul_gallery_images` VALUES (4, 1, 'eagle.jpg', 1, 'ÐžÑ€ÐµÐ»', '', '.jpg', 1250295071, 7);";
+$modul_sql_install[] = "INSERT INTO `CPPREFIX_modul_gallery_images` VALUES (5, 1, 'jellyfish.jpg', 1, 'ÐœÐµÐ´ÑƒÐ·Ñ‹', '', '.jpg', 1250295071, 1);";
+$modul_sql_install[] = "INSERT INTO `CPPREFIX_modul_gallery_images` VALUES (6, 1, 'killer_whale.jpg', 1, 'ÐšÐ°ÑÐ°Ñ‚ÐºÐ°', '', '.jpg', 1250295071, 6);";
+$modul_sql_install[] = "INSERT INTO `CPPREFIX_modul_gallery_images` VALUES (7, 1, 'leaf.jpg', 1, 'Ð›Ð¸ÑÑ‚', '', '.jpg', 1250295071, 1);";
+$modul_sql_install[] = "INSERT INTO `CPPREFIX_modul_gallery_images` VALUES (8, 1, 'spider.jpg', 1, 'ÐŸÐ°ÑƒÐº', '', '.jpg', 1250295071, 5);";
 
 
 $modul_sql_update[] = "UPDATE CPPREFIX_module SET CpEngineTag = '" . $modul['CpEngineTag'] . "', CpPHPTag = '" . $modul['CpPHPTag'] . "', Version = '" . $modul['ModulVersion'] . "' WHERE ModulPfad = '" . $modul['ModulPfad'] . "' LIMIT 1;";

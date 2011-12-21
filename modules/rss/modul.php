@@ -1,7 +1,7 @@
 <?php
 
 /**
- * AVE.cms - Ìîäóëü RSS
+ * AVE.cms - ÐœÐ¾Ð´ÑƒÐ»ÑŒ RSS
  *
  * @package AVE.cms
  * @subpackage module_RSS
@@ -13,10 +13,10 @@ if(!defined('BASE_DIR')) exit;
 
 if (defined('ACP'))
 {
-    $modul['ModulName'] = 'RSS ïîòîêè';
+    $modul['ModulName'] = 'RSS Ð¿Ð¾Ñ‚Ð¾ÐºÐ¸';
     $modul['ModulPfad'] = 'rss';
     $modul['ModulVersion'] = '1.1';
-    $modul['description'] = 'Äàííûé ìîäóëü ïðåäçíàçíà÷åí äëÿ îðãàíèçàöèè RSS ïîòîêîâ íà âàøåì ñàéòå.';
+    $modul['description'] = 'Ð”Ð°Ð½Ð½Ñ‹Ð¹ Ð¼Ð¾Ð´ÑƒÐ»ÑŒ Ð¿Ñ€ÐµÐ´Ð·Ð½Ð°Ð·Ð½Ð°Ñ‡ÐµÐ½ Ð´Ð»Ñ Ð¾Ñ€Ð³Ð°Ð½Ð¸Ð·Ð°Ñ†Ð¸Ð¸ RSS Ð¿Ð¾Ñ‚Ð¾ÐºÐ¾Ð² Ð½Ð° Ð²Ð°ÑˆÐµÐ¼ ÑÐ°Ð¹Ñ‚Ðµ.';
     $modul['Autor'] = 'Arcanum';
     $modul['MCopyright'] = '&copy; 2007-2008 Overdoze Team';
     $modul['Status'] = 1;
@@ -29,9 +29,9 @@ if (defined('ACP'))
 }
 
 /**
- * Îáðàáîòêà òýãà ìîäóëÿ RSS
+ * ÐžÐ±Ñ€Ð°Ð±Ð¾Ñ‚ÐºÐ° Ñ‚ÑÐ³Ð° Ð¼Ð¾Ð´ÑƒÐ»Ñ RSS
  *
- * @param int $rss_id èäåíòèôèêàòîð RSS-ëåíòû
+ * @param int $rss_id Ð¸Ð´ÐµÐ½Ñ‚Ð¸Ñ„Ð¸ÐºÐ°Ñ‚Ð¾Ñ€ RSS-Ð»ÐµÐ½Ñ‚Ñ‹
  */
 function mod_rss($rss_id)
 {
@@ -40,7 +40,7 @@ function mod_rss($rss_id)
 	if (is_numeric($rss_id))
 	{
 		echo '<a href="', ABS_PATH, 'rss/rss-', $rss_id, '.xml" target="blank"><img src="',
-			ABS_PATH, 'modules/rss/templates/feed.gif" border="0" title="RSS ëåíòà íîâîñòåé" /></a>';
+			ABS_PATH, 'modules/rss/templates/feed.gif" border="0" title="RSS Ð»ÐµÐ½Ñ‚Ð° Ð½Ð¾Ð²Ð¾ÑÑ‚ÐµÐ¹" /></a>';
 	}
 }
 

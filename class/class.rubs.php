@@ -8,33 +8,33 @@
  */
 
 /**
- * Класс работы с рубриками
+ * РљР»Р°СЃСЃ СЂР°Р±РѕС‚С‹ СЃ СЂСѓР±СЂРёРєР°РјРё
  */
 class AVE_Rubric
 {
 
 /**
- *	СВОЙСТВА
+ *	РЎР’РћР™РЎРўР’Рђ
  */
 
 	/**
-	 * Количество рубрик на странице
+	 * РљРѕР»РёС‡РµСЃС‚РІРѕ СЂСѓР±СЂРёРє РЅР° СЃС‚СЂР°РЅРёС†Рµ
 	 *
 	 * @var int
 	 */
 	var $_limit = 15;
 
 /**
- *	ВНУТРЕННИЕ МЕТОДЫ
+ *	Р’РќРЈРўР Р•РќРќРР• РњР•РўРћР”Р«
  */
 
 
 /**
- *	ВНЕШНИЕ МЕТОДЫ
+ *	Р’РќР•РЁРќРР• РњР•РўРћР”Р«
  */
 
 	/**
-	 * Вывод списка рубрик
+	 * Р’С‹РІРѕРґ СЃРїРёСЃРєР° СЂСѓР±СЂРёРє
 	 *
 	 */
 	function rubricList()
@@ -76,7 +76,7 @@ class AVE_Rubric
 	}
 
 	/**
-	 * создание рубрики
+	 * СЃРѕР·РґР°РЅРёРµ СЂСѓР±СЂРёРєРё
 	 *
 	 */
 	function rubricNew()
@@ -110,7 +110,7 @@ class AVE_Rubric
 
 					if (!empty($_POST['rubric_alias']))
 					{
-						if (preg_match(TRANSLIT_URL ? '/[^\%HYa-z0-9\/-]+/' : '/[^\%HYa-zа-яёїєі0-9\/-]+/', $_POST['rubric_alias']))
+						if (preg_match(TRANSLIT_URL ? '/[^\%HYa-z0-9\/-]+/' : '/[^\%HYa-zР°-СЏС‘С—С”С–0-9\/-]+/', $_POST['rubric_alias']))
 						{
 							array_push($errors, $AVE_Template->get_config_vars('RUBRIK_PREFIX_BAD_CHAR'));
 						}
@@ -146,7 +146,7 @@ class AVE_Rubric
 						");
 						$iid = $AVE_DB->InsertId();
 
-						reportLog($_SESSION['user_name'] . ' - добавил рубрику (' . stripslashes($_POST['rubric_title']) . ')', 2, 2);
+						reportLog($_SESSION['user_name'] . ' - РґРѕР±Р°РІРёР» СЂСѓР±СЂРёРєСѓ (' . stripslashes($_POST['rubric_title']) . ')', 2, 2);
 
 						header('Location:index.php?do=rubs&action=edit&Id=' . $iid . '&cp=' . SESSION);
 						exit;
@@ -157,7 +157,7 @@ class AVE_Rubric
 	}
 
 	/**
-	 * Запись настроек рубрики
+	 * Р—Р°РїРёСЃСЊ РЅР°СЃС‚СЂРѕРµРє СЂСѓР±СЂРёРєРё
 	 *
 	 */
 	function quickSave()
@@ -190,7 +190,7 @@ class AVE_Rubric
 
 					if (isset($_POST['rubric_alias'][$rubric_id]) && $_POST['rubric_alias'][$rubric_id] != '')
 					{
-						$pattern = TRANSLIT_URL ? '/[^\%HYa-z0-9\/-]+/' : '/[^\%HYa-zа-яёїєі0-9\/-]+/';
+						$pattern = TRANSLIT_URL ? '/[^\%HYa-z0-9\/-]+/' : '/[^\%HYa-zР°-СЏС‘С—С”С–0-9\/-]+/';
 						if (!(preg_match($pattern, $_POST['rubric_alias'][$rubric_id])))
 						{
 							$prefix_exist = $AVE_DB->Query("
@@ -232,7 +232,7 @@ class AVE_Rubric
 	}
 
 	/**
-	 * Копирование рубрики
+	 * РљРѕРїРёСЂРѕРІР°РЅРёРµ СЂСѓР±СЂРёРєРё
 	 *
 	 */
 	function rubricCopy()
@@ -261,7 +261,7 @@ class AVE_Rubric
 
 		if (!empty($_POST['rubric_alias']))
 		{
-			if (preg_match(TRANSLIT_URL ? '/[^\%HYa-z0-9\/-]+/' : '/[^\%HYa-zа-яёїєі0-9\/-]+/', $_POST['rubric_alias']))
+			if (preg_match(TRANSLIT_URL ? '/[^\%HYa-z0-9\/-]+/' : '/[^\%HYa-zР°-СЏС‘С—С”С–0-9\/-]+/', $_POST['rubric_alias']))
 			{
 				array_push($errors, $AVE_Template->get_config_vars('RUBRIK_PREFIX_BAD_CHAR'));
 			}
@@ -349,14 +349,14 @@ class AVE_Rubric
 				");
 			}
 
-			reportLog($_SESSION['user_name'] . ' - создал копию рубрики (' . $rubric_id . ')', 2, 2);
+			reportLog($_SESSION['user_name'] . ' - СЃРѕР·РґР°Р» РєРѕРїРёСЋ СЂСѓР±СЂРёРєРё (' . $rubric_id . ')', 2, 2);
 
 			echo '<script>window.opener.location.reload();window.close();</script>';
 		}
 	}
 
 	/**
-	 * Удаление рубрики
+	 * РЈРґР°Р»РµРЅРёРµ СЂСѓР±СЂРёРєРё
 	 *
 	 */
 	function rubricDelete()
@@ -395,14 +395,14 @@ class AVE_Rubric
 				FROM " . PREFIX . "_rubric_permissions
 				WHERE rubric_id = '" . $rubric_id . "'
 			");
-			// Очищаем кэш шаблона документов рубрики
+			// РћС‡РёС‰Р°РµРј РєСЌС€ С€Р°Р±Р»РѕРЅР° РґРѕРєСѓРјРµРЅС‚РѕРІ СЂСѓР±СЂРёРєРё
 			$AVE_DB->Query("
 				DELETE
 				FROM " . PREFIX . "_rubric_template_cache
 				WHERE rub_id = '" . $rubric_id . "'
 			");
 
-			reportLog($_SESSION['user_name'] . ' - удалил рубрику (' . $rubric_id . ')', 2, 2);
+			reportLog($_SESSION['user_name'] . ' - СѓРґР°Р»РёР» СЂСѓР±СЂРёРєСѓ (' . $rubric_id . ')', 2, 2);
 		}
 
 		header('Location:index.php?do=rubs&cp=' . SESSION);
@@ -410,9 +410,9 @@ class AVE_Rubric
 	}
 
 	/**
-	 * Вывод списка полей рубрики
+	 * Р’С‹РІРѕРґ СЃРїРёСЃРєР° РїРѕР»РµР№ СЂСѓР±СЂРёРєРё
 	 *
-	 * @param int $rubric_id	идентификатор рубрики
+	 * @param int $rubric_id	РёРґРµРЅС‚РёС„РёРєР°С‚РѕСЂ СЂСѓР±СЂРёРєРё
 	 */
 	function rubricFieldShow($rubric_id = 0)
 	{
@@ -465,9 +465,9 @@ class AVE_Rubric
 	}
 
 	/**
-	 * Создание нового поля рубрики
+	 * РЎРѕР·РґР°РЅРёРµ РЅРѕРІРѕРіРѕ РїРѕР»СЏ СЂСѓР±СЂРёРєРё
 	 *
-	 * @param int $rubric_id	идентификатор рубрики
+	 * @param int $rubric_id	РёРґРµРЅС‚РёС„РёРєР°С‚РѕСЂ СЂСѓР±СЂРёРєРё
 	 */
 	function rubricFieldNew($rubric_id = 0)
 	{
@@ -515,7 +515,7 @@ class AVE_Rubric
 				");
 			}
 
-			reportLog($_SESSION['user_name'] . ' - добавил поле рубрики (' . stripslashes($_POST['TitelNew']) . ')', 2, 2);
+			reportLog($_SESSION['user_name'] . ' - РґРѕР±Р°РІРёР» РїРѕР»Рµ СЂСѓР±СЂРёРєРё (' . stripslashes($_POST['TitelNew']) . ')', 2, 2);
 		}
 
 		header('Location:index.php?do=rubs&action=edit&Id=' . $rubric_id . '&cp=' . SESSION);
@@ -523,9 +523,9 @@ class AVE_Rubric
 	}
 
 	/**
-	 * Управление полями рубрики
+	 * РЈРїСЂР°РІР»РµРЅРёРµ РїРѕР»СЏРјРё СЂСѓР±СЂРёРєРё
 	 *
-	 * @param int $rubric_id	идентификатор рубрики
+	 * @param int $rubric_id	РёРґРµРЅС‚РёС„РёРєР°С‚РѕСЂ СЂСѓР±СЂРёРєРё
 	 */
 	function rubricFieldSave($rubric_id = 0)
 	{
@@ -558,13 +558,13 @@ class AVE_Rubric
 					WHERE
 						Id = '" . $id . "'
 				");
-				// Очищаем кэш шаблона документов рубрики
+				// РћС‡РёС‰Р°РµРј РєСЌС€ С€Р°Р±Р»РѕРЅР° РґРѕРєСѓРјРµРЅС‚РѕРІ СЂСѓР±СЂРёРєРё
 				$AVE_DB->Query("
 					DELETE
 					FROM " . PREFIX . "_rubric_template_cache
 					WHERE rub_id = '" . $rubric_id . "'
 				");
-				reportLog($_SESSION['user_name'] . ' - отредактировал поле рубрики (' . stripslashes($title) . ')', 2, 2);
+				reportLog($_SESSION['user_name'] . ' - РѕС‚СЂРµРґР°РєС‚РёСЂРѕРІР°Р» РїРѕР»Рµ СЂСѓР±СЂРёРєРё (' . stripslashes($title) . ')', 2, 2);
 			}
 		}
 
@@ -583,14 +583,14 @@ class AVE_Rubric
 					FROM " . PREFIX . "_document_fields
 					WHERE rubric_field_id = '" . $id . "'
 				");
-				// Очищаем кэш шаблона документов рубрики
+				// РћС‡РёС‰Р°РµРј РєСЌС€ С€Р°Р±Р»РѕРЅР° РґРѕРєСѓРјРµРЅС‚РѕРІ СЂСѓР±СЂРёРєРё
 				$AVE_DB->Query("
 					DELETE
 					FROM " . PREFIX . "_rubric_template_cache
 					WHERE rub_id = '" . $rubric_id . "'
 				");
 
-				reportLog($_SESSION['user_name'] . ' - удалил поле рубрики (' . stripslashes($_POST['title'][$id]) . ')', 2, 2);
+				reportLog($_SESSION['user_name'] . ' - СѓРґР°Р»РёР» РїРѕР»Рµ СЂСѓР±СЂРёРєРё (' . stripslashes($_POST['title'][$id]) . ')', 2, 2);
 			}
 		}
 
@@ -599,7 +599,7 @@ class AVE_Rubric
 	}
 
 	/**
-	 * Вывод шаблона рубрики
+	 * Р’С‹РІРѕРґ С€Р°Р±Р»РѕРЅР° СЂСѓР±СЂРёРєРё
 	 *
 	 * @param int $show
 	 * @param int $extern
@@ -662,7 +662,7 @@ class AVE_Rubric
 	}
 
 	/**
-	 * Редактирование шаблона рубрики
+	 * Р РµРґР°РєС‚РёСЂРѕРІР°РЅРёРµ С€Р°Р±Р»РѕРЅР° СЂСѓР±СЂРёРєРё
 	 *
 	 * @param string $data
 	 */
@@ -677,21 +677,21 @@ class AVE_Rubric
 			SET rubric_template = '" . $data . "'
 			WHERE Id = '" . $rubric_id . "'
 		");
-		// Очищаем кэш шаблона документов рубрики
+		// РћС‡РёС‰Р°РµРј РєСЌС€ С€Р°Р±Р»РѕРЅР° РґРѕРєСѓРјРµРЅС‚РѕРІ СЂСѓР±СЂРёРєРё
 		$AVE_DB->Query("
 			DELETE
 			FROM " . PREFIX . "_rubric_template_cache
 			WHERE rub_id = '" . $rubric_id . "'
 		");
 
-		reportLog($_SESSION['user_name'] . ' - отредактировал шаблон рубрики (' . $rubric_id . ')', 2, 2);
+		reportLog($_SESSION['user_name'] . ' - РѕС‚СЂРµРґР°РєС‚РёСЂРѕРІР°Р» С€Р°Р±Р»РѕРЅ СЂСѓР±СЂРёРєРё (' . $rubric_id . ')', 2, 2);
 		header('Location:index.php?do=rubs&cp=' . SESSION);
 	}
 
 	/**
-	 * Управление правами доступа к документам рубрик
+	 * РЈРїСЂР°РІР»РµРЅРёРµ РїСЂР°РІР°РјРё РґРѕСЃС‚СѓРїР° Рє РґРѕРєСѓРјРµРЅС‚Р°Рј СЂСѓР±СЂРёРє
 	 *
-	 * @param int $rubric_id	идентификатор рубрики
+	 * @param int $rubric_id	РёРґРµРЅС‚РёС„РёРєР°С‚РѕСЂ СЂСѓР±СЂРёРєРё
 	 */
 	function rubricPermissionSave($rubric_id = 0)
 	{
@@ -737,10 +737,10 @@ class AVE_Rubric
 	}
 
 	/**
-	 * Получить наименование и URL-префикс Рубрики по идентификатору
+	 * РџРѕР»СѓС‡РёС‚СЊ РЅР°РёРјРµРЅРѕРІР°РЅРёРµ Рё URL-РїСЂРµС„РёРєСЃ Р СѓР±СЂРёРєРё РїРѕ РёРґРµРЅС‚РёС„РёРєР°С‚РѕСЂСѓ
 	 *
-	 * @param int $rubric_id идентификатор Рубрики
-	 * @return object наименование Рубрики
+	 * @param int $rubric_id РёРґРµРЅС‚РёС„РёРєР°С‚РѕСЂ Р СѓР±СЂРёРєРё
+	 * @return object РЅР°РёРјРµРЅРѕРІР°РЅРёРµ Р СѓР±СЂРёРєРё
 	 */
 	function rubricNameByIdGet($rubric_id = 0)
 	{
@@ -764,7 +764,7 @@ class AVE_Rubric
 	}
 
 	/**
-	 * Формирование прав доступа Групп пользователей на все Рубрики
+	 * Р¤РѕСЂРјРёСЂРѕРІР°РЅРёРµ РїСЂР°РІ РґРѕСЃС‚СѓРїР° Р“СЂСѓРїРї РїРѕР»СЊР·РѕРІР°С‚РµР»РµР№ РЅР° РІСЃРµ Р СѓР±СЂРёРєРё
 	 *
 	 */
 	function rubricPermissionFetch()

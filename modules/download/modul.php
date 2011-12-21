@@ -7,7 +7,7 @@ if (defined('ACP'))
     $modul['ModulName'] = 'Download';
     $modul['ModulPfad'] = 'download';
     $modul['ModulVersion'] = '2.0';
-    $modul['description'] = 'Download-System, с аддоном позволяющим назначать плату за скачивание файла.';
+    $modul['description'] = 'Download-System, СЃ Р°РґРґРѕРЅРѕРј РїРѕР·РІРѕР»СЏСЋС‰РёРј РЅР°Р·РЅР°С‡Р°С‚СЊ РїР»Р°С‚Сѓ Р·Р° СЃРєР°С‡РёРІР°РЅРёРµ С„Р°Р№Р»Р°.';
     $modul['Autor'] = 'cron';
     $modul['MCopyright'] = 'cron';
     $modul['Status'] = 1;
@@ -15,7 +15,7 @@ if (defined('ACP'))
     $modul['ModulTemplate'] = 1;
     $modul['AdminEdit'] = 1;
     $modul['ModulFunktion'] = null;
-    $modul['CpEngineTagTpl'] = '<b>Ссылка:</b> <a target="_blank" href="../index.php?module=download">index.php?module=download</a>';
+    $modul['CpEngineTagTpl'] = '<b>РЎСЃС‹Р»РєР°:</b> <a target="_blank" href="../index.php?module=download">index.php?module=download</a>';
     $modul['CpEngineTag'] = null;
     $modul['CpPHPTag'] = null;
 }
@@ -87,7 +87,7 @@ if( (isset($_REQUEST['module']) && $_REQUEST['module'] == 'download') || (isset(
 				break;
 
 			case 'secure':
-				$sc = preg_replace('/[^A-Za-zА-Яа-яЁёЇЄІїєі0-9]/', '', $_REQUEST['scode']);
+				$sc = preg_replace('/[^A-Za-zРђ-РЇР°-СЏРЃС‘Р‡Р„Р†С—С”С–0-9]/', '', $_REQUEST['scode']);
 				$download->ajaxSecure($sc);
 				break;
 

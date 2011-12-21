@@ -1,11 +1,11 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=windows-1251">
+<meta http-equiv="content-type" content="text/html; charset=UTF-8" >
 <title>({$smarty.session.user_name|escape})</title>
 <meta name="robots" content="noindex,nofollow">
 <meta http-equiv="pragma" content="no-cache">
-<meta name="generator" content="">
+<meta name="generator" content="Bluefish 2.0.3" >
 <meta name="Expires" content="Mon, 06 Jan 1990 00:00:01 GMT">
 <link href="{$tpl_dir}/css/style.css" rel="stylesheet" type="text/css">
 <script src="{$tpl_dir}/js/jquery/jquery.js" type="text/javascript"></script>
@@ -27,7 +27,7 @@
 						{section name=files loop=5}
 							<tr class="{cycle values='first,second'}">
 								<td>#{$smarty.section.files.index+1}</td>
-								<td><input name="upfile[]" type="file" id="upfile[]" size="60"></td>
+								<td><input name="upfile[]" type="file" id="upfile[]" size="50"></td>
 							</tr>
 						{/section}
 

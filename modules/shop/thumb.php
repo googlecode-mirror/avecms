@@ -92,9 +92,9 @@ if ($max !== false)
 				0, 0,
 				imagecolorallocate(
 					$thumb,
-					hexdec(substr($bg, -6, 2)),
-					hexdec(substr($bg, -4, 2)),
-					hexdec(substr($bg, -2))
+					hexdec(mb_substr($bg, -6, 2)),
+					hexdec(mb_substr($bg, -4, 2)),
+					hexdec(mb_substr($bg, -2))
 				)
 			);
 			break;

@@ -37,6 +37,6 @@
 	<li><a href="{$ShopBasketLink}">{#GotoBasket#}</a></li>
 	<li><a href="{$ShopCheckoutLink}">{#GotoCheckout#}</a></li>
 {/if}{if $WishListActive==1}
-	<li><a href="{$ShopWishlistLink}" target="_blank">{#Wishlist#}</a> – <a class="tooltip" title="{#WishlistInf#}"  href="#">{#WhatsThat#}</a></li>
+	<li><a href="{$ShopWishlistLink}" target="_blank">{#Wishlist#}</a> â€“ <a class="tooltip" title="{#WishlistInf#}"  href="#">{#WhatsThat#}</a></li>
 {/if}
 </ul>

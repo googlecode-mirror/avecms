@@ -1,15 +1,15 @@
 $().ready(function() {
 
-	// отдельный файловый менеджер
+	// РѕС‚РґРµР»СЊРЅС‹Р№ С„Р°Р№Р»РѕРІС‹Р№ РјРµРЅРµРґР¶РµСЂ
 	$('#finder').elfinder({
 		url : ave_path+'admin/redactor/elfinder/php/connector.php',
 		lang : 'ru', 
 	   height : 500,
-	   title : 'Файловый менеджер'
+	   title : 'Р¤Р°Р№Р»РѕРІС‹Р№ РјРµРЅРµРґР¶РµСЂ'
 	}).elfinder('instance');
 		
 
-	// диалог выбора изображений
+	// РґРёР°Р»РѕРі РІС‹Р±РѕСЂР° РёР·РѕР±СЂР°Р¶РµРЅРёР№
 	$('.dialog_images').click(function() {
 		var id = $(this).attr("rel");
 		$('<div/>').dialogelfinder({
@@ -18,7 +18,7 @@ $().ready(function() {
 			width : 1100,
 			height: 600,
 			modal : true, 
-			title : 'Файловый менеджер',
+			title : 'Р¤Р°Р№Р»РѕРІС‹Р№ РјРµРЅРµРґР¶РµСЂ',
 			getFileCallback : function(files, fm) {
 				$("#img_feld__"+id).val(files['url'].slice(1)); 
 				$("#images_feld_"+id).html("<img src="+files['url']+">");
@@ -48,7 +48,7 @@ $().ready(function() {
 	$('#elRTE a').delay(800).animate({'background-position' : '0 0'}, 300);
 
 
-	// нормальный редактор	
+	// РЅРѕСЂРјР°Р»СЊРЅС‹Р№ СЂРµРґР°РєС‚РѕСЂ	
 	var opt = {			
 		cssClass : 'el-rte',
 		toolbars :  {
@@ -65,7 +65,7 @@ $().ready(function() {
 	          lang : 'ru',
 	          width : 1100, 
 	          height : 500,
-	          title : 'Файловый менеджер',
+	          title : 'Р¤Р°Р№Р»РѕРІС‹Р№ РјРµРЅРµРґР¶РµСЂ',
 	          commandsOptions : {
                getfile : {
                    onlyURL  : true,
@@ -81,7 +81,7 @@ $().ready(function() {
 	$('.editor').elrte(opt);
 
 
-	// упрощенный редактор
+	// СѓРїСЂРѕС‰РµРЅРЅС‹Р№ СЂРµРґР°РєС‚РѕСЂ
 	var opts = {
 		cssClass : 'el-rte',
 		toolbars :  {

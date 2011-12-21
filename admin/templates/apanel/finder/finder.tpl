@@ -6,6 +6,6 @@
 	
 	<script type="text/javascript" src="{$tpl_dir}/js/rle.js"></script>	
 	
-	<h1>Файловый менеджер</h1>	<br><br>
+	<h1>Р¤Р°Р№Р»РѕРІС‹Р№ РјРµРЅРµРґР¶РµСЂ</h1>	<br><br>
 	
 	<div id="finder">finder</div> 

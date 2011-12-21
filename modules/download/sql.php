@@ -25,7 +25,7 @@ $modul_sql_install[] = "CREATE TABLE CPPREFIX_modul_download_comments (
   Ip varchar(200) NOT NULL default '',
   status tinyint(1) unsigned NOT NULL default '1',
   PRIMARY KEY  (Id)
-) ENGINE=MyISAM DEFAULT CHARSET=cp1251;";
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 
 $modul_sql_install[] = "CREATE TABLE CPPREFIX_modul_download_files (
   Id int(10) unsigned NOT NULL auto_increment,
@@ -62,7 +62,7 @@ $modul_sql_install[] = "CREATE TABLE CPPREFIX_modul_download_files (
   Pay varchar(10) default '0',
   Pay_val int(10) unsigned NOT NULL default '0',
   PRIMARY KEY  (Id)
-) ENGINE=MyISAM DEFAULT CHARSET=cp1251;";
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 
 $modul_sql_install[] = "CREATE TABLE CPPREFIX_modul_download_kat (
   Id int(10) unsigned NOT NULL auto_increment,
@@ -73,13 +73,13 @@ $modul_sql_install[] = "CREATE TABLE CPPREFIX_modul_download_kat (
   user_group varchar(255) NOT NULL default '1|2|3|4|5|6',
   Bild varchar(200) default NULL,
   PRIMARY KEY  (Id)
-) ENGINE=MyISAM DEFAULT CHARSET=cp1251;";
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 
 $modul_sql_install[] = "CREATE TABLE CPPREFIX_modul_download_lizenzen (
   Id smallint(2) unsigned NOT NULL auto_increment,
   Name varchar(255) NOT NULL default '',
   PRIMARY KEY  (Id)
-) ENGINE=MyISAM DEFAULT CHARSET=cp1251;";
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 
 $modul_sql_install[] = "CREATE TABLE CPPREFIX_modul_download_log (
   Id int(14) unsigned NOT NULL auto_increment,
@@ -87,35 +87,35 @@ $modul_sql_install[] = "CREATE TABLE CPPREFIX_modul_download_log (
   Datum varchar(10) NOT NULL default '',
   Ip varchar(100) NOT NULL default '',
   PRIMARY KEY  (Id)
-) ENGINE=MyISAM DEFAULT CHARSET=cp1251;";
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 
 $modul_sql_install[] = "CREATE TABLE CPPREFIX_modul_download_os (
   Id int(10) unsigned NOT NULL auto_increment,
   Name varchar(200) NOT NULL default '',
   PRIMARY KEY  (Id)
-) ENGINE=MyISAM DEFAULT CHARSET=cp1251;";
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 
 $modul_sql_install[] = "CREATE TABLE CPPREFIX_modul_download_settings (
   Empfehlen tinyint(1) unsigned NOT NULL default '1',
   Bewerten tinyint(1) unsigned NOT NULL default '0',
   Spamwoerter text NOT NULL,
   Kommentare tinyint(1) unsigned NOT NULL default '1'
-) ENGINE=MyISAM DEFAULT CHARSET=cp1251;";
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 
 $modul_sql_install[] = "CREATE TABLE CPPREFIX_modul_download_sprachen (
   Id int(10) unsigned NOT NULL auto_increment,
   Name varchar(200) NOT NULL default '',
   PRIMARY KEY  (Id)
-) ENGINE=MyISAM DEFAULT CHARSET=cp1251;";
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 
-$modul_sql_install[] = "INSERT INTO CPPREFIX_modul_download_files VALUES (8, 'Overdoze', 'http://www.overdoze.ru', '5.0', '1', 24, 'Koobi Handbuch', '<p>Актуальное руководство для Koobi 5 Standard и Koobi 5 Pro.<br />\r\n<br />\r\nНа данный момент руководство состоит из 130 страниц с 240 цветными иллюстрациями. Это руководство постоянно обновляется, поэтому Вы сможете получить специальные сведения о последних изменениях.</p>\r\n<p>Для просмотра у Вас должна быть установлена программа Adobe&reg; Acrobat&reg; Reader</p>', 'keine', 1, 'local', 'HandbuchKoobi5.pdf', 450, 0, 'kb', 1164046575, 1164047383, '8', 3, '5', 32, 5, '', 1, 'keine', 'http://www.overdoze.ru\r\nhttp://www.domain.ru', 'uploads/images/splash_koobi.gif', 1, 1, 1, 0, 0, 0);";
-$modul_sql_install[] = "INSERT INTO CPPREFIX_modul_download_files VALUES (11, '', '', '', '1', 24, 'Koobi Changelog', 'Этот документ содержит описание всех изменений в Koobi', '', 1, 'local', 'Changelog.pdf', 69, 0, 'kb', 1164047584, NULL, '9', 3, '5', 20, 3, '', 1, '', '', 'uploads/images/splash_koobi.gif', 1, 1, 1, 0, 0, 0);";
+$modul_sql_install[] = "INSERT INTO CPPREFIX_modul_download_files VALUES (8, 'Overdoze', 'http://www.overdoze.ru', '5.0', '1', 24, 'Koobi Handbuch', '<p>РђРєС‚СѓР°Р»СЊРЅРѕРµ СЂСѓРєРѕРІРѕРґСЃС‚РІРѕ РґР»СЏ Koobi 5 Standard Рё Koobi 5 Pro.<br />\r\n<br />\r\nРќР° РґР°РЅРЅС‹Р№ РјРѕРјРµРЅС‚ СЂСѓРєРѕРІРѕРґСЃС‚РІРѕ СЃРѕСЃС‚РѕРёС‚ РёР· 130 СЃС‚СЂР°РЅРёС† СЃ 240 С†РІРµС‚РЅС‹РјРё РёР»Р»СЋСЃС‚СЂР°С†РёСЏРјРё. Р­С‚Рѕ СЂСѓРєРѕРІРѕРґСЃС‚РІРѕ РїРѕСЃС‚РѕСЏРЅРЅРѕ РѕР±РЅРѕРІР»СЏРµС‚СЃСЏ, РїРѕСЌС‚РѕРјСѓ Р’С‹ СЃРјРѕР¶РµС‚Рµ РїРѕР»СѓС‡РёС‚СЊ СЃРїРµС†РёР°Р»СЊРЅС‹Рµ СЃРІРµРґРµРЅРёСЏ Рѕ РїРѕСЃР»РµРґРЅРёС… РёР·РјРµРЅРµРЅРёСЏС….</p>\r\n<p>Р”Р»СЏ РїСЂРѕСЃРјРѕС‚СЂР° Сѓ Р’Р°СЃ РґРѕР»Р¶РЅР° Р±С‹С‚СЊ СѓСЃС‚Р°РЅРѕРІР»РµРЅР° РїСЂРѕРіСЂР°РјРјР° Adobe&reg; Acrobat&reg; Reader</p>', 'keine', 1, 'local', 'HandbuchKoobi5.pdf', 450, 0, 'kb', 1164046575, 1164047383, '8', 3, '5', 32, 5, '', 1, 'keine', 'http://www.overdoze.ru\r\nhttp://www.domain.ru', 'uploads/images/splash_koobi.gif', 1, 1, 1, 0, 0, 0);";
+$modul_sql_install[] = "INSERT INTO CPPREFIX_modul_download_files VALUES (11, '', '', '', '1', 24, 'Koobi Changelog', 'Р­С‚РѕС‚ РґРѕРєСѓРјРµРЅС‚ СЃРѕРґРµСЂР¶РёС‚ РѕРїРёСЃР°РЅРёРµ РІСЃРµС… РёР·РјРµРЅРµРЅРёР№ РІ Koobi', '', 1, 'local', 'Changelog.pdf', 69, 0, 'kb', 1164047584, NULL, '9', 3, '5', 20, 3, '', 1, '', '', 'uploads/images/splash_koobi.gif', 1, 1, 1, 0, 0, 0);";
 
 $modul_sql_install[] = "INSERT INTO CPPREFIX_modul_download_kat VALUES (24, 0, 'Koobi', 1, '', '1|12|6|2|8|7|4|5|11|3', 'koobi.gif');";
 
 $modul_sql_install[] = "INSERT INTO CPPREFIX_modul_download_lizenzen VALUES ('', 'Freeware');";
 $modul_sql_install[] = "INSERT INTO CPPREFIX_modul_download_lizenzen VALUES ('', 'Shareware');";
-$modul_sql_install[] = "INSERT INTO CPPREFIX_modul_download_lizenzen VALUES ('', 'Без лицензии');";
+$modul_sql_install[] = "INSERT INTO CPPREFIX_modul_download_lizenzen VALUES ('', 'Р‘РµР· Р»РёС†РµРЅР·РёРё');";
 $modul_sql_install[] = "INSERT INTO CPPREFIX_modul_download_lizenzen VALUES ('', 'GNU LGPL');";
 $modul_sql_install[] = "INSERT INTO CPPREFIX_modul_download_lizenzen VALUES ('', 'GPL');";
 $modul_sql_install[] = "INSERT INTO CPPREFIX_modul_download_lizenzen VALUES ('', 'LGPL');";
@@ -140,11 +140,11 @@ $modul_sql_install[] = "INSERT INTO CPPREFIX_modul_download_os VALUES (17, 'Unix
 
 $modul_sql_install[] = "INSERT INTO CPPREFIX_modul_download_settings VALUES (1, 1, 'viagra\r\ncialis\r\ncasino\r\ngamble\r\npoker\r\nholdem\r\nbackgammon\r\nbackjack\r\nblack Jack\r\nRoulette\r\nV-I-A-G-R-A\r\nsex\r\ninsurance\r\n!!!\r\n???\r\nxxx', 1);";
 
-$modul_sql_install[] = "INSERT INTO CPPREFIX_modul_download_sprachen VALUES (1, 'Русский');";
-$modul_sql_install[] = "INSERT INTO CPPREFIX_modul_download_sprachen VALUES (2, 'Английский');";
-$modul_sql_install[] = "INSERT INTO CPPREFIX_modul_download_sprachen VALUES (3, 'Немецкий');";
-$modul_sql_install[] = "INSERT INTO CPPREFIX_modul_download_sprachen VALUES (4, 'Французский');";
-$modul_sql_install[] = "INSERT INTO CPPREFIX_modul_download_sprachen VALUES (5, 'Итальянский');";
+$modul_sql_install[] = "INSERT INTO CPPREFIX_modul_download_sprachen VALUES (1, 'Р СѓСЃСЃРєРёР№');";
+$modul_sql_install[] = "INSERT INTO CPPREFIX_modul_download_sprachen VALUES (2, 'РђРЅРіР»РёР№СЃРєРёР№');";
+$modul_sql_install[] = "INSERT INTO CPPREFIX_modul_download_sprachen VALUES (3, 'РќРµРјРµС†РєРёР№');";
+$modul_sql_install[] = "INSERT INTO CPPREFIX_modul_download_sprachen VALUES (4, 'Р¤СЂР°РЅС†СѓР·СЃРєРёР№');";
+$modul_sql_install[] = "INSERT INTO CPPREFIX_modul_download_sprachen VALUES (5, 'РС‚Р°Р»СЊСЏРЅСЃРєРёР№');";
 
 $modul_sql_install[] = "ALTER TABLE CPPREFIX_modul_download_files ADD Pay_Type SMALLINT(2) UNSIGNED NOT NULL DEFAULT '0';";
 $modul_sql_install[] = "ALTER TABLE CPPREFIX_modul_download_files ADD Only_Pay TINYINT(1) UNSIGNED NOT NULL DEFAULT '1';";
@@ -159,7 +159,7 @@ $modul_sql_install[] = "CREATE TABLE CPPREFIX_modul_download_payhistory (
   PayDate varchar(10) default '',
   User_IP varchar(15) default '',
   PRIMARY KEY  (Id)
-) ENGINE=MyISAM DEFAULT CHARSET=cp1251;";
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 
 $modul_sql_update[] = "UPDATE CPPREFIX_module SET CpEngineTag = '" . $modul['CpEngineTag'] . "', CpPHPTag = '" . $modul['CpPHPTag'] . "', Version = '" . $modul['ModulVersion'] . "' WHERE ModulPfad = '" . $modul['ModulPfad'] . "' LIMIT 1;";
 

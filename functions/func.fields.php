@@ -1,5 +1,5 @@
 <?php
-// Определяем пустое изображение
+// РћРїСЂРµРґРµР»СЏРµРј РїСѓСЃС‚РѕРµ РёР·РѕР±СЂР°Р¶РµРЅРёРµ
 $img_pixel = 'templates/' . $_SESSION['admin_theme'] . '/images/blanc.gif';
 
 function get_field_default($field_value,$type,$field_id='',$rubric_field_template='',$tpl_field_empty=0,&$maxlength = '',$document_fields=0,$rubric_id=0,$dropdown=''){
@@ -84,7 +84,7 @@ function get_field_smalltext($field_value,$type,$field_id='',$rubric_field_templ
 				else
 				{
 					switch ($_SESSION['use_editor']) {
-					case '0': // стандартный редактор
+					case '0': // СЃС‚Р°РЅРґР°СЂС‚РЅС‹Р№ СЂРµРґР°РєС‚РѕСЂ
 						$oFCKeditor = new FCKeditor('feld[' . $field_id . ']') ;
 						$oFCKeditor->Height = $AVE_Document->_textarea_height_small;
 						$oFCKeditor->Value  = $field_value;
@@ -92,7 +92,7 @@ function get_field_smalltext($field_value,$type,$field_id='',$rubric_field_templ
 						$field = $oFCKeditor->Create($field_id);
 						break;
 						
-					case '1': // Elrte и Elfinder 
+					case '1': // Elrte Рё Elfinder 
 						$field  = '<a name="' . $field_id . '"></a>';
 						$field  .='<textarea style="width:' . $AVE_Document->_textarea_width_small . ';height:' . $AVE_Document->_textarea_height_small . '" name="feld[' . $field_id . ']" class="small-editor">' . $field_value . '</textarea></div>';
 						break;
@@ -142,14 +142,14 @@ function get_field_langtext($field_value,$type,$field_id='',$rubric_field_templa
 				else
 				{							
 					switch ($_SESSION['use_editor']) {
-					case '0': // стандартный редактор
+					case '0': // СЃС‚Р°РЅРґР°СЂС‚РЅС‹Р№ СЂРµРґР°РєС‚РѕСЂ
 						$oFCKeditor = new FCKeditor('feld[' . $field_id . ']') ;
 						$oFCKeditor->Height = $AVE_Document->_textarea_height;
 						$oFCKeditor->Value  = $field_value;
 						$field  = $oFCKeditor->Create($field_id);
 						break;
 						
-					case '1': // Elrte и Elfinder 
+					case '1': // Elrte Рё Elfinder 
 						$field  = '<a name="' . $field_id . '"></a>';
 						$field  .='<textarea style="width:' . $AVE_Document->_textarea_width . ';height:' . $AVE_Document->_textarea_height . '" name="feld[' . $field_id . ']" class="editor">' . $field_value . '</textarea></div>';
 						break;
@@ -189,14 +189,14 @@ function get_field_bild($field_value,$type,$field_id='',$rubric_field_template='
 				$field .= "<div style=\"display:none\" id=\"span_feld__" . $field_id . "\">&nbsp;</div>" . (!empty($field_value) ? "<br />" : '');
 								
 				switch ($_SESSION['use_editor']) {
-					case '0': // стандартный редактор
+					case '0': // СЃС‚Р°РЅРґР°СЂС‚РЅС‹Р№ СЂРµРґР°РєС‚РѕСЂ
 					case '2':
 						$field .= "<div style=\"display:none\" id=\"span_feld__" . $field_id . "\">&nbsp;</div>" . (!empty($field_value) ? "<br />" : '');
 						$field .= "<input type=\"text\" style=\"width:" . $AVE_Document->_field_width . "\" name=\"feld[" . $field_id . "]\" value=\"" . htmlspecialchars($field_value, ENT_QUOTES) . "\" id=\"img_feld__" . $field_id . "\" />&nbsp;";
 						$field .= "<button class=\"button\" onclick=\"cp_imagepop('img_feld__" . $field_id . "', '', '', '0'); return false;\" name=\"feld[" . $field_id . "]\">" . $AVE_Template->get_config_vars('MAIN_OPEN_MEDIAPATH') . "</button>";
 						break;
 				
-					case '1': // Elrte и Elfinder 
+					case '1': // Elrte Рё Elfinder 
 						$field .= "<input class=\"docm finder\" type=\"text\" style=\"width:" . $AVE_Document->_field_width . "\" name=\"feld[" . $field_id . "]\" value=\"" . htmlspecialchars($field_value, ENT_QUOTES) . "\" id=\"img_feld__" . $field_id . "\"/>&nbsp;";
 						$field .= "<span class=\"button dialog_images\" rel=\"". $field_id ."\">" . $AVE_Template->get_config_vars('MAIN_OPEN_MEDIAPATH') . "</span>";
 						break;
@@ -417,7 +417,7 @@ function get_field_download($field_value,$type,$field_id='',$rubric_field_templa
 			{
 				$field_value = (!empty($field_param[1]) ? $field_param[1] . '<br />' : '')
 					. '<form method="get" target="_blank" action="' . ABS_PATH . $field_param[0]
-					. '"><input class="button" type="submit" value="Скачать" /></form>';
+					. '"><input class="button" type="submit" value="РЎРєР°С‡Р°С‚СЊ" /></form>';
 			}
 			else
 			{
@@ -583,54 +583,54 @@ function get_field_gps($field_value,$type,$field_id='',$rubric_field_template=''
     <script type="text/javascript">
         var map, geoResult, placemark;
 
-        // Создание обработчика для события window.onLoad
+        // РЎРѕР·РґР°РЅРёРµ РѕР±СЂР°Р±РѕС‚С‡РёРєР° РґР»СЏ СЃРѕР±С‹С‚РёСЏ window.onLoad
         YMaps.jQuery(function () {
-            // Создание экземпляра карты и его привязка к созданному контейнеру
+            // РЎРѕР·РґР°РЅРёРµ СЌРєР·РµРјРїР»СЏСЂР° РєР°СЂС‚С‹ Рё РµРіРѕ РїСЂРёРІСЏР·РєР° Рє СЃРѕР·РґР°РЅРЅРѕРјСѓ РєРѕРЅС‚РµР№РЅРµСЂСѓ
             map = new YMaps.Map(YMaps.jQuery("#Map")[0]);
 
-            // Установка для карты ее центра и масштаба
+            // РЈСЃС‚Р°РЅРѕРІРєР° РґР»СЏ РєР°СЂС‚С‹ РµРµ С†РµРЅС‚СЂР° Рё РјР°СЃС€С‚Р°Р±Р°
 			if("<#--FIELD_VALUE--#>">""){var coord=new YMaps.GeoPoint(<#--FIELD_VALUE--#>);}else{var coord=new YMaps.GeoPoint(49.38,53.52);}
             map.setCenter(coord, 13);
 
-            // Добавление элементов управления
+            // Р”РѕР±Р°РІР»РµРЅРёРµ СЌР»РµРјРµРЅС‚РѕРІ СѓРїСЂР°РІР»РµРЅРёСЏ
             map.addControl(new YMaps.TypeControl());
 			placemark = new YMaps.Placemark(coord, {draggable: true});
-            placemark.name = "Результат";
+            placemark.name = "Р РµР·СѓР»СЊС‚Р°С‚";
             if("<#--FIELD_VALUE--#>">"")map.addOverlay(placemark);
  
-            // При щелчке на карте показывается балун со значениями координат указателя мыши и масштаба
+            // РџСЂРё С‰РµР»С‡РєРµ РЅР° РєР°СЂС‚Рµ РїРѕРєР°Р·С‹РІР°РµС‚СЃСЏ Р±Р°Р»СѓРЅ СЃРѕ Р·РЅР°С‡РµРЅРёСЏРјРё РєРѕРѕСЂРґРёРЅР°С‚ СѓРєР°Р·Р°С‚РµР»СЏ РјС‹С€Рё Рё РјР°СЃС€С‚Р°Р±Р°
             YMaps.Events.observe(placemark, placemark.Events.DragEnd, function (obj) {
-                // Задаем контент для балуна
+                // Р—Р°РґР°РµРј РєРѕРЅС‚РµРЅС‚ РґР»СЏ Р±Р°Р»СѓРЅР°
 				document.getElementById("feld_<#--FIELD_ID--#>").value=placemark.getGeoPoint();
                 obj.update();
             });
         });
 
-        // Функция для отображения результата геокодирования
-        // Параметр value - адрес объекта для поиска
+        // Р¤СѓРЅРєС†РёСЏ РґР»СЏ РѕС‚РѕР±СЂР°Р¶РµРЅРёСЏ СЂРµР·СѓР»СЊС‚Р°С‚Р° РіРµРѕРєРѕРґРёСЂРѕРІР°РЅРёСЏ
+        // РџР°СЂР°РјРµС‚СЂ value - Р°РґСЂРµСЃ РѕР±СЉРµРєС‚Р° РґР»СЏ РїРѕРёСЃРєР°
         function showAddress (value) {
-            // Удаление предыдущего результата поиска
+            // РЈРґР°Р»РµРЅРёРµ РїСЂРµРґС‹РґСѓС‰РµРіРѕ СЂРµР·СѓР»СЊС‚Р°С‚Р° РїРѕРёСЃРєР°
             map.removeOverlay(geoResult);
 
-            // Запуск процесса геокодирования
+            // Р—Р°РїСѓСЃРє РїСЂРѕС†РµСЃСЃР° РіРµРѕРєРѕРґРёСЂРѕРІР°РЅРёСЏ
             var geocoder = new YMaps.Geocoder(value, {results: 1, boundedBy: map.getBounds()});
 
-            // Создание обработчика для успешного завершения геокодирования
+            // РЎРѕР·РґР°РЅРёРµ РѕР±СЂР°Р±РѕС‚С‡РёРєР° РґР»СЏ СѓСЃРїРµС€РЅРѕРіРѕ Р·Р°РІРµСЂС€РµРЅРёСЏ РіРµРѕРєРѕРґРёСЂРѕРІР°РЅРёСЏ
             YMaps.Events.observe(geocoder, geocoder.Events.Load, function () {
-                // Если объект был найден, то добавляем его на карту
-                // и центрируем карту по области обзора найденного объекта
+                // Р•СЃР»Рё РѕР±СЉРµРєС‚ Р±С‹Р» РЅР°Р№РґРµРЅ, С‚Рѕ РґРѕР±Р°РІР»СЏРµРј РµРіРѕ РЅР° РєР°СЂС‚Сѓ
+                // Рё С†РµРЅС‚СЂРёСЂСѓРµРј РєР°СЂС‚Сѓ РїРѕ РѕР±Р»Р°СЃС‚Рё РѕР±Р·РѕСЂР° РЅР°Р№РґРµРЅРЅРѕРіРѕ РѕР±СЉРµРєС‚Р°
                 if (this.length()) {
                     geoResult = this.get(0);
                     //map.addOverlay(geoResult);
                     map.setBounds(geoResult.getBounds());
                 }else {
-                    alert("Ничего не найдено")
+                    alert("РќРёС‡РµРіРѕ РЅРµ РЅР°Р№РґРµРЅРѕ")
                 }
             });
 
-            // Процесс геокодирования завершен неудачно
+            // РџСЂРѕС†РµСЃСЃ РіРµРѕРєРѕРґРёСЂРѕРІР°РЅРёСЏ Р·Р°РІРµСЂС€РµРЅ РЅРµСѓРґР°С‡РЅРѕ
             YMaps.Events.observe(geocoder, geocoder.Events.Fault, function (geocoder, error) {
-                alert("Произошла ошибка: " + error);
+                alert("РџСЂРѕРёР·РѕС€Р»Р° РѕС€РёР±РєР°: " + error);
             })
         }
 		function SetPlaceMarkCoords(){
@@ -736,7 +736,7 @@ google.maps.event.addDomListener(window, "load", initialize);
 ';
             $code.='<p>
 			<input type="text" id="address" style="width:525px;" value="" />
-            <input type="button" value="Искать" onclick="showAddress(document.getElementById(\'address\').value);return false;"/>
+            <input type="button" value="РСЃРєР°С‚СЊ" onclick="showAddress(document.getElementById(\'address\').value);return false;"/>
             <div id="Map" style="width:600px;height:400px"></div>';
 			$res.=str_ireplace('<#--FIELD_ID--#>',$field_id,str_ireplace('<#--FIELD_VALUE--#>',$field_value,$code));
 			break;
@@ -773,7 +773,7 @@ function field_image_multi_add(field_id, field_value, img_path, alt){
 		'<input value="{$AVE_Template->get_config_vars('MAIN_OPEN_MEDIAPATH')}" class="button" type="button" onclick="'+"cp_imagepop('img_feld__" + field_id + '_'+_id+"', '', '', '0');"+'" />&nbsp;'+
 		'<input type="button" value="&#8593;" onclick="field_image_multi_move(' + field_id + ', ' + _id + ', \'up\')" />'+
 		'<input type="button" value="&#8595;" onclick="field_image_multi_move(' + field_id + ', ' + _id + ', \'down\')" />'+
-		'<input type="button" value="&#215;" onclick="if(window.confirm(\'Удалить?\'))field_image_multi_delete(' + field_id + ', ' + _id + ')" />';
+		'<input type="button" value="&#215;" onclick="if(window.confirm(\'РЈРґР°Р»РёС‚СЊ?\'))field_image_multi_delete(' + field_id + ', ' + _id + ')" />';
 		
 		element=document.createElement("div");
 		element.id=img_id;
@@ -812,13 +812,13 @@ function field_image_multi_move(field_id, id, direction){ // direction: {up, dow
 
 BLOCK;
 
-	static $jsCodeWritten; // статическая переменная, показывающая, были ли уже выведен JS для редактирования поля multi image
+	static $jsCodeWritten; // СЃС‚Р°С‚РёС‡РµСЃРєР°СЏ РїРµСЂРµРјРµРЅРЅР°СЏ, РїРѕРєР°Р·С‹РІР°СЋС‰Р°СЏ, Р±С‹Р»Рё Р»Рё СѓР¶Рµ РІС‹РІРµРґРµРЅ JS РґР»СЏ СЂРµРґР°РєС‚РёСЂРѕРІР°РЅРёСЏ РїРѕР»СЏ multi image
 
 	switch ($type)
 	{
 		case 'edit' :
 			$field='';
-			// выводим JS-код, только один раз
+			// РІС‹РІРѕРґРёРј JS-РєРѕРґ, С‚РѕР»СЊРєРѕ РѕРґРёРЅ СЂР°Р·
 			if($jsCodeWritten!==1){
 				$field.=$jsCode;
 				$jsCodeWritten=1;
@@ -827,7 +827,7 @@ BLOCK;
 			$field.="
 				<div id=\"feld_{$field_id}\">
 				</div>
-				<input type='button' onclick=\"field_image_multi_add({$field_id},'','','');\" value='Добавить' />
+				<input type='button' onclick=\"field_image_multi_add({$field_id},'','','');\" value='Р”РѕР±Р°РІРёС‚СЊ' />
 				<script language=\"javascript\" type=\"text/javascript\">";
 				$massa=unserialize($field_value);
 				if($massa!=false){
@@ -914,55 +914,61 @@ BLOCK;
 			
 }
 
-function get_field_docfromrub($field_value,$type,$field_id='',$rubric_field_template='',$tpl_field_empty=0,&$maxlength = '',$document_fields=0,$rubric_id=0,$dropdown=''){
+
+function get_field_docfromrubcheck($field_value,$type,$field_id='',$rubric_field_template='',$tpl_field_empty=0,&$maxlength = '',$document_fields=0,$rubric_id=0,$dropdown=''){
 	global $AVE_DB,$AVE_Template, $AVE_Core, $AVE_Document;
+
 	$res=0;
 	switch ($type)
 	{
 		case 'edit' :
-				$field  = '<a name="' . $field_id . '"></a>';
-				$sql="SELECT Id,document_title from ". PREFIX ."_documents WHERE rubric_id='".$dropdown."' ORDER BY document_title ASC";
+				$sql="SELECT Id,document_title from ". PREFIX ."_documents WHERE rubric_id='".$dropdown."' order by document_title";
+				$field_value=unserialize($field_value);
 				$res=$AVE_DB->Query($sql);
-				$field = "<select name=\"feld[" . $field_id . "]\">";
+				$field = "";
 				while($row = $res->FetchRow()){
-					$field.="<option value=\"" . htmlspecialchars($row->Id, ENT_QUOTES) . "\"" . ((trim($field_value) == trim($row->Id)) ? " selected=\"selected\"" : "") . ">" . htmlspecialchars($row->document_title, ENT_QUOTES) . "</option>";
+					$field.="<input name=\"feld[" . $field_id . "][]\" value=\"".$row->Id."\" type=\"checkbox\" ".((in_array($row->Id, $field_value)==false) ? "" : "checked=checked")."><label>".htmlspecialchars($row->document_title, ENT_QUOTES)."</label></br>";
 				}
-				$field .= "</select>";
+				$field .= "";
 				
 				$res=$field;
 			break;
 
 		case 'doc' :
-			$field_value = htmlspecialchars($field_value, ENT_QUOTES);
-			$field_value = pretty_chars($field_value);
-			$field_value = clean_php($field_value);
-			$field_value = str_replace('"', '&quot;', $field_value);
-			if (!$tpl_field_empty)
-			{
-				$field_param = explode('|', $field_value);
-				$field_value = preg_replace('/\[tag:parametr:(\d+)\]/ie', '@$field_param[\\1]', $rubric_field_template);
+			$field_value1=unserialize($field_value);
+			if(is_array($field_value1)){
+				$res=$AVE_DB->Query("SELECT Id,document_title FROM " . PREFIX . "_documents WHERE Id IN (".implode(', ',$field_value1).")");
+				$result=Array();
+				while ($mfa=$res->FetchArray())$result[$mfa['Id']]=$mfa['document_title'];
+				$res='';
+				if ($tpl_field_empty)$res.='<ul>';
+				foreach($field_value1 as $k=>$v){	
+					$field_value = htmlspecialchars($v, ENT_QUOTES);
+					$field_value = pretty_chars($field_value);
+					$field_value = clean_php($field_value);
+					if (!$tpl_field_empty)
+					{
+						$field_param = explode('|', $field_value);
+						$field_value = preg_replace('/\[tag:parametr:(\d+)\]/ie', '@$field_param[\\1]', $rubric_field_template);
+					}
+					else
+					{
+					  $field_value="<li>".$result[$field_value]."</li>";
+					}
+					$res.=$field_value;
+				}
+				if ($tpl_field_empty)$res.='</ul>';
 			}
-			$res=$field_value;
 			break;
 
 			case 'req' :
-			/*
-			$field_value = clean_php($field_value);
-			$field_param = explode('|', $field_value);
-			$field_value = $field_param[0];
-			$field_value = str_replace('"', '&quot;', $field_value);
-			$res=$field_value;
-			*/
-			
-			
 			$res=get_field_default($field_value,$type,$field_id,$rubric_field_template,$tpl_field_empty,$maxlength,$document_fields,$rubric_id);
 
 			break;
 		case 'name' :
-			$res='FIELD_DOCFROMRUB';
+			$res='FIELD_DOCFROMRUB_CHECK';
 		break;
-	}
-	return ($res ? $res : $field_value);
+	}	return ($res ? $res : $field_value);
 			
 }
 

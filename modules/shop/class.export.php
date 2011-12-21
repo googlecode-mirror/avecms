@@ -15,7 +15,7 @@ class DataExport
 		header('Content-Type: ' . $dattype);
 		header('Expires: ' . gmdate('D, d M Y H:i:s') . ' GMT');
 		header('Content-Disposition: attachment; filename="' . $datname . '"');
-		if ($extra != 1) header('Content-Length: ' . strlen($datstring));
+		if ($extra != 1) header('Content-Length: ' . mb_strlen($datstring));
 		header('Cache-Control: must-revalidate, post-check=0, pre-check=0');
 		header('Pragma: public');
 		echo $datstring;

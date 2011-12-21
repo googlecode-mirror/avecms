@@ -39,7 +39,7 @@ if (isset($_SESSION['Product']))
 		$SummVars = '';
 		//$IncVat = '';
 
-		// mögliche Produkt - Varianten auslesen und Preis berechnen
+		// mÑ†gliche Produkt - Varianten auslesen und Preis berechnen
 		$Vars = array();
 		if (!empty($_SESSION['ProductVar'][$item->Id]))
 		{
@@ -124,7 +124,7 @@ if (isset($_SESSION['Product']))
 			}
 		}
 
-		// Muss der Käufer USt. zahlen?
+		// Muss der KÐ´ufer USt. zahlen?
 		// ShipperId
 		$PayUSt = true;
 		if (is_object($row_ieu) && $row_ieu->country_eu == 2)
@@ -182,10 +182,10 @@ if (isset($_SESSION['Product']))
 		$item->Hersteller_Name = $this->_fetchManufacturer($row->Hersteller);
 		$item->DelLink = $this->_delete_item . $row->Id;
 
-		// Einzelpreis unter Berücksichtigung von Kundengruppe und Varianten
+		// Einzelpreis unter BerÑŒcksichtigung von Kundengruppe und Varianten
 		$item->EPreis = (($PayUSt != true) ? (($this->_getDiscountVal($Einzelpreis)+$SummVarsE) / $this->_getVat($key)) : ($this->_getDiscountVal($Einzelpreis)+$SummVarsE));
 
-		// Summe unter Berücksichtung der Anzahl
+		// Summe unter BerÑŒcksichtung der Anzahl
 		$item->EPreisSumme = (($PayUSt != true) ? (($this->_getDiscountVal($Einzelpreis*$value)+$SummVarsE) / $this->_getVat($key)) : ($this->_getDiscountVal($Einzelpreis)+$SummVarsE)*$value);
 
 		$item->Gewicht = $row->Gewicht*$value;
@@ -196,7 +196,7 @@ if (isset($_SESSION['Product']))
 		$PreisGesamt += $item->EPreisSumme;
 		$GewichtGesamt += $item->Gewicht;
 
-		// Preis 2.Währung
+		// Preis 2.WÐ´hrung
 		if (defined("WaehrungSymbol2") && defined("Waehrung2") && defined("Waehrung2Multi"))
 		{
 			@$item->PreisW2 = (($PayUSt != true) ? (($this->_getDiscountVal($Einzelpreis * Waehrung2Multi)+$SummVarsE) / $this->_getVat($key)) : ($this->_getDiscountVal($Einzelpreis)+$SummVarsE));;//($row->Preis * Waehrung2Multi);
@@ -228,7 +228,7 @@ if (isset($_SESSION['Product']))
 		$item = '';
 		$row = '';
 	}
-	// Eventuellen Kundengruppen - Rabatt berücksichtigen!
+	// Eventuellen Kundengruppen - Rabatt berÑŒcksichtigen!
 
 	$PreisVorher = '';
 
@@ -238,7 +238,7 @@ if (isset($_SESSION['Product']))
 	$_SESSION['BasketOverall'] = $PreisGesamt;
 	$_SESSION['GewichtSumm'] = $GewichtGesamt;
 
-	// Gutscheincode löschen
+	// Gutscheincode lÑ†schen
 	if (isset($_POST['couponcode_del']) && $_POST['couponcode_del'] == '1' && $this->getShopSetting('GutscheinCodes') == 1)
 	{
 		unset($_SESSION['CouponCode']);

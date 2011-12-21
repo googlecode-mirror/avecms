@@ -1,7 +1,7 @@
 <?php
 
 /**
- * AVE.cms - Модуль Архив новостей
+ * AVE.cms - РњРѕРґСѓР»СЊ РђСЂС…РёРІ РЅРѕРІРѕСЃС‚РµР№
  *
  * @package AVE.cms
  * @subpackage module_Newsarchive
@@ -14,10 +14,10 @@ if (!defined('BASE_DIR')) exit;
 
 if (defined('ACP'))
 {
-    $modul['ModulName'] = 'Архив документов';
+    $modul['ModulName'] = 'РђСЂС…РёРІ РґРѕРєСѓРјРµРЅС‚РѕРІ';
     $modul['ModulPfad'] = 'newsarchive';
     $modul['ModulVersion'] = '1.1';
-    $modul['description'] = 'Данный модуль предзназначен для организации архива документов по выбранным рубрикам в системе. Параметры модуля позволяют определить возможность пока пустых месяцев и ежедневное меню навигации.';
+    $modul['description'] = 'Р”Р°РЅРЅС‹Р№ РјРѕРґСѓР»СЊ РїСЂРµРґР·РЅР°Р·РЅР°С‡РµРЅ РґР»СЏ РѕСЂРіР°РЅРёР·Р°С†РёРё Р°СЂС…РёРІР° РґРѕРєСѓРјРµРЅС‚РѕРІ РїРѕ РІС‹Р±СЂР°РЅРЅС‹Рј СЂСѓР±СЂРёРєР°Рј РІ СЃРёСЃС‚РµРјРµ. РџР°СЂР°РјРµС‚СЂС‹ РјРѕРґСѓР»СЏ РїРѕР·РІРѕР»СЏСЋС‚ РѕРїСЂРµРґРµР»РёС‚СЊ РІРѕР·РјРѕР¶РЅРѕСЃС‚СЊ РїРѕРєР° РїСѓСЃС‚С‹С… РјРµСЃСЏС†РµРІ Рё РµР¶РµРґРЅРµРІРЅРѕРµ РјРµРЅСЋ РЅР°РІРёРіР°С†РёРё.';
     $modul['Autor'] = 'Arcanum';
     $modul['MCopyright'] = '&copy; 2007-2008 Overdoze Team';
     $modul['Status'] = 1;
@@ -31,9 +31,9 @@ if (defined('ACP'))
 }
 
 /**
- * Обработка тэга модуля
+ * РћР±СЂР°Р±РѕС‚РєР° С‚СЌРіР° РјРѕРґСѓР»СЏ
  *
- * @param int $newsarchive_id - идентификатор архива
+ * @param int $newsarchive_id - РёРґРµРЅС‚РёС„РёРєР°С‚РѕСЂ Р°СЂС…РёРІР°
  */
 function mod_newsarchive($newsarchive_id)
 {
@@ -56,13 +56,13 @@ function mod_newsarchive($newsarchive_id)
 }
 
 /**
- * Выборка докуметов из БД на основании Месяца, Года и Дня
- * День необязательный параметр
+ * Р’С‹Р±РѕСЂРєР° РґРѕРєСѓРјРµС‚РѕРІ РёР· Р‘Р” РЅР° РѕСЃРЅРѕРІР°РЅРёРё РњРµСЃСЏС†Р°, Р“РѕРґР° Рё Р”РЅСЏ
+ * Р”РµРЅСЊ РЅРµРѕР±СЏР·Р°С‚РµР»СЊРЅС‹Р№ РїР°СЂР°РјРµС‚СЂ
  *
- * @param int $newsarchive_id	идентификатор архива
- * @param int $month			месяц
- * @param int $year				год
- * @param int $day				день
+ * @param int $newsarchive_id	РёРґРµРЅС‚РёС„РёРєР°С‚РѕСЂ Р°СЂС…РёРІР°
+ * @param int $month			РјРµСЃСЏС†
+ * @param int $year				РіРѕРґ
+ * @param int $day				РґРµРЅСЊ
  */
 function show_by($newsarchive_id, $month, $year, $day = 0)
 {
@@ -76,17 +76,17 @@ function show_by($newsarchive_id, $month, $year, $day = 0)
 	$lang_file = BASE_DIR . '/modules/newsarchive/lang/' . $_SESSION['user_language'] . '.txt';
 	$AVE_Template->config_load($lang_file, 'admin');
 
-	// Определяем, пришел ли в запросе номер дня
+	// РћРїСЂРµРґРµР»СЏРµРј, РїСЂРёС€РµР» Р»Рё РІ Р·Р°РїСЂРѕСЃРµ РЅРѕРјРµСЂ РґРЅСЏ
 	$db_day = (is_numeric($day) && $day != 0) ? "AND DAYOFMONTH(FROM_UNIXTIME(a.document_published)) = '" . $day . "'" : '';
 
-	// Выбираем все параметры для запроса с текущим ID
+	// Р’С‹Р±РёСЂР°РµРј РІСЃРµ РїР°СЂР°РјРµС‚СЂС‹ РґР»СЏ Р·Р°РїСЂРѕСЃР° СЃ С‚РµРєСѓС‰РёРј ID
 	$newsarchive = $AVE_DB->Query("
 		SELECT *
 		FROM ".PREFIX."_modul_newsarchive
 		WHERE id = '" . (int)$newsarchive_id . "'
 	")->FetchRow();
 
-	// Формирование условий сортировки выводимых документов
+	// Р¤РѕСЂРјРёСЂРѕРІР°РЅРёРµ СѓСЃР»РѕРІРёР№ СЃРѕСЂС‚РёСЂРѕРІРєРё РІС‹РІРѕРґРёРјС‹С… РґРѕРєСѓРјРµРЅС‚РѕРІ
 	$db_sort = 'ORDER BY a.document_published ASC';
 	if(isset($_REQUEST['sort']))
 	{
@@ -105,7 +105,7 @@ function show_by($newsarchive_id, $month, $year, $day = 0)
 	$doctime = get_settings('use_doctime')
 		? ("AND document_published <= " . time() . " AND (document_expire = 0 OR document_expire >= " . time() . ")") : '';
 
-	// Выбираем из БД документы. которые соответствуют условиям для запроса и модуля
+	// Р’С‹Р±РёСЂР°РµРј РёР· Р‘Р” РґРѕРєСѓРјРµРЅС‚С‹. РєРѕС‚РѕСЂС‹Рµ СЃРѕРѕС‚РІРµС‚СЃС‚РІСѓСЋС‚ СѓСЃР»РѕРІРёСЏРј РґР»СЏ Р·Р°РїСЂРѕСЃР° Рё РјРѕРґСѓР»СЏ
 	$query = $AVE_DB->Query("
 		SELECT
 		  	a.Id,
@@ -129,7 +129,7 @@ function show_by($newsarchive_id, $month, $year, $day = 0)
 		" . $db_sort . "
 	");
 
-	// Заполняем массив докуметов результатами из БД
+	// Р—Р°РїРѕР»РЅСЏРµРј РјР°СЃСЃРёРІ РґРѕРєСѓРјРµС‚РѕРІ СЂРµР·СѓР»СЊС‚Р°С‚Р°РјРё РёР· Р‘Р”
 	$documents = array();
 	while($doc = $query->FetchRow())
 	{
@@ -137,9 +137,9 @@ function show_by($newsarchive_id, $month, $year, $day = 0)
 		array_push($documents, $doc);
 	}
 
-	// Формируем меню навигации по дням
+	// Р¤РѕСЂРјРёСЂСѓРµРј РјРµРЅСЋ РЅР°РІРёРіР°С†РёРё РїРѕ РґРЅСЏРј
 	$day_in_month = date('t', mktime(0, 0, 0, (int)$month, 1, (int)$year));
-	$m_arr = array(null, 'Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь', 'Июль', 'Август', 'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь');
+	$m_arr = array(null, 'РЇРЅРІР°СЂСЊ', 'Р¤РµРІСЂР°Р»СЊ', 'РњР°СЂС‚', 'РђРїСЂРµР»СЊ', 'РњР°Р№', 'РСЋРЅСЊ', 'РСЋР»СЊ', 'РђРІРіСѓСЃС‚', 'РЎРµРЅС‚СЏР±СЂСЊ', 'РћРєС‚СЏР±СЂСЊ', 'РќРѕСЏР±СЂСЊ', 'Р”РµРєР°Р±СЂСЊ');
 
 	$assign['newsarchive'] = $newsarchive;
 	$assign['documents']   = $documents;
@@ -154,13 +154,13 @@ function show_by($newsarchive_id, $month, $year, $day = 0)
 	define('MODULE_CONTENT', $AVE_Template->fetch($tpl_dir . 'archive_result.tpl'));
 }
 
-// Включаем проверку входных данных и показываем результаты в зависимости от запроса
+// Р’РєР»СЋС‡Р°РµРј РїСЂРѕРІРµСЂРєСѓ РІС…РѕРґРЅС‹С… РґР°РЅРЅС‹С… Рё РїРѕРєР°Р·С‹РІР°РµРј СЂРµР·СѓР»СЊС‚Р°С‚С‹ РІ Р·Р°РІРёСЃРёРјРѕСЃС‚Рё РѕС‚ Р·Р°РїСЂРѕСЃР°
 if (isset($_GET['module']) && $_GET['module'] == 'newsarchive' && !empty($_GET['month']) && !empty($_GET['year']))
 {
 	show_by($_GET['id'], $_GET['month'], $_GET['year'], isset($_GET['day']) ? $_GET['day'] : 0);
 }
 
-// Кусок кода, отвечающий за управление модулем в админке
+// РљСѓСЃРѕРє РєРѕРґР°, РѕС‚РІРµС‡Р°СЋС‰РёР№ Р·Р° СѓРїСЂР°РІР»РµРЅРёРµ РјРѕРґСѓР»РµРј РІ Р°РґРјРёРЅРєРµ
 if (defined('ACP') && !empty($_REQUEST['moduleaction']))
 {
 	require_once(BASE_DIR . '/modules/newsarchive/class.newsarchive.php');

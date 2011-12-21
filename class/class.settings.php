@@ -8,23 +8,23 @@
  */
 
 /**
- * Класс управления настройками системы
+ * РљР»Р°СЃСЃ СѓРїСЂР°РІР»РµРЅРёСЏ РЅР°СЃС‚СЂРѕР№РєР°РјРё СЃРёСЃС‚РµРјС‹
  */
 class AVE_Settings
 {
 /**
- *	СВОЙСТВА
+ *	РЎР’РћР™РЎРўР’Рђ
  */
 
 	/**
-	 * Количество стран на странице
+	 * РљРѕР»РёС‡РµСЃС‚РІРѕ СЃС‚СЂР°РЅ РЅР° СЃС‚СЂР°РЅРёС†Рµ
 	 *
 	 * @var int
 	 */
 	var $_limit = 15;
 
 /**
- *	ВНУТРЕННИЕ МЕТОДЫ
+ *	Р’РќРЈРўР Р•РќРќРР• РњР•РўРћР”Р«
  */
 
 	function _clearCode($code)
@@ -36,11 +36,11 @@ class AVE_Settings
 	}
 
 /**
- *	ВНЕШНИЕ МЕТОДЫ
+ *	Р’РќР•РЁРќРР• РњР•РўРћР”Р«
  */
 
 	/**
-	 * Метод отображения настроек
+	 * РњРµС‚РѕРґ РѕС‚РѕР±СЂР°Р¶РµРЅРёСЏ РЅР°СЃС‚СЂРѕРµРє
 	 *
 	 */
 	function settingsShow()
@@ -67,9 +67,35 @@ class AVE_Settings
 		$AVE_Template->assign('available_countries', get_country_list(1));
 		$AVE_Template->assign('content', $AVE_Template->fetch('settings/settings_main.tpl'));
 	}
+	
+	/**
+	 * РњРµС‚РѕРґ РѕС‚РѕР±СЂР°Р¶РµРЅРёСЏ РґРѕРїРѕР»РЅРёС‚РµР»СЊРЅС‹С… РЅР°СЃС‚СЂРѕРµРє
+	 *
+	 */
+	function settingsCase() 	{
+		 global $AVE_Template;
+		 if ($_REQUEST['dop']) {
+			$set='<?';
+			foreach($_REQUEST['GLOB'] as $k=>$v){
+				switch ($GLOBALS['CMS_CONFIG'][$k]['TYPE']) {
+						case 'bool' : $v=$v ? 'true' : 'false'; break;
+						case 'integer' : $v=intval($v); break;
+						case 'string' : $v="'".add_slashes($v)."'";break;
+						case 'dropdown' : $v="'".add_slashes($v)."'";break;
+						default : $v="'".add_slashes($v)."'";break;
+				}
+				$set.="	//".$GLOBALS['CMS_CONFIG'][$k]['DESCR']."\r\n";
+				$set.="	define('".$k."',".$v.");\r\n\r\n";
+			}
+			$set.='?>';
+			file_put_contents(BASE_DIR.'/inc/config.inc.php',$set);
+			reportLog($_SESSION['user_name'] . " - РёР·РјРµРЅРёР» РґРѕРїРѕР»РЅРёС‚РµР»СЊРЅС‹Рµ РЅР°СЃС‚СЂРѕР№РєРё СЃРёСЃС‚РµРјС‹", 2, 2);
+ 		}
+	$AVE_Template->assign('CMS_CONFIG',$GLOBALS['CMS_CONFIG']); 		$AVE_Template->assign('content', $AVE_Template->fetch('settings/settings_case.tpl'));
+	}
 
 	/**
-	 * Метод записи настроек
+	 * РњРµС‚РѕРґ Р·Р°РїРёСЃРё РЅР°СЃС‚СЂРѕРµРє
 	 *
 	 */
 	function settingsSave()
@@ -104,7 +130,7 @@ class AVE_Settings
 				mail_word_wrap    = '" . $_REQUEST['mail_word_wrap'] . "',
 				mail_new_user     = '" . $_REQUEST['mail_new_user'] . "',
 				mail_signature    = '" . $_REQUEST['mail_signature'] . "',
-                message_forbidden = '" . $_REQUEST['message_forbidden'] . "',
+            message_forbidden = '" . $_REQUEST['message_forbidden'] . "',
 				hidden_text       = '" . $_REQUEST['hidden_text'] . "',
 				navi_box          = '" . $_REQUEST['navi_box'] . "',
 				total_label       = '" . $this->_clearCode($_REQUEST['total_label']) . "',
@@ -120,12 +146,12 @@ class AVE_Settings
 			WHERE
 				Id = 1
 		");
-
-		reportLog($_SESSION['user_name'] . ' - изменил общие настройки системы', 2, 2);
+		
+		reportLog($_SESSION['user_name'] . " - РёР·РјРµРЅРёР» РѕР±С‰РёРµ РЅР°СЃС‚СЂРѕР№РєРё СЃРёСЃС‚РµРјС‹", 2, 2);
 	}
 
 	/**
-	 * Метод отображения списка стран
+	 * РњРµС‚РѕРґ РѕС‚РѕР±СЂР°Р¶РµРЅРёСЏ СЃРїРёСЃРєР° СЃС‚СЂР°РЅ
 	 *
 	 */
 	function settingsCountriesList()
@@ -159,7 +185,7 @@ class AVE_Settings
 	}
 
 	/**
-	 * Метод записи параметров стран
+	 * РњРµС‚РѕРґ Р·Р°РїРёСЃРё РїР°СЂР°РјРµС‚СЂРѕРІ СЃС‚СЂР°РЅ
 	 *
 	 */
 	function settingsCountriesSave()

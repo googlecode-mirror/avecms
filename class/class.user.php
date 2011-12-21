@@ -8,59 +8,59 @@
  */
 
 /**
- * Класс для работы с группами и учетными записями пользователей
+ * РљР»Р°СЃСЃ РґР»СЏ СЂР°Р±РѕС‚С‹ СЃ РіСЂСѓРїРїР°РјРё Рё СѓС‡РµС‚РЅС‹РјРё Р·Р°РїРёСЃСЏРјРё РїРѕР»СЊР·РѕРІР°С‚РµР»РµР№
  */
 class AVE_User
 {
 /**
- *	СВОЙСТВА
+ *	РЎР’РћР™РЎРўР’Рђ
  */
 
 	/**
-	 * Количество Пользователей отображаемых на одной странице списка
+	 * РљРѕР»РёС‡РµСЃС‚РІРѕ РџРѕР»СЊР·РѕРІР°С‚РµР»РµР№ РѕС‚РѕР±СЂР°Р¶Р°РµРјС‹С… РЅР° РѕРґРЅРѕР№ СЃС‚СЂР°РЅРёС†Рµ СЃРїРёСЃРєР°
 	 *
 	 * @var int
 	 */
 	var $_limit = 15;
 
 	/**
-	 * Допустимые права доступа в административной панели
+	 * Р”РѕРїСѓСЃС‚РёРјС‹Рµ РїСЂР°РІР° РґРѕСЃС‚СѓРїР° РІ Р°РґРјРёРЅРёСЃС‚СЂР°С‚РёРІРЅРѕР№ РїР°РЅРµР»Рё
 	 *
 	 * @var array
 	 */
 	var $_allowed_admin_permission = array(
-		'alles',																							// все права
-		'adminpanel',																						// доступ в админку
-		'gen_settings',																						// общие настройки
-		'modules', 'modules_admin',																			// модули
-		'group', 'group_new', 'group_edit',																	// группы пользователей
-		'user', 'user_new', 'user_edit', 'user_del', 'user_perms',											// пользователи
-		'template', 'template_new', 'template_edit', 'template_del', 'template_multi', 'template_php',		// шаблоны
-		'rubrics', 'rubric_new', 'rubric_edit', 'rubric_del', 'rubric_multi', 'rubric_perms', 'rubric_php',	// рубрики
-		'documents', 'document_php',																		// документы
-		'remarks', 'remark_status', 'remark_del',															// заметки
-		'request', 'request_new', 'request_del',															// запросы
-		'navigation', 'navigation_new', 'navigation_edit',													// навигация
-		'mediapool', 'mediapool_del',																		// файловый менеджер
-		'dbactions',																						// база данных
-		'logs'																								// логи
+		'alles',																							// РІСЃРµ РїСЂР°РІР°
+		'adminpanel',																						// РґРѕСЃС‚СѓРї РІ Р°РґРјРёРЅРєСѓ
+		'gen_settings',																						// РѕР±С‰РёРµ РЅР°СЃС‚СЂРѕР№РєРё
+		'modules', 'modules_admin',																			// РјРѕРґСѓР»Рё
+		'group', 'group_new', 'group_edit',																	// РіСЂСѓРїРїС‹ РїРѕР»СЊР·РѕРІР°С‚РµР»РµР№
+		'user', 'user_new', 'user_edit', 'user_del', 'user_perms',											// РїРѕР»СЊР·РѕРІР°С‚РµР»Рё
+		'template', 'template_new', 'template_edit', 'template_del', 'template_multi', 'template_php',		// С€Р°Р±Р»РѕРЅС‹
+		'rubrics', 'rubric_new', 'rubric_edit', 'rubric_del', 'rubric_multi', 'rubric_perms', 'rubric_php',	// СЂСѓР±СЂРёРєРё
+		'documents', 'document_php',																		// РґРѕРєСѓРјРµРЅС‚С‹
+		'remarks', 'remark_status', 'remark_del',															// Р·Р°РјРµС‚РєРё
+		'request', 'request_new', 'request_del',															// Р·Р°РїСЂРѕСЃС‹
+		'navigation', 'navigation_new', 'navigation_edit',													// РЅР°РІРёРіР°С†РёСЏ
+		'mediapool', 'mediapool_del',																		// С„Р°Р№Р»РѕРІС‹Р№ РјРµРЅРµРґР¶РµСЂ
+		'dbactions',																						// Р±Р°Р·Р° РґР°РЅРЅС‹С…
+		'logs'																								// Р»РѕРіРё
 	);
 
 	/**
-	 * Разделитель используемый при записи даты рождения
+	 * Р Р°Р·РґРµР»РёС‚РµР»СЊ РёСЃРїРѕР»СЊР·СѓРµРјС‹Р№ РїСЂРё Р·Р°РїРёСЃРё РґР°С‚С‹ СЂРѕР¶РґРµРЅРёСЏ
 	 *
 	 * @var string
 	 */
 	var $_birthday_delimetr = '.';
 
 /**
- *	ВНУТРЕННИЕ МЕТОДЫ
+ *	Р’РќРЈРўР Р•РќРќРР• РњР•РўРћР”Р«
  */
 
 	/**
-	 * Проверка элементов учетной записи пользователя
+	 * РџСЂРѕРІРµСЂРєР° СЌР»РµРјРµРЅС‚РѕРІ СѓС‡РµС‚РЅРѕР№ Р·Р°РїРёСЃРё РїРѕР»СЊР·РѕРІР°С‚РµР»СЏ
 	 *
-	 * @param boolean $new признак проверки элементов новой учетной записи
+	 * @param boolean $new РїСЂРёР·РЅР°Рє РїСЂРѕРІРµСЂРєРё СЌР»РµРјРµРЅС‚РѕРІ РЅРѕРІРѕР№ СѓС‡РµС‚РЅРѕР№ Р·Р°РїРёСЃРё
 	 * @return array
 	 */
 	function _userFieldValidate($new = false)
@@ -73,10 +73,10 @@ class AVE_User
 		$regex_username = '/[^\w-]/';
 		$regex_password = '/[^\x21-\xFF]/';
 		$regex_birthday = '#(0[1-9]|[12][0-9]|3[01])([[:punct:]| ])(0[1-9]|1[012])\2(19|20)\d\d#';
-//		$regex_email = "¬^[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+(?:[a-z]{2}|com|org|net|edu|gov|mil|biz|info|mobi|name|aero|asia|jobs|museum)$¬i";
+//		$regex_email = "В¬^[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+(?:[a-z]{2}|com|org|net|edu|gov|mil|biz|info|mobi|name|aero|asia|jobs|museum)$В¬i";
 		$regex_email = '/^[\w.-]+@[a-z0-9.-]+\.(?:[a-z]{2}|com|org|net|edu|gov|mil|biz|info|mobi|name|aero|asia|jobs|museum)$/i';
 
-		// Проверка логина
+		// РџСЂРѕРІРµСЂРєР° Р»РѕРіРёРЅР°
 		if (empty($_POST['user_name']))
 		{
 			$errors[] = @$AVE_Template->get_config_vars('USER_NO_USERNAME');
@@ -86,7 +86,7 @@ class AVE_User
 			$errors[] = @$AVE_Template->get_config_vars('USER_ERROR_USERNAME');
 		}
 
-		// Проверка имени
+		// РџСЂРѕРІРµСЂРєР° РёРјРµРЅРё
 		if (empty($_POST['firstname']))
 		{
 			$errors[] = @$AVE_Template->get_config_vars('USER_NO_FIRSTNAME');
@@ -96,7 +96,7 @@ class AVE_User
 			$errors[] = @$AVE_Template->get_config_vars('USER_ERROR_FIRSTNAME');
 		}
 
-		// Проверка фамилии
+		// РџСЂРѕРІРµСЂРєР° С„Р°РјРёР»РёРё
 		if (empty($_POST['lastname']))
 		{
 			$errors[] = @$AVE_Template->get_config_vars('USER_NO_LASTNAME');
@@ -106,7 +106,7 @@ class AVE_User
 			$errors[] = @$AVE_Template->get_config_vars('USER_ERROR_LASTNAME');
 		}
 
-		// Проверка e-Mail
+		// РџСЂРѕРІРµСЂРєР° e-Mail
 		if (empty($_POST['email']))
 		{
 			$errors[] = @$AVE_Template->get_config_vars('USER_NO_EMAIL');
@@ -131,7 +131,7 @@ class AVE_User
 			}
 		}
 
-		// Проверка пароля
+		// РџСЂРѕРІРµСЂРєР° РїР°СЂРѕР»СЏ
 		if (isset($_REQUEST['action']) && $_REQUEST['action'] != 'edit')
 		{
 			if (empty($_POST['password']))
@@ -148,7 +148,7 @@ class AVE_User
 			}
 		}
 
-		// Проверка даты рождения
+		// РџСЂРѕРІРµСЂРєР° РґР°С‚С‹ СЂРѕР¶РґРµРЅРёСЏ
 		$match = '';
 		if (!empty($_POST['birthday']) && !preg_match($regex_birthday, $_POST['birthday'], $match))
 		{
@@ -166,17 +166,17 @@ class AVE_User
 	}
 
 /**
- *	ВНЕШНИЕ МЕТОДЫ
+ *	Р’РќР•РЁРќРР• РњР•РўРћР”Р«
  */
 
 	/**
-	 * Группы пользователей
+	 * Р“СЂСѓРїРїС‹ РїРѕР»СЊР·РѕРІР°С‚РµР»РµР№
 	 */
 
 	/**
-	 * Получение списка Групп пользователей
+	 * РџРѕР»СѓС‡РµРЅРёРµ СЃРїРёСЃРєР° Р“СЂСѓРїРї РїРѕР»СЊР·РѕРІР°С‚РµР»РµР№
 	 *
-	 * @param string $exclude идентификатор исключаемой Группы пользователей (гостей)
+	 * @param string $exclude РёРґРµРЅС‚РёС„РёРєР°С‚РѕСЂ РёСЃРєР»СЋС‡Р°РµРјРѕР№ Р“СЂСѓРїРїС‹ РїРѕР»СЊР·РѕРІР°С‚РµР»РµР№ (РіРѕСЃС‚РµР№)
 	 * @return array
 	 */
 	function userGroupListGet($exclude = '')
@@ -206,7 +206,7 @@ class AVE_User
 	}
 
 	/**
-	 * Отобразить список Групп пользователей
+	 * РћС‚РѕР±СЂР°Р·РёС‚СЊ СЃРїРёСЃРѕРє Р“СЂСѓРїРї РїРѕР»СЊР·РѕРІР°С‚РµР»РµР№
 	 *
 	 */
 	function userGroupListShow()
@@ -218,7 +218,7 @@ class AVE_User
 	}
 
 	/**
-	 * Создание новой Группы пользователей
+	 * РЎРѕР·РґР°РЅРёРµ РЅРѕРІРѕР№ Р“СЂСѓРїРїС‹ РїРѕР»СЊР·РѕРІР°С‚РµР»РµР№
 	 *
 	 */
 	function userGroupNew()
@@ -238,7 +238,7 @@ class AVE_User
 			");
 			$iid = $AVE_DB->InsertId();
 
-			reportLog($_SESSION['user_name'] . ' - Создал группу пользователей (' . $iid . ')', 2, 2);
+			reportLog($_SESSION['user_name'] . ' - РЎРѕР·РґР°Р» РіСЂСѓРїРїСѓ РїРѕР»СЊР·РѕРІР°С‚РµР»РµР№ (' . $iid . ')', 2, 2);
 
 			header('Location:index.php?do=groups&action=grouprights&Id=' . $iid . '&cp=' . SESSION);
 		}
@@ -249,9 +249,9 @@ class AVE_User
 	}
 
 	/**
-	 * Удаление Группы пользователей
+	 * РЈРґР°Р»РµРЅРёРµ Р“СЂСѓРїРїС‹ РїРѕР»СЊР·РѕРІР°С‚РµР»РµР№
 	 *
-	 * @param int $user_group_id идентификатор Группы пользователей
+	 * @param int $user_group_id РёРґРµРЅС‚РёС„РёРєР°С‚РѕСЂ Р“СЂСѓРїРїС‹ РїРѕР»СЊР·РѕРІР°С‚РµР»РµР№
 	 */
 	function userGroupDelete($user_group_id = '0')
 	{
@@ -274,7 +274,7 @@ class AVE_User
 					WHERE user_group = '" . $user_group_id . "'
 				");
 
-				reportLog($_SESSION['user_name'] . ' - Удалил группу пользователей (' . $user_group_id . ')', 2, 2);
+				reportLog($_SESSION['user_name'] . ' - РЈРґР°Р»РёР» РіСЂСѓРїРїСѓ РїРѕР»СЊР·РѕРІР°С‚РµР»РµР№ (' . $user_group_id . ')', 2, 2);
 			}
 		}
 
@@ -282,9 +282,9 @@ class AVE_User
 	}
 
 	/**
-	 * Редактирование прав Группы пользователей
+	 * Р РµРґР°РєС‚РёСЂРѕРІР°РЅРёРµ РїСЂР°РІ Р“СЂСѓРїРїС‹ РїРѕР»СЊР·РѕРІР°С‚РµР»РµР№
 	 *
-	 * @param int $user_group_id идентификатор Группы пользователей
+	 * @param int $user_group_id РёРґРµРЅС‚РёС„РёРєР°С‚РѕСЂ Р“СЂСѓРїРїС‹ РїРѕР»СЊР·РѕРІР°С‚РµР»РµР№
 	 */
 	function userGroupPermissionEdit($user_group_id)
 	{
@@ -324,9 +324,9 @@ class AVE_User
 	}
 
 	/**
-	 * Запись прав Групп пользователей
+	 * Р—Р°РїРёСЃСЊ РїСЂР°РІ Р“СЂСѓРїРї РїРѕР»СЊР·РѕРІР°С‚РµР»РµР№
 	 *
-	 * @param int $user_group_id идентификатор Группы пользователей
+	 * @param int $user_group_id РёРґРµРЅС‚РёС„РёРєР°С‚РѕСЂ Р“СЂСѓРїРїС‹ РїРѕР»СЊР·РѕРІР°С‚РµР»РµР№
 	 */
 	function userGroupPermissionSave($user_group_id)
 	{
@@ -345,7 +345,7 @@ class AVE_User
 				WHERE user_group = '" . $user_group_id . "'
 			");
 
-			reportLog($_SESSION['user_name'] . ' - Изменил права доступа для группы (' . $user_group_id . ')', 2, 2);
+			reportLog($_SESSION['user_name'] . ' - РР·РјРµРЅРёР» РїСЂР°РІР° РґРѕСЃС‚СѓРїР° РґР»СЏ РіСЂСѓРїРїС‹ (' . $user_group_id . ')', 2, 2);
 		}
 
 		header('Location:index.php?do=groups&cp=' . SESSION);
@@ -353,13 +353,13 @@ class AVE_User
 	}
 
 	/**
-	 * Учетные записи пользователей
+	 * РЈС‡РµС‚РЅС‹Рµ Р·Р°РїРёСЃРё РїРѕР»СЊР·РѕРІР°С‚РµР»РµР№
 	 */
 
 	/**
-	 * Формирование спискка учетных записей пользователей
+	 * Р¤РѕСЂРјРёСЂРѕРІР°РЅРёРµ СЃРїРёСЃРєРєР° СѓС‡РµС‚РЅС‹С… Р·Р°РїРёСЃРµР№ РїРѕР»СЊР·РѕРІР°С‚РµР»РµР№
 	 *
-	 * @param int $user_group_id идентификатор Группы пользователей
+	 * @param int $user_group_id РёРґРµРЅС‚РёС„РёРєР°С‚РѕСЂ Р“СЂСѓРїРїС‹ РїРѕР»СЊР·РѕРІР°С‚РµР»РµР№
 	 */
 	function userListFetch($user_group_id = '')
 	{
@@ -419,17 +419,13 @@ class AVE_User
 
 		$isShop = $AVE_DB->Query("SHOW TABLES LIKE '" . PREFIX . "_modul_shop_bestellungen'")->GetCell();
 		$users = array();
+
 		while ($row = $sql->FetchRow())
 		{
-			if ($isShop)
-			{
-				$row->IsShop = 1;
-				$row->Orders = $AVE_DB->Query("
-					SELECT DISTINCT(Id)
-					FROM " . PREFIX . "_modul_shop_bestellungen
-					WHERE Benutzer = '" . $row->Id . "'
-				")->NumRows();
-			}
+			// РґР»СЏ РєРѕРјРјРµРЅС‚Р°СЂРёРµРІ
+			$sqla = $AVE_DB->Query("SELECT * FROM " . PREFIX . "_modul_comment_info WHERE comment_author_id = '".(int)$row->Id."'");
+			$row->comments = $sqla->numrows();
+	
 			array_push($users, $row);
 		}
 
@@ -445,7 +441,7 @@ class AVE_User
 	}
 
 	/**
-	 * Создание новой учетной записи
+	 * РЎРѕР·РґР°РЅРёРµ РЅРѕРІРѕР№ СѓС‡РµС‚РЅРѕР№ Р·Р°РїРёСЃРё
 	 *
 	 */
 	function userNew()
@@ -516,7 +512,7 @@ class AVE_User
 						$AVE_Template->get_config_vars('USER_MAIL_SUBJECT')
 					);
 
-					reportLog($_SESSION['user_name'] . ' - Добавил пользователя (' . stripslashes($_POST['user_name']) . ')', 2, 2);
+					reportLog($_SESSION['user_name'] . ' - Р”РѕР±Р°РІРёР» РїРѕР»СЊР·РѕРІР°С‚РµР»СЏ (' . stripslashes($_POST['user_name']) . ')', 2, 2);
 
 					header('Location:index.php?do=user&cp=' . SESSION);
 				}
@@ -525,9 +521,9 @@ class AVE_User
 	}
 
 	/**
-	 * Редактирование учетной записи пользователя
+	 * Р РµРґР°РєС‚РёСЂРѕРІР°РЅРёРµ СѓС‡РµС‚РЅРѕР№ Р·Р°РїРёСЃРё РїРѕР»СЊР·РѕРІР°С‚РµР»СЏ
 	 *
-	 * @param int $user_id идентификатор учетной записи пользователя
+	 * @param int $user_id РёРґРµРЅС‚РёС„РёРєР°С‚РѕСЂ СѓС‡РµС‚РЅРѕР№ Р·Р°РїРёСЃРё РїРѕР»СЊР·РѕРІР°С‚РµР»СЏ
 	 */
 	function userEdit($user_id)
 	{
@@ -603,7 +599,9 @@ class AVE_User
 					}
 
 					$user_group_set = ($_SESSION['user_id'] != $user_id) ? "user_group = '" . $_REQUEST['user_group'] . "'," : '';
-
+					
+					$times = ($_REQUEST['deleted'] == "1") ? time() : '';
+					
 					$AVE_DB->Query("
 						UPDATE " . PREFIX . "_users
 						SET
@@ -623,13 +621,17 @@ class AVE_User
 							status      = '" . $_REQUEST['status'] . "',
 							country     = '" . $_REQUEST['country'] . "',
 							birthday    = '" . $_REQUEST['birthday'] . "',
+							deleted     = '" . $_REQUEST['deleted'] . "',
+							del_time      = '" . $times . "',
 							taxpay      = '" . $_REQUEST['taxpay'] . "',
+							url      = '" . $_REQUEST['url'] . "',
+							icq      = '".$_REQUEST['icq'] ."',
 							company     = '" . $_REQUEST['company'] . "',
 							user_group_extra = '" . @implode(';', $_REQUEST['user_group_extra']) . "'
 						WHERE
 							Id = '" . $user_id . "'
 					");
-
+					
 					if ($AVE_DB->Query("SHOW TABLES LIKE '" . PREFIX . "_modul_forum_userprofile'")->GetCell())
 					{
 						$AVE_DB->Query("
@@ -660,7 +662,7 @@ class AVE_User
 							$AVE_Template->get_config_vars('USER_MAIL_SUBJECT'),
 							get_settings('mail_from'),
 							get_settings('mail_from_name') . ' (' . get_settings('site_name') . ')',
-							'text'
+							'text'							
 						);
 					}
 
@@ -681,7 +683,7 @@ class AVE_User
 							$AVE_Template->get_config_vars('USER_MAIL_PASSWORD'),
 							get_settings('mail_from'),
 							get_settings('mail_from_name') . ' (' . get_settings('site_name') . ')',
-							'text'
+							'text'							
 						);
 					}
 
@@ -693,7 +695,7 @@ class AVE_User
 							stripslashes($_POST['SubjectMessage']),
 							$_SESSION['user_email'],
 							$_SESSION['user_name'],
-							'text'
+							'text'							
 						);
 					}
 
@@ -703,7 +705,7 @@ class AVE_User
 						$_SESSION['user_email'] = $_POST['email'];
 					}
 
-					reportLog($_SESSION['user_name'] . ' - Отредактировал параметры пользователя (' . stripslashes($_POST['user_name']) . ')', 2, 2);
+					reportLog($_SESSION['user_name'] . ' - РћС‚СЂРµРґР°РєС‚РёСЂРѕРІР°Р» РїР°СЂР°РјРµС‚СЂС‹ РїРѕР»СЊР·РѕРІР°С‚РµР»СЏ (' . stripslashes($_POST['user_name']) . ')', 2, 2);
 
 					header('Location:index.php?do=user&cp=' . SESSION);
 					exit;
@@ -713,9 +715,9 @@ class AVE_User
 	}
 
 	/**
-	 * Удаление учетной записи пользователя
+	 * РЈРґР°Р»РµРЅРёРµ СѓС‡РµС‚РЅРѕР№ Р·Р°РїРёСЃРё РїРѕР»СЊР·РѕРІР°С‚РµР»СЏ
 	 *
-	 * @param int $user_id идентификатор учетной записи пользователя
+	 * @param int $user_id РёРґРµРЅС‚РёС„РёРєР°С‚РѕСЂ СѓС‡РµС‚РЅРѕР№ Р·Р°РїРёСЃРё РїРѕР»СЊР·РѕРІР°С‚РµР»СЏ
 	 */
 	function userDelete($user_id)
 	{
@@ -738,14 +740,14 @@ class AVE_User
 				");
 			}
 
-			reportLog($_SESSION['user_name'] . ' - Удалил пользователя (' . $user_id . ')', 2, 2);
+			reportLog($_SESSION['user_name'] . ' - РЈРґР°Р»РёР» РїРѕР»СЊР·РѕРІР°С‚РµР»СЏ (' . $user_id . ')', 2, 2);
 		}
 
 		header('Location:index.php?do=user&cp=' . SESSION);
 	}
 
 	/**
-	 * Запись изменений учетных записей пользователей в списке
+	 * Р—Р°РїРёСЃСЊ РёР·РјРµРЅРµРЅРёР№ СѓС‡РµС‚РЅС‹С… Р·Р°РїРёСЃРµР№ РїРѕР»СЊР·РѕРІР°С‚РµР»РµР№ РІ СЃРїРёСЃРєРµ
 	 *
 	 */
 	function userListEdit()
@@ -761,7 +763,7 @@ class AVE_User
 					FROM " . PREFIX . "_users
 					WHERE Id = '" . $user_id . "'
 				");
-				reportLog($_SESSION['user_name'] . ' - Удалил пользователя (' . $user_id . ')', 2, 2);
+				reportLog($_SESSION['user_name'] . ' - РЈРґР°Р»РёР» РїРѕР»СЊР·РѕРІР°С‚РµР»СЏ (' . $user_id . ')', 2, 2);
 			}
 		}
 
@@ -775,7 +777,7 @@ class AVE_User
 					SET user_group = '" . $user_group_id . "'
 					WHERE Id = '" . $user_id . "'
 				");
-				reportLog($_SESSION['user_name'] . ' - Изменил группу для пользователя (' . $user_id . ')', 2, 2);
+				reportLog($_SESSION['user_name'] . ' - РР·РјРµРЅРёР» РіСЂСѓРїРїСѓ РґР»СЏ РїРѕР»СЊР·РѕРІР°С‚РµР»СЏ (' . $user_id . ')', 2, 2);
 			}
 		}
 

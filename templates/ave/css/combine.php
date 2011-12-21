@@ -1,10 +1,10 @@
 <?php
 
-$cache 	  = true;		// Êåøèðîâàíèå
-$cachedir = '../../../cache';	// Ïóòü ê êýøó
+$cache 	  = true;		// ÐšÐµÑˆÐ¸Ñ€Ð¾Ð²Ð°Ð½Ð¸Ðµ
+$cachedir = '../../../cache';	// ÐŸÑƒÑ‚ÑŒ Ðº ÐºÑÑˆÑƒ
 
-// Îïðåäåëÿåì òèï ôàéëîâ, ïîëíûé ïóòü ê ôàéëàì
-// è ïîëó÷àåì ñïèñîê èìåí ôàéëîâ
+// ÐžÐ¿Ñ€ÐµÐ´ÐµÐ»ÑÐµÐ¼ Ñ‚Ð¸Ð¿ Ñ„Ð°Ð¹Ð»Ð¾Ð², Ð¿Ð¾Ð»Ð½Ñ‹Ð¹ Ð¿ÑƒÑ‚ÑŒ Ðº Ñ„Ð°Ð¹Ð»Ð°Ð¼
+// Ð¸ Ð¿Ð¾Ð»ÑƒÑ‡Ð°ÐµÐ¼ ÑÐ¿Ð¸ÑÐ¾Ðº Ð¸Ð¼ÐµÐ½ Ñ„Ð°Ð¹Ð»Ð¾Ð²
 if (!empty($_GET['css']))
 {
 	$type = 'css';
@@ -25,7 +25,7 @@ else
 	exit;
 }
 
-// Îïðåäåëÿåì äàòó ïîñëåäíåé ìîäèôèêàöèè ôàéëîâ
+// ÐžÐ¿Ñ€ÐµÐ´ÐµÐ»ÑÐµÐ¼ Ð´Ð°Ñ‚Ñƒ Ð¿Ð¾ÑÐ»ÐµÐ´Ð½ÐµÐ¹ Ð¼Ð¾Ð´Ð¸Ñ„Ð¸ÐºÐ°Ñ†Ð¸Ð¸ Ñ„Ð°Ð¹Ð»Ð¾Ð²
 $lastmodified = 0;
 while (list(,$element) = each($elements))
 {
@@ -47,30 +47,30 @@ while (list(,$element) = each($elements))
 	$lastmodified = max($lastmodified, filemtime($path));
 }
 
-// Îòïðàâëÿåì Etag
+// ÐžÑ‚Ð¿Ñ€Ð°Ð²Ð»ÑÐµÐ¼ Etag
 $hash = $lastmodified . '-' . $hash;
 header ("Etag: \"" . $hash . "\"");
 
 if (isset($_SERVER['HTTP_IF_NONE_MATCH']) &&
 	stripslashes($_SERVER['HTTP_IF_NONE_MATCH']) == '"' . $hash . '"')
 {
-	// Ïîâòîðíûé âèçèò è ôàéëû íå èçìåíÿëèñü - íè÷åãî íå îòïðàâëÿåì
+	// ÐŸÐ¾Ð²Ñ‚Ð¾Ñ€Ð½Ñ‹Ð¹ Ð²Ð¸Ð·Ð¸Ñ‚ Ð¸ Ñ„Ð°Ð¹Ð»Ñ‹ Ð½Ðµ Ð¸Ð·Ð¼ÐµÐ½ÑÐ»Ð¸ÑÑŒ - Ð½Ð¸Ñ‡ÐµÐ³Ð¾ Ð½Ðµ Ð¾Ñ‚Ð¿Ñ€Ð°Ð²Ð»ÑÐµÐ¼
 	header ("HTTP/1.0 304 Not Modified");
 	header ('Content-Length: 0');
 }
 else
 {
-	// Ïåðâûé âèçèò èëè ôàéëû èçìåíÿëèñü
+	// ÐŸÐµÑ€Ð²Ñ‹Ð¹ Ð²Ð¸Ð·Ð¸Ñ‚ Ð¸Ð»Ð¸ Ñ„Ð°Ð¹Ð»Ñ‹ Ð¸Ð·Ð¼ÐµÐ½ÑÐ»Ð¸ÑÑŒ
 	if ($cache)
 	{
-		// Îïðåäåëÿåì äîñòóïíûå ìåòîäû ñæàòèÿ
+		// ÐžÐ¿Ñ€ÐµÐ´ÐµÐ»ÑÐµÐ¼ Ð´Ð¾ÑÑ‚ÑƒÐ¿Ð½Ñ‹Ðµ Ð¼ÐµÑ‚Ð¾Ð´Ñ‹ ÑÐ¶Ð°Ñ‚Ð¸Ñ
 		$gzip = strstr($_SERVER['HTTP_ACCEPT_ENCODING'], 'gzip');
 		$deflate = strstr($_SERVER['HTTP_ACCEPT_ENCODING'], 'deflate');
 
-		// Îïðåäåëÿåì êàêîé ìåòîä èñïîëüçîâàòü
+		// ÐžÐ¿Ñ€ÐµÐ´ÐµÐ»ÑÐµÐ¼ ÐºÐ°ÐºÐ¾Ð¹ Ð¼ÐµÑ‚Ð¾Ð´ Ð¸ÑÐ¿Ð¾Ð»ÑŒÐ·Ð¾Ð²Ð°Ñ‚ÑŒ
 		$encoding = $gzip ? 'gzip' : ($deflate ? 'deflate' : 'none');
 
-		// Îïðåäåëÿåìñÿ ñ âåðñèåé áðàóçåðà äëÿ îáõîäà ãëþêîâ IE
+		// ÐžÐ¿Ñ€ÐµÐ´ÐµÐ»ÑÐµÐ¼ÑÑ Ñ Ð²ÐµÑ€ÑÐ¸ÐµÐ¹ Ð±Ñ€Ð°ÑƒÐ·ÐµÑ€Ð° Ð´Ð»Ñ Ð¾Ð±Ñ…Ð¾Ð´Ð° Ð³Ð»ÑŽÐºÐ¾Ð² IE
 		if (!strstr($_SERVER['HTTP_USER_AGENT'], 'Opera') &&
 			preg_match('/^Mozilla\/4\.0 \(compatible; MSIE ([0-9]\.[0-9])/i', $_SERVER['HTTP_USER_AGENT'], $matches))
 		{
@@ -83,7 +83,7 @@ else
 				$encoding = 'none';
 		}
 
-		// Ïðîâåðÿåì íàëè÷èå êîìáèíèðîâàííîãî ôàéëà â êýøå
+		// ÐŸÑ€Ð¾Ð²ÐµÑ€ÑÐµÐ¼ Ð½Ð°Ð»Ð¸Ñ‡Ð¸Ðµ ÐºÐ¾Ð¼Ð±Ð¸Ð½Ð¸Ñ€Ð¾Ð²Ð°Ð½Ð½Ð¾Ð³Ð¾ Ñ„Ð°Ð¹Ð»Ð° Ð² ÐºÑÑˆÐµ
 		$cachefile = 'cache-' . $hash . '.' . $type . ($encoding != 'none' ? '.' . $encoding : '');
 
 		if (file_exists($cachedir . '/' . $cachefile))
@@ -105,7 +105,7 @@ else
 		}
 	}
 
-	// Ñ÷èòûâàåì ôàéëû
+	// Ð¡Ñ‡Ð¸Ñ‚Ñ‹Ð²Ð°ÐµÐ¼ Ñ„Ð°Ð¹Ð»Ñ‹
 	$contents = '';
 	reset($elements);
 	while (list(,$element) = each($elements))
@@ -114,12 +114,12 @@ else
 		$contents .= "\n\n" . file_get_contents($path);
 	}
 
-	// Îòïðàâëÿåì çàãîëîâîê Content-Type
+	// ÐžÑ‚Ð¿Ñ€Ð°Ð²Ð»ÑÐµÐ¼ Ð·Ð°Ð³Ð¾Ð»Ð¾Ð²Ð¾Ðº Content-Type
 	header ("Content-Type: text/" . $type);
 
 	if (isset($encoding) && $encoding != 'none')
 	{
-		// Ñæèìàåì è îòïðàâëÿåì êîìáèíèðîâàííûé ôàéë
+		// Ð¡Ð¶Ð¸Ð¼Ð°ÐµÐ¼ Ð¸ Ð¾Ñ‚Ð¿Ñ€Ð°Ð²Ð»ÑÐµÐ¼ ÐºÐ¾Ð¼Ð±Ð¸Ð½Ð¸Ñ€Ð¾Ð²Ð°Ð½Ð½Ñ‹Ð¹ Ñ„Ð°Ð¹Ð»
 		$contents = gzencode($contents, 9, $gzip ? FORCE_GZIP : FORCE_DEFLATE);
 		header ("Content-Encoding: " . $encoding);
 		header ('Content-Length: ' . strlen($contents));
@@ -127,12 +127,12 @@ else
 	}
 	else
 	{
-		// Îòïðàâëÿåì êîìáèíèðîâàííûé ôàéë áåç ñæàòèÿ
+		// ÐžÑ‚Ð¿Ñ€Ð°Ð²Ð»ÑÐµÐ¼ ÐºÐ¾Ð¼Ð±Ð¸Ð½Ð¸Ñ€Ð¾Ð²Ð°Ð½Ð½Ñ‹Ð¹ Ñ„Ð°Ð¹Ð» Ð±ÐµÐ· ÑÐ¶Ð°Ñ‚Ð¸Ñ
 		header ('Content-Length: ' . strlen($contents));
 		echo $contents;
 	}
 
-	// Êýøèðóåì
+	// ÐšÑÑˆÐ¸Ñ€ÑƒÐµÐ¼
 	if ($cache)
 	{
 		if ($fp = fopen($cachedir . '/' . $cachefile, 'wb'))

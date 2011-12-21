@@ -41,9 +41,9 @@ $modul_sql_install[] = "CREATE TABLE `CPPREFIX_modul_gweather` (
   `useCSS` enum('1','0') NOT NULL default '1',
   `nameCSS` enum('gweather','simple') NOT NULL default 'gweather',
   PRIMARY KEY  (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=cp1251;" ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8;" ;
 
-$modul_sql_install[] = "INSERT INTO `CPPREFIX_modul_gweather` VALUES (1, 'Odessa,Ukraine', 'Œ‰ÂÒÒ‡', 'ru', 46.46666666, 30.73333333, '+2', '1', '1', '1', 'c', '3', '64', '32', 30, 'cp1251', 'gweather', '1', 'gweather');";
+$modul_sql_install[] = "INSERT INTO `CPPREFIX_modul_gweather` VALUES (1, 'Odessa,Ukraine', '–û–¥–µ—Å—Å–∞', 'ru', 46.46666666, 30.73333333, '+2', '1', '1', '1', 'c', '3', '64', '32', 30, 'cp1251', 'gweather', '1', 'gweather');";
 
 $modul_sql_update[] = "UPDATE CPPREFIX_module SET CpEngineTag = '" . $modul['CpEngineTag'] . "', CpPHPTag = '" . $modul['CpPHPTag'] . "', Version = '" . $modul['ModulVersion'] . "' WHERE ModulPfad = '" . $modul['ModulPfad'] . "' LIMIT 1;";
 

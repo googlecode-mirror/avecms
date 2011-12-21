@@ -50,7 +50,7 @@ $(document).ready(function() {ldelim}
 	<tr>
 		<td nowrap="nowrap">{#GUEST_PUB_NAME#} | {#GUEST_ALL_COMMENTS#} {$allcomments}</td>
 		<td align="right">
-			<form action="index.php?module=guestbook" method="post" name="pp">
+			<form action="" method="post" name="pp">
 				<select name="sort">
 					<option value="desc"{if $descsel!=''} selected="selected"{/if}>{#GUEST_SORTBYDESC#}</option>
 					<option value="asc"{if $ascsel!=''} selected="selected"{/if}>{#GUEST_SORTBYASC#}</option>
@@ -104,6 +104,7 @@ $(document).ready(function() {ldelim}
 <form id="gbf" action="index.php?module=guestbook&action=new" method="post">
 	<input name="pim" type="hidden" value="{$pim}" />
 	<input name="send" type="hidden" value="1" />
+	<input name="document" type="hidden" value="{$document}" />
 
 	{if $smarty.session.user_group == '2'}
 		<div class="gb_input">

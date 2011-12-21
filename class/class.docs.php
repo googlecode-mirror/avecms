@@ -3,7 +3,7 @@
 /**
  * AVE.cms
  *
- * Класс, предназначенный для управления документами в Панели управления
+ * РљР»Р°СЃСЃ, РїСЂРµРґРЅР°Р·РЅР°С‡РµРЅРЅС‹Р№ РґР»СЏ СѓРїСЂР°РІР»РµРЅРёСЏ РґРѕРєСѓРјРµРЅС‚Р°РјРё РІ РџР°РЅРµР»Рё СѓРїСЂР°РІР»РµРЅРёСЏ
  *
  *
  * @package AVE.cms
@@ -14,68 +14,68 @@ class AVE_Document
 {
 
 /**
- *	Свойства класса
+ *	РЎРІРѕР№СЃС‚РІР° РєР»Р°СЃСЃР°
  */
 
 	/**
-	 * Количество документов отображаемых на одной странице
+	 * РљРѕР»РёС‡РµСЃС‚РІРѕ РґРѕРєСѓРјРµРЅС‚РѕРІ РѕС‚РѕР±СЂР°Р¶Р°РµРјС‹С… РЅР° РѕРґРЅРѕР№ СЃС‚СЂР°РЅРёС†Рµ
 	 *
 	 * @var int
 	 */
 	var $_limit = 40;
 
 	/**
-	 * Ширина поля ввода (для элементов input)
+	 * РЁРёСЂРёРЅР° РїРѕР»СЏ РІРІРѕРґР° (РґР»СЏ СЌР»РµРјРµРЅС‚РѕРІ input)
 	 *
 	 * @var string
 	 */
-	var $_field_width = '400px';
+	var $_field_width = '80%';
 
 	/**
-	 * Ширина многострочного поля ввода (для элементов textarea)
+	 * РЁРёСЂРёРЅР° РјРЅРѕРіРѕСЃС‚СЂРѕС‡РЅРѕРіРѕ РїРѕР»СЏ РІРІРѕРґР° (РґР»СЏ СЌР»РµРјРµРЅС‚РѕРІ textarea)
 	 *
 	 * @var string
 	 */
 	var $_textarea_width = '98%';
 
 	/**
-	 * Высота многострочного поля ввода (для элементов textarea)
+	 * Р’С‹СЃРѕС‚Р° РјРЅРѕРіРѕСЃС‚СЂРѕС‡РЅРѕРіРѕ РїРѕР»СЏ РІРІРѕРґР° (РґР»СЏ СЌР»РµРјРµРЅС‚РѕРІ textarea)
 	 *
 	 * @var string
 	 */
 	var $_textarea_height = '400px';
 
 	/**
-	 * Ширина маленького многострочного поля ввода
+	 * РЁРёСЂРёРЅР° РјР°Р»РµРЅСЊРєРѕРіРѕ РјРЅРѕРіРѕСЃС‚СЂРѕС‡РЅРѕРіРѕ РїРѕР»СЏ РІРІРѕРґР°
 	 *
 	 * @var string
 	 */
 	var $_textarea_width_small = '98%';
 
 	/**
-	 * Высота маленького многострочного поля ввода (для элементов textarea)
+	 * Р’С‹СЃРѕС‚Р° РјР°Р»РµРЅСЊРєРѕРіРѕ РјРЅРѕРіРѕСЃС‚СЂРѕС‡РЅРѕРіРѕ РїРѕР»СЏ РІРІРѕРґР° (РґР»СЏ СЌР»РµРјРµРЅС‚РѕРІ textarea)
 	 *
 	 * @var string
 	 */
 	var $_textarea_height_small = '200px';
 
 	/**
-	 * Максимальное количество символов в Заметке к Документу
+	 * РњР°РєСЃРёРјР°Р»СЊРЅРѕРµ РєРѕР»РёС‡РµСЃС‚РІРѕ СЃРёРјРІРѕР»РѕРІ РІ Р—Р°РјРµС‚РєРµ Рє Р”РѕРєСѓРјРµРЅС‚Сѓ
 	 *
 	 * @var int
 	 */
 	var $_max_remark_length = 5000;
 
 /**
- *	Внутренние методы класса
+ *	Р’РЅСѓС‚СЂРµРЅРЅРёРµ РјРµС‚РѕРґС‹ РєР»Р°СЃСЃР°
  */
 
 	/**
-	 * Метод, предназначенный для формирование метки времени,
-	 * которая будет определять начало периода показа списка Документов.
-	 * Т.е. с какого числа/времени начать вывод списка документов.
+	 * РњРµС‚РѕРґ, РїСЂРµРґРЅР°Р·РЅР°С‡РµРЅРЅС‹Р№ РґР»СЏ С„РѕСЂРјРёСЂРѕРІР°РЅРёРµ РјРµС‚РєРё РІСЂРµРјРµРЅРё,
+	 * РєРѕС‚РѕСЂР°СЏ Р±СѓРґРµС‚ РѕРїСЂРµРґРµР»СЏС‚СЊ РЅР°С‡Р°Р»Рѕ РїРµСЂРёРѕРґР° РїРѕРєР°Р·Р° СЃРїРёСЃРєР° Р”РѕРєСѓРјРµРЅС‚РѕРІ.
+	 * Рў.Рµ. СЃ РєР°РєРѕРіРѕ С‡РёСЃР»Р°/РІСЂРµРјРµРЅРё РЅР°С‡Р°С‚СЊ РІС‹РІРѕРґ СЃРїРёСЃРєР° РґРѕРєСѓРјРµРЅС‚РѕРІ.
 	 *
-	 * @return int	метка времени Unix
+	 * @return int	РјРµС‚РєР° РІСЂРµРјРµРЅРё Unix
 	 */
 	function _documentListStart()
 	{
@@ -83,11 +83,11 @@ class AVE_Document
 	}
 
 	/**
-	 * Метод, предназначенный для формирование метки времени,
-	 * которая будет определять окончание периода показа списка Документов.
-	 * Т.е. по какое число/время ограничить вывод списка документов.
+	 * РњРµС‚РѕРґ, РїСЂРµРґРЅР°Р·РЅР°С‡РµРЅРЅС‹Р№ РґР»СЏ С„РѕСЂРјРёСЂРѕРІР°РЅРёРµ РјРµС‚РєРё РІСЂРµРјРµРЅРё,
+	 * РєРѕС‚РѕСЂР°СЏ Р±СѓРґРµС‚ РѕРїСЂРµРґРµР»СЏС‚СЊ РѕРєРѕРЅС‡Р°РЅРёРµ РїРµСЂРёРѕРґР° РїРѕРєР°Р·Р° СЃРїРёСЃРєР° Р”РѕРєСѓРјРµРЅС‚РѕРІ.
+	 * Рў.Рµ. РїРѕ РєР°РєРѕРµ С‡РёСЃР»Рѕ/РІСЂРµРјСЏ РѕРіСЂР°РЅРёС‡РёС‚СЊ РІС‹РІРѕРґ СЃРїРёСЃРєР° РґРѕРєСѓРјРµРЅС‚РѕРІ.
 	 *
-	 * @return int	метка времени Unix
+	 * @return int	РјРµС‚РєР° РІСЂРµРјРµРЅРё Unix
 	 */
 	function _documentListEnd()
 	{
@@ -95,13 +95,13 @@ class AVE_Document
 	}
 
 	/**
-	 * Метод, предназначенный для формирование метки времени начала публикации Документа
+	 * РњРµС‚РѕРґ, РїСЂРµРґРЅР°Р·РЅР°С‡РµРЅРЅС‹Р№ РґР»СЏ С„РѕСЂРјРёСЂРѕРІР°РЅРёРµ РјРµС‚РєРё РІСЂРµРјРµРЅРё РЅР°С‡Р°Р»Р° РїСѓР±Р»РёРєР°С†РёРё Р”РѕРєСѓРјРµРЅС‚Р°
 	 *
-	 * @return int	метка времени Unix
+	 * @return int	РјРµС‚РєР° РІСЂРµРјРµРЅРё Unix
 	 */
-	function _documentStart()
+	function _documentStart($data=0)
 	{
-		$timestamp = 0;
+		$timestamp = $data;
 		if (!empty($_REQUEST['publishedDay']))
 		{
 			$timestamp = mktime(
@@ -118,13 +118,13 @@ class AVE_Document
 	}
 
 	/**
-	 * Метод, предназначенный для формирование метки времени окончания публикации Документа
+	 * РњРµС‚РѕРґ, РїСЂРµРґРЅР°Р·РЅР°С‡РµРЅРЅС‹Р№ РґР»СЏ С„РѕСЂРјРёСЂРѕРІР°РЅРёРµ РјРµС‚РєРё РІСЂРµРјРµРЅРё РѕРєРѕРЅС‡Р°РЅРёСЏ РїСѓР±Р»РёРєР°С†РёРё Р”РѕРєСѓРјРµРЅС‚Р°
 	 *
-	 * @return int	метка времени Unix
+	 * @return int	РјРµС‚РєР° РІСЂРµРјРµРЅРё Unix
 	 */
-	function _documentEnd()
+	function _documentEnd($data=0)
 	{
-		$timestamp = 0;
+		$timestamp = $data;
 		if (!empty($_REQUEST['expireDay']))
 		{
 			$timestamp = mktime(
@@ -140,16 +140,17 @@ class AVE_Document
 		return $timestamp;
 	}
 
+
 	/**
-	 * Метод, предназначенный для получения типа поля
-	 * (изображения, однострочное поле, многострочный текст и т.д.),
-	 * а также формирования вспомогательных элементов управления этим полем (например кнопка)
+	 * РњРµС‚РѕРґ, РїСЂРµРґРЅР°Р·РЅР°С‡РµРЅРЅС‹Р№ РґР»СЏ РїРѕР»СѓС‡РµРЅРёСЏ С‚РёРїР° РїРѕР»СЏ
+	 * (РёР·РѕР±СЂР°Р¶РµРЅРёСЏ, РѕРґРЅРѕСЃС‚СЂРѕС‡РЅРѕРµ РїРѕР»Рµ, РјРЅРѕРіРѕСЃС‚СЂРѕС‡РЅС‹Р№ С‚РµРєСЃС‚ Рё С‚.Рґ.),
+	 * Р° С‚Р°РєР¶Рµ С„РѕСЂРјРёСЂРѕРІР°РЅРёСЏ РІСЃРїРѕРјРѕРіР°С‚РµР»СЊРЅС‹С… СЌР»РµРјРµРЅС‚РѕРІ СѓРїСЂР°РІР»РµРЅРёСЏ СЌС‚РёРј РїРѕР»РµРј (РЅР°РїСЂРёРјРµСЂ РєРЅРѕРїРєР°)
 	 *
-	 * @param string $field_type	тип поля
-	 * @param string $field_value	содержимое поля
-	 * @param int    $field_id		идентификатор поля
-	 * @param string $dropdown		значения для поля типа "Выпадающий список"
-	 * @return string				HTML-код поля Документа
+	 * @param string $field_type	С‚РёРї РїРѕР»СЏ
+	 * @param string $field_value	СЃРѕРґРµСЂР¶РёРјРѕРµ РїРѕР»СЏ
+	 * @param int    $field_id		РёРґРµРЅС‚РёС„РёРєР°С‚РѕСЂ РїРѕР»СЏ
+	 * @param string $dropdown		Р·РЅР°С‡РµРЅРёСЏ РґР»СЏ РїРѕР»СЏ С‚РёРїР° "Р’С‹РїР°РґР°СЋС‰РёР№ СЃРїРёСЃРѕРє"
+	 * @return string				HTML-РєРѕРґ РїРѕР»СЏ Р”РѕРєСѓРјРµРЅС‚Р°
 	 */
 	function _documentFieldGet($field_type, $field_value, $field_id, $dropdown = '')
 	{
@@ -163,16 +164,17 @@ class AVE_Document
 		return $field;
 	}
 
-/**
- *	Внутренние методы
- */
 
+/**
+ *	Р’РЅСѓС‚СЂРµРЅРЅРёРµ РјРµС‚РѕРґС‹
+ */
+ 
 	/**
-	 *	Управление Документами
+	 *	РЈРїСЂР°РІР»РµРЅРёРµ Р”РѕРєСѓРјРµРЅС‚Р°РјРё
 	 */
 
 	/**
-	 * Метод, предназначенный для получения списка документов в Панели управления
+	 * РњРµС‚РѕРґ, РїСЂРµРґРЅР°Р·РЅР°С‡РµРЅРЅС‹Р№ РґР»СЏ РїРѕР»СѓС‡РµРЅРёСЏ СЃРїРёСЃРєР° РґРѕРєСѓРјРµРЅС‚РѕРІ РІ РџР°РЅРµР»Рё СѓРїСЂР°РІР»РµРЅРёСЏ
 	 *
 	 */
 	function documentListGet()
@@ -189,13 +191,13 @@ class AVE_Document
 		$ex_docstatus = '';
 		$navi_docstatus = '';
 
-		// Если в запросе пришел параметр на поиск документа по названию
+		// Р•СЃР»Рё РІ Р·Р°РїСЂРѕСЃРµ РїСЂРёС€РµР» РїР°СЂР°РјРµС‚СЂ РЅР° РїРѕРёСЃРє РґРѕРєСѓРјРµРЅС‚Р° РїРѕ РЅР°Р·РІР°РЅРёСЋ
 		if (!empty($_REQUEST['QueryTitel']))
 		{
 			$request = $_REQUEST['QueryTitel'];
-			$kette = explode(' ', $request);  // Получаем список слов, разделяя по пробелу (если их несколько)
+			$kette = explode(' ', $request);  // РџРѕР»СѓС‡Р°РµРј СЃРїРёСЃРѕРє СЃР»РѕРІ, СЂР°Р·РґРµР»СЏСЏ РїРѕ РїСЂРѕР±РµР»Сѓ (РµСЃР»Рё РёС… РЅРµСЃРєРѕР»СЊРєРѕ)
 
-			// Циклически обрабатываем слова, формируя условия, которые будут применены в запросе к БД
+			// Р¦РёРєР»РёС‡РµСЃРєРё РѕР±СЂР°Р±Р°С‚С‹РІР°РµРј СЃР»РѕРІР°, С„РѕСЂРјРёСЂСѓСЏ СѓСЃР»РѕРІРёСЏ, РєРѕС‚РѕСЂС‹Рµ Р±СѓРґСѓС‚ РїСЂРёРјРµРЅРµРЅС‹ РІ Р·Р°РїСЂРѕСЃРµ Рє Р‘Р”
 			foreach ($kette as $suche)
 			{
 				$und = @explode(' +', $suche);
@@ -225,23 +227,23 @@ class AVE_Document
 			$nav_titel = '&QueryTitel=' . urlencode($request);
 		}
 
-		// Если в запросе пришел id определенной рубрики
+		// Р•СЃР»Рё РІ Р·Р°РїСЂРѕСЃРµ РїСЂРёС€РµР» id РѕРїСЂРµРґРµР»РµРЅРЅРѕР№ СЂСѓР±СЂРёРєРё
 		if (isset($_REQUEST['rubric_id']) && $_REQUEST['rubric_id'] != 'all')
 		{
-			// Формируем условия, которые будут применены в запросе к БД
+			// Р¤РѕСЂРјРёСЂСѓРµРј СѓСЃР»РѕРІРёСЏ, РєРѕС‚РѕСЂС‹Рµ Р±СѓРґСѓС‚ РїСЂРёРјРµРЅРµРЅС‹ РІ Р·Р°РїСЂРѕСЃРµ Рє Р‘Р”
 			$ex_rub = " AND rubric_id = '" . $_REQUEST['rubric_id'] . "'";
 
-			// формируем условия, которые будут применены в ссылках
+			// С„РѕСЂРјРёСЂСѓРµРј СѓСЃР»РѕРІРёСЏ, РєРѕС‚РѕСЂС‹Рµ Р±СѓРґСѓС‚ РїСЂРёРјРµРЅРµРЅС‹ РІ СЃСЃС‹Р»РєР°С…
 			$nav_rub = '&rubric_id=' . (int)$_REQUEST['rubric_id'];
 		}
 
-		// Если в запросе пришел параметр на фильтрацию документов по определенному временному интервалу
+		// Р•СЃР»Рё РІ Р·Р°РїСЂРѕСЃРµ РїСЂРёС€РµР» РїР°СЂР°РјРµС‚СЂ РЅР° С„РёР»СЊС‚СЂР°С†РёСЋ РґРѕРєСѓРјРµРЅС‚РѕРІ РїРѕ РѕРїСЂРµРґРµР»РµРЅРЅРѕРјСѓ РІСЂРµРјРµРЅРЅРѕРјСѓ РёРЅС‚РµСЂРІР°Р»Сѓ
 		if (!empty($_REQUEST['TimeSelect']))
 		{
-			// Формируем условия, которые будут применены в запросе к БД
+			// Р¤РѕСЂРјРёСЂСѓРµРј СѓСЃР»РѕРІРёСЏ, РєРѕС‚РѕСЂС‹Рµ Р±СѓРґСѓС‚ РїСЂРёРјРµРЅРµРЅС‹ РІ Р·Р°РїСЂРѕСЃРµ Рє Р‘Р”
 			$ex_zeit = 'AND ((document_published BETWEEN ' . $this->_documentListStart() . ' AND ' . $this->_documentListEnd() . ') OR document_published = 0)';
 
-			// формируем условия, которые будут применены в ссылках
+			// С„РѕСЂРјРёСЂСѓРµРј СѓСЃР»РѕРІРёСЏ, РєРѕС‚РѕСЂС‹Рµ Р±СѓРґСѓС‚ РїСЂРёРјРµРЅРµРЅС‹ РІ СЃСЃС‹Р»РєР°С…
 			$nav_zeit = '&TimeSelect=1'
 				. '&publishedMonth=' . (int)$_REQUEST['publishedMonth']
 				. '&publishedDay='   . (int)$_REQUEST['publishedDay']
@@ -251,31 +253,31 @@ class AVE_Document
 				. '&expireYear='     . (int)$_REQUEST['expireYear'];
 		}
 
-		// Если в запросе пришел параметр на фильтрацию документов по статусу
+		// Р•СЃР»Рё РІ Р·Р°РїСЂРѕСЃРµ РїСЂРёС€РµР» РїР°СЂР°РјРµС‚СЂ РЅР° С„РёР»СЊС‚СЂР°С†РёСЋ РґРѕРєСѓРјРµРЅС‚РѕРІ РїРѕ СЃС‚Р°С‚СѓСЃСѓ
 		if (!empty($_REQUEST['status']))
 		{
-			// Определяем, какой статус запрашивается и формируем условия, которые будут применены в запросе к БД,
-			// а также в ссылках, для дальнейшей навигации
+			// РћРїСЂРµРґРµР»СЏРµРј, РєР°РєРѕР№ СЃС‚Р°С‚СѓСЃ Р·Р°РїСЂР°С€РёРІР°РµС‚СЃСЏ Рё С„РѕСЂРјРёСЂСѓРµРј СѓСЃР»РѕРІРёСЏ, РєРѕС‚РѕСЂС‹Рµ Р±СѓРґСѓС‚ РїСЂРёРјРµРЅРµРЅС‹ РІ Р·Р°РїСЂРѕСЃРµ Рє Р‘Р”,
+			// Р° С‚Р°РєР¶Рµ РІ СЃСЃС‹Р»РєР°С…, РґР»СЏ РґР°Р»СЊРЅРµР№С€РµР№ РЅР°РІРёРіР°С†РёРё
 			switch ($_REQUEST['status'])
 			{
-				// С любым статусом
+				// РЎ Р»СЋР±С‹Рј СЃС‚Р°С‚СѓСЃРѕРј
 				case '':
 				case 'All':
 					break;
 
-				// Только опубликованные
+				// РўРѕР»СЊРєРѕ РѕРїСѓР±Р»РёРєРѕРІР°РЅРЅС‹Рµ
 				case 'Opened':
 					$ex_docstatus = "AND document_status = '1'";
 					$navi_docstatus = '&status=Opened';
 					break;
 
-				// Только неопубликованные
+				// РўРѕР»СЊРєРѕ РЅРµРѕРїСѓР±Р»РёРєРѕРІР°РЅРЅС‹Рµ
 				case 'Closed':
 					$ex_docstatus = "AND document_status = '0'";
 					$navi_docstatus = '&status=Closed';
 					break;
 
-				// Помеченные на удаление
+				// РџРѕРјРµС‡РµРЅРЅС‹Рµ РЅР° СѓРґР°Р»РµРЅРёРµ
 				case 'Deleted':
 					$ex_docstatus = "AND document_deleted = '1'";
 					$navi_docstatus = '&status=Deleted';
@@ -283,11 +285,11 @@ class AVE_Document
 			}
 		}
 
-		// Определяем группу пользоваеля и id документа, если он присутствует в запросе
+		// РћРїСЂРµРґРµР»СЏРµРј РіСЂСѓРїРїСѓ РїРѕР»СЊР·РѕРІР°РµР»СЏ Рё id РґРѕРєСѓРјРµРЅС‚Р°, РµСЃР»Рё РѕРЅ РїСЂРёСЃСѓС‚СЃС‚РІСѓРµС‚ РІ Р·Р°РїСЂРѕСЃРµ
 		$ex_Geloescht = (UGROUP != 1) ? "AND document_deleted != '1'" : '' ;
 		$w_id = !empty($_REQUEST['doc_id']) ? " AND Id = '" . $_REQUEST['doc_id'] . "'" : '';
 
-		// Выполняем запрос к БД на получение количества документов соответствующих вышеопределенным условиям
+		// Р’С‹РїРѕР»РЅСЏРµРј Р·Р°РїСЂРѕСЃ Рє Р‘Р” РЅР° РїРѕР»СѓС‡РµРЅРёРµ РєРѕР»РёС‡РµСЃС‚РІР° РґРѕРєСѓРјРµРЅС‚РѕРІ СЃРѕРѕС‚РІРµС‚СЃС‚РІСѓСЋС‰РёС… РІС‹С€РµРѕРїСЂРµРґРµР»РµРЅРЅС‹Рј СѓСЃР»РѕРІРёСЏРј
 		$num = $AVE_DB->Query("
 			SELECT COUNT(*)
 			FROM " . PREFIX . "_documents
@@ -300,136 +302,136 @@ class AVE_Document
 			" . $w_id . "
 		")->GetCell();
 
-		// Определяем лимит документов, который будет показан на 1 странице
+		// РћРїСЂРµРґРµР»СЏРµРј Р»РёРјРёС‚ РґРѕРєСѓРјРµРЅС‚РѕРІ, РєРѕС‚РѕСЂС‹Р№ Р±СѓРґРµС‚ РїРѕРєР°Р·Р°РЅ РЅР° 1 СЃС‚СЂР°РЅРёС†Рµ
 		$limit = (isset($_REQUEST['Datalimit']) && is_numeric($_REQUEST['Datalimit']) && $_REQUEST['Datalimit'] > 0)
 			? $_REQUEST['Datalimit']
 			: $limit = $this->_limit;
 
 		$nav_limit = '&Datalimit=' . $limit;
 
-		// Определяем количество страниц, которые будут сформированы на основании количества полученных документов
+		// РћРїСЂРµРґРµР»СЏРµРј РєРѕР»РёС‡РµСЃС‚РІРѕ СЃС‚СЂР°РЅРёС†, РєРѕС‚РѕСЂС‹Рµ Р±СѓРґСѓС‚ СЃС„РѕСЂРјРёСЂРѕРІР°РЅС‹ РЅР° РѕСЃРЅРѕРІР°РЅРёРё РєРѕР»РёС‡РµСЃС‚РІР° РїРѕР»СѓС‡РµРЅРЅС‹С… РґРѕРєСѓРјРµРЅС‚РѕРІ
 		$seiten = ceil($num / $limit);
 		$start = get_current_page() * $limit - $limit;
 
 		$db_sort   = 'ORDER BY Id DESC';
 		$navi_sort = '&sort=id_desc';
 
-		// Если в запросе используется параметр сортировки
+		// Р•СЃР»Рё РІ Р·Р°РїСЂРѕСЃРµ РёСЃРїРѕР»СЊР·СѓРµС‚СЃСЏ РїР°СЂР°РјРµС‚СЂ СЃРѕСЂС‚РёСЂРѕРІРєРё
 		if (!empty($_REQUEST['sort']))
 		{
-			// Определяем, по какому параметру происходит сортировка
+			// РћРїСЂРµРґРµР»СЏРµРј, РїРѕ РєР°РєРѕРјСѓ РїР°СЂР°РјРµС‚СЂСѓ РїСЂРѕРёСЃС…РѕРґРёС‚ СЃРѕСЂС‚РёСЂРѕРІРєР°
 			switch ($_REQUEST['sort'])
 			{
-				// По id документа, по возрастанию
+				// РџРѕ id РґРѕРєСѓРјРµРЅС‚Р°, РїРѕ РІРѕР·СЂР°СЃС‚Р°РЅРёСЋ
 				case 'id' :
 					$db_sort   = 'ORDER BY Id ASC';
 					$navi_sort = '&sort=id';
 					break;
 
-				// По id документа, по убыванию
+				// РџРѕ id РґРѕРєСѓРјРµРЅС‚Р°, РїРѕ СѓР±С‹РІР°РЅРёСЋ
 				case 'id_desc' :
 					$db_sort   = 'ORDER BY Id DESC';
 					$navi_sort = '&sort=id_desc';
 					break;
 
-				// По названию документа, в алфавитном порядке
+				// РџРѕ РЅР°Р·РІР°РЅРёСЋ РґРѕРєСѓРјРµРЅС‚Р°, РІ Р°Р»С„Р°РІРёС‚РЅРѕРј РїРѕСЂСЏРґРєРµ
 				case 'title' :
 					$db_sort   = 'ORDER BY document_title ASC';
 					$navi_sort = '&sort=title';
 					break;
 
-				// По названию документа, в обратном алфавитном порядке
+				// РџРѕ РЅР°Р·РІР°РЅРёСЋ РґРѕРєСѓРјРµРЅС‚Р°, РІ РѕР±СЂР°С‚РЅРѕРј Р°Р»С„Р°РІРёС‚РЅРѕРј РїРѕСЂСЏРґРєРµ
 				case 'title_desc' :
 					$db_sort   = 'ORDER BY document_title DESC';
 					$navi_sort = '&sort=title_desc';
 					break;
 
-				// По url-адресу, в алфавитном порядке
+				// РџРѕ url-Р°РґСЂРµСЃСѓ, РІ Р°Р»С„Р°РІРёС‚РЅРѕРј РїРѕСЂСЏРґРєРµ
 				case 'alias' :
 					$db_sort   = 'ORDER BY document_alias ASC';
 					$navi_sort = '&sort=alias';
 					break;
 
-				// По url-адресу, в обратном алфавитном порядке
+				// РџРѕ url-Р°РґСЂРµСЃСѓ, РІ РѕР±СЂР°С‚РЅРѕРј Р°Р»С„Р°РІРёС‚РЅРѕРј РїРѕСЂСЏРґРєРµ
 				case 'alias_desc' :
 					$db_sort   = 'ORDER BY document_alias DESC';
 					$navi_sort = '&sort=alias_desc';
 					break;
 
-				// По id рубрики, по возрастанию
+				// РџРѕ id СЂСѓР±СЂРёРєРё, РїРѕ РІРѕР·СЂР°СЃС‚Р°РЅРёСЋ
 				case 'rubric' :
 					$db_sort   = 'ORDER BY rubric_id ASC';
 					$navi_sort = '&sort=rubric';
 					break;
 
-				// По id рубрики, по убыванию
+				// РџРѕ id СЂСѓР±СЂРёРєРё, РїРѕ СѓР±С‹РІР°РЅРёСЋ
 				case 'rubric_desc' :
 					$db_sort   = 'ORDER BY rubric_id DESC';
 					$navi_sort = '&sort=rubric_desc';
 					break;
 
-				// По дате публикации, по возрастанию
+				// РџРѕ РґР°С‚Рµ РїСѓР±Р»РёРєР°С†РёРё, РїРѕ РІРѕР·СЂР°СЃС‚Р°РЅРёСЋ
 				case 'published' :
 					$db_sort   = 'ORDER BY document_published ASC';
 					$navi_sort = '&sort=published';
 					break;
 
-				// По дате публикации, по убыванию
+				// РџРѕ РґР°С‚Рµ РїСѓР±Р»РёРєР°С†РёРё, РїРѕ СѓР±С‹РІР°РЅРёСЋ
 				case 'published_desc' :
 					$db_sort   = 'ORDER BY document_published DESC';
 					$navi_sort = '&sort=published_desc';
 					break;
 
-				// По количеству просмотров, по возрастанию
+				// РџРѕ РєРѕР»РёС‡РµСЃС‚РІСѓ РїСЂРѕСЃРјРѕС‚СЂРѕРІ, РїРѕ РІРѕР·СЂР°СЃС‚Р°РЅРёСЋ
 				case 'view' :
 					$db_sort   = 'ORDER BY document_count_view ASC';
 					$navi_sort = '&sort=view';
 					break;
 
-				// По количеству просмотров, по убыванию
+				// РџРѕ РєРѕР»РёС‡РµСЃС‚РІСѓ РїСЂРѕСЃРјРѕС‚СЂРѕРІ, РїРѕ СѓР±С‹РІР°РЅРёСЋ
 				case 'view_desc' :
 					$db_sort   = 'ORDER BY document_count_view DESC';
 					$navi_sort = '&sort=view_desc';
 					break;
 
-				// По количеству печати документа, по возрастанию
+				// РџРѕ РєРѕР»РёС‡РµСЃС‚РІСѓ РїРµС‡Р°С‚Рё РґРѕРєСѓРјРµРЅС‚Р°, РїРѕ РІРѕР·СЂР°СЃС‚Р°РЅРёСЋ
 				case 'print' :
 					$db_sort   = 'ORDER BY document_count_print ASC';
 					$navi_sort = '&sort=print';
 					break;
 
-				// По количеству печати документа, по убыванию
+				// РџРѕ РєРѕР»РёС‡РµСЃС‚РІСѓ РїРµС‡Р°С‚Рё РґРѕРєСѓРјРµРЅС‚Р°, РїРѕ СѓР±С‹РІР°РЅРёСЋ
 				case 'print_desc' :
 					$db_sort   = 'ORDER BY document_count_print DESC';
 					$navi_sort = '&sort=print_desc';
 					break;
 
-				// По автору, по алфавитному возрастанию
+				// РџРѕ Р°РІС‚РѕСЂСѓ, РїРѕ Р°Р»С„Р°РІРёС‚РЅРѕРјСѓ РІРѕР·СЂР°СЃС‚Р°РЅРёСЋ
 				case 'author' :
 					$db_sort   = 'ORDER BY document_author_id ASC';
 					$navi_sort = '&sort=author';
 					break;
 
-				// По автору, по алфавитному убыванию
+				// РџРѕ Р°РІС‚РѕСЂСѓ, РїРѕ Р°Р»С„Р°РІРёС‚РЅРѕРјСѓ СѓР±С‹РІР°РЅРёСЋ
 				case 'author_desc' :
 					$db_sort   = 'ORDER BY document_author_id DESC';
 					$navi_sort = '&sort=author_desc';
 					break;
 
-				// По дате последнего редактирования, по возрастанию
+				// РџРѕ РґР°С‚Рµ РїРѕСЃР»РµРґРЅРµРіРѕ СЂРµРґР°РєС‚РёСЂРѕРІР°РЅРёСЏ, РїРѕ РІРѕР·СЂР°СЃС‚Р°РЅРёСЋ
 				case 'changed':
 					$db_sort   = 'ORDER BY document_changed ASC';
 					$navi_sort = '&sort=changed';
 					break;
 
-				// По дате последнего редактирования, по убыванию
+				// РџРѕ РґР°С‚Рµ РїРѕСЃР»РµРґРЅРµРіРѕ СЂРµРґР°РєС‚РёСЂРѕРІР°РЅРёСЏ, РїРѕ СѓР±С‹РІР°РЅРёСЋ
 				case 'changed_desc':
 					$db_sort   = 'ORDER BY document_changed DESC';
 					$navi_sort = '&sort=changed_desc';
 					break;
 
-				// По умолчанию, по дате последнего редактирования по убыванию.
-				// Последний отредактированный документ, будет первым в списке.
+				// РџРѕ СѓРјРѕР»С‡Р°РЅРёСЋ, РїРѕ РґР°С‚Рµ РїРѕСЃР»РµРґРЅРµРіРѕ СЂРµРґР°РєС‚РёСЂРѕРІР°РЅРёСЏ РїРѕ СѓР±С‹РІР°РЅРёСЋ.
+				// РџРѕСЃР»РµРґРЅРёР№ РѕС‚СЂРµРґР°РєС‚РёСЂРѕРІР°РЅРЅС‹Р№ РґРѕРєСѓРјРµРЅС‚, Р±СѓРґРµС‚ РїРµСЂРІС‹Рј РІ СЃРїРёСЃРєРµ.
 				default :
 					$db_sort   = 'ORDER BY document_changed DESC';
 					$navi_sort = '&sort=changed_desc';
@@ -439,9 +441,9 @@ class AVE_Document
 
 		$docs = array();
 
-		// Выполняем запрос к БД на получение уже не количества документов, отвечающих условиям, а уже на
-		// получение всех данных, с учетом всех условий, а также типа сортировки и лимита для вывода на
-		// одну страницу.
+		// Р’С‹РїРѕР»РЅСЏРµРј Р·Р°РїСЂРѕСЃ Рє Р‘Р” РЅР° РїРѕР»СѓС‡РµРЅРёРµ СѓР¶Рµ РЅРµ РєРѕР»РёС‡РµСЃС‚РІР° РґРѕРєСѓРјРµРЅС‚РѕРІ, РѕС‚РІРµС‡Р°СЋС‰РёС… СѓСЃР»РѕРІРёСЏРј, Р° СѓР¶Рµ РЅР°
+		// РїРѕР»СѓС‡РµРЅРёРµ РІСЃРµС… РґР°РЅРЅС‹С…, СЃ СѓС‡РµС‚РѕРј РІСЃРµС… СѓСЃР»РѕРІРёР№, Р° С‚Р°РєР¶Рµ С‚РёРїР° СЃРѕСЂС‚РёСЂРѕРІРєРё Рё Р»РёРјРёС‚Р° РґР»СЏ РІС‹РІРѕРґР° РЅР°
+		// РѕРґРЅСѓ СЃС‚СЂР°РЅРёС†Сѓ.
 		$sql = $AVE_DB->Query("
 			SELECT *
 			FROM " . PREFIX . "_documents
@@ -456,10 +458,10 @@ class AVE_Document
 			LIMIT " . $start . "," . $limit . "
 		");
 
-		// Циклически обрабатываем полученные данные с целью приведения некоторых из них к удобочитаемому виду
+		// Р¦РёРєР»РёС‡РµСЃРєРё РѕР±СЂР°Р±Р°С‚С‹РІР°РµРј РїРѕР»СѓС‡РµРЅРЅС‹Рµ РґР°РЅРЅС‹Рµ СЃ С†РµР»СЊСЋ РїСЂРёРІРµРґРµРЅРёСЏ РЅРµРєРѕС‚РѕСЂС‹С… РёР· РЅРёС… Рє СѓРґРѕР±РѕС‡РёС‚Р°РµРјРѕРјСѓ РІРёРґСѓ
 		while ($row = $sql->FetchRow())
 		{
-			// Определяем количество комментариев, оставленных для данного документа
+			// РћРїСЂРµРґРµР»СЏРµРј РєРѕР»РёС‡РµСЃС‚РІРѕ РєРѕРјРјРµРЅС‚Р°СЂРёРµРІ, РѕСЃС‚Р°РІР»РµРЅРЅС‹С… РґР»СЏ РґР°РЅРЅРѕРіРѕ РґРѕРєСѓРјРµРЅС‚Р°
 			$row->ist_remark = $AVE_DB->Query("
 				SELECT COUNT(*)
 				FROM " . PREFIX . "_document_remarks
@@ -468,17 +470,17 @@ class AVE_Document
 
 			$this->documentPermissionFetch($row->rubric_id);
 
-			// Получаем название рубрики по ее Id
+			// РџРѕР»СѓС‡Р°РµРј РЅР°Р·РІР°РЅРёРµ СЂСѓР±СЂРёРєРё РїРѕ РµРµ Id
 			$row->RubName         = $AVE_Rubric->rubricNameByIdGet($row->rubric_id)->rubric_title;
-			$row->document_author = get_username_by_id($row->document_author_id); // Получаем имя пользователя (Автора)
+			$row->document_author = get_username_by_id($row->document_author_id); // РџРѕР»СѓС‡Р°РµРј РёРјСЏ РїРѕР»СЊР·РѕРІР°С‚РµР»СЏ (РђРІС‚РѕСЂР°)
 			$row->cantEdit        = 0;
 			$row->canDelete       = 0;
 			$row->canEndDel       = 0;
 			$row->canOpenClose    = 0;
 
-			// разрешаем редактирование и удаление
-			// если автор имеет право изменять свои документы в рубрике
-			// или пользователю разрешено изменять все документы в рубрике
+			// СЂР°Р·СЂРµС€Р°РµРј СЂРµРґР°РєС‚РёСЂРѕРІР°РЅРёРµ Рё СѓРґР°Р»РµРЅРёРµ
+			// РµСЃР»Рё Р°РІС‚РѕСЂ РёРјРµРµС‚ РїСЂР°РІРѕ РёР·РјРµРЅСЏС‚СЊ СЃРІРѕРё РґРѕРєСѓРјРµРЅС‚С‹ РІ СЂСѓР±СЂРёРєРµ
+			// РёР»Рё РїРѕР»СЊР·РѕРІР°С‚РµР»СЋ СЂР°Р·СЂРµС€РµРЅРѕ РёР·РјРµРЅСЏС‚СЊ РІСЃРµ РґРѕРєСѓРјРµРЅС‚С‹ РІ СЂСѓР±СЂРёРєРµ
 			if ( ($row->document_author_id == @$_SESSION['user_id']
 				&& isset($_SESSION[$row->rubric_id . '_editown']) && @$_SESSION[$row->rubric_id . '_editown'] == 1)
 				|| (isset($_SESSION[$row->rubric_id . '_editall']) && $_SESSION[$row->rubric_id . '_editall'] == 1) )
@@ -486,19 +488,19 @@ class AVE_Document
 					$row->cantEdit  = 1;
 					$row->canDelete = 1;
 			}
-			// запрещаем редактирование главной страницы и страницу ошибки 404 если требуется одобрение Администратора
+			// Р·Р°РїСЂРµС‰Р°РµРј СЂРµРґР°РєС‚РёСЂРѕРІР°РЅРёРµ РіР»Р°РІРЅРѕР№ СЃС‚СЂР°РЅРёС†С‹ Рё СЃС‚СЂР°РЅРёС†Сѓ РѕС€РёР±РєРё 404 РµСЃР»Рё С‚СЂРµР±СѓРµС‚СЃСЏ РѕРґРѕР±СЂРµРЅРёРµ РђРґРјРёРЅРёСЃС‚СЂР°С‚РѕСЂР°
 			if ( ($row->Id == 1 || $row->Id == PAGE_NOT_FOUND_ID)
 				&& isset($_SESSION[$row->rubric_id . '_newnow']) && @$_SESSION[$row->rubric_id . '_newnow'] != 1)
 			{
 				$row->cantEdit = 0;
 			}
-			// разрешаем автору блокировать и разблокировать свои документы если не требуется одобрение Администратора
+			// СЂР°Р·СЂРµС€Р°РµРј Р°РІС‚РѕСЂСѓ Р±Р»РѕРєРёСЂРѕРІР°С‚СЊ Рё СЂР°Р·Р±Р»РѕРєРёСЂРѕРІР°С‚СЊ СЃРІРѕРё РґРѕРєСѓРјРµРЅС‚С‹ РµСЃР»Рё РЅРµ С‚СЂРµР±СѓРµС‚СЃСЏ РѕРґРѕР±СЂРµРЅРёРµ РђРґРјРёРЅРёСЃС‚СЂР°С‚РѕСЂР°
 			if ($row->document_author_id == @$_SESSION['user_id']
 				&& isset($_SESSION[$row->rubric_id . '_newnow']) && @$_SESSION[$row->rubric_id . '_newnow'] == 1)
 			{
 				$row->canOpenClose = 1;
 			}
-			// разрешаем всё, если пользователь принадлежит группе Администраторов или имеет все права на рубрику
+			// СЂР°Р·СЂРµС€Р°РµРј РІСЃС‘, РµСЃР»Рё РїРѕР»СЊР·РѕРІР°С‚РµР»СЊ РїСЂРёРЅР°РґР»РµР¶РёС‚ РіСЂСѓРїРїРµ РђРґРјРёРЅРёСЃС‚СЂР°С‚РѕСЂРѕРІ РёР»Рё РёРјРµРµС‚ РІСЃРµ РїСЂР°РІР° РЅР° СЂСѓР±СЂРёРєСѓ
 			if (UGROUP == 1 || @$_SESSION[$row->rubric_id . '_alles'] == 1)
 			{
 				$row->cantEdit     = 1;
@@ -506,7 +508,7 @@ class AVE_Document
 				$row->canEndDel    = 1;
 				$row->canOpenClose = 1;
 			}
-			// Запрещаем удаление Главной страницы и страницы с 404 ошибкой
+			// Р—Р°РїСЂРµС‰Р°РµРј СѓРґР°Р»РµРЅРёРµ Р“Р»Р°РІРЅРѕР№ СЃС‚СЂР°РЅРёС†С‹ Рё СЃС‚СЂР°РЅРёС†С‹ СЃ 404 РѕС€РёР±РєРѕР№
 			if ($row->Id == 1 || $row->Id == PAGE_NOT_FOUND_ID)
 			{
 				$row->canDelete = 0;
@@ -516,7 +518,7 @@ class AVE_Document
 			array_push($docs, $row);
 		}
 
-		// Передаем полученные данные в шаблон для вывода
+		// РџРµСЂРµРґР°РµРј РїРѕР»СѓС‡РµРЅРЅС‹Рµ РґР°РЅРЅС‹Рµ РІ С€Р°Р±Р»РѕРЅ РґР»СЏ РІС‹РІРѕРґР°
 		$AVE_Template->assign('docs', $docs);
 
 		$link  = "index.php?do=docs";
@@ -536,7 +538,7 @@ class AVE_Document
 
 		$AVE_Template->assign('link', $link);
 
-		// Если количество отобранных документов превышает лимит на одной странице - формируем постраничную навигацию
+		// Р•СЃР»Рё РєРѕР»РёС‡РµСЃС‚РІРѕ РѕС‚РѕР±СЂР°РЅРЅС‹С… РґРѕРєСѓРјРµРЅС‚РѕРІ РїСЂРµРІС‹С€Р°РµС‚ Р»РёРјРёС‚ РЅР° РѕРґРЅРѕР№ СЃС‚СЂР°РЅРёС†Рµ - С„РѕСЂРјРёСЂСѓРµРј РїРѕСЃС‚СЂР°РЅРёС‡РЅСѓСЋ РЅР°РІРёРіР°С†РёСЋ
 		if ($num > $limit)
 		{
 			$page_nav = get_pagination($seiten, 'page', ' <a class="pnav" href="' . $link . $navi_sort . '&page={s}&cp=' . SESSION . '">{t}</a> ');
@@ -547,139 +549,184 @@ class AVE_Document
 		$AVE_Template->assign('DEF_DOC_END_YEAR', mktime(0, 0, 0, date("m"), date("d"), date("Y") + 10));
 	}
 
+
 	/**
-	 * Метод, предназначенный для добавления нового документа в БД
+	 * РњРµС‚РѕРґ, РїСЂРµРґРЅР°Р·РЅР°С‡РµРЅРЅС‹Р№ РґР»СЏ СЃРѕС…СЂР°РЅРµРЅРёСЏ РґРѕРєСѓРјРµРЅС‚Р° РІ Р‘Р”
 	 *
-	 * @param int $rubric_id	идентификатор Рубрики
+	 * @param int $rubric_id	РёРґРµРЅС‚РёС„РёРєР°С‚РѕСЂ Р СѓР±СЂРёРєРё
+	 * @param int $document_id	РёРґРµРЅС‚РёС„РёРєР°С‚РѕСЂ Р”РѕРєСѓРјРµРЅС‚Р°
+	 * @param array $data			Р”РѕРєСѓРјРµРЅС‚ РІ РјР°СЃСЃРёРІРµ СЃС‚СЂСѓРєС‚СѓСЂР° - С…РёС‚СЂР°СЏ
+	 * @param bool $update_non_exists_fields	РР·РјРµРЅСЏС‚СЊ РїРѕР»СЏ РЅР° РїСѓСЃС‚С‹Рµ Р·РЅР°С‡РµРЅРёСЏ Сѓ РЅРµ РїРµСЂРµРґР°РЅРЅС‹С… РїРѕР»РµР№ РёР»Рё РЅРµ РЅР°РґРѕ
+	 * РІРѕС…РІСЂР°Р¶Р°РµС‚ РЅРѕРјРµСЂ РґРѕРєСѓРјРµРЅС‚Р° РµСЃР»Рё РІСЃРµ СѓРґР°С‡РЅРѕ Рё false РµСЃР»Рё РІСЃРµ РїР»РѕС…Рѕ
 	 */
-	function documentNew($rubric_id)
-	{
-		global $AVE_DB, $AVE_Rubric, $AVE_Template;
 
-		$this->documentPermissionFetch($rubric_id);
+	function documentSave($rubric_id,$document_id,$data,$update_non_exists_fields=false){
+		global $AVE_DB;
+		//РџСЂРѕРІРµСЂСЏРµРј РІС…РѕРґСЏС‰РёРµ РґР°РЅРЅС‹Рµ
+		$rubric_id=(int)$rubric_id;
+		$document_id=(int)$document_id;
+		if(!isset($data))return false;
+		if(!isset($data['feld'])) return false;
+		//РѕРїСЂРµРґРµР»СЏРµРј С‚РёРї РѕРїСЂРµР°С†РёРё
+		$oper='INSERT';
 
-		// Если пользователь имеет права на добавление документов в указанную рубрику, тогда
-		if ( (isset($_SESSION[$rubric_id . '_newnow'])  && $_SESSION[$rubric_id . '_newnow'] == 1)
+		if($document_id>0)$oper='UPDATE';
+		// Р•СЃР»Рё РїРѕР»СЊР·РѕРІР°С‚РµР»СЊ РёРјРµРµС‚ РїСЂР°РІР° РЅР° РґРѕР±Р°РІР»РµРЅРёРµ РґРѕРєСѓРјРµРЅС‚РѕРІ РІ СѓРєР°Р·Р°РЅРЅСѓСЋ СЂСѓР±СЂРёРєСѓ, С‚РѕРіРґР°
+		if ($oper=='INSERT' && !( (isset($_SESSION[$rubric_id . '_newnow'])  && $_SESSION[$rubric_id . '_newnow'] == 1)
 			|| (isset($_SESSION[$rubric_id . '_new'])   && $_SESSION[$rubric_id . '_new']    == 1)
 			|| (isset($_SESSION[$rubric_id . '_alles']) && $_SESSION[$rubric_id . '_alles']  == 1)
-			|| (defined('UGROUP') && UGROUP == 1) )
-		{
-			// Определяем вид действия, переданный в параметре sub
-			switch ($_REQUEST['sub'])
+			|| (defined('UGROUP') && UGROUP == 1) )) return false;
+		
+		if($oper=='UPDATE'){
+			// Р’С‹РїРѕР»РЅСЏРµРј Р·Р°РїСЂРѕСЃ Рє Р‘Р” РЅР° РїРѕР»СѓС‡РµРЅРёРµ Р°РІС‚РѕСЂР° РґРѕРєСѓРјРµРЅС‚Р° Рё id Р СѓР±СЂРёРєРё
+				$row = $AVE_DB->Query("
+					SELECT
+						rubric_id,
+						document_author_id
+					FROM " . PREFIX . "_documents
+					WHERE Id = '" . $document_id . "'
+				")->FetchRow();
+				$rubric_id=$row->rubric_id;
+				$row->cantEdit = 0;
+
+				// РћРїСЂРµРґРµР»СЏРµРј РїСЂР°РІР° РґРѕСЃС‚СѓРїР° Рє РґРѕРєСѓРјРµРЅС‚Р°Рј РІ РґР°РЅРЅРѕР№ СЂСѓР±СЂРёРєРё
+				$this->documentPermissionFetch($row->rubric_id);
+
+				// СЂР°Р·СЂРµС€Р°РµРј СЂРµРґР°РєС‚РёСЂРѕРІР°РЅРёРµ
+				// РµСЃР»Рё Р°РІС‚РѕСЂ РёРјРµРµС‚ РїСЂР°РІРѕ РёР·РјРµРЅСЏС‚СЊ СЃРІРѕРё РґРѕРєСѓРјРµРЅС‚С‹ РІ СЂСѓР±СЂРёРєРµ
+				// РёР»Рё РїРѕР»СЊР·РѕРІР°С‚РµР»СЋ СЂР°Р·СЂРµС€РµРЅРѕ РёР·РјРµРЅСЏС‚СЊ РІСЃРµ РґРѕРєСѓРјРµРЅС‚С‹ РІ СЂСѓР±СЂРёРєРµ
+				if ( (isset($_SESSION['user_id']) && $row->document_author_id == $_SESSION['user_id'] &&
+						isset($_SESSION[$row->rubric_id . '_editown']) && $_SESSION[$row->rubric_id . '_editown'] == 1)
+					|| (isset($_SESSION[$row->rubric_id . '_editall']) && @$_SESSION[$row->rubric_id . '_editall'] == 1) )
+				{
+					$row->cantEdit = 1;
+				}
+				// Р·Р°РїСЂРµС‰Р°РµРј СЂРµРґР°РєС‚РёСЂРѕРІР°РЅРёРµ РіР»Р°РІРЅРѕР№ СЃС‚СЂР°РЅРёС†С‹ Рё СЃС‚СЂР°РЅРёС†С‹ РѕС€РёР±РєРё 404 РµСЃР»Рё С‚СЂРµР±СѓРµС‚СЃСЏ РѕРґРѕР±СЂРµРЅРёРµ РђРґРјРёРЅРёСЃС‚СЂР°С‚РѕСЂР°
+				if ( ($document_id == 1 || $document_id == PAGE_NOT_FOUND_ID) && @$_SESSION[$row->rubric_id . '_newnow'] != 1 )
+				{
+					$row->cantEdit = 0;
+				}
+				// СЂР°Р·СЂРµС€Р°РµРј СЂРµРґР°РєС‚РёСЂРѕРІР°РЅРёРµ, РµСЃР»Рё РїРѕР»СЊР·РѕРІР°С‚РµР»СЊ РїСЂРёРЅР°РґР»РµР¶РёС‚ РіСЂСѓРїРїРµ РђРґРјРёРЅРёСЃС‚СЂР°С‚РѕСЂРѕРІ РёР»Рё РёРјРµРµС‚ РІСЃРµ РїСЂР°РІР° РЅР° СЂСѓР±СЂРёРєСѓ
+				if ( (defined('UGROUP') && UGROUP == 1)
+					|| (isset($_SESSION[$row->rubric_id . '_alles']) && $_SESSION[$row->rubric_id . '_alles'] == 1) )
+				{
+					$row->cantEdit = 1;
+				}
+				
+				//РІС‹С…РѕРґРёРј РµСЃР»Рё РЅРµР»СЊР·СЏ СЂРµРґР°РєС‚РёСЂРѕРІР°С‚СЊ
+				if(!$row->cantEdit==1 )return false;
+					// РћР±СЂР°Р±Р°С‚С‹РІР°РµРј РІСЃРµ РґР°РЅРЅС‹Рµ, РїСЂРёС€РµРґС€РёРµ РІ Р·Р°РїСЂРѕСЃРµ
+					$suche     = (isset($data['document_in_search']) && $data['document_in_search'] == 1) ? '1' : '0';
+					$document_status = ( (isset($_SESSION[$row->rubric_id . '_newnow']) && $_SESSION[$row->rubric_id . '_newnow'] == 1)
+								|| (isset($_SESSION[$row->rubric_id . '_alles']) && $_SESSION[$row->rubric_id . '_alles'] == 1)
+								|| (defined('UGROUP') && UGROUP == 1) ) ? (isset($data['document_status']) ? $data['document_status'] : '0') : '0';
+					$document_status = ($document_id == 1 || $document_id == PAGE_NOT_FOUND_ID) ? '1' : $docstatus;
+
+					// Р¤РѕСЂРјРёСЂСѓРµРј/РїСЂРѕРІРµСЂСЏРµРј Р°РґСЂРµСЃ РЅР° СѓРЅРёРєР°Р»СЊРЅРѕСЃС‚СЊ
+					$data['document_alias'] = $_url = prepare_url(empty($data['document_alias'])
+						? trim($_POST['prefix'] . '/' . $data['doc_title'], '/')
+						: $data['document_alias']);
+					$cnt = 1;
+					while ($AVE_DB->Query("
+						SELECT 1
+						FROM " . PREFIX . "_documents
+						WHERE Id != '" . $document_id . "'
+						AND document_alias = '" . $data['document_alias'] . "'
+						LIMIT 1
+						")->NumRows() == 1)
+					{
+						$data['document_alias'] = $_url . '-' . $cnt;
+						$cnt++;
+					}
+			}
+			else
 			{
-				case 'save': // Сохранение документа в БД
-					$start  = $this->_documentStart(); // Дата/время начала публикации документа
-					$ende   = $this->_documentEnd();   // Дата/время окончания публикации документа
-					$innavi = check_permission_acp('navigation_new') ? '&innavi=1' : '';
-
-					// Определяем статус документа
-					$document_status = !empty($_REQUEST['document_status']) ? (int)$_REQUEST['document_status'] : '0';
-
-					// Если статус документа не определен
-					if (empty($document_status) && $_SESSION['user_group'] != 1)
-					{
-						$innavi = '';
-						@reset($_POST);
-						$newtext = "\n\n";
-
-						// Формируем текст сообщения, состоящий из данных,
-						// которые пользователь ввел в поля документа
-						foreach ($_POST['feld'] as $val)
-						{
-							if (!empty($val))
-							{
-								$newtext .= $val;
-								$newtext .= "\n---------------------\n";
-							}
-						}
-						$text = strip_tags($newtext);
-
-						// Получаем e-mail адрес из общих настроек системы
-						$system_mail = get_settings('mail_from');
-						$system_mail_name = get_settings('mail_from_name');
-
-						// Отправляем администартору уведомление, о том что необходимо проверить документ
-						$body_to_admin = $AVE_Template->get_config_vars('DOC_MAIL_BODY_CHECK');
-						$body_to_admin = str_replace('%N%', "\n", $body_to_admin);
-						$body_to_admin = str_replace('%TITLE%', stripslashes($_POST['doc_title']), $body_to_admin);
-						$body_to_admin = str_replace('%USER%', "'" . $_SESSION['user_name'] . "'", $body_to_admin);
-						send_mail(
-							$system_mail,
-							$body_to_admin . $text,
-							$AVE_Template->get_config_vars('DOC_MAIL_SUBJECT_CHECK'),
-							$system_mail,
-							$system_mail_name,
-							'text'
-						);
-
-						// Отправляем уведомление автору, о том что документ находится на проверке
-						$body_to_author = str_replace('%N%', "\n", $AVE_Template->get_config_vars('DOC_MAIL_BODY_USER'));
-						$body_to_author = str_replace('%TITLE%', stripslashes($_POST['doc_title']), $body_to_author);
-						$body_to_author = str_replace('%USER%', "'" . $_SESSION['user_name'] . "'", $body_to_author);
-						send_mail(
-							$_SESSION['user_email'],
-							$body_to_author,
-							$AVE_Template->get_config_vars('DOC_MAIL_SUBJECT_USER'),
-							$system_mail,
-							$system_mail_name,
-							'text'
-						);
-					}
-
-					if (! ((isset($_SESSION[$rubric_id . '_newnow']) && $_SESSION[$rubric_id . '_newnow'] == 1)
-						|| (isset($_SESSION[$rubric_id . '_alles']) && $_SESSION[$rubric_id . '_alles'] == 1)
-						|| (defined('UGROUP') && UGROUP == 1)) )
-					{
-						$document_status = 0;
-					}
-
-					$suche = (isset($_POST['document_in_search']) && $_POST['document_in_search'] == 1) ? 1 : 0;
-
-					// Формируем/проверяем алиас адреса на уникальность
-					$_REQUEST['document_alias'] = $_url = prepare_url(empty($_POST['document_alias']) ? trim($_POST['prefix'] . '/' . $_POST['doc_title'], '/') : $_POST['document_alias']);
+					$suche = (isset($data['document_in_search']) && $data['document_in_search'] == 1) ? 1 : 0;
+					$document_status = !empty($data['document_status']) ? (int)$data['document_status'] : '0';
+					$document_status = ($document_id == 1 || $document_id == PAGE_NOT_FOUND_ID) ? '1' : $document_status;
+					$data['document_alias'] = $_url = prepare_url(empty($data['document_alias']) ? trim($data['prefix'] . '/' . $data['doc_title'], '/') : $data['document_alias']);
 					$cnt = 1;
 					while (
 						$AVE_DB->Query("
 							SELECT 1
 							FROM " . PREFIX . "_documents
-							WHERE document_alias = '" . $_REQUEST['document_alias'] . "'
+							WHERE document_alias = '" . $data['document_alias'] . "'
 							LIMIT 1
 						")->NumRows())
 					{
-						$_REQUEST['document_alias'] = $_url . '-' . $cnt;
+						$data['document_alias'] = $_url . '-' . $cnt;
 						$cnt++;
 					}
 
-					// Выполняем запрос к БД на добавлние нового документа
-					$AVE_DB->Query("
-						INSERT
-						INTO " . PREFIX . "_documents
-						SET
-							rubric_id                 = '" . $rubric_id . "',
-							document_parent                 = '" . (int)$_REQUEST['document_parent'] . "',
-							document_title            = '" . clean_no_print_char($_POST['doc_title']) . "',
-							document_alias            = '" . $_REQUEST['document_alias'] . "',
-							document_published        = '" . $start . "',
-							document_expire           = '" . $ende . "',
-							document_changed          = '" . time() . "',
-							document_author_id        = '" . $_SESSION['user_id'] . "',
-							document_in_search        = '" . $suche . "',
-							document_meta_keywords    = '" . clean_no_print_char($_POST['document_meta_keywords']) . "',
-							document_meta_description = '" . clean_no_print_char($_POST['document_meta_description']) . "',
-							document_meta_robots      = '" . $_POST['document_meta_robots'] . "',
-							document_status           = '" . $document_status . "',
-							document_linked_navi_id   = '" . (int)$_POST['document_linked_navi_id'] . "'
-					");
+			}
+					$docstart	= ($document_id == 1 || $document_id == PAGE_NOT_FOUND_ID) ? '0' : $this->_documentStart((int)$data['document_published']);
+					$docend		= ($document_id == 1 || $document_id == PAGE_NOT_FOUND_ID) ? '0' : $this->_documentEnd((int)$data['document_expire']);
 
-					// Получаем id добавленной записи
-					$iid = $AVE_DB->InsertId();
+						//РџРѕР»СѓС‡Р°РµРј СЃС‚СЂСѓРєС‚СѓСЂСѓ РґРѕРєСѓРјРµРЅС‚Р°
+						$fields = array();
 
-					// Сохраняем системное сообщение в журнал
-					reportLog($_SESSION['user_name'] . ' - добавил документ (' . $iid . ')', 2, 2);
+						if($oper=='INSERT'){
+							$sql = $AVE_DB->Query("
+								SELECT *
+								FROM " . PREFIX . "_rubric_fields
+								WHERE rubric_id = '" . $rubric_id . "'
+								ORDER BY rubric_field_position ASC
+							");
+						}
+						else{
+							$sql = $AVE_DB->Query("
+								SELECT
+									doc.Id AS df_id,
+									rub.*,
+									rubric_field_default,
+									doc.field_value
+								FROM " . PREFIX . "_rubric_fields AS rub
+								LEFT JOIN " . PREFIX . "_document_fields AS doc ON rubric_field_id = rub.Id
+								WHERE document_id = '" . $document_id . "'
+								ORDER BY rubric_field_position ASC
+							");
+						}
+						while ($row = $sql->FetchRow())
+						{
+							$row->Feld = $this->_documentFieldGet($row->rubric_field_type, ($oper=='INSERT' ? $row->rubric_field_default : $row->field_value), $row->Id, $row->rubric_field_default);
+							array_push($fields, $row);
+						}
 
-					// Циклически обрабатываем поля документа
-					foreach ($_POST['feld'] as $fld_id => $fld_val)
+						$where=($oper=='UPDATE' ? 'WHERE Id='.$document_id : '');
+						$zag=($oper=='UPDATE' ? "UPDATE " . PREFIX . "_documents" : "INSERT INTO " . PREFIX . "_documents");
+						$sql="
+							$zag
+							SET
+								rubric_id                 = '" . $rubric_id . "',
+								document_parent                 = '" . (int)$data['document_parent'] . "',
+								document_title            = '" . clean_no_print_char($data['doc_title']) . "',
+								document_alias            = '" . $data['document_alias'] . "',
+								document_published        = '" . $docstart . "',
+								document_expire           = '" . $docend . "',
+								document_changed          = '" . time() . "',
+								document_author_id        = '" . $_SESSION['user_id'] . "',
+								document_in_search        = '" . $suche . "',
+								document_meta_keywords    = '" . clean_no_print_char($data['document_meta_keywords']) . "',
+								document_meta_description = '" . clean_no_print_char($data['document_meta_description']) . "',
+								document_meta_robots      = '" . $data['document_meta_robots'] . "',
+								document_status           = '" . $data['document_status'] . "',
+								document_linked_navi_id   = '" . (int)$data['document_linked_navi_id'] . "'
+							$where";
+						$AVE_DB->Query($sql);
+					// РџРѕР»СѓС‡Р°РµРј id РґРѕР±Р°РІР»РµРЅРЅРѕР№ Р·Р°РїРёСЃРё
+					$iid=$AVE_DB->InsertId();
+					$document_id = ($oper=="INSERT" ? $iid : $document_id);
+					// РЎРѕС…СЂР°РЅСЏРµРј СЃРёСЃС‚РµРјРЅРѕРµ СЃРѕРѕР±С‰РµРЅРёРµ РІ Р¶СѓСЂРЅР°Р»
+					reportLog($_SESSION['user_name'] . ' - '.($oper=='INSERT' ? 'РґРѕР±Р°РІРёР»' : 'РѕС‚СЂРµРґР°РєС‚РёСЂРѕРІР°Р»').' РґРѕРєСѓРјРµРЅС‚ (' . $document_id . ')', 2, 2);
+
+					// Р¦РёРєР»РёС‡РµСЃРєРё РѕР±СЂР°Р±Р°С‚С‹РІР°РµРј РїРѕР»СЏ РґРѕРєСѓРјРµРЅС‚Р°
+					foreach ($fields as $k => $v)
 					{
+						$fld_id=$v->Id;
+						//РµСЃР»Рё РІ РґР°РЅРЅС‹С… РЅРµС‚ РїРѕР»СЏ Рё РјС‹ СЂРµРґР°РєС‚РёСЂСѓРµРј РґРѕРєСѓРјРµРЅС‚ - РёР·РјРµРЅСЏС‚СЊ Р»Рё СЌС‚Рѕ РїРѕР»Рµ РЅР° РїСѓСЃС‚РѕРµ Р·РЅР°С‡РµРЅРёРµ
+						if($oper=='UPDATE' && (!(isset($data['feld'][$fld_id]))) && !$update_non_exists_fields) continue;
+						$fld_val=(isset($data['feld'][$fld_id]) ? $data['feld'][$fld_id] : $v->rubric_field_default);
+						
 						if (!$AVE_DB->Query("
 								SELECT 1
 								FROM " . PREFIX . "_rubric_fields
@@ -700,39 +747,163 @@ class AVE_Document
 						}
 						else
 						{
-							// Если запрещено использование php кода, тогда обнуляем данные поля
+							// Р•СЃР»Рё Р·Р°РїСЂРµС‰РµРЅРѕ РёСЃРїРѕР»СЊР·РѕРІР°РЅРёРµ php РєРѕРґР°, С‚РѕРіРґР° РѕР±РЅСѓР»СЏРµРј РґР°РЅРЅС‹Рµ РїРѕР»СЏ
 							if (!check_permission('document_php'))
 							{
 								if (is_php_code($fld_val)) $fld_val = '';
 							}
 
-							// Убираем из текста непчатбемые символы
+							// РЈР±РёСЂР°РµРј РёР· С‚РµРєСЃС‚Р° РЅРµРїС‡Р°С‚Р±РµРјС‹Рµ СЃРёРјРІРѕР»С‹
 							$fld_val = clean_no_print_char($fld_val);
 							$fld_val = pretty_chars($fld_val);
 						}
-						// Выполняем запрос к БД на добавление нового поля с его содержимым
+						
+						// Р’С‹РїРѕР»РЅСЏРµРј Р·Р°РїСЂРѕСЃ Рє Р‘Р” РЅР° РґРѕР±Р°РІР»РµРЅРёРµ РЅРѕРІРѕРіРѕ РїРѕР»СЏ СЃ РµРіРѕ СЃРѕРґРµСЂР¶РёРјС‹Рј
+						$where=($oper=='UPDATE' ? 'WHERE document_id='.$document_id.' AND rubric_field_id='.$fld_id : '');
+						$zag=($oper=='UPDATE' ? "UPDATE " . PREFIX . "_document_fields" : "INSERT INTO " . PREFIX . "_document_fields");
+						
 						$sql="
-							INSERT
-							INTO " . PREFIX . "_document_fields
+							$zag
 							SET
 								rubric_field_id    = '" . $fld_id . "',
-								document_id        = '" . $iid . "',
+								document_id        = '" . $document_id . "',
 								field_value        = '" . (is_array($fld_val) ? serialize($fld_val) : $fld_val) . "',
+								field_number_value = '" . (int)(is_array($fld_val) ? serialize($fld_val) : $fld_val) . "',
 								document_in_search = '" . $suche . "'
+							$where	
 						";
 						$AVE_DB->Query($sql);
 					}
+					// РћС‡РёС‰Р°РµРј РєСЌС€ С€Р°Р±Р»РѕРЅР°
+					$AVE_DB->Query("
+						DELETE
+						FROM " . PREFIX . "_rubric_template_cache
+						WHERE doc_id = '" . $document_id . "'
+					");
+		//С‡РёСЃС‚РёРј РєРµС€
+		$AVE_DB->clearcache('rub_'.$rubric_id);			
+		$AVE_DB->clearcache('doc_'.$document_id);			
+		return $document_id;
+	}
+
+
+	/**
+	 * РњРµС‚РѕРґ, РїСЂРµРґРЅР°Р·РЅР°С‡РµРЅРЅС‹Р№ РґР»СЏ РґРѕР±Р°РІР»РµРЅРёСЏ РЅРѕРІРѕРіРѕ РґРѕРєСѓРјРµРЅС‚Р° РІ Р‘Р”
+	 *
+	 * @param int $rubric_id	РёРґРµРЅС‚РёС„РёРєР°С‚РѕСЂ Р СѓР±СЂРёРєРё
+	 */
+	function documentNew($rubric_id)
+	{
+		global $AVE_DB, $AVE_Rubric, $AVE_Template;
+
+		$this->documentPermissionFetch($rubric_id);
+
+		// Р•СЃР»Рё РїРѕР»СЊР·РѕРІР°С‚РµР»СЊ РёРјРµРµС‚ РїСЂР°РІР° РЅР° РґРѕР±Р°РІР»РµРЅРёРµ РґРѕРєСѓРјРµРЅС‚РѕРІ РІ СѓРєР°Р·Р°РЅРЅСѓСЋ СЂСѓР±СЂРёРєСѓ, С‚РѕРіРґР°
+		if ( (isset($_SESSION[$rubric_id . '_newnow'])  && $_SESSION[$rubric_id . '_newnow'] == 1)
+			|| (isset($_SESSION[$rubric_id . '_new'])   && $_SESSION[$rubric_id . '_new']    == 1)
+			|| (isset($_SESSION[$rubric_id . '_alles']) && $_SESSION[$rubric_id . '_alles']  == 1)
+			|| (defined('UGROUP') && UGROUP == 1) )
+		{
+
+			$fields = array();
+
+			// Р’С‹РїРѕР»РЅСЏРµРј Р·Р°РїСЂРѕСЃ Рє Р‘Р” РЅР° РїРѕР»СѓС‡РµРЅРёРµ СЃРїРёСЃРєР° РїРѕР»РµР№, РєРѕС‚РѕСЂС‹Рµ РѕС‚РЅРѕСЃСЏС‚СЃСЏ Рє РґР°РЅРЅРѕРјСѓ РґРѕРєСѓРјРµРЅС‚Сѓ
+			$sql = $AVE_DB->Query("
+				SELECT *
+				FROM " . PREFIX . "_rubric_fields
+				WHERE rubric_id = '" . $rubric_id . "'
+				ORDER BY rubric_field_position ASC
+			");
+			while ($row = $sql->FetchRow())
+			{
+				$row->Feld = $this->_documentFieldGet($row->rubric_field_type, $row->rubric_field_default, $row->Id, $row->rubric_field_default);
+				array_push($fields, $row);
+			}
+			//echo "<pre>";
+			//var_dump($fields);
+			//echo "</pre>";
+			// РћРїСЂРµРґРµР»СЏРµРј РІРёРґ РґРµР№СЃС‚РІРёСЏ, РїРµСЂРµРґР°РЅРЅС‹Р№ РІ РїР°СЂР°РјРµС‚СЂРµ sub
+			switch ($_REQUEST['sub'])
+			{
+				case 'save': // РЎРѕС…СЂР°РЅРµРЅРёРµ РґРѕРєСѓРјРµРЅС‚Р° РІ Р‘Р”
+					$start  = $this->_documentStart(); // Р”Р°С‚Р°/РІСЂРµРјСЏ РЅР°С‡Р°Р»Р° РїСѓР±Р»РёРєР°С†РёРё РґРѕРєСѓРјРµРЅС‚Р°
+					$ende   = $this->_documentEnd();   // Р”Р°С‚Р°/РІСЂРµРјСЏ РѕРєРѕРЅС‡Р°РЅРёСЏ РїСѓР±Р»РёРєР°С†РёРё РґРѕРєСѓРјРµРЅС‚Р°
+					$innavi = check_permission_acp('navigation_new') ? '&innavi=1' : '';
+
+					// РћРїСЂРµРґРµР»СЏРµРј СЃС‚Р°С‚СѓСЃ РґРѕРєСѓРјРµРЅС‚Р°
+					$document_status = !empty($_REQUEST['document_status']) ? (int)$_REQUEST['document_status'] : '0';
+
+					// Р•СЃР»Рё СЃС‚Р°С‚СѓСЃ РґРѕРєСѓРјРµРЅС‚Р° РЅРµ РѕРїСЂРµРґРµР»РµРЅ
+					if (empty($document_status) && $_SESSION['user_group'] != 1)
+					{
+						$innavi = '';
+						@reset($_POST);
+						$newtext = "\n\n";
+
+						// Р¤РѕСЂРјРёСЂСѓРµРј С‚РµРєСЃС‚ СЃРѕРѕР±С‰РµРЅРёСЏ, СЃРѕСЃС‚РѕСЏС‰РёР№ РёР· РґР°РЅРЅС‹С…,
+						// РєРѕС‚РѕСЂС‹Рµ РїРѕР»СЊР·РѕРІР°С‚РµР»СЊ РІРІРµР» РІ РїРѕР»СЏ РґРѕРєСѓРјРµРЅС‚Р°
+						foreach ($_POST['feld'] as $val)
+						{
+							if (!empty($val))
+							{
+								$newtext .= $val;
+								$newtext .= "\n---------------------\n";
+							}
+						}
+						$text = strip_tags($newtext);
+
+						// РџРѕР»СѓС‡Р°РµРј e-mail Р°РґСЂРµСЃ РёР· РѕР±С‰РёС… РЅР°СЃС‚СЂРѕРµРє СЃРёСЃС‚РµРјС‹
+						$system_mail = get_settings('mail_from');
+						$system_mail_name = get_settings('mail_from_name');
+
+						// РћС‚РїСЂР°РІР»СЏРµРј Р°РґРјРёРЅРёСЃС‚Р°СЂС‚РѕСЂСѓ СѓРІРµРґРѕРјР»РµРЅРёРµ, Рѕ С‚РѕРј С‡С‚Рѕ РЅРµРѕР±С…РѕРґРёРјРѕ РїСЂРѕРІРµСЂРёС‚СЊ РґРѕРєСѓРјРµРЅС‚
+						$body_to_admin = $AVE_Template->get_config_vars('DOC_MAIL_BODY_CHECK');
+						$body_to_admin = str_replace('%N%', "\n", $body_to_admin);
+						$body_to_admin = str_replace('%TITLE%', stripslashes($_POST['doc_title']), $body_to_admin);
+						$body_to_admin = str_replace('%USER%', "'" . $_SESSION['user_name'] . "'", $body_to_admin);
+						send_mail(
+							$system_mail,
+							$body_to_admin . $text,
+							$AVE_Template->get_config_vars('DOC_MAIL_SUBJECT_CHECK'),
+							$system_mail,
+							$system_mail_name,
+							'text'
+						);
+
+						// РћС‚РїСЂР°РІР»СЏРµРј СѓРІРµРґРѕРјР»РµРЅРёРµ Р°РІС‚РѕСЂСѓ, Рѕ С‚РѕРј С‡С‚Рѕ РґРѕРєСѓРјРµРЅС‚ РЅР°С…РѕРґРёС‚СЃСЏ РЅР° РїСЂРѕРІРµСЂРєРµ
+						$body_to_author = str_replace('%N%', "\n", $AVE_Template->get_config_vars('DOC_MAIL_BODY_USER'));
+						$body_to_author = str_replace('%TITLE%', stripslashes($_POST['doc_title']), $body_to_author);
+						$body_to_author = str_replace('%USER%', "'" . $_SESSION['user_name'] . "'", $body_to_author);
+						send_mail(
+							$_SESSION['user_email'],
+							$body_to_author,
+							$AVE_Template->get_config_vars('DOC_MAIL_SUBJECT_USER'),
+							$system_mail,
+							$system_mail_name,
+							'text'
+						);
+					}
+
+					if (! ((isset($_SESSION[$rubric_id . '_newnow']) && $_SESSION[$rubric_id . '_newnow'] == 1)
+						|| (isset($_SESSION[$rubric_id . '_alles']) && $_SESSION[$rubric_id . '_alles'] == 1)
+						|| (defined('UGROUP') && UGROUP == 1)) )
+					{
+						$document_status = 0;
+					}
+					$_POST['document_status']=$document_status;
+					$_POST['document_linked_navi_id'] = $innavi;
+					$iid=$this->documentSave($rubric_id,null,$_POST,true);
 
 					header('Location:index.php?do=docs&action=after&document_id=' . $iid . '&rubric_id=' . $rubric_id . '&cp=' . SESSION . $innavi);
 					exit;
 
-				case '': // Действия по умолчанию, если не задано
+				case '': // Р”РµР№СЃС‚РІРёСЏ РїРѕ СѓРјРѕР»С‡Р°РЅРёСЋ, РµСЃР»Рё РЅРµ Р·Р°РґР°РЅРѕ
 					$document = new stdClass();
 
-					// Получаем список прав доступа на добавление документов в определенную рубрику
+					// РџРѕР»СѓС‡Р°РµРј СЃРїРёСЃРѕРє РїСЂР°РІ РґРѕСЃС‚СѓРїР° РЅР° РґРѕР±Р°РІР»РµРЅРёРµ РґРѕРєСѓРјРµРЅС‚РѕРІ РІ РѕРїСЂРµРґРµР»РµРЅРЅСѓСЋ СЂСѓР±СЂРёРєСѓ
 					$this->documentPermissionFetch($rubric_id);
 
-					// Определяем флаг, который будет активировать или запрещать смену статуса у документа
+					// РћРїСЂРµРґРµР»СЏРµРј С„Р»Р°Рі, РєРѕС‚РѕСЂС‹Р№ Р±СѓРґРµС‚ Р°РєС‚РёРІРёСЂРѕРІР°С‚СЊ РёР»Рё Р·Р°РїСЂРµС‰Р°С‚СЊ СЃРјРµРЅСѓ СЃС‚Р°С‚СѓСЃР° Сѓ РґРѕРєСѓРјРµРЅС‚Р°
 					if ( (defined('UGROUP') && UGROUP == 1)
 						|| (isset($_SESSION[$rubric_id . '_alles']) && $_SESSION[$rubric_id . '_alles'] == 1)
 						|| (isset($_SESSION[$rubric_id . '_newnow']) && $_SESSION[$rubric_id . '_newnow'] == 1) )
@@ -744,22 +915,8 @@ class AVE_Document
 						$document->dontChangeStatus = 1;
 					}
 
-					$fields = array();
 
-					// Выполняем запрос к БД на получение списка полей, которые относятся к данному документу
-					$sql = $AVE_DB->Query("
-						SELECT *
-						FROM " . PREFIX . "_rubric_fields
-						WHERE rubric_id = '" . $rubric_id . "'
-						ORDER BY rubric_field_position ASC
-					");
-					while ($row = $sql->FetchRow())
-					{
-						$row->Feld = $this->_documentFieldGet($row->rubric_field_type, $row->rubric_field_default, $row->Id, $row->rubric_field_default);
-						array_push($fields, $row);
-					}
-
-					// Формируем данные и передаем в шаблон
+					// Р¤РѕСЂРјРёСЂСѓРµРј РґР°РЅРЅС‹Рµ Рё РїРµСЂРµРґР°РµРј РІ С€Р°Р±Р»РѕРЅ
 					$document->fields = $fields;
 					$document->rubric_title = $AVE_Rubric->rubricNameByIdGet($rubric_id)->rubric_title;
 					$document->rubric_url_prefix = strftime($AVE_Rubric->rubricNameByIdGet($rubric_id)->rubric_alias);
@@ -773,178 +930,35 @@ class AVE_Document
 			}
 		}
 		else
-		{	// Пользователь не имеет прав на создание документа, формируем сообщение с ошибкой
+		{	// РџРѕР»СЊР·РѕРІР°С‚РµР»СЊ РЅРµ РёРјРµРµС‚ РїСЂР°РІ РЅР° СЃРѕР·РґР°РЅРёРµ РґРѕРєСѓРјРµРЅС‚Р°, С„РѕСЂРјРёСЂСѓРµРј СЃРѕРѕР±С‰РµРЅРёРµ СЃ РѕС€РёР±РєРѕР№
 			$AVE_Template->assign('content', $AVE_Template->get_config_vars('DOC_NO_PERMISSION_RUB'));
 		}
 	}
 
 	/**
-	 * Метод, предназначенный для редактирования документа
+	 * РњРµС‚РѕРґ, РїСЂРµРґРЅР°Р·РЅР°С‡РµРЅРЅС‹Р№ РґР»СЏ СЂРµРґР°РєС‚РёСЂРѕРІР°РЅРёСЏ РґРѕРєСѓРјРµРЅС‚Р°
 	 *
-	 * @param int $document_id	идентификатор Документа
+	 * @param int $document_id	РёРґРµРЅС‚РёС„РёРєР°С‚РѕСЂ Р”РѕРєСѓРјРµРЅС‚Р°
 	 */
 	function documentEdit($document_id)
 	{
 		global $AVE_DB, $AVE_Rubric, $AVE_Template;
 
-		// Определяем действие, выбранное пользователем
+		// РћРїСЂРµРґРµР»СЏРµРј РґРµР№СЃС‚РІРёРµ, РІС‹Р±СЂР°РЅРЅРѕРµ РїРѕР»СЊР·РѕРІР°С‚РµР»РµРј
 		switch ($_REQUEST['sub'])
 		{
-			// Если была нажата кнопка Сохранить изменения
+			// Р•СЃР»Рё Р±С‹Р»Р° РЅР°Р¶Р°С‚Р° РєРЅРѕРїРєР° РЎРѕС…СЂР°РЅРёС‚СЊ РёР·РјРµРЅРµРЅРёСЏ
 			case 'save':
-
-				// Выполняем запрос к БД на получение автора документа и id Рубрики
-				$row = $AVE_DB->Query("
+					$row = $AVE_DB->Query("
 					SELECT
 						rubric_id,
 						document_author_id
 					FROM " . PREFIX . "_documents
 					WHERE Id = '" . $document_id . "'
 				")->FetchRow();
-
-				$row->cantEdit = 0;
-
-				// Определяем права доступа к документам в данной рубрики
-				$this->documentPermissionFetch($row->rubric_id);
-
-				// разрешаем редактирование
-				// если автор имеет право изменять свои документы в рубрике
-				// или пользователю разрешено изменять все документы в рубрике
-				if ( (isset($_SESSION['user_id']) && $row->document_author_id == $_SESSION['user_id'] &&
-						isset($_SESSION[$row->rubric_id . '_editown']) && $_SESSION[$row->rubric_id . '_editown'] == 1)
-					|| (isset($_SESSION[$row->rubric_id . '_editall']) && @$_SESSION[$row->rubric_id . '_editall'] == 1) )
-				{
-					$row->cantEdit = 1;
-				}
-				// запрещаем редактирование главной страницы и страницы ошибки 404 если требуется одобрение Администратора
-				if ( ($document_id == 1 || $document_id == PAGE_NOT_FOUND_ID) && @$_SESSION[$row->rubric_id . '_newnow'] != 1 )
-				{
-					$row->cantEdit = 0;
-				}
-				// разрешаем редактирование, если пользователь принадлежит группе Администраторов или имеет все права на рубрику
-				if ( (defined('UGROUP') && UGROUP == 1)
-					|| (isset($_SESSION[$row->rubric_id . '_alles']) && $_SESSION[$row->rubric_id . '_alles'] == 1) )
-				{
-					$row->cantEdit = 1;
-				}
-
-				// Если редактирование разрешено для данного пользователя
-				if ($row->cantEdit == 1)
-				{
-					// Обрабатываем все данные, пришедшие в запросе
-					$suche     = (isset($_POST['document_in_search']) && $_POST['document_in_search'] == 1) ? '1' : '0';
-					$docstatus = ( (isset($_SESSION[$row->rubric_id . '_newnow']) && $_SESSION[$row->rubric_id . '_newnow'] == 1)
-								|| (isset($_SESSION[$row->rubric_id . '_alles']) && $_SESSION[$row->rubric_id . '_alles'] == 1)
-								|| (defined('UGROUP') && UGROUP == 1) ) ? (isset($_REQUEST['document_status']) ? $_REQUEST['document_status'] : '0') : '0';
-					$docstatus = ($document_id == 1 || $document_id == PAGE_NOT_FOUND_ID) ? '1' : $docstatus;
-					$docend    = ($document_id == 1 || $document_id == PAGE_NOT_FOUND_ID) ? '0' : $this->_documentEnd();
-					$docstart  = ($document_id == 1 || $document_id == PAGE_NOT_FOUND_ID) ? '0' : $this->_documentStart();
-
-					// Формируем/проверяем адрес на уникальность
-					$_REQUEST['document_alias'] = $_url = prepare_url(empty($_POST['document_alias'])
-						? trim($_POST['prefix'] . '/' . $_POST['doc_title'], '/')
-						: $_POST['document_alias']);
-					$cnt = 1;
-					while ($AVE_DB->Query("
-						SELECT 1
-						FROM " . PREFIX . "_documents
-						WHERE Id != '" . $document_id . "'
-						AND document_alias = '" . $_REQUEST['document_alias'] . "'
-						LIMIT 1
-						")->NumRows() == 1)
-					{
-						$_REQUEST['document_alias'] = $_url . '-' . $cnt;
-						$cnt++;
-					}
-
-					// Выполняем запрос к БД на сохранение изменений в таблице документов
-					$AVE_DB->Query("
-						UPDATE " . PREFIX . "_documents
-						SET
-							document_parent                 = '" . (int)$_REQUEST['document_parent'] . "',
-							document_title            = '" . clean_no_print_char($_POST['doc_title']) . "',
-							document_alias            = '" . $_REQUEST['document_alias'] . "',
-							document_in_search        = '" . $suche . "',
-							document_meta_keywords    = '" . clean_no_print_char($_POST['document_meta_keywords']) . "',
-							document_meta_description = '" . clean_no_print_char($_POST['document_meta_description']) . "',
-							document_meta_robots      = '" . $_POST['document_meta_robots'] . "',
-							document_status           = '" . $docstatus . "',
-							document_expire           = '" . $docend . "',
-							document_published        = '" . $docstart . "',
-							document_changed          = '" . time() . "',
-							document_linked_navi_id   = '" . (int)$_POST['document_linked_navi_id'] . "'
-						WHERE
-							Id = '" . $document_id . "'
-					");
-
-					// Выполняем запрос к БД на сохранение изменений в таблице навигации
-					$AVE_DB->Query("
-						UPDATE " . PREFIX . "_navigation_items
-						SET document_alias = '" . $_REQUEST['document_alias'] . "'
-						WHERE navi_item_link = 'index.php?id=" . $document_id . "'
-					");
-
-					// Если документ содержит поля
-					if (isset($_POST['feld']))
-					{
-						// Циклически обрабатываем каждое поле
-						foreach ($_POST['feld'] as $fld_id => $fld_val)
-						{
-							$row_df = $AVE_DB->Query("
-								SELECT
-									field_value,
-									document_in_search
-								FROM " . PREFIX . "_document_fields
-								WHERE Id = '" . $fld_id . "'
-								AND document_id = '" . $document_id . "'
-							")->FetchRow();
-
-							if (!$row_df) continue;
-
-							//if ($row_df->document_in_search == $suche && $row_df->field_value == pretty_chars(stripslashes($fld_val))) continue;
-
-							// Если запрещено использование php-кода в полях, пропускаем это поле
-						if(is_array($fld_val)){
-							foreach($fld_val as $k=>$v){
-								if(!check_permission('document_php'))if (is_php_code($v)) $v = '';
-								$v = clean_no_print_char($v);
-								$v = pretty_chars($v);
-								$fld_val[$k]=$v;
-							}
-						}
-						else
-						{
-							// Если запрещено использование php кода, тогда обнуляем данные поля
-							if (!check_permission('document_php'))
-							{
-								if (is_php_code($fld_val)) $fld_val = '';
-							}
-
-							// Убираем из текста непчатбемые символы
-							$fld_val = clean_no_print_char($fld_val);
-							$fld_val = pretty_chars($fld_val);
-						}
-							// Выполняем запрос к БД на сохранение изменений в таблице полей документов
-							$AVE_DB->Query("
-								UPDATE " . PREFIX . "_document_fields
-								SET
-									field_value = '" . (is_array($fld_val) ? serialize($fld_val) : $fld_val) . "' ,
-									document_in_search  = '" . $suche . "'
-								WHERE
-									Id = '" . $fld_id . "'
-							");
-						}
-					}
-					// Очищаем кэш шаблона
-					$AVE_DB->Query("
-						DELETE
-						FROM " . PREFIX . "_rubric_template_cache
-						WHERE doc_id = '" . $document_id . "'
-					");
-
-					// Сохраняем системное сообщение в журнал
-					reportLog($_SESSION['user_name'] . ' - отредактировал документ (' . $document_id . ')', 2, 2);
-				}
+				
+				$this->documentSave($row->rubric_id,$document_id,$_POST,true);
+				
 				if(isset($_REQUEST['closeafter']) && $_REQUEST['closeafter']==1) {
 					echo "<script>window.opener.location.reload(); window.close();</script>";
 				} else {					
@@ -952,9 +966,9 @@ class AVE_Document
 				}
 				exit;
 
-			// Если пользователь не выполнял никаких действий, а просто открыл документ для редактирования
+			// Р•СЃР»Рё РїРѕР»СЊР·РѕРІР°С‚РµР»СЊ РЅРµ РІС‹РїРѕР»РЅСЏР» РЅРёРєР°РєРёС… РґРµР№СЃС‚РІРёР№, Р° РїСЂРѕСЃС‚Рѕ РѕС‚РєСЂС‹Р» РґРѕРєСѓРјРµРЅС‚ РґР»СЏ СЂРµРґР°РєС‚РёСЂРѕРІР°РЅРёСЏ
 			case '':
-				// Выполняем запрос к БД на получение данных о документе
+				// Р’С‹РїРѕР»РЅСЏРµРј Р·Р°РїСЂРѕСЃ Рє Р‘Р” РЅР° РїРѕР»СѓС‡РµРЅРёРµ РґР°РЅРЅС‹С… Рѕ РґРѕРєСѓРјРµРЅС‚Рµ
 				$document = $AVE_DB->Query("
 					SELECT *
 					FROM " . PREFIX . "_documents
@@ -963,25 +977,25 @@ class AVE_Document
 
 				$show = true;
 
-				// Проверяем права доступа к документу
+				// РџСЂРѕРІРµСЂСЏРµРј РїСЂР°РІР° РґРѕСЃС‚СѓРїР° Рє РґРѕРєСѓРјРµРЅС‚Сѓ
 				$this->documentPermissionFetch($document->rubric_id);
 
-				// запрещаем доступ,
-				// если автору документа не разрешено изменять свои документы в рубрике
-				// или пользователю не разрешено изменять все документы в рубрике
+				// Р·Р°РїСЂРµС‰Р°РµРј РґРѕСЃС‚СѓРї,
+				// РµСЃР»Рё Р°РІС‚РѕСЂСѓ РґРѕРєСѓРјРµРЅС‚Р° РЅРµ СЂР°Р·СЂРµС€РµРЅРѕ РёР·РјРµРЅСЏС‚СЊ СЃРІРѕРё РґРѕРєСѓРјРµРЅС‚С‹ РІ СЂСѓР±СЂРёРєРµ
+				// РёР»Рё РїРѕР»СЊР·РѕРІР°С‚РµР»СЋ РЅРµ СЂР°Р·СЂРµС€РµРЅРѕ РёР·РјРµРЅСЏС‚СЊ РІСЃРµ РґРѕРєСѓРјРµРЅС‚С‹ РІ СЂСѓР±СЂРёРєРµ
 				if (!( (isset($_SESSION['user_id']) && $document->document_author_id == $_SESSION['user_id']
 					&& isset($_SESSION[$document->rubric_id . '_editown']) && $_SESSION[$document->rubric_id . '_editown'] == 1)
 					|| (isset($_SESSION[$document->rubric_id . '_editall']) && $_SESSION[$document->rubric_id . '_editall'] == 1)))
 				{
 					$show = false;
 				}
-				// запрещаем доступ к главной странице и странице ошибки 404, если требуется одобрение Администратора
+				// Р·Р°РїСЂРµС‰Р°РµРј РґРѕСЃС‚СѓРї Рє РіР»Р°РІРЅРѕР№ СЃС‚СЂР°РЅРёС†Рµ Рё СЃС‚СЂР°РЅРёС†Рµ РѕС€РёР±РєРё 404, РµСЃР»Рё С‚СЂРµР±СѓРµС‚СЃСЏ РѕРґРѕР±СЂРµРЅРёРµ РђРґРјРёРЅРёСЃС‚СЂР°С‚РѕСЂР°
 				if ( ($document_id == 1 || $document_id == PAGE_NOT_FOUND_ID) &&
 					!(isset($_SESSION[$document->rubric_id . '_newnow']) && $_SESSION[$document->rubric_id . '_newnow'] == 1) )
 				{
 					$show = false;
 				}
-				// разрешаем доступ, если пользователь принадлежит группе Администраторов или имеет все права на рубрику
+				// СЂР°Р·СЂРµС€Р°РµРј РґРѕСЃС‚СѓРї, РµСЃР»Рё РїРѕР»СЊР·РѕРІР°С‚РµР»СЊ РїСЂРёРЅР°РґР»РµР¶РёС‚ РіСЂСѓРїРїРµ РђРґРјРёРЅРёСЃС‚СЂР°С‚РѕСЂРѕРІ РёР»Рё РёРјРµРµС‚ РІСЃРµ РїСЂР°РІР° РЅР° СЂСѓР±СЂРёРєСѓ
 				if ( (defined('UGROUP') && UGROUP == 1)
 					|| (isset($_SESSION[$document->rubric_id . '_alles']) && $_SESSION[$document->rubric_id . '_alles'] == 1) )
 				{
@@ -1002,7 +1016,7 @@ class AVE_Document
 						$document->dontChangeStatus = 1;
 					}
 
-					// Выполняем запрос к БД и получаем все данные для полей документа
+					// Р’С‹РїРѕР»РЅСЏРµРј Р·Р°РїСЂРѕСЃ Рє Р‘Р” Рё РїРѕР»СѓС‡Р°РµРј РІСЃРµ РґР°РЅРЅС‹Рµ РґР»СЏ РїРѕР»РµР№ РґРѕРєСѓРјРµРЅС‚Р°
 					$sql = $AVE_DB->Query("
 						SELECT
 							doc.Id AS df_id,
@@ -1016,11 +1030,11 @@ class AVE_Document
 					");
 					while ($row = $sql->FetchRow())
 					{
-						$row->Feld = $this->_documentFieldGet($row->rubric_field_type, $row->field_value, $row->df_id, $row->rubric_field_default);
+						$row->Feld = $this->_documentFieldGet($row->rubric_field_type, $row->field_value, $row->Id, $row->rubric_field_default);
 						array_push($fields, $row);
 					}
 
-					// Формируем ряд переменных и передаем их в шаблон для вывода
+					// Р¤РѕСЂРјРёСЂСѓРµРј СЂСЏРґ РїРµСЂРµРјРµРЅРЅС‹С… Рё РїРµСЂРµРґР°РµРј РёС… РІ С€Р°Р±Р»РѕРЅ РґР»СЏ РІС‹РІРѕРґР°
 					$document->fields = $fields;
 					$document->rubric_title = $AVE_Rubric->rubricNameByIdGet($document->rubric_id)->rubric_title;
 					$document->rubric_url_prefix = $AVE_Rubric->rubricNameByIdGet($document->rubric_id)->rubric_alias;
@@ -1029,10 +1043,10 @@ class AVE_Document
 					$AVE_Template->assign('document', $document);
 //					$AVE_Template->assign('DEF_DOC_END_YEAR', mktime(date("H"), date("i"), 0, date("m"), date("d"), date("Y") + 10));
 
-					// Отображаем страницу для редактирования
+					// РћС‚РѕР±СЂР°Р¶Р°РµРј СЃС‚СЂР°РЅРёС†Сѓ РґР»СЏ СЂРµРґР°РєС‚РёСЂРѕРІР°РЅРёСЏ
 					$AVE_Template->assign('content', $AVE_Template->fetch('documents/form.tpl'));
 				}
-				else // Если пользователь не имеет прав на редактирование, формируем сообщение об ошибке
+				else // Р•СЃР»Рё РїРѕР»СЊР·РѕРІР°С‚РµР»СЊ РЅРµ РёРјРµРµС‚ РїСЂР°РІ РЅР° СЂРµРґР°РєС‚РёСЂРѕРІР°РЅРёРµ, С„РѕСЂРјРёСЂСѓРµРј СЃРѕРѕР±С‰РµРЅРёРµ РѕР± РѕС€РёР±РєРµ
 				{
 					$AVE_Template->assign('content', $AVE_Template->get_config_vars('DOC_NO_PERMISSION'));
 				}
@@ -1041,15 +1055,15 @@ class AVE_Document
 	}
 
 	/**
-	 * Метод, предназначенный для пометки документа к удалению
+	 * РњРµС‚РѕРґ, РїСЂРµРґРЅР°Р·РЅР°С‡РµРЅРЅС‹Р№ РґР»СЏ РїРѕРјРµС‚РєРё РґРѕРєСѓРјРµРЅС‚Р° Рє СѓРґР°Р»РµРЅРёСЋ
 	 *
-	 * @param int $document_id	идентификатор Документа
+	 * @param int $document_id	РёРґРµРЅС‚РёС„РёРєР°С‚РѕСЂ Р”РѕРєСѓРјРµРЅС‚Р°
 	 */
 	function documentMarkDelete($document_id)
 	{
 		global $AVE_DB;
 
-		// Выполняем запрос к БД на получение информации о документе (id, id рубрики, автор)
+		// Р’С‹РїРѕР»РЅСЏРµРј Р·Р°РїСЂРѕСЃ Рє Р‘Р” РЅР° РїРѕР»СѓС‡РµРЅРёРµ РёРЅС„РѕСЂРјР°С†РёРё Рѕ РґРѕРєСѓРјРµРЅС‚Рµ (id, id СЂСѓР±СЂРёРєРё, Р°РІС‚РѕСЂ)
 		$row = $AVE_DB->Query("
 			SELECT
 				Id,
@@ -1059,106 +1073,125 @@ class AVE_Document
 			WHERE Id = '" . $document_id . "'
 		")->FetchRow();
 
-		// Если у пользователя достаточно прав на выполнение данной операции
+		// Р•СЃР»Рё Сѓ РїРѕР»СЊР·РѕРІР°С‚РµР»СЏ РґРѕСЃС‚Р°С‚РѕС‡РЅРѕ РїСЂР°РІ РЅР° РІС‹РїРѕР»РЅРµРЅРёРµ РґР°РЅРЅРѕР№ РѕРїРµСЂР°С†РёРё
 		if ( (isset($_SESSION['user_id']) && $_SESSION['user_id'] == $row->document_author_id)
 			&& (isset($_SESSION[$row->rubric_id . '_editown']) && $_SESSION[$row->rubric_id . '_editown'] == 1)
 			|| (isset($_SESSION[$row->rubric_id . '_alles']) && $_SESSION[$row->rubric_id . '_alles'] == 1)
 			|| (defined('UGROUP') && UGROUP == 1) )
 		{
-			// и это не главная страница и не страница с ошибкой 404
+			// Рё СЌС‚Рѕ РЅРµ РіР»Р°РІРЅР°СЏ СЃС‚СЂР°РЅРёС†Р° Рё РЅРµ СЃС‚СЂР°РЅРёС†Р° СЃ РѕС€РёР±РєРѕР№ 404
 			if ($document_id != 1 && $document_id != PAGE_NOT_FOUND_ID)
 			{
-				// Выполняем запрос к БД на обновление данных (пометка на удаление)
+				// Р’С‹РїРѕР»РЅСЏРµРј Р·Р°РїСЂРѕСЃ Рє Р‘Р” РЅР° РѕР±РЅРѕРІР»РµРЅРёРµ РґР°РЅРЅС‹С… (РїРѕРјРµС‚РєР° РЅР° СѓРґР°Р»РµРЅРёРµ)
 				$AVE_DB->Query("
 					UPDATE " . PREFIX . "_documents
 					SET document_deleted = '1'
 					WHERE Id = '" . $document_id . "'
 				");
 
-				// Сохраняем системное сообщение в журнал
-				reportLog($_SESSION['user_name'] . ' - временно удалил документ (' . $document_id . ')', 2, 2);
+				$AVE_DB->clearcache('rub_'.$row->rubric_id);			
+				$AVE_DB->clearcache('doc_'.$document_id);			
+				// РЎРѕС…СЂР°РЅСЏРµРј СЃРёСЃС‚РµРјРЅРѕРµ СЃРѕРѕР±С‰РµРЅРёРµ РІ Р¶СѓСЂРЅР°Р»
+				reportLog($_SESSION['user_name'] . ' - РІСЂРµРјРµРЅРЅРѕ СѓРґР°Р»РёР» РґРѕРєСѓРјРµРЅС‚ (' . $document_id . ')', 2, 2);
 			}
 		}
 
-		// Выполняем обновление страницы
+		// Р’С‹РїРѕР»РЅСЏРµРј РѕР±РЅРѕРІР»РµРЅРёРµ СЃС‚СЂР°РЅРёС†С‹
 		header('Location:index.php?do=docs&cp=' . SESSION);
 	}
 
 	/**
-	 * Метод, предназначенный для снятия отметки об удаления
+	 * РњРµС‚РѕРґ, РїСЂРµРґРЅР°Р·РЅР°С‡РµРЅРЅС‹Р№ РґР»СЏ СЃРЅСЏС‚РёСЏ РѕС‚РјРµС‚РєРё РѕР± СѓРґР°Р»РµРЅРёСЏ
 	 *
-	 * @param int $document_id	идентификатор Документа
+	 * @param int $document_id	РёРґРµРЅС‚РёС„РёРєР°С‚РѕСЂ Р”РѕРєСѓРјРµРЅС‚Р°
 	 */
 	function documentUnmarkDelete($document_id)
 	{
 		global $AVE_DB;
 
-		// Выполняем запрос к БД на обновление информации (снятие отметки об удалении)
+		// Р’С‹РїРѕР»РЅСЏРµРј Р·Р°РїСЂРѕСЃ Рє Р‘Р” РЅР° РѕР±РЅРѕРІР»РµРЅРёРµ РёРЅС„РѕСЂРјР°С†РёРё (СЃРЅСЏС‚РёРµ РѕС‚РјРµС‚РєРё РѕР± СѓРґР°Р»РµРЅРёРё)
+		$row = $AVE_DB->Query("
+			SELECT *
+			FROM " . PREFIX . "_documents
+			WHERE Id = '" . $document_id . "'
+		")->FetchRow();
+
 		$AVE_DB->Query("
 			UPDATE " . PREFIX . "_documents
 			SET document_deleted = '0'
 			WHERE Id = '" . $document_id . "'
 		");
 
-		// Сохраняем системное сообщение в журнал
-		reportLog($_SESSION['user_name'] . ' - восстановил удаленный документ (' . $document_id . ')', 2, 2);
+		// РЎРѕС…СЂР°РЅСЏРµРј СЃРёСЃС‚РµРјРЅРѕРµ СЃРѕРѕР±С‰РµРЅРёРµ РІ Р¶СѓСЂРЅР°Р»
+		reportLog($_SESSION['user_name'] . ' - РІРѕСЃСЃС‚Р°РЅРѕРІРёР» СѓРґР°Р»РµРЅРЅС‹Р№ РґРѕРєСѓРјРµРЅС‚ (' . $document_id . ')', 2, 2);
 
-		// Выполняем обновление страницы
+		$AVE_DB->clearcache('rub_'.$row->rubric_id);			
+		$AVE_DB->clearcache('doc_'.$document_id);			
+
+		// Р’С‹РїРѕР»РЅСЏРµРј РѕР±РЅРѕРІР»РµРЅРёРµ СЃС‚СЂР°РЅРёС†С‹
 		header('Location:index.php?do=docs&cp=' . SESSION);
 	}
 
 	/**
-	 * Метод, предназначенный для полного удаления документа без возможности восстановления
+	 * РњРµС‚РѕРґ, РїСЂРµРґРЅР°Р·РЅР°С‡РµРЅРЅС‹Р№ РґР»СЏ РїРѕР»РЅРѕРіРѕ СѓРґР°Р»РµРЅРёСЏ РґРѕРєСѓРјРµРЅС‚Р° Р±РµР· РІРѕР·РјРѕР¶РЅРѕСЃС‚Рё РІРѕСЃСЃС‚Р°РЅРѕРІР»РµРЅРёСЏ
 	 *
-	 * @param int $document_id	идентификатор Документа
+	 * @param int $document_id	РёРґРµРЅС‚РёС„РёРєР°С‚РѕСЂ Р”РѕРєСѓРјРµРЅС‚Р°
 	 */
 	function documentDelete($document_id)
 	{
 		global $AVE_DB;
 
-		// Проверяем, чтобы удаляемый документ не являлся главной страницей и не страницей с 404 ощибкой
+		// РџСЂРѕРІРµСЂСЏРµРј, С‡С‚РѕР±С‹ СѓРґР°Р»СЏРµРјС‹Р№ РґРѕРєСѓРјРµРЅС‚ РЅРµ СЏРІР»СЏР»СЃСЏ РіР»Р°РІРЅРѕР№ СЃС‚СЂР°РЅРёС†РµР№ Рё РЅРµ СЃС‚СЂР°РЅРёС†РµР№ СЃ 404 РѕС‰РёР±РєРѕР№
 		if ($document_id != 1 && $document_id != PAGE_NOT_FOUND_ID)
 		{
-			// Выполняем запрос к БД на удаление информации о документе
+			$row = $AVE_DB->Query("
+				SELECT *
+				FROM " . PREFIX . "_documents
+				WHERE Id = '" . $document_id . "'
+			")->FetchRow();
+			// Р’С‹РїРѕР»РЅСЏРµРј Р·Р°РїСЂРѕСЃ Рє Р‘Р” РЅР° СѓРґР°Р»РµРЅРёРµ РёРЅС„РѕСЂРјР°С†РёРё Рѕ РґРѕРєСѓРјРµРЅС‚Рµ
 			$AVE_DB->Query("
 				DELETE
 				FROM " . PREFIX . "_documents
 				WHERE Id = '" . $document_id . "'
 			");
 
-			// Выполняем запрос к БД на удаление полей, которые относились к документу
+			// Р’С‹РїРѕР»РЅСЏРµРј Р·Р°РїСЂРѕСЃ Рє Р‘Р” РЅР° СѓРґР°Р»РµРЅРёРµ РїРѕР»РµР№, РєРѕС‚РѕСЂС‹Рµ РѕС‚РЅРѕСЃРёР»РёСЃСЊ Рє РґРѕРєСѓРјРµРЅС‚Сѓ
 			$AVE_DB->Query("
 				DELETE
 				FROM " . PREFIX . "_document_fields
 				WHERE document_id = '" . $document_id . "'
 			");
 
-			// Очищаем кэш шаблона
+			// РћС‡РёС‰Р°РµРј РєСЌС€ С€Р°Р±Р»РѕРЅР°
 			$AVE_DB->Query("
 				DELETE
 				FROM " . PREFIX . "_rubric_template_cache
 				WHERE doc_id = '" . $document_id . "'
 			");
 
-			// Сохраняем системное сообщение в журнал
-			reportLog($_SESSION['user_name'] . ' - окончательно удалил документ (' . $document_id . ')', 2, 2);
+			// РЎРѕС…СЂР°РЅСЏРµРј СЃРёСЃС‚РµРјРЅРѕРµ СЃРѕРѕР±С‰РµРЅРёРµ РІ Р¶СѓСЂРЅР°Р»
+			reportLog($_SESSION['user_name'] . ' - РѕРєРѕРЅС‡Р°С‚РµР»СЊРЅРѕ СѓРґР°Р»РёР» РґРѕРєСѓРјРµРЅС‚ (' . $document_id . ')', 2, 2);
 		}
 
-		// Выполняем обновление страницы
+		$AVE_DB->clearcache('rub_'.$row->rubric_id);			
+		$AVE_DB->clearcache('doc_'.$document_id);			
+
+		// Р’С‹РїРѕР»РЅСЏРµРј РѕР±РЅРѕРІР»РµРЅРёРµ СЃС‚СЂР°РЅРёС†С‹
 		header('Location:index.php?do=docs&cp=' . SESSION);
 	}
 
 	/**
-	 * Метод, предназначенный для публикации или отмены публикации документа
+	 * РњРµС‚РѕРґ, РїСЂРµРґРЅР°Р·РЅР°С‡РµРЅРЅС‹Р№ РґР»СЏ РїСѓР±Р»РёРєР°С†РёРё РёР»Рё РѕС‚РјРµРЅС‹ РїСѓР±Р»РёРєР°С†РёРё РґРѕРєСѓРјРµРЅС‚Р°
 	 *
-	 * @param int $document_id	идентификатор Документа
-	 * @param string $openclose	статус Документа {open|close}
+	 * @param int $document_id	РёРґРµРЅС‚РёС„РёРєР°С‚РѕСЂ Р”РѕРєСѓРјРµРЅС‚Р°
+	 * @param string $openclose	СЃС‚Р°С‚СѓСЃ Р”РѕРєСѓРјРµРЅС‚Р° {open|close}
 	 */
 	function documentStatusSet($document_id, $openclose = 0)
 	{
 		global $AVE_DB;
 
-		// Выполняем запрос к БД на получение id автора документа, чтобы проверить уровень прав доступа
+		// Р’С‹РїРѕР»РЅСЏРµРј Р·Р°РїСЂРѕСЃ Рє Р‘Р” РЅР° РїРѕР»СѓС‡РµРЅРёРµ id Р°РІС‚РѕСЂР° РґРѕРєСѓРјРµРЅС‚Р°, С‡С‚РѕР±С‹ РїСЂРѕРІРµСЂРёС‚СЊ СѓСЂРѕРІРµРЅСЊ РїСЂР°РІ РґРѕСЃС‚СѓРїР°
 		$row = $AVE_DB->Query("
 			SELECT
 				rubric_id,
@@ -1167,35 +1200,39 @@ class AVE_Document
 			WHERE Id = '" . $document_id . "'
 		")->FetchRow();
 
-		// Проверем, чтобы у пользователя было достаточно прав на выполнение данной операции
+		// РџСЂРѕРІРµСЂРµРј, С‡С‚РѕР±С‹ Сѓ РїРѕР»СЊР·РѕРІР°С‚РµР»СЏ Р±С‹Р»Рѕ РґРѕСЃС‚Р°С‚РѕС‡РЅРѕ РїСЂР°РІ РЅР° РІС‹РїРѕР»РЅРµРЅРёРµ РґР°РЅРЅРѕР№ РѕРїРµСЂР°С†РёРё
 		if ( ($row->document_author_id == @$_SESSION['user_id'])
 			&& (isset($_SESSION[$row->rubric_id . '_newnow']) && @$_SESSION[$row->rubric_id . '_newnow'] == 1)
 			|| @$_SESSION[$row->rubric_id . '_alles'] == 1
 			|| UGROUP == 1)
 		{
-			// Если это не главная страница и не страница с 404 ошибкой
+			// Р•СЃР»Рё СЌС‚Рѕ РЅРµ РіР»Р°РІРЅР°СЏ СЃС‚СЂР°РЅРёС†Р° Рё РЅРµ СЃС‚СЂР°РЅРёС†Р° СЃ 404 РѕС€РёР±РєРѕР№
 			if ($document_id != 1 && $document_id != PAGE_NOT_FOUND_ID)
 			{
-				// Выполянем запрос к БД на смену статуса у документа
+				// Р’С‹РїРѕР»СЏРЅРµРј Р·Р°РїСЂРѕСЃ Рє Р‘Р” РЅР° СЃРјРµРЅСѓ СЃС‚Р°С‚СѓСЃР° Сѓ РґРѕРєСѓРјРµРЅС‚Р°
 				$AVE_DB->Query("
 					UPDATE " . PREFIX . "_documents
 					SET document_status = '" . $openclose . "'
 					WHERE Id = '" . $document_id . "'
 				");
 
-				// Сохраняем системное сообщение в журнал
-				reportLog($_SESSION['user_name'] . ' - ' . (($openclose==1) ? 'активировал' : 'деактивировал') . ' документ (' . $document_id . ')', 2, 2);
+				$AVE_DB->clearcache('rub_'.$row->rubric_id);			
+				$AVE_DB->clearcache('doc_'.$document_id);			
+				// РЎРѕС…СЂР°РЅСЏРµРј СЃРёСЃС‚РµРјРЅРѕРµ СЃРѕРѕР±С‰РµРЅРёРµ РІ Р¶СѓСЂРЅР°Р»
+				reportLog($_SESSION['user_name'] . ' - ' . (($openclose==1) ? 'Р°РєС‚РёРІРёСЂРѕРІР°Р»' : 'РґРµР°РєС‚РёРІРёСЂРѕРІР°Р»') . ' РґРѕРєСѓРјРµРЅС‚ (' . $document_id . ')', 2, 2);
 			}
 		}
 
-		// Выполняем обновление страницы
+		$AVE_DB->clearcache('rub_'.$row->rubric_id);			
+		$AVE_DB->clearcache('doc_'.$document_id);			
+		// Р’С‹РїРѕР»РЅСЏРµРј РѕР±РЅРѕРІР»РµРЅРёРµ СЃС‚СЂР°РЅРёС†С‹
 		header('Location:index.php?do=docs&cp=' . SESSION);
 		exit;
 	}
 
 	/**
-	 * Метод, предназначенный для передачи в Smarty шаблонизатор меток периода времени отображаемых
-	 * в списке документов
+	 * РњРµС‚РѕРґ, РїСЂРµРґРЅР°Р·РЅР°С‡РµРЅРЅС‹Р№ РґР»СЏ РїРµСЂРµРґР°С‡Рё РІ Smarty С€Р°Р±Р»РѕРЅРёР·Р°С‚РѕСЂ РјРµС‚РѕРє РїРµСЂРёРѕРґР° РІСЂРµРјРµРЅРё РѕС‚РѕР±СЂР°Р¶Р°РµРјС‹С…
+	 * РІ СЃРїРёСЃРєРµ РґРѕРєСѓРјРµРЅС‚РѕРІ
 	 *
 	 */
 	function documentTemplateTimeAssign()
@@ -1210,33 +1247,33 @@ class AVE_Document
 	}
 
 	/**
-	 * Метод, предназначенный для переноса документа в другую рубрику
+	 * РњРµС‚РѕРґ, РїСЂРµРґРЅР°Р·РЅР°С‡РµРЅРЅС‹Р№ РґР»СЏ РїРµСЂРµРЅРѕСЃР° РґРѕРєСѓРјРµРЅС‚Р° РІ РґСЂСѓРіСѓСЋ СЂСѓР±СЂРёРєСѓ
 	 *
 	 */
 	function documentRubricChange()
 	{
 		global $AVE_DB, $AVE_Template;
 
-		$document_id = (int)$_REQUEST['Id'];        // идентификатор документа
-		$rubric_id   = (int)$_REQUEST['rubric_id']; // идентификатор текущей рубрики
+		$document_id = (int)$_REQUEST['Id'];        // РёРґРµРЅС‚РёС„РёРєР°С‚РѕСЂ РґРѕРєСѓРјРµРЅС‚Р°
+		$rubric_id   = (int)$_REQUEST['rubric_id']; // РёРґРµРЅС‚РёС„РёРєР°С‚РѕСЂ С‚РµРєСѓС‰РµР№ СЂСѓР±СЂРёРєРё
 
-		// Если в запросе пришел идентификатор новой рубрики и id документа, тогда
-		// выполняем автоматический перенос документа из одной рубрики в другую
+		// Р•СЃР»Рё РІ Р·Р°РїСЂРѕСЃРµ РїСЂРёС€РµР» РёРґРµРЅС‚РёС„РёРєР°С‚РѕСЂ РЅРѕРІРѕР№ СЂСѓР±СЂРёРєРё Рё id РґРѕРєСѓРјРµРЅС‚Р°, С‚РѕРіРґР°
+		// РІС‹РїРѕР»РЅСЏРµРј Р°РІС‚РѕРјР°С‚РёС‡РµСЃРєРёР№ РїРµСЂРµРЅРѕСЃ РґРѕРєСѓРјРµРЅС‚Р° РёР· РѕРґРЅРѕР№ СЂСѓР±СЂРёРєРё РІ РґСЂСѓРіСѓСЋ
 		if ((!empty($_POST['NewRubr'])) and (!empty($_GET['Id'])))
 		{
-			$new_rubric_id = (int)$_POST['NewRubr']; // идентификатор целевой рубрики
+			$new_rubric_id = (int)$_POST['NewRubr']; // РёРґРµРЅС‚РёС„РёРєР°С‚РѕСЂ С†РµР»РµРІРѕР№ СЂСѓР±СЂРёРєРё
 
-			// Циклически обрабатываем данные, пришедшие в запросе методо POST
+			// Р¦РёРєР»РёС‡РµСЃРєРё РѕР±СЂР°Р±Р°С‚С‹РІР°РµРј РґР°РЅРЅС‹Рµ, РїСЂРёС€РµРґС€РёРµ РІ Р·Р°РїСЂРѕСЃРµ РјРµС‚РѕРґРѕ POST
 			foreach ($_POST as $key => $value)
 			{
 				if (is_integer($key))
 				{
-					// Определяем флаг поля
+					// РћРїСЂРµРґРµР»СЏРµРј С„Р»Р°Рі РїРѕР»СЏ
 					switch ($value)
 					{
-						// Если 0, тогда
+						// Р•СЃР»Рё 0, С‚РѕРіРґР°
 						case 0:
-							// Выполняем запрос к БД на удаление старого поля (лишнее или не требует переноса)
+							// Р’С‹РїРѕР»РЅСЏРµРј Р·Р°РїСЂРѕСЃ Рє Р‘Р” РЅР° СѓРґР°Р»РµРЅРёРµ СЃС‚Р°СЂРѕРіРѕ РїРѕР»СЏ (Р»РёС€РЅРµРµ РёР»Рё РЅРµ С‚СЂРµР±СѓРµС‚ РїРµСЂРµРЅРѕСЃР°)
 							$AVE_DB->Query("
 								DELETE
 								FROM " . PREFIX . "_document_fields
@@ -1245,9 +1282,9 @@ class AVE_Document
 							");
 							break;
 
-						// Если -1, тогда
+						// Р•СЃР»Рё -1, С‚РѕРіРґР°
 						case -1:
-							// Выполняем запрос на получение данных для этого (старого) поля
+							// Р’С‹РїРѕР»РЅСЏРµРј Р·Р°РїСЂРѕСЃ РЅР° РїРѕР»СѓС‡РµРЅРёРµ РґР°РЅРЅС‹С… РґР»СЏ СЌС‚РѕРіРѕ (СЃС‚Р°СЂРѕРіРѕ) РїРѕР»СЏ
 							$row_fd = $AVE_DB->Query("
 								SELECT
 									rubric_field_title,
@@ -1256,7 +1293,7 @@ class AVE_Document
 								WHERE Id = '" . $key . "'
 							")->FetchRow();
 
-							// Выполняем запрос к БД и получаем последнюю позицию полей в рубрики КУДА переносим
+							// Р’С‹РїРѕР»РЅСЏРµРј Р·Р°РїСЂРѕСЃ Рє Р‘Р” Рё РїРѕР»СѓС‡Р°РµРј РїРѕСЃР»РµРґРЅСЋСЋ РїРѕР·РёС†РёСЋ РїРѕР»РµР№ РІ СЂСѓР±СЂРёРєРё РљРЈР”Рђ РїРµСЂРµРЅРѕСЃРёРј
 							$new_pos = $AVE_DB->Query("
 								SELECT rubric_field_position
 								FROM " . PREFIX . "_rubric_fields
@@ -1266,7 +1303,7 @@ class AVE_Document
 							")->GetCell();
 							++$new_pos;
 
-							// Выполняем запрос к БД и добавляем новое поле в новую рубрику
+							// Р’С‹РїРѕР»РЅСЏРµРј Р·Р°РїСЂРѕСЃ Рє Р‘Р” Рё РґРѕР±Р°РІР»СЏРµРј РЅРѕРІРѕРµ РїРѕР»Рµ РІ РЅРѕРІСѓСЋ СЂСѓР±СЂРёРєСѓ
 							$AVE_DB->Query("
 								INSERT
 								INTO " . PREFIX . "_rubric_fields
@@ -1279,7 +1316,7 @@ class AVE_Document
 
 							$lastid = $AVE_DB->InsertId();
 
-							// Выполняем запрос к БД и добавляем запись о поле в таблицу с полями документов
+							// Р’С‹РїРѕР»РЅСЏРµРј Р·Р°РїСЂРѕСЃ Рє Р‘Р” Рё РґРѕР±Р°РІР»СЏРµРј Р·Р°РїРёСЃСЊ Рѕ РїРѕР»Рµ РІ С‚Р°Р±Р»РёС†Сѓ СЃ РїРѕР»СЏРјРё РґРѕРєСѓРјРµРЅС‚РѕРІ
 							$sql_docs = $AVE_DB->Query("
 								SELECT Id
 								FROM " . PREFIX . "_documents
@@ -1299,7 +1336,7 @@ class AVE_Document
 								");
 							}
 
-							// Выполняем запрос к БД и создаем новое поле для изменяемого документа
+							// Р’С‹РїРѕР»РЅСЏРµРј Р·Р°РїСЂРѕСЃ Рє Р‘Р” Рё СЃРѕР·РґР°РµРј РЅРѕРІРѕРµ РїРѕР»Рµ РґР»СЏ РёР·РјРµРЅСЏРµРјРѕРіРѕ РґРѕРєСѓРјРµРЅС‚Р°
 							$AVE_DB->Query("
 								UPDATE " . PREFIX . "_document_fields
 								SET rubric_field_id   = '" . $lastid . "'
@@ -1308,9 +1345,9 @@ class AVE_Document
 							");
 							break;
 
-						// По умолчанию
+						// РџРѕ СѓРјРѕР»С‡Р°РЅРёСЋ
 						default:
-							// Выполняем запрос к БД и просто обновляем имеющиеся данные
+							// Р’С‹РїРѕР»РЅСЏРµРј Р·Р°РїСЂРѕСЃ Рє Р‘Р” Рё РїСЂРѕСЃС‚Рѕ РѕР±РЅРѕРІР»СЏРµРј РёРјРµСЋС‰РёРµСЃСЏ РґР°РЅРЅС‹Рµ
 							$AVE_DB->Query("
 								UPDATE " . PREFIX . "_document_fields
 								SET rubric_field_id   = '" . $value . "'
@@ -1322,7 +1359,7 @@ class AVE_Document
 				}
 			}
 
-			// Выполняем запрос к БД и получаем список всех полей у новой рубрики
+			// Р’С‹РїРѕР»РЅСЏРµРј Р·Р°РїСЂРѕСЃ Рє Р‘Р” Рё РїРѕР»СѓС‡Р°РµРј СЃРїРёСЃРѕРє РІСЃРµС… РїРѕР»РµР№ Сѓ РЅРѕРІРѕР№ СЂСѓР±СЂРёРєРё
 			$sql_rub = $AVE_DB->Query("
 				SELECT Id
 				FROM " . PREFIX . "_rubric_fields
@@ -1330,7 +1367,7 @@ class AVE_Document
 				ORDER BY Id ASC
 			");
 
-			// Выполняем запросы к БД на проверку наличия нужных полей.
+			// Р’С‹РїРѕР»РЅСЏРµРј Р·Р°РїСЂРѕСЃС‹ Рє Р‘Р” РЅР° РїСЂРѕРІРµСЂРєСѓ РЅР°Р»РёС‡РёСЏ РЅСѓР¶РЅС‹С… РїРѕР»РµР№.
 			while ($row_rub = $sql_rub->FetchRow())
 			{
 				$num = $AVE_DB->Query("
@@ -1341,7 +1378,7 @@ class AVE_Document
 					LIMIT 1
 				")->NumRows();
 
-				// Если в новой рубрики требуемого поля нет, выполняем запрос к БД на добавление нового типа поля
+				// Р•СЃР»Рё РІ РЅРѕРІРѕР№ СЂСѓР±СЂРёРєРё С‚СЂРµР±СѓРµРјРѕРіРѕ РїРѕР»СЏ РЅРµС‚, РІС‹РїРѕР»РЅСЏРµРј Р·Р°РїСЂРѕСЃ Рє Р‘Р” РЅР° РґРѕР±Р°РІР»РµРЅРёРµ РЅРѕРІРѕРіРѕ С‚РёРїР° РїРѕР»СЏ
 				if ($num != 1)
 				{
 					$AVE_DB->Query("
@@ -1355,15 +1392,15 @@ class AVE_Document
 				}
 			}
 
-			// Выполянем запрос к БД на обновление информации, в котором устанавливаем для перенесенного документа
-			// новое значение id рубрики
+			// Р’С‹РїРѕР»СЏРЅРµРј Р·Р°РїСЂРѕСЃ Рє Р‘Р” РЅР° РѕР±РЅРѕРІР»РµРЅРёРµ РёРЅС„РѕСЂРјР°С†РёРё, РІ РєРѕС‚РѕСЂРѕРј СѓСЃС‚Р°РЅР°РІР»РёРІР°РµРј РґР»СЏ РїРµСЂРµРЅРµСЃРµРЅРЅРѕРіРѕ РґРѕРєСѓРјРµРЅС‚Р°
+			// РЅРѕРІРѕРµ Р·РЅР°С‡РµРЅРёРµ id СЂСѓР±СЂРёРєРё
 			$AVE_DB->Query("
 				UPDATE " . PREFIX . "_documents
 				SET rubric_id = '" . $new_rubric_id . "'
 				WHERE Id = '" . $document_id . "'
 			");
 
-			// Выполняем запрос к БД и очищаем кэш шаблона документа
+			// Р’С‹РїРѕР»РЅСЏРµРј Р·Р°РїСЂРѕСЃ Рє Р‘Р” Рё РѕС‡РёС‰Р°РµРј РєСЌС€ С€Р°Р±Р»РѕРЅР° РґРѕРєСѓРјРµРЅС‚Р°
 			$AVE_DB->Query("
 				DELETE
 				FROM " . PREFIX . "_rubric_template_cache
@@ -1372,14 +1409,14 @@ class AVE_Document
 
 			echo '<script>window.opener.location.reload(); window.close();</script>';
 		}
-		else  // Если в запросе не был указан id рубрики и id документа
+		else  // Р•СЃР»Рё РІ Р·Р°РїСЂРѕСЃРµ РЅРµ Р±С‹Р» СѓРєР°Р·Р°РЅ id СЂСѓР±СЂРёРєРё Рё id РґРѕРєСѓРјРµРЅС‚Р°
 		{
-			// Формируем и отображаем форму, где пользователь самостоятельно определяет перенос
+			// Р¤РѕСЂРјРёСЂСѓРµРј Рё РѕС‚РѕР±СЂР°Р¶Р°РµРј С„РѕСЂРјСѓ, РіРґРµ РїРѕР»СЊР·РѕРІР°С‚РµР»СЊ СЃР°РјРѕСЃС‚РѕСЏС‚РµР»СЊРЅРѕ РѕРїСЂРµРґРµР»СЏРµС‚ РїРµСЂРµРЅРѕСЃ
 			$fields = array();
 
 			if ((!empty($_GET['NewRubr'])) and ($rubric_id != (int)$_GET['NewRubr']))
 			{
-				// Выполняем запрос к БД  и выбираем все поля новой рубрики
+				// Р’С‹РїРѕР»РЅСЏРµРј Р·Р°РїСЂРѕСЃ Рє Р‘Р”  Рё РІС‹Р±РёСЂР°РµРј РІСЃРµ РїРѕР»СЏ РЅРѕРІРѕР№ СЂСѓР±СЂРёРєРё
 				$sql_rub = $AVE_DB->Query("
 					SELECT
 						Id,
@@ -1398,7 +1435,7 @@ class AVE_Document
 					);
 				}
 
-				// Выполняем запрос к БД и выбираем все поля старой рубрики
+				// Р’С‹РїРѕР»РЅСЏРµРј Р·Р°РїСЂРѕСЃ Рє Р‘Р” Рё РІС‹Р±РёСЂР°РµРј РІСЃРµ РїРѕР»СЏ СЃС‚Р°СЂРѕР№ СЂСѓР±СЂРёРєРё
 				$sql_old_rub = $AVE_DB->Query("
 					SELECT
 						Id,
@@ -1409,7 +1446,7 @@ class AVE_Document
 					ORDER BY Id ASC
 				");
 
-				// Циклически обрабатываем полученные данные
+				// Р¦РёРєР»РёС‡РµСЃРєРё РѕР±СЂР°Р±Р°С‚С‹РІР°РµРј РїРѕР»СѓС‡РµРЅРЅС‹Рµ РґР°РЅРЅС‹Рµ
 				while ($row_nr = $sql_old_rub->FetchRow()) {
 					$type = $row_nr->rubric_field_type;
 					$option_arr = array('0'  => $AVE_Template->get_config_vars('DOC_CHANGE_DROP_FIELD'),
@@ -1431,7 +1468,7 @@ class AVE_Document
 				}
 			}
 
-			// Формируем ряд переменых и отображаем страницу с выбором рубрики
+			// Р¤РѕСЂРјРёСЂСѓРµРј СЂСЏРґ РїРµСЂРµРјРµРЅС‹С… Рё РѕС‚РѕР±СЂР°Р¶Р°РµРј СЃС‚СЂР°РЅРёС†Сѓ СЃ РІС‹Р±РѕСЂРѕРј СЂСѓР±СЂРёРєРё
 			$AVE_Template->assign('fields', $fields);
 			$AVE_Template->assign('formaction', 'index.php?do=docs&action=change&Id=' . $document_id . '&rubric_id=' . $rubric_id . '&pop=1&cp=' . SESSION);
 			$AVE_Template->assign('content', $AVE_Template->fetch('documents/change.tpl'));
@@ -1439,14 +1476,14 @@ class AVE_Document
 	}
 
 	/**
-	 * Метод, предназначенный для формирования URL
+	 * РњРµС‚РѕРґ, РїСЂРµРґРЅР°Р·РЅР°С‡РµРЅРЅС‹Р№ РґР»СЏ С„РѕСЂРјРёСЂРѕРІР°РЅРёСЏ URL
 	 *
 	 */
 	function documentAliasCreate()
 	{
-		$alias  = empty($_REQUEST['alias'])  ? '' : prepare_url(iconv("UTF-8", "WINDOWS-1251//IGNORE//TRANSLIT", $_REQUEST['alias']));
-		$title  = empty($_REQUEST['title'])  ? '' : prepare_url(iconv("UTF-8", "WINDOWS-1251//IGNORE//TRANSLIT", $_REQUEST['title']));
-		$prefix = empty($_REQUEST['prefix']) ? '' : prepare_url(iconv("UTF-8", "WINDOWS-1251//IGNORE//TRANSLIT", $_REQUEST['prefix']));
+		$alias  = empty($_REQUEST['alias'])  ? '' : prepare_url($_REQUEST['alias']);
+		$title  = empty($_REQUEST['title'])  ? '' : prepare_url($_REQUEST['title']);
+		$prefix = empty($_REQUEST['prefix']) ? '' : prepare_url($_REQUEST['prefix']);
 
 		if ($alias != $title && $alias != trim($prefix . '/' . $title, '/')) $alias = trim($alias . '/' . $title, '/');
 
@@ -1454,7 +1491,7 @@ class AVE_Document
 	}
 
 	/**
-	 * Метод, предназначенный для контроля уникальности URL
+	 * РњРµС‚РѕРґ, РїСЂРµРґРЅР°Р·РЅР°С‡РµРЅРЅС‹Р№ РґР»СЏ РєРѕРЅС‚СЂРѕР»СЏ СѓРЅРёРєР°Р»СЊРЅРѕСЃС‚Рё URL
 	 *
 	 */
 	function documentAliasCheck()
@@ -1462,31 +1499,30 @@ class AVE_Document
 		global $AVE_DB, $AVE_Template;
 
 		$document_id = (isset($_REQUEST['id']) && is_numeric($_REQUEST['id'])) ? $_REQUEST['id'] : 0;
-		$document_alias = (isset($_REQUEST['alias'])) ? iconv("UTF-8", "WINDOWS-1251//IGNORE//TRANSLIT", $_REQUEST['alias']) : '';
-
+		$document_alias = (isset($_REQUEST['alias'])) ? $_REQUEST['alias'] : '';
+		
 		$errors = array();
 
-		// Если указанный URL пользователем не пустой
+		// Р•СЃР»Рё СѓРєР°Р·Р°РЅРЅС‹Р№ URL РїРѕР»СЊР·РѕРІР°С‚РµР»РµРј РЅРµ РїСѓСЃС‚РѕР№
 		if (!empty($document_alias))
 		{
-
-			// Проверяем, чтобы данный URL соответствовал требованиям
-			if (preg_match(TRANSLIT_URL ? '/[^a-z0-9\/-]+/' : '/[^a-zа-яёїєі0-9\/-]+/', $document_alias))
+			// РџСЂРѕРІРµСЂСЏРµРј, С‡С‚РѕР±С‹ РґР°РЅРЅС‹Р№ URL СЃРѕРѕС‚РІРµС‚СЃС‚РІРѕРІР°Р» С‚СЂРµР±РѕРІР°РЅРёСЏРј
+			if (preg_match(TRANSLIT_URL ? '/[^a-z0-9\/-]+/' : '/[^a-zР°-СЏС‘С—С”С–0-9\/-]+/', $document_alias))
 			{
 				$errors[] = $AVE_Template->get_config_vars('DOC_URL_ERROR_SYMBOL');
 			}
 
-			// Если URL начинается с "/" - фиксируем ошибку
+			// Р•СЃР»Рё URL РЅР°С‡РёРЅР°РµС‚СЃСЏ СЃ "/" - С„РёРєСЃРёСЂСѓРµРј РѕС€РёР±РєСѓ
 			if ($document_alias[0] == '/') $errors[] = $AVE_Template->get_config_vars('DOC_URL_ERROR_START');
 
-			// Если URL заканчивается на "/" - фиксируем ошибку
+			// Р•СЃР»Рё URL Р·Р°РєР°РЅС‡РёРІР°РµС‚СЃСЏ РЅР° "/" - С„РёРєСЃРёСЂСѓРµРј РѕС€РёР±РєСѓ
 			if (substr($document_alias, -1) == '/') $errors[] = $AVE_Template->get_config_vars('DOC_URL_ERROR_END');
 
-			// Если в URL используются слова apage-XX, artpage-XX,page-XX,print, фиксируем ошибку, где ХХ - число
+			// Р•СЃР»Рё РІ URL РёСЃРїРѕР»СЊР·СѓСЋС‚СЃСЏ СЃР»РѕРІР° apage-XX, artpage-XX,page-XX,print, С„РёРєСЃРёСЂСѓРµРј РѕС€РёР±РєСѓ, РіРґРµ РҐРҐ - С‡РёСЃР»Рѕ
 			$matches = preg_grep('/^(apage-\d+|artpage-\d+|page-\d+|print)$/i', explode('/', $document_alias));
 			if (!empty($matches)) $errors[] = $AVE_Template->get_config_vars('DOC_URL_ERROR_SEGMENT') . implode(', ', $matches);
 
-			// Выполняем запрос к БД на получение ивсе URL и проверку на уникальность
+			// Р’С‹РїРѕР»РЅСЏРµРј Р·Р°РїСЂРѕСЃ Рє Р‘Р” РЅР° РїРѕР»СѓС‡РµРЅРёРµ РёРІСЃРµ URL Рё РїСЂРѕРІРµСЂРєСѓ РЅР° СѓРЅРёРєР°Р»СЊРЅРѕСЃС‚СЊ
 			if (empty($errors))
 			{
 				$alias_exist = $AVE_DB->Query("
@@ -1501,37 +1537,37 @@ class AVE_Document
 			}
 		}
 		else
-		{  // В противном случае, если URL пустой, формируем сообщение об ошибке
+		{  // Р’ РїСЂРѕС‚РёРІРЅРѕРј СЃР»СѓС‡Р°Рµ, РµСЃР»Рё URL РїСѓСЃС‚РѕР№, С„РѕСЂРјРёСЂСѓРµРј СЃРѕРѕР±С‰РµРЅРёРµ РѕР± РѕС€РёР±РєРµ
 			$errors[] = $AVE_Template->get_config_vars('DOC_URL_ERROR_EMTY');
 		}
 
-		// Если ошибок не найдено, формируем сообщение об успешной операции
+		// Р•СЃР»Рё РѕС€РёР±РѕРє РЅРµ РЅР°Р№РґРµРЅРѕ, С„РѕСЂРјРёСЂСѓРµРј СЃРѕРѕР±С‰РµРЅРёРµ РѕР± СѓСЃРїРµС€РЅРѕР№ РѕРїРµСЂР°С†РёРё
 		if (empty($errors))
 		{
 			return '<font class="checkUrlOk">' . $AVE_Template->get_config_vars('DOC_URL_CHECK_OK') . '</font>';
 		}
 		else
-		{ // В противном случае формируем сообщение с ошибкой
+		{ // Р’ РїСЂРѕС‚РёРІРЅРѕРј СЃР»СѓС‡Р°Рµ С„РѕСЂРјРёСЂСѓРµРј СЃРѕРѕР±С‰РµРЅРёРµ СЃ РѕС€РёР±РєРѕР№
 			return '<font class="checkUrlErr">' . implode(', ', $errors) . '</font>';
 		}
 	}
 
 	/**
-	 * Метод, предназначенный для формирования прав доступа Группы пользователей на Документы определённой Рубрики
+	 * РњРµС‚РѕРґ, РїСЂРµРґРЅР°Р·РЅР°С‡РµРЅРЅС‹Р№ РґР»СЏ С„РѕСЂРјРёСЂРѕРІР°РЅРёСЏ РїСЂР°РІ РґРѕСЃС‚СѓРїР° Р“СЂСѓРїРїС‹ РїРѕР»СЊР·РѕРІР°С‚РµР»РµР№ РЅР° Р”РѕРєСѓРјРµРЅС‚С‹ РѕРїСЂРµРґРµР»С‘РЅРЅРѕР№ Р СѓР±СЂРёРєРё
 	 *
-	 * @param int $rubric_id	идентификатор Рубрики
+	 * @param int $rubric_id	РёРґРµРЅС‚РёС„РёРєР°С‚РѕСЂ Р СѓР±СЂРёРєРё
 	 */
 	function documentPermissionFetch($rubric_id)
 	{
 		global $AVE_DB;
 
-		// Массив прав пользователей
+		// РњР°СЃСЃРёРІ РїСЂР°РІ РїРѕР»СЊР·РѕРІР°С‚РµР»РµР№
 		static $rubric_permissions = array();
 
-		// Если у нас уже имеются полученные права для данной рубрики, просто прерываем проверку
+		// Р•СЃР»Рё Сѓ РЅР°СЃ СѓР¶Рµ РёРјРµСЋС‚СЃСЏ РїРѕР»СѓС‡РµРЅРЅС‹Рµ РїСЂР°РІР° РґР»СЏ РґР°РЅРЅРѕР№ СЂСѓР±СЂРёРєРё, РїСЂРѕСЃС‚Рѕ РїСЂРµСЂС‹РІР°РµРј РїСЂРѕРІРµСЂРєСѓ
 		if (isset($rubric_permissions[$rubric_id])) return;
 
-		// Выполняем запрос к БД на получение прав для данной рубрики
+		// Р’С‹РїРѕР»РЅСЏРµРј Р·Р°РїСЂРѕСЃ Рє Р‘Р” РЅР° РїРѕР»СѓС‡РµРЅРёРµ РїСЂР°РІ РґР»СЏ РґР°РЅРЅРѕР№ СЂСѓР±СЂРёРєРё
 		$sql = $AVE_DB->Query("
 			SELECT
 				rubric_id,
@@ -1540,7 +1576,7 @@ class AVE_Document
 			WHERE user_group_id = '" . UGROUP . "'
 		");
 
-		// Циклически обрабатываем полученные данные и формируем массив прав
+		// Р¦РёРєР»РёС‡РµСЃРєРё РѕР±СЂР°Р±Р°С‚С‹РІР°РµРј РїРѕР»СѓС‡РµРЅРЅС‹Рµ РґР°РЅРЅС‹Рµ Рё С„РѕСЂРјРёСЂСѓРµРј РјР°СЃСЃРёРІ РїСЂР°РІ
 		while ($row = $sql->FetchRow())
 		{
 			$rubric_permissions[$row->rubric_id] = 1;
@@ -1558,24 +1594,24 @@ class AVE_Document
 	}
 
 	/**
-	 * Метод, предназначенный для просмотра и добавления Заметок к Документу
+	 * РњРµС‚РѕРґ, РїСЂРµРґРЅР°Р·РЅР°С‡РµРЅРЅС‹Р№ РґР»СЏ РїСЂРѕСЃРјРѕС‚СЂР° Рё РґРѕР±Р°РІР»РµРЅРёСЏ Р—Р°РјРµС‚РѕРє Рє Р”РѕРєСѓРјРµРЅС‚Сѓ
 	 *
-	 * @param int $reply	признак ответа на Заметку
+	 * @param int $reply	РїСЂРёР·РЅР°Рє РѕС‚РІРµС‚Р° РЅР° Р—Р°РјРµС‚РєСѓ
 	 */
 	function documentRemarkNew($document_id = 0, $reply = 0)
 	{
 		global $AVE_DB, $AVE_Template;
 
-		// Если id документа не число или 0, прерываем выполнение
+		// Р•СЃР»Рё id РґРѕРєСѓРјРµРЅС‚Р° РЅРµ С‡РёСЃР»Рѕ РёР»Рё 0, РїСЂРµСЂС‹РІР°РµРј РІС‹РїРѕР»РЅРµРЅРёРµ
 		if (!(is_numeric($document_id) && $document_id > 0)) exit;
 
-		// Если в запросе пришел параметр на Сохранение
+		// Р•СЃР»Рё РІ Р·Р°РїСЂРѕСЃРµ РїСЂРёС€РµР» РїР°СЂР°РјРµС‚СЂ РЅР° РЎРѕС…СЂР°РЅРµРЅРёРµ
 		if (isset($_REQUEST['sub']) && $_REQUEST['sub'] == 'save')
 		{
-			// Если пользователь оставил комментарий и у него имеются права и это не ответ, а новая заметка, тогда
+			// Р•СЃР»Рё РїРѕР»СЊР·РѕРІР°С‚РµР»СЊ РѕСЃС‚Р°РІРёР» РєРѕРјРјРµРЅС‚Р°СЂРёР№ Рё Сѓ РЅРµРіРѕ РёРјРµСЋС‚СЃСЏ РїСЂР°РІР° Рё СЌС‚Рѕ РЅРµ РѕС‚РІРµС‚, Р° РЅРѕРІР°СЏ Р·Р°РјРµС‚РєР°, С‚РѕРіРґР°
 			if (!empty($_REQUEST['remark_text']) && check_permission('remarks') && empty($_REQUEST['reply']))
 			{
-				// Выполняем запрос к БД на добавление новой заметки для документа
+				// Р’С‹РїРѕР»РЅСЏРµРј Р·Р°РїСЂРѕСЃ Рє Р‘Р” РЅР° РґРѕР±Р°РІР»РµРЅРёРµ РЅРѕРІРѕР№ Р·Р°РјРµС‚РєРё РґР»СЏ РґРѕРєСѓРјРµРЅС‚Р°
 				$AVE_DB->Query("
 					INSERT " . PREFIX . "_document_remarks
 					SET
@@ -1589,19 +1625,19 @@ class AVE_Document
 				");
 			}
 
-			// Выполняем обновление страницы
+			// Р’С‹РїРѕР»РЅСЏРµРј РѕР±РЅРѕРІР»РµРЅРёРµ СЃС‚СЂР°РЅРёС†С‹
 			header('Location:index.php?do=docs&action=remark_reply&Id=' . $document_id . '&pop=1&cp=' . SESSION);
 		}
 
-		// Если это ответ на уже существующую заметку
+		// Р•СЃР»Рё СЌС‚Рѕ РѕС‚РІРµС‚ РЅР° СѓР¶Рµ СЃСѓС‰РµСЃС‚РІСѓСЋС‰СѓСЋ Р·Р°РјРµС‚РєСѓ
 		if ($reply == 1)
 		{
 			if (isset($_REQUEST['sub']) && $_REQUEST['sub'] == 'save')
 			{
-				// Если пользователь оставил ответ и имеет на это права
+				// Р•СЃР»Рё РїРѕР»СЊР·РѕРІР°С‚РµР»СЊ РѕСЃС‚Р°РІРёР» РѕС‚РІРµС‚ Рё РёРјРµРµС‚ РЅР° СЌС‚Рѕ РїСЂР°РІР°
 				if (!empty($_REQUEST['remark_text']) && check_permission('remarks'))
 				{
-					// Выполняем запрос на получение e-mail адреса автора заметки
+					// Р’С‹РїРѕР»РЅСЏРµРј Р·Р°РїСЂРѕСЃ РЅР° РїРѕР»СѓС‡РµРЅРёРµ e-mail Р°РґСЂРµСЃР° Р°РІС‚РѕСЂР° Р·Р°РјРµС‚РєРё
 					$remark_author_email = $AVE_DB->Query("
 						SELECT remark_author_email
 						FROM  " . PREFIX . "_document_remarks
@@ -1609,7 +1645,7 @@ class AVE_Document
 						AND document_id = '" . $document_id . "'
 					")->GetCell();
 
-					// Выполняем запрос к БД на добавление заметки в БД
+					// Р’С‹РїРѕР»РЅСЏРµРј Р·Р°РїСЂРѕСЃ Рє Р‘Р” РЅР° РґРѕР±Р°РІР»РµРЅРёРµ Р·Р°РјРµС‚РєРё РІ Р‘Р”
 					$AVE_DB->Query("
 						INSERT " . PREFIX . "_document_remarks
 						SET
@@ -1623,7 +1659,7 @@ class AVE_Document
 					");
 				}
 
-				// Формируем сообщение и отправляем письмо автору, с информацией о том, что на его заметку есть ответ
+				// Р¤РѕСЂРјРёСЂСѓРµРј СЃРѕРѕР±С‰РµРЅРёРµ Рё РѕС‚РїСЂР°РІР»СЏРµРј РїРёСЃСЊРјРѕ Р°РІС‚РѕСЂСѓ, СЃ РёРЅС„РѕСЂРјР°С†РёРµР№ Рѕ С‚РѕРј, С‡С‚Рѕ РЅР° РµРіРѕ Р·Р°РјРµС‚РєСѓ РµСЃС‚СЊ РѕС‚РІРµС‚
 				$system_mail = get_settings('mail_from');
 				$system_mail_name = get_settings('mail_from_name');
 				$link = get_home_link() . 'index.php?do=docs&doc_id=' . $document_id;
@@ -1639,28 +1675,28 @@ class AVE_Document
 					$AVE_Template->get_config_vars('DOC_MAIL_SUBJECT_NOTICE'),
 					$system_mail,
 					$system_mail_name,
-					'text'					
+					'text'
 				);
 
-				// Выполняем обновление страницы
+				// Р’С‹РїРѕР»РЅСЏРµРј РѕР±РЅРѕРІР»РµРЅРёРµ СЃС‚СЂР°РЅРёС†С‹
 				header('Location:index.php?do=docs&action=remark_reply&Id=' . $document_id . '&pop=1&cp=' . SESSION);
 			}
 
-			// Получаем общее количество заметок для документа
+			// РџРѕР»СѓС‡Р°РµРј РѕР±С‰РµРµ РєРѕР»РёС‡РµСЃС‚РІРѕ Р·Р°РјРµС‚РѕРє РґР»СЏ РґРѕРєСѓРјРµРЅС‚Р°
 			$num = $AVE_DB->Query("
 				SELECT COUNT(*)
 				FROM " . PREFIX . "_document_remarks
 				WHERE document_id = '" . $document_id . "'
 			")->GetCell();
 
-			// Определяыем лимит заметок на 1 странице и подсчитываем количество страниц
+			// РћРїСЂРµРґРµР»СЏС‹РµРј Р»РёРјРёС‚ Р·Р°РјРµС‚РѕРє РЅР° 1 СЃС‚СЂР°РЅРёС†Рµ Рё РїРѕРґСЃС‡РёС‚С‹РІР°РµРј РєРѕР»РёС‡РµСЃС‚РІРѕ СЃС‚СЂР°РЅРёС†
 			$limit = 10;
 			$seiten = ceil($num / $limit);
 			$start = get_current_page() * $limit - $limit;
 
 			$answers = array();
 
-			// Выполняем запрос к БД на получение заметок с учетом количества на 1 странцу
+			// Р’С‹РїРѕР»РЅСЏРµРј Р·Р°РїСЂРѕСЃ Рє Р‘Р” РЅР° РїРѕР»СѓС‡РµРЅРёРµ Р·Р°РјРµС‚РѕРє СЃ СѓС‡РµС‚РѕРј РєРѕР»РёС‡РµСЃС‚РІР° РЅР° 1 СЃС‚СЂР°РЅС†Сѓ
 			$sql = $AVE_DB->Query("
 				SELECT *
 				FROM " . PREFIX . "_document_remarks
@@ -1682,8 +1718,8 @@ class AVE_Document
 				AND remark_first = '1'
 			")->GetCell();
 
-			// Если количество заметок превышает допустимое значение, определенное в переменной $limit, тогда
-			// формируем постраничную навигацию
+			// Р•СЃР»Рё РєРѕР»РёС‡РµСЃС‚РІРѕ Р·Р°РјРµС‚РѕРє РїСЂРµРІС‹С€Р°РµС‚ РґРѕРїСѓСЃС‚РёРјРѕРµ Р·РЅР°С‡РµРЅРёРµ, РѕРїСЂРµРґРµР»РµРЅРЅРѕРµ РІ РїРµСЂРµРјРµРЅРЅРѕР№ $limit, С‚РѕРіРґР°
+			// С„РѕСЂРјРёСЂСѓРµРј РїРѕСЃС‚СЂР°РЅРёС‡РЅСѓСЋ РЅР°РІРёРіР°С†РёСЋ
 			if ($num > $limit)
 			{
 				$page_nav = " <a class=\"pnav\" href=\"index.php?do=docs&action=remark_reply&Id=" . $document_id . "&page={s}&pop=1&cp=" . SESSION . "\">{t}</a> ";
@@ -1691,7 +1727,7 @@ class AVE_Document
 				$AVE_Template->assign('page_nav', $page_nav);
 			}
 
-			// Передаем данные  в шаблон и отображаем страницу со списком заметок
+			// РџРµСЂРµРґР°РµРј РґР°РЅРЅС‹Рµ  РІ С€Р°Р±Р»РѕРЅ Рё РѕС‚РѕР±СЂР°Р¶Р°РµРј СЃС‚СЂР°РЅРёС†Сѓ СЃРѕ СЃРїРёСЃРєРѕРј Р·Р°РјРµС‚РѕРє
 			$AVE_Template->assign('remark_status', $remark_status);
 			$AVE_Template->assign('answers', $answers);
 			$AVE_Template->assign('reply', 1);
@@ -1699,7 +1735,7 @@ class AVE_Document
 			$AVE_Template->assign('content', $AVE_Template->fetch('documents/newremark.tpl'));
 		}
 		else
-		{ // В противном случае, если заметок еще нет, открываем форму для добавление заметки
+		{ // Р’ РїСЂРѕС‚РёРІРЅРѕРј СЃР»СѓС‡Р°Рµ, РµСЃР»Рё Р·Р°РјРµС‚РѕРє РµС‰Рµ РЅРµС‚, РѕС‚РєСЂС‹РІР°РµРј С„РѕСЂРјСѓ РґР»СЏ РґРѕР±Р°РІР»РµРЅРёРµ Р·Р°РјРµС‚РєРё
 			$AVE_Template->assign('reply', 1);
 			$AVE_Template->assign('new', 1);
 			$AVE_Template->assign('formaction', 'index.php?do=docs&action=remark&sub=save&Id=' . $document_id . '&cp=' . SESSION);
@@ -1708,20 +1744,20 @@ class AVE_Document
 	}
 
 	/**
-	 * Метод, предназначенный для управления статусами дискусии (разрешить или запретить оставлять
-	 * ответы на заметки для других пользователей)
+	 * РњРµС‚РѕРґ, РїСЂРµРґРЅР°Р·РЅР°С‡РµРЅРЅС‹Р№ РґР»СЏ СѓРїСЂР°РІР»РµРЅРёСЏ СЃС‚Р°С‚СѓСЃР°РјРё РґРёСЃРєСѓСЃРёРё (СЂР°Р·СЂРµС€РёС‚СЊ РёР»Рё Р·Р°РїСЂРµС‚РёС‚СЊ РѕСЃС‚Р°РІР»СЏС‚СЊ
+	 * РѕС‚РІРµС‚С‹ РЅР° Р·Р°РјРµС‚РєРё РґР»СЏ РґСЂСѓРіРёС… РїРѕР»СЊР·РѕРІР°С‚РµР»РµР№)
 	 *
-	 * @param int $document_id	идентификатор документа
-	 * @param int $status		статус дискусии
+	 * @param int $document_id	РёРґРµРЅС‚РёС„РёРєР°С‚РѕСЂ РґРѕРєСѓРјРµРЅС‚Р°
+	 * @param int $status		СЃС‚Р°С‚СѓСЃ РґРёСЃРєСѓСЃРёРё
 	 */
 	function documentRemarkStatus($document_id = 0, $status = 0)
 	{
 		global $AVE_DB;
 
-		// Если id документа число и оно больше 0, тогда
+		// Р•СЃР»Рё id РґРѕРєСѓРјРµРЅС‚Р° С‡РёСЃР»Рѕ Рё РѕРЅРѕ Р±РѕР»СЊС€Рµ 0, С‚РѕРіРґР°
 		if (is_numeric($document_id) && $document_id > 0)
 		{
-			// Выполняем запрос к БД на обновление статуса у заметок
+			// Р’С‹РїРѕР»РЅСЏРµРј Р·Р°РїСЂРѕСЃ Рє Р‘Р” РЅР° РѕР±РЅРѕРІР»РµРЅРёРµ СЃС‚Р°С‚СѓСЃР° Сѓ Р·Р°РјРµС‚РѕРє
 			$AVE_DB->Query("
 				UPDATE " . PREFIX . "_document_remarks
 				SET remark_status  = '" . ($status != 1 ? 0 : 1) . "'
@@ -1730,34 +1766,34 @@ class AVE_Document
 			");
 		}
 
-		// Выполняем обновление данных
+		// Р’С‹РїРѕР»РЅСЏРµРј РѕР±РЅРѕРІР»РµРЅРёРµ РґР°РЅРЅС‹С…
 		header('Location:index.php?do=docs&action=remark_reply&Id=' . $document_id . '&pop=1&cp=' . SESSION);
 		exit;
 	}
 
 	/**
-	 * Метод, предназначенный для удаление заметок
+	 * РњРµС‚РѕРґ, РїСЂРµРґРЅР°Р·РЅР°С‡РµРЅРЅС‹Р№ РґР»СЏ СѓРґР°Р»РµРЅРёРµ Р·Р°РјРµС‚РѕРє
 	 *
-	 * @param int $all	признак удаления всех Заметок (1 - удалить все)
+	 * @param int $all	РїСЂРёР·РЅР°Рє СѓРґР°Р»РµРЅРёСЏ РІСЃРµС… Р—Р°РјРµС‚РѕРє (1 - СѓРґР°Р»РёС‚СЊ РІСЃРµ)
 	 */
 	function documentRemarkDelete($document_id = 0, $all = 0)
 	{
 		global $AVE_DB;
 
-		// Если id документа не число или 0, прерываем выполнение
+		// Р•СЃР»Рё id РґРѕРєСѓРјРµРЅС‚Р° РЅРµ С‡РёСЃР»Рѕ РёР»Рё 0, РїСЂРµСЂС‹РІР°РµРј РІС‹РїРѕР»РЅРµРЅРёРµ
 		if (!(is_numeric($document_id) && $document_id > 0)) exit;
 
-		// Если в запросе пришел параметр на удаление всех заметок
+		// Р•СЃР»Рё РІ Р·Р°РїСЂРѕСЃРµ РїСЂРёС€РµР» РїР°СЂР°РјРµС‚СЂ РЅР° СѓРґР°Р»РµРЅРёРµ РІСЃРµС… Р·Р°РјРµС‚РѕРє
 		if ($all == 1)
 		{
-			// Выполянем запрос к БД и удалаем заметки
+			// Р’С‹РїРѕР»СЏРЅРµРј Р·Р°РїСЂРѕСЃ Рє Р‘Р” Рё СѓРґР°Р»Р°РµРј Р·Р°РјРµС‚РєРё
 			$AVE_DB->Query("
 				DELETE
 				FROM " . PREFIX . "_document_remarks
 				WHERE document_id = '" . $document_id . "'
 			");
 
-			// Выполняем обновление страницы
+			// Р’С‹РїРѕР»РЅСЏРµРј РѕР±РЅРѕРІР»РµРЅРёРµ СЃС‚СЂР°РЅРёС†С‹
 			header('Location:index.php?do=docs&action=remark&Id=' . $document_id . '&pop=1&cp=' . SESSION);
 			exit;
 		}
@@ -1765,7 +1801,7 @@ class AVE_Document
 		{
 			if (!(isset($_REQUEST['CId']) && is_numeric($_REQUEST['CId']) && $_REQUEST['CId'] > 0)) exit;
 
-			// В противном случае, выполняем запрос к БД и удаляем только ту заметку, которая была выбрана
+			// Р’ РїСЂРѕС‚РёРІРЅРѕРј СЃР»СѓС‡Р°Рµ, РІС‹РїРѕР»РЅСЏРµРј Р·Р°РїСЂРѕСЃ Рє Р‘Р” Рё СѓРґР°Р»СЏРµРј С‚РѕР»СЊРєРѕ С‚Сѓ Р·Р°РјРµС‚РєСѓ, РєРѕС‚РѕСЂР°СЏ Р±С‹Р»Р° РІС‹Р±СЂР°РЅР°
 			$AVE_DB->Query("
 				DELETE
 				FROM " . PREFIX . "_document_remarks
@@ -1773,14 +1809,14 @@ class AVE_Document
 				AND Id = '" . $_REQUEST['CId'] . "'
 			");
 
-			// Выполняем обновление страницы
+			// Р’С‹РїРѕР»РЅСЏРµРј РѕР±РЅРѕРІР»РµРЅРёРµ СЃС‚СЂР°РЅРёС†С‹
 			header('Location:index.php?do=docs&action=remark_reply&Id=' . $document_id . '&pop=1&cp=' . SESSION);
 			exit;
 		}
 	}
 
 	/**
-	 * Добавить в навигацию пункт ссылающийся на документ
+	 * Р”РѕР±Р°РІРёС‚СЊ РІ РЅР°РІРёРіР°С†РёСЋ РїСѓРЅРєС‚ СЃСЃС‹Р»Р°СЋС‰РёР№СЃСЏ РЅР° РґРѕРєСѓРјРµРЅС‚
 	 *
 	 */
 	function documentInNavi()
@@ -1804,13 +1840,13 @@ class AVE_Document
 
 		if (isset($document_alias) && $document_alias !== false)
 		{
-			// Получаем id пункта меню из запроса
+			// РџРѕР»СѓС‡Р°РµРј id РїСѓРЅРєС‚Р° РјРµРЅСЋ РёР· Р·Р°РїСЂРѕСЃР°
 			$parent_id = isset($_REQUEST['parent_id']) ? (int)$_REQUEST['parent_id'] : 0;
 
-			// Если пункт не родительский, а какой-либо дочерний
+			// Р•СЃР»Рё РїСѓРЅРєС‚ РЅРµ СЂРѕРґРёС‚РµР»СЊСЃРєРёР№, Р° РєР°РєРѕР№-Р»РёР±Рѕ РґРѕС‡РµСЂРЅРёР№
 			if ($parent_id > 0)
 			{
-				// Выполняем запрос к БД на получение id меню навигации и уровня
+				// Р’С‹РїРѕР»РЅСЏРµРј Р·Р°РїСЂРѕСЃ Рє Р‘Р” РЅР° РїРѕР»СѓС‡РµРЅРёРµ id РјРµРЅСЋ РЅР°РІРёРіР°С†РёРё Рё СѓСЂРѕРІРЅСЏ
 				list($navi_id, $status, $level) = $AVE_DB->Query("
 					SELECT
 						navi_id,
@@ -1832,7 +1868,7 @@ class AVE_Document
 
 			$position = empty($_REQUEST['navi_item_position']) ? 1 : (int)$_REQUEST['navi_item_position'];
 
-			// Добавляем информации о новой связке Документ<->Пункт меню
+			// Р”РѕР±Р°РІР»СЏРµРј РёРЅС„РѕСЂРјР°С†РёРё Рѕ РЅРѕРІРѕР№ СЃРІСЏР·РєРµ Р”РѕРєСѓРјРµРЅС‚<->РџСѓРЅРєС‚ РјРµРЅСЋ
 			$AVE_DB->Query("
 				INSERT
 				INTO " . PREFIX . "_navigation_items
@@ -1854,7 +1890,7 @@ class AVE_Document
 	}
 
 	/**
-	 * Вывод формы дополнительных действий с новым или отредактированным документом
+	 * Р’С‹РІРѕРґ С„РѕСЂРјС‹ РґРѕРїРѕР»РЅРёС‚РµР»СЊРЅС‹С… РґРµР№СЃС‚РІРёР№ СЃ РЅРѕРІС‹Рј РёР»Рё РѕС‚СЂРµРґР°РєС‚РёСЂРѕРІР°РЅРЅС‹Рј РґРѕРєСѓРјРµРЅС‚РѕРј
 	 *
 	 */
 	function documentFormAfter()

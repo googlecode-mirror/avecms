@@ -341,7 +341,7 @@ function secureCode($c = 0)
 }
 
 //=======================================================
-// GÄSTEBUCH
+// GÐ”STEBUCH
 //=======================================================
 function userpage_guestbook ($limit, $uid)
 {

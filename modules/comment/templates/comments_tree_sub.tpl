@@ -8,7 +8,7 @@
 	<div id="{$c.Id}" class="mod_comment_box">
 		<div class="mod_comment_header clearfix">
 			<div class="mod_comment_author">
-				{#COMMENT_USER_ADD#} <a title="{#COMMENT_INFO#}" href="javascript:void(0);" onclick="popup('{$ABS_PATH}index.php?module=comment&action=postinfo&pop=1&Id={$c.Id}&theme={$theme}','comment','500','300','1');">{$c.comment_author_name|stripslashes|escape}</a> • {$c.comment_published}{if $smarty.const.UGROUP==1} • IP:{$c.comment_author_ip}{/if}
+				{#COMMENT_USER_ADD#} <a title="{#COMMENT_INFO#}" href="javascript:void(0);" onclick="popup('{$ABS_PATH}index.php?module=comment&action=postinfo&pop=1&Id={$c.Id}&theme={$theme}','comment','500','300','1');">{$c.comment_author_name|stripslashes|escape}</a> â€¢ {$c.comment_published}{if $smarty.const.UGROUP==1} â€¢ IP:{$c.comment_author_ip}{/if}
 				<span class="mod_comment_changed">{if $c.comment_changed > 1} ({#COMMENT_TEXT_CHANGED#} {$c.comment_changed}){/if}</span>
 			</div>
 

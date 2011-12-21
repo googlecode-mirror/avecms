@@ -1,8 +1,8 @@
 <script src="{$ABS_PATH}admin/codemirror/js/codemirror.js" type="text/javascript"></script>
 
 	<div class="h_tpl">&nbsp;</div>
-	<h2>Редактор файлов</h2>
-	<p>Пожалуйста, будьте предельно внимательны при редактировании файлов и помните, что неверно указанный код может испортить внешнее оформление сайта</p>
+	<h2>Р РµРґР°РєС‚РѕСЂ С„Р°Р№Р»РѕРІ</h2>
+	<p>РџРѕР¶Р°Р»СѓР№СЃС‚Р°, Р±СѓРґСЊС‚Рµ РїСЂРµРґРµР»СЊРЅРѕ РІРЅРёРјР°С‚РµР»СЊРЅС‹ РїСЂРё СЂРµРґР°РєС‚РёСЂРѕРІР°РЅРёРё С„Р°Р№Р»РѕРІ Рё РїРѕРјРЅРёС‚Рµ, С‡С‚Рѕ РЅРµРІРµСЂРЅРѕ СѓРєР°Р·Р°РЅРЅС‹Р№ РєРѕРґ РјРѕР¶РµС‚ РёСЃРїРѕСЂС‚РёС‚СЊ РІРЅРµС€РЅРµРµ РѕС„РѕСЂРјР»РµРЅРёРµ СЃР°Р№С‚Р°</p>
 	
 <form name="f_tpl" id="f_tpl" method="post" action="{$formaction}">
 	<table width="100%" border="0" cellpadding="8" cellspacing="1" class="tableborder">
@@ -17,7 +17,7 @@
 		</tr>
 
 		<tr>
-			<td class="tableheader" colspan="2">Код</td>
+			<td class="tableheader" colspan="2">РљРѕРґ</td>
 		</tr>
 
 		<tr>

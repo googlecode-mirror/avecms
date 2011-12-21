@@ -77,7 +77,7 @@ if(!defined("LAST24")) exit;
 	$r_last_active = $GLOBALS['AVE_DB']->Query($q_last_active);
 	$matches = array();
 
-	// MISC ID FÜR DEN AKTUELLEN BENUTZER
+	// MISC ID FÐ¬R DEN AKTUELLEN BENUTZER
 	include_once(BASE_DIR . "/modules/forums/internals/misc_ids.php");
 	$group_ids_misc = $group_ids;
 
@@ -87,7 +87,7 @@ if(!defined("LAST24")) exit;
 		// GRUPPEN ARRAY
 		$group_ids = explode(",", $topic['group_id']);
 
-		// DIESE ID BENÖTIGEN WIR UM DIE RECHTE ZU HOLEN
+		// DIESE ID BENÐ¦TIGEN WIR UM DIE RECHTE ZU HOLEN
 		$forum_id = $topic['forum_id'];
 
 		if (array_intersect($group_ids_misc, $group_ids))
@@ -102,7 +102,7 @@ if(!defined("LAST24")) exit;
 						{
 							// =================================================
 							// BUGFIX 21.04.2006
-							// HIER WERDEN NUR THEMEN ANGEZEIGT, DIE AUS EINEM FORUM STAMMEN, FÜR DAS DER BENUTZER
+							// HIER WERDEN NUR THEMEN ANGEZEIGT, DIE AUS EINEM FORUM STAMMEN, FÐ¬R DAS DER BENUTZER
 							// AUCH DIE RECHTE BESITZT
 							// =================================================
 							$topic['autorlink'] = "index.php?module=forums&amp;show=userprofile&amp;user_id=" . $topic['uid'];

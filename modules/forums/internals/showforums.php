@@ -56,7 +56,7 @@ if(!defined("SHOWFORUMS")) exit;
 		$categories = $GLOBALS['AVE_DB']->Query($cat_query);
 
 		//=======================================================
-		// Enth‰lt zur jeder kategorie ein array der dazugehoerigen foren
+		// Enth–¥lt zur jeder kategorie ein array der dazugehoerigen foren
 		//=======================================================
 		$forums_array = array();
 		$category_array = array();
@@ -136,7 +136,7 @@ if(!defined("SHOWFORUMS")) exit;
 					 if (@$permissions[FORUM_PERMISSION_CAN_SEE] == 1)
 					 {
 						//=======================================================
-						// Anzahl der Themen und Beitr‰ge ermitteln
+						// Anzahl der Themen und Beitr–¥ge ermitteln
 						//=======================================================
 						$pcount = 0;
 
@@ -245,7 +245,7 @@ if(!defined("SHOWFORUMS")) exit;
 
 						$forum['pcount'] = $pcount;
 						//=======================================================
-						// Anzahl der Themen und Beitr‰ge ermitteln
+						// Anzahl der Themen und Beitr–¥ge ermitteln
 						//=======================================================
 						$forum["link"] = "index.php?module=forums&amp;show=showforum&amp;fid=" . $forum["id"];
 

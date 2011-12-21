@@ -1,7 +1,7 @@
 <?php
 
 /**
- * AVE.cms - Ìîäóëü Ðàññûëêè
+ * AVE.cms - ÐœÐ¾Ð´ÑƒÐ»ÑŒ Ð Ð°ÑÑÑ‹Ð»ÐºÐ¸
  *
  * @package AVE.cms
  * @subpackage module_Newsletter
@@ -14,10 +14,10 @@ if (!defined('BASE_DIR')) exit;
 
 if (defined('ACP'))
 {
-    $modul['ModulName'] = 'Âíóòðåííÿÿ ðàññûëêà';
+    $modul['ModulName'] = 'Ð’Ð½ÑƒÑ‚Ñ€ÐµÐ½Ð½ÑÑ Ñ€Ð°ÑÑÑ‹Ð»ÐºÐ°';
     $modul['ModulPfad'] = 'newsletter';
     $modul['ModulVersion'] = '1.0';
-    $modul['description'] = 'Äàííûé ìîäóëü ïðåäíàçíà÷åí äëÿ ìàññîâîé ðàññûëêè ñîîáùåíèé ãðóïïàì ïîëüçîâàòåëåé ÷åðåç Ïàíåëü óïðàâëåíèÿ.';
+    $modul['description'] = 'Ð”Ð°Ð½Ð½Ñ‹Ð¹ Ð¼Ð¾Ð´ÑƒÐ»ÑŒ Ð¿Ñ€ÐµÐ´Ð½Ð°Ð·Ð½Ð°Ñ‡ÐµÐ½ Ð´Ð»Ñ Ð¼Ð°ÑÑÐ¾Ð²Ð¾Ð¹ Ñ€Ð°ÑÑÑ‹Ð»ÐºÐ¸ ÑÐ¾Ð¾Ð±Ñ‰ÐµÐ½Ð¸Ð¹ Ð³Ñ€ÑƒÐ¿Ð¿Ð°Ð¼ Ð¿Ð¾Ð»ÑŒÐ·Ð¾Ð²Ð°Ñ‚ÐµÐ»ÐµÐ¹ Ñ‡ÐµÑ€ÐµÐ· ÐŸÐ°Ð½ÐµÐ»ÑŒ ÑƒÐ¿Ñ€Ð°Ð²Ð»ÐµÐ½Ð¸Ñ.';
     $modul['Autor'] = 'Arcanum';
     $modul['MCopyright'] = '&copy; 2007-2008 Overdoze.Ru';
     $modul['Status'] = 1;

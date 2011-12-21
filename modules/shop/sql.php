@@ -4,12 +4,12 @@ $modul_sql_install = array();
 $modul_sql_deinstall = array();
 $modul_sql_update = array();
 
-// установка (структура)
+// СѓСЃС‚Р°РЅРѕРІРєР° (СЃС‚СЂСѓРєС‚СѓСЂР°)
 $modul_sql_install[] = "CREATE TABLE `CPPREFIX_modul_shop` (
   `Id` tinyint(1) unsigned NOT NULL auto_increment,
   `status` enum('0','1') NOT NULL default '0',
   `Waehrung` varchar(10) NOT NULL default 'RUR',
-  `WaehrungSymbol` varchar(10) NOT NULL default 'руб.',
+  `WaehrungSymbol` varchar(10) NOT NULL default 'СЂСѓР±.',
   `Waehrung2` varchar(10) NOT NULL default 'EUR',
   `WaehrungSymbol2` varchar(10) NOT NULL default '&euro;',
   `Waehrung2Multi` decimal(10,4) NOT NULL default '1.0000',
@@ -63,7 +63,7 @@ $modul_sql_install[] = "CREATE TABLE `CPPREFIX_modul_shop` (
   `EmpEmail` varchar(255) NOT NULL default '',
   `BetreffBest` varchar(255) NOT NULL default '',
   PRIMARY KEY  (`Id`)
-) ENGINE=MyISAM DEFAULT CHARSET=cp1251;";
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 
 $modul_sql_install[] = "CREATE TABLE `CPPREFIX_modul_shop_artikel` (
   `Id` int(10) unsigned NOT NULL auto_increment,
@@ -116,14 +116,14 @@ $modul_sql_install[] = "CREATE TABLE `CPPREFIX_modul_shop_artikel` (
   KEY `Bestellungen` (`Bestellungen`),
   KEY `Angebot` (`Angebot`),
   FULLTEXT KEY `Schlagwoerter` (`Schlagwoerter`)
-) ENGINE=MyISAM DEFAULT CHARSET=cp1251 PACK_KEYS=0;";
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 PACK_KEYS=0;";
 
 $modul_sql_install[] = "CREATE TABLE `CPPREFIX_modul_shop_artikel_bilder` (
   `Id` int(10) unsigned NOT NULL auto_increment,
   `ArtId` int(10) unsigned NOT NULL default '0',
   `Bild` char(255) NOT NULL,
   PRIMARY KEY  (`Id`)
-) ENGINE=MyISAM DEFAULT CHARSET=cp1251 PACK_KEYS=0;";
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 PACK_KEYS=0;";
 
 $modul_sql_install[] = "CREATE TABLE `CPPREFIX_modul_shop_artikel_downloads` (
   `Id` int(10) unsigned NOT NULL auto_increment,
@@ -136,7 +136,7 @@ $modul_sql_install[] = "CREATE TABLE `CPPREFIX_modul_shop_artikel_downloads` (
   `description` text NOT NULL,
   `Position` mediumint(3) unsigned NOT NULL default '1',
   PRIMARY KEY  (`Id`)
-) ENGINE=MyISAM DEFAULT CHARSET=cp1251;";
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 
 $modul_sql_install[] = "CREATE TABLE `CPPREFIX_modul_shop_artikel_kommentare` (
   `Id` int(8) unsigned NOT NULL auto_increment,
@@ -148,7 +148,7 @@ $modul_sql_install[] = "CREATE TABLE `CPPREFIX_modul_shop_artikel_kommentare` (
   `Wertung` smallint(1) unsigned NOT NULL default '0',
   `Publik` tinyint(1) unsigned NOT NULL default '0',
   PRIMARY KEY  (`Id`)
-) ENGINE=MyISAM DEFAULT CHARSET=cp1251;";
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 
 $modul_sql_install[] = "CREATE TABLE `CPPREFIX_modul_shop_bestellungen` (
   `Id` int(14) unsigned NOT NULL auto_increment,
@@ -190,7 +190,7 @@ $modul_sql_install[] = "CREATE TABLE `CPPREFIX_modul_shop_bestellungen` (
   `Status` enum('wait','progress','ok','ok_send','failed') NOT NULL default 'wait',
   `DatumBezahlt` int(10) unsigned NOT NULL default '0',
   PRIMARY KEY  (`Id`)
-) ENGINE=MyISAM DEFAULT CHARSET=cp1251 PACK_KEYS=0;";
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 PACK_KEYS=0;";
 
 $modul_sql_install[] = "CREATE TABLE `CPPREFIX_modul_shop_downloads` (
   `Id` int(11) unsigned NOT NULL auto_increment,
@@ -207,7 +207,7 @@ $modul_sql_install[] = "CREATE TABLE `CPPREFIX_modul_shop_downloads` (
   `GesperrtGrund` text NOT NULL,
   `Position` smallint(2) NOT NULL default '1',
   PRIMARY KEY  (`Id`)
-) ENGINE=MyISAM DEFAULT CHARSET=cp1251;";
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 
 $modul_sql_install[] = "CREATE TABLE `CPPREFIX_modul_shop_einheiten` (
   `Id` int(10) unsigned NOT NULL auto_increment,
@@ -215,7 +215,7 @@ $modul_sql_install[] = "CREATE TABLE `CPPREFIX_modul_shop_einheiten` (
   `NameEinzahl` char(255) NOT NULL,
   PRIMARY KEY  (`Id`),
   UNIQUE KEY `Name` (`Name`)
-) ENGINE=MyISAM DEFAULT CHARSET=cp1251;";
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 
 $modul_sql_install[] = "CREATE TABLE `CPPREFIX_modul_shop_gutscheine` (
   `Id` int(10) unsigned NOT NULL auto_increment,
@@ -230,7 +230,7 @@ $modul_sql_install[] = "CREATE TABLE `CPPREFIX_modul_shop_gutscheine` (
   `AlleBenutzer` tinyint(1) unsigned NOT NULL default '0',
   PRIMARY KEY  (`Id`),
   UNIQUE KEY `Code` (`Code`)
-) ENGINE=MyISAM DEFAULT CHARSET=cp1251;";
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 
 $modul_sql_install[] = "CREATE TABLE `CPPREFIX_modul_shop_hersteller` (
   `Id` mediumint(5) unsigned NOT NULL auto_increment,
@@ -239,7 +239,7 @@ $modul_sql_install[] = "CREATE TABLE `CPPREFIX_modul_shop_hersteller` (
   `Logo` char(255) NOT NULL,
   PRIMARY KEY  (`Id`),
   UNIQUE KEY `Name` (`Name`)
-) ENGINE=MyISAM DEFAULT CHARSET=cp1251;";
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 
 $modul_sql_install[] = "CREATE TABLE `CPPREFIX_modul_shop_kategorie` (
   `Id` mediumint(5) unsigned NOT NULL auto_increment,
@@ -252,7 +252,7 @@ $modul_sql_install[] = "CREATE TABLE `CPPREFIX_modul_shop_kategorie` (
   `cbid` int(5) unsigned NOT NULL default '0',
   PRIMARY KEY  (`Id`,`parent_id`),
   KEY `KatName` (`KatName`)
-) ENGINE=MyISAM DEFAULT CHARSET=cp1251 PACK_KEYS=0;";
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 PACK_KEYS=0;";
 
 $modul_sql_install[] = "CREATE TABLE `CPPREFIX_modul_shop_kundenrabatte` (
   `Id` smallint(3) unsigned NOT NULL auto_increment,
@@ -260,7 +260,7 @@ $modul_sql_install[] = "CREATE TABLE `CPPREFIX_modul_shop_kundenrabatte` (
   `Wert` decimal(7,2) unsigned NOT NULL default '0.00',
   PRIMARY KEY  (`Id`),
   UNIQUE KEY `GruppenId` (`GruppenId`)
-) ENGINE=MyISAM DEFAULT CHARSET=cp1251;";
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 
 $modul_sql_install[] = "CREATE TABLE `CPPREFIX_modul_shop_merkliste` (
   `Id` int(10) unsigned NOT NULL auto_increment,
@@ -269,7 +269,7 @@ $modul_sql_install[] = "CREATE TABLE `CPPREFIX_modul_shop_merkliste` (
   `Inhalt` text NOT NULL,
   `Inhalt_Vars` text NOT NULL,
   PRIMARY KEY  (`Id`)
-) ENGINE=MyISAM DEFAULT CHARSET=cp1251;";
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 
 $modul_sql_install[] = "CREATE TABLE `CPPREFIX_modul_shop_staffelpreise` (
   `Id` int(10) unsigned NOT NULL auto_increment,
@@ -280,14 +280,14 @@ $modul_sql_install[] = "CREATE TABLE `CPPREFIX_modul_shop_staffelpreise` (
   PRIMARY KEY  (`Id`),
   KEY `ArtId` (`ArtId`),
   KEY `Preis` (`Preis`)
-) ENGINE=MyISAM DEFAULT CHARSET=cp1251;";
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 
 $modul_sql_install[] = "CREATE TABLE `CPPREFIX_modul_shop_ust` (
   `Id` smallint(3) unsigned NOT NULL auto_increment,
   `Name` char(100) NOT NULL,
   `Wert` decimal(4,2) NOT NULL default '16.00',
   PRIMARY KEY  (`Id`)
-) ENGINE=MyISAM DEFAULT CHARSET=cp1251;";
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 
 $modul_sql_install[] = "CREATE TABLE `CPPREFIX_modul_shop_varianten` (
   `Id` int(10) unsigned NOT NULL auto_increment,
@@ -301,7 +301,7 @@ $modul_sql_install[] = "CREATE TABLE `CPPREFIX_modul_shop_varianten` (
   PRIMARY KEY  (`Id`),
   KEY `KatId` (`KatId`),
   KEY `ArtId` (`ArtId`)
-) ENGINE=MyISAM DEFAULT CHARSET=cp1251;";
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 
 $modul_sql_install[] = "CREATE TABLE `CPPREFIX_modul_shop_varianten_kategorien` (
   `Id` int(10) unsigned NOT NULL auto_increment,
@@ -311,7 +311,7 @@ $modul_sql_install[] = "CREATE TABLE `CPPREFIX_modul_shop_varianten_kategorien` 
   `status` tinyint(1) unsigned NOT NULL default '1',
   PRIMARY KEY  (`Id`),
   KEY `KatId` (`KatId`)
-) ENGINE=MyISAM DEFAULT CHARSET=cp1251;";
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 
 $modul_sql_install[] = "CREATE TABLE `CPPREFIX_modul_shop_versandarten` (
   `Id` int(10) unsigned NOT NULL auto_increment,
@@ -325,7 +325,7 @@ $modul_sql_install[] = "CREATE TABLE `CPPREFIX_modul_shop_versandarten` (
   `NurBeiGewichtNull` tinyint(1) unsigned NOT NULL default '0',
   `ErlaubteGruppen` tinytext NOT NULL,
   PRIMARY KEY  (`Id`)
-) ENGINE=MyISAM DEFAULT CHARSET=cp1251;";
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 
 $modul_sql_install[] = "CREATE TABLE `CPPREFIX_modul_shop_versandkosten` (
   `Id` int(10) unsigned NOT NULL auto_increment,
@@ -335,7 +335,7 @@ $modul_sql_install[] = "CREATE TABLE `CPPREFIX_modul_shop_versandkosten` (
   `KBis` decimal(8,3) NOT NULL default '10.000',
   `Betrag` decimal(7,2) NOT NULL default '0.00',
   PRIMARY KEY  (`Id`)
-) ENGINE=MyISAM DEFAULT CHARSET=cp1251;";
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 
 $modul_sql_install[] = "CREATE TABLE `CPPREFIX_modul_shop_versandzeit` (
   `Id` smallint(2) unsigned NOT NULL auto_increment,
@@ -343,7 +343,7 @@ $modul_sql_install[] = "CREATE TABLE `CPPREFIX_modul_shop_versandzeit` (
   `description` text NOT NULL,
   `Icon` varchar(255) NOT NULL,
   PRIMARY KEY  (`Id`)
-) ENGINE=MyISAM DEFAULT CHARSET=cp1251;";
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 
 $modul_sql_install[] = "CREATE TABLE `CPPREFIX_modul_shop_zahlungsmethoden` (
   `Id` mediumint(5) unsigned NOT NULL auto_increment,
@@ -364,12 +364,12 @@ $modul_sql_install[] = "CREATE TABLE `CPPREFIX_modul_shop_zahlungsmethoden` (
   `Position` mediumint(5) unsigned NOT NULL default '0',
   PRIMARY KEY  (`Id`),
   UNIQUE KEY `Name` (`Name`)
-) ENGINE=MyISAM DEFAULT CHARSET=cp1251;";
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 
-// установка (данные)
+// СѓСЃС‚Р°РЅРѕРІРєР° (РґР°РЅРЅС‹Рµ)
 $modul_sql_install[] = "INSERT INTO `CPPREFIX_modul_shop` VALUES ();";
 
-// удаление
+// СѓРґР°Р»РµРЅРёРµ
 $modul_sql_deinstall[] = "DROP TABLE IF EXISTS CPPREFIX_modul_shop";
 $modul_sql_deinstall[] = "DROP TABLE IF EXISTS CPPREFIX_modul_shop_artikel";
 $modul_sql_deinstall[] = "DROP TABLE IF EXISTS CPPREFIX_modul_shop_artikel_bilder";
@@ -392,7 +392,7 @@ $modul_sql_deinstall[] = "DROP TABLE IF EXISTS CPPREFIX_modul_shop_versandkosten
 $modul_sql_deinstall[] = "DROP TABLE IF EXISTS CPPREFIX_modul_shop_versandzeit";
 $modul_sql_deinstall[] = "DROP TABLE IF EXISTS CPPREFIX_modul_shop_zahlungsmethoden";
 
-// обновление
+// РѕР±РЅРѕРІР»РµРЅРёРµ
 $modul_sql_update[] = "UPDATE CPPREFIX_module SET CpEngineTag = '" . $modul['CpEngineTag'] . "', CpPHPTag = '" . $modul['CpPHPTag'] . "', Version = '" . $modul['ModulVersion'] . "' WHERE ModulPfad = '" . $modul['ModulPfad'] . "' LIMIT 1;";
 
 ?>

@@ -86,7 +86,7 @@ class userpage {
 	}
 
 	//=======================================================
-	// Gästebucheintrag
+	// GÐ´stebucheintrag
 	//=======================================================
 	function displayForm($tpl_dir,$uid,$theme_folder)
 	{
@@ -111,8 +111,8 @@ class userpage {
 		if(isset($_POST['send']) && $_POST['send'] == 1)
 		{
 
-			$Text = substr(htmlspecialchars($_POST['Text']), 0, $this->_commentwords);
-			$Text_length = strlen($Text);
+			$Text = mb_substr(htmlspecialchars($_POST['Text']), 0, $this->_commentwords);
+			$Text_length = mb_strlen($Text);
 			$Text .= ($Text_length > $this->_commentwords) ? '...' : '';
 			$Text = pretty_chars($Text);
 
@@ -187,7 +187,7 @@ class userpage {
 	}
 
 	//=======================================================
-	// Gästebucheinträge löschen
+	// GÐ´stebucheintrÐ´ge lÑ†schen
 	//=======================================================
 	function del_guest($tpl_dir,$gid,$uid,$page)
 	{
@@ -287,7 +287,7 @@ class userpage {
 	}
 
 	//=======================================================
-	// Benutzerdaten ändern
+	// Benutzerdaten Ð´ndern
 	//=======================================================
 	function changeData($tpl_dir,$lang_file)
 	{
@@ -476,7 +476,7 @@ class userpage {
 			$muster_email = '/^[\w.-]+@[a-z0-9.-]+\.(?:[a-z]{2}|com|org|net|edu|gov|mil|biz|info|mobi|name|aero|asia|jobs|museum)$/i';
 
 			//=======================================================
-			// Benutzername prüfen
+			// Benutzername prÑŒfen
 			//=======================================================
 			if((isset($_POST['BenutzerName'])) && ($this->checkIfUserName(addslashes($_POST['BenutzerName']),addslashes($_SESSION['forum_user_name']))))
 			{
@@ -490,7 +490,7 @@ class userpage {
 			}
 
 			//=======================================================
-			// E-Mail prüfen
+			// E-Mail prÑŒfen
 			//=======================================================
 			if(!empty($_POST['email']) && $this->checkIfUserEmail($_POST['email'], $_SESSION['forum_user_email']))
 			{
@@ -616,8 +616,8 @@ class userpage {
 
 				}
 
-				// Prüfen, ob Benutzername mehr als 1 mal geändert wurde und ob er das
-				// recht hat, diesen zu ändern
+				// PrÑŒfen, ob Benutzername mehr als 1 mal geÐ´ndert wurde und ob er das
+				// recht hat, diesen zu Ð´ndern
 				$BC = '';
 				$sql = $GLOBALS['AVE_DB']->Query("SELECT BenutzerName,BenutzerNameChanged FROM " . PREFIX . "_modul_forum_userprofile WHERE BenutzerId = '" . $_SESSION['user_id'] . "'");
 				$row = $sql->FetchRow();
@@ -793,7 +793,7 @@ class userpage {
 					value = '" . $_POST['wert'][$id] . "',
 					active = '" . $_POST['aktiv'][$id] . "'
 					WHERE id = '$id'");
-				reportLog($_SESSION['user_name'] . " - èçìåíèë ïîëÿ â ìîäóëå Ïðîôèëü ïîëüçîâàòåëÿ (" . stripslashes($_POST['title']) . ")",'2','2');
+				reportLog($_SESSION['user_name'] . " - Ð¸Ð·Ð¼ÐµÐ½Ð¸Ð» Ð¿Ð¾Ð»Ñ Ð² Ð¼Ð¾Ð´ÑƒÐ»Ðµ ÐŸÑ€Ð¾Ñ„Ð¸Ð»ÑŒ Ð¿Ð¾Ð»ÑŒÐ·Ð¾Ð²Ð°Ñ‚ÐµÐ»Ñ (" . stripslashes($_POST['title']) . ")",'2','2');
 			}
 		}
 		header("Location:index.php?do=modules&action=modedit&mod=userpage&moduleaction=1&cp=" . SESSION);
@@ -838,12 +838,12 @@ class userpage {
 				break;
 			}
 		}
-		reportLog($_SESSION['user_name'] . " - äîáàâèë ïîëå â ìîäóëå Ïðîôèëü ïîëüçîâàòåëÿ (" . stripslashes($_REQUEST['title']) . ")",'2','2');
+		reportLog($_SESSION['user_name'] . " - Ð´Ð¾Ð±Ð°Ð²Ð¸Ð» Ð¿Ð¾Ð»Ðµ Ð² Ð¼Ð¾Ð´ÑƒÐ»Ðµ ÐŸÑ€Ð¾Ñ„Ð¸Ð»ÑŒ Ð¿Ð¾Ð»ÑŒÐ·Ð¾Ð²Ð°Ñ‚ÐµÐ»Ñ (" . stripslashes($_REQUEST['title']) . ")",'2','2');
 		header("Location:index.php?do=modules&action=modedit&mod=userpage&moduleaction=1&cp=" . SESSION);
 	}
 
 	//=======================================================
-	// Templateänderungen
+	// TemplateÐ´nderungen
 	//=======================================================
 	function showTemplate($tpl_dir)
 	{
@@ -878,7 +878,7 @@ class userpage {
 					tpl = '" . $_POST['Template'] ."'
 					WHERE id = '1'");
 
-			reportLog($_SESSION['user_name'] . " - èçìåíèë øàáëîí â ìîäóëå Ïðîôèëü ïîëüçîâàòåëÿ",'2','2');
+			reportLog($_SESSION['user_name'] . " - Ð¸Ð·Ð¼ÐµÐ½Ð¸Ð» ÑˆÐ°Ð±Ð»Ð¾Ð½ Ð² Ð¼Ð¾Ð´ÑƒÐ»Ðµ ÐŸÑ€Ð¾Ñ„Ð¸Ð»ÑŒ Ð¿Ð¾Ð»ÑŒÐ·Ð¾Ð²Ð°Ñ‚ÐµÐ»Ñ",'2','2');
 			header("Location:index.php?do=modules&action=modedit&mod=userpage&moduleaction=tpl&cp=" . SESSION);
 		}
 	}
@@ -938,13 +938,13 @@ class userpage {
 			$content = file_get_contents(BASE_DIR. "/modules/forums".$i);
 
 			$content = str_replace ("index.php?module=forums&amp;show=userprofile&amp;user_id=", "index.php?module=userpage&amp;action=show&amp;uid=", $content);
-//  Äëÿ îòìåíû îáíîâëåíèÿ ôîðóìà çàêîìåíòèðîâàòü ïðåäûäóùóþ ñòðîêó è ðàñêîìåíòèðîâàòü ñëåäóþùóþ ñòðîêó
+//  Ð”Ð»Ñ Ð¾Ñ‚Ð¼ÐµÐ½Ñ‹ Ð¾Ð±Ð½Ð¾Ð²Ð»ÐµÐ½Ð¸Ñ Ñ„Ð¾Ñ€ÑƒÐ¼Ð° Ð·Ð°ÐºÐ¾Ð¼ÐµÐ½Ñ‚Ð¸Ñ€Ð¾Ð²Ð°Ñ‚ÑŒ Ð¿Ñ€ÐµÐ´Ñ‹Ð´ÑƒÑ‰ÑƒÑŽ ÑÑ‚Ñ€Ð¾ÐºÑƒ Ð¸ Ñ€Ð°ÑÐºÐ¾Ð¼ÐµÐ½Ñ‚Ð¸Ñ€Ð¾Ð²Ð°Ñ‚ÑŒ ÑÐ»ÐµÐ´ÑƒÑŽÑ‰ÑƒÑŽ ÑÑ‚Ñ€Ð¾ÐºÑƒ
 //	    $content = str_replace ("index.php?module=userpage&amp;action=show&amp;uid=", "index.php?module=forums&amp;show=userprofile&amp;user_id=", $content);
 
 			if($i == "/templates/userpanel_forums.tpl")
 			{
 				$content = str_replace ("index.php?module=forums&amp;show=publicprofile", "index.php?module=userpage&amp;action=change", $content);
-//  Äëÿ îòìåíû îáíîâëåíèÿ ôîðóìà çàêîìåíòèðîâàòü ïðåäûäóùóþ ñòðîêó è ðàñêîìåíòèðîâàòü ñëåäóþùóþ ñòðîêó
+//  Ð”Ð»Ñ Ð¾Ñ‚Ð¼ÐµÐ½Ñ‹ Ð¾Ð±Ð½Ð¾Ð²Ð»ÐµÐ½Ð¸Ñ Ñ„Ð¾Ñ€ÑƒÐ¼Ð° Ð·Ð°ÐºÐ¾Ð¼ÐµÐ½Ñ‚Ð¸Ñ€Ð¾Ð²Ð°Ñ‚ÑŒ Ð¿Ñ€ÐµÐ´Ñ‹Ð´ÑƒÑ‰ÑƒÑŽ ÑÑ‚Ñ€Ð¾ÐºÑƒ Ð¸ Ñ€Ð°ÑÐºÐ¾Ð¼ÐµÐ½Ñ‚Ð¸Ñ€Ð¾Ð²Ð°Ñ‚ÑŒ ÑÐ»ÐµÐ´ÑƒÑŽÑ‰ÑƒÑŽ ÑÑ‚Ñ€Ð¾ÐºÑƒ
 //	      $content = str_replace ("index.php?module=userpage&amp;action=change", "index.php?module=forums&amp;show=publicprofile", $content);
 			}
 
@@ -955,7 +955,7 @@ class userpage {
 
 		}
 
-			reportLog($_SESSION['user_name'] . " - îáíîâèë ôàéëû ìîäóëÿ Ôîðóì",'2','2');
+			reportLog($_SESSION['user_name'] . " - Ð¾Ð±Ð½Ð¾Ð²Ð¸Ð» Ñ„Ð°Ð¹Ð»Ñ‹ Ð¼Ð¾Ð´ÑƒÐ»Ñ Ð¤Ð¾Ñ€ÑƒÐ¼",'2','2');
 			header("Location:index.php?do=modules&action=modedit&mod=userpage&moduleaction=update&ok=1&cp=" . SESSION);
 		}
 	}
@@ -1084,7 +1084,7 @@ class userpage {
 		return $rand_fn;
 	}
 
-	// Änderungen ?!
+	// Ð”nderungen ?!
 	function checkIfUserName($new='',$old='')
 	{
 		$sql = $GLOBALS['AVE_DB']->Query("SELECT
@@ -1102,7 +1102,7 @@ class userpage {
 
 	}
 
-	// Änderungen ?!
+	// Ð”nderungen ?!
 	function checkIfUserEmail($new='',$old='')
 	{
 		$sql = $GLOBALS['AVE_DB']->Query("SELECT
@@ -1170,7 +1170,7 @@ class userpage {
 					SET
 						Id             = '',
 						BenutzerId     = '" . $row->Id . "',
-						BenutzerName   = '" . (($row->user_name!='') ? $row->user_name : substr($row->firstname,0,1) . '. ' . $row->lastname) . "',
+						BenutzerName   = '" . (($row->user_name!='') ? $row->user_name : mb_substr($row->firstname,0,1) . '. ' . $row->lastname) . "',
 						GroupIdMisc    = '',
 						Beitraege      = '',
 						ZeigeProfil    = '1',

@@ -39,6 +39,12 @@
 						<option value=">=" {if $condition->condition_compare=='>='}selected="selected"{/if}>{#REQUEST_BIG1#}</option>
 						<option value="<" {if $condition->condition_compare=='<'}selected="selected"{/if}>{#REQUEST_SMALL2#}</option>
 						<option value=">" {if $condition->condition_compare=='>'}selected="selected"{/if}>{#REQUEST_BIG2#}</option>
+
+						<option value="N==" {if $condition->condition_compare=='<='}selected="selected"{/if}>{#REQUEST_N_COND_SELF#}</option>
+						<option value="N<=" {if $condition->condition_compare=='<='}selected="selected"{/if}>{#REQUEST_N_SMALL1#}</option>
+						<option value="N>=" {if $condition->condition_compare=='>='}selected="selected"{/if}>{#REQUEST_N_BIG1#}</option>
+						<option value="N<" {if $condition->condition_compare=='<'}selected="selected"{/if}>{#REQUEST_N_SMALL2#}</option>
+						<option value="N>" {if $condition->condition_compare=='>'}selected="selected"{/if}>{#REQUEST_N_BIG2#}</option>
 					</select>
 				</td>
 

@@ -1,7 +1,7 @@
 <?php
 
 /**
- * AVE.cms - Ìîäóëü Ñèñòåìíûå áëîêè
+ * AVE.cms - ÐœÐ¾Ð´ÑƒÐ»ÑŒ Ð¡Ð¸ÑÑ‚ÐµÐ¼Ð½Ñ‹Ðµ Ð±Ð»Ð¾ÐºÐ¸
  *
  * @package AVE.cms
  * @subpackage module_SysBlock
@@ -11,7 +11,7 @@
  */
 
 /**
- * mySQL-çàïðîñû äëÿ óñòàíîâêè, îáíîâëåíèÿ è óäàëåíèÿ ìîäóëÿ
+ * mySQL-Ð·Ð°Ð¿Ñ€Ð¾ÑÑ‹ Ð´Ð»Ñ ÑƒÑÑ‚Ð°Ð½Ð¾Ð²ÐºÐ¸, Ð¾Ð±Ð½Ð¾Ð²Ð»ÐµÐ½Ð¸Ñ Ð¸ ÑƒÐ´Ð°Ð»ÐµÐ½Ð¸Ñ Ð¼Ð¾Ð´ÑƒÐ»Ñ
  */
 
 $modul_sql_install = array();
@@ -25,9 +25,9 @@ $modul_sql_install[] = "CREATE TABLE CPPREFIX_modul_sysblock (
   `sysblock_name` varchar(255) NOT NULL,
   `sysblock_text` longtext NOT NULL,
   PRIMARY KEY  (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=cp1251;";
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 
-$modul_sql_install[] = "INSERT INTO CPPREFIX_modul_sysblock VALUES (1, 'Òåñòîâûé áëîê', 'Hello world!');";
+$modul_sql_install[] = "INSERT INTO CPPREFIX_modul_sysblock VALUES (1, 'Ð¢ÐµÑÑ‚Ð¾Ð²Ñ‹Ð¹ Ð±Ð»Ð¾Ðº', 'Hello world!');";
 
 $modul_sql_update[] = "UPDATE CPPREFIX_module SET CpEngineTag = '" . $modul['CpEngineTag'] . "', CpPHPTag = '" . $modul['CpPHPTag'] . "', Version = '" . $modul['ModulVersion'] . "' WHERE ModulPfad = '" . $modul['ModulPfad'] . "' LIMIT 1;";
 

@@ -1,1 +1,1 @@
-EXAMPLE_TITLE   = "Работа тестового модуля example:"
+EXAMPLE_TITLE   = "Р Р°Р±РѕС‚Р° С‚РµСЃС‚РѕРІРѕРіРѕ РјРѕРґСѓР»СЏ example:"

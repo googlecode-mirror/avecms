@@ -18,7 +18,7 @@ if ((!$this->fperm("canpn")) || (UGROUP==2))
 else
 {
 	//=======================================================
-	// PN LÖSCHEN
+	// PN LÐ¦SCHEN
 	//=======================================================
 	if (isset($_REQUEST['del']) && $_REQUEST['del']!="")
 	{
@@ -360,7 +360,7 @@ else
 		}
 
 		//=======================================================
-		// Selektion für gelesene und ungelesene Nachrichten wieder ändern...
+		// Selektion fÑŒr gelesene und ungelesene Nachrichten wieder Ð´ndern...
 		//=======================================================
 		if (isset($_REQUEST['porder']) && $_REQUEST['porder']=="readed")    $porder = "readed";
 		if (isset($_REQUEST['porder']) && $_REQUEST['porder']=="notreaded") $porder = "notreaded";
@@ -541,7 +541,7 @@ else
 		$row = $sql->FetchRow();
 		$sql->Close();
 
-		// WENN UNGÜLTIGE ID ODER PN NICHT == USER-ID
+		// WENN UNGÐ¬LTIGE ID ODER PN NICHT == USER-ID
 		if (!$num) $this->msg($mod['config_vars']['PN_WrongId'], 'index.php?module=forums&show=pn');
 
 		if ($ok==1)
@@ -704,7 +704,7 @@ else
 			if ($row->Pnempfang != 1)      $pnerror[] = $mod['config_vars']['PN_NotWant'];
 			if (empty($pnerror) && $num<1) $pnerror[] = $mod['config_vars']['PN_UserError'];
 
-			// CHECK OB ABSENDER IN IGNORIERLISTE DES EMPFÄNGERS STEHT
+			// CHECK OB ABSENDER IN IGNORIERLISTE DES EMPFÐ”NGERS STEHT
 			$num_ignore = 0;
 			if (is_object($row))
 			{
@@ -734,7 +734,7 @@ else
 				if ($numuserpn >= $usermaxpn) $pnerror[] = $mod['config_vars']['PN_BoxFull'];
 			}
 
-			// CHECK OB USER PN'S EMPFANGEN MÖCHTE
+			// CHECK OB USER PN'S EMPFANGEN MÐ¦CHTE
 			if (empty($pnerror))
 			{
 				if ($row->Pnempfang=="no") $pnerror[] = $mod['config_vars']['PN_NotWant'];

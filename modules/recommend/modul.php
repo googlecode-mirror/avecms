@@ -1,7 +1,7 @@
 <?php
 
 /**
- * AVE.cms - Модуль Рекомендовать
+ * AVE.cms - РњРѕРґСѓР»СЊ Р РµРєРѕРјРµРЅРґРѕРІР°С‚СЊ
  *
  * @package AVE.cms
  * @subpackage module_Recommend
@@ -13,10 +13,10 @@ if(!defined('BASE_DIR')) exit;
 
 if (defined('ACP'))
 {
-    $modul['ModulName'] = 'Рекомендовать';
+    $modul['ModulName'] = 'Р РµРєРѕРјРµРЅРґРѕРІР°С‚СЊ';
     $modul['ModulPfad'] = 'recommend';
     $modul['ModulVersion'] = '1.0';
-    $modul['description'] = 'Данный модуль позволяет посетителям выполнять отправку сообщения в случае, если пользователь считает данный сайт или страницу интересной и полезной. Чтобы использовать данный модуль, разместите ситемный тег <strong>[mod_recommend]</strong> в нужном месте вашего шаблона сайта или на какой-либо странице. Данный модуль будет представлен в виде ссылки, по нажатию на которую откроется дополнительное окно для ввода информации.';
+    $modul['description'] = 'Р”Р°РЅРЅС‹Р№ РјРѕРґСѓР»СЊ РїРѕР·РІРѕР»СЏРµС‚ РїРѕСЃРµС‚РёС‚РµР»СЏРј РІС‹РїРѕР»РЅСЏС‚СЊ РѕС‚РїСЂР°РІРєСѓ СЃРѕРѕР±С‰РµРЅРёСЏ РІ СЃР»СѓС‡Р°Рµ, РµСЃР»Рё РїРѕР»СЊР·РѕРІР°С‚РµР»СЊ СЃС‡РёС‚Р°РµС‚ РґР°РЅРЅС‹Р№ СЃР°Р№С‚ РёР»Рё СЃС‚СЂР°РЅРёС†Сѓ РёРЅС‚РµСЂРµСЃРЅРѕР№ Рё РїРѕР»РµР·РЅРѕР№. Р§С‚РѕР±С‹ РёСЃРїРѕР»СЊР·РѕРІР°С‚СЊ РґР°РЅРЅС‹Р№ РјРѕРґСѓР»СЊ, СЂР°Р·РјРµСЃС‚РёС‚Рµ СЃРёС‚РµРјРЅС‹Р№ С‚РµРі <strong>[mod_recommend]</strong> РІ РЅСѓР¶РЅРѕРј РјРµСЃС‚Рµ РІР°С€РµРіРѕ С€Р°Р±Р»РѕРЅР° СЃР°Р№С‚Р° РёР»Рё РЅР° РєР°РєРѕР№-Р»РёР±Рѕ СЃС‚СЂР°РЅРёС†Рµ. Р”Р°РЅРЅС‹Р№ РјРѕРґСѓР»СЊ Р±СѓРґРµС‚ РїСЂРµРґСЃС‚Р°РІР»РµРЅ РІ РІРёРґРµ СЃСЃС‹Р»РєРё, РїРѕ РЅР°Р¶Р°С‚РёСЋ РЅР° РєРѕС‚РѕСЂСѓСЋ РѕС‚РєСЂРѕРµС‚СЃСЏ РґРѕРїРѕР»РЅРёС‚РµР»СЊРЅРѕРµ РѕРєРЅРѕ РґР»СЏ РІРІРѕРґР° РёРЅС„РѕСЂРјР°С†РёРё.';
     $modul['Autor'] = 'Arcanum';
     $modul['MCopyright'] = '&copy; 2007 Overdoze Team';
     $modul['Status'] = 1;
@@ -37,7 +37,7 @@ function mod_recommend() {
 //	$recommend = new Recommend;
 //	$recommend->displayLink();
 ?>
-<a href="javascript:void(0);" onclick="popup('<?php echo ABS_PATH; ?>index.php?module=recommend&amp;action=form&amp;pop=1&amp;theme_folder=ave&amp;page=<?php echo base64_encode(get_redirect_link()); ?>','recommend','500','380','1');">Рекомендовать сайт</a>
+<a href="javascript:void(0);" onclick="popup('<?php echo ABS_PATH; ?>index.php?module=recommend&amp;action=form&amp;pop=1&amp;theme_folder=ave&amp;page=<?php echo base64_encode(get_redirect_link()); ?>','recommend','500','380','1');">Р РµРєРѕРјРµРЅРґРѕРІР°С‚СЊ СЃР°Р№С‚</a>
 <?php
 }
 

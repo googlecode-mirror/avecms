@@ -30,7 +30,7 @@
 						</tr>
 					</table>
 					<div style="padding:1px">
-						<img src="{$forum_images}forum/arrow.gif" alt="" border="0" class="absmiddle" /><a href="index.php?module=forums&amp;show=pn">{#PN_Name#}:</a><a href="#"></a> новые: {if $PNunreaded != 0}<span class="forum_pn_unread">{$PNunreaded}</span>{else}{$PNunreaded}{/if} | прочитанные: {$PNreaded}
+						<img src="{$forum_images}forum/arrow.gif" alt="" border="0" class="absmiddle" /><a href="index.php?module=forums&amp;show=pn">{#PN_Name#}:</a><a href="#"></a> РЅРѕРІС‹Рµ: {if $PNunreaded != 0}<span class="forum_pn_unread">{$PNunreaded}</span>{else}{$PNunreaded}{/if} | РїСЂРѕС‡РёС‚Р°РЅРЅС‹Рµ: {$PNreaded}
 					</div>
 				{else}
 					<form action="index.php" method="post" name="login">

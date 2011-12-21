@@ -1,7 +1,7 @@
 <?php
 
 /**
- * AVE.cms - Модуль Who is online
+ * AVE.cms - РњРѕРґСѓР»СЊ Who is online
  *
  * @package AVE.cms
  * @subpackage module_WhoIsOnline
@@ -16,7 +16,7 @@ if (defined('ACP'))
     $modul['ModulName'] = 'Who is online';
     $modul['ModulPfad'] = 'whoisonline';
     $modul['ModulVersion'] = '1.0';
-    $modul['description'] = 'Данный модуль предназначен для отображения присутствующих на сайте пользователей с гео-информацией.';
+    $modul['description'] = 'Р”Р°РЅРЅС‹Р№ РјРѕРґСѓР»СЊ РїСЂРµРґРЅР°Р·РЅР°С‡РµРЅ РґР»СЏ РѕС‚РѕР±СЂР°Р¶РµРЅРёСЏ РїСЂРёСЃСѓС‚СЃС‚РІСѓСЋС‰РёС… РЅР° СЃР°Р№С‚Рµ РїРѕР»СЊР·РѕРІР°С‚РµР»РµР№ СЃ РіРµРѕ-РёРЅС„РѕСЂРјР°С†РёРµР№.';
     $modul['Autor'] = '&copy;';
     $modul['MCopyright'] = '&copy; 2007-2010 Overdoze.Ru';
     $modul['Status'] = 1;
@@ -38,7 +38,7 @@ function mod_online()
 <div class="onlineWidget">
 	<div class="panel"><img class="preloader" src="<?php echo ABS_PATH; ?>modules/whoisonline/images/preloader.gif" alt="Loading.." width="22" height="22" /></div>
 	<div class="count"></div>
-    <div class="label">онлайн</div>
+    <div class="label">РѕРЅР»Р°Р№РЅ</div>
     <div class="arrow"></div>
 </div>
 <?php
@@ -186,7 +186,7 @@ if (!defined('ACP') && isset($_REQUEST['module']) && $_REQUEST['module'] == 'who
 			{
 				echo '
 				<div class="geoRow">
-					<div class="flag"><img src="' . ABS_PATH . 'modules/whoisonline/images/countryflags/' . strtolower($row->countryCode) . '.gif" width="16" height="11" /></div>
+					<div class="flag"><img src="' . ABS_PATH . 'modules/whoisonline/images/countryflags/' . mb_strtolower($row->countryCode) . '.gif" width="16" height="11" /></div>
 					<div class="country" title="' . htmlspecialchars($row->country) . '">' . $row->country . '</div>
 					<div class="people">' . $row->total . '</div>
 				</div>

@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Класс работы с баннерами
+ * РљР»Р°СЃСЃ СЂР°Р±РѕС‚С‹ СЃ Р±Р°РЅРЅРµСЂР°РјРё
  *
  * @package AVE.cms
  * @subpackage module_Banner
@@ -11,7 +11,7 @@
 class ModulBanner {
 
 /**
- *	СВОЙСТВА
+ *	РЎР’РћР™РЎРўР’Рђ
  */
 
 	var $_limit = 15;
@@ -27,7 +27,7 @@ class ModulBanner {
 		);
 
 /**
- *	ВНУТРЕННИЕ МЕТОДЫ
+ *	Р’РќРЈРўР Р•РќРќРР• РњР•РўРћР”Р«
  */
 
 	function _bannerRandomGet()
@@ -50,7 +50,7 @@ class ModulBanner {
 	}
 
 /**
- *	ВНЕШНИЕ МЕТОДЫ
+ *	Р’РќР•РЁРќРР• РњР•РўРћР”Р«
  */
 
 	function bannerShow($banner_category_id)
@@ -215,7 +215,7 @@ class ModulBanner {
 				{
 					$file = '';
 
-					$d_name = strtolower($_FILES['New']['name']);
+					$d_name = mb_strtolower($_FILES['New']['name']);
 					$d_name = str_replace(' ', '', $d_name);
 					$d_tmp = $_FILES['New']['tmp_name'];
 
@@ -233,7 +233,7 @@ class ModulBanner {
 							{
 								@chmod(BASE_DIR . '/modules/' . BANNER_DIR . '/files/' . $d_name, 0777);
 								echo "<script>alert('" . $AVE_Template->get_config_vars('BANNER_IS_UPLOADED') . ': ' . $d_name . "');</script>";
-								reportLog($_SESSION['user_name'] . ' - добавил изображение баннера (' . $d_name . ')', 2, 2);
+								reportLog($_SESSION['user_name'] . ' - РґРѕР±Р°РІРёР» РёР·РѕР±СЂР°Р¶РµРЅРёРµ Р±Р°РЅРЅРµСЂР° (' . $d_name . ')', 2, 2);
 								$file = $d_name;
 							}
 							else
@@ -267,7 +267,7 @@ class ModulBanner {
 							banner_height     = '" . $_REQUEST['banner_height'] . "'
 					");
 
-					reportLog($_SESSION['user_name'] . ' - добавил новый баннер (' . stripslashes($_REQUEST['banner_name']) . ')', 2, 2);
+					reportLog($_SESSION['user_name'] . ' - РґРѕР±Р°РІРёР» РЅРѕРІС‹Р№ Р±Р°РЅРЅРµСЂ (' . stripslashes($_REQUEST['banner_name']) . ')', 2, 2);
 				}
 
 				echo '<script>window.opener.location.reload(); self.close();</script>';
@@ -322,7 +322,7 @@ class ModulBanner {
 
 		if (!empty($_POST['banner_name']))
 		{
-			$d_name = strtolower($_FILES['New']['name']);
+			$d_name = mb_strtolower($_FILES['New']['name']);
 			$d_name = str_replace(' ','', $d_name);
 			$d_tmp = $_FILES['New']['tmp_name'];
 
@@ -347,7 +347,7 @@ class ModulBanner {
 							WHERE Id = '" . $banner_id . "'
 						");
 
-						reportLog($_SESSION['user_name'] . ' - заменил изображение баннера на (' . $d_name . ')', 2, 2);
+						reportLog($_SESSION['user_name'] . ' - Р·Р°РјРµРЅРёР» РёР·РѕР±СЂР°Р¶РµРЅРёРµ Р±Р°РЅРЅРµСЂР° РЅР° (' . $d_name . ')', 2, 2);
 					}
 					else
 					{
@@ -382,7 +382,7 @@ class ModulBanner {
 					Id = '" . $banner_id . "'
 			");
 
-			reportLog($_SESSION['user_name'] . ' - изменил параметры баннера (' . stripslashes($_REQUEST['banner_name']) . ')', 2, 2);
+			reportLog($_SESSION['user_name'] . ' - РёР·РјРµРЅРёР» РїР°СЂР°РјРµС‚СЂС‹ Р±Р°РЅРЅРµСЂР° (' . stripslashes($_REQUEST['banner_name']) . ')', 2, 2);
 		}
 
 		echo '<script>window.opener.location.reload(); self.close();</script>';
@@ -408,7 +408,7 @@ class ModulBanner {
 			WHERE Id = '" . $banner_id . "'
 		");
 
-		reportLog($_SESSION['user_name'] . ' - удалил баннер (' . $row->banner_name . ')', 2, 2);
+		reportLog($_SESSION['user_name'] . ' - СѓРґР°Р»РёР» Р±Р°РЅРЅРµСЂ (' . $row->banner_name . ')', 2, 2);
 
 		header('Location:index.php?do=modules&action=modedit&mod=' . BANNER_DIR . '&moduleaction=1&cp=' . SESSION);
 		exit;
@@ -452,7 +452,7 @@ class ModulBanner {
 						WHERE Id = '" . $banner_category_id . "'
 					");
 
-					reportLog($_SESSION['user_name'] . ' - удалил категорию баннеров (' . $banner_category_id . ')', 2, 2);
+					reportLog($_SESSION['user_name'] . ' - СѓРґР°Р»РёР» РєР°С‚РµРіРѕСЂРёСЋ Р±Р°РЅРЅРµСЂРѕРІ (' . $banner_category_id . ')', 2, 2);
 				}
 
 				header('Location:index.php?do=modules&action=modedit&mod=' . BANNER_DIR . '&moduleaction=category&cp=' . SESSION);
@@ -467,7 +467,7 @@ class ModulBanner {
 						SET banner_category_name = '" . $_REQUEST['banner_category_name'] . "'
 					");
 
-					reportLog($_SESSION['user_name'] . ' - добавил новую категорию (' . stripslashes($_REQUEST['banner_category_name']) . ')', 2, 2);
+					reportLog($_SESSION['user_name'] . ' - РґРѕР±Р°РІРёР» РЅРѕРІСѓСЋ РєР°С‚РµРіРѕСЂРёСЋ (' . stripslashes($_REQUEST['banner_category_name']) . ')', 2, 2);
 				}
 
 				header('Location:index.php?do=modules&action=modedit&mod=' . BANNER_DIR . '&moduleaction=category&cp=' . SESSION);

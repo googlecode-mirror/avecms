@@ -1,7 +1,7 @@
 
 {foreach from=$items item=item}
 	<li>
-{* Óñëîâèå åñëè àêòèâíûìè äîëæíû áûòü âñå ýëåìåíòû â ïóòè ê àêòèâíîé êàòåãîðèè
+{* Ð£ÑÐ»Ð¾Ð²Ð¸Ðµ ÐµÑÐ»Ð¸ Ð°ÐºÑ‚Ð¸Ð²Ð½Ñ‹Ð¼Ð¸ Ð´Ð¾Ð»Ð¶Ð½Ñ‹ Ð±Ñ‹Ñ‚ÑŒ Ð²ÑÐµ ÑÐ»ÐµÐ¼ÐµÐ½Ñ‚Ñ‹ Ð² Ð¿ÑƒÑ‚Ð¸ Ðº Ð°ÐºÑ‚Ð¸Ð²Ð½Ð¾Ð¹ ÐºÐ°Ñ‚ÐµÐ³Ð¾Ñ€Ð¸Ð¸
 		{if $smarty.request.categ==$item->Id || $item->sub_navi}
 *}		{if $smarty.request.categ==$item->Id}
 			<b><a href="{$item->dyn_link}">{$item->KatName|escape:'html'}</a></b>

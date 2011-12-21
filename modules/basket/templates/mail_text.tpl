@@ -37,7 +37,7 @@ html,body,td,th,div {font:11px Verdana,Arial,Helvetica,sans-serif;}
 				<col valign="top" align="right" width="100">
 				<thead>
 					<tr>
-						<th class="header"><strong>¹</strong></th>
+						<th class="header"><strong>â„–</strong></th>
 						<th class="header"><strong>{#BASKET_PRODUCT_NAME#}</strong></th>
 						<th class="header"><strong>{#BASKET_PRODUCT_QUANTITY#}</strong></th>
 						<th class="header"><strong>{#BASKET_PRODUCT_PRICE#}</strong></th>

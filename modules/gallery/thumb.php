@@ -1,7 +1,7 @@
 <?php
 
 /**
- * AVE.cms - Ìîäóëü Ãàëåðåÿ
+ * AVE.cms - ÐœÐ¾Ð´ÑƒÐ»ÑŒ Ð“Ð°Ð»ÐµÑ€ÐµÑ
  *
  * @package AVE.cms
  * @subpackage module_Gallery
@@ -10,13 +10,13 @@
  */
 
 /**
- * Ãåíåðàòîð ìèíèàòþð
+ * Ð“ÐµÐ½ÐµÑ€Ð°Ñ‚Ð¾Ñ€ Ð¼Ð¸Ð½Ð¸Ð°Ñ‚ÑŽÑ€
  *
  */
 $width = (isset($_REQUEST['xwidth']) && is_numeric($_REQUEST['xwidth']) &&
 	$_REQUEST['xwidth'] > 10 && $_REQUEST['xwidth'] < 500) ? (int)$_REQUEST['xwidth'] : 120;
 
-$type = (empty($_REQUEST['type'])) ? 'jpg' : strtolower($_REQUEST['type']);
+$type = (empty($_REQUEST['type'])) ? 'jpg' : mb_strtolower($_REQUEST['type']);
 
 switch($type)
 {
@@ -33,8 +33,8 @@ switch($type)
 		if ($file = realpath($source_dir . '/' . $source_file))
 		{
 			$thumb_file = $source_dir . '/th__' . $source_file;
-			// Åñëè íå óêàçàíî îáÿçàòåëüíîå ôîðìèðîâàíèå ìèíèàòþð (&compile=1)
-			// è åñòü ìèíèàòþðà ñôîðìèðîâàííàÿ ðàíåå - âûâîäèì å¸
+			// Ð•ÑÐ»Ð¸ Ð½Ðµ ÑƒÐºÐ°Ð·Ð°Ð½Ð¾ Ð¾Ð±ÑÐ·Ð°Ñ‚ÐµÐ»ÑŒÐ½Ð¾Ðµ Ñ„Ð¾Ñ€Ð¼Ð¸Ñ€Ð¾Ð²Ð°Ð½Ð¸Ðµ Ð¼Ð¸Ð½Ð¸Ð°Ñ‚ÑŽÑ€ (&compile=1)
+			// Ð¸ ÐµÑÑ‚ÑŒ Ð¼Ð¸Ð½Ð¸Ð°Ñ‚ÑŽÑ€Ð° ÑÑ„Ð¾Ñ€Ð¼Ð¸Ñ€Ð¾Ð²Ð°Ð½Ð½Ð°Ñ Ñ€Ð°Ð½ÐµÐµ - Ð²Ñ‹Ð²Ð¾Ð´Ð¸Ð¼ ÐµÑ‘
 			if (file_exists($thumb_file) && empty($_REQUEST['compile']))
 			{
 				$img_data = @getimagesize($file);
@@ -57,7 +57,7 @@ switch($type)
 		break;
 }
 
-if (! @include(substr(dirname(__FILE__), 0, -16) . '/class/class.thumbnail.php')) die();
+if (! @include(mb_substr(dirname(__FILE__), 0, -16) . '/class/class.thumbnail.php')) die();
 
 $img = new Image_Toolbox($file);
 

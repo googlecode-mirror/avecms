@@ -1,6 +1,6 @@
 {if $item->can_comment == 1}
 
- <!-- *********** GÄSTEBUCH *********** -->
+ <!-- *********** GÐ”STEBUCH *********** -->
 
 <div class="mod_userpage_border_guestbook">
 

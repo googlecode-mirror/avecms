@@ -14,7 +14,7 @@ require(BASE_DIR . '/inc/init.php');
 
 if (!(isset($_GET['id']) && is_numeric($_GET['id']))) exit;
 
-// Выполняем запрос к БД и выгребаем все параметры для данного канала
+// Р’С‹РїРѕР»РЅСЏРµРј Р·Р°РїСЂРѕСЃ Рє Р‘Р” Рё РІС‹РіСЂРµР±Р°РµРј РІСЃРµ РїР°СЂР°РјРµС‚СЂС‹ РґР»СЏ РґР°РЅРЅРѕРіРѕ РєР°РЅР°Р»Р°
 $rss_settings = $AVE_DB->Query("
 	SELECT
 		rss.*,
@@ -36,8 +36,8 @@ if ($rss_settings !== false)
 	$doctime = get_settings('use_doctime')
 		? ("AND document_published <= " . time() . " AND (document_expire = 0 OR document_expire >= " . time() . ")") : '';
 
-	// Получаем ID, URL и Дату публикации для документов, которые соответсвуют нашей рубрики
-	// Количество выборки ограничиваем значением установленным для канала
+	// РџРѕР»СѓС‡Р°РµРј ID, URL Рё Р”Р°С‚Сѓ РїСѓР±Р»РёРєР°С†РёРё РґР»СЏ РґРѕРєСѓРјРµРЅС‚РѕРІ, РєРѕС‚РѕСЂС‹Рµ СЃРѕРѕС‚РІРµС‚СЃРІСѓСЋС‚ РЅР°С€РµР№ СЂСѓР±СЂРёРєРё
+	// РљРѕР»РёС‡РµСЃС‚РІРѕ РІС‹Р±РѕСЂРєРё РѕРіСЂР°РЅРёС‡РёРІР°РµРј Р·РЅР°С‡РµРЅРёРµРј СѓСЃС‚Р°РЅРѕРІР»РµРЅРЅС‹Рј РґР»СЏ РєР°РЅР°Р»Р°
 	$sql_doc = $AVE_DB->Query("
 		SELECT
 			Id,
@@ -55,11 +55,11 @@ if ($rss_settings !== false)
 		LIMIT " . $rss_settings->rss_item_on_page
 	);
 
-	// Формируем массивы, которые будут хранить инфу
+	// Р¤РѕСЂРјРёСЂСѓРµРј РјР°СЃСЃРёРІС‹, РєРѕС‚РѕСЂС‹Рµ Р±СѓРґСѓС‚ С…СЂР°РЅРёС‚СЊ РёРЅС„Сѓ
 	$rss_item  = array();
 	$rss_items = array();
 
-	// Выполянем обработку полученных из БД данных
+	// Р’С‹РїРѕР»СЏРЅРµРј РѕР±СЂР°Р±РѕС‚РєСѓ РїРѕР»СѓС‡РµРЅРЅС‹С… РёР· Р‘Р” РґР°РЅРЅС‹С…
 	while ($row_doc = $sql_doc->FetchRow())
 	{
 		$sql_fields = $AVE_DB->Query("
@@ -87,9 +87,9 @@ if ($rss_settings !== false)
 				}
 				else
 				{
-					if (strlen($row_fields->field_value) > $rss_settings->rss_description_lenght)
+					if (mb_strlen($row_fields->field_value) > $rss_settings->rss_description_lenght)
 					{
-						$rss_item['description'] = substr($row_fields->field_value, 0, $rss_settings->rss_description_lenght) . '…';
+						$rss_item['description'] = mb_substr($row_fields->field_value, 0, $rss_settings->rss_description_lenght) . 'вЂ¦';
 					}
 					else
 					{
@@ -102,7 +102,7 @@ if ($rss_settings !== false)
 
 		$link_doc = !empty($row_doc->document_alias) ? $row_doc->document_alias : prepare_url($row_doc->document_title);
 		$link = rewrite_link('index.php?id=' . $row_doc->Id . '&amp;doc=' . $link_doc);
-		$rss_item['link'] = $rss_settings->rss_site_url . substr($link, strlen(ABS_PATH));
+		$rss_item['link'] = $rss_settings->rss_site_url . mb_substr($link, mb_strlen(ABS_PATH));
 
 		$rss_item['pubDate'] = $row_doc->document_published ? date('r', $row_doc->document_published) : date('r', time());
 
@@ -110,11 +110,11 @@ if ($rss_settings !== false)
 	}
 }
 
-// Ну а тут собственно шлем заголовок, что у нас документ XML и в путь... выводим данные
+// РќСѓ Р° С‚СѓС‚ СЃРѕР±СЃС‚РІРµРЅРЅРѕ С€Р»РµРј Р·Р°РіРѕР»РѕРІРѕРє, С‡С‚Рѕ Сѓ РЅР°СЃ РґРѕРєСѓРјРµРЅС‚ XML Рё РІ РїСѓС‚СЊ... РІС‹РІРѕРґРёРј РґР°РЅРЅС‹Рµ
 header("Content-Type: application/xml");
 header("Cache-Control: no-cache");
 header("Pragma: no-cache");
-echo '<?xml version="1.0" encoding="windows-1251"?>';
+echo '<?xml version="1.0" encoding="utf8"?>';
 ?>
 
 <rss version="2.0" xmlns:dc="http://purl.org/dc/elements/1.1/">

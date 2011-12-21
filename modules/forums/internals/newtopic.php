@@ -10,11 +10,11 @@
 if(!defined('NEWTOPIC')) exit;
 if(isset($_REQUEST['fid']) && $_REQUEST['fid'] != '' && is_numeric($_REQUEST['fid']) && $_REQUEST['fid'] > 0)
 {
-	// forum id überprüfen
+	// forum id ÑŒberprÑŒfen
 	$forum_result = $GLOBALS['AVE_DB']->Query("SELECT title, status FROM " . PREFIX . "_modul_forum_forum WHERE id = '" . $_REQUEST['fid'] . "'");
 	$forum = $forum_result->FetchRow();
 
-	// es wurde eine falsche fid übergeben
+	// es wurde eine falsche fid ÑŒbergeben
 	if ($forum_result->NumRows() < 1)
 	{
 		header("Location:index.php?module=forums");

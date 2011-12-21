@@ -1,11 +1,11 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=windows-1251">
+<meta http-equiv="content-type" content="text/html; charset=UTF-8" >
 <title>({$smarty.session.user_name|escape})</title>
 <meta name="robots" content="noindex,nofollow">
 <meta http-equiv="pragma" content="no-cache">
-<meta name="generator" content="">
+<meta name="generator" content="Bluefish 2.0.3" >
 <meta name="Expires" content="Mon, 06 Jan 1990 00:00:01 GMT">
 <link href="{$tpl_dir}/css/style.css" rel="stylesheet" type="text/css">
 <script src="{$tpl_dir}/js/jquery/jquery.js" type="text/javascript"></script>
@@ -39,7 +39,7 @@
 	<table width="100%"  border="0" cellpadding="5" cellspacing="1">
 		<tr class="second" valign="top">
 			<td width="100%">
-				{assign var=height value=490}
+				{assign var=height value=450}
 				<div style="border:1px solid #D4D4D4;overflow:hidden;height:{$height}px;width:100%">
 					<iframe frameborder="0" name="zf" id="zf" width="100%" height="{$height}" scrolling="Yes" src="browser.php?typ={$smarty.request.typ|escape}&cpengine={$sess}&dir=/&action=list"></iframe>
 				</div>
@@ -51,9 +51,9 @@
 		<table width="100%" border="0" cellpadding="5" cellspacing="1">
 			<tr class="third">
 				<td>
-					<input type="text" name="fn" size="20" style="width:100%;" readonly="readonly" />
+					<input type="text" name="fn" size="20" style="width:99%;" readonly="readonly" />
 				</td>
-				<td width="1%" align="right">
+				<td width="3%" align="right">
 					<input type="button" class="button" onClick="submitTheForm();" value="{#MAIN_MP_FILE_INSERT#}" />
 				</td>
 			</tr>

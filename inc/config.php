@@ -7,67 +7,47 @@
  * @filesource
  */
 
-// ЧПУ
-define('REWRITE_MODE', true);
-
-// транслитерация ЧПУ
-define('TRANSLIT_URL', true);
-
-// суфикс ЧПУ
-define('URL_SUFF', '/');
-
-// тема публичной части
-define('DEFAULT_THEME_FOLDER', 'ave');
-
-// тема панели администратора
-define('DEFAULT_ADMIN_THEME_FOLDER', 'apanel');
-
-// язык по умолчанию
-define('DEFAULT_LANGUAGE', 'ru');
-
-// хранить сессии в БД
-define('SESSION_SAVE_HANDLER', true);
-
-// время жизни сессии (Значение по умолчанию 24 минуты)
-define('SESSION_LIFETIME', 60*24);
-
-// время жизни cookie автологина (60*60*24*14 - 2 недели)
-define('COOKIE_LIFETIME', 60*60*24*14);
-
-// {true|false} вывод статистики и списка выполненых запросов
-define('PROFILING', false);
-
-// {true|false} отправка писем с ошибками MySQL
-define('SEND_SQL_ERROR', false);
-
-// {true|false} контролировать изменения tpl файлов (после настройки сайта установить - false)
-define('SMARTY_COMPILE_CHECK', true);
-
-// {true|false} консоль отладки Smarty
-define('SMARTY_DEBUGGING', false);
-
-// {true|false} Установите это в false если ваше окружение PHP
-// не разрешает создание директорий от имени Smarty.
-// Поддиректории более эффективны, так что используйте их, если можете.
-define('SMARTY_USE_SUB_DIRS', false);
-
-// {true|false} кэширование скомпилированных шаблонов документов
-define('CACHE_DOC_TPL', false);
-
-// время жизни кэша (60*60*24 = 1 сутки)
-define('CACHE_LIFETIME', 60*60*24*0);
-
-// имя домена используемое для cookie
-//define('COOKIE_DOMAIN', '.ave209.ru');
-
-//Yandex MAP API REY
-define('YANDEX_MAP_API_KEY', '');
-
-//GOOGLE MAP API REY
-define('GOOGLE_MAP_API_KEY', '');
-
 define('APP_NAME', 'AVE.cms');
 define('APP_VERSION', '2.09RC1');
 define('APP_INFO', APP_NAME . ' ' . APP_VERSION . ' &copy; 2008-2010 <a target="_blank" href="http://www.overdoze.ru/">Overdoze.Ru</a>');
+
+$GLOBALS['CMS_CONFIG']['REWRITE_MODE']=Array('DESCR' =>'РСЃРїРѕР»СЊР·РѕРІР°С‚СЊ Р§РџРЈ<br> РђРґСЂРµСЃР° РІРёРґР° index.php Р±СѓРґСѓС‚ РїСЂРµРѕР±СЂР°Р·РѕРІР°РЅС‹ РІ /home/','default'=>true,'TYPE'=>'bool','VARIANT'=>''); 
+$GLOBALS['CMS_CONFIG']['TRANSLIT_URL']=Array('DESCR' =>'РСЃРїРѕР»СЊР·РѕРІР°С‚СЊ С‚СЂР°РЅСЃР»РёС‚ РІ Р§РџРЈ <br> Р°РґСЂРµСЃР° РІРёРґР° /СЃС‚СЂР°РЅРёС†Р°/ РїРѕРјРµРЅСЏСЋС‚СЊСЃСЏ РЅР° /page/','default'=>true,'TYPE'=>'bool','VARIANT'=>''); 
+$GLOBALS['CMS_CONFIG']['URL_SUFF']=Array('DESCR' =>'CСѓС„С„РёРєСЃ Р§РџРЈ','default'=>'/','TYPE'=>'string','VARIANT'=>'');
+$themes=array();
+foreach (glob(dirname(dirname(__FILE__))."/templates/*") as $filename) {
+	if(is_dir($filename))$themes[]=basename($filename);
+}
+$GLOBALS['CMS_CONFIG']['DEFAULT_THEME_FOLDER']=Array('DESCR' =>'РўРµРјР° РїСѓР±Р»РёС‡РЅРѕР№ С‡Р°СЃС‚Рё','default'=>'ave','TYPE'=>'dropdown','VARIANT'=>$themes); 
+$themes=array();
+foreach (glob(dirname(dirname(__FILE__))."/admin/templates/*") as $filename) {
+	if(is_dir($filename))$themes[]=basename($filename);
+}
+$GLOBALS['CMS_CONFIG']['DEFAULT_ADMIN_THEME_FOLDER']=Array('DESCR' =>'РўРµРјР° РїР°РЅРµР»Рё Р°РґРјРёРЅРёСЃС‚СЂР°С‚РѕСЂР°','default'=>'apanel','TYPE'=>'dropdown','VARIANT'=>$themes); 
+$GLOBALS['CMS_CONFIG']['DEFAULT_LANGUAGE']=Array('DESCR' =>'РЇР·С‹Рє РїРѕ СѓРјРѕР»С‡Р°РЅРёСЋ','default'=>'ru','TYPE'=>'dropdown','VARIANT'=>array('ru','en','ua')); 
+$GLOBALS['CMS_CONFIG']['SESSION_SAVE_HANDLER']=Array('DESCR' =>'РҐСЂР°РЅРёС‚СЊ СЃРµСЃСЃРёРё РІ Р‘Р”','default'=>false,'TYPE'=>'bool','VARIANT'=>''); 
+$GLOBALS['CMS_CONFIG']['SESSION_LIFETIME']=Array('DESCR' =>'Р’СЂРµРјСЏ Р¶РёР·РЅРё СЃРµСЃСЃРёРё (Р—РЅР°С‡РµРЅРёРµ РїРѕ СѓРјРѕР»С‡Р°РЅРёСЋ 24 РјРёРЅСѓС‚С‹)','default'=>60*24,'TYPE'=>'integer','VARIANT'=>''); 
+$GLOBALS['CMS_CONFIG']['COOKIE_LIFETIME']=Array('DESCR' =>'Р’СЂРµРјСЏ Р¶РёР·РЅРё cookie Р°РІС‚РѕР»РѕРіРёРЅР° (60*60*24*14 - 2 РЅРµРґРµР»Рё)','default'=>60*60*24*14,'TYPE'=>'integer','VARIANT'=>''); 
+$GLOBALS['CMS_CONFIG']['PROFILING']=Array('DESCR' =>'Р’С‹РІРѕРґ СЃС‚Р°С‚РёСЃС‚РёРєРё Рё СЃРїРёСЃРєР° РІС‹РїРѕР»РЅРµРЅС‹С… Р·Р°РїСЂРѕСЃРѕРІ','default'=>false,'TYPE'=>'bool','VARIANT'=>''); 
+$GLOBALS['CMS_CONFIG']['SEND_SQL_ERROR']=Array('DESCR' =>'РћС‚РїСЂР°РІРєР° РїРёСЃРµРј СЃ РѕС€РёР±РєР°РјРё MySQL','default'=>false,'TYPE'=>'bool','VARIANT'=>''); 
+$GLOBALS['CMS_CONFIG']['SMARTY_COMPILE_CHECK']=Array('DESCR' =>'РљРѕРЅС‚СЂРѕР»РёСЂРѕРІР°С‚СЊ РёР·РјРµРЅРµРЅРёСЏ tpl С„Р°Р№Р»РѕРІ <br>РџРѕСЃР»Рµ РЅР°СЃС‚СЂРѕР№РєРё СЃР°Р№С‚Р° СѓСЃС‚Р°РЅРѕРІРёС‚СЊ - false','default'=>true,'TYPE'=>'bool','VARIANT'=>''); 
+$GLOBALS['CMS_CONFIG']['SMARTY_DEBUGGING']=Array('DESCR' =>'РљРѕРЅСЃРѕР»СЊ РѕС‚Р»Р°РґРєРё Smarty','default'=>false,'TYPE'=>'bool','VARIANT'=>''); 
+$GLOBALS['CMS_CONFIG']['SMARTY_USE_SUB_DIRS']=Array('DESCR' =>'РЎРѕР·РґР°РЅРёРµ РїР°РїРѕРє РґР»СЏ РєСЌС€РёСЂРѕРІР°РЅРёСЏ <br>РЈСЃС‚Р°РЅРѕРІРёС‚Рµ СЌС‚Рѕ РІ false РµСЃР»Рё РІР°С€Рµ РѕРєСЂСѓР¶РµРЅРёРµ PHP РЅРµ СЂР°Р·СЂРµС€Р°РµС‚ СЃРѕР·РґР°РЅРёРµ РґРёСЂРµРєС‚РѕСЂРёР№ РѕС‚ РёРјРµРЅРё Smarty. РџРѕРґРґРёСЂРµРєС‚РѕСЂРёРё Р±РѕР»РµРµ СЌС„С„РµРєС‚РёРІРЅС‹, С‚Р°Рє С‡С‚Рѕ РёСЃРїРѕР»СЊР·СѓР№С‚Рµ РёС…, РµСЃР»Рё РјРѕР¶РµС‚Рµ.','default'=>false,'TYPE'=>'bool','VARIANT'=>''); 
+$GLOBALS['CMS_CONFIG']['CACHE_DOC_TPL']=Array('DESCR' =>'РљСЌС€РёСЂРѕРІР°РЅРёРµ СЃРєРѕРјРїРёР»РёСЂРѕРІР°РЅРЅС‹С… С€Р°Р±Р»РѕРЅРѕРІ РґРѕРєСѓРјРµРЅС‚РѕРІ','default'=>true,'TYPE'=>'bool','VARIANT'=>''); 
+$GLOBALS['CMS_CONFIG']['CACHE_LIFETIME']=Array('DESCR' =>'Р’СЂРµРјСЏ Р¶РёР·РЅРё РєСЌС€Р° (300 = 5 РјРёРЅСѓС‚)','default'=>0,'TYPE'=>'integer','VARIANT'=>''); 
+$GLOBALS['CMS_CONFIG']['YANDEX_MAP_API_KEY']=Array('DESCR' =>'Yandex MAP API REY','default'=>'','TYPE'=>'string','VARIANT'=>'');
+$GLOBALS['CMS_CONFIG']['GOOGLE_MAP_API_KEY']=Array('DESCR' =>'Google MAP API REY','default'=>'','TYPE'=>'string','VARIANT'=>'');
+$GLOBALS['CMS_CONFIG']['Memcached_Server']=Array('DESCR' =>'РђРґСЂРµСЃ Memcached СЃРµСЂРІРµСЂР°','default'=>'','TYPE'=>'string','VARIANT'=>'');
+$GLOBALS['CMS_CONFIG']['Memcached_Port']=Array('DESCR' =>'РџРѕСЂС‚ Memcached СЃРµСЂРІРµСЂР°','default'=>'','TYPE'=>'string','VARIANT'=>'');
+$GLOBALS['CMS_CONFIG']['BILD_VERSION']=Array('DESCR' =>'Р’РµСЂСЃРёСЏ СЃР±РѕСЂРєРё','default'=>'','TYPE'=>'integer','VARIANT'=>'');
+$GLOBALS['CMS_CONFIG']['SVN_LOGIN']=Array('DESCR' =>'Р›РѕРіРёРЅ РѕС‚ SVN СЂРµРїРѕР·РёС‚Р°СЂРёСЏ','default'=>'public','TYPE'=>'string','VARIANT'=>'');
+$GLOBALS['CMS_CONFIG']['SVN_PASSWORD']=Array('DESCR' =>'РџР°СЂРѕР»СЊ РѕС‚ SVN СЂРµРїРѕР·РёС‚Р°СЂРёСЏ','default'=>'public','TYPE'=>'string','VARIANT'=>'');
+
+@include(dirname(dirname(__FILE__)).'/inc/config.inc.php');
+foreach($GLOBALS['CMS_CONFIG'] as $k=>$v)
+{
+	if(!defined($k))
+		define($k,$v['default']);
+}
 
 ?>

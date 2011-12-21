@@ -60,7 +60,7 @@ switch ($_REQUEST['action'])
 		if (check_permission_acp('template'))
 		{
 			
-			// для работы с css файлами
+			// РґР»СЏ СЂР°Р±РѕС‚С‹ СЃ css С„Р°Р№Р»Р°РјРё
 			$dir = BASE_DIR.'/templates/'.DEFAULT_THEME_FOLDER.'/css/';
 			if($handle = opendir($dir))
 			{
@@ -76,7 +76,7 @@ switch ($_REQUEST['action'])
 				closedir($handle);
 			} 
 			$AVE_Template->assign('css_files', $css_files);
-			// для работы с css файлами
+			// РґР»СЏ СЂР°Р±РѕС‚С‹ СЃ css С„Р°Р№Р»Р°РјРё
 			
 			$items   = array();
 			$num_tpl = $AVE_DB->Query("
@@ -171,7 +171,7 @@ switch ($_REQUEST['action'])
 								template_created   = '" . time() . "'
 						");
 
-						reportLog($_SESSION['user_name'] . ' - создал шаблон (' . stripslashes($_REQUEST['template_title']) . ')', 2, 2);
+						reportLog($_SESSION['user_name'] . ' - СЃРѕР·РґР°Р» С€Р°Р±Р»РѕРЅ (' . stripslashes($_REQUEST['template_title']) . ')', 2, 2);
 
 						header('Location:index.php?do=templates');
 						exit;
@@ -198,7 +198,7 @@ switch ($_REQUEST['action'])
 
 			if ($Used >= 1 || $_REQUEST['Id'] == 1)
 			{
-				reportLog($_SESSION['user_name'] . ' - попытка удаления основного шаблона (' . (int)$_REQUEST['Id'] . ')', 2, 2);
+				reportLog($_SESSION['user_name'] . ' - РїРѕРїС‹С‚РєР° СѓРґР°Р»РµРЅРёСЏ РѕСЃРЅРѕРІРЅРѕРіРѕ С€Р°Р±Р»РѕРЅР° (' . (int)$_REQUEST['Id'] . ')', 2, 2);
 
 				header('Location:index.php?do=templates');
 				exit;
@@ -219,7 +219,7 @@ switch ($_REQUEST['action'])
 					AUTO_INCREMENT = 1
 				");
 
-				reportLog($_SESSION['user_name'] . ' - удалил шаблон (' . (int)$_REQUEST['Id'] . ') ', 2, 2);
+				reportLog($_SESSION['user_name'] . ' - СѓРґР°Р»РёР» С€Р°Р±Р»РѕРЅ (' . (int)$_REQUEST['Id'] . ') ', 2, 2);
 
 				header('Location:index.php?do=templates');
 				exit;
@@ -257,7 +257,7 @@ switch ($_REQUEST['action'])
 					$check_code = strtolower($_REQUEST['template_text']);
 					if (is_php_code($check_code) && !check_permission('template_php') )
 					{
-						reportLog($_SESSION['user_name'] . ' - пытался использовать PHP кода в шаблоне (' . stripslashes($_REQUEST['template_title']) . ')', 2, 2);
+						reportLog($_SESSION['user_name'] . ' - РїС‹С‚Р°Р»СЃСЏ РёСЃРїРѕР»СЊР·РѕРІР°С‚СЊ PHP РєРѕРґР° РІ С€Р°Р±Р»РѕРЅРµ (' . stripslashes($_REQUEST['template_title']) . ')', 2, 2);
 						$AVE_Template->assign('php_forbidden', 1);
 						$ok = false;
 					}
@@ -269,7 +269,7 @@ switch ($_REQUEST['action'])
 					}
 					else
 					{
-						reportLog($_SESSION['user_name'] . ' - изменил шаблон (' . stripslashes($_REQUEST['template_title']) . ')', 2, 2);
+						reportLog($_SESSION['user_name'] . ' - РёР·РјРµРЅРёР» С€Р°Р±Р»РѕРЅ (' . stripslashes($_REQUEST['template_title']) . ')', 2, 2);
 						$AVE_DB->Query("
 							UPDATE " . PREFIX . "_templates
 							SET
@@ -301,13 +301,13 @@ switch ($_REQUEST['action'])
 					
 					if (is_php_code($check_code))
 					{
-						reportLog($_SESSION['user_name'] . ' - пытался использовать PHP в css файле (' . stripslashes($_REQUEST['name_file']) . ')', 2, 2);
+						reportLog($_SESSION['user_name'] . ' - РїС‹С‚Р°Р»СЃСЏ РёСЃРїРѕР»СЊР·РѕРІР°С‚СЊ PHP РІ css С„Р°Р№Р»Рµ (' . stripslashes($_REQUEST['name_file']) . ')', 2, 2);
 						header('Location:index.php?do=templates');
 						exit;
 					}
 					
 					file_put_contents($dir, trim($check_code));	
-					reportLog($_SESSION['user_name'] . ' - отредактировал файл (' . stripslashes($dir) . ')', 2, 2);
+					reportLog($_SESSION['user_name'] . ' - РѕС‚СЂРµРґР°РєС‚РёСЂРѕРІР°Р» С„Р°Р№Р» (' . stripslashes($dir) . ')', 2, 2);
 					header('Location:index.php?do=templates');
 					exit;
 					break;
@@ -372,7 +372,7 @@ switch ($_REQUEST['action'])
 								template_created   = '" . time() . "'
 						");
 
-						reportLog($_SESSION['user_name'] . ' - создал копию шаблона (' . (int)$_REQUEST['oId'] . ')', 2, 2);
+						reportLog($_SESSION['user_name'] . ' - СЃРѕР·РґР°Р» РєРѕРїРёСЋ С€Р°Р±Р»РѕРЅР° (' . (int)$_REQUEST['oId'] . ')', 2, 2);
 
 						echo '<script>window.opener.location.reload();window.close();</script>';
 					}

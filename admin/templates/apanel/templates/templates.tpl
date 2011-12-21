@@ -93,7 +93,7 @@ function check_name() {ldelim}
 		{foreach from=$css_files item=css_files}
 			<tr style="background-color: #eff3eb;" onmouseover="this.style.backgroundColor='#dae0d8';" onmouseout="this.style.backgroundColor='#eff3eb';">
 				<td>
-					<a title="Ðåäàêòèðîâàòü CSS ôàéë" href="index.php?do=templates&amp;action=edit_css&amp;sub=edit&amp;name_file={$css_files}&amp;cp={$sess}">{$css_files}</a>
+					<a title="Ð ÐµÐ´Ð°ÐºÑ‚Ð¸Ñ€Ð¾Ð²Ð°Ñ‚ÑŒ CSS Ñ„Ð°Ð¹Ð»" href="index.php?do=templates&amp;action=edit_css&amp;sub=edit&amp;name_file={$css_files}&amp;cp={$sess}">{$css_files}</a>
 				</td>
 			</tr>
 		{/foreach}	

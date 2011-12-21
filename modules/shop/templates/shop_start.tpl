@@ -1,12 +1,12 @@
 
 <div class="grid_12">
 	{if $smarty.request.categ==''}
-		<!-- Всупительное слово -->
+		<!-- Р’СЃСѓРїРёС‚РµР»СЊРЅРѕРµ СЃР»РѕРІРѕ -->
 		{if $ShopWillkommen}
 			{$ShopWillkommen}
 		{/if}
 
-		<!-- Презентация -->
+		<!-- РџСЂРµР·РµРЅС‚Р°С†РёСЏ -->
 		{$RandomOffer}
 
 		{include file="$mod_dir/shop/templates/shop_tree_extended.tpl"}
@@ -30,8 +30,8 @@
 	<div class="tab-container">
 		<div class="tab-header">
 			{if $smarty.request.categ=='' && $TopsellerActive==1}<div class="tab-handle">{#Topseller#}</div>{/if}
-			<div class="tab-handle">Специальное предложение</div>
-			<div class="tab-handle">Поледние поступления</div>
+			<div class="tab-handle">РЎРїРµС†РёР°Р»СЊРЅРѕРµ РїСЂРµРґР»РѕР¶РµРЅРёРµ</div>
+			<div class="tab-handle">РџРѕР»РµРґРЅРёРµ РїРѕСЃС‚СѓРїР»РµРЅРёСЏ</div>
 		</div>
 
 		<div class="tab-body">
@@ -45,7 +45,7 @@
 			{/if}
 
 			<div class="tab-body-element">
-				<h3>Специальное предложение</h3>
+				<h3>РЎРїРµС†РёР°Р»СЊРЅРѕРµ РїСЂРµРґР»РѕР¶РµРЅРёРµ</h3>
 				<div class="mod_shop_newprod_box">
 					<table width="100%" cellpadding="0" cellspacing="0">
 						<tr>
@@ -54,14 +54,14 @@
 									<a title="" href="#"><img src="templates/ave/images/hp151111.jpg" alt="Canon Powershot G11" width="55" height="55"/></a>
 								</div>
 								<a title="" href="#">Canon Powershot G11</a> <br />
-								<strong>599,00 руб.</strong>
+								<strong>599,00 СЂСѓР±.</strong>
 							</td>
 							<td style="text-align:center;">
 								<div class="mod_shop_newprod_box_container">
 									<a title="" href="#"><img src="templates/ave/images/hp151111.jpg" alt="Canon Powershot G11" width="55" height="55"/></a>
 								</div>
 								<a title="" href="#">Canon Powershot G11</a> <br />
-								<strong>599,00 руб.</strong>
+								<strong>599,00 СЂСѓР±.</strong>
 							</td>
 						</tr>
 					</table>
@@ -69,7 +69,7 @@
 			</div>
 
 			<div class="tab-body-element">
-				<h3>Поледние поступления</h3>
+				<h3>РџРѕР»РµРґРЅРёРµ РїРѕСЃС‚СѓРїР»РµРЅРёСЏ</h3>
 				<div class="mod_shop_newprod_box">
 					<table width="100%" cellpadding="0" cellspacing="0">
 						<tr>
@@ -78,7 +78,7 @@
 									<a title="" href="#"><img src="templates/ave/images/hp151111.jpg" alt="Canon Powershot G11" width="55" height="55"/></a>
 								</div>
 								<a title="" href="#">Canon Powershot G11</a><br />
-								<strong>599,00 руб.</strong>
+								<strong>599,00 СЂСѓР±.</strong>
 							</td>
 						</tr>
 					</table>
@@ -94,46 +94,46 @@
 
 {if $smarty.request.print!=1}
 	<div class="grid_4">
-		<!-- Правое меню -->
+		<!-- РџСЂР°РІРѕРµ РјРµРЅСЋ -->
 		<div class="box menu">
 			<h2><a href="#" id="toggle-section-menu">{#ProductOverview#}</a></h2>
 			<div class="block" id="section-menu">{$ShopNavi}</div>
 		</div>
 
-		<!-- Блок авторизации -->
+		<!-- Р‘Р»РѕРє Р°РІС‚РѕСЂРёР·Р°С†РёРё -->
 		<div class="box">
 			<h2> <a href="#" id="toggle-login-forms">{#UserPanel#}</a> </h2>
 			<div class="block" id="login-forms">{$UserPanel}</div>
 		</div>
 
-		<!-- Блок поиска по магазину -->
+		<!-- Р‘Р»РѕРє РїРѕРёСЃРєР° РїРѕ РјР°РіР°Р·РёРЅСѓ -->
 		<div class="box">
 			<h2><a href="#" id="toggle-shop-search">{#ProductSearch#}</a></h2>
 			<div class="block" id="shop-search">{$Search}</div>
 		</div>
 
-		<!-- Блок корзины -->
+		<!-- Р‘Р»РѕРє РєРѕСЂР·РёРЅС‹ -->
 		<div class="box">
 			<h2><a href="#" id="toggle-shopbasket">{#ShopBasket#}</a></h2>
 			<div class="block" id="shopbasket">{$Basket}</div>
 		</div>
 
 		{if $smarty.session.user_id}
-			<!-- Блок обработанных заказов -->
+			<!-- Р‘Р»РѕРє РѕР±СЂР°Р±РѕС‚Р°РЅРЅС‹С… Р·Р°РєР°Р·РѕРІ -->
 			<div class="box">
 				<h2><a href="#" id="toggle-myordersbox">{#MyOrders#}</a></h2>
 				<div class="block" id="myordersbox">{$MyOrders}</div>
 			</div>
 		{/if}
 
-		<!-- Блок информации -->
+		<!-- Р‘Р»РѕРє РёРЅС„РѕСЂРјР°С†РёРё -->
 		<div class="box">
 			<h2><a href="#" id="toggle-shopinfobox">{#Infopage#}</a></h2>
 			<div class="block" id="shopinfobox">{$InfoBox}</div>
 		</div>
 
 		{if $smarty.request.categ!=''}
-			<!-- Блок популярных товаров -->
+			<!-- Р‘Р»РѕРє РїРѕРїСѓР»СЏСЂРЅС‹С… С‚РѕРІР°СЂРѕРІ -->
 			<div class="box">
 				<h2><a href="#" id="toggle-shoppopprods">{#Topseller#}</a></h2>
 				<div class="block" id="shoppopprods">{$Topseller}</div>

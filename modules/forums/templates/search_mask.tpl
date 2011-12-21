@@ -15,11 +15,11 @@
           <tr>
             <td valign="top" class="forum_info_main"><table border="0" cellspacing="1" cellpadding="1">
               <tr>
-                <td>Фраза</td>
+                <td>Р¤СЂР°Р·Р°</td>
                 <td><input type="text" name="pattern" size="50" /></td>
               </tr>
               <tr>
-                <td>Тип темы</td>
+                <td>РўРёРї С‚РµРјС‹</td>
                 <td><select name="type">
                   <option value="-1">{#AllTypes#}</option>
                   <option value="1">{#StickThread#}</option>

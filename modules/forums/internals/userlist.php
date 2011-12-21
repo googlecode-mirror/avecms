@@ -71,7 +71,7 @@ else
 	$orderby = ' ORDER BY Beitraege DESC';
 }
 
-// Aktuelle Seite für Links
+// Aktuelle Seite fÑŒr Links
 $f_page = (!empty($_REQUEST['page']) && is_numeric($_REQUEST['page']) && $_REQUEST['page']>0)
 	? "&amp;page=". $_REQUEST['page']
 	: "";

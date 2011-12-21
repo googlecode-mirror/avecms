@@ -3,7 +3,7 @@
 {if $WishListActive==1}
 	<div style="padding: 20px">
 		<div class="mod_shop_topnav"><a class="mod_shop_navi" href="{$ShopStartLink}">{#PageName#}</a> {#PageSep#} {#Wishlist#} </div>
-		<h2 id="page-heading">Ваши закладки</h2><br />
+		<h2 id="page-heading">Р’Р°С€Рё Р·Р°РєР»Р°РґРєРё</h2><br />
 		{#WishlistInf#}<br />
 		<br />
 
@@ -21,7 +21,7 @@
 					<tr>
 						{foreach from=$MyWishlist item=bi}
 							<td class="mod_shop_basket_row_price mod_shop_wishlist_td ">
-								Цена: {num_format val=$bi->EPreis} {$Currency}
+								Р¦РµРЅР°: {num_format val=$bi->EPreis} {$Currency}
 							</td>
 						{/foreach}
 					</tr>
@@ -32,11 +32,11 @@
 								<table border="0" cellspacing="0" cellpadding="0">
 									<tr>
 										<td>
-											Количество: <input class="inputbox" name="amount[{$bi->Id}]" type="text" size="3" maxlength="3" value="{$bi->Anzahl}" />
+											РљРѕР»РёС‡РµСЃС‚РІРѕ: <input class="inputbox" name="amount[{$bi->Id}]" type="text" size="3" maxlength="3" value="{$bi->Anzahl}" />
 										</td>
 
 										<td>
-											&nbsp;-&nbsp;на сумму: <strong>{num_format val=$bi->EPreisSumme} </strong>{$Currency}
+											&nbsp;-&nbsp;РЅР° СЃСѓРјРјСѓ: <strong>{num_format val=$bi->EPreisSumme} </strong>{$Currency}
 											{if $bi->PreisW2Summ && $ZeigeWaehrung2=='1'}
 												<br />
 												<span class="mod_shop_ust">{num_format val=$bi->PreisW2Summ} {$Currency2}</span>
@@ -46,7 +46,7 @@
 
 									<tr>
 										<td>
-											Удалить <input name="del_product[{$bi->Id}]" type="checkbox" value="1" />
+											РЈРґР°Р»РёС‚СЊ <input name="del_product[{$bi->Id}]" type="checkbox" value="1" />
 										</td>
 										<td>
 											<input class="absmiddle" type="image" src="templates/{$theme_folder}/modules/shop/refresh.gif" />&nbsp;
@@ -72,7 +72,7 @@
 
 					<tr>
 						{foreach from=$MyWishlist item=bi}
-							<td class="mod_shop_basket_header mod_shop_wishlist_td ">Описание товара</td>
+							<td class="mod_shop_basket_header mod_shop_wishlist_td ">РћРїРёСЃР°РЅРёРµ С‚РѕРІР°СЂР°</td>
 						{/foreach}
 					</tr>
 

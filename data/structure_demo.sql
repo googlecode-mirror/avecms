@@ -5,7 +5,7 @@ CREATE TABLE `%%PRFX%%_antispam` (
   PRIMARY KEY  (`Id`),
   UNIQUE KEY `Code` (`Code`),
   KEY `Ctime` (`Ctime`)
-) ENGINE=MyISAM DEFAULT CHARSET=cp1251;#inst#
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;#inst#
 
 CREATE TABLE `%%PRFX%%_countries` (
   `Id` mediumint(5) unsigned NOT NULL auto_increment,
@@ -14,18 +14,19 @@ CREATE TABLE `%%PRFX%%_countries` (
   `country_status` enum('1','2') NOT NULL default '2',
   `country_eu` enum('1','2') NOT NULL default '2',
   PRIMARY KEY  (`Id`)
-) ENGINE=MyISAM AUTO_INCREMENT=238 DEFAULT CHARSET=cp1251;#inst#
+) ENGINE=MyISAM AUTO_INCREMENT=238 DEFAULT CHARSET=utf8;#inst#
 
 CREATE TABLE `%%PRFX%%_document_fields` (
   `Id` int(10) unsigned NOT NULL auto_increment,
   `rubric_field_id` mediumint(5) unsigned NOT NULL default '0',
   `document_id` int(10) unsigned NOT NULL default '0',
+  `field_number_value` int(11) NOT NULL DEFAULT '0',
   `field_value` longtext NOT NULL,
   `document_in_search` enum('1','0') NOT NULL default '1',
   PRIMARY KEY  (`Id`),
   KEY `document_id` (`document_id`),
   KEY `rubric_field_id` (`rubric_field_id`,`document_in_search`)
-) ENGINE=MyISAM AUTO_INCREMENT=100 DEFAULT CHARSET=cp1251 PACK_KEYS=0;#inst#
+) ENGINE=MyISAM AUTO_INCREMENT=100 DEFAULT CHARSET=utf8 PACK_KEYS=0;#inst#
 
 
 CREATE TABLE `%%PRFX%%_document_remarks` (
@@ -39,7 +40,7 @@ CREATE TABLE `%%PRFX%%_document_remarks` (
   `remark_status` enum('1','0') NOT NULL default '1',
   `remark_author_email` varchar(255) NOT NULL,
   PRIMARY KEY  (`Id`)
-) ENGINE=MyISAM DEFAULT CHARSET=cp1251 PACK_KEYS=0;#inst#
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 PACK_KEYS=0;#inst#
 
 CREATE TABLE `%%PRFX%%_documents` (
   `Id` int(10) unsigned NOT NULL auto_increment,
@@ -66,7 +67,7 @@ CREATE TABLE `%%PRFX%%_documents` (
   KEY `document_status` (`document_status`),
   KEY `document_published` (`document_published`),
   KEY `document_expire` (`document_expire`)
-) ENGINE=MyISAM AUTO_INCREMENT=28 DEFAULT CHARSET=cp1251 PACK_KEYS=0;#inst#
+) ENGINE=MyISAM AUTO_INCREMENT=28 DEFAULT CHARSET=utf8 PACK_KEYS=0;#inst#
 
 CREATE TABLE `%%PRFX%%_log` (
   `Id` int(10) unsigned NOT NULL auto_increment,
@@ -77,13 +78,13 @@ CREATE TABLE `%%PRFX%%_log` (
   `log_type` tinyint(1) unsigned NOT NULL default '2',
   `log_rubric` tinyint(1) unsigned NOT NULL default '2',
   PRIMARY KEY  (`Id`)
-) ENGINE=MyISAM DEFAULT CHARSET=cp1251 PACK_KEYS=0;#inst#
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 PACK_KEYS=0;#inst#
 
 CREATE TABLE `%%PRFX%%_modul_banner_categories` (
   `Id` smallint(3) unsigned NOT NULL auto_increment,
   `banner_category_name` char(100) NOT NULL default '',
   PRIMARY KEY  (`Id`)
-) ENGINE=MyISAM AUTO_INCREMENT=3 DEFAULT CHARSET=cp1251;#inst#
+) ENGINE=MyISAM AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;#inst#
 
 CREATE TABLE `%%PRFX%%_modul_basket` (
   `id` int(11) NOT NULL auto_increment,
@@ -94,7 +95,7 @@ CREATE TABLE `%%PRFX%%_modul_basket` (
   `basket_product_quantity` smallint(5) default NULL,
   `basket_product_amount` float(10,2) default NULL,
   PRIMARY KEY  (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=cp1251 PACK_KEYS=0;#inst#
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 PACK_KEYS=0;#inst#
 
 
 CREATE TABLE `%%PRFX%%_modul_banners` (
@@ -117,7 +118,7 @@ CREATE TABLE `%%PRFX%%_modul_banners` (
   `banner_height` smallint(3) unsigned NOT NULL default '0',
   PRIMARY KEY  (`Id`),
   KEY `banner_category_id` (`banner_category_id`)
-) ENGINE=MyISAM AUTO_INCREMENT=3 DEFAULT CHARSET=cp1251;#inst#
+) ENGINE=MyISAM AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;#inst#
 
 CREATE TABLE `%%PRFX%%_modul_contact_fields` (
   `Id` int(10) unsigned NOT NULL auto_increment,
@@ -134,7 +135,7 @@ CREATE TABLE `%%PRFX%%_modul_contact_fields` (
   `contact_field_max_chars` varchar(20) NOT NULL,
   `contact_field_value` varchar(255) NOT NULL,
   PRIMARY KEY  (`Id`)
-) ENGINE=MyISAM AUTO_INCREMENT=6 DEFAULT CHARSET=cp1251;#inst#
+) ENGINE=MyISAM AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;#inst#
 
 CREATE TABLE `%%PRFX%%_modul_contact_info` (
   `Id` int(10) unsigned NOT NULL auto_increment,
@@ -151,7 +152,7 @@ CREATE TABLE `%%PRFX%%_modul_contact_info` (
   `contact_form_out_message` longtext NOT NULL,
   `contact_form_out_attachment` tinytext NOT NULL,
   PRIMARY KEY  (`Id`)
-) ENGINE=MyISAM DEFAULT CHARSET=cp1251;#inst#
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;#inst#
 
 CREATE TABLE `%%PRFX%%_modul_contacts` (
   `Id` mediumint(5) unsigned NOT NULL auto_increment,
@@ -162,12 +163,12 @@ CREATE TABLE `%%PRFX%%_modul_contacts` (
   `contact_form_antispam` enum('1','0') NOT NULL default '1',
   `contact_form_max_upload` mediumint(5) unsigned NOT NULL default '500',
   `contact_form_subject_show` enum('1','0') NOT NULL default '1',
-  `contact_form_subject_default` varchar(255) NOT NULL default '—ÓÓ·˘ÂÌËÂ',
+  `contact_form_subject_default` varchar(255) NOT NULL default '–°–æ–æ–±—â–µ–Ω–∏–µ',
   `contact_form_allow_group` varchar(255) NOT NULL default '1,2,3,4',
   `contact_form_send_copy` enum('1','0') NOT NULL default '1',
   `contact_form_message_noaccess` text NOT NULL,
   PRIMARY KEY  (`Id`)
-) ENGINE=MyISAM AUTO_INCREMENT=2 DEFAULT CHARSET=cp1251;#inst#
+) ENGINE=MyISAM AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;#inst#
 
 CREATE TABLE `%%PRFX%%_modul_comment_info` (
   `Id` int(10) unsigned NOT NULL auto_increment,
@@ -188,7 +189,7 @@ CREATE TABLE `%%PRFX%%_modul_comment_info` (
   KEY `document_id` (`document_id`),
   KEY `parent_id` (`parent_id`),
   KEY `status` (`comment_status`)
-) ENGINE=MyISAM AUTO_INCREMENT=20 DEFAULT CHARSET=cp1251 PACK_KEYS=0;#inst#
+) ENGINE=MyISAM AUTO_INCREMENT=20 DEFAULT CHARSET=utf8 PACK_KEYS=0;#inst#
 
 CREATE TABLE `%%PRFX%%_modul_comments` (
   `Id` tinyint(1) unsigned NOT NULL auto_increment,
@@ -198,7 +199,7 @@ CREATE TABLE `%%PRFX%%_modul_comments` (
   `comment_active` enum('1','0') NOT NULL default '1',
   `comment_use_antispam` enum('1','0') NOT NULL default '1',
   PRIMARY KEY  (`Id`)
-) ENGINE=MyISAM AUTO_INCREMENT=2 DEFAULT CHARSET=cp1251;#inst#
+) ENGINE=MyISAM AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;#inst#
 
 CREATE TABLE `%%PRFX%%_modul_download_comments` (
   `Id` int(10) unsigned NOT NULL auto_increment,
@@ -211,7 +212,7 @@ CREATE TABLE `%%PRFX%%_modul_download_comments` (
   `Ip` varchar(200) NOT NULL default '',
   `Aktiv` tinyint(1) unsigned NOT NULL default '1',
   PRIMARY KEY  (`Id`)
-) ENGINE=MyISAM DEFAULT CHARSET=cp1251;#inst#
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;#inst#
 
 CREATE TABLE `%%PRFX%%_modul_download_files` (
   `Id` int(10) unsigned NOT NULL auto_increment,
@@ -252,7 +253,7 @@ CREATE TABLE `%%PRFX%%_modul_download_files` (
   `Excl_Pay` tinyint(1) unsigned NOT NULL default '0',
   `Excl_Chk` tinyint(1) unsigned NOT NULL default '0',
   PRIMARY KEY  (`Id`)
-) ENGINE=MyISAM AUTO_INCREMENT=13 DEFAULT CHARSET=cp1251;#inst#
+) ENGINE=MyISAM AUTO_INCREMENT=13 DEFAULT CHARSET=utf8;#inst#
 
 CREATE TABLE `%%PRFX%%_modul_download_kat` (
   `Id` int(10) unsigned NOT NULL auto_increment,
@@ -263,13 +264,13 @@ CREATE TABLE `%%PRFX%%_modul_download_kat` (
   `user_group` varchar(255) NOT NULL default '1|2|3|4|5|6',
   `Bild` varchar(200) default NULL,
   PRIMARY KEY  (`Id`)
-) ENGINE=MyISAM AUTO_INCREMENT=32 DEFAULT CHARSET=cp1251;#inst#
+) ENGINE=MyISAM AUTO_INCREMENT=32 DEFAULT CHARSET=utf8;#inst#
 
 CREATE TABLE `%%PRFX%%_modul_download_lizenzen` (
   `Id` smallint(2) unsigned NOT NULL auto_increment,
   `Name` char(255) NOT NULL,
   PRIMARY KEY  (`Id`)
-) ENGINE=MyISAM AUTO_INCREMENT=7 DEFAULT CHARSET=cp1251;#inst#
+) ENGINE=MyISAM AUTO_INCREMENT=7 DEFAULT CHARSET=utf8;#inst#
 
 CREATE TABLE `%%PRFX%%_modul_download_log` (
   `Id` int(14) unsigned NOT NULL auto_increment,
@@ -277,13 +278,13 @@ CREATE TABLE `%%PRFX%%_modul_download_log` (
   `Datum` char(10) NOT NULL,
   `Ip` char(100) NOT NULL,
   PRIMARY KEY  (`Id`)
-) ENGINE=MyISAM DEFAULT CHARSET=cp1251;#inst#
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;#inst#
 
 CREATE TABLE `%%PRFX%%_modul_download_os` (
   `Id` int(10) unsigned NOT NULL auto_increment,
   `Name` char(200) NOT NULL,
   PRIMARY KEY  (`Id`)
-) ENGINE=MyISAM AUTO_INCREMENT=18 DEFAULT CHARSET=cp1251;#inst#
+) ENGINE=MyISAM AUTO_INCREMENT=18 DEFAULT CHARSET=utf8;#inst#
 
 CREATE TABLE `%%PRFX%%_modul_download_payhistory` (
   `Id` int(10) unsigned NOT NULL auto_increment,
@@ -293,27 +294,27 @@ CREATE TABLE `%%PRFX%%_modul_download_payhistory` (
   `PayDate` char(10) NOT NULL,
   `User_IP` char(15) NOT NULL,
   PRIMARY KEY  (`Id`)
-) ENGINE=MyISAM DEFAULT CHARSET=cp1251;#inst#
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;#inst#
 
 CREATE TABLE `%%PRFX%%_modul_download_settings` (
   `Empfehlen` tinyint(1) unsigned NOT NULL default '1',
   `Bewerten` tinyint(1) unsigned NOT NULL default '0',
   `Spamwoerter` text NOT NULL,
   `Kommentare` tinyint(1) unsigned NOT NULL default '1'
-) ENGINE=MyISAM DEFAULT CHARSET=cp1251;#inst#
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;#inst#
 
 CREATE TABLE `%%PRFX%%_modul_download_sprachen` (
   `Id` int(10) unsigned NOT NULL auto_increment,
   `Name` char(200) NOT NULL,
   PRIMARY KEY  (`Id`)
-) ENGINE=MyISAM AUTO_INCREMENT=6 DEFAULT CHARSET=cp1251;#inst#
+) ENGINE=MyISAM AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;#inst#
 
 CREATE TABLE `%%PRFX%%_modul_faq` (
   `id` mediumint(5) unsigned NOT NULL auto_increment,
   `faq_title` char(100) NOT NULL,
   `faq_description` char(255) NOT NULL,
   PRIMARY KEY  (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=2 DEFAULT CHARSET=cp1251 PACK_KEYS=0;#inst#
+) ENGINE=MyISAM AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 PACK_KEYS=0;#inst#
 
 CREATE TABLE `%%PRFX%%_modul_faq_quest` (
   `id` mediumint(5) unsigned NOT NULL auto_increment,
@@ -321,14 +322,14 @@ CREATE TABLE `%%PRFX%%_modul_faq_quest` (
   `faq_answer` text NOT NULL,
   `faq_id` mediumint(5) unsigned NOT NULL default '1',
   PRIMARY KEY  (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=4 DEFAULT CHARSET=cp1251 PACK_KEYS=0;#inst#
+) ENGINE=MyISAM AUTO_INCREMENT=4 DEFAULT CHARSET=utf8 PACK_KEYS=0;#inst#
 
 CREATE TABLE `%%PRFX%%_modul_forum_allowed_files` (
   `id` tinyint(3) unsigned NOT NULL auto_increment,
   `filetype` char(200) NOT NULL,
   `filesize` int(10) unsigned NOT NULL default '0',
   PRIMARY KEY  (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=11 DEFAULT CHARSET=cp1251;#inst#
+) ENGINE=MyISAM AUTO_INCREMENT=11 DEFAULT CHARSET=utf8;#inst#
 
 CREATE TABLE `%%PRFX%%_modul_forum_attachment` (
   `id` mediumint(8) unsigned NOT NULL auto_increment,
@@ -338,7 +339,7 @@ CREATE TABLE `%%PRFX%%_modul_forum_attachment` (
   PRIMARY KEY  (`id`),
   KEY `filename` (`filename`),
   FULLTEXT KEY `filename_2` (`filename`)
-) ENGINE=MyISAM DEFAULT CHARSET=cp1251;#inst#
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;#inst#
 
 CREATE TABLE `%%PRFX%%_modul_forum_category` (
   `id` int(11) NOT NULL auto_increment,
@@ -351,7 +352,7 @@ CREATE TABLE `%%PRFX%%_modul_forum_category` (
   KEY `title` (`title`),
   KEY `position` (`position`),
   KEY `parent_id` (`parent_id`)
-) ENGINE=MyISAM AUTO_INCREMENT=2 DEFAULT CHARSET=cp1251;#inst#
+) ENGINE=MyISAM AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;#inst#
 
 CREATE TABLE `%%PRFX%%_modul_forum_forum` (
   `id` int(11) unsigned NOT NULL auto_increment,
@@ -378,7 +379,7 @@ CREATE TABLE `%%PRFX%%_modul_forum_forum` (
   KEY `group_id` (`group_id`),
   KEY `status` (`status`),
   KEY `category_id` (`category_id`)
-) ENGINE=MyISAM AUTO_INCREMENT=3 DEFAULT CHARSET=cp1251;#inst#
+) ENGINE=MyISAM AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;#inst#
 
 CREATE TABLE `%%PRFX%%_modul_forum_groupavatar` (
   `Id` int(10) unsigned NOT NULL auto_increment,
@@ -386,7 +387,7 @@ CREATE TABLE `%%PRFX%%_modul_forum_groupavatar` (
   `IstStandard` tinyint(1) unsigned NOT NULL default '1',
   `StandardAvatar` char(255) NOT NULL,
   PRIMARY KEY  (`Id`)
-) ENGINE=MyISAM AUTO_INCREMENT=5 DEFAULT CHARSET=cp1251;#inst#
+) ENGINE=MyISAM AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;#inst#
 
 CREATE TABLE `%%PRFX%%_modul_forum_grouppermissions` (
   `Id` int(10) unsigned NOT NULL auto_increment,
@@ -403,7 +404,7 @@ CREATE TABLE `%%PRFX%%_modul_forum_grouppermissions` (
   `MAX_EDIT_PERIOD` smallint(4) unsigned NOT NULL default '672',
   PRIMARY KEY  (`Id`),
   UNIQUE KEY `Benutzergruppe` (`user_group`)
-) ENGINE=MyISAM AUTO_INCREMENT=5 DEFAULT CHARSET=cp1251 PACK_KEYS=0;#inst#
+) ENGINE=MyISAM AUTO_INCREMENT=5 DEFAULT CHARSET=utf8 PACK_KEYS=0;#inst#
 
 CREATE TABLE `%%PRFX%%_modul_forum_ignorelist` (
   `Id` int(14) unsigned NOT NULL auto_increment,
@@ -412,19 +413,19 @@ CREATE TABLE `%%PRFX%%_modul_forum_ignorelist` (
   `Grund` char(255) NOT NULL,
   `Datum` int(14) unsigned NOT NULL default '0',
   PRIMARY KEY  (`Id`)
-) ENGINE=MyISAM DEFAULT CHARSET=cp1251;#inst#
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;#inst#
 
 CREATE TABLE `%%PRFX%%_modul_forum_mods` (
   `forum_id` int(11) NOT NULL default '0',
   `user_id` int(11) NOT NULL default '0'
-) ENGINE=MyISAM DEFAULT CHARSET=cp1251;#inst#
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;#inst#
 
 CREATE TABLE `%%PRFX%%_modul_forum_permissions` (
   `forum_id` int(11) NOT NULL default '0',
   `group_id` int(11) NOT NULL default '0',
   `permissions` char(255) NOT NULL,
   PRIMARY KEY  (`forum_id`,`group_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=cp1251;#inst#
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;#inst#
 
 CREATE TABLE `%%PRFX%%_modul_forum_pn` (
   `pnid` int(11) unsigned NOT NULL auto_increment,
@@ -440,7 +441,7 @@ CREATE TABLE `%%PRFX%%_modul_forum_pn` (
   `reply` enum('yes','no') NOT NULL default 'no',
   `forward` enum('yes','no') NOT NULL default 'no',
   PRIMARY KEY  (`pnid`)
-) ENGINE=MyISAM DEFAULT CHARSET=cp1251;#inst#
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;#inst#
 
 CREATE TABLE `%%PRFX%%_modul_forum_post` (
   `id` bigint(20) unsigned NOT NULL auto_increment,
@@ -459,7 +460,7 @@ CREATE TABLE `%%PRFX%%_modul_forum_post` (
   KEY `uid` (`uid`),
   KEY `topic_id` (`topic_id`),
   KEY `datum` (`datum`)
-) ENGINE=MyISAM AUTO_INCREMENT=12 DEFAULT CHARSET=cp1251;#inst#
+) ENGINE=MyISAM AUTO_INCREMENT=12 DEFAULT CHARSET=utf8;#inst#
 
 CREATE TABLE `%%PRFX%%_modul_forum_posticons` (
   `id` int(11) NOT NULL auto_increment,
@@ -467,14 +468,14 @@ CREATE TABLE `%%PRFX%%_modul_forum_posticons` (
   `active` tinyint(1) NOT NULL default '1',
   `path` char(55) NOT NULL,
   PRIMARY KEY  (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=15 DEFAULT CHARSET=cp1251;#inst#
+) ENGINE=MyISAM AUTO_INCREMENT=15 DEFAULT CHARSET=utf8;#inst#
 
 CREATE TABLE `%%PRFX%%_modul_forum_rank` (
   `id` int(10) unsigned NOT NULL auto_increment,
   `title` char(100) NOT NULL,
   `count` int(11) NOT NULL default '0',
   PRIMARY KEY  (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=7 DEFAULT CHARSET=cp1251;#inst#
+) ENGINE=MyISAM AUTO_INCREMENT=7 DEFAULT CHARSET=utf8;#inst#
 
 CREATE TABLE `%%PRFX%%_modul_forum_rating` (
   `topic_id` int(11) NOT NULL default '0',
@@ -482,7 +483,7 @@ CREATE TABLE `%%PRFX%%_modul_forum_rating` (
   `ip` text NOT NULL,
   `uid` text NOT NULL,
   PRIMARY KEY  (`topic_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=cp1251;#inst#
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;#inst#
 
 CREATE TABLE `%%PRFX%%_modul_forum_settings` (
   `boxwidthcomm` int(10) unsigned NOT NULL default '300',
@@ -502,7 +503,7 @@ CREATE TABLE `%%PRFX%%_modul_forum_settings` (
   UNIQUE KEY `boxwidthforums` (`boxwidthforums`),
   UNIQUE KEY `maxlengthword` (`maxlengthword`),
   UNIQUE KEY `maxlines` (`maxlines`)
-) ENGINE=MyISAM DEFAULT CHARSET=cp1251;#inst#
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;#inst#
 
 CREATE TABLE `%%PRFX%%_modul_forum_smileys` (
   `id` int(11) NOT NULL auto_increment,
@@ -511,7 +512,7 @@ CREATE TABLE `%%PRFX%%_modul_forum_smileys` (
   `code` char(15) NOT NULL,
   `path` char(55) NOT NULL,
   PRIMARY KEY  (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=14 DEFAULT CHARSET=cp1251;#inst#
+) ENGINE=MyISAM AUTO_INCREMENT=14 DEFAULT CHARSET=utf8;#inst#
 
 CREATE TABLE `%%PRFX%%_modul_forum_topic` (
   `id` int(11) NOT NULL auto_increment,
@@ -536,14 +537,14 @@ CREATE TABLE `%%PRFX%%_modul_forum_topic` (
   KEY `opened` (`opened`),
   KEY `uid` (`uid`),
   KEY `title` (`title`)
-) ENGINE=MyISAM AUTO_INCREMENT=4 DEFAULT CHARSET=cp1251;#inst#
+) ENGINE=MyISAM AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;#inst#
 
 CREATE TABLE `%%PRFX%%_modul_forum_topic_read` (
   `Usr` int(11) NOT NULL default '0',
   `Topic` int(11) NOT NULL default '0',
   `ReadOn` timestamp NOT NULL default CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP,
   PRIMARY KEY  (`Usr`,`Topic`)
-) ENGINE=MyISAM DEFAULT CHARSET=cp1251;#inst#
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;#inst#
 
 CREATE TABLE `%%PRFX%%_modul_forum_useronline` (
   `ip` char(25) NOT NULL default '0',
@@ -553,7 +554,7 @@ CREATE TABLE `%%PRFX%%_modul_forum_useronline` (
   `invisible` char(10) NOT NULL,
   UNIQUE KEY `ip` (`ip`),
   KEY `expire` (`expire`)
-) ENGINE=MyISAM DEFAULT CHARSET=cp1251;#inst#
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;#inst#
 
 CREATE TABLE `%%PRFX%%_modul_forum_userprofile` (
   `Id` int(14) unsigned NOT NULL auto_increment,
@@ -588,7 +589,7 @@ CREATE TABLE `%%PRFX%%_modul_forum_userprofile` (
   `Geschlecht` enum('male','female') NOT NULL default 'male',
   PRIMARY KEY  (`Id`),
   UNIQUE KEY `BenutzerId` (`BenutzerId`)
-) ENGINE=MyISAM AUTO_INCREMENT=2 DEFAULT CHARSET=cp1251 PACK_KEYS=0;#inst#
+) ENGINE=MyISAM AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 PACK_KEYS=0;#inst#
 
 CREATE TABLE `%%PRFX%%_modul_gallery` (
   `id` int(10) unsigned NOT NULL auto_increment,
@@ -609,7 +610,7 @@ CREATE TABLE `%%PRFX%%_modul_gallery` (
   `gallery_script` text NOT NULL,
   `gallery_image_template` text NOT NULL,
   PRIMARY KEY  (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=2 DEFAULT CHARSET=cp1251 PACK_KEYS=0;#inst#
+) ENGINE=MyISAM AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 PACK_KEYS=0;#inst#
 
 CREATE TABLE `%%PRFX%%_modul_gallery_images` (
   `id` int(10) unsigned NOT NULL auto_increment,
@@ -626,7 +627,7 @@ CREATE TABLE `%%PRFX%%_modul_gallery_images` (
   KEY `image_date` (`image_date`),
   KEY `gallery_id` (`gallery_id`),
   KEY `image_title` (`image_title`)
-) ENGINE=MyISAM AUTO_INCREMENT=9 DEFAULT CHARSET=cp1251 PACK_KEYS=0;#inst#
+) ENGINE=MyISAM AUTO_INCREMENT=9 DEFAULT CHARSET=utf8 PACK_KEYS=0;#inst#
 
 CREATE TABLE `%%PRFX%%_modul_login` (
   `Id` tinyint(1) unsigned NOT NULL auto_increment,
@@ -639,7 +640,7 @@ CREATE TABLE `%%PRFX%%_modul_login` (
   `login_require_firstname` enum('0','1') NOT NULL default '0',
   `login_require_lastname` enum('0','1') NOT NULL default '0',
   PRIMARY KEY  (`Id`)
-) ENGINE=MyISAM AUTO_INCREMENT=2 DEFAULT CHARSET=cp1251;#inst#
+) ENGINE=MyISAM AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;#inst#
 
 CREATE TABLE `%%PRFX%%_modul_newsarchive` (
   `id` mediumint(5) unsigned NOT NULL auto_increment,
@@ -648,7 +649,7 @@ CREATE TABLE `%%PRFX%%_modul_newsarchive` (
   `newsarchive_show_days` enum('1','0') NOT NULL default '1',
   `newsarchive_show_empty` enum('1','0') NOT NULL default '1',
   PRIMARY KEY  (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=2 DEFAULT CHARSET=cp1251 PACK_KEYS=0;#inst#
+) ENGINE=MyISAM AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 PACK_KEYS=0;#inst#
 
 CREATE TABLE `%%PRFX%%_modul_poll` (
   `id` int(10) unsigned NOT NULL auto_increment,
@@ -661,7 +662,7 @@ CREATE TABLE `%%PRFX%%_modul_poll` (
   `poll_users_id` text NOT NULL,
   `poll_users_ip` text NOT NULL,
   PRIMARY KEY  (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=2 DEFAULT CHARSET=cp1251;#inst#
+) ENGINE=MyISAM AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;#inst#
 
 CREATE TABLE `%%PRFX%%_modul_poll_comments` (
   `id` int(10) unsigned NOT NULL auto_increment,
@@ -672,7 +673,7 @@ CREATE TABLE `%%PRFX%%_modul_poll_comments` (
   `poll_comment_title` varchar(250) NOT NULL default '',
   `poll_comment_text` text NOT NULL,
   PRIMARY KEY  (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=cp1251;#inst#
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;#inst#
 
 CREATE TABLE `%%PRFX%%_modul_poll_items` (
   `id` int(10) unsigned NOT NULL auto_increment,
@@ -682,7 +683,7 @@ CREATE TABLE `%%PRFX%%_modul_poll_items` (
   `poll_item_color` varchar(10) NOT NULL default '',
   `poll_item_position` int(2) NOT NULL,
   PRIMARY KEY  (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=4 DEFAULT CHARSET=cp1251;#inst#
+) ENGINE=MyISAM AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;#inst#
 
 CREATE TABLE `%%PRFX%%_modul_search` (
   `Id` int(10) unsigned NOT NULL auto_increment,
@@ -691,13 +692,13 @@ CREATE TABLE `%%PRFX%%_modul_search` (
   `search_found` mediumint(5) unsigned NOT NULL default '0',
   PRIMARY KEY  (`Id`),
   UNIQUE KEY `search_query` (`search_query`)
-) ENGINE=MyISAM DEFAULT CHARSET=cp1251 PACK_KEYS=0;#inst#
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 PACK_KEYS=0;#inst#
 
 CREATE TABLE `%%PRFX%%_modul_shop` (
   `Id` tinyint(1) unsigned NOT NULL auto_increment,
   `status` enum('0','1') NOT NULL default '0',
   `Waehrung` varchar(10) NOT NULL default 'RUR',
-  `WaehrungSymbol` varchar(10) NOT NULL default 'Û·.',
+  `WaehrungSymbol` varchar(10) NOT NULL default '—Ä—É–±.',
   `Waehrung2` varchar(10) NOT NULL default 'EUR',
   `WaehrungSymbol2` varchar(10) NOT NULL default '&euro;#inst#',
   `Waehrung2Multi` decimal(10,4) NOT NULL default '1.0000',
@@ -751,7 +752,7 @@ CREATE TABLE `%%PRFX%%_modul_shop` (
   `EmpEmail` varchar(255) NOT NULL default '',
   `BetreffBest` varchar(255) NOT NULL default '',
   PRIMARY KEY  (`Id`)
-) ENGINE=MyISAM AUTO_INCREMENT=2 DEFAULT CHARSET=cp1251;#inst#
+) ENGINE=MyISAM AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;#inst#
 
 CREATE TABLE `%%PRFX%%_modul_shop_artikel` (
   `Id` int(10) unsigned NOT NULL auto_increment,
@@ -804,14 +805,14 @@ CREATE TABLE `%%PRFX%%_modul_shop_artikel` (
   KEY `Bestellungen` (`Bestellungen`),
   KEY `Angebot` (`Angebot`),
   FULLTEXT KEY `Schlagwoerter` (`Schlagwoerter`)
-) ENGINE=MyISAM AUTO_INCREMENT=18 DEFAULT CHARSET=cp1251 PACK_KEYS=0;#inst#
+) ENGINE=MyISAM AUTO_INCREMENT=18 DEFAULT CHARSET=utf8 PACK_KEYS=0;#inst#
 
 CREATE TABLE `%%PRFX%%_modul_shop_artikel_bilder` (
   `Id` int(10) unsigned NOT NULL auto_increment,
   `ArtId` int(10) unsigned NOT NULL default '0',
   `Bild` char(255) NOT NULL,
   PRIMARY KEY  (`Id`)
-) ENGINE=MyISAM AUTO_INCREMENT=6 DEFAULT CHARSET=cp1251 PACK_KEYS=0;#inst#
+) ENGINE=MyISAM AUTO_INCREMENT=6 DEFAULT CHARSET=utf8 PACK_KEYS=0;#inst#
 
 CREATE TABLE `%%PRFX%%_modul_shop_artikel_downloads` (
   `Id` int(10) unsigned NOT NULL auto_increment,
@@ -824,7 +825,7 @@ CREATE TABLE `%%PRFX%%_modul_shop_artikel_downloads` (
   `description` text NOT NULL,
   `Position` mediumint(3) unsigned NOT NULL default '1',
   PRIMARY KEY  (`Id`)
-) ENGINE=MyISAM DEFAULT CHARSET=cp1251;#inst#
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;#inst#
 
 CREATE TABLE `%%PRFX%%_modul_shop_artikel_kommentare` (
   `Id` int(8) unsigned NOT NULL auto_increment,
@@ -836,7 +837,7 @@ CREATE TABLE `%%PRFX%%_modul_shop_artikel_kommentare` (
   `Wertung` smallint(1) unsigned NOT NULL default '0',
   `Publik` tinyint(1) unsigned NOT NULL default '0',
   PRIMARY KEY  (`Id`)
-) ENGINE=MyISAM DEFAULT CHARSET=cp1251;#inst#
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;#inst#
 
 
 CREATE TABLE `%%PRFX%%_modul_shop_bestellungen` (
@@ -879,7 +880,7 @@ CREATE TABLE `%%PRFX%%_modul_shop_bestellungen` (
   `Status` enum('wait','progress','ok','ok_send','failed') NOT NULL default 'wait',
   `DatumBezahlt` int(10) unsigned NOT NULL default '0',
   PRIMARY KEY  (`Id`)
-) ENGINE=MyISAM DEFAULT CHARSET=cp1251 PACK_KEYS=0;#inst#
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 PACK_KEYS=0;#inst#
 
 CREATE TABLE `%%PRFX%%_modul_shop_downloads` (
   `Id` int(11) unsigned NOT NULL auto_increment,
@@ -896,7 +897,7 @@ CREATE TABLE `%%PRFX%%_modul_shop_downloads` (
   `GesperrtGrund` text NOT NULL,
   `Position` smallint(2) NOT NULL default '1',
   PRIMARY KEY  (`Id`)
-) ENGINE=MyISAM DEFAULT CHARSET=cp1251;#inst#
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;#inst#
 
 CREATE TABLE `%%PRFX%%_modul_shop_einheiten` (
   `Id` int(10) unsigned NOT NULL auto_increment,
@@ -904,7 +905,7 @@ CREATE TABLE `%%PRFX%%_modul_shop_einheiten` (
   `NameEinzahl` char(255) NOT NULL,
   PRIMARY KEY  (`Id`),
   UNIQUE KEY `Name` (`Name`)
-) ENGINE=MyISAM AUTO_INCREMENT=4 DEFAULT CHARSET=cp1251;#inst#
+) ENGINE=MyISAM AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;#inst#
 
 CREATE TABLE `%%PRFX%%_modul_shop_gutscheine` (
   `Id` int(10) unsigned NOT NULL auto_increment,
@@ -919,7 +920,7 @@ CREATE TABLE `%%PRFX%%_modul_shop_gutscheine` (
   `AlleBenutzer` tinyint(1) unsigned NOT NULL default '0',
   PRIMARY KEY  (`Id`),
   UNIQUE KEY `Code` (`Code`)
-) ENGINE=MyISAM DEFAULT CHARSET=cp1251;#inst#
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;#inst#
 
 CREATE TABLE `%%PRFX%%_modul_shop_hersteller` (
   `Id` mediumint(5) unsigned NOT NULL auto_increment,
@@ -928,7 +929,7 @@ CREATE TABLE `%%PRFX%%_modul_shop_hersteller` (
   `Logo` char(255) NOT NULL,
   PRIMARY KEY  (`Id`),
   UNIQUE KEY `Name` (`Name`)
-) ENGINE=MyISAM AUTO_INCREMENT=4 DEFAULT CHARSET=cp1251;#inst#
+) ENGINE=MyISAM AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;#inst#
 
 CREATE TABLE `%%PRFX%%_modul_shop_kategorie` (
   `Id` mediumint(5) unsigned NOT NULL auto_increment,
@@ -941,7 +942,7 @@ CREATE TABLE `%%PRFX%%_modul_shop_kategorie` (
   `cbid` int(5) unsigned NOT NULL default '0',
   PRIMARY KEY  (`Id`,`parent_id`),
   KEY `KatName` (`KatName`)
-) ENGINE=MyISAM AUTO_INCREMENT=29 DEFAULT CHARSET=cp1251 PACK_KEYS=0;#inst#
+) ENGINE=MyISAM AUTO_INCREMENT=29 DEFAULT CHARSET=utf8 PACK_KEYS=0;#inst#
 
 CREATE TABLE `%%PRFX%%_modul_shop_kundenrabatte` (
   `Id` smallint(3) unsigned NOT NULL auto_increment,
@@ -949,7 +950,7 @@ CREATE TABLE `%%PRFX%%_modul_shop_kundenrabatte` (
   `Wert` decimal(7,2) unsigned NOT NULL default '0.00',
   PRIMARY KEY  (`Id`),
   UNIQUE KEY `GruppenId` (`GruppenId`)
-) ENGINE=MyISAM DEFAULT CHARSET=cp1251;#inst#
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;#inst#
 
 CREATE TABLE `%%PRFX%%_modul_shop_merkliste` (
   `Id` int(10) unsigned NOT NULL auto_increment,
@@ -958,7 +959,7 @@ CREATE TABLE `%%PRFX%%_modul_shop_merkliste` (
   `Inhalt` text NOT NULL,
   `Inhalt_Vars` text NOT NULL,
   PRIMARY KEY  (`Id`)
-) ENGINE=MyISAM DEFAULT CHARSET=cp1251;#inst#
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;#inst#
 
 CREATE TABLE `%%PRFX%%_modul_shop_staffelpreise` (
   `Id` int(10) unsigned NOT NULL auto_increment,
@@ -969,14 +970,14 @@ CREATE TABLE `%%PRFX%%_modul_shop_staffelpreise` (
   PRIMARY KEY  (`Id`),
   KEY `ArtId` (`ArtId`),
   KEY `Preis` (`Preis`)
-) ENGINE=MyISAM DEFAULT CHARSET=cp1251;#inst#
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;#inst#
 
 CREATE TABLE `%%PRFX%%_modul_shop_ust` (
   `Id` smallint(3) unsigned NOT NULL auto_increment,
   `Name` char(100) NOT NULL,
   `Wert` decimal(4,2) NOT NULL default '16.00',
   PRIMARY KEY  (`Id`)
-) ENGINE=MyISAM AUTO_INCREMENT=2 DEFAULT CHARSET=cp1251;#inst#
+) ENGINE=MyISAM AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;#inst#
 
 CREATE TABLE `%%PRFX%%_modul_shop_varianten` (
   `Id` int(10) unsigned NOT NULL auto_increment,
@@ -990,7 +991,7 @@ CREATE TABLE `%%PRFX%%_modul_shop_varianten` (
   PRIMARY KEY  (`Id`),
   KEY `KatId` (`KatId`),
   KEY `ArtId` (`ArtId`)
-) ENGINE=MyISAM DEFAULT CHARSET=cp1251;#inst#
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;#inst#
 
 CREATE TABLE `%%PRFX%%_modul_shop_varianten_kategorien` (
   `Id` int(10) unsigned NOT NULL auto_increment,
@@ -1000,7 +1001,7 @@ CREATE TABLE `%%PRFX%%_modul_shop_varianten_kategorien` (
   `status` tinyint(1) unsigned NOT NULL default '1',
   PRIMARY KEY  (`Id`),
   KEY `KatId` (`KatId`)
-) ENGINE=MyISAM DEFAULT CHARSET=cp1251;#inst#
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;#inst#
 
 CREATE TABLE `%%PRFX%%_modul_shop_versandarten` (
   `Id` int(10) unsigned NOT NULL auto_increment,
@@ -1014,7 +1015,7 @@ CREATE TABLE `%%PRFX%%_modul_shop_versandarten` (
   `NurBeiGewichtNull` tinyint(1) unsigned NOT NULL default '0',
   `ErlaubteGruppen` tinytext NOT NULL,
   PRIMARY KEY  (`Id`)
-) ENGINE=MyISAM AUTO_INCREMENT=5 DEFAULT CHARSET=cp1251;#inst#
+) ENGINE=MyISAM AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;#inst#
 
 CREATE TABLE `%%PRFX%%_modul_shop_versandkosten` (
   `Id` int(10) unsigned NOT NULL auto_increment,
@@ -1024,7 +1025,7 @@ CREATE TABLE `%%PRFX%%_modul_shop_versandkosten` (
   `KBis` decimal(8,3) NOT NULL default '10.000',
   `Betrag` decimal(7,2) NOT NULL default '0.00',
   PRIMARY KEY  (`Id`)
-) ENGINE=MyISAM DEFAULT CHARSET=cp1251;#inst#
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;#inst#
 
 CREATE TABLE `%%PRFX%%_modul_shop_versandzeit` (
   `Id` smallint(2) unsigned NOT NULL auto_increment,
@@ -1032,7 +1033,7 @@ CREATE TABLE `%%PRFX%%_modul_shop_versandzeit` (
   `description` text NOT NULL,
   `Icon` varchar(255) NOT NULL,
   PRIMARY KEY  (`Id`)
-) ENGINE=MyISAM AUTO_INCREMENT=5 DEFAULT CHARSET=cp1251;#inst#
+) ENGINE=MyISAM AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;#inst#
 
 CREATE TABLE `%%PRFX%%_modul_shop_zahlungsmethoden` (
   `Id` mediumint(5) unsigned NOT NULL auto_increment,
@@ -1053,14 +1054,14 @@ CREATE TABLE `%%PRFX%%_modul_shop_zahlungsmethoden` (
   `Position` mediumint(5) unsigned NOT NULL default '0',
   PRIMARY KEY  (`Id`),
   UNIQUE KEY `Name` (`Name`)
-) ENGINE=MyISAM AUTO_INCREMENT=3 DEFAULT CHARSET=cp1251;#inst#
+) ENGINE=MyISAM AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;#inst#
 
 CREATE TABLE `%%PRFX%%_modul_sysblock` (
   `id` mediumint(5) unsigned NOT NULL auto_increment,
   `sysblock_name` varchar(255) NOT NULL,
   `sysblock_text` longtext NOT NULL,
   PRIMARY KEY  (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=22 DEFAULT CHARSET=cp1251 PACK_KEYS=0;#inst#
+) ENGINE=MyISAM AUTO_INCREMENT=22 DEFAULT CHARSET=utf8 PACK_KEYS=0;#inst#
 
 CREATE TABLE `%%PRFX%%_modul_who_is_online` (
   `id` int(10) unsigned NOT NULL auto_increment,
@@ -1072,7 +1073,7 @@ CREATE TABLE `%%PRFX%%_modul_who_is_online` (
   PRIMARY KEY  (`id`),
   UNIQUE KEY `ip` (`ip`),
   KEY `countrycode` (`countrycode`)
-) ENGINE=MyISAM DEFAULT CHARSET=cp1251;#inst#
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;#inst#
 
 CREATE TABLE `%%PRFX%%_module` (
   `Id` smallint(3) unsigned NOT NULL auto_increment,
@@ -1088,7 +1089,7 @@ CREATE TABLE `%%PRFX%%_module` (
   `AdminEdit` enum('0','1') NOT NULL default '0',
   PRIMARY KEY  (`Id`),
   UNIQUE KEY `ModulName` (`ModulName`)
-) ENGINE=MyISAM AUTO_INCREMENT=27 DEFAULT CHARSET=cp1251 PACK_KEYS=0;#inst#
+) ENGINE=MyISAM AUTO_INCREMENT=27 DEFAULT CHARSET=utf8 PACK_KEYS=0;#inst#
 
 CREATE TABLE `%%PRFX%%_navigation` (
   `id` smallint(3) unsigned NOT NULL auto_increment,
@@ -1110,7 +1111,7 @@ CREATE TABLE `%%PRFX%%_navigation` (
   `navi_user_group` text NOT NULL,
   `navi_expand` enum('0','1') NOT NULL default '0',
   PRIMARY KEY  (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=3 DEFAULT CHARSET=cp1251 PACK_KEYS=0;#inst#
+) ENGINE=MyISAM AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 PACK_KEYS=0;#inst#
 
 CREATE TABLE `%%PRFX%%_navigation_items` (
   `Id` mediumint(5) unsigned NOT NULL auto_increment,
@@ -1127,7 +1128,7 @@ CREATE TABLE `%%PRFX%%_navigation_items` (
   KEY `navi_id` (`navi_id`),
   KEY `document_alias` (`document_alias`),
   KEY `navi_item_status` (`navi_item_status`)
-) ENGINE=MyISAM AUTO_INCREMENT=20 DEFAULT CHARSET=cp1251 PACK_KEYS=0;#inst#
+) ENGINE=MyISAM AUTO_INCREMENT=20 DEFAULT CHARSET=utf8 PACK_KEYS=0;#inst#
 
 CREATE TABLE `%%PRFX%%_request` (
   `Id` smallint(3) unsigned NOT NULL auto_increment,
@@ -1143,8 +1144,9 @@ CREATE TABLE `%%PRFX%%_request` (
   `request_asc_desc` enum('ASC','DESC') NOT NULL default 'DESC',
   `request_show_pagination` enum('0','1') NOT NULL default '0',
   `request_where_cond` text NOT NULL,
+  `request_cache_lifetime` int(11) NOT NULL DEFAULT '0',
   PRIMARY KEY  (`Id`)
-) ENGINE=MyISAM AUTO_INCREMENT=8 DEFAULT CHARSET=cp1251 PACK_KEYS=0;#inst#
+) ENGINE=MyISAM AUTO_INCREMENT=8 DEFAULT CHARSET=utf8 PACK_KEYS=0;#inst#
 
 CREATE TABLE `%%PRFX%%_request_conditions` (
   `Id` mediumint(5) unsigned NOT NULL auto_increment,
@@ -1154,7 +1156,7 @@ CREATE TABLE `%%PRFX%%_request_conditions` (
   `condition_value` char(255) NOT NULL,
   `condition_join` enum('OR','AND') NOT NULL default 'OR',
   PRIMARY KEY  (`Id`)
-) ENGINE=MyISAM AUTO_INCREMENT=6 DEFAULT CHARSET=cp1251 PACK_KEYS=0;#inst#
+) ENGINE=MyISAM AUTO_INCREMENT=6 DEFAULT CHARSET=utf8 PACK_KEYS=0;#inst#
 
 CREATE TABLE `%%PRFX%%_rubric_fields` (
   `Id` mediumint(5) unsigned NOT NULL auto_increment,
@@ -1168,7 +1170,7 @@ CREATE TABLE `%%PRFX%%_rubric_fields` (
   PRIMARY KEY  (`Id`),
   KEY `rubric_id` (`rubric_id`),
   KEY `rubric_field_type` (`rubric_field_type`)
-) ENGINE=MyISAM AUTO_INCREMENT=41 DEFAULT CHARSET=cp1251 PACK_KEYS=0;#inst#
+) ENGINE=MyISAM AUTO_INCREMENT=41 DEFAULT CHARSET=utf8 PACK_KEYS=0;#inst#
 
 CREATE TABLE `%%PRFX%%_rubric_permissions` (
   `Id` mediumint(5) unsigned NOT NULL auto_increment,
@@ -1177,7 +1179,7 @@ CREATE TABLE `%%PRFX%%_rubric_permissions` (
   `rubric_permission` char(255) NOT NULL,
   PRIMARY KEY  (`Id`),
   KEY `rubric_id` (`rubric_id`)
-) ENGINE=MyISAM AUTO_INCREMENT=21 DEFAULT CHARSET=cp1251 PACK_KEYS=0;#inst#
+) ENGINE=MyISAM AUTO_INCREMENT=21 DEFAULT CHARSET=utf8 PACK_KEYS=0;#inst#
 
 CREATE TABLE `%%PRFX%%_rubric_template_cache` (
   `id` bigint(15) unsigned NOT NULL auto_increment,
@@ -1190,7 +1192,7 @@ CREATE TABLE `%%PRFX%%_rubric_template_cache` (
   `compiled` longtext NOT NULL,
   PRIMARY KEY  (`id`),
   KEY `rubric_id` (`rub_id`,`doc_id`,`wysiwyg`)
-) ENGINE=MyISAM DEFAULT CHARSET=cp1251 PACK_KEYS=0;#inst#
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 PACK_KEYS=0;#inst#
 
 CREATE TABLE `%%PRFX%%_rubrics` (
   `Id` smallint(3) unsigned NOT NULL auto_increment,
@@ -1202,7 +1204,7 @@ CREATE TABLE `%%PRFX%%_rubrics` (
   `rubric_created` int(10) unsigned NOT NULL default '0',
   PRIMARY KEY  (`Id`),
   KEY `rubric_template_id` (`rubric_template_id`)
-) ENGINE=MyISAM AUTO_INCREMENT=6 DEFAULT CHARSET=cp1251 PACK_KEYS=0;#inst#
+) ENGINE=MyISAM AUTO_INCREMENT=6 DEFAULT CHARSET=utf8 PACK_KEYS=0;#inst#
 
 CREATE TABLE `%%PRFX%%_sessions` (
   `sesskey` varchar(32) NOT NULL,
@@ -1213,7 +1215,7 @@ CREATE TABLE `%%PRFX%%_sessions` (
   PRIMARY KEY  (`sesskey`),
   KEY `expiry` (`expiry`),
   KEY `expire_datum` (`expire_datum`)
-) ENGINE=MyISAM DEFAULT CHARSET=cp1251;#inst#
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;#inst#
 
 CREATE TABLE `%%PRFX%%_settings` (
   `Id` tinyint(1) unsigned NOT NULL auto_increment,
@@ -1246,7 +1248,7 @@ CREATE TABLE `%%PRFX%%_settings` (
   `use_doctime` enum('1','0') NOT NULL default '1',
   `hidden_text` text NOT NULL,
   PRIMARY KEY  (`Id`)
-) ENGINE=MyISAM AUTO_INCREMENT=2 DEFAULT CHARSET=cp1251;#inst#
+) ENGINE=MyISAM AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;#inst#
 
 CREATE TABLE `%%PRFX%%_templates` (
   `Id` smallint(3) unsigned NOT NULL auto_increment,
@@ -1255,7 +1257,7 @@ CREATE TABLE `%%PRFX%%_templates` (
   `template_author_id` int(10) unsigned NOT NULL default '1',
   `template_created` int(10) unsigned NOT NULL,
   PRIMARY KEY  (`Id`)
-) ENGINE=MyISAM AUTO_INCREMENT=5 DEFAULT CHARSET=cp1251 PACK_KEYS=0;#inst#
+) ENGINE=MyISAM AUTO_INCREMENT=5 DEFAULT CHARSET=utf8 PACK_KEYS=0;#inst#
 
 CREATE TABLE `%%PRFX%%_user_groups` (
   `user_group` smallint(3) unsigned NOT NULL auto_increment,
@@ -1263,9 +1265,9 @@ CREATE TABLE `%%PRFX%%_user_groups` (
   `status` enum('1','0') NOT NULL default '1',
   `set_default_avatar` enum('1','0') NOT NULL default '0',
   `default_avatar` char(255) NOT NULL,
-  `user_group_permission` char(255) NOT NULL,
+  `user_group_permission` longtext NOT NULL,
   PRIMARY KEY  (`user_group`)
-) ENGINE=MyISAM AUTO_INCREMENT=5 DEFAULT CHARSET=cp1251;#inst#
+) ENGINE=MyISAM AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;#inst#
 
 CREATE TABLE `%%PRFX%%_users` (
   `Id` int(10) unsigned NOT NULL auto_increment,
@@ -1302,4 +1304,4 @@ CREATE TABLE `%%PRFX%%_users` (
   UNIQUE KEY `email` (`email`),
   UNIQUE KEY `user_name` (`user_name`),
   KEY `user_group` (`user_group`)
-) ENGINE=MyISAM DEFAULT CHARSET=cp1251 PACK_KEYS=0;#inst#
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 PACK_KEYS=0;#inst#

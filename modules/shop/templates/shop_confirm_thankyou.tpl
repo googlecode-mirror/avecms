@@ -35,45 +35,45 @@ function OrderPrint(id){ldelim}
 
 {if $smarty.request.print!=1}
 	<div class="grid_4">
-		<!-- Ïðàâîå ìåíþ -->
+		<!-- ÐŸÑ€Ð°Ð²Ð¾Ðµ Ð¼ÐµÐ½ÑŽ -->
 		<div class="box menu">
 			<h2><a href="#" id="toggle-section-menu">{#ProductOverview#}</a></h2>
 			<div class="block" id="section-menu">{$ShopNavi}</div>
 		</div>
 
-		<!-- Áëîê àâòîðèçàöèè -->
+		<!-- Ð‘Ð»Ð¾Ðº Ð°Ð²Ñ‚Ð¾Ñ€Ð¸Ð·Ð°Ñ†Ð¸Ð¸ -->
 		<div class="box">
 			<h2> <a href="#" id="toggle-login-forms">{#UserPanel#}</a> </h2>
 			<div class="block" id="login-forms">{$UserPanel}</div>
 		</div>
 
-		<!-- Áëîê ïîèñêà ïî ìàãàçèíó -->
+		<!-- Ð‘Ð»Ð¾Ðº Ð¿Ð¾Ð¸ÑÐºÐ° Ð¿Ð¾ Ð¼Ð°Ð³Ð°Ð·Ð¸Ð½Ñƒ -->
 		<div class="box">
 			<h2><a href="#" id="toggle-shop-search">{#ProductSearch#}</a></h2>
 			<div class="block" id="shop-search">{$Search}</div>
 		</div>
 
-		<!-- Áëîê êîðçèíû -->
+		<!-- Ð‘Ð»Ð¾Ðº ÐºÐ¾Ñ€Ð·Ð¸Ð½Ñ‹ -->
 		<div class="box">
 			<h2><a href="#" id="toggle-shopbasket">{#ShopBasket#}</a></h2>
 			<div class="block" id="shopbasket">{$Basket}</div>
 		</div>
 
 		{if $smarty.session.user_id}
-			<!-- Áëîê îáðàáîòàííûõ çàêàçîâ -->
+			<!-- Ð‘Ð»Ð¾Ðº Ð¾Ð±Ñ€Ð°Ð±Ð¾Ñ‚Ð°Ð½Ð½Ñ‹Ñ… Ð·Ð°ÐºÐ°Ð·Ð¾Ð² -->
 			<div class="box">
 				<h2><a href="#" id="toggle-myordersbox">{#MyOrders#}</a></h2>
 				<div class="block" id="myordersbox">{$MyOrders}</div>
 			</div>
 		{/if}
 
-		<!-- Áëîê èíôîðìàöèè -->
+		<!-- Ð‘Ð»Ð¾Ðº Ð¸Ð½Ñ„Ð¾Ñ€Ð¼Ð°Ñ†Ð¸Ð¸ -->
 		<div class="box">
 			<h2><a href="#" id="toggle-shopinfobox">{#Infopage#}</a></h2>
 			<div class="block" id="shopinfobox">{$InfoBox}</div>
 		</div>
 
-		<!-- Áëîê ïîïóëÿðíûõ òîâàðîâ -->
+		<!-- Ð‘Ð»Ð¾Ðº Ð¿Ð¾Ð¿ÑƒÐ»ÑÑ€Ð½Ñ‹Ñ… Ñ‚Ð¾Ð²Ð°Ñ€Ð¾Ð² -->
 		<div class="box">
 			<h2><a href="#" id="toggle-shoppopprods">{#Topseller#}</a></h2>
 			<div class="block" id="shoppopprods">{$Topseller}</div>

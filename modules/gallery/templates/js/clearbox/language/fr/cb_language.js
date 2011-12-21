@@ -4,15 +4,15 @@
 
 var
 
-	CB_NavTextPrv='précédent',				                    // texte pour image précédente
+	CB_NavTextPrv='prÐ¹cÐ¹dent',				                    // texte pour image prÐ¹cÐ¹dente
 	CB_NavTextNxt='suivant',					                // texte pour image suivante
-	CB_NavTextFull='plein écran',				                // texte pour l'image originale (uniquement pour les images)
-	CB_NavTextOpen='ouvrir dans une nouvelle fenêtre',		    // texte pour ouvrir dans une nouvelle fenêtre
-	CB_NavTextDL='télécharger',				                    // texte pour télécharger une image ou un autre contenu
+	CB_NavTextFull='plein Ð¹cran',				                // texte pour l'image originale (uniquement pour les images)
+	CB_NavTextOpen='ouvrir dans une nouvelle fenÐºtre',		    // texte pour ouvrir dans une nouvelle fenÐºtre
+	CB_NavTextDL='tÐ¹lÐ¹charger',				                    // texte pour tÐ¹lÐ¹charger une image ou un autre contenu
 	CB_NavTextClose='fermer',			                        // texte pour fermer clearbox
-	CB_NavTextStart='démarrer le diaporama',			        // texte pour démarrer le diaporama
-	CB_NavTextStop='arrêter le diaporama',			            // texte pour arrêter le diaporama
-	CB_NavTextRotR='rotation de l\'image à 90° vers la droite',	// texte pour faire une rotation vers la droite
-	CB_NavTextRotL='rotation de l\'image à 90° vers la gauche'	// texte pour faire une rotation vers la gauche
+	CB_NavTextStart='dÐ¹marrer le diaporama',			        // texte pour dÐ¹marrer le diaporama
+	CB_NavTextStop='arrÐºter le diaporama',			            // texte pour arrÐºter le diaporama
+	CB_NavTextRotR='rotation de l\'image Ð° 90Â° vers la droite',	// texte pour faire une rotation vers la droite
+	CB_NavTextRotL='rotation de l\'image Ð° 90Â° vers la gauche'	// texte pour faire une rotation vers la gauche
 
 ;

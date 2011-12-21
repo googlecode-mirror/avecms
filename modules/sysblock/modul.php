@@ -1,7 +1,7 @@
 <?php
 
 /**
- * AVE.cms - Модуль Системные блоки
+ * AVE.cms - РњРѕРґСѓР»СЊ РЎРёСЃС‚РµРјРЅС‹Рµ Р±Р»РѕРєРё
  *
  * @package AVE.cms
  * @subpackage module_SysBlock
@@ -12,10 +12,10 @@ if (!defined('BASE_DIR')) exit;
 
 if (defined('ACP'))
 {
-    $modul['ModulName'] = 'Системные блоки';
+    $modul['ModulName'] = 'РЎРёСЃС‚РµРјРЅС‹Рµ Р±Р»РѕРєРё';
     $modul['ModulPfad'] = 'sysblock';
     $modul['ModulVersion'] = '1.1';
-    $modul['Beschreibung'] = 'Данный модуль предназначен для вывода системных блоков с произвольным содержимым в шаблоне или документе.<br /><br />Можно использовать PHP и тэги модулей<br /><br />Для вывода результатов используйте системный тег<br /><strong>[mod_sysblock:XXX]</strong>';
+    $modul['Beschreibung'] = 'Р”Р°РЅРЅС‹Р№ РјРѕРґСѓР»СЊ РїСЂРµРґРЅР°Р·РЅР°С‡РµРЅ РґР»СЏ РІС‹РІРѕРґР° СЃРёСЃС‚РµРјРЅС‹С… Р±Р»РѕРєРѕРІ СЃ РїСЂРѕРёР·РІРѕР»СЊРЅС‹Рј СЃРѕРґРµСЂР¶РёРјС‹Рј РІ С€Р°Р±Р»РѕРЅРµ РёР»Рё РґРѕРєСѓРјРµРЅС‚Рµ.<br /><br />РњРѕР¶РЅРѕ РёСЃРїРѕР»СЊР·РѕРІР°С‚СЊ PHP Рё С‚СЌРіРё РјРѕРґСѓР»РµР№<br /><br />Р”Р»СЏ РІС‹РІРѕРґР° СЂРµР·СѓР»СЊС‚Р°С‚РѕРІ РёСЃРїРѕР»СЊР·СѓР№С‚Рµ СЃРёСЃС‚РµРјРЅС‹Р№ С‚РµРі<br /><strong>[mod_sysblock:XXX]</strong>';
     $modul['Autor'] = 'Mad Den';
     $modul['MCopyright'] = '&copy; 2008 Overdoze Team';
     $modul['Status'] = 1;
@@ -29,9 +29,9 @@ if (defined('ACP'))
 }
 
 /**
- * Обработка тэга модуля
+ * РћР±СЂР°Р±РѕС‚РєР° С‚СЌРіР° РјРѕРґСѓР»СЏ
  *
- * @param int $sysblock_id идентификатор системного блока
+ * @param int $sysblock_id РёРґРµРЅС‚РёС„РёРєР°С‚РѕСЂ СЃРёСЃС‚РµРјРЅРѕРіРѕ Р±Р»РѕРєР°
  */
 function mod_sysblock($sysblock_id)
 {
@@ -40,7 +40,7 @@ function mod_sysblock($sysblock_id)
 	if (is_numeric($sysblock_id))
 	{
 		
-        $cache_file=BASE_DIR.'/cache/sysblock-'.$sysblock_id.'.cache';
+        $cache_file=BASE_DIR.'/cache/module/sysblock-'.$sysblock_id.'.cache';
         if(!file_exists(dirname($cache_file))) mkdir(dirname($cache_file),0766,true);
         if(file_exists($cache_file)) {
             $return=file_get_contents($cache_file);
@@ -58,7 +58,7 @@ function mod_sysblock($sysblock_id)
 }
 
 /**
- * Администрирование
+ * РђРґРјРёРЅРёСЃС‚СЂРёСЂРѕРІР°РЅРёРµ
  */
 if (defined('ACP') && !empty($_REQUEST['moduleaction']))
 {
@@ -77,17 +77,17 @@ if (defined('ACP') && !empty($_REQUEST['moduleaction']))
 
 		case 'del':
 			sysblock::sysblockDelete($_REQUEST['id']);
-			if(isset($_REQUEST['id'])) unlink(BASE_DIR.'/cache/sysblock-'.$_REQUEST['id'].'.cache'); 
+			if(isset($_REQUEST['id'])) unlink(BASE_DIR.'/cache/module/sysblock-'.$_REQUEST['id'].'.cache'); 
 			break;
 
 		case 'edit':
 			sysblock::sysblockEdit(isset($_REQUEST['id']) ? $_REQUEST['id'] : null, $tpl_dir);
-			if(isset($_REQUEST['id'])) unlink(BASE_DIR.'/cache/sysblock-'.$_REQUEST['id'].'.cache'); 
+			if(isset($_REQUEST['id'])) unlink(BASE_DIR.'/cache/module/sysblock-'.$_REQUEST['id'].'.cache'); 
 			break;
 
 		case 'saveedit':
 			sysblock::sysblockSave(isset($_REQUEST['id']) ? $_REQUEST['id'] : null);
-			if(isset($_REQUEST['id'])) unlink(BASE_DIR.'/cache/sysblock-'.$_REQUEST['id'].'.cache'); 
+			if(isset($_REQUEST['id'])) unlink(BASE_DIR.'/cache/module/sysblock-'.$_REQUEST['id'].'.cache'); 
 			break;
 	}
 }
