@@ -623,9 +623,7 @@ class AVE_User
 							birthday    = '" . $_REQUEST['birthday'] . "',
 							deleted     = '" . $_REQUEST['deleted'] . "',
 							del_time      = '" . $times . "',
-							taxpay      = '" . $_REQUEST['taxpay'] . "',
-							url      = '" . $_REQUEST['url'] . "',
-							icq      = '".$_REQUEST['icq'] ."',
+							taxpay      = '" . $_REQUEST['taxpay'] . "'
 							company     = '" . $_REQUEST['company'] . "',
 							user_group_extra = '" . @implode(';', $_REQUEST['user_group_extra']) . "'
 						WHERE
