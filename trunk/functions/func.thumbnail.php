@@ -38,11 +38,8 @@ $width = (isset($_REQUEST['width']) && is_numeric($_REQUEST['width']) &&
 if (! empty($_REQUEST['thumb'])) $filename = ltrim(preg_replace('/[^\x20-\xFF]/', '', $_REQUEST['thumb']), '/');
 
 // Формируем полный путь к оригиналу изображения
-$source_dir = isset($_REQUEST['folder']) ? rawurldecode($_REQUEST['folder']) : '';
-$source_dir = str_replace(array('..', '\'', ':', 'http', 'ftp', ' '), '', $source_dir);
-$source_dir = BASE_DIR . rtrim('/' . $source_dir, '/');
-$file = $source_dir . '/' . ltrim($filename, '/');
-		
+$file = BASE_DIR . '/' . ltrim($filename, '/');
+
 // Проверяем наличие изображения
 if (! empty($filename) && file_exists($file))
 {
@@ -51,13 +48,11 @@ if (! empty($filename) && file_exists($file))
 
 	// Формируем путь к миниатюре с учетом того что миниатюры должны храниться в папке thumbnail,
 	// а имя файла миниатюры содержит размеры миниатюры (для хранения миниатюр с разными размерами)
-	// $thumb_file = $file_dir . '/thumbnail/th'
-	//	. ($width ? '-w' . $width : '') . ($height ? '-h' . $height : '') . '-' . $filename;
-	
-	$thumb_file = BASE_DIR . $_REQUEST['folder'] . "a_" . $filename;
+	$thumb_file = $file_dir . '/thumbnail/th'
+		. ($width ? '-w' . $width : '') . ($height ? '-h' . $height : '') . '-' . $filename;
 
 	// Проверяем наличие миниатюры с нужными размерами
-	if (file_exists($thumb_file) && !$_REQUEST['compile'])
+	if (file_exists($thumb_file))
 	{
 		$img_data = @getimagesize($file);
 		header('Content-Type:' . $img_data['mime'], true);
@@ -66,10 +61,10 @@ if (! empty($filename) && file_exists($file))
 	}
 
 	// Проверяем наличие папки для миниатюр и если её нет - создаём
-	if (! file_exists(BASE_DIR . $_REQUEST['folder']))
+	if (! file_exists($file_dir . '/thumbnail'))
 	{
 		$oldumask = umask(0);
-		@mkdir(BASE_DIR . $_REQUEST['folder'], 0777);
+		@mkdir($file_dir . '/thumbnail', 0777);
 		umask($oldumask);
 	}
 }
@@ -78,7 +73,7 @@ elseif (! $file = realpath(BASE_DIR . '/uploads/images/noimage.gif'))
 	exit;
 }
 
-define('IMAGE_TOOLBOX_DEFAULT_JPEG_QUALITY', 100);
+define('IMAGE_TOOLBOX_DEFAULT_JPEG_QUALITY', 75);
 
 require(BASE_DIR . '/class/class.thumbnail.php');
 
