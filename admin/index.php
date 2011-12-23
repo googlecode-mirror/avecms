@@ -58,8 +58,7 @@ $allowed = array('index',   'start',    'templates',  'rubs', 'user', 'finder',
 );
 $do = (!empty($_REQUEST['do']) && in_array($_REQUEST['do'], $allowed)) ? $_REQUEST['do'] : 'start';
 
-// после переноса на svn будет доступна возможность сверить версию ревизии прямо в админке
-//include(BASE_DIR . '/lib/subversion/work_svn.php');
+include(BASE_DIR . '/lib/subversion/work_svn.php');
 include(BASE_DIR . '/admin/' . $do . '.php');
 
 if (defined('NOPERM')) $AVE_Template->assign('content', $config_vars['MAIN_NO_PERMISSION']);
