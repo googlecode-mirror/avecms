@@ -700,7 +700,7 @@ CREATE TABLE `%%PRFX%%_modul_shop` (
   `Waehrung` varchar(10) NOT NULL default 'RUR',
   `WaehrungSymbol` varchar(10) NOT NULL default 'руб.',
   `Waehrung2` varchar(10) NOT NULL default 'EUR',
-  `WaehrungSymbol2` varchar(10) NOT NULL default '&euro;#inst#',
+  `WaehrungSymbol2` varchar(10) NOT NULL default '&euro;',
   `Waehrung2Multi` decimal(10,4) NOT NULL default '1.0000',
   `ShopLand` char(2) NOT NULL default 'RU',
   `ArtikelMax` mediumint(3) unsigned NOT NULL default '10',
