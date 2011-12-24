@@ -118,12 +118,16 @@ $(document).ready(function(){ldelim}
 		<strong>Рубрика</strong> &gt; {$document->rubric_title|escape}
 	</div>
 </div>
-<div class="upPage">&nbsp;</div><br />
+<div class="upPage">&nbsp;</div>
 
 <form method="post" name="formDocOption" action="{$document->formaction}" enctype="multipart/form-data">
 	<input type="hidden" name="prefix" value="{$document->rubric_url_prefix}" />
 	<input name="closeafter" type="hidden" id="closeafter" value="{$smarty.request.closeafter}">
-	
+		{if $smarty.request.action=='edit'}
+		<input type="submit" class="button" value="{#DOC_BUTTON_EDIT_DOCUMENT#}" />
+	{else}
+		<input type="submit" class="button" value="{#DOC_BUTTON_ADD_DOCUMENT#}" />
+	{/if}<br /><br />
 	<table width="100%" border="0" cellpadding="8" cellspacing="1" class="tableborder">
 		<col width="200" class="first">
 		<col class="second">
@@ -139,7 +143,7 @@ $(document).ready(function(){ldelim}
 				<h4>{#DOC_QUERIES#}</h4>
 				<div style="width:99%;overflow:auto;height:365px">
 					{foreach from=$conditions item=cond}
-						<input type="text" readonly="" style="width:140px" class="query" value="[tag:request:{$cond->Id}]"> <a onClick="cp_pop('index.php?do=request&action=edit&Id={$cond->Id}&rubric_id={$cond->rubric_id}&pop=1&cp={$sess}','750','600','1','cond')" title="{$cond->request_description|default:'#DOC_REQUEST_NOT_INFO#'|escape|stripslashes}" href="javascript:void(0);">{$cond->request_title|escape}</a><br />
+						<input type="text" readonly style="width:140px" class="query" value="[tag:request:{$cond->Id}]"> <a onClick="cp_pop('index.php?do=request&action=edit&Id={$cond->Id}&rubric_id={$cond->rubric_id}&pop=1&cp={$sess}','750','600','1','cond')" title="{$cond->request_description|default:'#DOC_REQUEST_NOT_INFO#'|escape|stripslashes}" href="javascript:void(0);">{$cond->request_title|escape}</a><br />
 					{/foreach}
 				</div>
 			</td>

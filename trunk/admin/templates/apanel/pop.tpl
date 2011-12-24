@@ -9,11 +9,9 @@
 <meta name="Expires" content="Mon, 06 Jan 1990 00:00:01 GMT">
 <link href="templates/{$smarty.session.admin_theme|escape}/css/style.css" rel="stylesheet" type="text/css" />
 <link href="templates/{$smarty.session.admin_theme|escape}/js/jquery/css/mbTooltip.css" rel="stylesheet" type="text/css" media="screen" />
-
-<script type="text/javascript" src="{$ABS_PATH}templates/{$smarty.const.DEFAULT_THEME_FOLDER}/js/jquery.js"></script>
-<script type="text/javascript" src="{$ABS_PATH}templates/{$smarty.const.DEFAULT_THEME_FOLDER}/js/ui/jquery-ui-1.8.12.custom.min.js"></script>
-<link type="text/css" href="{$ABS_PATH}templates/{$smarty.const.DEFAULT_THEME_FOLDER}/js/ui/jquery-ui-1.8.12.custom.css" rel="stylesheet" />
-
+<script type="text/javascript" src="templates/{$smarty.session.admin_theme|escape}/js/jquery/jquery.js"></script>
+<script type="text/javascript" src="templates/{$smarty.session.admin_theme|escape}/js/jquery/jquery-ui-1.8.12.custom.min.js"></script>
+<link type="text/css" href="templates/{$smarty.session.admin_theme|escape}/js/jquery/ui/jquery-ui-1.8.12.custom.css" rel="stylesheet" />
 <script type="text/javascript" src="templates/{$smarty.session.admin_theme|escape}/js/jquery/plugin/jquery.timers.js"></script>
 <script type="text/javascript" src="templates/{$smarty.session.admin_theme|escape}/js/jquery/plugin/jquery.dropshadow.js"></script>
 <script type="text/javascript" src="templates/{$smarty.session.admin_theme|escape}/js/jquery/plugin/mbTooltip.js"></script>
