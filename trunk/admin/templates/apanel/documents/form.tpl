@@ -139,7 +139,7 @@ $(document).ready(function(){ldelim}
 		<tr>
 			<td>{#DOC_NAME#}</td>
 			<td><input name="doc_title" type="text" id="doc_title" size="40" style="width:90%" value="{$document->document_title|escape}" /></td>
-			<td rowspan="10" valign="top" class="first">
+			<td rowspan="11" valign="top" class="first">
 				<h4>{#DOC_QUERIES#}</h4>
 				<div style="width:99%;overflow:auto;height:365px">
 					{foreach from=$conditions item=cond}

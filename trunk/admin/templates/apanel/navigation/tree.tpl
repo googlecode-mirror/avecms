@@ -1,4 +1,4 @@
-<select name="document_linked_navi_id" id="document_linked_navi_id">
+<select style="width:300px" name="document_linked_navi_id" id="document_linked_navi_id">
 	<option value="0">&nbsp;</option>
 	{foreach from=$navis item=navi}
 		<optgroup label="({$navi->id}) {$navi->navi_titel|escape}"></optgroup>
