@@ -10,6 +10,7 @@
 <link href="/admin/templates/apanel/css/style.css" rel="stylesheet" type="text/css" />
 <link href="/admin/templates/apanel/js/jquery/css/mbTooltip.css" rel="stylesheet" type="text/css" media="screen" />
 <script type="text/javascript" src="{$tpl_dir}/js/jquery/jquery.js"></script>
+<script type="text/javascript" src="{$tpl_dir}/js/jquery/jquery.form.js"></script>
 <script type="text/javascript" src="{$tpl_dir}/js/jquery/plugin/jquery.timers.js"></script>
 <script type="text/javascript" src="{$tpl_dir}/js/jquery/plugin/jquery.dropshadow.js"></script>
 <script type="text/javascript" src="{$tpl_dir}/js/jquery/plugin/mbTooltip.js"></script>
