@@ -1,22 +1,25 @@
 <?php
 
 /**
+ * AVE.cms - Модуль Системные блоки
+ *
+ * @filesource
+ */
+
+/**
  * Класс работы с системными блоками
  *
  * @package AVE.cms
  * @subpackage module_SysBlock
- * @author Mad Den
- * @since 2.07
- * @filesource
  */
-class Sysblock
+class sysblock
 {
 	/**
 	 * Вывод списка системных блоков
 	 *
 	 * @param string $tpl_dir - путь к папке с шаблонами модуля
 	 */
-	public static function sysblockList($tpl_dir)
+	function sysblockList($tpl_dir)
 	{
 		global $AVE_DB, $AVE_Template;
 
@@ -36,7 +39,7 @@ class Sysblock
 	 *
 	 * @param int $sysblock_id идентификатор системного блока
 	 */
-	public static function sysblockSave($sysblock_id = null)
+	function sysblockSave($sysblock_id = null)
 	{
 		global $AVE_DB;
 
@@ -74,7 +77,7 @@ class Sysblock
 	 *
 	 * @todo сделать отдельно методы добавления и редактирования
 	 */
-	public static function sysblockEdit($sysblock_id, $tpl_dir)
+	function sysblockEdit($sysblock_id, $tpl_dir)
 	{
 		global $AVE_DB, $AVE_Template;
 
@@ -109,7 +112,7 @@ class Sysblock
 	 *
 	 * @param int $sysblock_id идентификатор системного блока
 	 */
-	public static function sysblockDelete($sysblock_id)
+	function sysblockDelete($sysblock_id)
 	{
 		global $AVE_DB;
 

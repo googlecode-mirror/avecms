@@ -79,7 +79,20 @@ class AVE_Document
 	 */
 	function _documentListStart()
 	{
-		return mktime(0, 0, 0, $_REQUEST['publishedMonth'], $_REQUEST['publishedDay'], $_REQUEST['publishedYear']);
+		$published = explode(".", $_REQUEST['document_published']);
+		
+		if (!empty($published))
+		{
+			$timestamp = mktime(
+				0,
+				0,
+				0,
+				$published[1],
+				$published[0],
+				$published[2]
+			);
+		}
+		return $timestamp;
 	}
 
 	/**
@@ -91,7 +104,19 @@ class AVE_Document
 	 */
 	function _documentListEnd()
 	{
-		return mktime(23, 59, 59, $_REQUEST['expireMonth'], $_REQUEST['expireDay'], $_REQUEST['expireYear']);
+		$expire = explode(".", $_REQUEST['document_expire']);
+		if (!empty($expire))
+		{
+			$timestamp = mktime(
+				23,
+				59,
+				59,
+				$expire[1],
+				$expire[0],
+				$expire[2]
+			);
+		}
+		return $timestamp;
 	}
 
 	/**
@@ -101,16 +126,20 @@ class AVE_Document
 	 */
 	function _documentStart($data=0)
 	{
-		$timestamp = $data;
-		if (!empty($_REQUEST['publishedDay']))
+		
+		$data = explode(" ", $data);
+		$stamp[day] = explode(".", $data[0]);
+		$stamp[time] = explode(":", $data[1]);
+		
+		if (!empty($stamp))
 		{
 			$timestamp = mktime(
-				$_REQUEST['publishedHour'],
-				$_REQUEST['publishedMinute'] ,
+				$stamp[time][0],
+				$stamp[time][1],
 				0,
-				$_REQUEST['publishedMonth'],
-				$_REQUEST['publishedDay'],
-				$_REQUEST['publishedYear']
+				$stamp[day][1],
+				$stamp[day][0],
+				$stamp[day][2]
 			);
 		}
 
@@ -124,16 +153,19 @@ class AVE_Document
 	 */
 	function _documentEnd($data=0)
 	{
-		$timestamp = $data;
-		if (!empty($_REQUEST['expireDay']))
+		$data = explode(" ", $data);
+		$stamp[day] = explode(".", $data[0]);
+		$stamp[time] = explode(":", $data[1]);
+		
+		if (!empty($stamp))
 		{
 			$timestamp = mktime(
-				$_REQUEST['expireHour'],
-				$_REQUEST['expireMinute'],
+				$stamp[time][0],
+				$stamp[time][1],
 				0,
-				$_REQUEST['expireMonth'],
-				$_REQUEST['expireDay'],
-				$_REQUEST['expireYear']
+				$stamp[day][1],
+				$stamp[day][0],
+				$stamp[day][2]
 			);
 		}
 
@@ -238,19 +270,15 @@ class AVE_Document
 		}
 
 		// Если в запросе пришел параметр на фильтрацию документов по определенному временному интервалу
-		if (!empty($_REQUEST['TimeSelect']))
+		if ($_REQUEST['document_published'] && $_REQUEST['document_expire'])
 		{
 			// Формируем условия, которые будут применены в запросе к БД
 			$ex_zeit = 'AND ((document_published BETWEEN ' . $this->_documentListStart() . ' AND ' . $this->_documentListEnd() . ') OR document_published = 0)';
 
 			// формируем условия, которые будут применены в ссылках
 			$nav_zeit = '&TimeSelect=1'
-				. '&publishedMonth=' . (int)$_REQUEST['publishedMonth']
-				. '&publishedDay='   . (int)$_REQUEST['publishedDay']
-				. '&publishedYear='  . (int)$_REQUEST['publishedYear']
-				. '&expireMonth='    . (int)$_REQUEST['expireMonth']
-				. '&expireDay='      . (int)$_REQUEST['expireDay']
-				. '&expireYear='     . (int)$_REQUEST['expireYear'];
+				. '&document_published=' . $_REQUEST['document_published']
+				. '&document_expire='   . $_REQUEST['document_expire'];
 		}
 
 		// Если в запросе пришел параметр на фильтрацию документов по статусу
@@ -659,9 +687,9 @@ class AVE_Document
 					}
 
 			}
-					$docstart	= ($document_id == 1 || $document_id == PAGE_NOT_FOUND_ID) ? '0' : $this->_documentStart((int)$data['document_published']);
-					$docend		= ($document_id == 1 || $document_id == PAGE_NOT_FOUND_ID) ? '0' : $this->_documentEnd((int)$data['document_expire']);
-
+					$docstart	= ($document_id == 1 || $document_id == PAGE_NOT_FOUND_ID) ? '0' : $this->_documentStart($data['document_published']);
+					$docend		= ($document_id == 1 || $document_id == PAGE_NOT_FOUND_ID) ? '0' : $this->_documentEnd($data['document_expire']);
+					
 						//Получаем структуру документа
 						$fields = array();
 
@@ -693,6 +721,7 @@ class AVE_Document
 						}
 
 						$where=($oper=='UPDATE' ? 'WHERE Id='.$document_id : '');
+						$author=($oper!='UPDATE' ? 'document_author_id = '.$_SESSION['user_id'].',' : '');
 						$zag=($oper=='UPDATE' ? "UPDATE " . PREFIX . "_documents" : "INSERT INTO " . PREFIX . "_documents");
 						$sql="
 							$zag
@@ -704,7 +733,7 @@ class AVE_Document
 								document_published        = '" . $docstart . "',
 								document_expire           = '" . $docend . "',
 								document_changed          = '" . time() . "',
-								document_author_id        = '" . $_SESSION['user_id'] . "',
+								$author
 								document_in_search        = '" . $suche . "',
 								document_meta_keywords    = '" . clean_no_print_char($data['document_meta_keywords']) . "',
 								document_meta_description = '" . clean_no_print_char($data['document_meta_description']) . "',
