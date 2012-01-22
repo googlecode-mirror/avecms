@@ -7,13 +7,12 @@
 <meta http-equiv="pragma" content="no-cache" />
 <meta name="generator" content="Bluefish 2.0.3" />
 <meta name="Expires" content="Mon, 06 Jan 1990 00:00:01 GMT" />
-<link href="/admin/templates/apanel/css/style.css" rel="stylesheet" type="text/css" />
-<link href="/admin/templates/apanel/js/jquery/css/mbTooltip.css" rel="stylesheet" type="text/css" media="screen" />
+<link href="{$tpl_dir}/css/style.css" rel="stylesheet" type="text/css" />
+<link href="{$tpl_dir}/js/jquery/css/mbTooltip.css" rel="stylesheet" type="text/css" media="screen" />
 <script type="text/javascript" src="{$tpl_dir}/js/jquery/jquery.js"></script>
 <script type="text/javascript" src="{$tpl_dir}/js/jquery/jquery.form.js"></script>
 <script type="text/javascript" src="{$tpl_dir}/js/jquery/plugin/jquery.timers.js"></script>
 <script type="text/javascript" src="{$tpl_dir}/js/jquery/plugin/jquery.dropshadow.js"></script>
-<script type="text/javascript" src="{$tpl_dir}/js/jquery/plugin/mbTooltip.js"></script>
 <script type="text/javascript" src="{$tpl_dir}/js/cpcode.js"></script>
 <script type="text/javascript" src="{$tpl_dir}/js/jquery/ui/jquery-ui.min.js"></script>
 <link type="text/css" href="{$tpl_dir}/js/jquery/ui/jquery-ui.css" rel="stylesheet" />

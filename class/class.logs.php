@@ -22,7 +22,7 @@ class AVE_Logs
 	 * @var int
 	 */
 	var $_limit = 15;
-
+	var $_logdir = '/cache/log.php';
 /**
  *	Внутренние методы класса
  */
@@ -39,21 +39,13 @@ class AVE_Logs
 	function logList()
 	{
 		global $AVE_DB, $AVE_Template;
-
-		$logs = array();
-		// Выполняем запрос к БД на получение списка всех системных сообщений в журнале
-        $sql = $AVE_DB->Query("SELECT *
-			FROM " . PREFIX . "_log
-			ORDER BY Id DESC
-		");
-
-		while ($row = $sql->FetchRow())
-		{
-			array_push($logs, $row);
-		}
-
+		$logdata=array();
+		$logfile = BASE_DIR.$this->_logdir;
+		if(file_exists($logfile))
+			include($logfile);
+		arsort($logdata);
 		// Передаем данные в шаблон для вывода и отображаем страницу
-        $AVE_Template->assign('logs', $logs);
+        $AVE_Template->assign('logs', $logdata);
 		$AVE_Template->assign('content', $AVE_Template->fetch('logs/logs.tpl'));
 	}
 
@@ -63,26 +55,11 @@ class AVE_Logs
 	 */
 	function logDelete()
 	{
-		global $AVE_DB;
-
-    	// Выполняем запрос к БД на удаление системных сообщений из журнала
-        $AVE_DB->Query("
-			DELETE
-			FROM " . PREFIX . "_log
-		");
-
-        // Выполняем запрос к БД на обновление структуры таблицы и обнулям все значения
-        $AVE_DB->Query("
-			ALTER
-			TABLE " . PREFIX . "_log
-			PACK_KEYS = 0
-			CHECKSUM = 0
-			DELAY_KEY_WRITE = 0
-			AUTO_INCREMENT = 1
-		");
-
-
-        // Сохраняем системное сообщение в журнал
+		$logfile = BASE_DIR.$this->_logdir;
+		if(file_exists($logfile))
+			unlink($logfile);
+		
+	// Сохраняем системное сообщение в журнал
         reportLog($_SESSION['user_name'] . ' - очистил Журнал событий', 2, 2);
 
 		// Выполняем обновление страницы
@@ -106,31 +83,30 @@ class AVE_Logs
 		$enclosed = '"';
 
         // Выполняем запрос к БД на получение списка всех системных сообщений
-        $sql = $AVE_DB->Query("SELECT *
-			FROM " . PREFIX . "_log
-			ORDER BY Id DESC
-		");
-		$fieldcount = $sql->NumFields();
-
-		for ($it=0; $it<$fieldcount; $it++)
-		{
-			$datstring .= $enclosed . $sql->FieldName($it) . $enclosed . $separator;
-		}
+		$logdata=array();
+		$logfile = BASE_DIR.$this->_logdir;
+		if(file_exists($logfile))
+			include($logfile);
+		arsort($logdata);
+		$fieldcount = count($logdata[0]);
+		
+		foreach($logdata[0] as $k=>$v)
+			$datstring .= $enclosed . $k . $enclosed . $separator;
 		$datstring .= PHP_EOL;
 
 		// Циклически обрабатываем данные и формируем CSV файл с учетом указаны выше параметров
-        while ($row = $sql->FetchRow())
+		foreach($logdata as $k=>$v)
 		{
-			foreach ($row as $key => $val)
+			foreach ($v as $key => $val)
 			{
-				$val = ($key=='log_time') ? date('d-m-Y, H:i:s', $row->log_time) : $val;
+				$val = ($key=='log_time') ? date('d-m-Y, H:i:s', $val) : $val;
 				$datstring .= ($val == '') ? $separator : $enclosed . stripslashes($val) . $enclosed . $separator;
 			}
 			$datstring .= PHP_EOL;
 		}
 
 		// Определяем заголовки документа
-        header('Content-Type: text/csv' . $dattype);
+      header('Content-Type: text/csv' . $dattype);
 		header('Expires: ' . gmdate('D, d M Y H:i:s') . ' GMT');
 		header('Content-Disposition: attachment; filename="' . $datname . '"');
 		header('Content-Length: ' . strlen($datstring));

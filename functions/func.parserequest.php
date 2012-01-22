@@ -78,6 +78,8 @@
 				case 'N<=': $where[] = "<?php \$vv=eval2var(' ?>$val<? '); echo \$vv>'' ? \"  ".$row_ak->condition_join."((t$i.document_id = a.id)AND(t$i.rubric_field_id = $fid AND t$i.field_number_value <= '\$vv')) \" : ''; ?>"; break;
 				case 'N>=': $where[] = "<?php \$vv=eval2var(' ?>$val<? '); echo \$vv>'' ? \"  ".$row_ak->condition_join."((t$i.document_id = a.id)AND(t$i.rubric_field_id = $fid AND t$i.field_number_value >= '\$vv')) \" : ''; ?>"; break;
 				case 'N==': $where[] = "<?php \$vv=eval2var(' ?>$val<? '); echo \$vv>'' ? \" ".$row_ak->condition_join."((t$i.document_id = a.id)AND(t$i.rubric_field_id = $fid AND t$i.field_number_value = '\$vv')) \" : ''; ?>"; break;
+				case 'IN=': $where[] = "<?php \$vv=eval2var(' ?>$val<? '); echo \$vv>'' ? \" ".$row_ak->condition_join."((t$i.document_id = a.id)AND(t$i.rubric_field_id = $fid AND t$i.field_number_value IN(\$vv))) \" : ''; ?>"; break;
+				case 'ANY': $where[] = "<?php \$vv=eval2var(' ?>$val<? '); echo \$vv>'' ? \" ".$row_ak->condition_join."((t$i.document_id = a.id)AND(t$i.rubric_field_id = $fid AND t$i.field_number_value ANY(\$vv))) \" : ''; ?>"; break;
 
 				case  '<': $where[] = "<?php \$vv=eval2var(' ?>$val<? '); echo \$vv>'' ? \" ".$row_ak->condition_join."((t$i.document_id = a.id)AND(t$i.rubric_field_id = $fid AND UPPER(t$i.field_value) < UPPER('\$vv'))) \" : ''; ?>"; break;
 				case  '>': $where[] = "<?php \$vv=eval2var(' ?>$val<? '); echo \$vv>'' ? \" ".$row_ak->condition_join."((t$i.document_id = a.id)AND(t$i.rubric_field_id = $fid AND UPPER(t$i.field_value) > UPPER('\$vv'))) \" : ''; ?>"; break;
@@ -101,7 +103,7 @@
 		$from = implode(' ', $from);
 		//$where =  (($i) ? implode(' AND ', $where) : '(' . implode(') OR(', $where) . ')');
 		$where =  implode($where);
-		$retval = serialize(array('from'=>$from,'where'=>"<?php echo (trim(eval2var(' ?>$vvv<? '))>'' ? \" AND(1=1)  \" :\"\") ?>".$where));
+		$retval = serialize(array('from'=>$from,'where'=>"<?php echo (trim(eval2var(' ?>$vvv<? '))>'' ? \" AND(0=1)  \" :\"\") ?>".$where));
 	}
 
 	if (defined('ACP'))
@@ -375,12 +377,12 @@ function request_parse($id)
 		$items = '';
 		foreach ($rows as $row)
 		{
-			$cachefile_docid=BASE_DIR.'/cache/sql/doc_'.$row->Id.'/request-'.$id.'.cache';
+			$cachefile_docid=BASE_DIR.'/cache/sql/doc/'.intval(floor($row->Id/1000)).'/'.$row->Id.'/'.md5($item_template);
 			if(!file_exists($cachefile_docid))
 				{
 					$item = preg_replace('/\[tag:rfld:(\d+)]\[(more|esc|[0-9-]+)]/e', "request_get_document_field(\"$1\", $row->Id, \"$2\")", $item_template);
-					//if(!file_exists(dirname($cachefile_docid)))mkdir(dirname($cachefile_docid),0777,true);
-					//file_put_contents($cachefile_docid,$item);
+					if(!file_exists(dirname($cachefile_docid)))mkdir(dirname($cachefile_docid),0777,true);
+					file_put_contents($cachefile_docid,$item);
 				}
 				else
 				{

@@ -40,11 +40,13 @@
 						<option value="<" {if $condition->condition_compare=='<'}selected="selected"{/if}>{#REQUEST_SMALL2#}</option>
 						<option value=">" {if $condition->condition_compare=='>'}selected="selected"{/if}>{#REQUEST_BIG2#}</option>
 
-						<option value="N==" {if $condition->condition_compare=='<='}selected="selected"{/if}>{#REQUEST_N_COND_SELF#}</option>
-						<option value="N<=" {if $condition->condition_compare=='<='}selected="selected"{/if}>{#REQUEST_N_SMALL1#}</option>
-						<option value="N>=" {if $condition->condition_compare=='>='}selected="selected"{/if}>{#REQUEST_N_BIG1#}</option>
-						<option value="N<" {if $condition->condition_compare=='<'}selected="selected"{/if}>{#REQUEST_N_SMALL2#}</option>
-						<option value="N>" {if $condition->condition_compare=='>'}selected="selected"{/if}>{#REQUEST_N_BIG2#}</option>
+						<option value="N==" {if $condition->condition_compare=='N=='}selected="selected"{/if}>{#REQUEST_N_COND_SELF#}</option>
+						<option value="N<=" {if $condition->condition_compare=='N<='}selected="selected"{/if}>{#REQUEST_N_SMALL1#}</option>
+						<option value="N>=" {if $condition->condition_compare=='N>='}selected="selected"{/if}>{#REQUEST_N_BIG1#}</option>
+						<option value="N<" {if $condition->condition_compare=='N<'}selected="selected"{/if}>{#REQUEST_N_SMALL2#}</option>
+						<option value="N>" {if $condition->condition_compare=='N>'}selected="selected"{/if}>{#REQUEST_N_BIG2#}</option>
+						<option value="IN=" {if $condition->condition_compare=='IN='}selected="selected"{/if}>{#REQUEST_IN_NUM#}</option>
+					<option value="ANY" {if $condition->condition_compare=='ANY'}selected="selected"{/if}>{#REQUEST_ANY_NUM#}</option>
 					</select>
 				</td>
 
@@ -83,6 +85,14 @@
 					<option value=">=" {if $condition->condition_compare=='>='}selected="selected"{/if}>{#REQUEST_BIG1#}</option>
 					<option value="<" {if $condition->condition_compare=='<'}selected="selected"{/if}>{#REQUEST_SMALL2#}</option>
 					<option value=">" {if $condition->condition_compare=='>'}selected="selected"{/if}>{#REQUEST_BIG2#}</option>
+
+					<option value="N==" {if $condition->condition_compare=='N=='}selected="selected"{/if}>{#REQUEST_N_COND_SELF#}</option>
+					<option value="N<=" {if $condition->condition_compare=='N<='}selected="selected"{/if}>{#REQUEST_N_SMALL1#}</option>
+					<option value="N>=" {if $condition->condition_compare=='N>='}selected="selected"{/if}>{#REQUEST_N_BIG1#}</option>
+					<option value="N<" {if $condition->condition_compare=='N<'}selected="selected"{/if}>{#REQUEST_N_SMALL2#}</option>
+					<option value="N>" {if $condition->condition_compare=='N>'}selected="selected"{/if}>{#REQUEST_N_BIG2#}</option>
+					<option value="IN=" {if $condition->condition_compare=='IN='}selected="selected"{/if}>{#REQUEST_IN_NUM#}</option>
+					<option value="ANY" {if $condition->condition_compare=='ANY'}selected="selected"{/if}>{#REQUEST_ANY_NUM#}</option>
 				</select>
 			</td>
 

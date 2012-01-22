@@ -602,6 +602,7 @@ class AVE_User
 					
 					$times = ($_REQUEST['deleted'] == "1") ? time() : '';
 					
+					
 					$AVE_DB->Query("
 						UPDATE " . PREFIX . "_users
 						SET
@@ -623,13 +624,13 @@ class AVE_User
 							birthday    = '" . $_REQUEST['birthday'] . "',
 							deleted     = '" . $_REQUEST['deleted'] . "',
 							del_time      = '" . $times . "',
-							taxpay      = '" . $_REQUEST['taxpay'] . "'
+							taxpay      = '" . $_REQUEST['taxpay'] . "',
 							company     = '" . $_REQUEST['company'] . "',
 							user_group_extra = '" . @implode(';', $_REQUEST['user_group_extra']) . "'
 						WHERE
 							Id = '" . $user_id . "'
 					");
-					
+										
 					if ($AVE_DB->Query("SHOW TABLES LIKE '" . PREFIX . "_modul_forum_userprofile'")->GetCell())
 					{
 						$AVE_DB->Query("

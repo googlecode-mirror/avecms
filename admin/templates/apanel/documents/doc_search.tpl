@@ -4,6 +4,67 @@ $(document).ready(function(){ldelim}
 {rdelim});
 </script>
 
+<link rel="stylesheet" href="{$tpl_dir}/js/jquery/plugin/jquery-ui-time.css" type="text/css">	
+<script src="{$tpl_dir}/js/jquery/plugin/jquery-ui-time.js" type="text/javascript"></script>
+<script type="text/javascript">
+	$(document).ready(function(){ldelim}
+		$('#document_published').datepicker({ldelim}
+			timeOnlyTitle: 'Выберите время',
+			timeText: 'Время',
+			hourText: 'Часы',
+			minuteText: 'Минуты',
+			secondText: 'Секунды',
+			currentText: 'Теперь',
+			closeText: 'Закрыть',
+			
+			onClose: function(dateText, inst) {ldelim}
+	        var endDateTextBox = $('#document_expire');
+	        if (endDateTextBox.val() != '') {ldelim}
+	            var testStartDate = new Date(dateText);
+	            var testEndDate = new Date(endDateTextBox.val());
+	            if (testStartDate > testEndDate)
+	                endDateTextBox.val(dateText);
+	        {rdelim}
+	        else {ldelim}
+	            endDateTextBox.val(dateText);
+	        {rdelim}
+		    {rdelim},
+		    onSelect: function (selectedDateTime){ldelim}
+		        var start = $(this).datetimepicker('getDate');
+		        $('#document_expire').datetimepicker('option', 'minDate', new Date(start.getTime()));
+		    {rdelim}
+		{rdelim});
+		
+		
+		$('#document_expire').datepicker({ldelim}
+			timeOnlyTitle: 'Выберите время',
+			timeText: 'Время',
+			hourText: 'Часы',
+			minuteText: 'Минуты',
+			secondText: 'Секунды',
+			currentText: 'Теперь',
+			closeText: 'Закрыть',
+			
+			onClose: function(dateText, inst) {ldelim}
+	        var startDateTextBox = $('#document_published');
+	        if (startDateTextBox.val() != '') {ldelim}
+	            var testStartDate = new Date(startDateTextBox.val());
+	            var testEndDate = new Date(dateText);
+	            if (testStartDate > testEndDate)
+	                startDateTextBox.val(dateText);
+	        {rdelim}
+	        else {ldelim}
+	            startDateTextBox.val(dateText);
+	        {rdelim}
+	    {rdelim},
+	    onSelect: function (selectedDateTime){ldelim}
+	        var end = $(this).datetimepicker('getDate');
+	        $('#document_published').datetimepicker('option', 'maxDate', new Date(end.getTime()) );
+	    {rdelim}
+		{rdelim});	
+	{rdelim});
+</script>
+	
 <table cellspacing="1" cellpadding="8" border="0" width="100%">
 	<tr>
 		<td class="second">
@@ -31,7 +92,7 @@ $(document).ready(function(){ldelim}
 		<tr class="first">
 			<td rowspan="2" class="second"><strong>{#MAIN_TIME_PERIOD#}</strong></td>
 			<td nowrap="nowrap">
-				{html_select_date time=$sel_start|default:$DEF_DOC_START_YEAR prefix="published" start_year="-10" end_year="+10" field_order=DMY}
+				<input id="document_published" name="document_published" type="text" value="{$smarty.request.document_published|date_format:"%d.%m.%Y"}" />
 			</td>
 			<td class="second"><strong>{#MAIN_TITLE_SEARCH#}</strong></td>
 			<td nowrap="nowrap">
@@ -51,7 +112,7 @@ $(document).ready(function(){ldelim}
 
 		<tr class="first">
 			<td nowrap="nowrap">
-				{html_select_date time=$sel_ende|default:$DEF_DOC_END_YEAR prefix="expire" start_year="-10" end_year="+10" field_order=DMY}
+				<input id="document_expire" name="document_expire" type="text" value="{$smarty.request.document_expire|date_format:"%d.%m.%Y"}" />
 			</td>
 			<td class="second"><strong>{#MAIN_ID_SEARCH#}</strong></td>
 			<td><input style="width:160px" type="text" name="doc_id" value="{$smarty.request.doc_id|escape|stripslashes}" /></td>

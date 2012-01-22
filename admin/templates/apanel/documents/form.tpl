@@ -20,6 +20,9 @@
   <script language=JavaScript src='{$ABS_PATH}admin/redactor/innova/scripts/innovaeditor.js'></script>	
 {/if}	
 
+ <link rel="stylesheet" href="{$tpl_dir}/js/jquery/plugin/jquery-ui-time.css" type="text/css">	
+ <script src="{$tpl_dir}/js/jquery/plugin/jquery-ui-time.js" type="text/javascript"></script>
+
 <script type="text/javascript">
 {*
 function insertHTML(ed, code) {ldelim}
@@ -100,6 +103,60 @@ $(document).ready(function(){ldelim}
 			'background' : '#ffffff'
 		{rdelim});
 	{/if}
+$('#document_published').datetimepicker({ldelim}
+		timeOnlyTitle: 'Выберите время',
+		timeText: 'Время',
+		hourText: 'Часы',
+		minuteText: 'Минуты',
+		secondText: 'Секунды',
+		currentText: 'Теперь',
+		closeText: 'Закрыть',
+		
+		onClose: function(dateText, inst) {ldelim}
+        var endDateTextBox = $('#document_expire');
+        if (endDateTextBox.val() != '') {ldelim}
+            var testStartDate = new Date(dateText);
+            var testEndDate = new Date(endDateTextBox.val());
+            if (testStartDate > testEndDate)
+                endDateTextBox.val(dateText);
+        {rdelim}
+        else {ldelim}
+            endDateTextBox.val(dateText);
+        {rdelim}
+	    {rdelim},
+	    onSelect: function (selectedDateTime){ldelim}
+	        var start = $(this).datetimepicker('getDate');
+	        $('#document_expire').datetimepicker('option', 'minDate', new Date(start.getTime()));
+	    {rdelim}
+	{rdelim});
+	
+	
+	$('#document_expire').datetimepicker({ldelim}
+		timeOnlyTitle: 'Выберите время',
+		timeText: 'Время',
+		hourText: 'Часы',
+		minuteText: 'Минуты',
+		secondText: 'Секунды',
+		currentText: 'Теперь',
+		closeText: 'Закрыть',
+		
+		onClose: function(dateText, inst) {ldelim}
+        var startDateTextBox = $('#document_published');
+        if (startDateTextBox.val() != '') {ldelim}
+            var testStartDate = new Date(startDateTextBox.val());
+            var testEndDate = new Date(dateText);
+            if (testStartDate > testEndDate)
+                startDateTextBox.val(dateText);
+        {rdelim}
+        else {ldelim}
+            startDateTextBox.val(dateText);
+        {rdelim}
+    {rdelim},
+    onSelect: function (selectedDateTime){ldelim}
+        var end = $(this).datetimepicker('getDate');
+        $('#document_published').datetimepicker('option', 'maxDate', new Date(end.getTime()) );
+    {rdelim}
+	{rdelim});
 {rdelim});
 </script>
 
@@ -195,19 +252,15 @@ $(document).ready(function(){ldelim}
 
 		<tr>
 			<td>{#DOC_START_PUBLICATION#}</td>
-			<td>
-				{html_select_date time=$document->document_published prefix="published" start_year="-10" end_year="+10" field_order=DMY all_extra=$extra}
-				&nbsp;-&nbsp;
-				{html_select_time time=$document->document_published prefix="published" display_seconds=false all_extra=$extra}
+			<td>				
+				<input id="document_published" name="document_published" type="text" value="{$document->document_published|date_format:"%d.%m.%Y %H:%M"}" />
 			</td>
 		</tr>
 
 		<tr>
 			<td>{#DOC_END_PUBLICATION#}</td>
 			<td>
-				{html_select_date time=$document->document_expire prefix="expire" start_year="-10" end_year="+10" field_order=DMY all_extra=$extra}
-				&nbsp;-&nbsp;
-				{html_select_time time=$document->document_expire prefix="expire" display_seconds=false all_extra=$extra}
+				<input id="document_expire" name="document_expire" type="text" value="{$document->document_expire|date_format:"%d.%m.%Y %H:%M"}" />
 			</td>
 		</tr>
 

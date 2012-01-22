@@ -136,9 +136,9 @@ function mark_mailpass() {ldelim}
 			<td>
 				<select name="country" style="width:250px;">
 					{if $smarty.request.action=='new'}
-						{assign var=sL value=$smarty.request.country|default:$smarty.session.user_language|lower|escape|stripslashes}
+						{assign var=sL value=$smarty.request.country|default:$smarty.session.user_language|escape|stripslashes}
 					{else}
-						{assign var=sL value=$row->country|lower|escape|stripslashes}
+						{assign var=sL value=$row->country|escape|stripslashes}
 					{/if}
 					{foreach from=$available_countries item=land}
 						<option value="{$land->country_code}"{if $sL==$land->country_code} selected="selected"{/if}>{$land->country_name|escape}</option>
