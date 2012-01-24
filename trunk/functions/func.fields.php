@@ -361,7 +361,7 @@ function get_field_flash($field_value,$type,$field_id='',$rubric_field_template=
 				$field .= "<div style=\"display:none\" id=\"span_feld__" . $field_id . "\"></div>";
 				$field .= "<input type=\"text\" style=\"width:" . $AVE_Document->_field_width . "\" name=\"feld[" . $field_id . "]\" value=\"" . htmlspecialchars($field_value, ENT_QUOTES) . "\" id=\"img_feld__" . $field_id . "\" />&nbsp;";
 				$field .= "<input value=\"" . $AVE_Template->get_config_vars('MAIN_OPEN_MEDIAPATH') . "\" class=\"button\" type=\"button\" onclick=\"cp_imagepop('img_feld__" . $field_id . "', '', '', '0');\" />";
-				$field .= '<input style="margin-left:5px" class="button" type="button" value="?" onmouseover="return overlib(\'' . $AVE_Template->get_config_vars('DOC_FLASH_TYPE_HELP') . '\',ABOVE,WIDTH,300);" onmouseout="nd();" style="cursor: help;">';
+				$field .= '<a class="button tooltip" title="'.$AVE_Template->get_config_vars('DOC_FLASH_TYPE_HELP').'" href="#">?</a>';
 				$res=$field;
 			break;
 
@@ -405,7 +405,7 @@ function get_field_download($field_value,$type,$field_id='',$rubric_field_templa
 				$field .= "<div style=\"display:none\" id=\"span_feld__" . $field_id . "\"></div>";
 				$field .= "<input type=\"text\" style=\"width:" . $AVE_Document->_field_width . "\" name=\"feld[" . $field_id . "]\" value=\"" . htmlspecialchars($field_value, ENT_QUOTES) . "\" id=\"img_feld__" . $field_id . "\" />&nbsp;";
 				$field .= "<input value=\"" . $AVE_Template->get_config_vars('MAIN_OPEN_MEDIAPATH') . "\" class=\"button\" type=\"button\" onclick=\"cp_imagepop('img_feld__" . $field_id . "', '', '', '0');\" />";
-				$field .= '<input style="margin-left:5px" class="button" type="button" value="?" onmouseover="return overlib(\'' . $AVE_Template->get_config_vars('DOC_FILE_TYPE_HELP') . '\',ABOVE,WIDTH,300);" onmouseout="nd();" style="cursor: help;">';
+				$field .= '<a class="button tooltip" title="'.$AVE_Template->get_config_vars('DOC_FILE_TYPE_HELP').'" href="#">?</a>';
 				$field .= '</div>';
 				$res=$field;
 			break;
@@ -447,7 +447,7 @@ function get_field_video_mov($field_value,$type,$field_id='',$rubric_field_templ
 				$field .= "<div style=\"display:none\" id=\"span_feld__" . $field_id . "\"></div>";
 				$field .= "<input type=\"text\" style=\"width:" . $AVE_Document->_field_width . "\" name=\"feld[" . $field_id . "]\" value=\"" . htmlspecialchars($field_value, ENT_QUOTES) . "\" id=\"img_feld__" . $field_id . "\" />&nbsp;";
 				$field .= "<input value=\"" . $AVE_Template->get_config_vars('MAIN_OPEN_MEDIAPATH') . "\" class=\"button\" type=\"button\" onclick=\"cp_imagepop('img_feld__" . $field_id . "', '', '', '0');\" />";
-				$field .= '<input style="margin-left:5px" class="button" type="button" value="?" onmouseover="return overlib(\'' . $AVE_Template->get_config_vars('DOC_VIDEO_TYPE_HELP') . '\',ABOVE,WIDTH,300);" onmouseout="nd();" style="cursor: help;">';
+				$field .= '<a class="button tooltip" title="'.$AVE_Template->get_config_vars('DOC_VIDEO_TYPE_HELP').'" href="#">?</a>';
 				$field .= '</div>';
 				$res=$field;
 			break;
