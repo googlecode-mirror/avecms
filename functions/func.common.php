@@ -632,8 +632,8 @@ function prepare_fname($st)
 {
 	$st = strip_tags($st);
 
-	$st = strtr($st,'ABCDEFGHIJKLMNOPQRSTUVWXYZАБВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЬЪЫЭЮЯЇЄІ',
-					'abcdefghijklmnopqrstuvwxyzабвгдеёжзийклмнопрстуфхцчшщьъыэюяїєі');
+	$st = strtr($st,'ABCDEFGHIJKLMNOPQRSTUVWXYZАБВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЬЪЫЭЮЯ',
+					'abcdefghijklmnopqrstuvwxyzабвгдеёжзийклмнопрстуфхцчшщьъыэюя');
 			
 	$st = translit_string(trim($st));
 
@@ -672,15 +672,19 @@ function rewrite_link($s)
 
 function reportLog($meldung, $typ = 0, $rub = 0)
 {
-	$logdata=array();
-	
-	$logfile=BASE_DIR.'/cache/log.php';
-	if(file_exists($logfile))
-		include($logfile);
-	$logdata[]=array('log_time' =>time(),'log_ip'=>$_SERVER['REMOTE_ADDR'],'log_url'=>$_SERVER['QUERY_STRING'],'log_text'=>$meldung,'log_type'=>(int)$typ,'log_rubric'=>(int)$rub);
-	$messlimit=50;
-	$logdata=array_slice($logdata,-1*$messlimit);
-	file_put_contents($logfile,'<? $logdata='.var_export($logdata,true).' ?>');
+	global $AVE_DB;
+
+	$AVE_DB->Query("
+		INSERT INTO " . PREFIX . "_log
+		SET
+			Id         = '',
+			log_time   = '" . time() . "',
+			log_ip     = '" . addslashes($_SERVER['REMOTE_ADDR']) . "',
+			log_url	   = '" . addslashes($_SERVER['QUERY_STRING']) . "',
+			log_text   = '" . addslashes($meldung) . "',
+			log_type   = '" . (int)$typ . "',
+			log_rubric = '" . (int)$rub . "'
+	");
 }
 
 function get_document_fields($document_id)
@@ -951,6 +955,28 @@ function get_country_list($status = '')
 }
 
 /**
+ * Получение списка изображений из заданной папки
+ **/
+function image_multi_import($path) {
+	
+	$dir = BASE_DIR."/".$path;
+	if($handle = opendir($dir))
+	{
+		while (false !== ($file = readdir($handle)))
+		{
+			if ($file != "." && $file != "..")
+			{
+			  if(!is_dir($dir."/".$file))
+				$files[] = $file;
+			}
+		}
+		closedir($handle);
+	} 
+	
+	return $files;
+}
+
+/**
  * Отправка e-Mail
  *
  * @param string $to
@@ -1134,26 +1160,6 @@ if (!defined('PHP_EOL')) {
         default:
             define('PHP_EOL', "\n");
     }
-}
-function is_php_code($check_code)
-{
-	$check_code = stripslashes($check_code);
-	$check_code = str_replace(' ', '', $check_code);
-	$check_code = strtolower($check_code);
-
-	if (strpos($check_code, '<?php') !== false ||
-		strpos($check_code, '<?') !== false ||
-		strpos($check_code, '<? ') !== false ||
-		strpos($check_code, '<?=') !== false ||
-		strpos($check_code, '<script language="php">') !== false ||
-		strpos($check_code, 'language="php"') !== false ||
-		strpos($check_code, "language='php'") !== false ||
-		strpos($check_code, 'language=php') !== false)
-	{
-		return true;
-	}
-
-	return false;
 }
 
 ?>

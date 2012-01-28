@@ -761,7 +761,11 @@ function get_field_bild_multi($field_value,$type,$field_id='',$rubric_field_temp
 	$jsCode=<<<BLOCK
 
 <script language="javascript" type="text/javascript">
-
+$(document).ready(function(){
+	$.ajaxSetup({
+	   dataType: "json"
+	});
+});	
 function field_image_multi_add(field_id, field_value, img_path, alt){
 	var
 		_id = Math.round(Math.random()*1000);
@@ -808,6 +812,40 @@ function field_image_multi_move(field_id, id, direction){ // direction: {up, dow
 	}
 }
 
+function field_image_multi_opimport(field_id){	
+	$("#on"+field_id).hide();
+	var html='<br>Указывать нужно папку (Формат: uploads/images/samepath/)<br><input type="text" style="width:{$AVE_Document->_field_width}" value="uploads/images/" id="img_importfeld__' + field_id +'" />&nbsp;'+
+		'<input type="button" class="button" onclick="field_image_multi_import(' + field_id + ');" value="Импорт" />';
+		element=document.createElement("div");
+		element.id=img_id;
+		element.innerHTML=html; 
+		document.getElementById("feld_"+field_id).appendChild(element);
+}
+
+function field_image_multi_import(field_id){
+	
+	var path_import = $("#img_importfeld__"+field_id).val(); 
+	var html = '';	
+
+	$.ajax({
+		url: ave_path+'admin/index.php?do=docs&action=image_import', 
+		data: {"path": path_import}, 
+		success: function(dat) {
+			
+			for (var p = 0, max = dat.respons.length; p < max; p++) {
+				var field_value = path_import + dat.respons[p];
+				var img_path = '../index.php?thumb=' + field_value;
+				field_image_multi_add(field_id, field_value, img_path, '');
+			}
+		},
+		error: function(data) {
+			alert("Ошибка импорта");
+		},
+	}); 
+	
+
+}
+
 </script>
 
 BLOCK;
@@ -827,7 +865,7 @@ BLOCK;
 			$field.="
 				<div id=\"feld_{$field_id}\">
 				</div>
-				<input type='button' onclick=\"field_image_multi_add({$field_id},'','','');\" value='Добавить' />
+				<input type='button' onclick=\"field_image_multi_add({$field_id},'','','');\" value='Добавить' /> <input type='button' id='on".$field_id."' onclick=\"field_image_multi_opimport({$field_id});\" value='Импорт' />
 				<script language=\"javascript\" type=\"text/javascript\">";
 				$massa=unserialize($field_value);
 				if($massa!=false){
