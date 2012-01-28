@@ -168,6 +168,10 @@ switch($_REQUEST['action'])
 	case 'translit':
 		echo($AVE_Document->documentAliasCreate());
 		exit;
+		
+	case 'image_import':
+		echo json_encode(array("respons"=>image_multi_import($_REQUEST['path']), "status"=>"error", "action"=>"return"));
+		exit;
 
 	case 'checkurl':
 		echo($AVE_Document->documentAliasCheck());
