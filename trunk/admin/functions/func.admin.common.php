@@ -320,6 +320,27 @@ function file_download($filename, $retbytes = true)
 	return $status;
 }
 
+function is_php_code($check_code)
+{
+	$check_code = stripslashes($check_code);
+	$check_code = str_replace(' ', '', $check_code);
+	$check_code = strtolower($check_code);
+
+	if (strpos($check_code, '<?php') !== false ||
+		strpos($check_code, '<?') !== false ||
+		strpos($check_code, '<? ') !== false ||
+		strpos($check_code, '<?=') !== false ||
+		strpos($check_code, '<script language="php">') !== false ||
+		strpos($check_code, 'language="php"') !== false ||
+		strpos($check_code, "language='php'") !== false ||
+		strpos($check_code, 'language=php') !== false)
+	{
+		return true;
+	}
+
+	return false;
+}
+
 function check_permission_acp($perm)
 {
 	if (!check_permission($perm))
