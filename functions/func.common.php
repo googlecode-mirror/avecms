@@ -672,19 +672,15 @@ function rewrite_link($s)
 
 function reportLog($meldung, $typ = 0, $rub = 0)
 {
-	global $AVE_DB;
-
-	$AVE_DB->Query("
-		INSERT INTO " . PREFIX . "_log
-		SET
-			Id         = '',
-			log_time   = '" . time() . "',
-			log_ip     = '" . addslashes($_SERVER['REMOTE_ADDR']) . "',
-			log_url	   = '" . addslashes($_SERVER['QUERY_STRING']) . "',
-			log_text   = '" . addslashes($meldung) . "',
-			log_type   = '" . (int)$typ . "',
-			log_rubric = '" . (int)$rub . "'
-	");
+	$logdata=array();
+	
+	$logfile=BASE_DIR.'/cache/log.php';
+	if(file_exists($logfile))
+		include($logfile);
+	$logdata[]=array('log_time' =>time(),'log_ip'=>$_SERVER['REMOTE_ADDR'],'log_url'=>$_SERVER['QUERY_STRING'],'log_text'=>$meldung,'log_type'=>(int)$typ,'log_rubric'=>(int)$rub);
+	$messlimit=50;
+	$logdata=array_slice($logdata,-1*$messlimit);
+	file_put_contents($logfile,'<? $logdata='.var_export($logdata,true).' ?>');
 }
 
 function get_document_fields($document_id)
