@@ -59,7 +59,7 @@
 	define('Memcached_Port','');
 
 	//Версия сборки
-	define('BILD_VERSION',268);
+	define('BILD_VERSION',276);
 
 	//Логин от SVN репозитария
 	define('SVN_LOGIN','public');
