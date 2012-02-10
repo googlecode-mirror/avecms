@@ -577,6 +577,72 @@ class AVE_Document
 		$AVE_Template->assign('DEF_DOC_END_YEAR', mktime(0, 0, 0, date("m"), date("d"), date("Y") + 10));
 	}
 
+	/**
+	 * Метод, предназначенный для сохранения статусов документа в БД
+	 *
+	 */
+	 function editstatus() {
+	 	global $AVE_DB;
+	 	
+		 switch(@$_REQUEST['moderation']) {
+			// статусы
+			case "1" :
+				foreach (@$_REQUEST['document'] as $id => $status)
+					{
+						if (is_numeric($id) && is_numeric($status))
+						{
+							$AVE_DB->Query("UPDATE " . PREFIX . "_documents SET document_status = '1' WHERE Id = '".$id."'	");				
+						}
+					}
+			break;
+			
+			// статусы
+			case "0" :
+				foreach (@$_REQUEST['document'] as $id => $status)
+					{
+						if (is_numeric($id) && is_numeric($status))
+						{
+							$AVE_DB->Query("UPDATE " . PREFIX . "_documents SET document_status = '0' WHERE Id = '".$id."'	");
+						}
+					}
+			break;
+			
+			// в корзину
+			case "intrash" :
+				foreach (@$_REQUEST['document'] as $id => $status)
+					{
+						if (is_numeric($id) && is_numeric($status))
+						{
+							$AVE_DB->Query("UPDATE " . PREFIX . "_documents SET document_deleted = '1' WHERE Id = '".$id."'	");
+						}
+					}
+			break;
+			
+			// из корзины
+			case "outtrash" :
+				foreach (@$_REQUEST['document'] as $id => $status)
+					{
+						if (is_numeric($id) && is_numeric($status))
+						{
+							$AVE_DB->Query("UPDATE " . PREFIX . "_documents SET document_deleted = '0' WHERE Id = '".$id."'	");
+						}
+					}
+			break;
+			
+			// совсем удалить
+			case "trash" :
+				foreach (@$_REQUEST['document'] as $id => $status)
+					{
+						if (is_numeric($id) && is_numeric($status))
+						{
+							$AVE_DB->Query("DELETE FROM " . PREFIX . "_documents WHERE Id = '".$id."'	");
+						}
+					}
+			break;
+		}
+	 	header('Location:index.php?do=docs&cp=' . SESSION);
+		exit;
+	 }
 
 	/**
 	 * Метод, предназначенный для сохранения документа в БД
