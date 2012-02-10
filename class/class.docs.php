@@ -636,6 +636,7 @@ class AVE_Document
 						if (is_numeric($id) && is_numeric($status))
 						{
 							$AVE_DB->Query("DELETE FROM " . PREFIX . "_documents WHERE Id = '".$id."'	");
+							$AVE_DB->Query("DELETE FROM " . PREFIX . "_document_fields WHERE document_id = '".$id."'	");
 						}
 					}
 			break;
