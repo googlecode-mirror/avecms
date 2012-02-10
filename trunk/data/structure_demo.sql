@@ -69,17 +69,6 @@ CREATE TABLE `%%PRFX%%_documents` (
   KEY `document_expire` (`document_expire`)
 ) ENGINE=MyISAM AUTO_INCREMENT=28 DEFAULT CHARSET=utf8 PACK_KEYS=0;#inst#
 
-CREATE TABLE `%%PRFX%%_log` (
-  `Id` int(10) unsigned NOT NULL auto_increment,
-  `log_time` int(10) NOT NULL default '0',
-  `log_ip` varchar(25) NOT NULL,
-  `log_url` varchar(255) NOT NULL,
-  `log_text` text NOT NULL,
-  `log_type` tinyint(1) unsigned NOT NULL default '2',
-  `log_rubric` tinyint(1) unsigned NOT NULL default '2',
-  PRIMARY KEY  (`Id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 PACK_KEYS=0;#inst#
-
 CREATE TABLE `%%PRFX%%_modul_banner_categories` (
   `Id` smallint(3) unsigned NOT NULL auto_increment,
   `banner_category_name` char(100) NOT NULL default '',

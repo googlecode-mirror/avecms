@@ -71,7 +71,9 @@ function check_name() {ldelim}
 {include file='documents/doc_search.tpl'}
 
 <h4>{#MAIN_DOCUMENTS_ALL#}</h4>
+<form method="post" action="index.php?do=docs&action=editstatus&cp={$sess}">
 <table width="100%" border="0" cellpadding="8" cellspacing="1" class="tableborder">
+	<col width="10" class="itcen">
 	<col width="10" class="itcen">
 	<col>
 	<col width="150">
@@ -86,6 +88,7 @@ function check_name() {ldelim}
 	<col width="20">
 	<col width="20">
 	<tr class="tableheader">
+		<td></td>
 		<td><a class="header" href="{$link}&sort=id{if $smarty.request.sort=='id'}_desc{/if}&page={$smarty.request.page|escape|default:'1'}&cp={$sess}">{#DOC_ID#}</a></td>
 		<td nowrap="nowrap">
 			<a class="header" href="{$link}&sort=title{if $smarty.request.sort=='title'}_desc{/if}&page={$smarty.request.page|escape|default:'1'}&cp={$sess}">{#DOC_TITLE#}</a>
@@ -103,6 +106,7 @@ function check_name() {ldelim}
 
 	{foreach from=$docs item=item}
 		<tr style="background-color:#eff3eb" onmouseover="this.style.backgroundColor='#dae0d8';" onmouseout="this.style.backgroundColor='#eff3eb';" id="table_rows">
+			<td><input name="document[{$item->Id}]" type="checkbox" value="1" {if ($item->cantEdit!=1 || $item->canOpenClose!=1 || $item->canEndDel!=1) && ($item->Id == 1 || $item->Id == $PAGE_NOT_FOUND_ID)}disabled{/if} /></td>
 			<td nowrap="nowrap">{$item->Id}</td>
 
 			<td>
@@ -209,7 +213,26 @@ function check_name() {ldelim}
 			</td>
 		</tr>
 	{/foreach}
+	
+	<tr>
+		<td colspan="4">
+			<div class="setChecked">Фильтр: <span id="text">отметить все</span></div>
+
+			<select name="moderation" class="action-in-moderation">
+				<option value="none" selected="selected">Действие с выбранными</option>
+				<option value="1">Активный</option>
+				<option value="0">Не активный</option>
+				<option value="intrash">Временно удалить</option>
+				<option value="outtrash">Восстановить</option>
+				<option value="trash">Удалить</option>
+			</select>
+			
+			<br><br>
+			<input type="submit" class="button" value="Сохранить изменения" />
+		</td>
+	</tr>
 </table>
+</form>
 <br />
 
 {if $page_nav}

@@ -165,12 +165,19 @@ switch($_REQUEST['action'])
 		}
 		break;
 
-	case 'translit':
-		echo($AVE_Document->documentAliasCreate());
-		exit;
-		
+	case 'editstatus':
+		if (check_permission_acp('documents'))
+		{
+			$AVE_Document->editstatus();
+		}
+		break;
+
 	case 'image_import':
 		echo json_encode(array("respons"=>image_multi_import($_REQUEST['path']), "status"=>"error", "action"=>"return"));
+		exit;
+		
+	case 'translit':
+		echo($AVE_Document->documentAliasCreate());
 		exit;
 
 	case 'checkurl':
