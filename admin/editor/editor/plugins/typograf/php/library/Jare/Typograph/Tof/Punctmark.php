@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 /**
  * @see Jare_Typograph_Tof
  */
