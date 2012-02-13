@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 /**
  * Jare_Typograph_Param
  *

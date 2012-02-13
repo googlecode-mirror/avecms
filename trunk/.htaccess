@@ -52,6 +52,7 @@ php_value error_reporting E_NONE
 	RewriteRule ^basket.html$ index.php?module=shop&action=showbasket [QSA,L]
 	RewriteRule ^basket-print.html$ index.php?module=shop&action=showbasket&print=1 [QSA,L]
 	RewriteRule ^manufacturer-([0-9]+).html$ index.php?module=shop&manufacturer=$1 [QSA,L]
+	RewriteRule ^manufacturer-([0-9]+).html&page=([0-9]+)$ index.php?module=shop&manufacturer=$1&page=$2 [QSA,L]
 	RewriteRule ^manufacturer-print.html$ index.php?module=shop&manufacturer=$1&print=1 [QSA,L]
 	RewriteRule ^checkout.html$ index.php?module=shop&action=checkout [QSA,L]
 	RewriteRule ^checkout-print.html$ index.php?module=shop&action=checkout&print=1 [QSA,L]
