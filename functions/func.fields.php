@@ -952,6 +952,48 @@ BLOCK;
 			
 }
 
+function get_field_docfromrub($field_value,$type,$field_id='',$rubric_field_template='',$tpl_field_empty=0,&$maxlength = '',$document_fields=0,$rubric_id=0,$dropdown=''){
+	global $AVE_DB,$AVE_Template, $AVE_Core, $AVE_Document;
+	$res=0;
+	switch ($type)
+	{
+		case 'edit' :
+				$field  = '<a name="' . $field_id . '"></a>';
+				$sql="SELECT Id,document_title from ". PREFIX ."_documents WHERE rubric_id='".$dropdown."' ORDER BY document_title ASC";
+				$res=$AVE_DB->Query($sql);
+				$field = "<select name=\"feld[" . $field_id . "]\">";
+				while($row = $res->FetchRow()){
+					$field.="<option value=\"" . htmlspecialchars($row->Id, ENT_QUOTES) . "\"" . ((trim($field_value) == trim($row->Id)) ? " selected=\"selected\"" : "") . ">" . htmlspecialchars($row->document_title, ENT_QUOTES) . "</option>";
+				}
+				$field .= "</select>";
+				
+				$res=$field;
+			break;
+
+		case 'doc' :
+			$field_value = htmlspecialchars($field_value, ENT_QUOTES);
+			$field_value = pretty_chars($field_value);
+			$field_value = clean_php($field_value);
+			$field_value = str_replace('"', '&quot;', $field_value);
+			if (!$tpl_field_empty)
+			{
+				$field_param = explode('|', $field_value);
+				$field_value = preg_replace('/\[tag:parametr:(\d+)\]/ie', '@$field_param[\\1]', $rubric_field_template);
+			}
+			$res=$field_value;
+			break;
+
+			case 'req' :
+			$res=get_field_default($field_value,$type,$field_id,$rubric_field_template,$tpl_field_empty,$maxlength,$document_fields,$rubric_id);
+
+			break;
+		case 'name' :
+			$res='FIELD_DOCFROMRUB';
+		break;
+	}
+	return ($res ? $res : $field_value);
+			
+}
 
 function get_field_docfromrubcheck($field_value,$type,$field_id='',$rubric_field_template='',$tpl_field_empty=0,&$maxlength = '',$document_fields=0,$rubric_id=0,$dropdown=''){
 	global $AVE_DB,$AVE_Template, $AVE_Core, $AVE_Document;
