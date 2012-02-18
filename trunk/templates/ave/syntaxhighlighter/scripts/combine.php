@@ -1,6 +1,6 @@
-<?php
+﻿<?php
 
-$cache 	  = true;					// Кеширование
+$cache 	  = true;		// Кеширование
 $cachedir = '../../../../cache';	// Путь к кэшу
 
 // Определяем тип файлов, полный путь к файлам
@@ -24,80 +24,73 @@ else
 	header ("HTTP/1.0 503 Not Implemented");
 	exit;
 }
-
-// Определяем дату последней модификации файлов
+// Determine last modification date of the files
 $lastmodified = 0;
-while (list(,$element) = each($elements))
-{
+while (list(,$element) = each($elements)) {
 	$path = realpath($base . '/' . $element);
 
-	if (($type == 'javascript' && substr($path, -3) != '.js') ||
-		($type == 'css' && substr($path, -4) != '.css'))
-	{
+	if (($type == 'javascript' && substr($path, -3) != '.js') || 
+		($type == 'css' && substr($path, -4) != '.css')) {
 		header ("HTTP/1.0 403 Forbidden");
-		exit;
+		exit;	
 	}
 
-	if (substr($path, 0, strlen($base)) != $base || !file_exists($path))
-	{
+	if (substr($path, 0, strlen($base)) != $base || !file_exists($path)) {
 		header ("HTTP/1.0 404 Not Found");
 		exit;
 	}
-
+	
 	$lastmodified = max($lastmodified, filemtime($path));
 }
 
-// Отправляем Etag
-$hash = $lastmodified . '-' . $hash;
+// Send Etag hash
+$hash = $lastmodified . '-' . md5($_GET['files']);
 header ("Etag: \"" . $hash . "\"");
 
-if (isset($_SERVER['HTTP_IF_NONE_MATCH']) &&
-	stripslashes($_SERVER['HTTP_IF_NONE_MATCH']) == '"' . $hash . '"')
+if (isset($_SERVER['HTTP_IF_NONE_MATCH']) && 
+	stripslashes($_SERVER['HTTP_IF_NONE_MATCH']) == '"' . $hash . '"') 
 {
-	// Повторный визит и файлы не изменялись - ничего не отправляем
+	// Return visit and no modifications, so do not send anything
 	header ("HTTP/1.0 304 Not Modified");
 	header ('Content-Length: 0');
-}
-else
+} 
+else 
 {
-	// Первый визит или файлы изменялись
-	if ($cache)
+	// First time visit or files were modified
+	if ($cache) 
 	{
-		// Определяем доступные методы сжатия
+		// Determine supported compression method
 		$gzip = strstr($_SERVER['HTTP_ACCEPT_ENCODING'], 'gzip');
 		$deflate = strstr($_SERVER['HTTP_ACCEPT_ENCODING'], 'deflate');
 
-		// Определяем какой метод использовать
+		// Determine used compression method
 		$encoding = $gzip ? 'gzip' : ($deflate ? 'deflate' : 'none');
 
-		// Определяемся с версией браузера для обхода глюков IE
-		if (!strstr($_SERVER['HTTP_USER_AGENT'], 'Opera') &&
-			preg_match('/^Mozilla\/4\.0 \(compatible; MSIE ([0-9]\.[0-9])/i', $_SERVER['HTTP_USER_AGENT'], $matches))
-		{
+		// Check for buggy versions of Internet Explorer
+		if (!strstr($_SERVER['HTTP_USER_AGENT'], 'Opera') && 
+			preg_match('/^Mozilla\/4\.0 \(compatible; MSIE ([0-9]\.[0-9])/i', $_SERVER['HTTP_USER_AGENT'], $matches)) {
 			$version = floatval($matches[1]);
-
+			
 			if ($version < 6)
 				$encoding = 'none';
-
-			if ($version == 6 && !strstr($_SERVER['HTTP_USER_AGENT'], 'EV1'))
+				
+			if ($version == 6 && !strstr($_SERVER['HTTP_USER_AGENT'], 'EV1')) 
 				$encoding = 'none';
 		}
-
-		// Проверяем наличие комбинированного файла в кэше
+		
+		// Try the cache first to see if the combined files were already generated
 		$cachefile = 'cache-' . $hash . '.' . $type . ($encoding != 'none' ? '.' . $encoding : '');
+		
+		if (file_exists($cachedir . '/' . $cachefile)) {
+			if ($fp = fopen($cachedir . '/' . $cachefile, 'rb')) {
 
-		if (file_exists($cachedir . '/' . $cachefile))
-		{
-			if ($fp = fopen($cachedir . '/' . $cachefile, 'rb'))
-			{
-				if ($encoding != 'none')
-				{
+				if ($encoding != 'none') {
 					header ("Content-Encoding: " . $encoding);
 				}
-
+			
 				header ("Content-Type: text/" . $type);
 				header ("Content-Length: " . filesize($cachedir . '/' . $cachefile));
-
+	
 				fpassthru($fp);
 				fclose($fp);
 				exit;
@@ -105,40 +98,74 @@ else
 		}
 	}
 
-	// Считываем файлы
+	// Get contents of the files
 	$contents = '';
 	reset($elements);
-	while (list(,$element) = each($elements))
-	{
+	while (list(,$element) = each($elements)) {
 		$path = realpath($base . '/' . $element);
-		$contents .= "\n\n" . file_get_contents($path);
+		$contents .= file_get_contents($path);
 	}
 
-	// Отправляем заголовок Content-Type
-	header ("Content-Type: text/" . $type);
+			if ($type == 'javascript')
+			{
+			 for ($i = 1; $i < 10; $i++)
+			 {
+			 $contents = str_replace("\n\n", "\n", $contents); //Удаляем переносы строк
+			 $contents = str_replace("\r\r", "\r", $contents); //Удаляем переносы строк
+			 $contents = str_replace("\r\n\r\n", "\r\n", $contents); //Удаляем переносы строк
+			 }
+			}
 
-	if (isset($encoding) && $encoding != 'none')
+			if ($type == 'css')
+			{
+			 $contents = preg_replace('/\/\*.*\*\//Uis', '', $contents); //Удаляем комментарии
+			 $contents = str_replace("\r", "", $contents); //Удаляем переносы строк
+			 $contents = str_replace("\n", "", $contents); //Удаляем переносы строк
+			 $contents = str_replace(chr(9), "", $contents); //Удаляем табуляцию
+			 $contents = str_replace(" }", "}", $contents); //Удаляем пробелы перед }
+			 $contents = str_replace(" {", "{", $contents); //Удаляем пробелы перед {
+			 $contents = str_replace("{ ", "{", $contents); //Удаляем пробелы после {
+			 $contents = str_replace("} ", "}", $contents); //Удаляем пробелы после }
+			 $contents = str_replace("; ", ";", $contents); //Удаляем пробелы после ;
+			 $contents = str_replace(" ;", ";", $contents); //Удаляем пробелы перед ;
+			 $contents = str_replace(" :", ":", $contents); //Удаляем пробелы перед :
+			 $contents = str_replace(": ", ":", $contents); //Удаляем пробелы после :
+			 $contents = str_replace("+ ", "+", $contents); //Удаляем пробелы после +
+			 $contents = str_replace(" +", "+", $contents); //Удаляем пробелы перед +
+			 $contents = str_replace("= ", "=", $contents); //Удаляем пробелы после =
+			 $contents = str_replace(" =", "=", $contents); //Удаляем пробелы перед =
+			 $contents = str_replace("- ", "-", $contents); //Удаляем пробелы после -
+			 $contents = str_replace("/ ", "/", $contents); //Удаляем пробелы после /
+			 $contents = str_replace(" /", "/", $contents); //Удаляем пробелы перед /
+			 $contents = str_replace(", ", ",", $contents); //Удаляем пробелы после ,
+			 $contents = str_replace(" ,", ",", $contents); //Удаляем пробелы перед ,
+			 $contents = str_replace("  ", " ", $contents); //Удаляем двойной пробел
+			}
+
+			// Send Content-Type
+	header ("Content-Type: text/" . $type);
+	
+	if (isset($encoding) && $encoding != 'none') 
 	{
-		// Сжимаем и отправляем комбинированный файл
-		$contents = gzencode($contents, 9, $gzip ? FORCE_GZIP : FORCE_DEFLATE);
+		// Send compressed contents
+		$contents = gzencode($contents, 3, $gzip ? FORCE_GZIP : FORCE_DEFLATE);
 		header ("Content-Encoding: " . $encoding);
 		header ('Content-Length: ' . strlen($contents));
 		echo $contents;
-	}
-	else
+	} 
+	else 
 	{
-		// Отправляем комбинированный файл без сжатия
+		// Send regular contents
 		header ('Content-Length: ' . strlen($contents));
 		echo $contents;
 	}
 
-	// Кэшируем
-	if ($cache)
-	{
-		if ($fp = fopen($cachedir . '/' . $cachefile, 'wb'))
-		{
+	// Store cache
+	if ($cache) {
+		if ($fp = fopen($cachedir . '/' . $cachefile, 'wb')) {
 			fwrite($fp, $contents);
 			fclose($fp);
 		}
 	}
 }
+?>

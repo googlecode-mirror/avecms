@@ -1,13 +1,12 @@
 {if $smarty.session.use_editor == 1}
-	<!-- css -->
-	<link rel="stylesheet" href="{$ABS_PATH}admin/redactor/elrte/css/elrte.min.css" type="text/css" media="screen">
-	<link rel="stylesheet" href="{$ABS_PATH}admin/redactor/elfinder/css/elfinder.full.css" type="text/css" media="screen">
-	<link rel="stylesheet" href="{$ABS_PATH}admin/redactor/elfinder/css/theme.css" type="text/css" media="screen"></link>
-	<!-- translation messages -->
-	<script src="{$ABS_PATH}admin/redactor/elrte/js/elrte.min.js" type="text/javascript"></script>
+	<!-- elrte -->
+	<link rel="stylesheet" href="{$ABS_PATH}admin/redactor/elrte/css/elrte.full.css" type="text/css" media="screen" />
+	<script src="{$ABS_PATH}admin/redactor/elrte/js/elrte.full.js" type="text/javascript"></script>
 	<script src="{$ABS_PATH}admin/redactor/elrte/js/i18n/elrte.ru.js" type="text/javascript"></script>
 	
 	<!-- elfinder -->
+   	<link rel="stylesheet" href="{$ABS_PATH}admin/redactor/elfinder/css/elfinder.full.css" type="text/css" media="screen" />
+	<link rel="stylesheet" href="{$ABS_PATH}admin/redactor/elfinder/css/theme.css" type="text/css" media="screen" />
 	<script src="{$ABS_PATH}admin/redactor/elfinder/js/elfinder.full.js" type="text/javascript"></script>
 	<script src="{$ABS_PATH}admin/redactor/elfinder/js/i18n/elfinder.ru.js" type="text/javascript"></script>
 	<script src="{$ABS_PATH}admin/redactor/elfinder/js/jquery.dialogelfinder.js" type="text/javascript"></script>

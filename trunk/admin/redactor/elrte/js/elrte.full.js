@@ -2719,33 +2719,33 @@ elRTE.prototype.dom = function(rte) {
 			n = $('<div>'+html+'</div>');
 			
 			// remove empty spans and merge nested spans
-			n.find('span:not([id]):not([class])').each(function() {
-				var t = $(this);
-				
-				if (!t.attr('style')) {
-					
-					$.trim(t.html()).length ? self.rte.dom.unwrap(this) : t.remove();
-					// t.children().length ? self.rte.dom.unwrap(this) : t.remove();
-				}
-			}).end().find('span span:only-child').each(function() {
-				var t   = $(this), 
-					p   = t.parent().eq(0), 
-					tid = t.attr('id'), 
-					pid = p.attr('id'), id, s, c;
-
-				if (self.rte.dom.isOnlyNotEmpty(this) && (!tid || !pid)) {
-					c = $.trim(p.attr('class')+' '+t.attr('class'))
-					c && p.attr('class', c);
-					s = self.rte.utils.serializeStyle($.extend(self.rte.utils.parseStyle($(this).attr('style')||''), self.rte.utils.parseStyle($(p).attr('style')||'')));
-					s && p.attr('style', s);
-					id = tid||pid;
-					id && p.attr('id', id);
-					this.firstChild ? $(this.firstChild).unwrap() : t.remove();
-				}
-			})
-			.end().find('a[name]').each(function() {
-				$(this).addClass('elrte-protected elrte-anchor');
-			});
+//			n.find('span:not([id]):not([class])').each(function() {
+//				var t = $(this);
+//				
+//				if (!t.attr('style')) {
+//					
+//					$.trim(t.html()).length ? self.rte.dom.unwrap(this) : t.remove();
+//					// t.children().length ? self.rte.dom.unwrap(this) : t.remove();
+//				}
+//			}).end().find('span span:only-child').each(function() {
+//				var t   = $(this), 
+//					p   = t.parent().eq(0), 
+//					tid = t.attr('id'), 
+//					pid = p.attr('id'), id, s, c;
+//
+//				if (self.rte.dom.isOnlyNotEmpty(this) && (!tid || !pid)) {
+//					c = $.trim(p.attr('class')+' '+t.attr('class'))
+//					c && p.attr('class', c);
+//					s = self.rte.utils.serializeStyle($.extend(self.rte.utils.parseStyle($(this).attr('style')||''), self.rte.utils.parseStyle($(p).attr('style')||'')));
+//					s && p.attr('style', s);
+//					id = tid||pid;
+//					id && p.attr('id', id);
+//					this.firstChild ? $(this.firstChild).unwrap() : t.remove();
+//				}
+//			})
+//			.end().find('a[name]').each(function() {
+//				$(this).addClass('elrte-protected elrte-anchor');
+//			});
 			
 			return n.html()	
 		},
