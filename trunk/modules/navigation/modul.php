@@ -35,7 +35,7 @@ if (defined('ACP') && !(isset($_REQUEST['action']) && $_REQUEST['action'] == 'de
 }
 
 /**
- * Функция обработки тэга модуля
+ * Функция обработки тега модуля
  *
  * @param int $navigation_id - идентификатор меню навигации
  */
