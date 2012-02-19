@@ -107,7 +107,7 @@ function document_get_field($field_id)
  * @param int $length	необязательный параметр,
  * 						количество возвращаемых символов содержимого поля.
  * 						если данный параметр указать со знаком минус
- * 						содержимое поля будет очищено от HTML-тэгов.
+ * 						содержимое поля будет очищено от HTML-тегов.
  * @return string
  */
 function document_get_field_value($field_id, $length = 0)

@@ -228,23 +228,22 @@ function check_navi_permission($id)
 }
 
 /**
- * Обработка парного тэга [tag:hide:X,X]...[/tag:hide] (скрытый текст)
+ * Обработка парного тега [tag:hide:X,X:text]...[/tag:hide] (скрытый текст)
  * Заменяет скрываемый текст в зависимости от группы пользователя
  *
  * @param string $data обрабатываемый текст
  * @return string обработанный текст
  */
-function parse_hide($data)
-{
-	static $hidden_text = null;
-
-	if (1 != preg_match('/\[tag:hide:\d+(,\d+)*].*?\[\/tag:hide]/s', $data)) return $data;
-
-	if ($hidden_text === null) $hidden_text = trim(get_settings('hidden_text'));
-
-	$data = preg_replace('/\[tag:hide:(\d+,)*' . UGROUP . '(,\d+)*].*?\[\/tag:hide]/s', $hidden_text, $data);
-	$data = preg_replace('/\[tag:hide:\d+(,\d+)*](.*?)\[\/tag:hide]/s', '\\2', $data);
-
+function parse_hide($data){
+	static $matches = null;
+	static $i = null;
+	preg_match_all('/\[tag:hide:(\d+,)*'.UGROUP.'(,\d+)*(:.*?)?].*?\[\/tag:hide]/s', $data, $matches, PREG_SET_ORDER);
+	for ($i=0; $i<=count($matches); $i++) {
+		$hidden_text = substr($matches[$i][3],1);
+		if ($hidden_text == "") $hidden_text = trim(get_settings('hidden_text'));
+		$data = preg_replace('/\[tag:hide:(\d+,)*'.UGROUP.'(,\d+)*(:.*?)?].*?\[\/tag:hide]/s', $hidden_text, $data, 1);
+	}
+	$data = preg_replace('/\[tag:hide:\d+(,\d+)*.*?](.*?)\[\/tag:hide]/s', '\\2', $data);
 	return $data;
 }
 
@@ -488,7 +487,7 @@ function convert_entity($matches, $destroy = true)
 
 /**
  * Замена некоторых символов на их сущности
- * замена и исправление HTML-тэгов
+ * замена и исправление HTML-тегов
  *
  * @param unknown_type $s
  * @return unknown

@@ -31,7 +31,7 @@ if (defined('ACP'))
 if (!defined('BANNER_DIR')) define('BANNER_DIR', 'media');
 
 /**
- * Обработка тэга модуля
+ * Обработка тега модуля
  *
  * @param int $banner_category_id - идентификатор категории баннеров
  */

@@ -480,11 +480,11 @@ class AVE_Core
 
 	/**
 	 * Метод, предназначенный для обработки системных тегов модулей. Здесь подключаются только те файлы модулей,
-	 * системные тэги которых обнаружены в шаблоне при парсинге. Также формирует массив всех установленных модулей
+	 * системные теги которых обнаружены в шаблоне при парсинге. Также формирует массив всех установленных модулей
      * в системе, предварительно проверяя их доступность.
 	 *
-	 * @param string $template текст шаблона с тэгами
-	 * @return string текст шаблона с обработанными тэгами модулей
+	 * @param string $template текст шаблона с тегами
+	 * @return string текст шаблона с обработанными тегами модулей
 	 */
 	function coreModuleTagParse($template)
 	{
@@ -499,7 +499,7 @@ class AVE_Core
 			// Циклически обрабатываем каждый модуль
             foreach ($this->install_modules as $row)
 			{
-				// Если в запросе пришел вызов модуля или у модуля есть функция вызываемая тэгом,
+				// Если в запросе пришел вызов модуля или у модуля есть функция вызываемая тегом,
                 // который присутствует в шаблоне
                 if ((isset($_REQUEST['module']) && $_REQUEST['module'] == $row->ModulPfad) ||
 					(1 == $row->IstFunktion && !empty($row->CpEngineTag) && 1 == preg_match($row->CpEngineTag, $template)))
@@ -585,7 +585,7 @@ class AVE_Core
 					}
 				}
 				else
-				{	// Если у модуля нет функции или тэг модуля не используется - просто помещаем в массив информацию о модуле
+				{	// Если у модуля нет функции или тег модуля не используется - просто помещаем в массив информацию о модуле
 					$this->install_modules[$row->ModulPfad] = $row;
 				}
 			}
@@ -695,10 +695,10 @@ class AVE_Core
 					}
 					else
 					{
-						// парсим тэги полей в шаблоне документа
+						// парсим теги полей в шаблоне документа
 						$main_content = preg_replace_callback('/\[tag:fld:(\d+)\]/', 'document_get_field', $rubTmpl);
 
-						// удаляем ошибочные тэги полей
+						// удаляем ошибочные теги полей
 						$main_content = preg_replace('/\[tag:fld:\d*\]/', '', $main_content);
 
 						if (CACHE_DOC_TPL && empty ($_POST) && !(isset ($_SESSION['user_adminmode']) && $_SESSION['user_adminmode'] == 1))
@@ -743,7 +743,7 @@ class AVE_Core
 		define('THEME_FOLDER', empty ($match[1]) ? DEFAULT_THEME_FOLDER : $match[1]);
 		$out = preg_replace('/\[tag:theme:(.*?)]/', '', $out);
 
-		// парсим тэги модулей
+		// парсим теги модулей
 		$out = $this->coreModuleTagParse($out);
 
 		if ( isset($_REQUEST['module'])
@@ -753,13 +753,13 @@ class AVE_Core
 			display_notice($this->_module_error);
 		}
 
-		// парсим тэги системы внутренних запросов
+		// парсим теги системы внутренних запросов
 		$out = preg_replace_callback('/\[tag:request:(\d+)\]/', 'request_parse', $out);
 
-		// парсим тэги скрытого текста
+		// парсим теги скрытого текста
 		$out = parse_hide($out);
 
-		// парсим остальные тэги основного шаблона
+		// парсим остальные теги основного шаблона
 		$search = array(
 			'[tag:mediapath]',
 			'[tag:path]',
@@ -783,7 +783,7 @@ class AVE_Core
 		);
 
 		if (defined('MODULE_CONTENT'))
-		{	// парсинг тэгов при выводе из модуля		
+		{	// парсинг тегов при выводе из модуля		
 			$search[] = '[tag:maincontent]';
 			$replace[] = MODULE_CONTENT;
 			$search[] = '[tag:title]';
@@ -814,7 +814,7 @@ class AVE_Core
 
 		$out = str_replace($search, $replace, $out);
 		unset ($search, $replace);
-		// /парсим остальные тэги основного шаблона
+		// /парсим остальные теги основного шаблона
 
 		// ЧПУ
 		$out = rewrite_link($out);
