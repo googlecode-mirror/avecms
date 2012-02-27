@@ -203,7 +203,10 @@ class AVE_Template extends Smarty
 	function templateCacheClear()
 	{
 		$this->clear_all_cache();
-
+		foreach (glob($this->cache_dir_root."/cache_*") as $filename) {
+			@unlink($filename);
+		}
+		
 		$filename = $this->cache_dir . '/.htaccess';
 		if (!file_exists($filename))
 		{
