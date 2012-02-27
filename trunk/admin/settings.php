@@ -68,11 +68,11 @@ switch($_REQUEST['action'])
 					break;
 
 				case 'clearcache':
-					if ($_REQUEST['templateCacheClear']) $AVE_Template->templateCacheClear();
-					if ($_REQUEST['templateCompiledTemplateClear']) $AVE_Template->templateCompiledTemplateClear();
-					if ($_REQUEST['moduleCacheClear']) $AVE_Template->moduleCacheClear();
-					if ($_REQUEST['sqlCacheClear']) $AVE_Template->sqlCacheClear();
-					if ($_REQUEST['sessionClear']) $AVE_Template->sessionClear();
+					if (isset($_REQUEST['templateCacheClear'])) $AVE_Template->templateCacheClear();
+					if (isset($_REQUEST['templateCompiledTemplateClear'])) $AVE_Template->templateCompiledTemplateClear();
+					if (isset($_REQUEST['moduleCacheClear'])) $AVE_Template->moduleCacheClear();
+					if (isset($_REQUEST['sqlCacheClear'])) $AVE_Template->sqlCacheClear();
+					if (isset($_REQUEST['sessionClear'])) $AVE_Template->sessionClear();
 					exit;
 			}
 		}
