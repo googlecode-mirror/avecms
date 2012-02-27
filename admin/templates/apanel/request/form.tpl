@@ -58,6 +58,10 @@ function changeRub(select) {ldelim}
 			<td class="first">{#REQUEST_NAME2#}</td>
 			<td class="second"><input {$dis} style="width:250px" name="request_title" type="text" id="l_Titel" value="{$smarty.request.request_title_new|stripslashes|default:$row->request_title|escape}"></td>
 		</tr>
+		<tr>
+			<td class="first">{#REQUEST_CACHE#}</td>
+			<td class="second"><input {$dis} style="width:250px" name="request_cache_lifetime" type="text" id="l_Titel" value="{$smarty.request.request_cache_lifetime|stripslashes|default:$row->request_cache_lifetime|escape}"></td>
+		</tr>
 
 		<tr>
 			<td class="first">{#REQUEST_SELECT_RUBRIK#}</td>
