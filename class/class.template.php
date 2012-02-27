@@ -221,6 +221,12 @@ class AVE_Template extends Smarty
 			$memcache->flush();
 		}
 		
+		// Очищаем кэш шаблона документов рубрики
+		$GLOBALS['AVE_DB']->Query("
+			DELETE
+			FROM " . PREFIX . "_rubric_template_cache
+		");
+
 		reportLog($_SESSION['user_name'] . ' - очистил кэш', 2, 2);
 	}
 
@@ -252,14 +258,9 @@ class AVE_Template extends Smarty
 	 */	
 	function moduleCacheClear()
     {
-
-        $_params = array('auto_base' => $this->module_cache_dir,
-                        'auto_source' => null,
-                        'auto_id' => null,
-                        'exp_time' => null,
-                        'extensions' => array('.inc', '.php'));
-        
-      $filename = $this->module_cache_dir . '/.htaccess';
+		rrmdir($this->module_cache_dir);
+		mkdir($this->module_cache_dir,0777,true);
+		$filename = $this->module_cache_dir . '/.htaccess';
 		if (!file_exists($filename))
 		{
 			$fp = @fopen($filename, 'w');
@@ -271,9 +272,6 @@ class AVE_Template extends Smarty
 		}
 
 		reportLog($_SESSION['user_name'] . ' - удалил скомпилированные шаблоны модулей', 2, 2);
-		
-		require_once(SMARTY_CORE_DIR . 'core.rm_auto.php');
-		return smarty_core_rm_auto($_params, $this);
     }
     
 	/**
@@ -282,14 +280,9 @@ class AVE_Template extends Smarty
 	 */	
 	function sessionClear()
     {
-
-        $_params = array('auto_base' => $this->session_dir,
-                        'auto_source' => null,
-                        'auto_id' => null,
-                        'exp_time' => null,
-                        'extensions' => array('.inc', '.php'));
-        
-      $filename = $this->session_dir . '/.htaccess';
+		rrmdir($this->session_dir);
+		mkdir($this->session_dir,0777,true);
+		$filename = $this->session_dir . '/.htaccess';
 		if (!file_exists($filename))
 		{
 			$fp = @fopen($filename, 'w');
@@ -301,9 +294,6 @@ class AVE_Template extends Smarty
 		}
 
 		reportLog($_SESSION['user_name'] . ' - удалил сессии пользователей', 2, 2);
-		
-		require_once(SMARTY_CORE_DIR . 'core.rm_auto.php');
-		return smarty_core_rm_auto($_params, $this);
     }
     
     /**
@@ -311,15 +301,10 @@ class AVE_Template extends Smarty
 	 *
 	 */	
 	function sqlCacheClear()
-    {
-
-        $_params = array('auto_base' => $this->sql_cache_dir,
-                        'auto_source' => null,
-                        'auto_id' => null,
-                        'exp_time' => null,
-                        'extensions' => array('.inc', '.php'));
-        
-      $filename = $this->sql_cache_dir . '/.htaccess';
+    {	
+		rrmdir($this->sql_cache_dir);
+		mkdir($this->sql_cache_dir,0777,true);
+		$filename = $this->sql_cache_dir . '/.htaccess';
 		if (!file_exists($filename))
 		{
 			$fp = @fopen($filename, 'w');
@@ -331,9 +316,6 @@ class AVE_Template extends Smarty
 		}
 
 		reportLog($_SESSION['user_name'] . ' - удалил кэш sql запросов', 2, 2);
-		
-		require_once(SMARTY_CORE_DIR . 'core.rm_auto.php');
-		return smarty_core_rm_auto($_params, $this);
     }
 	
 }
