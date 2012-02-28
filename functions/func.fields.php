@@ -760,12 +760,7 @@ function get_field_bild_multi($field_value,$type,$field_id='',$rubric_field_temp
 	
 	$jsCode=<<<BLOCK
 
-<script language="javascript" type="text/javascript">
-$(document).ready(function(){
-	$.ajaxSetup({
-	   dataType: "json"
-	});
-});	
+<script language="javascript" type="text/javascript">	
 function field_image_multi_add(field_id, field_value, img_path, alt){
 	var
 		_id = Math.round(Math.random()*1000);
@@ -830,6 +825,7 @@ function field_image_multi_import(field_id){
 	$.ajax({
 		url: ave_path+'admin/index.php?do=docs&action=image_import', 
 		data: {"path": path_import}, 
+		dataType: "json",
 		success: function(dat) {
 			
 			for (var p = 0, max = dat.respons.length; p < max; p++) {
