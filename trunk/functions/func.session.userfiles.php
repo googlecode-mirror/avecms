@@ -2,7 +2,7 @@
 
 ini_set('session.save_handler', 'user');
 
-function sess_open($sess_save_path, $sess_session_name){
+function sess_open($sess_save_path, $session_name){
   global $sess_save_path, $sess_session_name;
        
   $sess_save_path = BASE_DIR.'/cache/session';
