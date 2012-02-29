@@ -69,6 +69,7 @@ php_value error_reporting E_NONE
 
 	## Yandex Market
 	RewriteRule ^market.xml$ inc/yandex.php [QSA,L]
+	RewriteRule ^sitemap.xml$ inc/sitemap.php [QSA,L]
 
 	## Poll
 	RewriteRule ^poll-([0-9]+).html$ index.php?module=poll&action=result&pid=$1

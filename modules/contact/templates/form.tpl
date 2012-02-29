@@ -113,7 +113,7 @@ function checkForm(obj, elems) {ldelim}
 				<input type="hidden" name="contact_action" value="DoPost" />
 				<input type="hidden" name="modules" value="contact" />
 				<input type="submit" class="button" value="{#CONTACT_BUTTON_SEND#}" />&nbsp;
-				<input type="reset" class="button" />
+				<input type="reset" class="button" value="{#CONTACT_BUTTON_CLEAN#}" />
 			</div>
 		</p>
 	</form>
