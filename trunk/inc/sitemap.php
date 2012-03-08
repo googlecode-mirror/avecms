@@ -7,8 +7,8 @@ define('BASE_DIR', str_replace("\\", "/", dirname(dirname(__FILE__))));
 if (! @filesize(BASE_DIR . '/inc/db.config.php')) { header('Location:install.php'); exit; }
 if (! empty($_REQUEST['thumb'])) {require(BASE_DIR . '/functions/func.thumbnail.php'); exit; }
 if(substr($_SERVER['REQUEST_URI'],0,strlen('/index.php?'))!='/index.php?'){$_SERVER['REQUEST_URI']=str_ireplace('_','-',$_SERVER['REQUEST_URI']);}
-$domain='http://'.str_ireplace('www.','',$_SERVER['SERVER_NAME']).'/';
 require(BASE_DIR . '/inc/init.php');
+$domain='http://'.str_ireplace('www.','',$_SERVER['SERVER_NAME']).'/';
 echo '<?xml version="1.0" encoding="UTF-8"?>';
 
 ?>
@@ -27,6 +27,7 @@ FROM ".PREFIX."_documents
 where 
  document_status=1
  AND document_expire>UNIX_TIMESTAMP()
+ AND Id != 2
 ";
 $res=$AVE_DB->Query($sql);
 while($row=$res->FetchAssocArray()){
