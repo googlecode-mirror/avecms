@@ -185,7 +185,7 @@ function get_field_bild($field_value,$type,$field_id='',$rubric_field_template='
 		case 'edit' :
 				$massiv = explode('|', $field_value);
 				$field  = "<a name=\"" . $field_id . "\"></a>";
-				$field .= "<div id=\"images_feld_" . $field_id . "\"><img id=\"_img_feld__" . $field_id . "\" src=\"" . (!empty($field_value) ? '../' . htmlspecialchars($massiv[0], ENT_QUOTES) : $img_pixel) . "\" alt=\"" . (isset($massiv[1]) ? htmlspecialchars($massiv[1], ENT_QUOTES) : '') . "\" border=\"0\" /></div>";
+				$field .= "<div id=\"images_feld_" . $field_id . "\"><img height=\"120px\" id=\"_img_feld__" . $field_id . "\" src=\"" . (!empty($field_value) ? '../' . htmlspecialchars($massiv[0], ENT_QUOTES) : $img_pixel) . "\" alt=\"" . (isset($massiv[1]) ? htmlspecialchars($massiv[1], ENT_QUOTES) : '') . "\" border=\"0\" /></div>";
 				$field .= "<div style=\"display:none\" id=\"span_feld__" . $field_id . "\">&nbsp;</div>" . (!empty($field_value) ? "<br />" : '');
 								
 				switch ($_SESSION['use_editor']) {
@@ -903,8 +903,7 @@ BLOCK;
 					if($v){
 						if ($tpl_field_empty)
 						{
-							$v = '<li><img width="100px" height="75px" alt="' . (isset($field_param[1]) ? $field_param[1] : '')
-								. '" src="' . ABS_PATH . $field_param[0] . '" border="0" /></li>';
+							$v = '<li><img src="'.ABS_PATH.$field_param[0].'" alt="'.$field_param[1].'"/></li>';
 						}
 						else
 						{
@@ -912,34 +911,34 @@ BLOCK;
 						}
 					}
 					$res.=$v;
-				}	
-			$res=$res;	
+				}
 			break;
+			
+			
 
-			case 'req' :
+		case 'req' :
 			$massa=unserialize($field_value);
 			$res='';
+			$rubric_field_template_request = $document_fields[$rubric_id]['rubric_field_template_request'];	
 			if($massa!=false)
 				foreach($massa as $k=>$v)
 				{
 					$v = clean_php($v);
 					$field_param = explode('|', $v);
 					if($v){
-						if ($tpl_field_empty)
+						if (!$rubric_field_template_request)
 						{
-							$v = '<li><img width="100px" height="75px" alt="' . (isset($field_param[1]) ? $field_param[1] : '')
-								. '" src="' . ABS_PATH . $field_param[0] . '" border="0" /></li>';
+							$v = '<li><img src="'.ABS_PATH.$field_param[0].'" alt="'.$field_param[1].'"/></li>';
 						}
 						else
 						{
-							$v = preg_replace('/\[tag:parametr:(\d+)\]/ie', '@$field_param[\\1]', $rubric_field_template);
+							$v = preg_replace('/\[tag:parametr:(\d+)\]/ie', '@$field_param[\\1]', $rubric_field_template_request);
 						}
 					}
-					$res.='<li>'.$v.'</li>';
+					$res.=$v;
 				}
-			$res=$res;	
-			$maxlength='';
 			break;
+			
 		case 'name' :
 			$res='FIELD_BILD_MULTI';
 		break;

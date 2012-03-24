@@ -21,7 +21,7 @@ $().ready(function() {
 			title : 'Файловый менеджер',
 			getFileCallback : function(files, fm) {
 				$("#img_feld__"+id).val(files['url'].slice(1)); 
-				$("#images_feld_"+id).html("<img src="+files['url']+">");
+				$("#images_feld_"+id).html('<img height="120px" src='+files['url']+'>');
 			},
 			commandsOptions : {
 				getfile : {

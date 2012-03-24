@@ -35,7 +35,7 @@ if ($_REQUEST['id'] == 2) header($_SERVER['SERVER_PROTOCOL'] . ' 404 Not Found',
 
 eval ('?>' . $content . '<?');
 
-if (isset($cache) && is_object($cache)) $cache->end();
+//if (isset($cache) && is_object($cache)) $cache->end();
 
 if (!defined('ONLYCONTENT') && UGROUP == 1 && defined('PROFILING') && PROFILING) echo get_statistic(1, 1, 1, 1);
 
