@@ -321,7 +321,11 @@ class Contact
         if ($fetch == 1) return $AVE_Template->fetch($tpl_dir . 'form.tpl');
 
 		// Отображаем сформированную контактную форму
-		$AVE_Template->display($tpl_dir . 'form.tpl');
+		if (file_exists($tpl_dir . 'form-'.$contact_form_id.'.tpl')) {
+			$AVE_Template->display($tpl_dir . 'form-'.$contact_form_id.'.tpl');
+		} else {
+			$AVE_Template->display($tpl_dir . 'form.tpl');
+		}	
 	}
 
 	/**
