@@ -185,7 +185,7 @@ function get_field_bild($field_value,$type,$field_id='',$rubric_field_template='
 		case 'edit' :
 				$massiv = explode('|', $field_value);
 				$field  = "<a name=\"" . $field_id . "\"></a>";
-				$field .= "<div id=\"images_feld_" . $field_id . "\"><img height=\"120px\" id=\"_img_feld__" . $field_id . "\" src=\"" . (!empty($field_value) ? '../' . htmlspecialchars($massiv[0], ENT_QUOTES) : $img_pixel) . "\" alt=\"" . (isset($massiv[1]) ? htmlspecialchars($massiv[1], ENT_QUOTES) : '') . "\" border=\"0\" /></div>";
+				$field .= "<div id=\"images_feld_" . $field_id . "\"><img height=\"120px\"" . (!empty($field_value) ? '' : ' style="display:none"'). " id=\"_img_feld__" . $field_id . "\" src=\"" . (!empty($field_value) ? '../' . htmlspecialchars($massiv[0], ENT_QUOTES) : $img_pixel) . "\" alt=\"" . (isset($massiv[1]) ? htmlspecialchars($massiv[1], ENT_QUOTES) : '') . "\" border=\"0\" /></div>";
 				$field .= "<div style=\"display:none\" id=\"span_feld__" . $field_id . "\">&nbsp;</div>" . (!empty($field_value) ? "<br />" : '');
 								
 				switch ($_SESSION['use_editor']) {
@@ -765,8 +765,8 @@ function field_image_multi_add(field_id, field_value, img_path, alt){
 	var
 		_id = Math.round(Math.random()*1000);
 		img_id = '__img_feld__' + field_id + '_' + _id;
-	
-	var html='<img id="_img_feld__'+field_id+'_'+_id+'" src="'+img_path+'" alt="'+alt+'" border="0" />'+
+
+	var html='<img height="120px" id="_img_feld__'+field_id+'_'+_id+'" src="'+img_path+'" alt="'+alt+'" border="0" />'+
 		'<div style="display:none" id="span_feld__'+field_id+ '_'+_id+'">&nbsp;</div>' + (field_value ? '<br />' : '') + 
 		'<input type="text" style="width:{$AVE_Document->_field_width}" name="feld[' + field_id + '][]" value="' + field_value + '" id="img_feld__' + field_id +'_' + _id+'" />&nbsp;'+
 		'<input value="{$AVE_Template->get_config_vars('MAIN_OPEN_MEDIAPATH')}" class="button" type="button" onclick="'+"cp_imagepop('img_feld__" + field_id + '_'+_id+"', '', '', '0');"+'" />&nbsp;'+
