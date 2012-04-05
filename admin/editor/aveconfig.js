@@ -33,19 +33,19 @@ FCKConfig.ToolbarSets["Simple"] = [
 FCKConfig.SwitchtoolbarCycle = ['cpengine','cpengine_small','Simple'];
 
 
-FCKConfig.EnterMode = 'br' ;       // p | div | br
-//FCKConfig.ShiftEnterMode = 'br' ;  // p | div | br
+FCKConfig.EnterMode = 'p' ;       // p | div | br
+FCKConfig.ShiftEnterMode = 'br' ;  // p | div | br
 
 FCKConfig.FontFormats = 'div;p;h1;h2;h3;h4;h5;h6;pre;address' ;
 
-FCKConfig.LinkBrowserURL    = "../../../../../admin/browser.php?typ=bild&mode=fck&target=link" ;
+FCKConfig.LinkBrowserURL    = "../../../../admin/browser.php?typ=bild&mode=fck&target=link" ;
 FCKConfig.LinkBrowserLnkUrl = "../../../../admin/browser.php?typ=bild&mode=fck&target=link_image" ;
-FCKConfig.ImageBrowserURL   = "../../../../../admin/browser.php?typ=bild&mode=fck&target=txtUrl" ;
-FCKConfig.FlashBrowserURL   = "../../../../../admin/browser.php?typ=bild&mode=fck&target=txtUrl";
-FCKConfig.ImagesBrowserURL  = "../../../../../admin/browser.php?typ=bild&mode=fck&target=txtImgURL";
-FCKConfig.StyleBrowserURL   = "../../../../../admin/browser.php?typ=bild&mode=fck&target=txtExternalStyleURL";
-FCKConfig.CommentBrowserURL   = "../../../../../admin/browser.php?typ=bild&mode=fck&target=txtComURL";
-FCKConfig.PlayBrowserURL   = "../../../../../admin/browser.php?typ=bild&mode=fck&target=txtPlayURL";
+FCKConfig.ImageBrowserURL   = "../../../../admin/browser.php?typ=bild&mode=fck&target=txtUrl" ;
+FCKConfig.FlashBrowserURL   = "../../../../admin/browser.php?typ=bild&mode=fck&target=txtUrl";
+FCKConfig.ImagesBrowserURL  = "../../../../admin/browser.php?typ=bild&mode=fck&target=txtImgURL";
+FCKConfig.StyleBrowserURL   = "../../../../admin/browser.php?typ=bild&mode=fck&target=txtExternalStyleURL";
+FCKConfig.CommentBrowserURL   = "../../../../admin/browser.php?typ=bild&mode=fck&target=txtComURL";
+FCKConfig.PlayBrowserURL   = "../../../../admin/browser.php?typ=bild&mode=fck&target=txtPlayURL";
 
 FCKConfig.LinkUpload  = false ;
 FCKConfig.ImageUpload = false ;
