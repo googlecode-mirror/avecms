@@ -528,6 +528,7 @@ function SetTarget( targetType )
 	{
 		case "_blank" :
 		case "_self" :
+		case "_modal" :
 		case "_parent" :
 		case "_top" :
 			GetE('txtTargetFrame').value = targetType ;
@@ -750,11 +751,16 @@ function Ok()
 		oLink.innerHTML = sInnerHtml ;		// Set (or restore) the innerHTML
 
 		// Target
-		if( GetE('cmbTarget').value != 'popup' )
-			SetAttribute( oLink, 'target', GetE('txtTargetFrame').value ) ;
-		else
+		if( GetE('cmbTarget').value != 'popup' ) {
+			if ( GetE('cmbTarget').value != '_modal' ) {
+				SetAttribute( oLink, 'target', GetE('txtTargetFrame').value ) ;
+			} else {
+				SetAttribute( oLink, 'class', GetE('cmbTarget').value ) ;
+			}
+		} else {
 			SetAttribute( oLink, 'target', null ) ;
-
+		}
+		
 		// Let's set the "id" only for the first link to avoid duplication.
 		if ( i == 0 )
 			SetAttribute( oLink, 'id', GetE('txtAttId').value ) ;
@@ -781,7 +787,7 @@ function Ok()
 		}
 		else
 		{
-			SetAttribute( oLink, 'class', GetE('txtAttClasses').value ) ;
+			//SetAttribute( oLink, 'class', GetE('txtAttClasses').value ) ;
 			SetAttribute( oLink, 'style', GetE('txtAttStyle').value ) ;
 		}
 	}
@@ -880,6 +886,7 @@ function SetDefaultTarget()
 	{
 		case '_blank' :
 		case '_self' :
+		case '_modal' :
 		case '_parent' :
 		case '_top' :
 			GetE('cmbTarget').value = target ;
