@@ -255,7 +255,7 @@ class AVE_Request
 			SET
 				rubric_id               = '" . $row->rubric_id . "',
 				request_items_per_page  = '" . $row->request_items_per_page . "',
-				request_title           = '" . substr($_REQUEST['cname'], 0, 25) . "',
+				request_title           = '" . $_REQUEST['cname'] . "',
 				request_template_item   = '" . addslashes($row->request_template_item) . "',
 				request_template_main   = '" . addslashes($row->request_template_main) . "',
 				request_order_by        = '" . addslashes($row->request_order_by) . "',
