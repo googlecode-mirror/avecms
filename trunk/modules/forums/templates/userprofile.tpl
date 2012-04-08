@@ -3,7 +3,7 @@
 {include file="$inc_path/header_sthreads.tpl"}
 {if $public==1}
 
-<form method="post" action="index.php?module=forums&amp;show=userprofile&amp;user_id={$smarty.get.user_id}">
+<form method="post" action="index.php?module=userpage&amp;action=show&amp;uid={$smarty.get.user_id}">
 <table width="100%" border="0" cellpadding="5" cellspacing="1" class="forum_tableborder">
   <tr>
     <td colspan="2" class="forum_header"><strong>{#PR_userprofile_from#} &#8222;{$user->BenutzerName}&#8220;</strong></td>

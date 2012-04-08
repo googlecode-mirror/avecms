@@ -21,7 +21,7 @@
 
 	{foreach from=$ignored item=i}
 		<tr class="{cycle name='il' values='forum_post_second,forum_post_first'}">
-			<td><a href="index.php?module=forums&amp;show=userprofile&amp;user_id={$i.IgnoreId}"><strong>{$i.user_group_name|escape}</strong></a></td>
+			<td><a href="index.php?module=userpage&amp;action=show&amp;uid={$i.IgnoreId}"><strong>{$i.user_group_name|escape}</strong></a></td>
 			<td align="center">{$i.IgnoreId}</td>
 			<td align="center">{$i.Datum|date_format:$smarty.config.DateFormatMemberSince}</td>
 			<td>{$i.Grund|escape:html|stripslashes}</td>

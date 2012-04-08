@@ -74,6 +74,7 @@
 		</tr>
 		<tr>
 			<td valign="top" class="forum_post_first">
+			
 				{if $post->poster->BenutzerName != ''}
 					{if $post->poster->reg_time > '1' && $post->poster->user_group!=2}
 						{if $smarty.request.print!=1}

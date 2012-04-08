@@ -1934,7 +1934,7 @@ class Forum
 			");
 			while ($row = $sql->FetchRow())
 			{
-				$mods[] = "<a class=\"forum_links_small\" href=\"index.php?module=forums&amp;show=userprofile&amp;user_id=" . $row->user_id . "\">" . $this->fetchusername($row->user_id) . "</a>";
+				$mods[] = "<a class=\"forum_links_small\" href=\"index.php?module=userpage&amp;action=show&amp;uid=" . $row->user_id . "\">" . $this->fetchusername($row->user_id) . "</a>";
 			}
 			return @implode(", ", $mods);
 		}
