@@ -1,56 +1,59 @@
+
 function SymError(){return true;}
 window.onerror = SymError;
+
 
 tags = new Array();
 
 function getarraysize(thearray){
 	for (i = 0; i < thearray.length; i++) {
 		if ((thearray[i] == "undefined") || (thearray[i] == "") || (thearray[i] == null)) return i;
-	}
-	return thearray.length;
-}
-
+		}
+		return thearray.length;}
+		
 function arraypush(thearray,value) {
 	thearraysize = getarraysize(thearray);thearray[thearraysize] = value;
-}
-
+	}
+	
 function arraypop(thearray) {
 	thearraysize = getarraysize(thearray);retval = thearray[thearraysize - 1];
 	delete thearray[thearraysize - 1];return retval;
-}
-
+	}
+	
 function setmode(modevalue) {
 	document.cookie = "cmscodemode="+modevalue+"; path=/; expires=Wed, 1 Jan 2100 00:00:00 GMT;";
-}
-
+	}
+	
 function normalmode(theform) {
 	return true;
-}
-
+	}
+	
 function stat(thevalue) {
 	document.bbform.status.value = eval(thevalue+"_text");
-}
-
+	}
+	
 function setfocus(theform) {
 	theform.text.focus();
-}
-
+	}
+	
 var selectedText = "";
 AddTxt = "";
 
 function getActiveText(msg) {
 	selectedText = (document.all) ? document.selection.createRange().text : window.getSelection();if (msg.createTextRange) msg.caretPos = document.selection.createRange().duplicate();return true;
-}
+	}
 
 function AddText(NewCode,theform) {
 	if (theform.text.createTextRange && theform.text.caretPos) {
 		var caretPos = theform.text.caretPos;caretPos.text = caretPos.text.charAt(caretPos.text.length - 1) == ' ' ? NewCode + ' ' : NewCode;
-	} else theform.text.value+=NewCode
+		} else theform.text.value+=NewCode
 
-	AddTxt = "";setfocus(theform);
+AddTxt = "";setfocus(theform);
 }
 
-function unametofield(theuser) {
+
+function unametofield(theuser)
+{
 	opener.document.f.tofromname.value = '' + theuser + '';
 	window.close();
 }
@@ -60,46 +63,50 @@ var Override    = "";
 MessageMax      = parseInt(MessageMax);
 if ( MessageMax < 0 ){
 	MessageMax = 0;
-}
+	}
 
-var B_open = 0;
-var I_open = 0;
-var U_open = 0;
-var QUOTE_open = 0;
-var CODE_open = 0;
-var PHP_open = 0;
+	var B_open = 0;
+	var I_open = 0;
+	var U_open = 0;
+	var QUOTE_open = 0;
+	var CODE_open = 0;
+	var PHP_open = 0;
 
-var ktags = new Array();
-var myAgent = navigator.userAgent.toLowerCase();
+var ktags   = new Array();
+var myAgent   = navigator.userAgent.toLowerCase();
 var myVersion = parseInt(navigator.appVersion);
 
-var is_ie  = ((myAgent.indexOf("msie") != -1)       && (myAgent.indexOf("opera") == -1));
-var is_nav = ((myAgent.indexOf('mozilla')!=-1)      && (myAgent.indexOf('spoofer') == -1)
-           && (myAgent.indexOf('compatible') == -1) && (myAgent.indexOf('opera') == -1)
-           && (myAgent.indexOf('webtv') ==-1)       && (myAgent.indexOf('hotjava') == -1));
+var is_ie   = ((myAgent.indexOf("msie") != -1)  && (myAgent.indexOf("opera") == -1));
+var is_nav  = ((myAgent.indexOf('mozilla')!=-1) && (myAgent.indexOf('spoofer')==-1)
+                && (myAgent.indexOf('compatible') == -1) && (myAgent.indexOf('opera')==-1)
+                && (myAgent.indexOf('webtv') ==-1)       && (myAgent.indexOf('hotjava')==-1));
 
-var is_win = ((myAgent.indexOf("win") != -1) || (myAgent.indexOf("16bit") != -1));
-var is_mac = (myAgent.indexOf("mac") != -1);
+var is_win   =  ((myAgent.indexOf("win")!=-1) || (myAgent.indexOf("16bit")!=-1));
+var is_mac    = (myAgent.indexOf("mac")!=-1);
+
+
 
 var allcookies = document.cookie;
 var pos = allcookies.indexOf("kmode=");
 
 prep_mode();
 
-function prep_mode() {
+function prep_mode()
+{
 	if (pos != 1) {
 		var cstart = pos + 7;
 		var cend   = allcookies.indexOf(";", cstart);
 		if (cend == -1) { cend = allcookies.length; }
 		cvalue = allcookies.substring(cstart, cend);
-
+		
 		if (cvalue == 'helpmode') {
 			document.f.kmode[0].checked = true;
 		} else {
 			document.f.kmode[1].checked = true;
 		}
-	}
+	} 
 	else {
+	
 		document.f.kmode[1].checked = true;
 	}
 }
@@ -121,7 +128,10 @@ function normmodestat(){
 
 function khelp(msg){
 	document.f.khelp_msg.value = eval( "khelp_" + msg );
-}
+	}
+
+
+
 
 function stacksize(thearray){
 	for (i = 0 ; i < thearray.length; i++ ) {
@@ -129,14 +139,18 @@ function stacksize(thearray){
 			return i;
 		}
 	}
-
+	
 	return thearray.length;
 }
+
+
 
 function pushstack(thearray, newval){
 	arraysize = stacksize(thearray);
 	thearray[arraysize] = newval;
 }
+
+
 
 function popstack(thearray){
 	arraysize = stacksize(thearray);
@@ -144,6 +158,9 @@ function popstack(thearray){
 	delete thearray[arraysize - 1];
 	return theval;
 }
+
+
+
 
 function closeall(){
 	if (ktags[0]) {
@@ -156,10 +173,13 @@ function closeall(){
 				eval(tagRemove + "_open = 0");
 			}
 		}
-	}
+}
+
 	ktags = new Array();
 	document.f.text.focus();
 }
+
+
 
 function add_code(NewCode){
     document.f.text.value += NewCode;
@@ -177,10 +197,13 @@ function changefont(theval, thetag){
     document.f.fcolor.selectedIndex = 0;
 }
 
+
+
+
 function easytag(thetag)
 {
 	var tagOpen = eval(thetag + "_open");
-
+	
 	if ( normmodestat() ) {
 		inserttext = prompt(prompt_start + "\n[" + thetag + "]xxx[/" + thetag + "]");
 		if ( (inserttext != null) && (inserttext != "") ) {
@@ -190,13 +213,13 @@ function easytag(thetag)
 	else {
 		if (tagOpen == 0) {
 			if(thetag == "PHP") {
-				var openphp = '<?php ';
-				var closephp = ' ?>';
+					var openphp = '<?php ';
+					var closephp = ' ?>';
 			} else {
 				var openphp = '';
 				var closephp = '';
 			}
-
+					
 			if(doInsert("[" + thetag + "]"+openphp+"", "[/" + thetag + "]", true)){
 				eval(thetag + "_open = 1");
 				eval("document.f." + thetag + ".value += '*'");
@@ -206,18 +229,21 @@ function easytag(thetag)
 		}
 		else {
 			lastindex = 0;
+			
 			for (i = 0 ; i < ktags.length; i++ ) {
 				if ( ktags[i] == thetag ) {
 					lastindex = i;
 				}
 			}
-
+			
+			
+			
 			while (ktags[lastindex]) {
 				if(thetag == "PHP") {
 					var closephp = ' ?>';
-				} else {
-					var closephp = '';
-				}
+			} else {
+				var closephp = '';
+			}
 				tagRemove = popstack(ktags);
 				doInsert(""+closephp+"[/" + tagRemove + "]", "", false)
 				eval("document.f." + tagRemove + ".value = ' " + tagRemove + " '");
@@ -227,26 +253,36 @@ function easytag(thetag)
 	}
 }
 
+
+
+
 function tag_list(){
 	var listtype = prompt(list_prompt, "");
 
-	if ((listtype == "a") || (listtype == "1") || (listtype == "i")) {
+	if ((listtype == "a") || (listtype == "1") || (listtype == "i"))
+	{
 		thelist = "[LIST=" + listtype + "]\n";
 	}
-	else {
+	else
+	{
 		thelist = "[LIST]\n";
 	}
 	var listentry = "initial";
-	while ((listentry != "") && (listentry != null)) {
+	while ((listentry != "") && (listentry != null))
+	{
 		listentry = prompt(list_prompt2, "");
-		if ((listentry != "") && (listentry != null)) {
+		if ((listentry != "") && (listentry != null))
+		{
 			thelist = thelist + "[*]" + listentry + "\n";
 		}
 	}
 	doInsert(thelist + "[/LIST]\n", "", false);
 }
 
-function tag_url() {
+
+
+function tag_url()
+{
     var FoundErrors = '';
     var enterURL   = prompt(text_enter_url, "http://");
     var enterTITLE = prompt(text_enter_url_name, "Webseiten-Name");
@@ -262,6 +298,7 @@ function tag_url() {
         alert(""+FoundErrors);
         return;
     }
+
 	doInsert("[URL="+enterURL+"]"+enterTITLE+"[/URL]", "", false);
 }
 
@@ -284,9 +321,9 @@ function tag_image(){
 function tag_email(){
     var emailAddress = prompt(text_enter_email, "");
 
-    if (!emailAddress) {
-		alert(error_no_email);
-		return;
+    if (!emailAddress) { 
+		alert(error_no_email); 
+		return; 
 	}
 
 	doInsert("[EMAIL]"+emailAddress+"[/EMAIL]", "", false);
@@ -298,7 +335,7 @@ function doInsert(ktag, kctag, once){
 	var obj_ta = document.f.text;
 
 	if ( (myVersion >= 4) && is_ie && is_win) {
-		if(obj_ta.isTextEdit){
+		if(obj_ta.isTextEdit){ 
 			obj_ta.focus();
 			var sel = document.selection;
 			var rng = sel.createRange();
@@ -306,29 +343,31 @@ function doInsert(ktag, kctag, once){
 			if((sel.type == "Text" || sel.type == "None") && rng != null){
 				if(kctag != "" && rng.text.length > 0)
 					ktag += rng.text + kctag;
-
+					
 				else if(once)
 					isClose = true;
-
+	
 				rng.text = ktag;
 			}
 		}
 		else{
 			if(once)
 				isClose = true;
-
+	
 			obj_ta.value += ktag;
 			alert('MOZZ');
 		}
 	}
-	else {
-		if(once) {
+	else
+	{
+		if(once)
+		{
 			isClose = true;
 		}
-
+		
 		// obj_ta.value += ktag;
-		// Fix fÑŒr Mozilla:
-		// FÑŒgt Tag an der gewÑŒnschten position ein!
+		// Fix für Mozilla:
+		// Fügt Tag an der gewünschten position ein!
 		var tarea = document.getElementById('msgform');
     	var selEnd = tarea.selectionEnd;
     	var txtLen = tarea.value.length;
@@ -339,7 +378,8 @@ function doInsert(ktag, kctag, once){
 	}
 	obj_ta.focus();
 	return isClose;
-}
+}	
+
 
 function MWJ_findObj( oName, oFrame, oDoc ) {
 	if( !oDoc ) {
@@ -349,54 +389,54 @@ function MWJ_findObj( oName, oFrame, oDoc ) {
             oDoc = window.document;
         }
     }
-
+    
 	if( oDoc[oName] ) {
         return oDoc[oName];
     }
-
+    
     if( oDoc.all && oDoc.all[oName] ) {
         return oDoc.all[oName];
     }
-
+    
 	if( oDoc.getElementById && oDoc.getElementById(oName) ) {
         return oDoc.getElementById(oName);
     }
-
+    
 	for( var x = 0; x < oDoc.forms.length; x++ ) {
         if( oDoc.forms[x][oName] ) {
             return oDoc.forms[x][oName];
         }
     }
-
+    
 	for( var x = 0; x < oDoc.anchors.length; x++ ) {
         if( oDoc.anchors[x].name == oName ) {
             return oDoc.anchors[x];
         }
     }
-
+    
 	for( var x = 0; document.layers && x < oDoc.layers.length; x++ ) {
 		var theOb = MWJ_findObj( oName, null, oDoc.layers[x].document );
         if( theOb ) {
             return theOb;
         }
     }
-
+    
 	if( !oFrame && window[oName] ) {
         return window[oName];
     }
-
+    
     if( oFrame && oFrame[oName] ) {
         return oFrame[oName];
     }
-
+    
 	for( var x = 0; oFrame && oFrame.frames && x < oFrame.frames.length; x++ ) {
 		var theOb = MWJ_findObj( oName, oFrame.frames[x], oFrame.frames[x].document );
-
+    
         if( theOb ) {
             return theOb;
         }
     }
-
+	
     return null;
 }
 
@@ -404,7 +444,7 @@ function cpengine_toggleImage(oId, path) {
     var image = MWJ_findObj(oId);
     var imagePath = image.src.slice(0, image.src.lastIndexOf('/')+1);
     var imageName = image.src.slice(image.src.lastIndexOf('/')+1, image.src.length);
-
+    
     if (imageName == 'minus.gif') {
         image.src = imagePath + 'plus.gif';
     } else {
@@ -423,11 +463,11 @@ function MWJ_retrieveCookie( cookieName ) {
 
 function cpengine_setCookie(name,value) {
 	value = value+'@';
-
+    
     // ein Jahr
     var lifeTime = 31536000;
 	var currentStr = MWJ_retrieveCookie(name);
-
+	
     if( !currentStr ) {
 		//store the id
 		MWJ_setCookie( name, value, lifeTime );
@@ -446,12 +486,13 @@ function MWJ_setCookie( cookieName, cookieValue, lifeTime, path, domain, isSecur
 	if( lifeTime == "delete" ) { lifeTime = -10; }
 	document.cookie = escape( cookieName ) + "=" + escape( cookieValue ) +
 		( lifeTime ? ";expires=" + ( new Date( ( new Date() ).getTime() + ( 1000 * lifeTime ) ) ).toGMTString() : "" ) +
-		( path ? ";path=" + path : "") + ( domain ? ";domain=" + domain : "") +
+		( path ? ";path=" + path : "") + ( domain ? ";domain=" + domain : "") + 
 		( isSecure ? ";secure" : "");
 	//check if the cookie has been set/deleted as required
 	if( lifeTime < 0 ) { if( typeof( MWJ_retrieveCookie( cookieName ) ) == "string" ) { return false; } return true; }
 	if( typeof( MWJ_retrieveCookie( cookieName ) ) == "string" ) { return true; } return false;
 }
+
 
 function cpengine_getCookie(name){
    var i=0  //Suchposition im Cookie
@@ -468,59 +509,62 @@ function cpengine_getCookie(name){
    return null
 }
 
+
 function MWJ_changeDisplay( oName, oDisp, oFrame ) {
 	var theDiv = MWJ_findObj( oName, oFrame );
-
+    
     if( !theDiv ) { return; }
-
+	
     if( theDiv.style ) {
         theDiv = theDiv.style;
     }
-
+    
     if( typeof( oDisp ) == 'string' ) {
         oDisp = oDisp.toLowerCase();
     }
-
+	
     theDiv.display = ( oDisp == 'none' ) ? 'none' : ( oDisp == 'block' ) ? 'block' : ( oDisp == 'inline' ) ? 'inline' : '';
 }
 
+
 function MWJ_getStyle( oName, oStyle, oFrame ) {
+	
     if( oName == 'document' ) {
 		var theBody = oFrame ? oFrame.document : window.document;
-
+		
         if( theBody.documentElement && theBody.documentElement.style && theBody.documentElement.style.backgroundColor ) {
             return theBody.documentElement.style.backgroundColor;
         }
-
+		
         if( theBody.body && theBody.body.style && theBody.body.style.backgroundColor ) {
             return theBody.body.style.backgroundColor;
         }
-
+		
         if( theBody.documentElement && theBody.documentElement.style && theBody.documentElement.style.background ) {
             return theBody.documentElement.style.background;
         }
-
+		
         if( theBody.body && theBody.body.style && theBody.body.style.background ) {
             return theBody.body.style.background;
         }
-
+        
 		if( theBody.bgColor ) {
             return theBody.bgColor;
         }
-
+		
         return '#ffffff';
 	}
-
+    
 	var theDiv = MWJ_findObj( oName, oFrame );
-
+    
     if( !theDiv ) {
         return null;
     }
-
+    
     if( theDiv.style && oStyle != 'clip' ) {
         theDiv = theDiv.style;
     }
-
+	
     switch( oStyle ) {
 		case 'visibility':
             return ( ( theDiv.visibility && !( theDiv.visibility.toLowerCase().indexOf( 'hid' ) + 1 ) ) ? true : false );
@@ -553,22 +597,25 @@ function MWJ_getStyle( oName, oStyle, oFrame ) {
 }
 
 
-function InsertCode(code,field_id,field_name) {
+function InsertCode(code,field_id,field_name)
+{
 	var field_name = 'text';
 	var field_id = 'msgform';
-	if (document.getElementById(field_id).createTextRange){
+	if (document.getElementById(field_id).createTextRange)
+	{
 		document.getElementById(field_id).focus();
 		document.selection.createRange().duplicate().text = code;
 	}
-	else if (document.getElementById && !document.all) { // Mozilla
-		var tarea = document.getElementById(field_id);
-		var selEnd = tarea.selectionEnd;
-		var txtLen = tarea.value.length;
-		var txtbefore = tarea.value.substring(0,selEnd);
-		var txtafter =  tarea.value.substring(selEnd, txtLen);
-		tarea.value = txtbefore + code + txtafter;
-	}
-	else {
+	else if (document.getElementById && !document.all) // Mozilla
+	{
+    	var tarea = document.getElementById(field_id);
+    	var selEnd = tarea.selectionEnd;
+    	var txtLen = tarea.value.length;
+    	var txtbefore = tarea.value.substring(0,selEnd);
+    	var txtafter =  tarea.value.substring(selEnd, txtLen);
+    	tarea.value = txtbefore + code + txtafter;
+	} else {
 		document.entryform.field_name.value += code;
-	}
+   }
 }
+

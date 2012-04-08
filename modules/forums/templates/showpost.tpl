@@ -6,7 +6,7 @@
 		<tr>
 			<td>
 				<a class="forum_links_navi" href="index.php?module=forums">{#PageNameForums#}</a>
-					{#ForumSep#}{#PostsFrom#} <a class="forum_links_navi" href="index.php?module=forums&amp;show=userprofile&amp;user_id={$smarty.request.user_id}">{$poster->Poster}</a> ({$post_count})</strong>
+					{#ForumSep#}{#PostsFrom#} <a class="forum_links_navi" href="index.php?module=userpage&amp;action=show&amp;uid={$smarty.request.user_id}">{$poster->Poster}</a> ({$post_count})</strong>
 			</td>
     		<td>
     			<div align="right">
