@@ -174,7 +174,10 @@ function request_get_document_field($rubric_id, $document_id, $maxlength = '')
 				$field_value = trim($field_value);
 				$maxlength = abs($maxlength);
 			}
-			$field_value = mb_substr($field_value, 0, $maxlength) . ((strlen($field_value) > $maxlength) ? '... ' : '');
+			elseif($maxlength > 0)
+			{
+				$field_value = mb_substr($field_value, 0, $maxlength) . ((strlen($field_value) > $maxlength) ? '... ' : '');
+			}
 		}
 	}
 
