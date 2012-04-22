@@ -987,7 +987,6 @@ class AVE_Document
 						$document_status = 0;
 					}
 					$_POST['document_status']=$document_status;
-					$_POST['document_linked_navi_id'] = $innavi;
 					$iid=$this->documentSave($rubric_id,null,$_POST,true);
 
 					header('Location:index.php?do=docs&action=after&document_id=' . $iid . '&rubric_id=' . $rubric_id . '&cp=' . SESSION . $innavi);

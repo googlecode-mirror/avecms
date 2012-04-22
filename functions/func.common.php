@@ -1,5 +1,7 @@
 <?php
 
+include (BASE_DIR."/functions/func.custom.php"); // вставляем файл с пользовательскими функциями
+
 /**
  * AVE.cms
  *
