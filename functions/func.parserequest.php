@@ -144,11 +144,14 @@ function request_get_document_field($rubric_id, $document_id, $maxlength = '')
 //	}
 
 	$func='get_field_'.$document_fields[$rubric_id]['rubric_field_type'];
-	if(is_callable($func)){
-			$field_value=$func($field_value,'req',"","","",$maxlength,$document_fields,$rubric_id);
-		}else{
-			$field_value=get_field_default($field_value,'req',"","","",$maxlength,$document_fields,$rubric_id);
-		}
+	if(is_callable($func))
+	{
+		$field_value=$func($field_value,'req',"","","",$maxlength,$document_fields,$rubric_id);
+	}
+	else
+	{
+		$field_value=get_field_default($field_value,'req',"","","",$maxlength,$document_fields,$rubric_id);
+	}
 
 	if ($maxlength != '')
 	{
@@ -164,9 +167,9 @@ function request_get_document_field($rubric_id, $document_id, $maxlength = '')
 				$field_value = addslashes($field_value);
 			}
 		}
-		else
+		elseif (is_numeric($maxlength))
 		{
-			if ($maxlength < 0)
+			if ($maxlength < 0 | $maxlength == -0)
 			{
 				$field_value = str_replace(array("\r\n","\n","\r"), " ", $field_value);
 				$field_value = strip_tags($field_value, "<a>");
@@ -174,11 +177,12 @@ function request_get_document_field($rubric_id, $document_id, $maxlength = '')
 				$field_value = trim($field_value);
 				$maxlength = abs($maxlength);
 			}
-			elseif($maxlength > 0)
+			if ($maxlength != 0)
 			{
 				$field_value = mb_substr($field_value, 0, $maxlength) . ((strlen($field_value) > $maxlength) ? '... ' : '');
 			}
 		}
+		else return false;
 	}
 
 /*	if (!$document_fields[$rubric_id]['tpl_req_empty'])
