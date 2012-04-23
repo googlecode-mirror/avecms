@@ -169,7 +169,7 @@ function request_get_document_field($rubric_id, $document_id, $maxlength = '')
 		}
 		elseif (is_numeric($maxlength))
 		{
-			if ($maxlength < 0 | $maxlength == -0)
+			if ($maxlength < 0)
 			{
 				$field_value = str_replace(array("\r\n","\n","\r"), " ", $field_value);
 				$field_value = strip_tags($field_value, "<a>");
