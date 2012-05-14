@@ -46,18 +46,18 @@
 	//Насколько я понял это чтото было сделано для динамческого запроса ... тогда почему только на сравнение по '='?
 	if (!empty($_POST['req_' . $id]) && is_array($_POST['req_' . $id]))
 	{
+		$i=1;
 		foreach ($_POST['req_' . $id] as $fid => $val)
 		{
 			if (!($val != '' && isset($_SESSION['val_' . $fid]) && in_array($val, $_SESSION['val_' . $fid]))) continue;
-
-			if ($i) $from[] = "%%PREFIX%%_document_fields AS t$i, ";
-			$where[] = "((t$i.document_id = t0.document_id)AND(t$i.rubric_field_id = $fid AND t$i.field_value = '$val'))";
-
+			$from[] = "%%PREFIX%%_document_fields AS t$i, ";
+			$where[] = "AND((t$i.document_id = a.Id)AND(t$i.rubric_field_id = $fid AND t$i.field_value = '$val'))";
 			++$i;
 		}
 	}
-        $i=1;
-		$vvv='';
+	
+	$i=1;
+	$vvv='';
 	while ($row_ak = $sql_ak->FetchRow())
 	{
 		$fid = $row_ak->condition_field_id;

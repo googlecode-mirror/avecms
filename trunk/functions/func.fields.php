@@ -772,109 +772,108 @@ function get_field_bild_multi($field_value,$type,$field_id='',$rubric_field_temp
 				'<img height=\"120px\" id=\"_img_feld__'+field_id+'_'+_id+'\" src=\"'+img_path+'\" alt=\"'+alt+'\" border=\"0\" />' +
 			'</div>' +
 			'<input class=\"docm finder\" type=\"text\" style=\"width:70%;\" name=\"feld[' + field_id + '][]\" value=\"' + field_value + '\" id=\"img_feld__' + field_id +'_' + _id+'\" />&nbsp;'+
-			'<span class=\"button dialog_images\" rel=\"'+ field_id + '_'+_id+'\">".$AVE_Template->get_config_vars('MAIN_OPEN_MEDIAPATH')."</span>'";
+			'<span class=\"button\" onClick=\"dialog_images($(this))\" rel=\"'+ field_id + '_'+_id+'\">".$AVE_Template->get_config_vars('MAIN_OPEN_MEDIAPATH')."</span>'";
 		break;
     }
 	$theme_folder =  '/admin/templates/'.DEFAULT_ADMIN_THEME_FOLDER;
 	$jsCode = <<<BLOCK
-		<script language="javascript" type="text/javascript">	
-		function field_image_multi_add(field_id, field_value, img_path, alt){
-			var
-				_id = Math.round(Math.random()*1000);
-				img_id = '__img_feld__' + field_id + '_' + _id;
-		
-			var html={$img_js}+
-				'<input type="button" value="&#8593;" onclick="field_image_multi_move(' + field_id + ', ' + _id + ', \'up\')" />'+
-				'<input type="button" value="&#8595;" onclick="field_image_multi_move(' + field_id + ', ' + _id + ', \'down\')" />'+
-				'<input type="button" value="&#215;" onclick="if(window.confirm(\'Удалить?\'))field_image_multi_delete(' + field_id + ', ' + _id + ')" />'
-								
-				element=document.createElement("div");
-				element.id=img_id;
-				element.innerHTML=html;
-				document.getElementById("feld_"+field_id).appendChild(element);
-
-				$('.dialog_images').click(function() {
-					var id = $(this).attr("rel");
-					$('<div/>').dialogelfinder({
-						url : ave_path+'admin/redactor/elfinder/php/connector.php',
-						lang : 'ru',
-						width : 1100,
-						height: 600,
-						modal : true, 
-						title : 'Файловый менеджер',
-						getFileCallback : function(files, fm) {
-							$("#img_feld__"+id).val(files['url'].slice(1)); 
-							$("#images_feld_"+id).html('<img height="120px" src='+files['url']+'>');
-						},
-						commandsOptions : {
-							getfile : {
-								oncomplete : 'destroy',
-								folders : false
-							}
+		<script language="javascript" type="text/javascript">
+			function dialog_images (elem_this){
+				var id = elem_this.attr("rel");
+				$('<div/>').dialogelfinder({
+					url : ave_path+'admin/redactor/elfinder/php/connector.php',
+					lang : 'ru',
+					width : 1100,
+					height: 600,
+					modal : true, 
+					title : 'Файловый менеджер',
+					getFileCallback : function(files, fm) {
+						$("#img_feld__"+id).val(files['url'].slice(1)); 
+						$("#images_feld_"+id).html('<img height="120px" src='+files['url']+'>');
+					},
+					commandsOptions : {
+						getfile : {
+							oncomplete : 'destroy',
+							folders : false
 						}
-					})
-				});
-		}
-		
-		function field_image_multi_delete(field_id, id){
-			img_id = '__img_feld__' + field_id + '_' + id;
-			element=document.getElementById(img_id);
-			element.parentNode.removeChild(element);
-		}
-		
-		function field_image_multi_move(field_id, id, direction){ // direction: {up, down};
-			img_id = '__img_feld__' + field_id + '_' + id;
-			element=document.getElementById(img_id);
+					}
+				})
+			};
+			function field_image_multi_add(field_id, field_value, img_path, alt){
+				var
+					_id = Math.round(Math.random()*1000);
+					img_id = '__img_feld__' + field_id + '_' + _id;
 			
-			if(direction=='up')
-				neighbour=element.previousSibling;
-			else
-				neighbour=element.nextSibling;
+				var html={$img_js}+
+					'<input type="button" value="&#8593;" onclick="field_image_multi_move(' + field_id + ', ' + _id + ', \'up\')" />'+
+					'<input type="button" value="&#8595;" onclick="field_image_multi_move(' + field_id + ', ' + _id + ', \'down\')" />'+
+					'<input type="button" value="&#215;" onclick="if(window.confirm(\'Удалить?\'))field_image_multi_delete(' + field_id + ', ' + _id + ')" />'
+									
+					element=document.createElement("div");
+					element.id=img_id;
+					element.innerHTML=html;
+					document.getElementById("feld_"+field_id).appendChild(element);
+			}
 			
-			if(neighbour){
+			function field_image_multi_delete(field_id, id){
+				img_id = '__img_feld__' + field_id + '_' + id;
+				element=document.getElementById(img_id);
+				element.parentNode.removeChild(element);
+			}
+			
+			function field_image_multi_move(field_id, id, direction){ // direction: {up, down};
+				img_id = '__img_feld__' + field_id + '_' + id;
+				element=document.getElementById(img_id);
+				
 				if(direction=='up')
-					neighbour.parentNode.insertBefore(element.parentNode.removeChild(element), neighbour);
-				else{
-					if( neighbour.nextSibling )
-						neighbour.parentNode.insertBefore(element.parentNode.removeChild(element), neighbour.nextSibling);
-					else
-						neighbour.parentNode.appendChild(element.parentNode.removeChild(element));
+					neighbour=element.previousSibling;
+				else
+					neighbour=element.nextSibling;
+				
+				if(neighbour){
+					if(direction=='up')
+						neighbour.parentNode.insertBefore(element.parentNode.removeChild(element), neighbour);
+					else{
+						if( neighbour.nextSibling )
+							neighbour.parentNode.insertBefore(element.parentNode.removeChild(element), neighbour.nextSibling);
+						else
+							neighbour.parentNode.appendChild(element.parentNode.removeChild(element));
+					}
 				}
 			}
-		}
-		
-		function field_image_multi_opimport(field_id){	
-			$("#on"+field_id).hide();
-			var html='<br>Указывать нужно папку (Формат: uploads/images/samepath/)<br><input type="text" style="width:{$AVE_Document->_field_width}" value="uploads/images/" id="img_importfeld__' + field_id +'" />&nbsp;'+
-				'<input type="button" class="button" onclick="field_image_multi_import(' + field_id + ');" value="Импорт" />';
-				element=document.createElement("div");
-				element.id=img_id;
-				element.innerHTML=html; 
-				document.getElementById("feld_"+field_id).appendChild(element);
-		}
-		
-		function field_image_multi_import(field_id){
 			
-			var path_import = $("#img_importfeld__"+field_id).val(); 
-			var html = '';	
-		
-			$.ajax({
-				url: ave_path+'admin/index.php?do=docs&action=image_import', 
-				data: {"path": path_import}, 
-				dataType: "json",
-				success: function(dat) {
-					
-					for (var p = 0, max = dat.respons.length; p < max; p++) {
-						var field_value = path_import + dat.respons[p];
-						var img_path = '../index.php?thumb=' + field_value;
-						field_image_multi_add(field_id, field_value, img_path, '');
-					}
-				},
-				error: function(data) {
-					alert("Ошибка импорта");
-				},
-			}); 
-		}
+			function field_image_multi_opimport(field_id){	
+				$("#on"+field_id).hide();
+				var html='<br>Указывать нужно папку (Формат: uploads/images/samepath/)<br><input type="text" style="width:{$AVE_Document->_field_width}" value="uploads/images/" id="img_importfeld__' + field_id +'" />&nbsp;'+
+					'<input type="button" class="button" onclick="field_image_multi_import(' + field_id + ');" value="Импорт" />';
+					element=document.createElement("div");
+					element.id=img_id;
+					element.innerHTML=html; 
+					document.getElementById("feld_"+field_id).appendChild(element);
+			}
+			
+			function field_image_multi_import(field_id){
+				
+				var path_import = $("#img_importfeld__"+field_id).val(); 
+				var html = '';	
+			
+				$.ajax({
+					url: ave_path+'admin/index.php?do=docs&action=image_import', 
+					data: {"path": path_import}, 
+					dataType: "json",
+					success: function(dat) {
+						
+						for (var p = 0, max = dat.respons.length; p < max; p++) {
+							var field_value = path_import + dat.respons[p];
+							var img_path = '../index.php?thumb=' + field_value;
+							field_image_multi_add(field_id, field_value, img_path, '');
+						}
+					},
+					error: function(data) {
+						alert("Ошибка импорта");
+					},
+				}); 
+			}
 		</script>
 BLOCK;
 
