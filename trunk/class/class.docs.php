@@ -22,7 +22,7 @@ class AVE_Document
 	 *
 	 * @var int
 	 */
-	var $_limit = 40;
+	var $_limit = 50;
 
 	/**
 	 * Ширина поля ввода (для элементов input)
@@ -989,7 +989,12 @@ class AVE_Document
 					$_POST['document_status']=$document_status;
 					$iid=$this->documentSave($rubric_id,null,$_POST,true);
 
-					header('Location:index.php?do=docs&action=after&document_id=' . $iid . '&rubric_id=' . $rubric_id . '&cp=' . SESSION . $innavi);
+					if (!$_REQUEST['next_edit']) {		
+						header('Location:index.php?do=docs&action=after&document_id=' . $iid . '&rubric_id=' . $rubric_id . '&cp=' . SESSION . $innavi);
+					} else {
+						header('Location:index.php?do=docs&action=edit&Id=' . $iid . '&rubric_id=' . $rubric_id . '&cp=' . SESSION);
+					}
+					
 					exit;
 
 				case '': // Действия по умолчанию, если не задано
@@ -1056,8 +1061,13 @@ class AVE_Document
 				
 				if(isset($_REQUEST['closeafter']) && $_REQUEST['closeafter']==1) {
 					echo "<script>window.opener.location.reload(); window.close();</script>";
-				} else {					
-					header('Location:index.php?do=docs&action=after&document_id=' . $document_id . '&rubric_id=' . $row->rubric_id . '&cp=' . SESSION);
+				} else {				
+				
+					if (!$_REQUEST['next_edit']) {		
+						header('Location:index.php?do=docs&action=after&document_id=' . $document_id . '&rubric_id=' . $row->rubric_id . '&cp=' . SESSION);
+					} else {
+						header('Location:index.php?do=docs&action=edit&Id=' . $document_id . '&rubric_id=' . $row->rubric_id . '&cp=' . SESSION);
+					}
 				}
 				exit;
 
