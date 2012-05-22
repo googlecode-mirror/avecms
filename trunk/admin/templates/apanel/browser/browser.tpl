@@ -90,7 +90,7 @@ parent.document.dat.dateiname.value='{$dir}';
 				</a>
 			</div>
 
-			<div class="mb_kb" align="center">{$dat->datsize}&nbsp;РљР±</div>
+			<div class="mb_kb" align="center">{$dat->datsize}&nbsp;</div>
 
 			<div class="mb_time">{$dat->moddate}</div>
 
