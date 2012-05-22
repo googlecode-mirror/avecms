@@ -224,7 +224,6 @@ a.header:hover {
 	/*	font-size:8pt;
 	font-family:Tahoma, Arial, Helvetica, Geneva, sans-serif;*/
 	padding:20px;
-	padding-bottom:0;
 	background-color:#fff;
 }
 #content h2 {
@@ -1394,3 +1393,6 @@ ul#doclinks a:hover {
 	background:#fffbcc;
 	border-color:#e6db55
 }
+
+.setChecked {padding:0 0 5px 0}
+.setChecked #text {cursor:pointer;text-decoration:underline}

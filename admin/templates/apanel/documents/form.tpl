@@ -16,7 +16,7 @@
 	
 {if $smarty.session.use_editor == 2}	
 	<script language="Javascript" src="{$ABS_PATH}admin/redactor/innova/scripts/language/ru-RU/editor_lang.js"></script>
-  <script language=JavaScript src='{$ABS_PATH}admin/redactor/innova/scripts/innovaeditor.js'></script>	
+ 	<script language=JavaScript src='{$ABS_PATH}admin/redactor/innova/scripts/innovaeditor.js'></script>	
 {/if}	
 
  <link rel="stylesheet" href="{$tpl_dir}/js/jquery/plugin/jquery-ui-time.css" type="text/css">	
@@ -179,11 +179,22 @@ $('#document_published').datetimepicker({ldelim}
 <form method="post" name="formDocOption" action="{$document->formaction}" enctype="multipart/form-data">
 	<input type="hidden" name="prefix" value="{$document->rubric_url_prefix}" />
 	<input name="closeafter" type="hidden" id="closeafter" value="{$smarty.request.closeafter}">
-		{if $smarty.request.action=='edit'}
+	
+	{if $smarty.request.action=='edit'}
 		<input type="submit" class="button" value="{#DOC_BUTTON_EDIT_DOCUMENT#}" />
 	{else}
 		<input type="submit" class="button" value="{#DOC_BUTTON_ADD_DOCUMENT#}" />
-	{/if}<br /><br />
+	{/if}
+	
+	или
+	
+	{if $smarty.request.action=='edit'}
+		<input type="submit" class="button button_lev2" name="next_edit" value="{#DOC_BUTTON_EDIT_DOCUMENT_NEXT#}" />
+	{else}
+		<input type="submit" class="button button_lev2" name="next_edit" value="{#DOC_BUTTON_ADD_DOCUMENT_NEXT#}" />
+	{/if}
+	<br /><br />
+	
 	<table width="100%" border="0" cellpadding="8" cellspacing="1" class="tableborder">
 		<col width="200" class="first">
 		<col class="second">
@@ -325,10 +336,18 @@ $('#document_published').datetimepicker({ldelim}
 	</table>
 	<br />
 
-	{*$hidden*}
+
 	{if $smarty.request.action=='edit'}
 		<input type="submit" class="button" value="{#DOC_BUTTON_EDIT_DOCUMENT#}" />
 	{else}
 		<input type="submit" class="button" value="{#DOC_BUTTON_ADD_DOCUMENT#}" />
+	{/if}
+	
+	или
+	
+	{if $smarty.request.action=='edit'}
+		<input type="submit" class="button button_lev2" name="next_edit" value="{#DOC_BUTTON_EDIT_DOCUMENT_NEXT#}" />
+	{else}
+		<input type="submit" class="button button_lev2" name="next_edit" value="{#DOC_BUTTON_ADD_DOCUMENT_NEXT#}" />
 	{/if}
 </form>
