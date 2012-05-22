@@ -84,7 +84,7 @@ switch ($_REQUEST['action'])
 				FROM " . PREFIX . "_templates
 			")->GetCell();
 
-			$page_limit = (isset($_REQUEST['set']) && is_numeric($_REQUEST['set'])) ? (int)$_REQUEST['set'] : 15;
+			$page_limit = (isset($_REQUEST['set']) && is_numeric($_REQUEST['set'])) ? (int)$_REQUEST['set'] : 30;
 			$seiten     = ceil($num_tpl / $page_limit);
 			$set_start  = get_current_page() * $page_limit - $page_limit;
 
@@ -278,7 +278,13 @@ switch ($_REQUEST['action'])
 							WHERE
 								Id = '" . (int)$_REQUEST['Id'] . "'
 						");
-						header('Location:?do=templates');
+						
+
+						if (!$_REQUEST['next_edit']) {		
+							header('Location:index.php?do=templates&cp=' . SESSION);
+						} else {
+							header('Location:index.php?do=templates&action=edit&Id=' . (int)$_REQUEST['Id'] . '&cp=' . SESSION);
+						} 
 					}
 					break;
 			}
@@ -309,6 +315,13 @@ switch ($_REQUEST['action'])
 					file_put_contents($dir, trim($check_code));	
 					reportLog($_SESSION['user_name'] . ' - отредактировал файл (' . stripslashes($dir) . ')', 2, 2);
 					header('Location:index.php?do=templates');
+					
+						if (!$_REQUEST['next_edit']) {		
+							header('Location:index.php?do=templates&cp=' . SESSION);
+						} else {
+							header('Location:index.php?do=templates&action=edit_css&sub=edit&name_file='.stripslashes($_REQUEST['name_file']).'&cp=' . SESSION);
+						} 
+
 					exit;
 					break;
 					

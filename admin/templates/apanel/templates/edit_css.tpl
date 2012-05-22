@@ -31,7 +31,7 @@
 		
 		<tr>
 			<td class="second">			
-				<button class="button">{if $smarty.request.action=='new'}{#TEMPLATES_BUTTON_ADD#}{else}{#TEMPLATES_BUTTON_SAVE#}{/if}</button>
+				<button class="button">{if $smarty.request.action=='new'}{#TEMPLATES_BUTTON_ADD#}{else}{#TEMPLATES_BUTTON_SAVE#}{/if}</button> или <input type="submit" class="button button_lev2" name="next_edit" value="{#TEMPLATES_BUTTON_SAVE_NEXT#}" />
 			</td>
 		</tr>
 	</table>

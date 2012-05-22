@@ -20,7 +20,7 @@ class AVE_Request
 	 *
 	 * @var int
 	 */
-	var $_limit = 30;
+	var $_limit = 50;
 
 /**
  *	Внутренние методы
@@ -152,8 +152,8 @@ class AVE_Request
 				// Сохраняем системное сообщение в журнал
                 reportLog($_SESSION['user_name'] . ' - добавил новый запрос (' . stripslashes($_REQUEST['request_title']) . ')', 2, 2);
 
-                // Если в запросе пришел параметр на продолжение редактирования запроса
-                if ($_REQUEST['reedit'] == 1)
+            // Если в запросе пришел параметр на продолжение редактирования запроса
+            if ($_REQUEST['reedit'] == 1)
 				{
 					// Выполняем переход на страницу с редактированием запроса
                     header('Location:index.php?do=request&action=edit&Id=' . $iid . '&rubric_id=' . $_REQUEST['rubric_id'] . '&cp=' . SESSION);
@@ -161,9 +161,14 @@ class AVE_Request
 				else
 				{
 					// В противном случае выполняем переход к списку запросов
-                    header('Location:index.php?do=request&cp=' . SESSION);
+			      if (!$_REQUEST['next_edit']) {		
+						header('Location:index.php?do=request&cp=' . SESSION);
+					} else {
+						header('Location:index.php?do=request&action=edit&Id=' . $iid . '&cp=' . SESSION);
+					}          
 				}
 				exit;
+	
 		}
 	}
 
@@ -225,8 +230,12 @@ class AVE_Request
 				}
 				else
 				{
-                    // В противном случае выполняем переход к списку запросов
-					header('Location:index.php?do=request&cp=' . SESSION);
+               // В противном случае выполняем переход к списку запросов
+					if (!$_REQUEST['next_edit']) {		
+						header('Location:index.php?do=request&cp=' . SESSION);
+					} else {
+						header('Location:index.php?do=request&action=edit&Id=' . $request_id . '&cp=' . SESSION);
+					} 
 					exit;
 				}
 				break;
