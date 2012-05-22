@@ -1,1 +1,1 @@
-<li><a {if $smarty.request.do=='browser'}class="active" {/if}href="index.php?do=finder&cp={$sess}">Файловый менеджер</a></li>
+<li><a {if $smarty.request.do=='finder'}class="active" {/if}href="index.php?do=finder&cp={$sess}">Файловый менеджер</a></li>
