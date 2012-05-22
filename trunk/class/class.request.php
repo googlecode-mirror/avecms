@@ -164,7 +164,7 @@ class AVE_Request
 			      if (!$_REQUEST['next_edit']) {		
 						header('Location:index.php?do=request&cp=' . SESSION);
 					} else {
-						header('Location:index.php?do=request&action=edit&Id=' . $iid . '&cp=' . SESSION);
+						header('Location:index.php?do=request&action=edit&Id=' . $iid . '&rubric_id='.$_REQUEST['rubric_id'].'&cp=' . SESSION);
 					}          
 				}
 				exit;
@@ -234,7 +234,7 @@ class AVE_Request
 					if (!$_REQUEST['next_edit']) {		
 						header('Location:index.php?do=request&cp=' . SESSION);
 					} else {
-						header('Location:index.php?do=request&action=edit&Id=' . $request_id . '&cp=' . SESSION);
+						header('Location:index.php?do=request&action=edit&Id=' . $request_id . '&rubric_id='.$_REQUEST['rubric_id'].'&cp=' . SESSION);
 					} 
 					exit;
 				}
