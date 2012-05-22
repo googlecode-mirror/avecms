@@ -219,6 +219,14 @@
       {else}
         <input class="button" type="submit" value="{#TEMPLATES_BUTTON_SAVE#}" />
       {/if}
+      
+      или 
+      
+      {if $smarty.request.action=='edit'}
+			<input type="submit" class="button button_lev2" name="next_edit" value="{#TEMPLATES_BUTTON_SAVE_NEXT#}" />
+		{else}
+			<input type="submit" class="button button_lev2" name="next_edit" value="{#TEMPLATES_BUTTON_ADD_NEXT#}" />
+		{/if}
     </td>
   </tr>
   </form>

@@ -398,6 +398,14 @@ function changeRub(select) {ldelim}
 				{else}
 					<input {$dis} type="submit" class="button" value="{#REQUEST_BUTTON_ADD#}" />
 				{/if}
+				
+					или
+	
+				{if $smarty.request.action=='edit'}
+					<input type="submit" class="button button_lev2" name="next_edit" value="{#REQUEST_BUTTON_SAVE_NEXT#}" />
+				{else}
+					<input type="submit" class="button button_lev2" name="next_edit" value="{#REQUEST_BUTTON_ADD_NEXT#}" />
+				{/if}
 			</td>
 		</tr>
 	</table>
