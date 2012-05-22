@@ -22,7 +22,7 @@ class AVE_Rubric
 	 *
 	 * @var int
 	 */
-	var $_limit = 15;
+	var $_limit = 30;
 
 /**
  *	ВНУТРЕННИЕ МЕТОДЫ
@@ -685,7 +685,11 @@ class AVE_Rubric
 		");
 
 		reportLog($_SESSION['user_name'] . ' - отредактировал шаблон рубрики (' . $rubric_id . ')', 2, 2);
-		header('Location:index.php?do=rubs&cp=' . SESSION);
+		if (!$_REQUEST['next_edit']) {		
+			header('Location:index.php?do=rubs&cp=' . SESSION);
+		} else {
+			header('Location:index.php?do=rubs&action=template&Id=' . $rubric_id . '&cp=' . SESSION);
+		}
 	}
 
 	/**

@@ -102,7 +102,7 @@
 		<tr class="{cycle name='ta' values='first,second'}">
 			<td class="second">
 				<input type="hidden" name="Id" value="{$smarty.request.Id|escape}">
-				<input class="button" type="submit" value="{#RUBRIK_BUTTON_TPL#}" />
+				<input class="button" type="submit" value="{#RUBRIK_BUTTON_TPL#}" /> или <input type="submit" class="button button_lev2" name="next_edit" value="{#RUBRIK_BUTTON_TPL_NEXT#}" />
 			</td>
 		</tr>
 	</table>
