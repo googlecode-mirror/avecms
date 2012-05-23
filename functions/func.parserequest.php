@@ -407,6 +407,7 @@ function request_parse($id)
 		}
 
 		$main_template = str_replace('[tag:pages]', $page_nav, $main_template);
+		$main_template = str_replace('[tag:pagetitle]', $AVE_DB->Query("SELECT document_title FROM " . PREFIX . "_documents WHERE Id = '".$AVE_Core->curentdoc->Id."' ")->GetCell(), $main_template);
 		$main_template = str_replace('[tag:docid]', $AVE_Core->curentdoc->Id, $main_template);
 		$main_template = str_replace('[tag:docdate]', pretty_date(strftime(DATE_FORMAT, $AVE_Core->curentdoc->document_published)), $main_template);
 		$main_template = str_replace('[tag:doctime]', pretty_date(strftime(TIME_FORMAT, $AVE_Core->curentdoc->document_published)), $main_template);

@@ -159,6 +159,13 @@ function changeRub(select) {ldelim}
 
 					<tr>
 						<td scope="row" class="first">
+							<strong><a href="javascript:void(0);" onclick="editAreaLoader.insertTags('{$js_textfeld}', '[tag:pagetitle]', '');">[tag:pagetitle]</a></strong>
+						</td>
+						<td class="first">{#REQUEST_CDOCID_TITLE#}</td>
+					</tr>
+					
+					<tr>
+						<td scope="row" class="first">
 							<strong><a href="javascript:void(0);" onclick="editAreaLoader.insertTags('{$js_textfeld}', '[tag:docid]', '');">[tag:docid]</a></strong>
 						</td>
 						<td class="first">{#REQUEST_CDOCID_INFO#}</td>
