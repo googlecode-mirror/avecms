@@ -246,6 +246,7 @@ function request_parse($id)
 					WHERE
 						a.Id != '1'
 					AND a.Id != '" . PAGE_NOT_FOUND_ID . "'
+					AND a.Id != '".get_current_document_id()."'
 					AND a.rubric_id = '" . $row_ab->rubric_id . "'
 					AND a.document_deleted != '1'
 					AND a.document_status != '0'
@@ -263,7 +264,7 @@ function request_parse($id)
 					WHERE
 						a.Id != '1'
 					AND a.Id != '" . PAGE_NOT_FOUND_ID . "'
-					
+					AND a.Id != '".get_current_document_id()."'
 					AND a.rubric_id = '" . $row_ab->rubric_id . "'
 					AND a.document_deleted != '1'
 					AND a.document_status != '0'
@@ -310,6 +311,7 @@ function request_parse($id)
 				WHERE
 					a.Id != '1'
 				AND a.Id != '" . PAGE_NOT_FOUND_ID . "'
+				AND a.Id != '".get_current_document_id()."'
 				AND a.rubric_id = '" . $row_ab->rubric_id . "'
 				AND a.document_deleted != '1'
 				AND a.document_status != '0'
@@ -336,7 +338,7 @@ function request_parse($id)
 				WHERE
 					a.Id != '1'
 				AND a.Id != '" . PAGE_NOT_FOUND_ID . "'
-				
+				AND a.Id != '".get_current_document_id()."'
 				AND a.rubric_id = '" . $row_ab->rubric_id . "'
 				AND a.document_deleted != '1'
 				AND a.document_status != '0'

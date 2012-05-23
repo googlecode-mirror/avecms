@@ -163,7 +163,7 @@ $('#document_published').datetimepicker({ldelim}
 	<div class="h_module">&nbsp;</div>
 	{if $smarty.request.action=='edit'}
 		<div class="HeaderTitle">
-			<h2>{#DOC_EDIT_DOCUMENT#}<span style="color:#000"> &gt; {$document->document_title}</span></h2>
+			<h2>{#DOC_EDIT_DOCUMENT#}<span style="color:#000"> &gt; <a href="{$ABS_PATH}index.php?id={$document->Id}" target="_blank">{$document->document_title}</a></span></h2>
 		</div>
 	{else}
 		<div class="HeaderTitle">

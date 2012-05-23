@@ -262,6 +262,17 @@ function get_current_document_id()
 }
 
 /**
+ * Получить идентификатор родительского документа
+ *
+ * @return int идентификатор родительского документа
+ */
+function get_parent_document_id()
+{
+	global $AVE_DB;
+	return $AVE_DB->Query("SELECT document_parent FROM " . PREFIX . "_documents WHERE Id = '".get_current_document_id()."' ")->GetCell();
+}
+
+/**
  * Формирование URL редиректа
  *
  * @return string URL
