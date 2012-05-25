@@ -71,7 +71,8 @@ function changeRub(select) {ldelim}
 						<option value="">{#REQUEST_PLEASE_SELECT#}</option>
 					{/if}
 					{foreach from=$rubrics item=rubric}
-						<option id="RubrikId_{$rubric->Id}" value="{$rubric->Id}"{if $row->rubric_id==$rubric->Id || $smarty.request.rubric_id==$rubric->Id} selected="selected"{/if}>{$rubric->rubric_title|escape}</option>
+						<option id="RubrikId_{$rubric->Id}" value="{$rubric->Id}"{if $smarty.request.rubric_id==$rubric->Id} selected="selected"{/if}>{$rubric->rubric_title|escape}</option>
+						
 					{/foreach}
 				</select>
 			</td>
