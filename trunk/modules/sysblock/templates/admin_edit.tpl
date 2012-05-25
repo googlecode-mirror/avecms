@@ -44,6 +44,14 @@
 				{else}
 					<input name="submit" type="submit" class="button" value="{#SYSBLOCK_SAVE#}" />
 				{/if}
+				
+				или 
+				
+				{if $smarty.request.moduleaction=='edit'}
+					<input type="submit" class="button button_lev2" name="next_edit" value="{#SYSBLOCK_SAVEDIT_NEXT#}" />
+				{else}
+					<input type="submit" class="button button_lev2" name="next_edit" value="{#SYSBLOCK_SAVE_NEXT#}" />
+				{/if}
 			</td>
 		</tr>
 	</table>

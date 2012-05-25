@@ -64,9 +64,17 @@ class sysblock
 					sysblock_name = '" . $_POST['sysblock_name'] . "',
 					sysblock_text = '" . $_POST['sysblock_text'] . "'
 			");
+			
+			$sysblock_id = $AVE_DB->Query("SELECT LAST_INSERT_ID(id) FROM " . PREFIX . "_modul_sysblock ORDER BY id DESC LIMIT 1")->GetCell();
 		}
+		
+		if (!isset($_REQUEST['next_edit'])) {		
+			header('Location:index.php?do=modules&action=modedit&mod=sysblock&moduleaction=1&cp=' . SESSION);
+		} else {
+			header('Location:index.php?do=modules&action=modedit&mod=sysblock&moduleaction=edit&&id='.$sysblock_id.'&cp='. SESSION);
+		}
+			
 
-		header('Location:index.php?do=modules&action=modedit&mod=sysblock&moduleaction=1&cp=' . SESSION);
 	}
 
 	/**
