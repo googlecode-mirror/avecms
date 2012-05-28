@@ -907,17 +907,9 @@ BLOCK;
 								'" . (isset($massiv[1]) ? htmlspecialchars($massiv[1], ENT_QUOTES) : '') . "');";
 						}
 					}
-						/* $field.="
-						field_image_multi_add_".$field_id."(
-							'".$field_id."',
-							'',
-							'',
-							'');"; */
 				}
-				else
-				{
-							$field.="
-							field_image_multi_add({$field_id},'','','');";
+				else{
+					$field.="field_image_multi_add({$field_id},'','','');";
 				}
 				$field.="</script>";
 				$res=$field;
@@ -944,8 +936,6 @@ BLOCK;
 					$res.=$v;
 				}
 			break;
-			
-			
 
 		case 'req' :
 			$massa=unserialize($field_value);
@@ -974,8 +964,7 @@ BLOCK;
 			$res='FIELD_BILD_MULTI';
 		break;
 	}
-	return ($res ? $res : $field_value);
-			
+	return $res;
 }
 
 function get_field_docfromrub($field_value,$type,$field_id='',$rubric_field_template='',$tpl_field_empty=0,&$maxlength = '',$document_fields=0,$rubric_id=0,$dropdown=''){
