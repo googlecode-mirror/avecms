@@ -7,7 +7,8 @@
  * @filesource
  */
 @date_default_timezone_set('Europe/Moscow');
-
+ini_set('display_errors',0);
+error_reporting(NONE);
 define('START_MICROTIME', microtime());
 
 ob_start();
@@ -58,8 +59,12 @@ $allowed = array('index',   'start',    'templates',  'rubs', 'user', 'finder',
 );
 $do = (!empty($_REQUEST['do']) && in_array($_REQUEST['do'], $allowed)) ? $_REQUEST['do'] : 'start';
 
-include(BASE_DIR . '/lib/subversion/work_svn.php');
+if (SVN_ACTIVE == true) {
+	include(BASE_DIR . '/lib/subversion/work_svn.php');
+}
+
 include(BASE_DIR . '/admin/' . $do . '.php');
+
 
 if (defined('NOPERM')) $AVE_Template->assign('content', $config_vars['MAIN_NO_PERMISSION']);
 

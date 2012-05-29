@@ -40,6 +40,7 @@ $GLOBALS['CMS_CONFIG']['GOOGLE_MAP_API_KEY']=Array('DESCR' =>'Google MAP API REY
 $GLOBALS['CMS_CONFIG']['Memcached_Server']=Array('DESCR' =>'Адрес Memcached сервера','default'=>'','TYPE'=>'string','VARIANT'=>'');
 $GLOBALS['CMS_CONFIG']['Memcached_Port']=Array('DESCR' =>'Порт Memcached сервера','default'=>'','TYPE'=>'string','VARIANT'=>'');
 $GLOBALS['CMS_CONFIG']['BILD_VERSION']=Array('DESCR' =>'Версия сборки','default'=>'','TYPE'=>'integer','VARIANT'=>'');
+$GLOBALS['CMS_CONFIG']['SVN_ACTIVE']=Array('DESCR' =>'Проверка обновлений','default'=>false,'TYPE'=>'bool','VARIANT'=>'');
 $GLOBALS['CMS_CONFIG']['SVN_LOGIN']=Array('DESCR' =>'Логин от SVN репозитария','default'=>'public','TYPE'=>'string','VARIANT'=>'');
 $GLOBALS['CMS_CONFIG']['SVN_PASSWORD']=Array('DESCR' =>'Пароль от SVN репозитария','default'=>'public','TYPE'=>'string','VARIANT'=>'');
 
