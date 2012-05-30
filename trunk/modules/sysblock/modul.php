@@ -53,6 +53,26 @@ function mod_sysblock($sysblock_id)
             ")->GetCell();
             file_put_contents($cache_file,$return);
         } 
+
+		// парсим остальные теги основного шаблона
+		$search = array(
+			'[tag:mediapath]',
+			'[tag:path]',
+			'[tag:home]',
+			'[tag:docid]',
+			'[tag:breadcrumb]'
+		);
+		$replace = array(
+			ABS_PATH . 'templates/' . THEME_FOLDER . '/',
+			ABS_PATH,
+			get_home_link(),
+			get_current_document_id(),
+			get_breadcrumb()
+		);
+		$return = str_replace($search, $replace, $return);   
+		$return = preg_replace_callback('/\[tag:request:(\d+)\]/', 'request_parse', $return);     
+      // парсим остальные теги основного шаблона
+        
 		eval ('?>' . $return . '<?');
 	}
 }
