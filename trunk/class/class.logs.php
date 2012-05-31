@@ -43,7 +43,7 @@ class AVE_Logs
 		$logfile = BASE_DIR.$this->_logdir;
 		if(file_exists($logfile))
 			include($logfile);
-		arsort($logdata);
+		krsort($logdata);
 		// Передаем данные в шаблон для вывода и отображаем страницу
         $AVE_Template->assign('logs', $logdata);
 		$AVE_Template->assign('content', $AVE_Template->fetch('logs/logs.tpl'));

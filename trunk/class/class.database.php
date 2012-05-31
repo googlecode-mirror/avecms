@@ -399,7 +399,7 @@ class AVE_DB
 		$res = @mysqli_query($this->_handle,$query);
 		//$this->_time_exec[] = microtime();
 		//$this->_query_list[] = $query;
-		//if (!$res) $this->_error('query', $query);
+		if (!$res) $this->_error('query', $query);
 
 		return new AVE_DB_Result($res);
 	}
