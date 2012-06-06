@@ -2002,9 +2002,11 @@ $AVE_Template->caching = 0;
 
 		$tpl_out = $AVE_Template->fetch($GLOBALS['mod']['tpl_dir'] . $this->_shop_product_detail_tpl);
 		$tpl_out = $this->_shopRewrite($tpl_out);
-
+		
 		define('MODULE_CONTENT', $tpl_out);
 		define('MODULE_SITE', $GLOBALS['mod']['config_vars']['PageName'] . $GLOBALS['mod']['config_vars']['PageSep'] . @$row->ArtName);
+		define('MODULE_DESCRIPTION', $row->ProdDescription);
+		define('MODULE_KEYWORDS', $row->ProdKeywords);
 	}
 
 	//=======================================================
