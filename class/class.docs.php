@@ -328,9 +328,11 @@ class AVE_Document
 
 		// Выполняем запрос к БД на получение количества документов соответствующих вышеопределенным условиям
 		$num = $AVE_DB->Query("
-			SELECT COUNT(*)
-			FROM " . PREFIX . "_documents
+			SELECT COUNT(doc.Id)
+			FROM " . PREFIX . "_documents as doc
+			". $ex_db ."
 			WHERE 1
+			" . $ex_rub . "
 			" . $ex_Geloescht . "
 			" . $ex_zeit . "
 			" . $ex_titel . "
