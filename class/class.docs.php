@@ -267,8 +267,17 @@ class AVE_Document
 
 			// формируем условия, которые будут применены в ссылках
 			$nav_rub = '&rubric_id=' . (int)$_REQUEST['rubric_id'];
+		} 
+		
+		// Поиск с учётом условий настроек рубрик
+		if (!isset($_REQUEST['rubric_id']) && empty($_REQUEST['QueryTitel'])) {
+			// Формируем условия, которые будут применены в запросе к БД
+			$ex_rub = " AND rubric_docs_active = '1'";
+			
+			// формаируем условия для бд
+			$ex_db = "JOIN " . PREFIX . "_rubrics as rub on rub.Id = rubric_id";
 		}
-
+		
 		// Если в запросе пришел параметр на фильтрацию документов по определенному временному интервалу
 		if ($_REQUEST['document_published'] && $_REQUEST['document_expire'])
 		{
@@ -468,14 +477,16 @@ class AVE_Document
 		}
 
 		$docs = array();
-
+		
 		// Выполняем запрос к БД на получение уже не количества документов, отвечающих условиям, а уже на
 		// получение всех данных, с учетом всех условий, а также типа сортировки и лимита для вывода на
 		// одну страницу.
 		$sql = $AVE_DB->Query("
-			SELECT *
-			FROM " . PREFIX . "_documents
+			SELECT doc.*
+			FROM " . PREFIX . "_documents as doc
+			". $ex_db ."
 			WHERE 1
+			" . $ex_rub . "
 			" . $ex_Geloescht . "
 			" . $ex_zeit . "
 			" . $ex_titel . "
