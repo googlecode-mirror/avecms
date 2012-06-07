@@ -39,6 +39,7 @@ function check_name() {ldelim}
 	<col width="200">
 	<col width="200">
 	<col width="100">
+	<col width="100">
 	<col width="20">
 	<col width="20">
 	<col width="20">
@@ -49,6 +50,7 @@ function check_name() {ldelim}
 		<td>{#RUBRIK_URL_PREFIX#}</td>
 		<td>{#RUBRIK_TEMPLATE_OUT#}</td>
 		<td align="center">{#RUBRIK_COUNT_DOCS#}</td>
+		<td align="center">{#RUBRIK_DOCS_VI#}</td>
 		<td align="center" colspan="4">{#RUBRIK_ACTION#}</td>
 	</tr>
 
@@ -86,6 +88,8 @@ function check_name() {ldelim}
 			</td>
 
 			<td align="center"><strong>{$rubric->doc_count}</strong></td>
+			
+			<td align="center"> <input type="checkbox" name="rubric_docs_active[{$rubric->Id}]" value="1" {if $rubric->rubric_docs_active == 1}checked="checked"{/if}> </td>
 
 			<td align="center">
 				{if check_permission('rubric_edit')}

@@ -219,7 +219,8 @@ class AVE_Rubric
 						SET
 							" . $set_rubric_title . "
 							" . $set_rubric_alias . "
-							rubric_template_id = '" . $_POST['rubric_template_id'][$rubric_id] . "'
+							rubric_template_id = '" . $_POST['rubric_template_id'][$rubric_id] . "',
+							rubric_docs_active = '".(int)$_POST['rubric_docs_active'][$rubric_id]."'
 						WHERE
 							Id = '" . $rubric_id . "'
 					");

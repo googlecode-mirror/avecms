@@ -259,7 +259,7 @@ INSERT INTO `%%PRFX%%_rubric_permissions` VALUES
   (2, 1, 2, 'docread');#inst#
 
 INSERT INTO `%%PRFX%%_rubrics` VALUES
-  (1, 'Основные страницы', '', '<h1>[tag:fld:1]</h1>[tag:fld:2]', 1, 1, 0);#inst#
+  (1, 'Основные страницы', '', '<h1>[tag:fld:1]</h1>[tag:fld:2]', 1, 1, 0, 1);#inst#
 
 INSERT INTO `%%PRFX%%_settings` VALUES
   (1, '%%SITENAME%%', 'mail', 'text/plain', 465, 'smtp.gmail.com', 'yourusername@gmail.com', 'yourpassword', '/usr/sbin/sendmail', 50, '%%EMAIL%%', '%%USERNAME%%', 'Здравствуйте %NAME%,\r\nВаша регистрация на сайте %HOST%. \r\n\r\nТеперь Вы можете войти на %HOST% со следующими данными:: \r\n\r\nПароль: %KENNWORT%\r\nE-Mail: %EMAIL%\r\n\r\n-----------------------\r\n%EMAILFUSS%\r\n\r\n', '--------------------\r\nOverdoze Team\r\nwww.overdoze.ru\r\ninfo@overdoze.ru\r\n--------------------', 2, '<h2>Ошибка...</h2>\r\n<br />\r\nУ Вас нет прав на просмотр этого документа!.', '<div class="page_navigation_box">%s</div>', 'Первая «', '» Последняя', '…', '»', '«', 'Страница %d из %d', '%d %B %Y', '%d %B %Y, %H:%M', 'ru', '0', '0', '<div class="hidden_box">Содержимое скрыто. Пожалуйста, <a href="index.php?module=login&action=register">зарегистрируйтесь</a></div>');#inst#

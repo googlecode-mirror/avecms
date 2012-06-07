@@ -1191,6 +1191,7 @@ CREATE TABLE `%%PRFX%%_rubrics` (
   `rubric_template_id` smallint(3) unsigned NOT NULL default '1',
   `rubric_author_id` int(10) unsigned NOT NULL default '1',
   `rubric_created` int(10) unsigned NOT NULL default '0',
+  `rubric_docs_active` int(1) unsigned NOT NULL default '1',
   PRIMARY KEY  (`Id`),
   KEY `rubric_template_id` (`rubric_template_id`)
 ) ENGINE=MyISAM AUTO_INCREMENT=6 DEFAULT CHARSET=utf8 PACK_KEYS=0;#inst#
