@@ -40,6 +40,29 @@ if (! empty($_REQUEST['thumb'])) $filename = ltrim(preg_replace('/[^\x20-\xFF]/'
 // Формируем полный путь к оригиналу изображения
 $file = BASE_DIR . '/' . ltrim($filename, '/');
 
+if( isset( $_REQUEST['nocrop'] ) && ( $width && $height ) ){
+    $img_data = @getimagesize($file);
+    $aspectRatioOriginal = $img_data[0] / $img_data[1];
+    $aspectRatio = $width / $height;
+    
+    if( $aspectRatio>$aspectRatioOriginal )
+        $width = 0;
+    elseif( $aspectRatio<$aspectRatioOriginal )
+        $height = 0;
+}
+
+if( isset( $_REQUEST['nocropmin'] ) && ( $width && $height ) ){
+    $img_data = @getimagesize($file);
+    $aspectRatioOriginal = $img_data[0] / $img_data[1];
+    $aspectRatio = $width / $height;
+    
+    if( $aspectRatio<$aspectRatioOriginal )
+        $width = 0;
+    elseif( $aspectRatio>$aspectRatioOriginal )
+        $height = 0;
+}
+
+
 // Проверяем наличие изображения
 if (! empty($filename) && file_exists($file))
 {
@@ -52,10 +75,12 @@ if (! empty($filename) && file_exists($file))
 		. ($width ? '-w' . $width : '') . ($height ? '-h' . $height : '') . '-' . $filename;
 
 	// Проверяем наличие миниатюры с нужными размерами
-	if (file_exists($thumb_file))
+	if (file_exists($thumb_file)&&filemtime($thumb_file)>filemtime($file))
 	{
 		$img_data = @getimagesize($file);
 		header('Content-Type:' . $img_data['mime'], true);
+		header("Last-Modified: ".gmdate("D, d M Y H:i:s".filemtime($thumb_file))." GMT");
+		header("Content-Length: " . (string) filesize($thumb_file), true);
 		readfile($thumb_file);
 		exit;
 	}
@@ -79,11 +104,15 @@ require(BASE_DIR . '/class/class.thumbnail.php');
 
 $img = new Image_Toolbox($file);
 
+// если указано, что не обрезать, а помещать в установленные размеры, и при этом эти размеры явно заданы...
+
 $img->newOutputSize($width, $height, 1, false);
 
 //$img->addText('AVE.cms 2.09', BASE_DIR . '/inc/fonts/ft16.ttf', 16, '#709536', 'right -10', 'bottom -10');
 
-$img->output();
+header('Content-Type:' . $img_data['mime'], true);
+header("Last-Modified: ".gmdate("D, d M Y H:i:s".filemtime($thumb_file))." GMT");
+header("Content-Length: " . (string) filesize($thumb_file), true);
 
 if (! empty($thumb_file))
 {
@@ -92,5 +121,5 @@ if (! empty($thumb_file))
 	chmod($thumb_file, 0644);
     umask($oldumask);
 }
-
+$img->output();
 ?>
