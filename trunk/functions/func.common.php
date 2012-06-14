@@ -10,6 +10,23 @@ if (file_exists(BASE_DIR."/functions/func.custom.php")) include (BASE_DIR."/func
  */
 
 /**
+ * Функция загрузки файлов с удаленного сервера через CURL
+ * как альтернатива для file_get_conents
+ */
+function CURL_file_get_contents($sourceFileName){
+	$ch = curl_init();
+	curl_setopt($ch, CURLOPT_URL, $sourceFileName);
+	curl_setopt($ch, CURLOPT_TIMEOUT, 20);
+	curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+
+	$st = curl_exec($ch);
+	curl_close($ch);
+	return ($st);
+}
+
+ 
+ 
+/**
  * Рекурсивно чистит директорию
  *
  * @param $dir	Директория
@@ -241,7 +258,7 @@ function parse_hide($data){
 	static $i = null;
 	preg_match_all('/\[tag:hide:(\d+,)*'.UGROUP.'(,\d+)*(:.*?)?].*?\[\/tag:hide]/s', $data, $matches, PREG_SET_ORDER);
 	for ($i=0; $i<=count($matches); $i++) {
-		$hidden_text = substr($matches[$i][3],1);
+		$hidden_text = substr(@$matches[$i][3],1);
 		if ($hidden_text == "") $hidden_text = trim(get_settings('hidden_text'));
 		$data = preg_replace('/\[tag:hide:(\d+,)*'.UGROUP.'(,\d+)*(:.*?)?].*?\[\/tag:hide]/s', $hidden_text, $data, 1);
 	}
@@ -774,30 +791,91 @@ function get_document_fields($document_id)
  * @param int $short {0|1} признак формирования короткой формы
  * @return string
  */
+function ucfirst_utf8($str){
+        $string = mb_strtoupper(mb_substr($str, 0, 1)) . mb_substr($str, 1);
+        return $string;
+} 
+ 
 function get_username($login = '', $first_name = '', $last_name = '', $short = 1)
 {
 	if ($first_name != '' && $last_name != '')
 	{
-		//if ($short == 1) $first_name = substr($first_name, 0, 1) . '.';
-		//return ucfirst(strtolower($first_name)) . ' ' . ucfirst(strtolower($last_name));
-		return ucfirst(strtolower($login));
+		if ($short == 1) $first_name = mb_substr($first_name, 0, 1) . '.';
+		return ucfirst_utf8(mb_strtolower($first_name)) . ' ' . ucfirst_utf8(mb_strtolower($last_name));
+		return ucfirst_utf8(mb_strtolower($login));
 	}
 	elseif ($first_name != '' && $last_name == '')
 	{
-		return ucfirst(strtolower($first_name));
+		return ucfirst_utf8(mb_strtolower($first_name));
 	}
 	elseif ($first_name == '' && $last_name != '')
 	{
-		return ucfirst(strtolower($last_name));
+		return ucfirst_utf8(mb_strtolower($last_name));
 	}
 	elseif ($login != '')
 	{
-		return ucfirst(strtolower($login));
+		return ucfirst_utf8(mb_strtolower($login));
 	}
 
 //	return get_settings('anonymous');
 	return 'Anonymous';
 }
+
+/**
+ * Возвращает запись из юзерс по идентификатору
+ * не делает лишних запросов
+ *
+ * @param int $id - идентификатор пользователя
+ * @return string
+ */
+
+function get_user_rec_by_id($id){
+	global $AVE_DB;
+
+	static $users = array();
+
+	if (!isset($users[$id]))
+	{
+		$row = $AVE_DB->Query("
+			SELECT
+				*
+			FROM " . PREFIX . "_users
+			WHERE Id = '" . (int)$id . "'
+		")->FetchRow();
+
+		$users[$id] = $row;
+	}
+	return $users[$id];
+
+}
+
+
+/**
+ * Возвращает имя пользователя по его идентификатору
+ *
+ * @param int $id - идентификатор пользователя
+ * @return string
+ */
+function get_userlogin_by_id($id)
+{
+	$rec=get_user_rec_by_id($id);
+	
+	return $rec->user_name;
+}
+
+/**
+ * Возвращает имя пользователя по его идентификатору
+ *
+ * @param int $id - идентификатор пользователя
+ * @return string
+ */
+function get_useremail_by_id($id)
+{
+	$rec=get_user_rec_by_id($id);
+	
+	return $rec->email;
+}
+
 
 /**
  * Возвращает имя пользователя по его идентификатору
@@ -807,25 +885,9 @@ function get_username($login = '', $first_name = '', $last_name = '', $short = 1
  */
 function get_username_by_id($id)
 {
-	global $AVE_DB;
-
-	static $users = array();
-
-	if (!isset($users[$id]))
-	{
-		$row = $AVE_DB->Query("
-			SELECT
-				user_name,
-				firstname,
-				lastname
-			FROM " . PREFIX . "_users
-			WHERE Id = '" . (int)$id . "'
-		")->FetchRow();
-
-		$users[$id] = !empty($row) ? get_username($row->user_name, $row->firstname, $row->lastname, 1) : get_username();
-	}
-
-	return $users[$id];
+	$row=get_user_rec_by_id($id);
+	$row = !empty($row) ? get_username($row->user_name, $row->firstname, $row->lastname, 1) : get_username();
+	return $row;
 }
 
 /**
@@ -1169,5 +1231,6 @@ if (!defined('PHP_EOL')) {
             define('PHP_EOL', "\n");
     }
 }
+
 
 ?>
