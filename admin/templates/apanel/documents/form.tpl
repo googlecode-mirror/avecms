@@ -263,14 +263,14 @@ $('#document_published').datetimepicker({ldelim}
 		<tr>
 			<td>{#DOC_START_PUBLICATION#}</td>
 			<td>				
-				<input id="document_published" name="document_published" type="text" value="{$document->document_published|date_format:"%d.%m.%Y %H:%M"}" />
+				<input id="document_published" name="document_published" type="text" value="{$document->document_published|date_format:"%d.%m.%Y %H:%M"}" {if $document->Id == 1 || $document->Id == 2}disabled{/if} />
 			</td>
 		</tr>
 
 		<tr>
 			<td>{#DOC_END_PUBLICATION#}</td>
 			<td>
-				<input id="document_expire" name="document_expire" type="text" value="{$document->document_expire|date_format:"%d.%m.%Y %H:%M"}" />
+				<input id="document_expire" name="document_expire" type="text" value="{$document->document_expire|date_format:"%d.%m.%Y %H:%M"}" {if $document->Id == 1 || $document->Id == 2}disabled{/if} />
 			</td>
 		</tr>
 
