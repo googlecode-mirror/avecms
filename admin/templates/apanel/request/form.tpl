@@ -109,6 +109,23 @@ function changeRub(select) {ldelim}
 			</td>
 		</tr>
 
+		
+		<tr>
+			<td class="first">{#REQUEST_SORT_BY_NAT#}</td>
+			<td class="second">
+				<select {$dis} style="width:250px" name="request_order_by_nat" id="request_order_by_nat">
+					<option></option>
+					{foreach from=$tags item=tag}
+					  <option value="{$tag->Id}" {if $tag->Id == $row->request_order_by_nat}selected="selected"{/if}>{$tag->rubric_field_title}</option>
+					{/foreach}
+				</select>
+			</td>
+		</tr>
+		
+
+		
+		
+		
 		<tr>
 			<td class="first">{#REQUEST_ASC_DESC#}</td>
 			<td class="second">
@@ -123,6 +140,7 @@ function changeRub(select) {ldelim}
 			<td class="first">{#REQUEST_DOC_PER_PAGE#}</td>
 			<td class="second">
 				<select {$dis} style="width:100px" name="request_items_per_page" id="request_items_per_page">
+					<option value="0" {if $row->request_items_per_page==all} selected="selected"{/if}>{#REQUEST_DOC_PER_PAGE_ALL#}</option>
 					{section name=zahl loop=300 step=1 start=0}
 						<option value="{$smarty.section.zahl.index+1}"{if $row->request_items_per_page==$smarty.section.zahl.index+1} selected="selected"{/if}>{$smarty.section.zahl.index+1}</option>
 					{/section}
@@ -163,6 +181,13 @@ function changeRub(select) {ldelim}
 							<strong><a href="javascript:void(0);" onclick="editAreaLoader.insertTags('{$js_textfeld}', '[tag:pagetitle]', '');">[tag:pagetitle]</a></strong>
 						</td>
 						<td class="first">{#REQUEST_CDOCID_TITLE#}</td>
+					</tr>
+					
+					<tr>
+						<td scope="row" class="first">
+							<strong><a href="javascript:void(0);" onclick="editAreaLoader.insertTags('{$js_textfeld}', '[tag:doctotal]', '');">[tag:doctotal]</a></strong>
+						</td>
+						<td class="first">{#REQUEST_DOC_COUNT#}</td>
 					</tr>
 					
 					<tr>
