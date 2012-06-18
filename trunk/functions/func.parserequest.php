@@ -223,7 +223,17 @@ function request_parse($id)
 		$item_template = $row_ab->request_template_item;
 		$request_order_by = $row_ab->request_order_by;
 		$request_asc_desc = $row_ab->request_asc_desc;
+		$request_order = $request_order_by . " " . $request_asc_desc; 
+		$request_order_fields = '';
+		$request_order_tables = '';
 
+		if ($row_ab->request_order_by_nat) {
+		    $request_order_tables="LEFT JOIN ". PREFIX . "_document_fields AS s" .$row_ab->request_order_by_nat. "
+			    ON (s" .$row_ab->request_order_by_nat. ".document_id = a.Id and s" .$row_ab->request_order_by_nat. ".rubric_field_id=".$row_ab->request_order_by_nat.")";
+		    $request_order_fields="s".$row_ab->request_order_by_nat.".field_value, ";	
+		    $request_order = "s" .$row_ab->request_order_by_nat. ".field_value ".$row_ab->request_asc_desc;
+		}
+		
  		$doctime = get_settings('use_doctime') 
  		        	? ("AND a.document_published <= UNIX_TIMESTAMP() AND
  		         	(a.document_expire = 0 OR a.document_expire >=UNIX_TIMESTAMP())") : '';
@@ -295,6 +305,7 @@ function request_parse($id)
 		{
 			$q =  " ?>
 				SELECT
+					". $request_order_fields ."
 					a.Id,
 					a.document_title,
 					a.document_alias,
@@ -308,6 +319,7 @@ function request_parse($id)
 				LEFT JOIN
 					" . PREFIX . "_modul_comment_info AS b
 						ON b.document_id = a.Id
+				    ". ($request_order_tables>'' ? $request_order_tables : '') . "	
 				WHERE
 					a.Id != '1'
 				AND a.Id != '" . PAGE_NOT_FOUND_ID . "'
@@ -318,7 +330,7 @@ function request_parse($id)
 				" . $where_cond['where'] . "
 				" . $doctime . "
 				GROUP BY a.Id
-				ORDER BY " . $request_order_by . " " . $request_asc_desc . "
+				ORDER BY " . $request_order . "
 				LIMIT " . $start . "," . $limit .
 			" <?php ";
 		}
@@ -326,6 +338,7 @@ function request_parse($id)
 		{
 			$q =  " ?>
 				SELECT
+					". $request_order_fields ."
 					a.Id,
 					a.document_title,
 					a.document_alias,
@@ -334,7 +347,9 @@ function request_parse($id)
 					a.document_published
 				FROM
 					".($where_cond['from'] ? $where_cond['from'] : '')."
+					
 					" . PREFIX . "_documents AS a
+					". ($request_order_tables>'' ? $request_order_tables : "") . "
 				WHERE
 					a.Id != '1'
 				AND a.Id != '" . PAGE_NOT_FOUND_ID . "'
@@ -344,11 +359,12 @@ function request_parse($id)
 				AND a.document_status != '0'
 				" . $where_cond['where'] . "
 				" . $doctime . "
-				ORDER BY " . $request_order_by . " " . $request_asc_desc . "
+				ORDER BY " . $request_order . "
 				LIMIT " . $start . "," . $limit .
 			" <?php ";
 		}
 		$q=eval2var($q);
+		
 		$q=$AVE_DB->Query($q,$ttl,'rub_'.$row_ab->rubric_id);
 		if ($q->NumRows() > 0)
 		{
@@ -409,6 +425,7 @@ function request_parse($id)
 		}
 
 		$main_template = str_replace('[tag:pages]', $page_nav, $main_template);
+		$main_template = str_replace('[tag:doctotal]', $seiten*$q->NumRows(), $main_template);
 		$main_template = str_replace('[tag:pagetitle]', $AVE_DB->Query("SELECT document_title FROM " . PREFIX . "_documents WHERE Id = '".$AVE_Core->curentdoc->Id."' ")->GetCell(), $main_template);
 		$main_template = str_replace('[tag:docid]', $AVE_Core->curentdoc->Id, $main_template);
 		$main_template = str_replace('[tag:docdate]', pretty_date(strftime(DATE_FORMAT, $AVE_Core->curentdoc->document_published)), $main_template);

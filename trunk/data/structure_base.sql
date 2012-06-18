@@ -122,6 +122,7 @@ CREATE TABLE `%%PRFX%%_request` (
   `request_template_item` text NOT NULL,
   `request_template_main` text NOT NULL,
   `request_order_by` varchar(255) NOT NULL,
+  `request_order_by_nat` int(10) NOT NULL DEFAULT '0',
   `request_author_id` int(10) unsigned NOT NULL default '1',
   `request_created` int(10) unsigned NOT NULL,
   `request_description` tinytext NOT NULL,
