@@ -752,19 +752,34 @@ class AVE_Document
 					$suche = (isset($data['document_in_search']) && $data['document_in_search'] == 1) ? 1 : 0;
 					$document_status = !empty($data['document_status']) ? (int)$data['document_status'] : '0';
 					$document_status = ($document_id == 1 || $document_id == PAGE_NOT_FOUND_ID) ? '1' : $document_status;
-					$data['document_alias'] = $_url = prepare_url(empty($data['document_alias']) ? trim($data['prefix'] . '/' . $data['doc_title'], '/') : $data['document_alias']);
-					$cnt = 1;
-					while (
-						$AVE_DB->Query("
-							SELECT 1
+
+					if ( preg_replace('/%id/', '', $data['document_alias']) ) {
+						$max = $AVE_DB->Query("
+							SELECT MAX(Id)
 							FROM " . PREFIX . "_documents
-							WHERE document_alias = '" . $data['document_alias'] . "'
-							LIMIT 1
-						")->NumRows())
-					{
-						$data['document_alias'] = $_url . '-' . $cnt;
-						$cnt++;
+						")->GetCell();
+
+						$data['document_alias'] = preg_replace('/%id/', $max+1, $data['document_alias']);
+					} else {
+
+						$data['document_alias'] = $_url = prepare_url(empty($data['document_alias']) ? trim($data['prefix'] . '/' . $data['doc_title'], '/') : $data['document_alias']);
+
+						$cnt = 1;
+						while (
+							$AVE_DB->Query("
+								SELECT 1
+								FROM " . PREFIX . "_documents
+								WHERE document_alias = '" . $data['document_alias'] . "'
+								LIMIT 1
+							")->NumRows())
+						{
+
+							$data['document_alias'] = $_url . '-' . $cnt;
+							$cnt++;
+						}
+
 					}
+					
 
 			}
 					$docstart	= ($document_id == 1 || $document_id == PAGE_NOT_FOUND_ID) ? '0' : $this->_documentStart($data['document_published']);
