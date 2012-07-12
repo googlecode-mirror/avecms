@@ -154,6 +154,8 @@ function check_name() {ldelim}
 
 <br />
 
+
+
 <div class="iconHelpSegmentBox">
 	<div class="segmentBoxHeader">
 		<div class="segmentBoxTitle">&nbsp;</div>
@@ -165,5 +167,17 @@ function check_name() {ldelim}
 		<img class="absmiddle" src="{$tpl_dir}/images/icon_template.gif" alt="" border="0" /> - {#RUBRIK_EDIT_TEMPLATE#}<br />
 		<img class="absmiddle" src="{$tpl_dir}/images/icon_copy.gif" alt="" border="0" /> - {#RUBRIK_MULTIPLY#}<br />
 		<img class="absmiddle" src="{$tpl_dir}/images/icon_del.gif" alt="" border="0" /> - {#RUBRIK_DELETE_LEGEND#}
+	</div>
+</div>
+
+<div class="iconHelpSegmentBox" style="margin-right:10px;">
+	<div class="segmentBoxHeader">
+		<div class="segmentBoxTitle">&nbsp;</div>
+	</div>
+	<div class="segmentBoxContent">
+		<img class="absmiddle" src="{$tpl_dir}/images/arrow.gif" alt="" border="0" /> <strong>{#RUBRIK_FORMAT#}</strong><br>
+		<br />
+		<strong>%d-%m-%Y</strong> - {#RUBRIK_FORMAT_TIME#}<br>
+		<strong>%id</strong> - {#RUBRIK_FORMAT_ID#}
 	</div>
 </div>
