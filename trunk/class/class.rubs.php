@@ -453,13 +453,13 @@ class AVE_Rubric
 			array_push($groups,$row);
 		}
 		$sql = $AVE_DB->Query("
-			SELECT rubric_title
+			SELECT rubric_title, rubric_code_start, rubric_code_end 
 			FROM " . PREFIX . "_rubrics
 			WHERE id = '" . $rubric_id . "'
 			LIMIT 1
 		");
-		$rubrikName = $sql->GetCell();
-		$AVE_Template->assign('rubric_title', $rubrikName);
+		$rubrik = $sql->FetchRow();
+		$AVE_Template->assign('rubric', $rubrik);
 		$AVE_Template->assign('groups', $groups);
 		$AVE_Template->assign('felder', get_field_type());
 		$AVE_Template->assign('content', $AVE_Template->fetch('rubs/rub_fields.tpl'));
@@ -518,6 +518,28 @@ class AVE_Rubric
 
 			reportLog($_SESSION['user_name'] . ' - добавил поле рубрики (' . stripslashes($_POST['TitelNew']) . ')', 2, 2);
 		}
+
+		header('Location:index.php?do=rubs&action=edit&Id=' . $rubric_id . '&cp=' . SESSION);
+		exit;
+	}
+
+	/**
+	 * Редактирование кода для рубрики
+	 *
+	 * @param int $rubric_id	идентификатор рубрики
+	 */
+	function rubricCode($rubric_id = 0)
+	{
+		global $AVE_DB;
+
+		$AVE_DB->Query("
+					UPDATE " . PREFIX . "_rubrics
+					SET
+						rubric_code_start           = '" . $_POST['rubric_code_start'] . "',
+						rubric_code_end             = '" . $_POST['rubric_code_end'] . "'
+					WHERE
+						Id = '" . $rubric_id . "'
+		");
 
 		header('Location:index.php?do=rubs&action=edit&Id=' . $rubric_id . '&cp=' . SESSION);
 		exit;
