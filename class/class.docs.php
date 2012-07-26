@@ -683,6 +683,10 @@ class AVE_Document
 		//определяем тип опреации
 		$oper='INSERT';
 
+		// выполняем стартовый код рубрики
+		$code = $AVE_DB->Query("SELECT rubric_code_start, rubric_code_end FROM " . PREFIX . "_rubrics WHERE Id = '" . $rubric_id . "'")->FetchRow();
+		eval ('?>' . $code->rubric_code_start . '<?');
+
 		if($document_id>0)$oper='UPDATE';
 		// Если пользователь имеет права на добавление документов в указанную рубрику, тогда
 		if ($oper=='INSERT' && !( (isset($_SESSION[$rubric_id . '_newnow'])  && $_SESSION[$rubric_id . '_newnow'] == 1)
@@ -908,6 +912,10 @@ class AVE_Document
 						FROM " . PREFIX . "_rubric_template_cache
 						WHERE doc_id = '" . $document_id . "'
 					");
+
+		// выполняем финишный код рубрики
+		eval ('?>' . $code->rubric_code_end . '<?');
+
 		//чистим кеш
 		$AVE_DB->clearcache('rub_'.$rubric_id);			
 		$AVE_DB->clearcache('doc_'.$document_id);			

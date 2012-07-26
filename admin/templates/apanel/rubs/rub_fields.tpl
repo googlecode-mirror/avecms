@@ -11,7 +11,7 @@ $(document).ready(function(){ldelim}
 <div id="pageHeaderTitle" style="padding-top:7px;">
 	<div class="h_rubs">&nbsp;</div>
 	<div class="HeaderTitle">
-		<h2>{#RUBRIK_EDIT_FIELDS#}<span style="color:#000;"> &gt; {$rubric_title}</span></h2>
+		<h2>{#RUBRIK_EDIT_FIELDS#}<span style="color:#000;"> &gt; {$rubric->rubric_title}</span></h2>
 	</div>
 	{if !$rub_fields}
 		<div class="HeaderText">{#RUBRIK_NO_FIELDS#}</div>
@@ -138,6 +138,49 @@ $(document).ready(function(){ldelim}
 </form><br />
 <br />
 {/if}
+
+
+<table cellspacing="1" cellpadding="8" border="0" width="100%">
+	<tr>
+		<td class="second">
+			<div id="otherLinks">
+				<a href="javascript:void(0);" onclick="$('#coder').toggle();">
+					<div class="taskTitle">{#RUBRIK_CODE#}</div>
+				</a>
+			</div>
+		</td>
+	</tr>
+</table>
+
+<form id="coder" action="index.php?do=rubs&amp;action=edit&amp;Id={$smarty.request.Id|escape}&amp;cp={$sess}" method="post">
+	<table width="100%" border="0" cellspacing="1" cellpadding="7" class="tableborder">
+		<col class="second">
+		<col class="second">
+		<tr class="tableheader">
+			<td>{#RUBRIK_CODE_START#}</td>
+			<td>{#RUBRIK_CODE_END#}</td>
+		</tr>
+
+		<tr>
+			<td>
+				<textarea name="rubric_code_start" type="text" id="code_start" value="" style="width:99%;height:300px;" />{$rubric->rubric_code_start}</textarea>
+			</td>
+
+			<td>
+				<textarea name="rubric_code_end" type="text" id="code_end" value="" style="width:99%;height:300px;" />{$rubric->rubric_code_end}</textarea>
+			</td>
+		</tr>
+
+		<tr>
+			<td colspan="2" class="third">
+				<input type="hidden" name="submit" value="code" id="code" />
+				<input class="button" type="submit" value="{#RUBRIK_BUTTON_SAVE#}" /><br />
+			</td>
+		</tr>
+	</table>
+</form><br />
+<br />
+
 
 <table cellspacing="1" cellpadding="8" border="0" width="100%">
 	<tr>

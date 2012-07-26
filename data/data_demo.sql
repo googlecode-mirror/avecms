@@ -753,15 +753,15 @@ INSERT INTO `%%PRFX%%_rubric_permissions` VALUES (1, 1, 1, 'docread|alles|new|ne
 (19, 5, 3, 'docread|new|editown'),
 (20, 5, 4, 'docread');#inst#
 
-INSERT INTO `%%PRFX%%_rubrics` VALUES (1, 'Основные страницы', '', '<h2 id="page-heading">[tag:fld:4]</h2>\r\n[tag:fld:2][tag:fld:1]\r\n<div style="clear:both"></div>', 1, 1, 1250295071, 1),
-(2, 'Новости', 'новости/%Y-%m-%d', '<h2 id="page-heading">[tag:fld:10]</h2>\r\n[tag:fld:27]\r\n[tag:fld:6]\r\n[tag:fld:5]\r\n[mod_moredoc]\r\n[mod_comment]', 1, 1, 1250295071, 1),
-(3, 'Статьи', 'article', '<h2 id="page-heading">[tag:fld:29]</h2>\r\n[tag:fld:31][tag:fld:30]', 1, 1, 1272800070, 1),
+INSERT INTO `%%PRFX%%_rubrics` VALUES (1, 'Основные страницы', '', '<h2 id="page-heading">[tag:fld:4]</h2>\r\n[tag:fld:2][tag:fld:1]\r\n<div style="clear:both"></div>', 1, 1, 1250295071, 1, '', ''),
+(2, 'Новости', 'новости/%Y-%m-%d', '<h2 id="page-heading">[tag:fld:10]</h2>\r\n[tag:fld:27]\r\n[tag:fld:6]\r\n[tag:fld:5]\r\n[mod_moredoc]\r\n[mod_comment]', 1, 1, 1250295071, 1, '', ''),
+(3, 'Статьи', 'article', '<h2 id="page-heading">[tag:fld:29]</h2>\r\n[tag:fld:31][tag:fld:30]', 1, 1, 1272800070, 1, '', ''),
 (4, 'Товары', '', '[tag:fld:33]\r\n<form id="product" class="product" method="get" action="[tag:path]index.php">\r\n	<input type="hidden" name="module" value="basket" />\r\n	<input
 type="hidden" name="action" value="add" />\r\n	<input type="hidden" name="p_id" value="[tag:docid]" />\r\n	<input type="hidden" name="p_name" value="33" />\r\n	<input type="hidden"
 name="p_price" value="35" />\r\n	[tag:fld:36]\r\n	[tag:fld:35]\r\n	<div class="product-to-basket">\r\n		<input type="text" name="quantity" value="1" size="1"
 maxlength="2" />\r\n		<input type="submit" class="button" value="Добавить в корзину" />\r\n	</div>\r\n</form>\r\n[tag:fld:34]\r\n<hr />\r\n[mod_sysblock:19]\r\n[mod_moredoc]', 1, 1,
-1281988666, 1),
-(5, 'Галереи', '', '<h2 id="page-heading">[tag:fld:38]</h2>\r\n[tag:fld:40][tag:fld:39]\r\n<div class="clear"></div>', 4, 1, 1287796608, 1);#inst#
+1281988666, 1, '', ''),
+(5, 'Галереи', '', '<h2 id="page-heading">[tag:fld:38]</h2>\r\n[tag:fld:40][tag:fld:39]\r\n<div class="clear"></div>', 4, 1, 1287796608, 1, '', '');#inst#
 
 INSERT INTO `%%PRFX%%_settings` VALUES (1, 'AVE.cms 2.09e', 'mail', 'text/plain', 465, 'smtp.gmail.com', 'yourusername@gmail.com', 'yourpassword', '/usr/sbin/sendmail', 50, 'info@avecms.ru', 'Admin', 'Здравствуйте %NAME%,\r\nВаша регистрация на сайте %HOST%. \r\n\r\nТеперь Вы можете войти на %HOST% со следующими данными:: \r\n\r\nПароль: %KENNWORT%\r\nE-Mail: %EMAIL%\r\n\r\n-----------------------\r\n%EMAILFUSS%\r\n\r\n', '--------------------\r\nOverdoze Team\r\nwww.overdoze.ru\r\ninfo@overdoze.ru\r\n--------------------', 2, '<h2>Ошибка...</h2>\r\n<br />\r\nУ Вас нет прав на просмотр этого документа!.', '<div class="page_navigation_box">%s</div>', 'Первая «', '» Последняя', '…', '»', '«', 'Страница %d из %d', '%d %B %Y', '%d %B %Y, %H:%M', 'ru', '0', '0', '<div class="hidden_box">Содержимое скрыто. Пожалуйста, <a href="index.php?module=login&action=register">зарегистрируйтесь</a></div>');#inst#
 

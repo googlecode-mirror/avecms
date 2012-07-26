@@ -115,6 +115,10 @@ switch($_REQUEST['action'])
 							$AVE_Rubric->rubricFieldSave((int)$_REQUEST['Id']);
 							break;
 
+						case 'code':
+							$AVE_Rubric->rubricCode((int)$_REQUEST['Id']);
+							break;
+
 						case 'next':
 							header('Location:index.php?do=rubs&action=template&Id=' . $_REQUEST['Id'] . '&cp=' . SESSION);
 							exit;
