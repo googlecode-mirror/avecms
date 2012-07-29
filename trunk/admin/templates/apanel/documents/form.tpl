@@ -263,14 +263,14 @@ $('#document_published').datetimepicker({ldelim}
 		<tr>
 			<td>{#DOC_START_PUBLICATION#}</td>
 			<td>				
-				<input id="document_published" name="document_published" type="text" value="{$document->document_published|date_format:"%d.%m.%Y %H:%M"}" {if $document->Id == 1 || $document->Id == 2}disabled{/if} />
+				<input id="document_published" name="document_published" type="text" value="{$document->document_published|date_format:"%d.%m.%Y %H:%M"}" />
 			</td>
 		</tr>
 
 		<tr>
 			<td>{#DOC_END_PUBLICATION#}</td>
 			<td>
-				<input id="document_expire" name="document_expire" type="text" value="{$document->document_expire|date_format:"%d.%m.%Y %H:%M"}" {if $document->Id == 1 || $document->Id == 2}disabled{/if} />
+				<input id="document_expire" name="document_expire" type="text" value="{$document->document_expire|date_format:"%d.%m.%Y %H:%M"}" />
 			</td>
 		</tr>
 
@@ -318,7 +318,7 @@ $('#document_published').datetimepicker({ldelim}
 			<td>{#DOC_USE_BREADCRUMB#}</td>
 			<td>
 				<input name="document_parent" type="text" id="document_parent" value="{$document->document_parent}" size="4" maxlength="10" />&nbsp;
-				<span class="button" onClick="openLinkWin('document_parent','document_parent');">выбрать</span>
+				<span class="button" onClick="openLinkWin('document_parent','document_parent');">выбрать</span> {if $document->parent}Связан с «<a href="{$ABS_PATH}index.php?id={$document->parent->Id}" target="_blank">{$document->parent->document_title}</a>»{/if}
 			</td>
 		</tr>
 
