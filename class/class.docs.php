@@ -1185,6 +1185,8 @@ class AVE_Document
 					$document->rubric_url_prefix = $AVE_Rubric->rubricNameByIdGet($document->rubric_id)->rubric_alias;
 					$document->formaction = 'index.php?do=docs&action=edit&sub=save&Id=' . $document_id . '&cp=' . SESSION;
 
+					if ($document->document_parent != 0) $document->parent = $AVE_DB->Query("SELECT document_title, Id FROM " . PREFIX . "_documents WHERE Id = '".$document->document_parent."' ")->FetchRow();
+
 					$AVE_Template->assign('document', $document);
 //					$AVE_Template->assign('DEF_DOC_END_YEAR', mktime(date("H"), date("i"), 0, date("m"), date("d"), date("Y") + 10));
 
