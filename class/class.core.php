@@ -832,9 +832,11 @@ class AVE_Core
 	function coreUrlParse($get_url = '')
 	{
 		global $AVE_DB;
-
+		
 		$get_url = rawurldecode($get_url);
 		$get_url = mb_substr($get_url, strlen(ABS_PATH));
+		$test_url = $get_url; // сохранение старого урла для првоерки использования суффикса
+
 		if (mb_substr($get_url, - strlen(URL_SUFF)) == URL_SUFF)
 		{
 			$get_url = mb_substr($get_url, 0, - strlen(URL_SUFF));
@@ -842,8 +844,7 @@ class AVE_Core
 
 		// Разбиваем строку пароаметров на отдельные части
         $get_url = explode('/', $get_url);
-
-		$get_url = array_combine($get_url, $get_url);
+		//$get_url = array_combine($get_url, $get_url);
 
 		if (isset ($get_url['index']))
 		{
@@ -882,6 +883,10 @@ class AVE_Core
 
 //		unset ($pages);
 
+		if(!empty($_REQUEST['id'])) { // проверка на наличие id в запросе
+			$get_url = $AVE_DB->Query("SELECT document_alias FROM " . PREFIX . "_documents WHERE Id = '".(int)$_REQUEST['id']."' ")->GetCell();
+		}
+
         // Выполняем запрос к БД на получение
 		$sql = $AVE_DB->Query("
 			SELECT
@@ -911,6 +916,12 @@ class AVE_Core
 		{
 			$_GET['id']  = $_REQUEST['id']  = $this->curentdoc->Id;
 			$_GET['doc'] = $_REQUEST['doc'] = $this->curentdoc->document_alias;
+
+			// перенаправление на адреса с суффиксом
+			if ($test_url !== $get_url.URL_SUFF && !$pages && $test_url) {
+				header('HTTP/1.1 301 Moved Permanently');
+				header('Location:' . ABS_PATH.$get_url.URL_SUFF);
+			}
 		}
 		else
 		{
