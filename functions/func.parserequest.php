@@ -301,6 +301,10 @@ function request_parse($id)
 			$start  = 0;
 		}
 
+		if ($row_ab->request_items_per_page != 0) {
+			$filter_limit = "LIMIT " . $start . "," . $limit;
+		}
+
 		if (!empty($AVE_Core->install_modules['comment']->Status))
 		{
 			$q =  " ?>
@@ -331,7 +335,7 @@ function request_parse($id)
 				" . $doctime . "
 				GROUP BY a.Id
 				ORDER BY " . $request_order . "
-				LIMIT " . $start . "," . $limit .
+				" . $filter_limit .
 			" <?php ";
 		}
 		else
@@ -360,11 +364,12 @@ function request_parse($id)
 				" . $where_cond['where'] . "
 				" . $doctime . "
 				ORDER BY " . $request_order . "
-				LIMIT " . $start . "," . $limit .
+				" . $filter_limit .
 			" <?php ";
 		}
+
 		$q=eval2var($q);
-		
+
 		$q=$AVE_DB->Query($q,$ttl,'rub_'.$row_ab->rubric_id);
 		if ($q->NumRows() > 0)
 		{
@@ -378,7 +383,7 @@ function request_parse($id)
 		}
 
 		$page_nav   = '';
-		if ($row_ab->request_show_pagination == 1 && $seiten > 1)
+		if ($row_ab->request_show_pagination == 1 && $seiten > 1 && $row_ab->request_items_per_page != 0)
 		{
 			$page_nav = ' <a class="pnav" href="index.php?id=' . $AVE_Core->curentdoc->Id
 				. '&amp;doc=' . (empty($AVE_Core->curentdoc->document_alias) ? prepare_url($AVE_Core->curentdoc->document_title) : $AVE_Core->curentdoc->document_alias)
@@ -425,7 +430,7 @@ function request_parse($id)
 		}
 
 		$main_template = str_replace('[tag:pages]', $page_nav, $main_template);
-		$main_template = str_replace('[tag:doctotal]', $num, $main_template);
+		$main_template = str_replace('[tag:doctotal]', $seiten*$q->NumRows(), $main_template);
 		$main_template = str_replace('[tag:pagetitle]', $AVE_DB->Query("SELECT document_title FROM " . PREFIX . "_documents WHERE Id = '".$AVE_Core->curentdoc->Id."' ")->GetCell(), $main_template);
 		$main_template = str_replace('[tag:docid]', $AVE_Core->curentdoc->Id, $main_template);
 		$main_template = str_replace('[tag:docdate]', pretty_date(strftime(DATE_FORMAT, $AVE_Core->curentdoc->document_published)), $main_template);
