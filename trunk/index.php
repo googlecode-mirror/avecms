@@ -25,7 +25,7 @@ if (! isset($_REQUEST['sub'])) $_REQUEST['sub'] = '';
 
 require(BASE_DIR . '/class/class.core.php');
 $AVE_Core = new AVE_Core;
-if (empty($_REQUEST['module']) && empty($_REQUEST['id'])) $AVE_Core->coreUrlParse($_SERVER['REQUEST_URI']);
+if (empty($_REQUEST['module'])) $AVE_Core->coreUrlParse($_SERVER['REQUEST_URI']);
 $AVE_Core->coreSiteFetch(get_current_document_id());
 
 $content = ob_get_clean();
