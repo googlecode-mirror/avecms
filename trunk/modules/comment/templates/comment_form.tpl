@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=windows-1251" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title>{#COMMENT_NEW_TITLE#}</title>
 <link href="templates/{$theme}/css/style.css" rel="stylesheet" type="text/css" media="screen" />
 <script src="templates/{$theme}/js/common.js" type="text/javascript"></script>
