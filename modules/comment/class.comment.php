@@ -432,7 +432,7 @@ class Comment
 
             $comment_max_chars = ($row['comment_max_chars'] != '' && $row['comment_max_chars'] > 10) ? $row['comment_max_chars'] : 20;
 
-			$comment_text = iconv('utf-8', 'cp1251', $_POST['text']);
+			$comment_text = $_POST['text'];
 
 			// Преобразуем все HTML сущности к числовым аналогам
 			$comment_text = preg_replace_callback('/&([a-zA-Z][a-zA-Z0-9]{1,7});/', 'convert_entity', $comment_text);
