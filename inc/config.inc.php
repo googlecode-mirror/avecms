@@ -1,4 +1,6 @@
-<?	//Использовать ЧПУ<br> Адреса вида index.php будут преобразованы в /home/
+<?php
+
+	//Использовать ЧПУ<br> Адреса вида index.php будут преобразованы в /home/
 	define('REWRITE_MODE',true);
 
 	//Использовать транслит в ЧПУ <br> адреса вида /страница/ поменяються на /page/
@@ -59,7 +61,7 @@
 	define('Memcached_Port','');
 
 	//Версия сборки
-	define('BILD_VERSION',320);
+	define('BILD_VERSION',327);
 	
 	//Проверка обновлений
 	define('SVN_ACTIVE',false);

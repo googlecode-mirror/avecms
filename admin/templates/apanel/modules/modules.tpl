@@ -13,8 +13,7 @@
 	</ul>
 {/if}
 
-{assign var=permission_modules_admin value=check_permission('modules_admin')}
-{if $permission_modules_admin}
+{if check_permission('modules_admin')}
 	<form method="post" action="index.php?do=modules&action=quicksave&cp={$sess}">
 {/if}
 
@@ -26,7 +25,7 @@
 	<col width="150" />
 	<col />
 	<col width="90" />
-	{if $permission_modules_admin}
+	{if check_permission('modules_admin')}
 		<col width="30" />
 		<col width="30" />
 		<col width="30" />
@@ -37,7 +36,7 @@
 		<td>{#MODULES_TEMPLATE#}</td>
 		<td>{#MODULES_SYSTEM_TAG#}</td>
 		<td align="center">{#MODULES_VERSION#}</td>
-		{if $permission_modules_admin}
+		{if check_permission('modules_admin')}
 			<td colspan="3">{#MODULES_ACTIONS#}</td>
 		{/if}
 	</tr>
@@ -76,7 +75,7 @@
 
 				<td align="center" class="Version">{$module->version|escape|default:''}</td>
 
-				{if $permission_modules_admin}
+				{if check_permission('modules_admin')}
 					<td align="center">
 						{if $module->status}
 							<a title="{#MODULES_STOP#}" href="index.php?do=modules&amp;action=onoff&amp;module={$module->path}&amp;cp={$sess}">
@@ -116,7 +115,7 @@
 	{/foreach}
 </table><br />
 
-{if $permission_modules_admin}
+{if check_permission('modules_admin')}
 	<input type="submit" class="button" value="{#MODULES_BUTTON_SAVE#}" />
 </form>
 {/if}
@@ -131,7 +130,7 @@
 	<col width="150" />
 	<col />
 	<col width="90" />
-	{if $permission_modules_admin}
+	{if check_permission('modules_admin')}
 		<col width="30" />
 		<col width="30" />
 		<col width="30" />
@@ -142,7 +141,7 @@
 		<td>{#MODULES_TEMPLATE#}</td>
 		<td>{#MODULES_SYSTEM_TAG#}</td>
 		<td align="center">{#MODULES_VERSION#}</td>
-		{if $permission_modules_admin}
+		{if check_permission('modules_admin')}
 			<td colspan="3">{#MODULES_ACTIONS#}</td>
 		{/if}
 	</tr>
@@ -170,7 +169,7 @@
 
 				<td align="center" class="Version">{$module->version|escape|default:''}</td>
 
-				{if $permission_modules_admin}
+				{if check_permission('modules_admin')}
 					<td align="center">
 						<a title="{#MODULES_INSTALL#}" href="index.php?do=modules&amp;action=install&amp;module={$module->path}&amp;cp={$sess}">
 							<img src="{$tpl_dir}/images/icon_install.gif" alt="" border="0" />
