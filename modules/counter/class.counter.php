@@ -129,7 +129,6 @@ class Counter
             if (isset($_SERVER['HTTP_REFERER']))
 			{
 				$referer = urldecode(trim($_SERVER['HTTP_REFERER']));
-				$referer = iconv("UTF-8", "WINDOWS-1251", $referer);
 			}
 
 			// Подключаем классы, предназначенные для получения детальной информации о пользователе
