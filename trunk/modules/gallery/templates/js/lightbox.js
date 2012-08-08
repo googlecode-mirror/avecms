@@ -62,8 +62,8 @@
 //
 //	Configuration
 //
-var fileLoadingImage = "modules/gallery/templates/images/loading.gif";
-var fileBottomNavCloseImage = "modules/gallery/templates/images/close.gif";
+var fileLoadingImage = aveabspath + "modules/gallery/templates/images/loading.gif";
+var fileBottomNavCloseImage = aveabspath + "modules/gallery/templates/images/close.gif";
 
 var overlayOpacity = 0.8;	// controls transparency of shadow overlay
 
