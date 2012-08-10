@@ -1,13 +1,11 @@
-<?php
-
-	//Использовать ЧПУ<br> Адреса вида index.php будут преобразованы в /home/
+<?	//Использовать ЧПУ<br> Адреса вида index.php будут преобразованы в /home/
 	define('REWRITE_MODE',true);
 
 	//Использовать транслит в ЧПУ <br> адреса вида /страница/ поменяються на /page/
 	define('TRANSLIT_URL',true);
 
 	//Cуффикс ЧПУ
-	define('URL_SUFF','/');
+	define('URL_SUFF','');
 
 	//Тема публичной части
 	define('DEFAULT_THEME_FOLDER','ave');
@@ -60,16 +58,19 @@
 	//Порт Memcached сервера
 	define('Memcached_Port','');
 
-	//Версия сборки
-	define('BILD_VERSION',327);
-	
 	//Проверка обновлений
 	define('SVN_ACTIVE',false);
 
-	//Логин от SVN репозитария
-	define('SVN_LOGIN','public');
+	//Адрес SVN репозитария (включая папку, изменения которой Вас интересуют, например, trunk)
+	define('SVN_URL','http://avecms.googlecode.com/svn/trunk/');
 
-	//Пароль от SVN репозитария
-	define('SVN_PASSWORD','public');
+	//Часть ссылки SVN репозитария до номера ревизии для просмотра информации
+	define('SVN_LINK','http://code.google.com/p/avecms/source/detail?r=');
+
+	//Логин для SVN репозитария
+	define('SVN_LOGIN','');
+
+	//Пароль для SVN репозитария
+	define('SVN_PASSWORD','');
 
 ?>

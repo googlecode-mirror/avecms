@@ -39,10 +39,11 @@ $GLOBALS['CMS_CONFIG']['YANDEX_MAP_API_KEY']=Array('DESCR' =>'Yandex MAP API REY
 $GLOBALS['CMS_CONFIG']['GOOGLE_MAP_API_KEY']=Array('DESCR' =>'Google MAP API REY','default'=>'','TYPE'=>'string','VARIANT'=>'');
 $GLOBALS['CMS_CONFIG']['Memcached_Server']=Array('DESCR' =>'Адрес Memcached сервера','default'=>'','TYPE'=>'string','VARIANT'=>'');
 $GLOBALS['CMS_CONFIG']['Memcached_Port']=Array('DESCR' =>'Порт Memcached сервера','default'=>'','TYPE'=>'string','VARIANT'=>'');
-$GLOBALS['CMS_CONFIG']['BILD_VERSION']=Array('DESCR' =>'Версия сборки','default'=>'','TYPE'=>'integer','VARIANT'=>'');
-$GLOBALS['CMS_CONFIG']['SVN_ACTIVE']=Array('DESCR' =>'Проверка обновлений','default'=>false,'TYPE'=>'bool','VARIANT'=>'');
-$GLOBALS['CMS_CONFIG']['SVN_LOGIN']=Array('DESCR' =>'Логин от SVN репозитария','default'=>'public','TYPE'=>'string','VARIANT'=>'');
-$GLOBALS['CMS_CONFIG']['SVN_PASSWORD']=Array('DESCR' =>'Пароль от SVN репозитария','default'=>'public','TYPE'=>'string','VARIANT'=>'');
+$GLOBALS['CMS_CONFIG']['SVN_ACTIVE'] = array('DESCR' =>'Проверка обновлений','default'=>false,'TYPE'=>'bool','VARIANT'=>'');
+$GLOBALS['CMS_CONFIG']['SVN_URL'] = array('DESCR' =>'Адрес SVN репозитария (включая папку, изменения которой Вас интересуют, например, trunk)','default'=>'http://avecms.googlecode.com/svn/trunk/','TYPE'=>'string','VARIANT'=>'');
+$GLOBALS['CMS_CONFIG']['SVN_LINK'] = array('DESCR' =>'Часть ссылки SVN репозитария до номера ревизии для просмотра информации','default'=>'http://code.google.com/p/avecms/source/detail?r=','TYPE'=>'string','VARIANT'=>'');
+$GLOBALS['CMS_CONFIG']['SVN_LOGIN'] = array('DESCR' =>'Логин для SVN репозитария','default'=>'','TYPE'=>'string','VARIANT'=>'');
+$GLOBALS['CMS_CONFIG']['SVN_PASSWORD'] = array('DESCR' =>'Пароль для SVN репозитария','default'=>'','TYPE'=>'string','VARIANT'=>'');
 
 @include(dirname(dirname(__FILE__)).'/inc/config.inc.php');
 foreach($GLOBALS['CMS_CONFIG'] as $k=>$v)
