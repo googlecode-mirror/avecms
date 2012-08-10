@@ -20,9 +20,9 @@ $(document).ready(function(){ldelim}
 
 {if $log_svn}
 <div class='update-nag'>
-  Вышла новая версия <a href="http://www.overdoze.ru/index.php?module=forums" target="_blank">{$smarty.const.APP_VERSION}</a>! <a href="http://websvn.avecms.ru" target="_blank">Рекомендуется обновиться</a>.<br>
+  Вышла новая версия <a href="http://www.overdoze.ru/index.php?module=forums" target="_blank">{$smarty.const.APP_VERSION}</a>! <a href="{$svn_url}" target="_blank">Рекомендуется обновиться!</a>.<br>
   {foreach from=$log_svn item=log_svn}
-  №<a href="http://websvn.avecms.ru/revision.php?repname=AVE.cms+2.09&path=/trunk/&rev={$log_svn.version}&isdir=1" target="_blank">{$log_svn.version}</a> ({$log_svn.author}): {$log_svn.comment} <br>
+  №<a href="{$svn_link}{$log_svn.version}" target="_blank">{$log_svn.version}</a> ({$log_svn.author}): {$log_svn.comment} <br>
   {/foreach}
 </div>
 {/if}
