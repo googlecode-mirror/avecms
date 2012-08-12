@@ -1,5 +1,19 @@
-<script language="Javascript" type="text/javascript" src="editarea/edit_area_compressor.php"></script>
-<script language="Javascript" type="text/javascript" src="editarea/request.js"></script>
+<link rel="stylesheet" href="{$ABS_PATH}admin/codemirror/lib/codemirror.css">
+
+<script src="{$ABS_PATH}admin/codemirror/lib/codemirror.js" type="text/javascript"></script>
+    <script src="{$ABS_PATH}admin/codemirror/mode/xml/xml.js"></script>
+    <script src="{$ABS_PATH}admin/codemirror/mode/javascript/javascript.js"></script>
+    <script src="{$ABS_PATH}admin/codemirror/mode/css/css.js"></script>
+    <script src="{$ABS_PATH}admin/codemirror/mode/clike/clike.js"></script>
+    <script src="{$ABS_PATH}admin/codemirror/mode/php/php.js"></script>
+
+{literal}
+    <style type="text/css">
+      .activeline {background: #e8f2ff !important;}
+      .CodeMirror-scroll {height: 450px;}
+    </style>
+{/literal}
+
 <script language="JavaScript" type="text/javascript">
 /*<![CDATA[*/
 function changeRub(select) {ldelim}
@@ -108,7 +122,6 @@ function changeRub(select) {ldelim}
 				</select>
 			</td>
 		</tr>
-
 		
 		<tr>
 			<td class="first">{#REQUEST_SORT_BY_NAT#}</td>
@@ -121,10 +134,6 @@ function changeRub(select) {ldelim}
 				</select>
 			</td>
 		</tr>
-		
-
-		
-		
 		
 		<tr>
 			<td class="first">{#REQUEST_ASC_DESC#}</td>
@@ -158,143 +167,120 @@ function changeRub(select) {ldelim}
 		</tr>
 
 		<tr>
-			<td colspan="2" class="second">
-				<table width="100%" border="0" cellspacing="1" cellpadding="4">
-					{assign var=js_textfeld value='request_template_main'}
-					<col width="230">
-					<tr>
-						<td scope="row" class="first">
-							<strong><a href="javascript:void(0);" onclick="editAreaLoader.insertTags('{$js_textfeld}', '[tag:content]', '');">[tag:content]</a></strong>
-						</td>
-						<td class="first">{#REQUEST_MAIN_CONTENT#}</td>
-					</tr>
+		    <td scope="row" class="first">
+			    <strong><a title="{#REQUEST_MAIN_CONTENT#}" href="javascript:void(0);" onclick="textSelection('[tag:content]', '');">[tag:content]</a></strong>
+			</td>
+			<td rowspan="14" class="second">             
+				<div class="coder_in"><textarea {$dis} name="request_template_main" id="request_template_main" wrap="off" style="width:100%; height:400px">{$row->request_template_main|escape|default:''}</textarea></div>
+            </td>
+        </tr>
 
-					<tr>
-						<td scope="row" class="first">
-							<strong><a href="javascript:void(0);" onclick="editAreaLoader.insertTags('{$js_textfeld}', '[tag:pages]', '');">[tag:pages]</a></strong>
-						</td>
-						<td class="first">{#REQUEST_MAIN_NAVI#}</td>
-					</tr>
-
-					<tr>
-						<td scope="row" class="first">
-							<strong><a href="javascript:void(0);" onclick="editAreaLoader.insertTags('{$js_textfeld}', '[tag:pagetitle]', '');">[tag:pagetitle]</a></strong>
-						</td>
-						<td class="first">{#REQUEST_CDOCID_TITLE#}</td>
-					</tr>
-					
-					<tr>
-						<td scope="row" class="first">
-							<strong><a href="javascript:void(0);" onclick="editAreaLoader.insertTags('{$js_textfeld}', '[tag:doctotal]', '');">[tag:doctotal]</a></strong>
-						</td>
-						<td class="first">{#REQUEST_DOC_COUNT#}</td>
-					</tr>
-					
-					<tr>
-						<td scope="row" class="first">
-							<strong><a href="javascript:void(0);" onclick="editAreaLoader.insertTags('{$js_textfeld}', '[tag:docid]', '');">[tag:docid]</a></strong>
-						</td>
-						<td class="first">{#REQUEST_CDOCID_INFO#}</td>
-					</tr>
-
-					<tr>
-						<td scope="row" class="first">
-							<strong><a href="javascript:void(0);" onclick="editAreaLoader.insertTags('{$js_textfeld}', '[tag:docdate]', '');">[tag:docdate]</a></strong>
-						</td>
-						<td class="first">{#REQUEST_CDOCDATE_INFO#}</td>
-					</tr>
-
-					<tr>
-						<td scope="row" class="first">
-							<strong><a href="javascript:void(0);" onclick="editAreaLoader.insertTags('{$js_textfeld}', '[tag:doctime]', '');">[tag:doctime]</a></strong>
-						</td>
-						<td class="first">{#REQUEST_CDOCTIME_INFO#}</td>
-					</tr>
-
-					<tr>
-						<td scope="row" class="first">
-							<strong><a href="javascript:void(0);" onclick="editAreaLoader.insertTags('{$js_textfeld}', '[tag:docauthor]', '');">[tag:docauthor]</a></strong>
-						</td>
-						<td class="first">{#REQUEST_CDOCAUTHOR_INFO#}</td>
-					</tr>
-
-					<tr>
-						<td scope="row" class="first">
-							<strong><a href="javascript:void(0);" onclick="editAreaLoader.insertTags('{$js_textfeld}', '[tag:path]', '');">[tag:path]</a></strong>
-						</td>
-						<td class="first">{#REQUEST_PATH#}</td>
-					</tr>
-
-					<tr>
-						<td scope="row" class="first">
-							<strong><a href="javascript:void(0);" onclick="editAreaLoader.insertTags('{$js_textfeld}', '[tag:mediapath]', '');">[tag:mediapath]</a></strong>
-						</td>
-						<td class="first">{#REQUEST_MEDIAPATH#}</td>
-					</tr>
-
-					<tr>
-						<td scope="row" class="first">
-							<strong><a href="javascript:void(0);" onclick="editAreaLoader.insertTags('{$js_textfeld}', '[tag:if_empty]\n', '\n[/tag:if_empty]');">[tag:if_empty][/tag:if_empty]</a></strong>
-						</td>
-						<td class="first">{#REQUEST_IF_EMPTY#}</td>
-					</tr>
-
-					<tr>
-						<td scope="row" class="first">
-							<strong><a href="javascript:void(0);" onclick="editAreaLoader.insertTags('{$js_textfeld}', '[tag:if_notempty]\n', '\n[/tag:if_notempty]');">[tag:if_notempty][/tag:if_notempty]</a></strong>
-						</td>
-						<td class="first">{#REQUEST_NOT_EMPTY#}</td>
-					</tr>
-{*
-					<tr>
-						<td scope="row" class="first">
-							<strong><a href="javascript:void(0);" onclick="editAreaLoader.insertTags('{$js_textfeld}', '[tag:order]', '');">[tag:order]</a></strong>
-						</td>
-						<td class="first">{#REQUEST_CONTROL_SORT#}</td>
-					</tr>
-*}
-					<tr>
-						{if $ddid != ''}
-							<td scope="row" class="first">
-								<strong><a href="javascript:void(0);" onclick="editAreaLoader.insertTags('{$js_textfeld}', '[tag:dropdown:', '{$ddid}]');">[tag:dropdown:{$ddid}]</a></strong>
-							</td>
-						{else}
-							<td scope="row" class="first">
-								<strong><a href="javascript:void(0);" onclick="alert('{#REQUEST_NO_DROPDOWN#}');">[tag:dropdown:XX,XX...]</a></strong>
-							</td>
-						{/if}
-						<td class="first">{#REQUEST_CONTROL_FIELD#}</td>
-					</tr>
-				</table>
+		<tr>
+			<td scope="row" class="first">
+				<strong><a title="{#REQUEST_MAIN_NAVI#}" href="javascript:void(0);" onclick="textSelection('[tag:pages]', '');">[tag:pages]</a></strong>
 			</td>
 		</tr>
 
 		<tr>
-			<td colspan="2" class="second">
-{*
-				<script type="text/javascript" language="JavaScript">
-				function update(ID,GER) {ldelim}
-					document.getElementById(ID).value = document.getElementById(GER).value;
-				{rdelim}
-				</script>
-				<input name="cp__AbGeruest" type="hidden" id="ag" value="" />
-				<textarea {$dis} onclick="update('ag','request_template_main');" onKeyDown="update('ag','request_template_main');"  onKeyUp="update('ag','request_template_main');" wrap="off" style="width:100%; height:200px" name="request_template_main" id="request_template_main">{$row->request_template_main|escape|default:''}</textarea>
-*}
-				<textarea {$dis} name="request_template_main" id="request_template_main" wrap="off" style="width:100%; height:200px">{$row->request_template_main|escape|default:''}</textarea>
+			<td scope="row" class="first">
+				<strong><a title="{#REQUEST_CDOCID_TITLE#}" href="javascript:void(0);" onclick="textSelection('[tag:pagetitle]', '');">[tag:pagetitle]</a></strong>
+			</td>
+		</tr>
+		
+		<tr>
+			<td scope="row" class="first">
+				<strong><a title="{#REQUEST_DOC_COUNT#}" href="javascript:void(0);" onclick="textSelection('[tag:doctotal]', '');">[tag:doctotal]</a></strong>
+			</td>
+		</tr>
+		
+		<tr>
+			<td scope="row" class="first">
+				<strong><a title="{#REQUEST_CDOCID_INFO#}" href="javascript:void(0);" onclick="textSelection('[tag:docid]', '');">[tag:docid]</a></strong>
+			</td>
+		</tr>
+
+		<tr>
+			<td scope="row" class="first">
+				<strong><a title="{#REQUEST_CDOCDATE_INFO#}" class="rightDir" href="javascript:void(0);" onclick="textSelection('[tag:docdate]', '');">[tag:docdate]</a></strong>
+			</td>
+		</tr>
+
+		<tr>
+			<td scope="row" class="first">
+				<strong><a title="{#REQUEST_CDOCTIME_INFO#}" href="javascript:void(0);" onclick="textSelection('[tag:doctime]', '');">[tag:doctime]</a></strong>
+			</td>
+		</tr>
+
+		<tr>
+			<td scope="row" class="first">
+				<strong><a title="{#REQUEST_CDOCAUTHOR_INFO#}" href="javascript:void(0);" onclick="textSelection('[tag:docauthor]', '');">[tag:docauthor]</a></strong>
+			</td>
+		</tr>
+
+		<tr>
+			<td scope="row" class="first">
+				<strong><a title="{#REQUEST_PATH#}" href="javascript:void(0);" onclick="textSelection('[tag:path]', '');">[tag:path]</a></strong>
+			</td>
+		</tr>
+
+		<tr>
+			<td scope="row" class="first">
+				<strong><a title="{#REQUEST_MEDIAPATH#}" href="javascript:void(0);" onclick="textSelection('[tag:mediapath]', '');">[tag:mediapath]</a></strong>
+			</td>
+		</tr>
+
+		<tr>
+			<td scope="row" class="first">
+				<strong><a title="{#REQUEST_IF_EMPTY#}" href="javascript:void(0);" onclick="textSelection('[tag:if_empty]\n', '\n[/tag:if_empty]');">[tag:if_empty][/tag:if_empty]</a></strong>
+			</td>
+		</tr>
+
+		<tr>
+			<td scope="row" class="first">
+				<strong><a title="{#REQUEST_NOT_EMPTY#}" href="javascript:void(0);" onclick="textSelection('[tag:if_notempty]\n', '\n[/tag:if_notempty]');">[tag:if_notempty][/tag:if_notempty]</a></strong>
+			</td>
+		</tr>
+
+		<tr>
+			{if $ddid != ''}
+				<td scope="row" class="first">
+					<strong><a title="{#REQUEST_CONTROL_FIELD#}" href="javascript:void(0);" onclick="textSelection('[tag:dropdown:', '{$ddid}]');">[tag:dropdown:{$ddid}]</a></strong>
+				</td>
+			{else}
+				<td scope="row" class="first">
+					<strong><a title="{#REQUEST_CONTROL_FIELD#}" href="javascript:void(0);" onclick="alert('{#REQUEST_NO_DROPDOWN#}','');">[tag:dropdown:XX,XX...]</a></strong>
+				</td>
+			{/if}
+		</tr>
+        
+        <tr>
+            <td class="first"><td>			
+		</tr> 		
+		
+        <tr>
+            <td class="first">HTML Tags</td>
+			<td class="second">	 			
 				<div class="infobox">
-					<a href="javascript:void(0);" onclick="editAreaLoader.insertTags('{$js_textfeld}', '<ol>', '</ol>');">OL</a>&nbsp;|&nbsp;
-					<a href="javascript:void(0);" onclick="editAreaLoader.insertTags('{$js_textfeld}', '<ul>', '</ul>');">UL</a>&nbsp;|&nbsp;
-					<a href="javascript:void(0);" onclick="editAreaLoader.insertTags('{$js_textfeld}', '<li>', '</li>');">LI</a>&nbsp;|&nbsp;
-					<a href="javascript:void(0);" onclick="editAreaLoader.insertTags('{$js_textfeld}', '<p>', '</p>');">P</a>&nbsp;|&nbsp;
-					<a href="javascript:void(0);" onclick="editAreaLoader.insertTags('{$js_textfeld}', '<strong>', '</strong>');">B</a>&nbsp;|&nbsp;
-					<a href="javascript:void(0);" onclick="editAreaLoader.insertTags('{$js_textfeld}', '<em>', '</em>');">I</a>&nbsp;|&nbsp;
-					<a href="javascript:void(0);" onclick="editAreaLoader.insertTags('{$js_textfeld}', '<h1>', '</h1>');">H1</a>&nbsp;|&nbsp;
-					<a href="javascript:void(0);" onclick="editAreaLoader.insertTags('{$js_textfeld}', '<h2>', '</h2>');">H2</a>&nbsp;|&nbsp;
-					<a href="javascript:void(0);" onclick="editAreaLoader.insertTags('{$js_textfeld}', '<h3>', '</h3>');">H3</a>&nbsp;|&nbsp;
-					<a href="javascript:void(0);" onclick="editAreaLoader.insertTags('{$js_textfeld}', '<div>', '</div>');">DIV</a>&nbsp;|&nbsp;
-					<a href="javascript:void(0);" onclick="editAreaLoader.insertTags('{$js_textfeld}', '<pre>', '</pre>');">PRE</a>&nbsp;|&nbsp;
-					<a href="javascript:void(0);" onclick="editAreaLoader.insertTags('{$js_textfeld}', '<br />', '');">BR</a>&nbsp;|&nbsp;
-					<a href="javascript:void(0);" onclick="editAreaLoader.insertTags('{$js_textfeld}', '\t', '');">TAB</a>&nbsp;|
+					|&nbsp;
+					<a href="javascript:void(0);" onclick="textSelection('<ol>', '</ol>');"><strong>OL</strong></a>&nbsp;|&nbsp;
+					<a href="javascript:void(0);" onclick="textSelection('<ul>', '</ul>');"><strong>UL</strong></a>&nbsp;|&nbsp;
+					<a href="javascript:void(0);" onclick="textSelection('<li>', '</li>');"><strong>LI</strong></a>&nbsp;|&nbsp;
+					<a href="javascript:void(0);" onclick="textSelection('<p class=&quot;&quot;>', '</p>');"><strong>P</strong></a>&nbsp;|&nbsp;
+					<a href="javascript:void(0);" onclick="textSelection('<strong>', '</strong>');"><strong>B</strong></a>&nbsp;|&nbsp;
+					<a href="javascript:void(0);" onclick="textSelection('<em>', '</em>');"><strong>I</strong></a>&nbsp;|&nbsp;
+					<a href="javascript:void(0);" onclick="textSelection('<h1>', '</h1>');"><strong>H1</strong></a>&nbsp;|&nbsp;
+					<a href="javascript:void(0);" onclick="textSelection('<h2>', '</h2>');"><strong>H2</strong></a>&nbsp;|&nbsp;
+					<a href="javascript:void(0);" onclick="textSelection('<h3>', '</h3>');"><strong>H3</strong></a>&nbsp;|&nbsp;
+					<a href="javascript:void(0);" onclick="textSelection('<h4>', '</h4>');"><strong>H4</strong></a>&nbsp;|&nbsp;
+					<a href="javascript:void(0);" onclick="textSelection('<h5>', '</h5>');"><strong>H5</strong></a>&nbsp;|&nbsp;					
+					<a href="javascript:void(0);" onclick="textSelection('<h6>', '</h6>');"><strong>H6</strong></a>&nbsp;|&nbsp;
+					<a href="javascript:void(0);" onclick="textSelection('<div class=&quot;&quot; id=&quot;&quot;>', '</div>');"><strong>DIV</strong></a>&nbsp;|&nbsp;
+					<a href="javascript:void(0);" onclick="textSelection('<a href=&quot;&quot; title=&quot;&quot;>', '</a>');"><strong>A</strong></a>&nbsp;|&nbsp;
+					<a href="javascript:void(0);" onclick="textSelection('<img src=&quot;&quot; alt=&quot;&quot; />', '');"><strong>IMG</strong></a>&nbsp;|&nbsp;
+					<a href="javascript:void(0);" onclick="textSelection('<span>', '</span>');"><strong>SPAN</strong></a>&nbsp;|&nbsp;
+					<a href="javascript:void(0);" onclick="textSelection('<pre>', '</pre>');"><strong>PRE</strong></a>&nbsp;|&nbsp;
+					<a href="javascript:void(0);" onclick="textSelection('<br />', '');"><strong>BR</strong></a>&nbsp;|&nbsp;
+					<a href="javascript:void(0);" onclick="textSelection('\t', '');"><strong>TAB</strong></a>&nbsp;|
 				</div>
 			</td>
 		</tr>
@@ -304,101 +290,107 @@ function changeRub(select) {ldelim}
 		</tr>
 
 		<tr>
-			<td colspan="2" class="second">{#REQUEST_TEMPLATE_INFO#}<br /><br />
-				<table width="100%" border="0" cellspacing="1" cellpadding="4">
-					{assign var=js_textfeld value='request_template_item'}
-					<col width="230">
-					<tr>
-						<td scope="row" class="first">
-							<strong><a href="javascript:void(0);" onclick="alert('{#REQUEST_SELECT_IN_LIST#}');">[tag:rfld:ID][XXX]</a></strong>
-						</td>
-						<td class="first">{#REQUEST_RUB_INFO#}</td>
-					</tr>
+			<td colspan="2" class="second">{#REQUEST_TEMPLATE_INFO#}</td>
+		</tr>
 
-					<tr>
-						<td scope="row" class="first">
-							<strong><a href="javascript:void(0);" onclick="editAreaLoader.insertTags('{$js_textfeld}', '[tag:link]', '');">[tag:link]</a></strong>
-						</td>
-						<td class="first">{#REQUEST_LINK_INFO#}</td>
-					</tr>
-
-					<tr>
-						<td scope="row" class="first">
-							<strong><a href="javascript:void(0);" onclick="editAreaLoader.insertTags('{$js_textfeld}', '[tag:docid]', '');">[tag:docid]</a></strong>
-						</td>
-						<td class="first">{#REQUEST_DOCID_INFO#}</td>
-					</tr>
-
-					<tr>
-						<td scope="row" class="first">
-							<strong><a href="javascript:void(0);" onclick="editAreaLoader.insertTags('{$js_textfeld}', '[tag:docdate]', '');">[tag:docdate]</a></strong>
-						</td>
-						<td class="first">{#REQUEST_DOCDATE_INFO#}</td>
-					</tr>
-
-					<tr>
-						<td scope="row" class="first">
-							<strong><a href="javascript:void(0);" onclick="editAreaLoader.insertTags('{$js_textfeld}', '[tag:doctime]', '');">[tag:doctime]</a></strong>
-						</td>
-						<td class="first">{#REQUEST_DOCTIME_INFO#}</td>
-					</tr>
-
-					<tr>
-						<td scope="row" class="first">
-							<strong><a href="javascript:void(0);" onclick="editAreaLoader.insertTags('{$js_textfeld}', '[tag:docauthor]', '');">[tag:docauthor]</a></strong>
-						</td>
-						<td class="first">{#REQUEST_DOCAUTHOR_INFO#}</td>
-					</tr>
-
-					<tr>
-						<td scope="row" class="first">
-							<strong><a href="javascript:void(0);" onclick="editAreaLoader.insertTags('{$js_textfeld}', '[tag:docviews]', '');">[tag:docviews]</a></strong>
-						</td>
-						<td class="first">{#REQUEST_VIEWS_INFO#}</td>
-					</tr>
-
-					<tr>
-						<td scope="row" class="first">
-							<strong><a href="javascript:void(0);" onclick="editAreaLoader.insertTags('{$js_textfeld}', '[tag:doccomments]', '');">[tag:doccomments]</a></strong>
-						</td>
-						<td class="first">{#REQUEST_COMMENTS_INFO#}</td>
-					</tr>
-
-					<tr>
-						<td scope="row" class="first">
-							<strong><a href="javascript:void(0);" onclick="editAreaLoader.insertTags('{$js_textfeld}', '[tag:path]', '');">[tag:path]</a></strong>
-						</td>
-						<td class="first">{#REQUEST_PATH#}</td>
-					</tr>
-
-					<tr>
-						<td scope="row" class="first">
-							<strong><a href="javascript:void(0);" onclick="editAreaLoader.insertTags('{$js_textfeld}', '[tag:mediapath]', '');">[tag:mediapath]</a></strong>
-						</td>
-						<td class="first">{#REQUEST_MEDIAPATH#}</td>
-					</tr>
-				</table>
+		<tr>
+		    <td class="first">
+			    <strong><a title="{#REQUEST_RUB_INFO#}" href="javascript:void(0);" onclick="alert('{#REQUEST_SELECT_IN_LIST#}','');">[tag:rfld:ID][XXX]</a></strong>
+			</td>
+			<td rowspan="11" class="second">
+				<div class="coder_in">
+				<textarea {$dis} name="request_template_item" id="request_template_item" wrap="off" style="width:100%; height:200px">{$row->request_template_item|escape|default:''}</textarea>
+				</div>
 			</td>
 		</tr>
 
 		<tr>
-			<td colspan="2" class="second">
-				<textarea {$dis} name="request_template_item" id="request_template_item" wrap="off" style="width:100%; height:200px">{$row->request_template_item|escape|default:''}</textarea>
+			<td class="first">
+			    <strong><a title="{#REQUEST_LINK_INFO#}" href="javascript:void(0);" onclick="textSelection2('[tag:link]', '');">[tag:link]</a></strong>
+			</td>
+		</tr>
+		
+		<tr>
+			<td class="first">
+			    <strong><a title="{#REQUEST_DOCID_INFO#}" href="javascript:void(0);" onclick="textSelection2('[tag:docid]', '');">[tag:docid]</a></strong>
+			</td>
+		</tr>
+
+		<tr>
+			<td class="first">
+			    <strong><a title="{#REQUEST_DOCDATE_INFO#}" href="javascript:void(0);" onclick="textSelection2('[tag:docdate]', '');">[tag:docdate]</a></strong>
+			</td>
+		</tr>
+
+		<tr>
+			<td class="first">
+				<strong><a title="{#REQUEST_DOCTIME_INFO#}" href="javascript:void(0);" onclick="textSelection2('[tag:doctime]', '');">[tag:doctime]</a></strong>
+			</td>
+		</tr>
+
+		<tr>
+			<td class="first">
+				<strong><a title="{#REQUEST_DOCAUTHOR_INFO#}" href="javascript:void(0);" onclick="textSelection2('[tag:docauthor]', '');">[tag:docauthor]</a></strong>
+			</td>
+		</tr>
+
+		<tr>
+			<td class="first">
+				<strong><a title="{#REQUEST_VIEWS_INFO#}" href="javascript:void(0);" onclick="textSelection2('[tag:docviews]', '');">[tag:docviews]</a></strong>
+			</td>
+		</tr>
+
+		<tr>
+			<td class="first">
+				<strong><a title="{#REQUEST_COMMENTS_INFO#}" href="javascript:void(0);" onclick="textSelection2('[tag:doccomments]', '');">[tag:doccomments]</a></strong>
+			</td>
+		</tr>
+
+		<tr>
+			<td class="first">
+				<strong><a title="{#REQUEST_PATH#}" href="javascript:void(0);" onclick="textSelection2('[tag:path]', '');">[tag:path]</a></strong>
+			</td>
+		</tr>
+
+		<tr>
+			<td class="first">
+				<strong><a title="{#REQUEST_MEDIAPATH#}" class="rightDir" href="javascript:void(0);" onclick="textSelection2('[tag:mediapath]', '');">[tag:mediapath]</a></strong>
+			</td>
+		</tr>		
+		
+		<tr class="first">
+	        <td></td>
+        </tr>
+		
+        <tr>		
+		    <td class="first">HTML Tags</td>
+			<td class="second">			
 				<div class="infobox">
-					<a href="javascript:void(0);" onclick="editAreaLoader.insertTags('{$js_textfeld}', '<ol>', '</ol>');">OL</a>&nbsp;|&nbsp;
-					<a href="javascript:void(0);" onclick="editAreaLoader.insertTags('{$js_textfeld}', '<ul>', '</ul>');">UL</a>&nbsp;|&nbsp;
-					<a href="javascript:void(0);" onclick="editAreaLoader.insertTags('{$js_textfeld}', '<li>', '</li>');">LI</a>&nbsp;|&nbsp;
-					<a href="javascript:void(0);" onclick="editAreaLoader.insertTags('{$js_textfeld}', '<p>', '</p>');">P</a>&nbsp;|&nbsp;
-					<a href="javascript:void(0);" onclick="editAreaLoader.insertTags('{$js_textfeld}', '<strong>', '</strong>');">B</a>&nbsp;|&nbsp;
-					<a href="javascript:void(0);" onclick="editAreaLoader.insertTags('{$js_textfeld}', '<em>', '</em>');">I</a>&nbsp;|&nbsp;
-					<a href="javascript:void(0);" onclick="editAreaLoader.insertTags('{$js_textfeld}', '<h1>', '</h1>');">H1</a>&nbsp;|&nbsp;
-					<a href="javascript:void(0);" onclick="editAreaLoader.insertTags('{$js_textfeld}', '<h2>', '</h2>');">H2</a>&nbsp;|&nbsp;
-					<a href="javascript:void(0);" onclick="editAreaLoader.insertTags('{$js_textfeld}', '<h3>', '</h3>');">H3</a>&nbsp;|&nbsp;
-					<a href="javascript:void(0);" onclick="editAreaLoader.insertTags('{$js_textfeld}', '<div>', '</div>');">DIV</a>&nbsp;|&nbsp;
-					<a href="javascript:void(0);" onclick="editAreaLoader.insertTags('{$js_textfeld}', '<pre>', '</pre>');">PRE</a>&nbsp;|&nbsp;
-					<a href="javascript:void(0);" onclick="editAreaLoader.insertTags('{$js_textfeld}', '<br />', '');">BR</a>&nbsp;|&nbsp;
-					<a href="javascript:void(0);" onclick="editAreaLoader.insertTags('{$js_textfeld}', '\t', '');">TAB</a>&nbsp;|
+					|&nbsp;
+					<a href="javascript:void(0);" onclick="textSelection2('<ol>', '</ol>');"><strong>OL</strong></a>&nbsp;|&nbsp;
+					<a href="javascript:void(0);" onclick="textSelection2('<ul>', '</ul>');"><strong>UL</strong></a>&nbsp;|&nbsp;
+					<a href="javascript:void(0);" onclick="textSelection2('<li>', '</li>');"><strong>LI</strong></a>&nbsp;|&nbsp;
+					<a href="javascript:void(0);" onclick="textSelection2('<p class=&quot;&quot;>', '</p>');"><strong>P</strong></a>&nbsp;|&nbsp;
+					<a href="javascript:void(0);" onclick="textSelection2('<strong>', '</strong>');"><strong>B</strong></a>&nbsp;|&nbsp;
+					<a href="javascript:void(0);" onclick="textSelection2('<em>', '</em>');"><strong>I</strong></a>&nbsp;|&nbsp;
+					<a href="javascript:void(0);" onclick="textSelection2('<h1>', '</h1>');"><strong>H1</strong></a>&nbsp;|&nbsp;
+					<a href="javascript:void(0);" onclick="textSelection2('<h2>', '</h2>');"><strong>H2</strong></a>&nbsp;|&nbsp;
+					<a href="javascript:void(0);" onclick="textSelection2('<h3>', '</h3>');"><strong>H3</strong></a>&nbsp;|&nbsp;
+					<a href="javascript:void(0);" onclick="textSelection2('<h4>', '</h4>');"><strong>H4</strong></a>&nbsp;|&nbsp;
+					<a href="javascript:void(0);" onclick="textSelection2('<h5>', '</h5>');"><strong>H5</strong></a>&nbsp;|&nbsp;
+					<a href="javascript:void(0);" onclick="textSelection2('<h6>', '</h6>');"><strong>H6</strong></a>&nbsp;|&nbsp;
+					<a href="javascript:void(0);" onclick="textSelection2('<div class=&quot;&quot; id=&quot;&quot;>', '</div>');"><strong>DIV</strong></a>&nbsp;|&nbsp;
+					<a href="javascript:void(0);" onclick="textSelection2('<a href=&quot;&quot; title=&quot;&quot;>', '</a>');"><strong>A</strong></a>&nbsp;|&nbsp;
+					<a href="javascript:void(0);" onclick="textSelection2('<img src=&quot;&quot; alt=&quot;&quot; />', '');"><strong>IMG</strong></a>&nbsp;|&nbsp;
+					<a href="javascript:void(0);" onclick="textSelection2('<span>', '</span>');"><strong>SPAN</strong></a>&nbsp;|&nbsp;
+					<a href="javascript:void(0);" onclick="textSelection2('<pre>', '</pre>');"><strong>PRE</strong></a>&nbsp;|&nbsp;
+					<a href="javascript:void(0);" onclick="textSelection2('<br />', '');"><strong>BR</strong></a>&nbsp;|&nbsp;
+					<a href="javascript:void(0);" onclick="textSelection2s('\t', '');"><strong>TAB</strong></a>&nbsp;|
 				</div>
+		    </td>
+        </tr> 		
+		<tr>
+			<td colspan="2" class="second">
 				<table width="100%" border="0" cellspacing="1" cellpadding="4">
 					<col width="230">
 					<tr class="tableheader">
@@ -409,7 +401,7 @@ function changeRub(select) {ldelim}
 
 					{foreach from=$tags item=tag}
 						<tr>
-							<td class="first"><a title="{#REQUEST_INSERT_INFO#}" href="javascript:void(0);" onclick="editAreaLoader.insertTags('{$js_textfeld}', '[tag:rfld:{$tag->Id}][', '150]');">[tag:rfld:{$tag->Id}][150]</a></td>
+							<td class="first"><a title="{#REQUEST_INSERT_INFO#}" href="javascript:void(0);" onclick="textSelection2('[tag:rfld:{$tag->Id}][', '150]');">[tag:rfld:{$tag->Id}][150]</a></td>
 							<td class="first"><strong>{$tag->rubric_field_title}</strong></td>
 							<td class="first">
 								{section name=feld loop=$feld_array}
@@ -423,23 +415,79 @@ function changeRub(select) {ldelim}
 				</table>
 			</td>
 		</tr>
-
-		<tr>
-			<td colspan="2" class="third">
-				{if $smarty.request.action=='edit'}
-					<input {$dis} type="submit" class="button" value="{#REQUEST_BUTTON_SAVE#}" />
-				{else}
-					<input {$dis} type="submit" class="button" value="{#REQUEST_BUTTON_ADD#}" />
-				{/if}
-				
-					или
-	
-				{if $smarty.request.action=='edit'}
-					<input type="submit" class="button button_lev2" name="next_edit" value="{#REQUEST_BUTTON_SAVE_NEXT#}" />
-				{else}
-					<input type="submit" class="button button_lev2" name="next_edit" value="{#REQUEST_BUTTON_ADD_NEXT#}" />
-				{/if}
-			</td>
-		</tr>
 	</table>
+	<br />
+		{if $smarty.request.action=='edit'}
+			<input {$dis} type="submit" class="button" value="{#REQUEST_BUTTON_SAVE#}" />
+		{else}
+			<input {$dis} type="submit" class="button" value="{#REQUEST_BUTTON_ADD#}" />
+		{/if}
+		
+			или
+
+		{if $smarty.request.action=='edit'}
+			<input type="submit" class="button button_lev2" name="next_edit" value="{#REQUEST_BUTTON_SAVE_NEXT#}" />
+		{else}
+			<input type="submit" class="button button_lev2" name="next_edit" value="{#REQUEST_BUTTON_ADD_NEXT#}" />
+		{/if}	
 </form>
+
+    <script language="Javascript" type="text/javascript">
+{literal}
+      var editor = CodeMirror.fromTextArea(document.getElementById("request_template_main"), {
+        lineNumbers: true,
+		lineWrapping: true,
+        matchBrackets: true,
+        mode: "application/x-httpd-php",
+        indentUnit: 4,
+        indentWithTabs: true,
+        enterMode: "keep",
+        tabMode: "shift",
+        onChange: function(){editor.save();},
+		onCursorActivity: function() {
+		  editor.setLineClass(hlLine, null, null);
+		  hlLine = editor.setLineClass(editor.getCursor().line, null, "activeline");
+		}
+      });
+
+      function getSelectedRange() {
+        return { from: editor.getCursor(true), to: editor.getCursor(false) };
+      }
+
+      function textSelection(startTag,endTag) {
+        var range = getSelectedRange();
+        editor.replaceRange(startTag + editor.getRange(range.from, range.to) + endTag, range.from, range.to)
+        editor.setCursor(range.from.line, range.from.ch + startTag.length);
+      }
+
+	  var hlLine = editor.setLineClass(0, "activeline");
+
+      var editor2 = CodeMirror.fromTextArea(document.getElementById("request_template_item"), {
+        lineNumbers: true,
+		lineWrapping: true,
+        matchBrackets: true,
+        mode: "application/x-httpd-php",
+        indentUnit: 4,
+        indentWithTabs: true,
+        enterMode: "keep",
+        tabMode: "shift",
+        onChange: function(){editor2.save();},
+		onCursorActivity: function() {
+		  editor2.setLineClass(hlLine, null, null);
+		  hlLine = editor2.setLineClass(editor2.getCursor().line, null, "activeline");
+		}
+      });
+
+      function getSelectedRange2() {
+        return { from: editor2.getCursor(true), to: editor2.getCursor(false) };
+      }
+
+      function textSelection2(startTag,endTag) {
+        var range = getSelectedRange2();
+        editor2.replaceRange(startTag + editor2.getRange(range.from, range.to) + endTag, range.from, range.to)
+        editor2.setCursor(range.from.line, range.from.ch + startTag.length);
+      }
+
+      var hlLine = editor2.setLineClass(0, "activeline");
+{/literal}
+    </script>
