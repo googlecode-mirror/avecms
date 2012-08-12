@@ -1,4 +1,13 @@
-<script src="{$ABS_PATH}admin/codemirror/js/codemirror.js" type="text/javascript"></script>
+<link rel="stylesheet" href="{$ABS_PATH}admin/codemirror/lib/codemirror.css">
+
+<script src="{$ABS_PATH}admin/codemirror/lib/codemirror.js" type="text/javascript"></script>
+<script src="{$ABS_PATH}admin/codemirror/mode/css/css.js"></script>
+
+{literal}
+    <style type="text/css">
+      .activeline {background: #e8f2ff !important;}
+    </style>
+{/literal}
 
 	<div class="h_tpl">&nbsp;</div>
 	<h2>Редактор файлов</h2>
@@ -23,9 +32,8 @@
 		<tr>
 			<td class="second">
 				<div class="coder_in">
-					<textarea id="coder_sours" wrap="off" id="code_text" name="code_text" cols="120" rows="30"><style>{$code_text}</style></textarea>
+					<textarea id="code_text" name="code_text" style="width: 100%; height: 400px;"><style>{$code_text}</style></textarea>
 				</div>
-				<script src="{$ABS_PATH}admin/codemirror/config.js" type="text/javascript"></script>
 			</td>
 		</tr>
 		
@@ -36,3 +44,35 @@
 		</tr>
 	</table>
 </form>
+
+    <script language="Javascript" type="text/javascript">
+{literal}
+      var editor = CodeMirror.fromTextArea(document.getElementById("code_text"), {
+        lineNumbers: true,
+		lineWrapping: true,
+        matchBrackets: true,
+        mode: "text/css",
+        indentUnit: 4,
+        indentWithTabs: true,
+        enterMode: "keep",
+        tabMode: "shift",
+        onChange: function(){editor.save();},
+		onCursorActivity: function() {
+		  editor.setLineClass(hlLine, null, null);
+		  hlLine = editor.setLineClass(editor.getCursor().line, null, "activeline");
+		}
+      });
+
+      function getSelectedRange() {
+        return { from: editor.getCursor(true), to: editor.getCursor(false) };
+      }
+
+      function textSelection(startTag,endTag) {
+        var range = getSelectedRange();
+        editor.replaceRange(startTag + editor.getRange(range.from, range.to) + endTag, range.from, range.to)
+        editor.setCursor(range.from.line, range.from.ch + startTag.length);
+      }
+
+	  var hlLine = editor.setLineClass(0, "activeline");
+{/literal}
+    </script>

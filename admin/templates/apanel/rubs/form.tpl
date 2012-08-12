@@ -1,5 +1,18 @@
-<script language="Javascript" type="text/javascript" src="editarea/edit_area_compressor.php"></script>
-<script language="Javascript" type="text/javascript" src="editarea/rubrics.js"></script>
+<link rel="stylesheet" href="{$ABS_PATH}admin/codemirror/lib/codemirror.css">
+
+<script src="{$ABS_PATH}admin/codemirror/lib/codemirror.js" type="text/javascript"></script>
+    <script src="{$ABS_PATH}admin/codemirror/mode/xml/xml.js"></script>
+    <script src="{$ABS_PATH}admin/codemirror/mode/javascript/javascript.js"></script>
+    <script src="{$ABS_PATH}admin/codemirror/mode/css/css.js"></script>
+    <script src="{$ABS_PATH}admin/codemirror/mode/clike/clike.js"></script>
+    <script src="{$ABS_PATH}admin/codemirror/mode/php/php.js"></script>
+
+{literal}
+    <style type="text/css">
+      .activeline {background: #e8f2ff !important;}
+      .CodeMirror-scroll {height: 400px;}
+    </style>
+{/literal}
 
 <div id="pageHeaderTitle" style="padding-top: 7px;">
 	<div class="h_rubs">&nbsp;</div>
@@ -14,6 +27,9 @@
 
 <form name="f_tpl" id="f_tpl" method="post" action="{$formaction}">
 	<table width="100%" border="0" cellpadding="8" cellspacing="1" class="tableborder">
+	    <col width="200" class="first">
+		<col class="second">	
+	
 		{if $errors}
 			<tr>
 				<td class="tableheader">{#RUBRIK_HTML#}</td>
@@ -32,78 +48,167 @@
 		{/if}
 
 		<tr>
-			<td class="tableheader">{#RUBRIK_HTML#}</td>
+			<td colspan="2" class="tableheader">{#RUBRIK_HTML#}</td>
 		</tr>
 
 		<tr>
-			<td class="second">
+			<td>
+			    <a class="rightDir" title="{#RUBRIK_DOCID_INFO#}" href="javascript:void(0);" onclick="textSelection('[tag:docid]', '');"><strong>[tag:docid]</strong></a>
+			</td>
+			<td rowspan="11">
 				{if $php_forbidden==1}
 					<div class="infobox_error">{#RUBRIK_PHP_DENIDED#} </div>
 				{/if}
-
+                <div class="coder_in">
 				<textarea {$read_only} class="{if $php_forbidden==1}tpl_code_readonly{else}{/if}" wrap="off" style="width:100%; height:350px" name="rubric_template" id="rubric_template">{$row->rubric_template|default:$prefab|escape:html}</textarea>
-
-				<div class="infobox">
-					{assign var=js_textfeld value='rubric_template'}
-					{assign var=js_form value='f_tpl'}
-					<a href="javascript:void(0);" onclick="editAreaLoader.insertTags('{$js_textfeld}', '<ol>', '</ol>');">OL</a> |
-					<a href="javascript:void(0);" onclick="editAreaLoader.insertTags('{$js_textfeld}', '<ul>', '</ul>');">UL</a> |
-					<a href="javascript:void(0);" onclick="editAreaLoader.insertTags('{$js_textfeld}', '<li>', '</li>');">LI</a> |
-					<a href="javascript:void(0);" onclick="editAreaLoader.insertTags('{$js_textfeld}', '<p>', '</p>');">P</a> |
-					<a href="javascript:void(0);" onclick="editAreaLoader.insertTags('{$js_textfeld}', '<strong>', '</strong>');">B</a> |
-					<a href="javascript:void(0);" onclick="editAreaLoader.insertTags('{$js_textfeld}', '<em>', '</em>');">I</a> |
-					<a href="javascript:void(0);" onclick="editAreaLoader.insertTags('{$js_textfeld}', '<h1>', '</h1>');">H1</a> |
-					<a href="javascript:void(0);" onclick="editAreaLoader.insertTags('{$js_textfeld}', '<h2>', '</h2>');">H2</a> |
-					<a href="javascript:void(0);" onclick="editAreaLoader.insertTags('{$js_textfeld}', '<h3>', '</h3>');">H3</a> |
-					<a href="javascript:void(0);" onclick="editAreaLoader.insertTags('{$js_textfeld}', '<div>', '</div>');">DIV</a> |
-					<a href="javascript:void(0);" onclick="editAreaLoader.insertTags('{$js_textfeld}', '<pre>', '</pre>');">PRE</a> |
-					<a href="javascript:void(0);" onclick="editAreaLoader.insertTags('{$js_textfeld}', '<br />', '');">BR</a> |
-					<a href="javascript:void(0);" onclick="editAreaLoader.insertTags('{$js_textfeld}', '\t', '');">TAB</a> |
-					<a title="{#RUBRIK_DOCID_INFO#}" href="javascript:void(0);" onclick="editAreaLoader.insertTags('{$js_textfeld}', '[tag:docid]', '');">[tag:docid]</a> |
-					<a title="{#RUBRIK_DOCDATE_INFO#}" href="javascript:void(0);" onclick="editAreaLoader.insertTags('{$js_textfeld}', '[tag:docdate]', '');">[tag:docdate]</a> |
-					<a title="{#RUBRIK_DOCTIME_INFO#}" href="javascript:void(0);" onclick="editAreaLoader.insertTags('{$js_textfeld}', '[tag:doctime]', '');">[tag:doctime]</a> |
-					<a title="{#RUBRIK_DOCAUTHOR_INFO#}" href="javascript:void(0);" onclick="editAreaLoader.insertTags('{$js_textfeld}', '[tag:docauthor]', '');">[tag:docauthor]</a> |
-					<a title="{#RUBRIK_VIEWS_INFO#}" href="javascript:void(0);" onclick="editAreaLoader.insertTags('{$js_textfeld}', '[tag:docviews]', '');">[tag:docviews]</a> |
-					<a title="{#RUBRIK_TITLE_INFO#}" href="javascript:void(0);" onclick="editAreaLoader.insertTags('{$js_textfeld}', '[tag:title]', '');">[tag:title]</a> |
-					<a title="{#RUBRIK_PATH_INFO#}" href="javascript:void(0);" onclick="editAreaLoader.insertTags('{$js_textfeld}', '[tag:path]', '');">[tag:path]</a> |
-					<a title="{#RUBRIK_MEDIAPATH_INFO#}" href="javascript:void(0);" onclick="editAreaLoader.insertTags('{$js_textfeld}', '[tag:mediapath]', '');">[tag:mediapath]</a> |
-					<a title="{#RUBRIK_HIDE_INFO#}" href="javascript:void(0);" onclick="editAreaLoader.insertTags('{$js_textfeld}', '[tag:hide::', ']\n\n[/tag:hide]');">[tag:hide:X,X:text][/tag:hide]</a> |
-					<a title="{#RUBRIK_BREADCRUMB#}" href="javascript:void(0);" onclick="editAreaLoader.insertTags('{$js_textfeld}', '[tag:breadcrumb]', '');">[tag:breadcrumb]</a>
-				</div>
+                </div> 
+			</td>
+		</tr>
+		
+		<tr>
+			<td>
+		<a title="{#RUBRIK_DOCDATE_INFO#}" href="javascript:void(0);" onclick="textSelection('[tag:docdate]', '');"><strong>[tag:docdate]</strong></a>
+			</td>
+		</tr>
+		
+		<tr>
+			<td>
+		<a title="{#RUBRIK_DOCTIME_INFO#}" href="javascript:void(0);" onclick="textSelection('[tag:doctime]', '');"><strong>[tag:doctime]</strong></a>
+			</td>
+		</tr>
+			
+		<tr>
+			<td>
+		<a title="{#RUBRIK_DOCAUTHOR_INFO#}" href="javascript:void(0);" onclick="textSelection('[tag:docauthor]', '');"><strong>[tag:docauthor]</strong></a>
+			</td>
+		</tr>
+		
+		<tr>
+			<td>
+		<a title="{#RUBRIK_VIEWS_INFO#}" href="javascript:void(0);" onclick="textSelection('[tag:docviews]', '');"><strong>[tag:docviews]</strong></a>
+			</td>
+		</tr>
+		
+		<tr>
+			<td>
+		<a title="{#RUBRIK_TITLE_INFO#}" href="javascript:void(0);" onclick="textSelection('[tag:title]', '');"><strong>[tag:title]</strong></a>
+			</td>
+		</tr>
+		
+		<tr>
+			<td>
+		<a title="{#RUBRIK_PATH_INFO#}" href="javascript:void(0);" onclick="textSelection('[tag:path]', '');"><strong>[tag:path]</strong></a>
+			</td>
+		</tr>
+		
+		<tr>
+			<td>
+		<a title="{#RUBRIK_MEDIAPATH_INFO#}" href="javascript:void(0);" onclick="textSelection('[tag:mediapath]', '');"><strong>[tag:mediapath]</strong></a>
+			</td>
+		</tr>
+		
+		<tr>
+			<td>
+		<a title="{#RUBRIK_HIDE_INFO#}" href="javascript:void(0);" onclick="textSelection('[tag:hide:', ']\n\n[/tag:hide]');"><strong>[tag:hide:X,X][/tag:hide]</strong></a>
+			</td>
+		</tr>
+		
+		<tr>
+			<td>
+		<a title="{#RUBRIK_BREADCRUMB#}" href="javascript:void(0);" onclick="textSelection('[tag:breadcrumb]', '');"><strong>[tag:breadcrumb]</strong></a>
 			</td>
 		</tr>
 
+        <tr>
+            <td></td>
+        </tr>
+		
+        <tr>
+            <td>HTML Tags</td>
+			<td>
+			<div class="infobox">
+			|&nbsp;
+			<a href="javascript:void(0);" onclick="textSelection('<ol>', '</ol>');"><strong>OL</strong></a>&nbsp;|&nbsp;
+			<a href="javascript:void(0);" onclick="textSelection('<ul>', '</ul>');"><strong>UL</strong></a>&nbsp;|&nbsp;
+			<a href="javascript:void(0);" onclick="textSelection('<li>', '</li>');"><strong>LI</strong></a>&nbsp;|&nbsp;
+			<a href="javascript:void(0);" onclick="textSelection('<p class=&quot;&quot;>', '</p>');"><strong>P</strong></a>&nbsp;|&nbsp;
+			<a href="javascript:void(0);" onclick="textSelection('<strong>', '</strong>');"><strong>B</strong></a>&nbsp;|&nbsp;
+			<a href="javascript:void(0);" onclick="textSelection('<em>', '</em>');"><strong>I</strong></a>&nbsp;|&nbsp;
+			<a href="javascript:void(0);" onclick="textSelection('<h1>', '</h1>');"><strong>H1</strong></a>&nbsp;|&nbsp;
+			<a href="javascript:void(0);" onclick="textSelection('<h2>', '</h2>');"><strong>H2</strong></a>&nbsp;|&nbsp;
+			<a href="javascript:void(0);" onclick="textSelection('<h3>', '</h3>');"><strong>H3</strong></a>&nbsp;|&nbsp;
+			<a href="javascript:void(0);" onclick="textSelection('<h4>', '</h4>');"><strong>H4</strong></a>&nbsp;|&nbsp;
+			<a href="javascript:void(0);" onclick="textSelection('<h5>', '</h5>');"><strong>H5</strong></a>&nbsp;|&nbsp;
+			<a href="javascript:void(0);" onclick="textSelection('<h6>', '</h6>');"><strong>H6</strong></a>&nbsp;|&nbsp;			
+			<a href="javascript:void(0);" onclick="textSelection('<div class=&quot;&quot; id=&quot;&quot;>', '</div>');"><strong>DIV</strong></a>&nbsp;|&nbsp;
+			<a href="javascript:void(0);" onclick="textSelection('<a href=&quot;&quot; title=&quot;&quot;>', '</a>');"><strong>A</strong></a>&nbsp;|&nbsp;
+			<a href="javascript:void(0);" onclick="textSelection('<img src=&quot;&quot; alt=&quot;&quot; />', '');"><strong>IMG</strong></a>&nbsp;|&nbsp;
+			<a href="javascript:void(0);" onclick="textSelection('<span>', '</span>');"><strong>SPAN</strong></a>&nbsp;|&nbsp;
+			<a href="javascript:void(0);" onclick="textSelection('<pre>', '</pre>');"><strong>PRE</strong></a>&nbsp;|&nbsp;
+			<a href="javascript:void(0);" onclick="textSelection('<br />', '');"><strong>BR</strong></a>&nbsp;|&nbsp;
+			<a href="javascript:void(0);" onclick="textSelection('\t', '');"><strong>TAB</strong></a>&nbsp;|			
+			</div>
+			</td>
+        </tr>		
+		
 		<tr>
-			<td class="second" style="padding:0px">
+			<td colspan="2" class="second">
 				<table width="100%" border="0" cellspacing="1" cellpadding="4">
 					<tr class="tableheader">
 						<td width="10%">{#RUBRIK_ID#}</td>
 						<td width="20%">{#RUBRIK_FIELD_NAME#}</td>
 						<td width="30%">{#RUBRIK_FIELD_TYPE#}</td>
-						<td>&nbsp;</td>
 					</tr>
 
 					{foreach from=$tags item=tag}
 						<tr>
-							<td width="10%" class="first"><a title="{#RUBRIK_INSERT_HELP#}" href="javascript:void(0);" onclick="editAreaLoader.insertTags('{$js_textfeld}', '[tag:fld:{$tag->Id}]', '');">[tag:fld:{$tag->Id}]</a></td>
+							<td width="10%" class="first"><a title="{#RUBRIK_INSERT_HELP#}" href="javascript:void(0);" onclick="textSelection2('[tag:rfld:{$tag->Id}][', '150]');">[tag:fld:{$tag->Id}]</a></td>
 							<td width="10%" class="first"><strong>{$tag->rubric_field_title}</strong></td>
 							<td width="10%" class="first">
 								{section name=feld loop=$feld_array}
 									{if $tag->rubric_field_type == $feld_array[feld].id}{$feld_array[feld].name}{/if}
 								{/section}
 							</td>
-							<td class="first">&nbsp;</td>
 						</tr>
 					{/foreach}
 				</table>
 			</td>
 		</tr>
-
-		<tr class="{cycle name='ta' values='first,second'}">
-			<td class="second">
-				<input type="hidden" name="Id" value="{$smarty.request.Id|escape}">
-				<input class="button" type="submit" value="{#RUBRIK_BUTTON_TPL#}" /> или <input type="submit" class="button button_lev2" name="next_edit" value="{#RUBRIK_BUTTON_TPL_NEXT#}" />
-			</td>
-		</tr>
 	</table>
+	<br />
+	
+	<input type="hidden" name="Id" value="{$smarty.request.Id|escape}">
+	<input class="button" type="submit" value="{#RUBRIK_BUTTON_TPL#}" /> или <input type="submit" class="button button_lev2" name="next_edit" value="{#RUBRIK_BUTTON_TPL_NEXT#}" />
 </form>
+
+    <script language="Javascript" type="text/javascript">
+{literal}
+      var editor = CodeMirror.fromTextArea(document.getElementById("rubric_template"), {
+        lineNumbers: true,
+		lineWrapping: true,
+        matchBrackets: true,
+        mode: "application/x-httpd-php",
+        indentUnit: 4,
+        indentWithTabs: true,
+        enterMode: "keep",
+        tabMode: "shift",
+        onChange: function(){editor.save();},
+		onCursorActivity: function() {
+		  editor.setLineClass(hlLine, null, null);
+		  hlLine = editor.setLineClass(editor.getCursor().line, null, "activeline");
+		}
+      });
+
+      function getSelectedRange() {
+        return { from: editor.getCursor(true), to: editor.getCursor(false) };
+      }
+
+      function textSelection(startTag,endTag) {
+        var range = getSelectedRange();
+        editor.replaceRange(startTag + editor.getRange(range.from, range.to) + endTag, range.from, range.to)
+        editor.setCursor(range.from.line, range.from.ch + startTag.length);
+      }
+
+	  var hlLine = editor.setLineClass(0, "activeline");
+{/literal}
+    </script>

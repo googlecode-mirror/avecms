@@ -42,7 +42,7 @@ TEMPLATES_ALL          = "Список шаблонов"
 TEMPLATES_CSS_NAME          = "Список css файлов"
 
 TEMPLATES_TAGS         = "Тег"
-TEMPLATES_TAG_DESC     = "Описание тега"
+TEMPLATES_TAGS_2       = "HTML Tags"
 TEMPLATES_THEME_FOLDER = "Название шаблона (Имя папки с файлами для данного шаблона)"
 TEMPLATES_PAGENAME     = "Название сайта"
 TEMPLATES_TITLE        = "Название страницы"
