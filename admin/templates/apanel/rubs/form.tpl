@@ -109,7 +109,7 @@
 		
 		<tr>
 			<td>
-		<a title="{#RUBRIK_HIDE_INFO#}" href="javascript:void(0);" onclick="textSelection('[tag:hide:', ']\n\n[/tag:hide]');"><strong>[tag:hide:X,X][/tag:hide]</strong></a>
+		<a title="{#RUBRIK_HIDE_INFO#}" href="javascript:void(0);" onclick="textSelection('[tag:hide::', ']\n\n[/tag:hide]');"><strong>[tag:hide:X,X:text][/tag:hide]</strong></a>
 			</td>
 		</tr>
 		
