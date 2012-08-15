@@ -17,6 +17,16 @@ function check_name() {ldelim}
 	{rdelim}
 	return true;
 {rdelim}
+
+$(document).ready( function() {ldelim}
+	$("#selall").click(function(){ldelim}
+		if ($("#selall").attr('checked')){ldelim}
+			$(".checkbox:enabled").attr("checked", true);
+		{rdelim}else{ldelim}
+			$(".checkbox:enabled").attr("checked", false);
+		{rdelim}
+	{rdelim});
+{rdelim});
 </script>
 
 <table width="100%" border="0" cellspacing="1" cellpadding="0" class="tableborder">
@@ -88,7 +98,7 @@ function check_name() {ldelim}
 	<col width="20">
 	<col width="20">
 	<tr class="tableheader">
-		<td></td>
+		<td><div align="center"><input type="checkbox" id="selall" value="1" /></div></td>
 		<td><a class="header" href="{$link}&sort=id{if $smarty.request.sort=='id'}_desc{/if}&page={$smarty.request.page|escape|default:'1'}&cp={$sess}">{#DOC_ID#}</a></td>
 		<td nowrap="nowrap">
 			<a class="header" href="{$link}&sort=title{if $smarty.request.sort=='title'}_desc{/if}&page={$smarty.request.page|escape|default:'1'}&cp={$sess}">{#DOC_TITLE#}</a>
@@ -105,8 +115,9 @@ function check_name() {ldelim}
 	</tr>
 
 	{foreach from=$docs item=item}
+	    {if $item->cantRead==1}
 		<tr style="background-color:#eff3eb" onmouseover="this.style.backgroundColor='#dae0d8';" onmouseout="this.style.backgroundColor='#eff3eb';" id="table_rows">
-			<td><input name="document[{$item->Id}]" type="checkbox" value="1" {if ($item->cantEdit!=1 || $item->canOpenClose!=1 || $item->canEndDel!=1) && ($item->Id == 1 || $item->Id == $PAGE_NOT_FOUND_ID)}disabled{/if} /></td>
+			<td><input class="checkbox" name="document[{$item->Id}]" type="checkbox" value="1" {if ($item->cantEdit!=1 || $item->canOpenClose!=1 || $item->canEndDel!=1) && ($item->Id == 1 || $item->Id == $PAGE_NOT_FOUND_ID || $item->canAlles !=1)}disabled{/if} /></td>
 			<td nowrap="nowrap">{$item->Id}</td>
 
 			<td>
@@ -212,23 +223,22 @@ function check_name() {ldelim}
 				{/if}
 			</td>
 		</tr>
+		{/if}
 	{/foreach}
 	
 	<tr>
 		<td colspan="4">
-			<div class="setChecked">Фильтр: <span id="text">отметить все</span></div>
 
 			<select name="moderation" class="action-in-moderation">
-				<option value="none" selected="selected">Действие с выбранными</option>
-				<option value="1">Активный</option>
-				<option value="0">Не активный</option>
-				<option value="intrash">Временно удалить</option>
-				<option value="outtrash">Восстановить</option>
-				<option value="trash">Удалить</option>
+				<option value="none" selected="selected">{#DOC_ACTIONS_SELECTED#}</option>
+				<option value="1">{#DOC_ACTIONS_ACTIVE#}</option>
+				<option value="0">{#DOC_ACTIONS_INACTIVE#}</option>
+				<option value="intrash">{#DOC_ACTIONS_TEMP_DELETE#}</option>
+				<option value="outtrash">{#DOC_ACTIONS_RESTORE#}</option>
+				<option value="trash">{#DOC_ACTIONS_DELETE#}</option>
 			</select>
-			
-			<br><br>
-			<input type="submit" class="button" value="Сохранить изменения" />
+
+			<input type="submit" class="button" value="{#DOC_ACTIONS_BUTTON_EDIT#}" />
 		</td>
 	</tr>
 </table>

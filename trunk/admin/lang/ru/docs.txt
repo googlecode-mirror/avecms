@@ -136,3 +136,11 @@ DOC_URL_ERROR_DUPLICATES = " псевдоним уже используется 
 DOC_URL_CHECK_OK         = " можно использовать "
 
 DOC_REQUEST_NOT_INFO     = "Для данного запроса описания нет."
+
+DOC_ACTIONS_SELECTED     = "Действие с выбранными"
+DOC_ACTIONS_ACTIVE       = "Активный"
+DOC_ACTIONS_INACTIVE     = "Не активный"
+DOC_ACTIONS_TEMP_DELETE  = "Временно удалить"
+DOC_ACTIONS_RESTORE      = "Восстановить"
+DOC_ACTIONS_DELETE       = "Удалить"
+DOC_ACTIONS_BUTTON_EDIT  = "Сохранить изменения"

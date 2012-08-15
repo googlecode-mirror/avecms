@@ -519,11 +519,23 @@ class AVE_Document
 			// Получаем название рубрики по ее Id
 			$row->RubName         = $AVE_Rubric->rubricNameByIdGet($row->rubric_id)->rubric_title;
 			$row->document_author = get_username_by_id($row->document_author_id); // Получаем имя пользователя (Автора)
+            $row->canAlles        = 0;
+			$row->cantRead        = 0;			
 			$row->cantEdit        = 0;
 			$row->canDelete       = 0;
 			$row->canEndDel       = 0;
 			$row->canOpenClose    = 0;
-
+			
+            // разрешаем просмотр документов в рубрике
+			if ( isset($_SESSION[$row->rubric_id . '_docread']) && @$_SESSION[$row->rubric_id . '_docread'] == 1)
+			{
+					$row->cantRead  = 1;
+			}
+			// разрешаем все права документов в рубрике
+			if ( isset($_SESSION[$row->rubric_id . '_alles']) && @$_SESSION[$row->rubric_id . '_alles'] == 1)
+			{
+					$row->canAlles  = 1;
+			}			
 			// разрешаем редактирование и удаление
 			// если автор имеет право изменять свои документы в рубрике
 			// или пользователю разрешено изменять все документы в рубрике
