@@ -354,6 +354,14 @@ $(document).ready(function(){ldelim}
               <br />
               <br />
               <div class="text">
+                {#MAIN_STAT_AVEREV#}
+              </div>
+              <div class="stat">
+                {$smarty.const.BILD_VERSION}
+              </div>
+              <br />
+              <br />
+              <div class="text">
                 {#MAIN_STAT_PHP#}
               </div>
               <div class="stat">

@@ -173,8 +173,7 @@ function openLinkWindow(target,doc) {ldelim}
 			<td>{#SETTINGS_USE_EDITOR#}</td>
 			<td>
 				<input type="radio" name="use_editor" value="0"{if $row.use_editor==0} checked{/if} />{#SETTINGS_EDITOR_STANDART#} <br>
-				<input type="radio" name="use_editor" value="1"{if $row.use_editor==1} checked{/if} />{#SETTINGS_EDITOR_ELFINDER#}<br>
-				<input type="radio" name="use_editor" value="2"{if $row.use_editor==2} checked{/if} disabled />{#SETTINGS_EDITOR_INNOVA#}
+				<input type="radio" name="use_editor" value="1"{if $row.use_editor==1} checked{/if} />{#SETTINGS_EDITOR_ELFINDER#}
 			</td>
 		</tr>
 

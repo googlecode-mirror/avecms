@@ -53,7 +53,7 @@
     <td valign="top" id="content">{$content}</td>
   </tr>
   <tr>
-    <td id="tablebottom">{$smarty.const.APP_INFO}</td>
+    <td id="tablebottom">{$smarty.const.APP_NAME} {$smarty.const.APP_VERSION} {#MAIN_REV#} {$smarty.const.BILD_VERSION} | {$smarty.const.APP_INFO}</td>
   </tr>
 </table>
 </body>
