@@ -258,7 +258,7 @@ function changeRub(select) {ldelim}
 		</tr> 		
 		
         <tr>
-            <td class="first">HTML Tags</td>
+            <td class="first">{#REQUEST_HTML_TAGS#}</td>
 			<td class="second">	 			
 				<div class="infobox">
 					|&nbsp;
@@ -363,7 +363,7 @@ function changeRub(select) {ldelim}
         </tr>
 		
         <tr>		
-		    <td class="first">HTML Tags</td>
+		    <td class="first">{#REQUEST_HTML_TAGS#}</td>
 			<td class="second">			
 				<div class="infobox">
 					|&nbsp;
@@ -385,7 +385,7 @@ function changeRub(select) {ldelim}
 					<a href="javascript:void(0);" onclick="textSelection2('<span>', '</span>');"><strong>SPAN</strong></a>&nbsp;|&nbsp;
 					<a href="javascript:void(0);" onclick="textSelection2('<pre>', '</pre>');"><strong>PRE</strong></a>&nbsp;|&nbsp;
 					<a href="javascript:void(0);" onclick="textSelection2('<br />', '');"><strong>BR</strong></a>&nbsp;|&nbsp;
-					<a href="javascript:void(0);" onclick="textSelection2s('\t', '');"><strong>TAB</strong></a>&nbsp;|
+					<a href="javascript:void(0);" onclick="textSelection2('\t', '');"><strong>TAB</strong></a>&nbsp;|
 				</div>
 		    </td>
         </tr> 		
