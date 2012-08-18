@@ -1,5 +1,5 @@
-<link rel="stylesheet" type="text/css" href="lib/markitup/skins/markitup/style.css" />
-<link rel="stylesheet" type="text/css" href="lib/markitup/sets/bbcode/style.css" />
+<link rel="stylesheet" type="text/css" href="modules/guestbook/markitup/skins/markitup/style.css" />
+<link rel="stylesheet" type="text/css" href="modules/guestbook/markitup/sets/bbcode/style.css" />
 {literal}
 <style>
 #gbf .gb_input {width:50%; float:left; margin-bottom:1em;}
@@ -10,8 +10,8 @@
 	#gbf fieldset input {width:120px;}
 </style>
 {/literal}
-<script type="text/javascript" src="lib/markitup/jquery.markitup.pack.js"></script>
-<script type="text/javascript" src="lib/markitup/sets/bbcode/set.js"></script>
+<script type="text/javascript" src="modules/guestbook/markitup/jquery.markitup.js"></script>
+<script type="text/javascript" src="modules/guestbook/markitup/sets/bbcode/set.js"></script>
 
 <script language="javascript">
 $(document).ready(function() {ldelim}
