@@ -61,7 +61,7 @@ class Guest
 	{
 		global $AVE_Template;
 
-		require_once(BASE_DIR . '/lib/markitup/sets/bbcode/markitup.bbcode-parser.php');
+		require_once(BASE_DIR . '/modules/guestbook/markitup/sets/bbcode/markitup.bbcode-parser.php');
 
 		return BBCode2Html($text);
 	}
