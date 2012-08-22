@@ -97,7 +97,7 @@ class Roadmap
 		switch ($subaction)
 		{
 			case '':
-				$AVE_Template->assign('formaction', 'index.php?do=modules&action=modedit&mod=roadmap&moduleaction=edit_project&id={$project_id}&sub=save&cp=' . SESSION . '&pop=1');
+				$AVE_Template->assign('formaction', 'index.php?do=modules&action=modedit&mod=roadmap&moduleaction=edit_project&id=' . $project_id . '&sub=save&cp=' . SESSION . '&pop=1');
 
 				$row = $AVE_DB->Query("
 					SELECT *
@@ -190,7 +190,7 @@ class Roadmap
 
 		if ($num > $limit)
 		{
-			$page_nav = " <a class=\"pnav\" href=\"index.php?do=modules&action=modedit&mod=roadmap&moduleaction=show_tasks&closed={$status}&id={$project_id}&cp=" . SESSION . "&page={s}\">{t}</a> ";
+			$page_nav = " <a class=\"pnav\" href=\"index.php?do=modules&action=modedit&mod=roadmap&moduleaction=show_tasks&closed=" . $status . "&id=" . $project_id . "&cp=" . SESSION . "&page={s}\">{t}</a> ";
 			$page_nav = get_pagination($pages, 'page', $page_nav);
 			$AVE_Template->assign('page_nav', $page_nav);
 		}
@@ -208,7 +208,7 @@ class Roadmap
 		switch ($_REQUEST['sub'])
 		{
 			case '':
-				$AVE_Template->assign('formaction', 'index.php?do=modules&action=modedit&mod=roadmap&moduleaction=new_task&id={$project_id}&sub=save&cp=' . SESSION . '&pop=1');
+				$AVE_Template->assign('formaction', 'index.php?do=modules&action=modedit&mod=roadmap&moduleaction=new_task&id=' . $project_id . '&sub=save&cp=' . SESSION . '&pop=1');
 				$AVE_Template->assign('content', $AVE_Template->fetch($tpl_dir . 'admin_task_form.tpl'));
 				break;
 
@@ -242,7 +242,7 @@ class Roadmap
 		switch ($_REQUEST['sub'])
 		{
 			case '':
-				$AVE_Template->assign('formaction', 'index.php?do=modules&action=modedit&mod=roadmap&moduleaction=edit_task&id={$task_id}&sub=save&cp=' . SESSION . '&pop=1');
+				$AVE_Template->assign('formaction', 'index.php?do=modules&action=modedit&mod=roadmap&moduleaction=edit_task&id=' . $task_id . '&sub=save&cp=' . SESSION . '&pop=1');
 
 				$row = $AVE_DB->Query("
 					SELECT *
@@ -289,7 +289,7 @@ class Roadmap
 
 		reportLog($_SESSION['user_name'] . ' - удалил задачу ' . $task_id, 2, 2);
 
-		header('Location:index.php?do=modules&action=modedit&mod=roadmap&moduleaction=show_tasks&id={$project_id}&closed={$status}&cp=' . SESSION);
+		header('Location:index.php?do=modules&action=modedit&mod=roadmap&moduleaction=show_tasks&id=' . $project_id . '&closed=' . $status . '&cp=' . SESSION);
 		exit;
 	}
 
