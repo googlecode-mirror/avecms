@@ -162,7 +162,7 @@
 
 					{foreach from=$tags item=tag}
 						<tr>
-							<td width="10%" class="first"><a title="{#RUBRIK_INSERT_HELP#}" href="javascript:void(0);" onclick="textSelection2('[tag:rfld:{$tag->Id}][', '150]');">[tag:fld:{$tag->Id}]</a></td>
+							<td width="10%" class="first"><a title="{#RUBRIK_INSERT_HELP#}" href="javascript:void(0);" onclick="textSelection('[tag:rfld:{$tag->Id}][', '150]');">[tag:fld:{$tag->Id}]</a></td>
 							<td width="10%" class="first"><strong>{$tag->rubric_field_title}</strong></td>
 							<td width="10%" class="first">
 								{section name=feld loop=$feld_array}

@@ -150,7 +150,8 @@ function show_by($newsarchive_id, $month, $year, $day = 0)
 	$assign['day']         = (int)$day;
 
 	$AVE_Template->assign($assign);
-
+	
+    define('MODULE_SITE', $AVE_Template->get_config_vars('ARCHIVE_FROM') . ' ' . $m_arr[(int)$month] . ', ' . (int)$year . ' ' . $AVE_Template->get_config_vars('ARCHIVE_YEAR'));
 	define('MODULE_CONTENT', $AVE_Template->fetch($tpl_dir . 'archive_result.tpl'));
 }
 
