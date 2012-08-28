@@ -223,20 +223,49 @@
 		  {else}
 			<input class="button" type="submit" value="{#TEMPLATES_BUTTON_SAVE#}" />
 		  {/if}
-		  
-		  или 
-		  
+		    {#TEMPLATES_OR#}
 		  {if $smarty.request.action=='edit'}
 				<input type="submit" class="button button_lev2" name="next_edit" value="{#TEMPLATES_BUTTON_SAVE_NEXT#}" />
 			{else}
-				<input type="submit" class="button button_lev2" name="next_edit" value="{#TEMPLATES_BUTTON_ADD_NEXT#}" />
+				<input type="submit" class="button" name="next_edit" value="{#TEMPLATES_BUTTON_ADD_NEXT#}" />
 			{/if}
+			<span id="loading" style="display:none">&nbsp;&nbsp;&nbsp;<img src="{$tpl_dir}/js/jquery/images/ajax-loader-green.gif" border="0" /></span>
+			<span id="checkResult"></span>			
 		</td>
 	</tr>
  </form>
 </table>
 
     <script language="Javascript" type="text/javascript">
+	var sett_options = {ldelim}
+		url: '{$formaction}',
+		beforeSubmit: function(){ldelim}
+			$("#checkResult").html('');
+			{rdelim},
+        success: function(){ldelim}
+			$("#checkResult").html('{#TEMPLATES_RESULT_INFO#}');
+			{rdelim}		
+	{rdelim}	
+	
+	$(document).ready(function(){ldelim}
+
+		$(".button_lev2").click(function(e){ldelim}
+			if (e.preventDefault) {ldelim}
+				e.preventDefault();
+			{rdelim} else {ldelim}
+				// internet explorer
+				e.returnValue = false;
+			{rdelim}
+			$("#f_tpl").ajaxSubmit(sett_options);
+			return false;
+		{rdelim});
+	
+	{rdelim});
+	
+	$("#loading")
+		.bind("ajaxSend", function(){ldelim}$(this).show();{rdelim})
+		.bind("ajaxComplete", function(){ldelim}$(this).hide();{rdelim});
+		
 {literal}
       var editor = CodeMirror.fromTextArea(document.getElementById("template_text"), {
         lineNumbers: true,

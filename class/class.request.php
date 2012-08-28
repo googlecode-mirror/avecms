@@ -197,7 +197,7 @@ class AVE_Request
 
                 // Передаем данные в шаблон и отображаем страницу с редактированием запроса
 				$AVE_Template->assign('row', $row);
-				$AVE_Template->assign('formaction', 'index.php?do=request&amp;action=edit&amp;sub=save&amp;Id=' . $request_id . '&amp;cp=' . SESSION);
+				$AVE_Template->assign('formaction', 'index.php?do=request&action=edit&sub=save&Id=' . $request_id . '&cp=' . SESSION);
 				$AVE_Template->assign('content', $AVE_Template->fetch('request/form.tpl'));
 				break;
 

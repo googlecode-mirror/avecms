@@ -178,10 +178,41 @@
 	<br />
 	
 	<input type="hidden" name="Id" value="{$smarty.request.Id|escape}">
-	<input class="button" type="submit" value="{#RUBRIK_BUTTON_TPL#}" /> или <input type="submit" class="button button_lev2" name="next_edit" value="{#RUBRIK_BUTTON_TPL_NEXT#}" />
+	<input class="button" type="submit" value="{#RUBRIK_BUTTON_TPL#}" />{#RUBRIK_OR#}<input type="submit" class="button button_lev2" name="next_edit" value="{#RUBRIK_BUTTON_TPL_NEXT#}" />
+	<span id="loading" style="display:none">&nbsp;&nbsp;&nbsp;<img src="{$tpl_dir}/js/jquery/images/ajax-loader-green.gif" border="0" /></span>
+	<span id="checkResult"></span>
 </form>
 
     <script language="Javascript" type="text/javascript">
+	var sett_options = {ldelim}
+		url: '{$formaction}',
+		beforeSubmit: function(){ldelim}
+			$("#checkResult").html('');
+			{rdelim},
+        success: function(){ldelim}
+			$("#checkResult").html('{#RUBRIK_RESULT_INFO#}');
+			{rdelim}		
+	{rdelim}	
+	
+	$(document).ready(function(){ldelim}
+
+		$(".button_lev2").click(function(e){ldelim}
+			if (e.preventDefault) {ldelim}
+				e.preventDefault();
+			{rdelim} else {ldelim}
+				// internet explorer
+				e.returnValue = false;
+			{rdelim}
+			$("#f_tpl").ajaxSubmit(sett_options);
+			return false;
+		{rdelim});
+	
+	{rdelim});
+	
+	$("#loading")
+		.bind("ajaxSend", function(){ldelim}$(this).show();{rdelim})
+		.bind("ajaxComplete", function(){ldelim}$(this).hide();{rdelim});
+		
 {literal}
       var editor = CodeMirror.fromTextArea(document.getElementById("rubric_template"), {
         lineNumbers: true,

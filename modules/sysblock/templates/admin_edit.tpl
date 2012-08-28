@@ -25,7 +25,7 @@
 	» <a href="index.php?do=modules&action=modedit&mod=sysblock&moduleaction=1&cp={$sess}">{#SYSBLOCK_LIST_LINK#}</a>
 </div><br />
 
-<form action="index.php?do=modules&action=modedit&mod=sysblock&moduleaction=saveedit&cp={$sess}" method="post">
+<form id="sysblock" action="index.php?do=modules&action=modedit&mod=sysblock&moduleaction=saveedit&cp={$sess}" method="post">
 	<table width="100%" border="0" cellpadding="8" cellspacing="1" class="tableborder">
 	    <col width="200" class="first">
 		<col class="second">
@@ -124,18 +124,46 @@
 	{else}
 		<input name="submit" type="submit" class="button" value="{#SYSBLOCK_SAVE#}" />
 	{/if}
-	
-	или 
-	
+	{#SYSBLOCK_OR#}
 	{if $smarty.request.moduleaction=='edit'}
 		<input type="submit" class="button button_lev2" name="next_edit" value="{#SYSBLOCK_SAVEDIT_NEXT#}" />
 	{else}
 		<input type="submit" class="button button_lev2" name="next_edit" value="{#SYSBLOCK_SAVE_NEXT#}" />
-	{/if}	
+	{/if}
+    <span id="loading" style="display:none">&nbsp;&nbsp;&nbsp;<img src="{$tpl_dir}/js/jquery/images/ajax-loader-green.gif" border="0" /></span>
+	<span id="checkResult"></span>
 </form>
 
 <script language="javascript">
+    var sett_options = {ldelim}
+		url: 'index.php?do=modules&action=modedit&mod=sysblock&moduleaction=saveedit&cp={$sess}',
+		beforeSubmit: function(){ldelim}
+			$("#checkResult").html('');
+			{rdelim},
+        success: function(){ldelim}
+			$("#checkResult").html('{#SYSBLOCK_RESULT_INFO#}');
+			{rdelim}		
+	{rdelim}
 
+	$(document).ready(function(){ldelim}
+
+	    $(".button_lev2").click(function(e){ldelim}
+		    if (e.preventDefault) {ldelim}
+		        e.preventDefault();
+		    {rdelim} else {ldelim}
+		        // internet explorer
+		        e.returnValue = false;
+		    {rdelim}
+		    $("#sysblock").ajaxSubmit(sett_options);
+			return false;
+		{rdelim});
+
+	{rdelim});
+	
+	$("#loading")
+		.bind("ajaxSend", function(){ldelim}$(this).show();{rdelim})
+		.bind("ajaxComplete", function(){ldelim}$(this).hide();{rdelim});
+		
 	{literal}
       var editor = CodeMirror.fromTextArea(document.getElementById("sysblock_text"), {
         lineNumbers: true,

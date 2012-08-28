@@ -171,9 +171,19 @@ switch ($_REQUEST['action'])
 								template_created   = '" . time() . "'
 						");
 
+				   	    // Получаем id последней записи
+                        $iid = $AVE_DB->InsertId();
+						
 						reportLog($_SESSION['user_name'] . ' - создал шаблон (' . stripslashes($_REQUEST['template_title']) . ')', 2, 2);
 
-						header('Location:index.php?do=templates');
+						if (!$_REQUEST['next_edit']) 
+						{		
+							header('Location:index.php?do=templates&cp=' . SESSION);
+						} 
+						else 
+						{
+							header('Location:index.php?do=templates&action=edit&Id=' . $iid .'&cp=' . SESSION);
+						}						
 						exit;
 					}
 					break;
