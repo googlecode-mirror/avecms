@@ -59,7 +59,7 @@ function changeRub(select) {ldelim}
 	{assign var=dis value='disabled'}
 {/if}
 
-<form name="f_tpl" method="post" action="{$formaction}">
+<form name="f_tpl" id="f_tpl" method="post" action="{$formaction}">
 	<input name="pop" type="hidden" id="pop" value="{$smarty.request.pop|escape}" /><br />
 	{assign var=js_form value='f_tpl'}
 	<table width="100%" border="0" cellpadding="8" cellspacing="1" class="tableborder">
@@ -422,17 +422,46 @@ function changeRub(select) {ldelim}
 		{else}
 			<input {$dis} type="submit" class="button" value="{#REQUEST_BUTTON_ADD#}" />
 		{/if}
-		
-			или
-
+		{#REQUEST_OR#}
 		{if $smarty.request.action=='edit'}
-			<input type="submit" class="button button_lev2" name="next_edit" value="{#REQUEST_BUTTON_SAVE_NEXT#}" />
+			<input {$dis} type="submit" class="button button_lev2" name="next_edit" value="{#REQUEST_BUTTON_SAVE_NEXT#}" />
 		{else}
-			<input type="submit" class="button button_lev2" name="next_edit" value="{#REQUEST_BUTTON_ADD_NEXT#}" />
-		{/if}	
+			<input {$dis} type="submit" class="button" name="next_edit" value="{#REQUEST_BUTTON_ADD_NEXT#}" />
+		{/if}
+		<span id="loading" style="display:none">&nbsp;&nbsp;&nbsp;<img src="{$tpl_dir}/js/jquery/images/ajax-loader-green.gif" border="0" /></span>
+		<span id="checkResult"></span>		
 </form>
 
     <script language="Javascript" type="text/javascript">
+	var sett_options = {ldelim}
+		url: '{$formaction}',
+		beforeSubmit: function(){ldelim}
+			$("#checkResult").html('');
+			{rdelim},
+        success: function(){ldelim}
+			$("#checkResult").html('{#REQUEST_RESULT_INFO#}');
+			{rdelim}	
+	{rdelim}
+
+	$(document).ready(function(){ldelim}
+
+	    $(".button_lev2").click(function(e){ldelim}
+		    if (e.preventDefault) {ldelim}
+		        e.preventDefault();
+		    {rdelim} else {ldelim}
+		        // internet explorer
+		        e.returnValue = false;
+		    {rdelim}
+		    $("#f_tpl").ajaxSubmit(sett_options);
+			return false;
+		{rdelim});
+
+	{rdelim});	
+	
+	$("#loading")
+		.bind("ajaxSend", function(){ldelim}$(this).show();{rdelim})
+		.bind("ajaxComplete", function(){ldelim}$(this).hide();{rdelim});	
+
 {literal}
       var editor = CodeMirror.fromTextArea(document.getElementById("request_template_main"), {
         lineNumbers: true,
