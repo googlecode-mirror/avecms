@@ -1,4 +1,18 @@
-<script language="Javascript" type="text/javascript" src="editarea/edit_area_compressor.php"></script>
+<link rel="stylesheet" href="{$ABS_PATH}admin/codemirror/lib/codemirror.css">
+
+<script src="{$ABS_PATH}admin/codemirror/lib/codemirror.js" type="text/javascript"></script>
+    <script src="{$ABS_PATH}admin/codemirror/mode/xml/xml.js"></script>
+    <script src="{$ABS_PATH}admin/codemirror/mode/javascript/javascript.js"></script>
+    <script src="{$ABS_PATH}admin/codemirror/mode/css/css.js"></script>
+    <script src="{$ABS_PATH}admin/codemirror/mode/clike/clike.js"></script>
+    <script src="{$ABS_PATH}admin/codemirror/mode/php/php.js"></script>
+
+{literal}
+    <style type="text/css">
+      .activeline {background: #e8f2ff !important;}
+      .CodeMirror-scroll {height: 300px;}
+    </style>
+{/literal}
 
 <script language="Javascript" type="text/javascript">
 $(document).ready(function(){ldelim}
@@ -82,46 +96,61 @@ $(document).ready(function(){ldelim}
 			</tr>
 			<tr id="tpl_{$rf->Id}" class="tpls">
 				<td colspan="7" class="second">
-				<script language="Javascript" type="text/javascript">
-				editAreaLoader.init({ldelim}id: "rubric_field_template[{$rf->Id}]",allow_toggle: false,display: "later"{rdelim});
-				editAreaLoader.init({ldelim}id: "rubric_field_template_request[{$rf->Id}]",allow_toggle: false,display: "later"{rdelim});
-				</script>
+
 				<div style="width:50%; float:left">
 					<div class="tableheader" style="padding:6px">{#RUBRIK_FIELDS_TPL#}</div>
 					<textarea wrap="off" style="width:100%; height:70px" name="rubric_field_template[{$rf->Id}]" id="rubric_field_template[{$rf->Id}]">{$rf->rubric_field_template|escape}</textarea>
-					<div class="infobox">|
-						<a href="javascript:void(0);" onclick="editAreaLoader.insertTags('rubric_field_template[{$rf->Id}]', '<div>', '</div>');">DIV</a>|
-						<a href="javascript:void(0);" onclick="editAreaLoader.insertTags('rubric_field_template[{$rf->Id}]', '<p>', '</p>');">P</a>|
-						<a href="javascript:void(0);" onclick="editAreaLoader.insertTags('rubric_field_template[{$rf->Id}]', '<strong>', '</strong>');">B</a>|
-						<a href="javascript:void(0);" onclick="editAreaLoader.insertTags('rubric_field_template[{$rf->Id}]', '<em>', '</em>');">I</a>|
-						<a href="javascript:void(0);" onclick="editAreaLoader.insertTags('rubric_field_template[{$rf->Id}]', '<h1>', '</h1>');">H1</a>|
-						<a href="javascript:void(0);" onclick="editAreaLoader.insertTags('rubric_field_template[{$rf->Id}]', '<h2>', '</h2>');">H2</a>|
-						<a href="javascript:void(0);" onclick="editAreaLoader.insertTags('rubric_field_template[{$rf->Id}]', '<h3>', '</h3>');">H3</a>|
-						<a href="javascript:void(0);" onclick="editAreaLoader.insertTags('rubric_field_template[{$rf->Id}]', '<pre>', '</pre>');">PRE</a>|
-						<a href="javascript:void(0);" onclick="editAreaLoader.insertTags('rubric_field_template[{$rf->Id}]', '<br />', '');">BR</a>|
-						<a href="javascript:void(0);" onclick="editAreaLoader.insertTags('rubric_field_template[{$rf->Id}]', '[tag:parametr:', ']');">[tag:parametr:XXX]</a>|
-						<a href="javascript:void(0);" onclick="editAreaLoader.insertTags('rubric_field_template[{$rf->Id}]', '[tag:path]', '');">[tag:path]</a>|
-						<a href="javascript:void(0);" onclick="editAreaLoader.insertTags('rubric_field_template[{$rf->Id}]', '[tag:if_empty]\n', '\n[/tag:if_empty]');">[tag:if_empty]&nbsp;[/tag:if_empty]</a>|
-						<a href="javascript:void(0);" onclick="editAreaLoader.insertTags('rubric_field_template[{$rf->Id}]', '[tag:if_notempty]\n', '\n[/tag:if_notempty]');">[tag:if_notempty]&nbsp;[/tag:if_notempty]</a>|
+					<div class="infobox">|&nbsp;
+						<a title="{#RUBRIK_PARAMETR#}" href="javascript:void(0);" onclick="javascript:cp_insert('[tag:parametr:]', 'rubric_field_template[{$rf->Id}]', 'kform');">[tag:parametr:XXX]</a>&nbsp;|&nbsp;
+						<a title="{#RUBRIK_PATH_INFO#}" href="javascript:void(0);" onclick="javascript:cp_insert('[tag:path]', 'rubric_field_template[{$rf->Id}]', 'kform');">[tag:path]</a>&nbsp;|&nbsp;
+						<a title="{#RUBRIK_IF_EMPTY#}" href="javascript:void(0);" onclick="javascript:cp_tag('tag:if_empty', 'rubric_field_template[{$rf->Id}]', 'kform');">[tag:if_empty]&nbsp;[/tag:if_empty]</a>&nbsp;|&nbsp;
+						<a title="{#RUBRIK_NOT_EMPTY#}" href="javascript:void(0);" onclick="javascript:cp_tag('tag:if_notempty', 'rubric_field_template[{$rf->Id}]', 'kform');">[tag:if_notempty]&nbsp;[/tag:if_notempty]</a>
+						&nbsp;|
+						<br />
+						|&nbsp;
+						<a href="javascript:void(0);" onclick="javascript:cp_insert('<div class=&quot;&quot; id=&quot;&quot;></div>', 'rubric_field_template[{$rf->Id}]', 'kform');">DIV</a>&nbsp;|&nbsp;
+						<a href="javascript:void(0);" onclick="javascript:cp_insert('<a href=&quot;&quot; title=&quot;&quot;></a>', 'rubric_field_template[{$rf->Id}]', 'kform');">A</a>&nbsp;|&nbsp;
+						<a href="javascript:void(0);" onclick="javascript:cp_insert('<img src=&quot;&quot; alt=&quot;&quot; />', 'rubric_field_template[{$rf->Id}]', 'kform');">IMG</a>&nbsp;|&nbsp;
+						<a href="javascript:void(0);" onclick="javascript:cp_insert('<p class=&quot;&quot;></p>', 'rubric_field_template[{$rf->Id}]', 'kform');">P</a>&nbsp;|&nbsp;
+						<a href="javascript:void(0);" onclick="javascript:cp_code('strong', 'rubric_field_template[{$rf->Id}]', 'kform');">B</a>&nbsp;|&nbsp;
+						<a href="javascript:void(0);" onclick="javascript:cp_code('em', 'rubric_field_template[{$rf->Id}]', 'kform');">I</a>&nbsp;|&nbsp;
+						<a href="javascript:void(0);" onclick="javascript:cp_code('h1', 'rubric_field_template[{$rf->Id}]', 'kform');">H1</a>&nbsp;|&nbsp;
+						<a href="javascript:void(0);" onclick="javascript:cp_code('h2', 'rubric_field_template[{$rf->Id}]', 'kform');">H2</a>&nbsp;|&nbsp;
+						<a href="javascript:void(0);" onclick="javascript:cp_code('h3', 'rubric_field_template[{$rf->Id}]', 'kform');">H3</a>&nbsp;|&nbsp;
+						<a href="javascript:void(0);" onclick="javascript:cp_code('h4', 'rubric_field_template[{$rf->Id}]', 'kform');">H4</a>&nbsp;|&nbsp;
+						<a href="javascript:void(0);" onclick="javascript:cp_code('h5', 'rubric_field_template[{$rf->Id}]', 'kform');">H5</a>&nbsp;|&nbsp;
+						<a href="javascript:void(0);" onclick="javascript:cp_code('h6', 'rubric_field_template[{$rf->Id}]', 'kform');">H6</a>&nbsp;|&nbsp;						
+						<a href="javascript:void(0);" onclick="javascript:cp_code('pre', 'rubric_field_template[{$rf->Id}]', 'kform');">PRE</a>&nbsp;|&nbsp;						
+						<a href="javascript:void(0);" onclick="javascript:cp_code('span', 'rubric_field_template[{$rf->Id}]', 'kform');">SPAN</a>&nbsp;|&nbsp;
+						<a href="javascript:void(0);" onclick="javascript:cp_insert('<br />', 'rubric_field_template[{$rf->Id}]', 'kform');">BR</a>&nbsp;|
 					</div>
 				</div>
 				<div style="width:50%; float:left">
 					<div class="tableheader" style="padding:6px">{#RUBRIK_REQUEST_TPL#}</div>
 					<textarea wrap="off" style="width:100%; height:70px" name="rubric_field_template_request[{$rf->Id}]" id="rubric_field_template_request[{$rf->Id}]">{$rf->rubric_field_template_request|escape}</textarea>
-					<div class="infobox">|
-						<a href="javascript:void(0);" onclick="editAreaLoader.insertTags('rubric_field_template_request[{$rf->Id}]', '<div>', '</div>');">DIV</a>|
-						<a href="javascript:void(0);" onclick="editAreaLoader.insertTags('rubric_field_template_request[{$rf->Id}]', '<p>', '</p>');">P</a>|
-						<a href="javascript:void(0);" onclick="editAreaLoader.insertTags('rubric_field_template_request[{$rf->Id}]', '<strong>', '</strong>');">B</a>|
-						<a href="javascript:void(0);" onclick="editAreaLoader.insertTags('rubric_field_template_request[{$rf->Id}]', '<em>', '</em>');">I</a>|
-						<a href="javascript:void(0);" onclick="editAreaLoader.insertTags('rubric_field_template_request[{$rf->Id}]', '<h1>', '</h1>');">H1</a>|
-						<a href="javascript:void(0);" onclick="editAreaLoader.insertTags('rubric_field_template_request[{$rf->Id}]', '<h2>', '</h2>');">H2</a>|
-						<a href="javascript:void(0);" onclick="editAreaLoader.insertTags('rubric_field_template_request[{$rf->Id}]', '<h3>', '</h3>');">H3</a>|
-						<a href="javascript:void(0);" onclick="editAreaLoader.insertTags('rubric_field_template_request[{$rf->Id}]', '<pre>', '</pre>');">PRE</a>|
-						<a href="javascript:void(0);" onclick="editAreaLoader.insertTags('rubric_field_template_request[{$rf->Id}]', '<br />', '');">BR</a>|
-						<a href="javascript:void(0);" onclick="editAreaLoader.insertTags('rubric_field_template_request[{$rf->Id}]', '[tag:parametr:', ']');">[tag:parametr:XXX]</a>|
-						<a href="javascript:void(0);" onclick="editAreaLoader.insertTags('rubric_field_template_request[{$rf->Id}]', '[tag:path]', '');">[tag:path]</a>|
-						<a href="javascript:void(0);" onclick="editAreaLoader.insertTags('rubric_field_template_request[{$rf->Id}]', '[tag:if_empty]\n', '\n[/tag:if_empty]');">[tag:if_empty]&nbsp;[/tag:if_empty]</a>|
-						<a href="javascript:void(0);" onclick="editAreaLoader.insertTags('rubric_field_template_request[{$rf->Id}]', '[tag:if_notempty]\n', '\n[/tag:if_notempty]');">[tag:if_notempty]&nbsp;[/tag:if_notempty]</a>|
+					<div class="infobox">|&nbsp;
+						<a title="{#RUBRIK_PARAMETR#}" href="javascript:void(0);" onclick="javascript:cp_insert('[tag:parametr:]', 'rubric_field_template_request[{$rf->Id}]', 'kform');">[tag:parametr:XXX]</a>&nbsp;|&nbsp;
+						<a title="{#RUBRIK_PATH_INFO#}" href="javascript:void(0);" onclick="javascript:cp_insert('[tag:path]', 'rubric_field_template_request[{$rf->Id}]', 'kform');">[tag:path]</a>&nbsp;|&nbsp;
+						<a title="{#RUBRIK_IF_EMPTY#}" href="javascript:void(0);" onclick="javascript:cp_tag('tag:if_empty', 'rubric_field_template_request[{$rf->Id}]', 'kform');">[tag:if_empty]&nbsp;[/tag:if_empty]</a>&nbsp;|&nbsp;
+						<a title="{#RUBRIK_NOT_EMPTY#}" href="javascript:void(0);" onclick="javascript:cp_tag('tag:if_notempty', 'rubric_field_template_request[{$rf->Id}]', 'kform');">[tag:if_notempty]&nbsp;[/tag:if_notempty]</a>
+						&nbsp;|
+						<br />
+						|&nbsp;
+						<a href="javascript:void(0);" onclick="javascript:cp_code('div', 'rubric_field_template_request[{$rf->Id}]', 'kform');">DIV</a>&nbsp;|&nbsp;
+						<a href="javascript:void(0);" onclick="javascript:cp_insert('<a href=&quot;&quot; title=&quot;&quot;></a>', 'rubric_field_template_request[{$rf->Id}]', 'kform');">A</a>&nbsp;|&nbsp;
+						<a href="javascript:void(0);" onclick="javascript:cp_insert('<img src=&quot;&quot; alt=&quot;&quot; />', 'rubric_field_template_request[{$rf->Id}]', 'kform');">IMG</a>&nbsp;|&nbsp;
+						<a href="javascript:void(0);" onclick="javascript:cp_insert('<p class=&quot;&quot;></p>', 'rubric_field_template_request[{$rf->Id}]', 'kform');">P</a>&nbsp;|&nbsp;
+						<a href="javascript:void(0);" onclick="javascript:cp_code('strong', 'rubric_field_template_request[{$rf->Id}]', 'kform');">B</a>&nbsp;|&nbsp;
+						<a href="javascript:void(0);" onclick="javascript:cp_code('em', 'rubric_field_template_request[{$rf->Id}]', 'kform');">I</a>&nbsp;|&nbsp;
+						<a href="javascript:void(0);" onclick="javascript:cp_code('h1', 'rubric_field_template_request[{$rf->Id}]', 'kform');">H1</a>&nbsp;|&nbsp;
+						<a href="javascript:void(0);" onclick="javascript:cp_code('h2', 'rubric_field_template_request[{$rf->Id}]', 'kform');">H2</a>&nbsp;|&nbsp;
+						<a href="javascript:void(0);" onclick="javascript:cp_code('h3', 'rubric_field_template_request[{$rf->Id}]', 'kform');">H3</a>&nbsp;|&nbsp;
+						<a href="javascript:void(0);" onclick="javascript:cp_code('h4', 'rubric_field_template_request[{$rf->Id}]', 'kform');">H4</a>&nbsp;|&nbsp;
+						<a href="javascript:void(0);" onclick="javascript:cp_code('h5', 'rubric_field_template_request[{$rf->Id}]', 'kform');">H5</a>&nbsp;|&nbsp;
+						<a href="javascript:void(0);" onclick="javascript:cp_code('h6', 'rubric_field_template_request[{$rf->Id}]', 'kform');">H6</a>&nbsp;|&nbsp;						
+						<a href="javascript:void(0);" onclick="javascript:cp_code('pre', 'rubric_field_template_request[{$rf->Id}]', 'kform');">PRE</a>&nbsp;|&nbsp;						
+						<a href="javascript:void(0);" onclick="javascript:cp_code('span', 'rubric_field_template_request[{$rf->Id}]', 'kform');">SPAN</a>&nbsp;|&nbsp;
+						<a href="javascript:void(0);" onclick="javascript:cp_insert('<br />', 'rubric_field_template_request[{$rf->Id}]', 'kform');">BR</a>&nbsp;|
 					</div>
 				</div>
 				</td>
@@ -163,11 +192,15 @@ $(document).ready(function(){ldelim}
 
 		<tr>
 			<td>
+				<div class="coder_in">
 				<textarea name="rubric_code_start" type="text" id="code_start" value="" style="width:99%;height:300px;" />{$rubric->rubric_code_start}</textarea>
+				</div>
 			</td>
 
 			<td>
+				<div class="coder_in">
 				<textarea name="rubric_code_end" type="text" id="code_end" value="" style="width:99%;height:300px;" />{$rubric->rubric_code_end}</textarea>
+				</div>
 			</td>
 		</tr>
 
@@ -344,3 +377,63 @@ $(document).ready(function(){ldelim}
 </form><br />
 <br />
 {/if}
+
+    <script language="Javascript" type="text/javascript">
+{literal}
+      var editor = CodeMirror.fromTextArea(document.getElementById("code_start"), {
+        lineNumbers: true,
+		lineWrapping: true,
+        matchBrackets: true,
+        mode: "application/x-httpd-php",
+        indentUnit: 4,
+        indentWithTabs: true,
+        enterMode: "keep",
+        tabMode: "shift",
+        onChange: function(){editor.save();},
+		onCursorActivity: function() {
+		  editor.setLineClass(hlLine, null, null);
+		  hlLine = editor.setLineClass(editor.getCursor().line, null, "activeline");
+		}
+      });
+
+      function getSelectedRange() {
+        return { from: editor.getCursor(true), to: editor.getCursor(false) };
+      }
+
+      function textSelection(startTag,endTag) {
+        var range = getSelectedRange();
+        editor.replaceRange(startTag + editor.getRange(range.from, range.to) + endTag, range.from, range.to)
+        editor.setCursor(range.from.line, range.from.ch + startTag.length);
+      }
+
+	  var hlLine = editor.setLineClass(0, "activeline");
+
+      var editor2 = CodeMirror.fromTextArea(document.getElementById("code_end"), {
+        lineNumbers: true,
+		lineWrapping: true,
+        matchBrackets: true,
+        mode: "application/x-httpd-php",
+        indentUnit: 4,
+        indentWithTabs: true,
+        enterMode: "keep",
+        tabMode: "shift",
+        onChange: function(){editor2.save();},
+		onCursorActivity: function() {
+		  editor2.setLineClass(hlLine, null, null);
+		  hlLine = editor2.setLineClass(editor2.getCursor().line, null, "activeline");
+		}
+      });
+
+      function getSelectedRange2() {
+        return { from: editor2.getCursor(true), to: editor2.getCursor(false) };
+      }
+
+      function textSelection2(startTag,endTag) {
+        var range = getSelectedRange2();
+        editor2.replaceRange(startTag + editor2.getRange(range.from, range.to) + endTag, range.from, range.to)
+        editor2.setCursor(range.from.line, range.from.ch + startTag.length);
+      }
+
+      var hlLine = editor2.setLineClass(0, "activeline");
+{/literal}
+    </script>

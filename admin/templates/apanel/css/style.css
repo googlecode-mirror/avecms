@@ -1065,6 +1065,20 @@ em {
 	margin-left:4px;
 	display:block;
 }
+#noticeAreaClearCache a {
+	padding:8px 11px 11px 46px;
+	float:left;
+	background:transparent url(../images/util/warning.jpg) no-repeat 2px 2px;
+	margin-left:4px;
+	display:block;
+}
+#noticeAreaClearCache a:hover {
+	padding:8px 11px 11px 46px;
+	float: left;
+	background:transparent url(../images/util/warning.jpg) no-repeat 2px -36px;
+	margin-left:4px;
+	display:block;
+}
 /*-------------------- Right Stat -------------------------*/
 #sysinfo, #statbox, #activemodule {
 	background:#F8FAF4;

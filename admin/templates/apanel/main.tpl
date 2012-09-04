@@ -27,7 +27,8 @@
   <tr>
     <td id="tableheader_main">
       <div id="noticeAreaLogin"> <a href="index.php"><strong>{#MAIN_PAGE_TITLE#}</strong><br />
-        {#MAIN_LINK_HOME#}</a> </div>
+        {#MAIN_LINK_HOME#}</a> 
+	  </div>
       <div id="noticeAreaProfileSection">
         <div>{#MAIN_USER_ONLINE#} <strong style="color:#fff;">{$smarty.session.user_name|escape}</strong></div>
         <div><a onClick="return confirm('{#MAIN_LOGOUT_CONFIRM#}')" href="admin.php?do=logout">{#MAIN_LINK_LOGOUT#}</a></div>
@@ -35,7 +36,11 @@
       <div id="noticeAreaReturnToSite"> <a target="_blank" href="../index.php?module=login&action=wys_adm&sub=off"><strong>{#MAIN_LINK_SITE#}</strong></a><br />
         <a target="_blank" href="../index.php?module=login&action=wys_adm&sub=on">{#MAIN_LINK_SITE_GO#}</a>
       </div>
+      {if check_permission('session_clear')}
+	  <div id="noticeAreaClearCache">
+		<a href="#" class="clearCache"><strong>{#MAIN_STAT_CLEAR_CACHE_2#}</strong></a>
       </div>
+	  {/if}
     </td>
   </tr>
   {if $smarty.request.do != ''}
