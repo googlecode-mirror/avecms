@@ -393,6 +393,7 @@ $(document).ready(function(){ldelim}
               </div>
               <br />
               <br />
+			  {if check_permission('session_clear')}
               <div class="title">
                 Кэш
               </div>
@@ -422,6 +423,7 @@ $(document).ready(function(){ldelim}
                   <label class="cursor">{#MAIN_CLEAR_CACHE_SESSION#}</label>
                 </form>
               </div>
+			  {/if}
             </div>
             <br /></td>
         </tr>

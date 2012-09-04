@@ -50,6 +50,32 @@ function cp_code(v, feldname, form) {
 	}
 }
 
+function cp_tag(v, feldname, form) {
+	if (document.selection) {
+		var str = document.selection.createRange().text;
+		document.getElementById(feldname).focus();
+		var sel = document.selection.createRange();
+		sel.text = "[" + v + "]" + str + "[/" + v + "]";
+		return;
+	}
+	else if (document.getElementById && !document.all) {
+		var txtarea = document.forms[form].elements[feldname];
+		var selLength = txtarea.textLength;
+		var selStart = txtarea.selectionStart;
+		var selEnd = txtarea.selectionEnd;
+		if (selEnd == 1 || selEnd == 2)
+		selEnd = selLength;
+		var s1 = (txtarea.value).substring(0,selStart);
+		var s2 = (txtarea.value).substring(selStart, selEnd)
+		var s3 = (txtarea.value).substring(selEnd, selLength);
+		txtarea.value = s1 + '[' + v + ']' + s2 + '[/' + v + ']' + s3;
+		return;
+	}
+	else {
+		cp_insert('[' + v + '][/' + v + '] ');
+	}
+}
+
 function cp_insert(what,feldname, form) {
 	if (document.getElementById(feldname).createTextRange) {
 		document.getElementById(feldname).focus();
@@ -121,3 +147,17 @@ function desel() {
 }
 	
 (function($){$.fn.extend({limit:function(limit,element){var interval,f;var self=$(this);$(this).focus(function(){interval=window.setInterval(substring,100)});$(this).blur(function(){clearInterval(interval);substring()});substringFunction="function substring(){ var val = $(self).val();var length = val.length;if(length > limit){$(self).val($(self).val().substring(0,limit));}";if(typeof element!='undefined')substringFunction+="if($(element).html() != limit-length){$(element).html((limit-length<=0)?'0':limit-length);}";substringFunction+="}";eval(substringFunction);substring()}})})(jQuery);
+
+$(document).ready(function(){
+
+    //===== Очистка кэша =====//
+	$(".clearCache").click( function() {
+		$('#ccc').html('');
+		
+		$.post(ave_path+'admin/index.php?do=settings&sub=clearcache&ajax=run&templateCacheClear=1&templateCompiledTemplateClear=1&moduleCacheClear=1&sqlCacheClear=1', function(){
+			$('#cachesize').html('0 Kb');
+			$('#ccc').html('Кэш очищен');
+			alert('Кэш очищен');
+		});
+	});	
+});

@@ -41,9 +41,10 @@ class AVE_User
 		'remarks', 'remark_status', 'remark_del',															// заметки
 		'request', 'request_new', 'request_del',															// запросы
 		'navigation', 'navigation_new', 'navigation_edit',													// навигация
-		'mediapool', 'mediapool_del',																		// файловый менеджер
+		'mediapool', 'mediapool_del', 'finder',																// файловый менеджер
 		'dbactions',																						// база данных
-		'logs'																								// логи
+		'logs',																								// логи
+		'session_clear'																						// сессии и кеш
 	);
 
 	/**
