@@ -39,7 +39,7 @@
 	<table width="100%"  border="0" cellpadding="5" cellspacing="1">
 		<tr class="second" valign="top">
 			<td width="100%">
-				{assign var=height value=700}
+				{assign var=height value=500}
 				<div style="border:1px solid #D4D4D4;overflow:hidden;height:{$height}px;width:100%">
 					<iframe frameborder="0" name="zf" id="zf" width="100%" height="{$height}" scrolling="Yes" src="browser.php?typ={$smarty.request.typ|escape}&cpengine={$sess}&dir=/&action=list"></iframe>
 				</div>
