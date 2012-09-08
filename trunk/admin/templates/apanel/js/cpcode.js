@@ -150,14 +150,14 @@ function desel() {
 
 $(document).ready(function(){
 
-    //===== Очистка кэша =====//
+    //===== РћС‡РёСЃС‚РєР° РєСЌС€Р° =====//
 	$(".clearCache").click( function() {
 		$('#ccc').html('');
 		
 		$.post(ave_path+'admin/index.php?do=settings&sub=clearcache&ajax=run&templateCacheClear=1&templateCompiledTemplateClear=1&moduleCacheClear=1&sqlCacheClear=1', function(){
 			$('#cachesize').html('0 Kb');
-			$('#ccc').html('Кэш очищен');
-			alert('Кэш очищен');
+			$('#ccc').html('РљСЌС€ РѕС‡РёС‰РµРЅ');
+			alert('РљСЌС€ РѕС‡РёС‰РµРЅ');
 		});
 	});	
 });
