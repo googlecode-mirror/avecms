@@ -635,6 +635,7 @@ class Login
 																	   $row->firstname,
 																	   $row->lastname);
 								$_SESSION['user_ip']    = addslashes($_SERVER['REMOTE_ADDR']);
+								$_SESSION['user_group']   = $this->_newuser_group;
 							}
 						}
 
