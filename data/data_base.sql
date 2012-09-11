@@ -256,7 +256,9 @@ INSERT INTO `%%PRFX%%_rubric_fields` VALUES
 
 INSERT INTO `%%PRFX%%_rubric_permissions` VALUES
   (1, 1, 1, 'alles'),
-  (2, 1, 2, 'docread');#inst#
+  (2, 1, 2, 'docread'),
+  (3, 1, 3, 'docread'),
+  (4, 1, 4, 'docread');#inst#
 
 INSERT INTO `%%PRFX%%_rubrics` VALUES
   (1, 'Основные страницы', '', '<h1>[tag:fld:1]</h1>[tag:fld:2]', 1, 1, 0, 1, '', '');#inst#
@@ -270,6 +272,7 @@ INSERT INTO `%%PRFX%%_templates` VALUES
 INSERT INTO `%%PRFX%%_user_groups` VALUES
   (1, 'Администраторы', '1', '0', '', 'alles'),
   (2, 'Анонимные пользователи', '1', '0', '', ''),
+  (3, 'Модераторы', '1', '0', '', ''),
   (4, 'Зарегистрированные', '1', '0', '', '');#inst#
 
 INSERT INTO `%%PRFX%%_users` VALUES
