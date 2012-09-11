@@ -527,7 +527,8 @@ class AVE_Document
 			$row->canOpenClose    = 0;
 			
             // разрешаем просмотр документов в рубрике
-			if ( isset($_SESSION[$row->rubric_id . '_docread']) && @$_SESSION[$row->rubric_id . '_docread'] == 1)
+			if ( ( isset($_SESSION[$row->rubric_id . '_docread']) && @$_SESSION[$row->rubric_id . '_docread'] == 1)
+			   || (isset($_SESSION[$row->rubric_id . '_alles']) && @$_SESSION[$row->rubric_id . '_alles'] == 1) )
 			{
 					$row->cantRead  = 1;
 			}
@@ -541,7 +542,7 @@ class AVE_Document
 			// или пользователю разрешено изменять все документы в рубрике
 			if ( ($row->document_author_id == @$_SESSION['user_id']
 				&& isset($_SESSION[$row->rubric_id . '_editown']) && @$_SESSION[$row->rubric_id . '_editown'] == 1)
-				|| (isset($_SESSION[$row->rubric_id . '_editall']) && $_SESSION[$row->rubric_id . '_editall'] == 1) )
+				|| (isset($_SESSION[$row->rubric_id . '_editall']) && @$_SESSION[$row->rubric_id . '_editall'] == 1) )
 			{
 					$row->cantEdit  = 1;
 					$row->canDelete = 1;
@@ -561,6 +562,8 @@ class AVE_Document
 			// разрешаем всё, если пользователь принадлежит группе Администраторов или имеет все права на рубрику
 			if (UGROUP == 1 || @$_SESSION[$row->rubric_id . '_alles'] == 1)
 			{
+				$row->canAlles     = 1;
+				$row->cantRead     = 1;
 				$row->cantEdit     = 1;
 				$row->canDelete    = 1;
 				$row->canEndDel    = 1;
