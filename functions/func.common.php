@@ -900,6 +900,10 @@ function get_username_by_id($id)
  */
 function pretty_date($string, $language = '')
 {
+	if (!mb_check_encoding($string,'UTF-8'))
+	{
+		$string = iconv('Windows-1251', 'UTF-8', $string);
+	}
 	if ($language == '')
 	{
 		$language = (defined('ACP') && ACP) ? $_SESSION['admin_language'] : $_SESSION['user_language'];
