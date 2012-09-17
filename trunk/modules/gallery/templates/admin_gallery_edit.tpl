@@ -1,4 +1,18 @@
-<script src="editarea/edit_area_full.js"></script>
+<link rel="stylesheet" href="{$ABS_PATH}admin/codemirror/lib/codemirror.css">
+
+<script src="{$ABS_PATH}admin/codemirror/lib/codemirror.js" type="text/javascript"></script>
+<script src="{$ABS_PATH}admin/codemirror/mode/xml/xml.js"></script>
+<script src="{$ABS_PATH}admin/codemirror/mode/javascript/javascript.js"></script>
+<script src="{$ABS_PATH}admin/codemirror/mode/css/css.js"></script>
+<script src="{$ABS_PATH}admin/codemirror/mode/clike/clike.js"></script>
+<script src="{$ABS_PATH}admin/codemirror/mode/php/php.js"></script>
+
+{literal}
+    <style type="text/css">
+      .activeline {background: #e8f2ff !important;}
+      .CodeMirror-scroll {height: 300px;}
+    </style>
+{/literal}
 
 <div class="pageHeaderTitle" style="padding-top:7px">
 	<div class="h_module">&nbsp;</div>
@@ -12,7 +26,7 @@
 	<a href="index.php?do=modules&action=modedit&mod=gallery&moduleaction=1&cp={$sess}">&raquo;&nbsp;{#GalView#}</a>
 </div><br />
 
-<form method="post" name="gallery_form" action="index.php?do=modules&action=modedit&mod=gallery&moduleaction=editgallery&id={$smarty.request.id|escape}&cp={$sess}&sub=save">
+<form method="post" name="gallery_form" id="gallery_form" action="index.php?do=modules&action=modedit&mod=gallery&moduleaction=editgallery&id={$smarty.request.id|escape}&cp={$sess}&sub=save">
 	{assign var=js_form value='gallery_form'}
 	<table width="100%" border="0" cellpadding="8" cellspacing="1" class="tableborder">
 		<col width="200" class="first">
@@ -123,105 +137,230 @@
 			</td>
 		</tr>
 
-		<tr class="tr-toggle">
+		<tr>
+			<td class="tableheader" colspan="2">{#GalleryScripts#}</td>
+		</tr>
+
+		<tr>
+			<td>{#GalleryScriptsTag#}</td>
 			<td>{#GalleryScripts#}</td>
-			<td>
+		</tr>
+		
+		<tr>
+			<td><strong><a title="{#GalleryTagId#}" href="javascript:void(0);" onclick="textSelection('[tag:gal:id]', '');">[tag:gal:id]</a></strong></td>
+			<td rowspan="3">
+				<div class="coder_in">
 				<textarea name="gallery_script" cols="80" rows="10" id="gallery_script" style="width:100%">{$gallery.gallery_script|escape}</textarea>
+				</div>
 				{assign var=js_textfeld value='gallery_script'}
 			</td>
 		</tr>
-
-		<tr class="tr-toggle">
-			<td>{#GalleryScriptsTag#}</td>
-			<td>
-				<table width="100%" border="0" cellspacing="1" cellpadding="4">
-					<col class="first" width="130">
-					<col class="first">
-					<tr>
-						<td scope="row"><strong><a href="javascript:void(0);" onclick="editAreaLoader.insertTags('{$js_textfeld}', '[tag:gal:id]', '');">[tag:gal:id]</a></strong></td>
-						<td>{#GalleryTagId#}</td>
-					</tr>
-
-					<tr>
-						<td scope="row"><strong><a href="javascript:void(0);" onclick="editAreaLoader.insertTags('{$js_textfeld}', '[tag:gal:folder]', '');">[tag:gal:folder]</a></strong></td>
-						<td>{#GalleryTagFolder#}</td>
-					</tr>
-				</table>
-			</td>
+		
+		<tr>
+			<td><strong><a title="{#GalleryTagFolder#}" href="javascript:void(0);" onclick="textSelection('[tag:gal:folder]', '');">[tag:gal:folder]</a></strong></td>
 		</tr>
 
-		<tr class="tr-toggle">
-			<td>{#ImageTpl#}</td>
+		<tr>
+			<td></td>
+		</tr>		
+		
+		<tr>
+			<td>{#GalleryTags#}</td>
 			<td>
+				<div class="infobox">&nbsp;|
+					<a href="javascript:void(0);" onclick="textSelection('<ol>', '</ol>');"><strong>OL</strong></a>&nbsp;|&nbsp;
+					<a href="javascript:void(0);" onclick="textSelection('<ul>', '</ul>');"><strong>UL</strong></a>&nbsp;|&nbsp;
+					<a href="javascript:void(0);" onclick="textSelection('<li>', '</li>');"><strong>LI</strong></a>&nbsp;|&nbsp;
+					<a href="javascript:void(0);" onclick="textSelection('<p class=&quot;&quot;>', '</p>');"><strong>P</strong></a>&nbsp;|&nbsp;
+					<a href="javascript:void(0);" onclick="textSelection('<strong>', '</strong>');"><strong>B</strong></a>&nbsp;|&nbsp;
+					<a href="javascript:void(0);" onclick="textSelection('<em>', '</em>');"><strong>I</strong></a>&nbsp;|&nbsp;
+					<a href="javascript:void(0);" onclick="textSelection('<h1>', '</h1>');"><strong>H1</strong></a>&nbsp;|&nbsp;
+					<a href="javascript:void(0);" onclick="textSelection('<h2>', '</h2>');"><strong>H2</strong></a>&nbsp;|&nbsp;
+					<a href="javascript:void(0);" onclick="textSelection('<h3>', '</h3>');"><strong>H3</strong></a>&nbsp;|&nbsp;
+					<a href="javascript:void(0);" onclick="textSelection('<h4>', '</h4>');"><strong>H4</strong></a>&nbsp;|&nbsp;
+					<a href="javascript:void(0);" onclick="textSelection('<h5>', '</h5>');"><strong>H5</strong></a>&nbsp;|&nbsp;
+					<a href="javascript:void(0);" onclick="textSelection('<h6>', '</h6>');"><strong>H6</strong></a>&nbsp;|&nbsp;
+					<a href="javascript:void(0);" onclick="textSelection('<div>', '</div>');"><strong>DIV</strong></a>&nbsp;|&nbsp;
+					<a href="javascript:void(0);" onclick="textSelection('<a href=&quot;&quot; title=&quot;&quot;>', '</a>');"><strong>A</strong></a>&nbsp;|&nbsp;
+					<a href="javascript:void(0);" onclick="textSelection('<img src=&quot;&quot; alt=&quot;&quot; />', '');"><strong>IMG</strong></a>&nbsp;|&nbsp;					
+					<a href="javascript:void(0);" onclick="textSelection('<span>', '</span>');"><strong>SPAN</strong></a>&nbsp;|&nbsp;
+					<a href="javascript:void(0);" onclick="textSelection('<pre>', '</pre>');"><strong>PRE</strong></a>&nbsp;|&nbsp;
+					<a href="javascript:void(0);" onclick="textSelection('<br />', '');"><strong>BR</strong></a>&nbsp;|&nbsp;
+					<a href="javascript:void(0);" onclick="textSelection('\t', '');"><strong>TAB</strong></a>&nbsp;|
+				</div>				
+			</td>
+		</tr>
+		
+		<tr>
+			<td class="tableheader" colspan="2">{#ImageTpl#}</td>
+		</tr>
+
+		<tr>
+			<td>{#ImageTplTag#}</td>
+			<td>{#ImageTpl#}</td>
+		</tr>
+		
+		<tr>
+			<td><strong><a title="{#GalleryTagId#}" href="javascript:void(0);" onclick="textSelection2('[tag:gal:id]', '');">[tag:gal:id]</a></strong></td>
+			<td rowspan="8">
+				<div class="coder_in">
 				<textarea name="gallery_image_template" cols="80" rows="10" id="gallery_image_template" style="width:100%">{$gallery.gallery_image_template|escape}</textarea>
-				<div class="infobox">
-					{assign var=js_textfeld value='gallery_image_template'}
-					<a href="javascript:void(0);" onclick="editAreaLoader.insertTags('{$js_textfeld}', '<p>', '</p>');">P</a>&nbsp;|&nbsp;
-					<a href="javascript:void(0);" onclick="editAreaLoader.insertTags('{$js_textfeld}', '<strong>', '</strong>');">B</a>&nbsp;|&nbsp;
-					<a href="javascript:void(0);" onclick="editAreaLoader.insertTags('{$js_textfeld}', '<em>', '</em>');">I</a>&nbsp;|&nbsp;
-					<a href="javascript:void(0);" onclick="editAreaLoader.insertTags('{$js_textfeld}', '<h1>', '</h1>');">H1</a>&nbsp;|&nbsp;
-					<a href="javascript:void(0);" onclick="editAreaLoader.insertTags('{$js_textfeld}', '<h2>', '</h2>');">H2</a>&nbsp;|&nbsp;
-					<a href="javascript:void(0);" onclick="editAreaLoader.insertTags('{$js_textfeld}', '<h3>', '</h3>');">H3</a>&nbsp;|&nbsp;
-					<a href="javascript:void(0);" onclick="editAreaLoader.insertTags('{$js_textfeld}', '<div>', '</div>');">DIV</a>&nbsp;|&nbsp;
-					<a href="javascript:void(0);" onclick="editAreaLoader.insertTags('{$js_textfeld}', '<span>', '</span>');">SPAN</a>&nbsp;|&nbsp;
-					<a href="javascript:void(0);" onclick="editAreaLoader.insertTags('{$js_textfeld}', '<pre>', '</pre>');">PRE</a>&nbsp;|&nbsp;
-					<a href="javascript:void(0);" onclick="editAreaLoader.insertTags('{$js_textfeld}', '<br />', '');">BR</a>&nbsp;|&nbsp;
-					<a href="javascript:void(0);" onclick="editAreaLoader.insertTags('{$js_textfeld}', '\t', '');">TAB</a>&nbsp;
 				</div>
 			</td>
 		</tr>
 
-		<tr class="tr-toggle">
-			<td>{#ImageTplTag#}</td>
-			<td>
-				<table width="100%" border="0" cellspacing="1" cellpadding="4">
-					<col class="first" width="130">
-					<col class="first">
-					<tr>
-						<td scope="row"><strong><a href="javascript:void(0);" onclick="editAreaLoader.insertTags('{$js_textfeld}', '[tag:gal:id]', '');">[tag:gal:id]</a></strong></td>
-						<td>{#GalleryTagId#}</td>
-					</tr>
-
-					<tr>
-						<td scope="row"><strong><a href="javascript:void(0);" onclick="editAreaLoader.insertTags('{$js_textfeld}', '[tag:gal:folder]', '');">[tag:gal:folder]</a></strong></td>
-						<td>{#GalleryTagFolder#}</td>
-					</tr>
-
-					<tr>
-						<td scope="row"><strong><a href="javascript:void(0);" onclick="editAreaLoader.insertTags('{$js_textfeld}', '[tag:img:id]', '');">[tag:img:id]</a></strong></td>
-						<td>{#GalleryTagImgId#}</td>
-					</tr>
-
-					<tr>
-						<td scope="row"><strong><a href="javascript:void(0);" onclick="editAreaLoader.insertTags('{$js_textfeld}', '[tag:img:title]', '');">[tag:img:title]</a></strong></td>
-						<td>{#GalleryTagImgTitle#}</td>
-					</tr>
-
-					<tr>
-						<td scope="row"><strong><a href="javascript:void(0);" onclick="editAreaLoader.insertTags('{$js_textfeld}', '[tag:img:description]', '');">[tag:img:description]</a></strong></td>
-						<td>{#GalleryTagImgDesc#}</td>
-					</tr>
-
-					<tr>
-						<td scope="row"><strong><a href="javascript:void(0);" onclick="editAreaLoader.insertTags('{$js_textfeld}', '[tag:img:filename]', '');">[tag:img:filename]</a></strong></td>
-						<td>{#GalleryTagImgFilename#}</td>
-					</tr>
-
-					<tr>
-						<td scope="row"><strong><a href="javascript:void(0);" onclick="editAreaLoader.insertTags('{$js_textfeld}', '[tag:img:thumbnail]', '');">[tag:img:thumbnail]</a></strong></td>
-						<td>{#GalleryTagImgThumb#}</td>
-					</tr>
-				</table>
-			</td>
+		<tr>
+			<td><strong><a title="{#GalleryTagFolder#}" href="javascript:void(0);" onclick="textSelection2('[tag:gal:folder]', '');">[tag:gal:folder]</a></strong></td>
 		</tr>
 
 		<tr>
-			<td colspan="2" class="third">
-				<input type="submit" class="button" value="{#ButtonSave#}" />
+			<td><strong><a title="{#GalleryTagImgId#}" href="javascript:void(0);" onclick="textSelection2('[tag:img:id]', '');">[tag:img:id]</a></strong></td>
+		</tr>
+
+		<tr>
+			<td><strong><a title="{#GalleryTagImgTitle#}" href="javascript:void(0);" onclick="textSelection2('[tag:img:title]', '');">[tag:img:title]</a></strong></td>
+		</tr>
+
+		<tr>
+			<td><strong><a title="{#GalleryTagImgDesc#}" href="javascript:void(0);" onclick="textSelection2('[tag:img:description]', '');">[tag:img:description]</a></strong></td>
+		</tr>
+
+		<tr>
+			<td><strong><a title="{#GalleryTagImgFilename#}" href="javascript:void(0);" onclick="textSelection2('[tag:img:filename]', '');">[tag:img:filename]</a></strong></td>
+		</tr>
+
+		<tr>
+			<td><strong><a title="{#GalleryTagImgThumb#}" href="javascript:void(0);" onclick="textSelection2('[tag:img:thumbnail]', '');">[tag:img:thumbnail]</a></strong></td>
+		</tr>		
+		
+		<tr>
+			<td></td>
+		</tr>	
+		
+		<tr>
+			<td>{#GalleryTags#}</td>
+			<td>
+				<div class="infobox">&nbsp;|
+					<a href="javascript:void(0);" onclick="textSelection2('<ol>', '</ol>');"><strong>OL</strong></a>&nbsp;|&nbsp;
+					<a href="javascript:void(0);" onclick="textSelection2('<ul>', '</ul>');"><strong>UL</strong></a>&nbsp;|&nbsp;
+					<a href="javascript:void(0);" onclick="textSelection2('<li>', '</li>');"><strong>LI</strong></a>&nbsp;|&nbsp;
+					<a href="javascript:void(0);" onclick="textSelection2('<p class=&quot;&quot;>', '</p>');"><strong>P</strong></a>&nbsp;|&nbsp;
+					<a href="javascript:void(0);" onclick="textSelection2('<strong>', '</strong>');"><strong>B</strong></a>&nbsp;|&nbsp;
+					<a href="javascript:void(0);" onclick="textSelection2('<em>', '</em>');"><strong>I</strong></a>&nbsp;|&nbsp;
+					<a href="javascript:void(0);" onclick="textSelection2('<h1>', '</h1>');"><strong>H1</strong></a>&nbsp;|&nbsp;
+					<a href="javascript:void(0);" onclick="textSelection2('<h2>', '</h2>');"><strong>H2</strong></a>&nbsp;|&nbsp;
+					<a href="javascript:void(0);" onclick="textSelection2('<h3>', '</h3>');"><strong>H3</strong></a>&nbsp;|&nbsp;
+					<a href="javascript:void(0);" onclick="textSelection2('<h4>', '</h4>');"><strong>H4</strong></a>&nbsp;|&nbsp;
+					<a href="javascript:void(0);" onclick="textSelection2('<h5>', '</h5>');"><strong>H5</strong></a>&nbsp;|&nbsp;
+					<a href="javascript:void(0);" onclick="textSelection2('<h6>', '</h6>');"><strong>H6</strong></a>&nbsp;|&nbsp;
+					<a href="javascript:void(0);" onclick="textSelection2('<div>', '</div>');"><strong>DIV</strong></a>&nbsp;|&nbsp;
+			        <a href="javascript:void(0);" onclick="textSelection2('<a href=&quot;&quot; title=&quot;&quot;>', '</a>');"><strong>A</strong></a>&nbsp;|&nbsp;
+					<a href="javascript:void(0);" onclick="textSelection2('<img src=&quot;&quot; alt=&quot;&quot; />', '');"><strong>IMG</strong></a>&nbsp;|&nbsp;					
+					<a href="javascript:void(0);" onclick="textSelection2('<span>', '</span>');"><strong>SPAN</strong></a>&nbsp;|&nbsp;
+					<a href="javascript:void(0);" onclick="textSelection2('<pre>', '</pre>');"><strong>PRE</strong></a>&nbsp;|&nbsp;
+					<a href="javascript:void(0);" onclick="textSelection2('<br />', '');"><strong>BR</strong></a>&nbsp;|&nbsp;
+					<a href="javascript:void(0);" onclick="textSelection2('\t', '');"><strong>TAB</strong></a>&nbsp;|
+				</div>				
 			</td>
 		</tr>
-	</table><br />
+	</table>
+	<br />
+		<input type="submit" class="button" value="{#ButtonSave#}" />&nbsp;{#GalleryOr#}&nbsp;
+		<input type="submit" class="button button_lev2" value="{#ButtonSaveEdit#}" />
+		
+		<span id="loading" style="display:none">&nbsp;&nbsp;&nbsp;<img src="{$tpl_dir}/js/jquery/images/ajax-loader-green.gif" border="0" /></span>
+		<span id="checkResult"></span>		
 </form>
+
+    <script language="javascript">
+    var sett_options = {ldelim}
+		url: 'index.php?do=modules&action=modedit&mod=gallery&moduleaction=editgallery&id={$smarty.request.id|escape}&cp={$sess}&sub=save',
+		beforeSubmit: function(){ldelim}
+			$("#checkResult").html('');
+			{rdelim},
+        success: function(){ldelim}
+			$("#checkResult").html('{#GalleryResultInfo#}');
+			{rdelim}	
+	{rdelim}
+
+	$(document).ready(function(){ldelim}
+
+	    $(".button_lev2").click(function(e){ldelim}
+		    if (e.preventDefault) {ldelim}
+		        e.preventDefault();
+		    {rdelim} else {ldelim}
+		        // internet explorer
+		        e.returnValue = false;
+		    {rdelim}
+		    $("#gallery_form").ajaxSubmit(sett_options);
+			return false;
+		{rdelim});
+
+	{rdelim});
+	
+	$("#loading")
+		.bind("ajaxSend", function(){ldelim}$(this).show();{rdelim})
+		.bind("ajaxComplete", function(){ldelim}$(this).hide();{rdelim});	
+
+{literal}    
+      var editor = CodeMirror.fromTextArea(document.getElementById("gallery_script"), {
+        lineNumbers: true,
+		lineWrapping: true,
+        matchBrackets: true,
+        mode: "application/x-httpd-php",
+        indentUnit: 4,
+        indentWithTabs: true,
+        enterMode: "keep",
+        tabMode: "shift",
+        onChange: function(){editor.save();},
+		onCursorActivity: function() {
+		  editor.setLineClass(hlLine, null, null);
+		  hlLine = editor.setLineClass(editor.getCursor().line, null, "activeline");
+		}
+      });
+	  var hlLine = editor.setLineClass(0, "activeline");
+
+      function getSelectedRange() {
+        return { from: editor.getCursor(true), to: editor.getCursor(false) };
+      }
+
+      function textSelection(startTag,endTag) {
+        var range = getSelectedRange();
+        editor.replaceRange(startTag + editor.getRange(range.from, range.to) + endTag, range.from, range.to)
+        editor.setCursor(range.from.line, range.from.ch + startTag.length);
+      }
+	  
+      var hlLine = editor1.setLineClass(0, "activeline");	  
+
+      var editor2 = CodeMirror.fromTextArea(document.getElementById("gallery_image_template"), {
+        lineNumbers: true,
+		lineWrapping: true,
+        matchBrackets: true,
+        mode: "application/x-httpd-php",
+        indentUnit: 4,
+        indentWithTabs: true,
+        enterMode: "keep",
+        tabMode: "shift",
+        onChange: function(){editor2.save();},
+		onCursorActivity: function() {
+		  editor2.setLineClass(hlLine, null, null);
+		  hlLine = editor2.setLineClass(editor2.getCursor().line, null, "activeline");
+		}
+      });
+
+      function getSelectedRange2() {
+        return { from: editor2.getCursor(true), to: editor2.getCursor(false) };
+      }
+
+      function textSelection2(startTag,endTag) {
+        var range = getSelectedRange2();
+        editor2.replaceRange(startTag + editor2.getRange(range.from, range.to) + endTag, range.from, range.to)
+        editor2.setCursor(range.from.line, range.from.ch + startTag.length);
+      }
+
+      var hlLine = editor2.setLineClass(0, "activeline");
+{/literal}
+    </script>
 
 <script>
 {if $empty_gallery_title == 1}

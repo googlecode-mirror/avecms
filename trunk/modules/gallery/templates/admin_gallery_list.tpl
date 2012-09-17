@@ -18,7 +18,7 @@
 			<td width="180">{#Folder#}</td>
 			<td width="180">{#Gcreated#}</td>
 			<td width="5%">{#IncImages#}</td>
-			<td width="1%" colspan="4" align="center">{#Actions#}</td>
+			<td width="1%" colspan="5" align="center">{#Actions#}</td>
 		</tr>
 
 		<form action="" method="post">
@@ -47,6 +47,9 @@
 						</div>
 					</td>
 					<td>
+						<a title="{#ImageView#}" href="index.php?do=modules&action=modedit&mod=gallery&moduleaction=showimages&id={$gallery.id}&cp={$sess}"><img src="{$tpl_dir}/images/icon_search.gif" alt="" border="0" /></a>
+					</td>					
+					<td>
 						<a title="{#AddnewImages#}" href="index.php?do=modules&amp;action=modedit&amp;mod=gallery&amp;moduleaction=add&amp;id={$gallery.id}&amp;cp={$sess}"><img src="{$tpl_dir}/images/icon_add.gif" alt="" border="0" /></a>
 					</td>
 					<td>
@@ -61,7 +64,7 @@
 				</tr>
 			{/foreach}
 			<tr>
-				<td class="second" colspan="10">
+				<td class="second" colspan="11">
 					<input type="submit" class="button" style="float:right" value="{#CreateFolder#}" />
 				</td>
 			</tr>
