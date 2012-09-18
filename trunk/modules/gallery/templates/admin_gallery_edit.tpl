@@ -137,34 +137,33 @@
 			</td>
 		</tr>
 
-		<tr>
+		<tr class="tr-toggle">
 			<td class="tableheader" colspan="2">{#GalleryScripts#}</td>
 		</tr>
 
-		<tr>
+		<tr class="tr-toggle">
 			<td>{#GalleryScriptsTag#}</td>
 			<td>{#GalleryScripts#}</td>
 		</tr>
 		
-		<tr>
+		<tr class="tr-toggle">
 			<td><strong><a title="{#GalleryTagId#}" href="javascript:void(0);" onclick="textSelection('[tag:gal:id]', '');">[tag:gal:id]</a></strong></td>
 			<td rowspan="3">
 				<div class="coder_in">
 				<textarea name="gallery_script" cols="80" rows="10" id="gallery_script" style="width:100%">{$gallery.gallery_script|escape}</textarea>
 				</div>
-				{assign var=js_textfeld value='gallery_script'}
 			</td>
 		</tr>
 		
-		<tr>
+		<tr class="tr-toggle">
 			<td><strong><a title="{#GalleryTagFolder#}" href="javascript:void(0);" onclick="textSelection('[tag:gal:folder]', '');">[tag:gal:folder]</a></strong></td>
 		</tr>
 
-		<tr>
+		<tr class="tr-toggle">
 			<td></td>
 		</tr>		
 		
-		<tr>
+		<tr class="tr-toggle">
 			<td>{#GalleryTags#}</td>
 			<td>
 				<div class="infobox">&nbsp;|
@@ -191,16 +190,16 @@
 			</td>
 		</tr>
 		
-		<tr>
+		<tr class="tr-toggle">
 			<td class="tableheader" colspan="2">{#ImageTpl#}</td>
 		</tr>
 
-		<tr>
+		<tr class="tr-toggle">
 			<td>{#ImageTplTag#}</td>
 			<td>{#ImageTpl#}</td>
 		</tr>
 		
-		<tr>
+		<tr class="tr-toggle">
 			<td><strong><a title="{#GalleryTagId#}" href="javascript:void(0);" onclick="textSelection2('[tag:gal:id]', '');">[tag:gal:id]</a></strong></td>
 			<td rowspan="8">
 				<div class="coder_in">
@@ -209,35 +208,35 @@
 			</td>
 		</tr>
 
-		<tr>
+		<tr class="tr-toggle">
 			<td><strong><a title="{#GalleryTagFolder#}" href="javascript:void(0);" onclick="textSelection2('[tag:gal:folder]', '');">[tag:gal:folder]</a></strong></td>
 		</tr>
 
-		<tr>
+		<tr class="tr-toggle">
 			<td><strong><a title="{#GalleryTagImgId#}" href="javascript:void(0);" onclick="textSelection2('[tag:img:id]', '');">[tag:img:id]</a></strong></td>
 		</tr>
 
-		<tr>
+		<tr class="tr-toggle">
 			<td><strong><a title="{#GalleryTagImgTitle#}" href="javascript:void(0);" onclick="textSelection2('[tag:img:title]', '');">[tag:img:title]</a></strong></td>
 		</tr>
 
-		<tr>
+		<tr class="tr-toggle">
 			<td><strong><a title="{#GalleryTagImgDesc#}" href="javascript:void(0);" onclick="textSelection2('[tag:img:description]', '');">[tag:img:description]</a></strong></td>
 		</tr>
 
-		<tr>
+		<tr class="tr-toggle">
 			<td><strong><a title="{#GalleryTagImgFilename#}" href="javascript:void(0);" onclick="textSelection2('[tag:img:filename]', '');">[tag:img:filename]</a></strong></td>
 		</tr>
 
-		<tr>
+		<tr class="tr-toggle">
 			<td><strong><a title="{#GalleryTagImgThumb#}" href="javascript:void(0);" onclick="textSelection2('[tag:img:thumbnail]', '');">[tag:img:thumbnail]</a></strong></td>
 		</tr>		
 		
-		<tr>
+		<tr class="tr-toggle">
 			<td></td>
 		</tr>	
 		
-		<tr>
+		<tr class="tr-toggle">
 			<td>{#GalleryTags#}</td>
 			<td>
 				<div class="infobox">&nbsp;|
@@ -330,7 +329,7 @@
         editor.setCursor(range.from.line, range.from.ch + startTag.length);
       }
 	  
-      var hlLine = editor1.setLineClass(0, "activeline");	  
+      var hlLine = editor.setLineClass(0, "activeline");	  
 
       var editor2 = CodeMirror.fromTextArea(document.getElementById("gallery_image_template"), {
         lineNumbers: true,

@@ -95,5 +95,5 @@ GalleryTagImgThumb = "Системный тег миниатюры изобра�
 GallerySetParam = "Параметр"
 GallerySetVal = "Значение"
 GalleryOr = "или"
-GalleryResultInfo = "Галерея, успешно сохранена."
+GalleryResultInfo = "<strong>Галерея, успешно сохранена.</strong>"
 GalleryTags = "HTML tags"
