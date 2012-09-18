@@ -747,7 +747,6 @@ class userpage {
 		$GLOBALS['AVE_Template']->assign("groups_form", explode(",", $row_e->group_id));
 		$GLOBALS['AVE_Template']->assign("row", $row_e);
 		$GLOBALS['AVE_Template']->assign("items", $items);
-		$GLOBALS['AVE_Template']->assign("tpl_dir", $tpl_dir);
 		$GLOBALS['AVE_Template']->assign("sess", SESSION);
 
 
