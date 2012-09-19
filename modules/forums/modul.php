@@ -53,9 +53,10 @@ if( (isset($_REQUEST['module']) && $_REQUEST['module'] == 'forums') || (isset($_
 
 	if (empty($_REQUEST['show'])) $_REQUEST['show'] = 'showforums';
 
-	//=======================================================
-	// Паблик
-	//=======================================================
+	/**
+	 * Следующий раздел описывает правила поведения модуля и его функциональные возможности
+	 * только при работе в Публичной части сайта.
+	 */
 	if (!defined('ACP') && isset($_REQUEST['module']) && $_REQUEST['module'] == 'forums')
 	{
 		require_once(BASE_DIR . '/modules/forums/class.forums.php');
@@ -289,18 +290,18 @@ if( (isset($_REQUEST['module']) && $_REQUEST['module'] == 'forums') || (isset($_
 		}
 	}
 
-
-	//=======================================================
-	// Админка
-	//=======================================================
-	if(defined('ACP')
-		&& !empty($_REQUEST['moduleaction'])
+	/**
+	 * Следующий раздел описывает правила поведения модуля и его функциональные возможности
+	 * только при работе в Административной части сайта.
+	 */
+	if(defined('ACP') && !empty($_REQUEST['moduleaction'])
 		&& !(isset($_REQUEST['action']) && $_REQUEST['action'] == 'delete'))
 	{
+		// Подключаем основной класс и создаем объект
 		require_once(BASE_DIR . '/modules/forums/class.forums_admin.php');
 		$forums = new Forum;
-//		require_once(BASE_DIR . '/modules/forums/sql.php');
-
+		
+		// Определяем директори, где хранятся файлы с шаблонами модуля и подключаем языковые переменные
 		$tpl_dir = BASE_DIR . '/modules/forums/templates_admin/';
 		$tpl_dir_source = BASE_DIR . '/modules/forums/templates_admin';
 		$lang_file = BASE_DIR . '/modules/forums/lang/' . $_SESSION['admin_language'] . '.txt';
@@ -312,17 +313,17 @@ if( (isset($_REQUEST['module']) && $_REQUEST['module'] == 'forums') || (isset($_
 
 		$forums->AutoUpdatePerms();
 
+		// Определяем, какой параметр пришел из строки запроса браузера	
 		switch ($_REQUEST['moduleaction'])
 		{
-			// Kommentare
 			case '1':
 				$forums->forumAdmin($tpl_dir);
 				break;
-
+				// Редактирование категории
 			case 'edit_category':
 				$forums->editCategory($tpl_dir, $_GET['id']);
 				break;
-
+				// Редактирoвание форума
 			case 'edit_forum':
 				$forums->editForum($tpl_dir, $_GET['id']);
 				break;
@@ -339,11 +340,11 @@ if( (isset($_REQUEST['module']) && $_REQUEST['module'] == 'forums') || (isset($_
 			case 'delete_topics':
 				$forums->delTopics($tpl_dir);
 				break;
-
+				// Закрыть форум
 			case 'closeforum':
 				$forums->forumOpenClose($tpl_dir, $_GET['id'],'close');
 				break;
-
+				// Открыть форум
 			case 'openforum':
 				$forums->forumOpenClose($tpl_dir, $_GET['id'],'open');
 				break;
@@ -355,11 +356,11 @@ if( (isset($_REQUEST['module']) && $_REQUEST['module'] == 'forums') || (isset($_
 			case 'delcategory':
 				$forums->deleteCat($tpl_dir, $_GET['id']);
 				break;
-
+				// Добавление форума
 			case 'addforum':
 				$forums->addForum($tpl_dir, $_GET['id']);
 				break;
-
+				// Добавление категории
 			case 'addcategory':
 				$forums->addCategory($tpl_dir);
 				break;
@@ -375,7 +376,7 @@ if( (isset($_REQUEST['module']) && $_REQUEST['module'] == 'forums') || (isset($_
 			case 'user_ranks':
 				$forums->userRanks($tpl_dir);
 				break;
-
+				// Смайлы
 			case 'list_smilies':
 				$forums->listSmilies($tpl_dir);
 				break;
@@ -391,8 +392,7 @@ if( (isset($_REQUEST['module']) && $_REQUEST['module'] == 'forums') || (isset($_
 			case 'import':
 				$forums->import($tpl_dir);
 				break;
-
-				// Einstellungen
+				// Основные настройки
 			case 'settings':
 				$forums->settings($tpl_dir);
 				break;

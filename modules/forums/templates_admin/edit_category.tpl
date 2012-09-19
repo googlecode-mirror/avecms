@@ -1,7 +1,7 @@
 {if $smarty.request.moduleaction=='addcategory'}
-{assign var="action" value="index.php?do=modules&action=modedit&mod=forums&moduleaction=addcategory&cp={$sess}&pop=1&save=1"}
+{assign var="action" value="index.php?do=modules&action=modedit&mod=forums&moduleaction=addcategory&cp=$sess&pop=1&save=1"}
 {else}
-{assign var="action" value="index.php?do=modules&action=modedit&mod=forums&moduleaction=edit_category&cp={$sess}&pop=1&save=1"}
+{assign var="action" value="index.php?do=modules&action=modedit&mod=forums&moduleaction=edit_category&cp=$sess&pop=1&save=1"}
 {/if}
 
 <form action="{$action}" method="post">
@@ -11,9 +11,12 @@
 	
 	  <tr>
 	    <td colspan="2" class="tableheader">
-		{if $smarty.request.moduleaction=="addcategory"}{#CatNew#}
+		{if $smarty.request.moduleaction=="addcategory"}
+			{#CatNew#}
 		{else}
-		{#EditCateg#}{/if}		</td>
+			{#EditCateg#}
+		{/if}		
+		</td>
     </tr>
 	{if count($errors)}
     <tr>
@@ -25,19 +28,19 @@
 	</tr>
 	{/if}
 	<tr>
-		<td width="10%" class="first">{#Title#}</td>
+		<td width="20%" class="first">{#Title#}</td>
 		<td class="second">
-			<input type="text" name="title" value="{$smarty.post.title|default:$category->title|escape:"htmlall":'cp1251'|stripslashes}" size="50" maxlength="200" />
-	  </td>
+			<input type="text" name="title" value="{$smarty.post.title|default:$category->title|escape|stripslashes}" size="50" maxlength="200" />
+		</td>
 	</tr>
 	<tr>
-		<td width="10%" class="first">{#Posi#}</td>
+		<td width="20%" class="first">{#Posi#}</td>
 		<td class="second">
 			<input type="text" name="position" value="{if $smarty.request.moduleaction=="addcategory"}1{else}{$smarty.post.position|default:$category->position}{/if}" size="4" maxlength="3" />
 	  </td>
 	</tr>
 	<tr>
-		<td width="10%" class="first">{#GroupPerm#}
+		<td width="20%" class="first">{#GroupPerm#}
 		<br />
 		<small>
 		{#GroupPermInf#}
@@ -54,7 +57,7 @@
 	<tr>
 		<td class="first">{#Descr#}</td>
 		<td class="second">
-			<textarea name="comment" cols="50" rows="5">{$smarty.post.comment|default:$category->comment|escape:"htmlall":'cp1251'|stripslashes}</textarea>
+			<textarea name="comment" cols="50" rows="5">{$smarty.post.comment|default:$category->comment|escape|stripslashes}</textarea>
 	  </td>
 	</tr>
 
