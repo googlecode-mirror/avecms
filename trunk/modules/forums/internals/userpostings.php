@@ -2,7 +2,7 @@
 
 if (!defined("USERPOSTINGS")) exit;
 
-global $AVE_DB, $AVE_Template;
+global $AVE_DB, $AVE_Template, $mod;
 
 if (isset($_GET['user_id']) && is_numeric($_GET['user_id']) && $_GET['user_id'] >= 1)
 {
@@ -152,7 +152,7 @@ if (isset($_GET['user_id']) && is_numeric($_GET['user_id']) && $_GET['user_id'] 
 		}
 		else
 		{
-			$post->message = $GLOBALS['mod']['config_vars']['DeniedText'];
+			$post->message = $mod['config_vars']['DeniedText'];
 			$post->flink = 'no';
 		}
 
@@ -174,8 +174,8 @@ if (isset($_GET['user_id']) && is_numeric($_GET['user_id']) && $_GET['user_id'] 
 	$AVE_Template->assign("matches", $matches);
 	$AVE_Template->assign("post_count", $num);
 
-	define("MODULE_CONTENT", $AVE_Template->fetch($GLOBALS['mod']['tpl_dir'] . 'showpost.tpl'));
-	define("MODULE_SITE", $GLOBALS['mod']['config_vars']['UserPostings']);
+	define("MODULE_CONTENT", $AVE_Template->fetch($mod['tpl_dir'] . 'showpost.tpl'));
+	define("MODULE_SITE", $mod['config_vars']['UserPostings']);
 }
 else
 {

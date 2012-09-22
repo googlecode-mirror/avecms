@@ -1,13 +1,16 @@
 <?php
-/*::::::::::::::::::::::::::::::::::::::::
- System name: cpengine
- Short Desc: Full Russian Security Power Pack
- Version: 2.0 (Service Pack 2)
- Authors:  Arcanum (php@211.ru) &  Censored!
- Date: March 18, 2008
-::::::::::::::::::::::::::::::::::::::::*/
 
+/**
+ * 
+ *
+ * @package AVE.cms
+ * @subpackage module_Forums
+ * @filesource
+ */
 if(!defined("FLOGIN")) exit;
+
+global $AVE_DB;
+
 $r_pass = $GLOBALS['AVE_DB']->Query("SELECT password, title FROM " . PREFIX . "_modul_forum_forum WHERE id = '" . addslashes($_REQUEST['fid']) . "'");
 $pass = $r_pass->FetchRow();
 

@@ -1,8 +1,15 @@
 <?php
 
+/**
+ * 
+ *
+ * @package AVE.cms
+ * @subpackage module_Forums
+ * @filesource
+ */
 if (!defined('USERLIST')) exit;
 
-global $AVE_DB, $AVE_Template;
+global $AVE_DB, $AVE_Template, $mod;
 
 //// Beitragszaehler aktualisieren
 //$sql_first = $AVE_DB->Query("SELECT Id FROM " . PREFIX . "_modul_forum_userprofile");
@@ -132,7 +139,7 @@ $AVE_Template->assign("Link_PostSort", $Link_PostSort);
 $AVE_Template->assign("Link_RegSort", $Link_RegSort);
 $AVE_Template->assign("Link_NameSort", $Link_NameSort);
 
-define("MODULE_CONTENT", $AVE_Template->fetch($GLOBALS['mod']['tpl_dir'] . 'userlist.tpl'));
-define("MODULE_SITE", $GLOBALS['mod']['config_vars']['PageNameUserProfile']);
+define("MODULE_CONTENT", $AVE_Template->fetch($mod['tpl_dir'] . 'userlist.tpl'));
+define("MODULE_SITE", $mod['config_vars']['PageNameUserProfile']);
 
 ?>

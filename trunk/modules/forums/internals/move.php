@@ -1,13 +1,16 @@
 <?php
-/*::::::::::::::::::::::::::::::::::::::::
- System name: cpengine
- Short Desc: Full Russian Security Power Pack
- Version: 2.0 (Service Pack 2)
- Authors:  Arcanum (php@211.ru) &  Censored!
- Date: March 18, 2008
-::::::::::::::::::::::::::::::::::::::::*/
 
+/**
+ * 
+ *
+ * @package AVE.cms
+ * @subpackage module_Forums
+ * @filesource
+ */
 if(!defined("MOVETOPIC")) exit;
+
+global $AVE_DB, $AVE_Template, $mod;
+
 if(!isset($_REQUEST['fid']) || !isset($_REQUEST['toid']) || !is_numeric($_REQUEST['fid']) || !is_numeric($_REQUEST['toid']) )
 {
 	header("Location:index.php?module=forums");
@@ -20,7 +23,7 @@ $own   = -1;
 $type = addslashes($_REQUEST['item']);
 $f_id = addslashes($_REQUEST['fid']);
 
-$sql = $GLOBALS['AVE_DB']->Query("SELECT uid FROM ".PREFIX."_modul_forum_topic WHERE id='".addslashes($_REQUEST['toid'])."'");
+$sql = $AVE_DB->Query("SELECT uid FROM ".PREFIX."_modul_forum_topic WHERE id='".addslashes($_REQUEST['toid'])."'");
 $row = $sql->FetchRow();
 
 if($row->uid == UID)
@@ -31,7 +34,7 @@ if($row->uid == UID)
 //=========================================================
 // zugriffsrechte
 //=========================================================
-$cat_query = $GLOBALS['AVE_DB']->Query("SELECT group_id FROM " . PREFIX . "_modul_forum_forum WHERE id = '" . $f_id . "'");
+$cat_query = $AVE_DB->Query("SELECT group_id FROM " . PREFIX . "_modul_forum_forum WHERE id = '" . $f_id . "'");
 while ($category = $cat_query->FetchAssocArray())
 {
 	// miscrechte
@@ -51,7 +54,7 @@ if($own != 1)
 	//=======================================================
 	if ($permissions[FORUM_PERMISSIONS_CAN_MOVE_TOPIC] == 0)
 	{
-		$this->msg($GLOBALS['mod']['config_vars']['ErrornoPerm']);
+		$this->msg($mod['config_vars']['ErrornoPerm']);
 	}
 }
 else
@@ -61,7 +64,7 @@ else
 	//=======================================================
 	if ($permissions[FORUM_PERMISSION_CAN_MOVE_OWN_TOPIC] == 0)
 	{
-		$this->msg($GLOBALS['mod']['config_vars']['ErrornoPerm']);
+		$this->msg($mod['config_vars']['ErrornoPerm']);
 	}
 }
 
@@ -70,7 +73,7 @@ if($NOOUT != 1)
 	if (isset($_GET["action"]) && $_GET["action"] == "commit")
 	{
         $Source_Board = $this->Cpengine_Board_GetTopic_Board($_REQUEST['toid']);
-        $r_commit = $GLOBALS['AVE_DB']->Query("UPDATE " . PREFIX . "_modul_forum_topic SET forum_id = '".addslashes($_REQUEST['dest'])."' WHERE id = '".addslashes($_REQUEST['toid'])."'");
+        $r_commit = $AVE_DB->Query("UPDATE " . PREFIX . "_modul_forum_topic SET forum_id = '".addslashes($_REQUEST['dest'])."' WHERE id = '".addslashes($_REQUEST['toid'])."'");
 
         //=======================================================
 		// Letzten Beitra setzen
@@ -86,10 +89,10 @@ if($NOOUT != 1)
 
 	} else {
 
-		$r_item = $GLOBALS['AVE_DB']->Query("SELECT id, title FROM " . PREFIX . "_modul_forum_topic WHERE id = '".addslashes($_REQUEST['toid'])."'");
+		$r_item = $AVE_DB->Query("SELECT id, title FROM " . PREFIX . "_modul_forum_topic WHERE id = '".addslashes($_REQUEST['toid'])."'");
 		$item = $r_item->FetchRow();
 
-		$r_dest = $GLOBALS['AVE_DB']->Query("SELECT id, title FROM " . PREFIX . "_modul_forum_forum");
+		$r_dest = $AVE_DB->Query("SELECT id, title FROM " . PREFIX . "_modul_forum_forum");
 		$destinations = array();
 
 		while ($destination = $r_dest->FetchRow())
@@ -105,16 +108,16 @@ if($NOOUT != 1)
 
 		$categories = array();
 		$this->getCategories(0, $categories, "");
-		$GLOBALS['AVE_Template']->assign("categories_dropdown", $categories);
-		$GLOBALS['AVE_Template']->assign("item", $item);
-		$GLOBALS['AVE_Template']->assign("backlink", $_SERVER['HTTP_REFERER']);
-		$GLOBALS['AVE_Template']->assign("navigation", $this->getNavigation(addslashes($_GET['toid']), "topic"));
-		$GLOBALS['AVE_Template']->assign("destinations", $destinations);
+		$AVE_Template->assign("categories_dropdown", $categories);
+		$AVE_Template->assign("item", $item);
+		$AVE_Template->assign("backlink", $_SERVER['HTTP_REFERER']);
+		$AVE_Template->assign("navigation", $this->getNavigation(addslashes($_GET['toid']), "topic"));
+		$AVE_Template->assign("destinations", $destinations);
 
-		$tpl_out = $GLOBALS['AVE_Template']->fetch($GLOBALS['mod']['tpl_dir'] . $this->_MoveTpl);
+		$tpl_out = $AVE_Template->fetch($mod['tpl_dir'] . $this->_MoveTpl);
 
 		define("MODULE_CONTENT", $tpl_out);
-		define("MODULE_SITE", $GLOBALS['mod']['config_vars']['MoveTopic']);
+		define("MODULE_SITE", $mod['config_vars']['MoveTopic']);
 	}
 }
 ?>

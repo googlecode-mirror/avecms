@@ -1,12 +1,12 @@
 <?php
-/*::::::::::::::::::::::::::::::::::::::::
- System name: cpengine
- Short Desc: Full Russian Security Power Pack
- Version: 2.0 (Service Pack 2)
- Authors:  Arcanum (php@211.ru) &  Censored!
- Date: March 18, 2008
-::::::::::::::::::::::::::::::::::::::::*/
 
+/**
+ * 
+ *
+ * @package AVE.cms
+ * @subpackage module_Userpage
+ * @filesource
+ */
 define("no_avatar", 1);
 define("date_format", "d.m.y, H:i");
 
@@ -21,8 +21,9 @@ class userpage {
 	//=======================================================
 	function show($tpl_dir,$lang_file,$uid)
 	{
-
-		$sql = $GLOBALS['AVE_DB']->Query("
+		global $AVE_DB, $AVE_Template;
+		
+		$sql = $AVE_DB->Query("
 			SELECT
 				a.*,
 				c.firstname,lastname,country,user_group,user_name,
@@ -38,18 +39,18 @@ class userpage {
 		");
 
 		# LADE TEMPLATE
-		$sql_tpl = $GLOBALS['AVE_DB']->Query("SELECT tpl FROM " . PREFIX . "_modul_userpage_template WHERE id = '1'");
+		$sql_tpl = $AVE_DB->Query("SELECT tpl FROM " . PREFIX . "_modul_userpage_template WHERE id = '1'");
 		$row_tpl = $sql_tpl->FetchRow();
 
 
 		# LADE BENUTZERDATEN
 		$row = $sql->FetchRow();
 
-		if(!is_object($row)) $this->msg($GLOBALS['AVE_Template']->get_config_vars('ProfileError'),'',$tpl_dir);
-		if($row->ZeigeProfil != '1') $this->msg($GLOBALS['AVE_Template']->get_config_vars('NoPublicProfile'),'',$tpl_dir);
-		if(!$this->fperm('userprofile')) $this->msg($GLOBALS['AVE_Template']->get_config_vars('ErrornoPerm'),'',$tpl_dir);
+		if(!is_object($row)) $this->msg($AVE_Template->get_config_vars('ProfileError'),'',$tpl_dir);
+		if($row->ZeigeProfil != '1') $this->msg($AVE_Template->get_config_vars('NoPublicProfile'),'',$tpl_dir);
+		if(!$this->fperm('userprofile')) $this->msg($AVE_Template->get_config_vars('ErrornoPerm'),'',$tpl_dir);
 
-		$sql_country = $GLOBALS['AVE_DB']->Query("SELECT country_name FROM " . PREFIX . "_countries WHERE country_code = '".$row->country."'");
+		$sql_country = $AVE_DB->Query("SELECT country_name FROM " . PREFIX . "_countries WHERE country_code = '".$row->country."'");
 		$row_country = $sql_country->FetchRow();
 
 
@@ -73,10 +74,7 @@ class userpage {
 		$tpl = preg_replace("/\[tag_feld\:([0-9]*)\]/","<?php userpage_getfield(\"\\1\",\"1\",".$uid."); ?>", $tpl);
 		$tpl = preg_replace("[\[tag_lang:(.*?)\]]",  "<?php userpage_lang(\"\\1\"); ?>", $tpl);
 
-
-
-		define("MODULE_SITE", $row->user_name.$GLOBALS['AVE_Template']->get_config_vars('UPheader'));
-
+		define("MODULE_SITE", $row->user_name.$AVE_Template->get_config_vars('UPheader'));
 
 		if(!defined("MODULE_CONTENT"))
 		{
@@ -90,22 +88,24 @@ class userpage {
 	//=======================================================
 	function displayForm($tpl_dir,$uid,$theme_folder)
 	{
-		$sql = $GLOBALS['AVE_DB']->Query("SELECT * FROM " . PREFIX . "_modul_userpage WHERE id = '1'");
+		global $AVE_DB, $AVE_Template;
+		
+		$sql = $AVE_DB->Query("SELECT * FROM " . PREFIX . "_modul_userpage WHERE id = '1'");
 		$row = $sql->FetchRow();
 		$gruppen = explode(',', $row->group_id);
 
 		if($row->can_comment == 1 && in_array(UGROUP, $gruppen))
 		{
-			$GLOBALS['AVE_Template']->assign('cancomment', 1);
+			$AVE_Template->assign('cancomment', 1);
 		}
-		$GLOBALS['AVE_Template']->assign('MaxZeichen', $this->_commentwords);
+		$AVE_Template->assign('MaxZeichen', $this->_commentwords);
 
 		$im = "";
 
-		$sql_ig = $GLOBALS['AVE_DB']->Query("SELECT * FROM " . PREFIX . "_modul_forum_ignorelist WHERE BenutzerId = '$uid' AND IgnoreId = '".$_SESSION['user_id']."'");
+		$sql_ig = $AVE_DB->Query("SELECT * FROM " . PREFIX . "_modul_forum_ignorelist WHERE BenutzerId = '$uid' AND IgnoreId = '".$_SESSION['user_id']."'");
 		$num_ig = $sql_ig->NumRows();
 
-		if ($num_ig == 1) $GLOBALS['AVE_Template']->assign('cancomment', 1);
+		if ($num_ig == 1) $AVE_Template->assign('cancomment', 1);
 
 		// absenden
 		if(isset($_POST['send']) && $_POST['send'] == 1)
@@ -117,24 +117,24 @@ class userpage {
 			$Text = pretty_chars($Text);
 
 			$error = array();
-			if (empty($_POST['title'])) $error[] = $GLOBALS['AVE_Template']->get_config_vars('NoTitle');
-			if (empty($Text)) $error[] = $GLOBALS['AVE_Template']->get_config_vars('NoComment');
+			if (empty($_POST['title'])) $error[] = $AVE_Template->get_config_vars('NoTitle');
+			if (empty($Text)) $error[] = $AVE_Template->get_config_vars('NoComment');
 
 
 			if (function_exists("imagettftext") && function_exists("imagepng") && $this->_anti_spam == 1)
 			{
 				if(empty($_POST['cpSecurecode']) || $_POST['cpSecurecode'] != $_SESSION['cpSecurecode'])
 				{
-					$error[] = $GLOBALS['AVE_Template']->get_config_vars('NoSecure');
+					$error[] = $AVE_Template->get_config_vars('NoSecure');
 
 				}
 			}
 
 			if (count($error)>0)
 			{
-				$GLOBALS['AVE_Template']->assign('errors', $error);
-				$GLOBALS['AVE_Template']->assign('titel', $_POST['title']);
-				$GLOBALS['AVE_Template']->assign('text', $_POST['Text']);
+				$AVE_Template->assign('errors', $error);
+				$AVE_Template->assign('titel', $_POST['title']);
+				$AVE_Template->assign('text', $_POST['Text']);
 			}
 			else
 			{
@@ -159,10 +159,9 @@ class userpage {
 						'" . $_POST['title'] . "',
 						'" . $Text . "'
 					)";
-					$GLOBALS['AVE_DB']->Query($sql);
+					$AVE_DB->Query($sql);
 
 				}
-
 
 				echo '<script>window.opener.location.reload(); window.close();</script>';
 			}
@@ -172,18 +171,18 @@ class userpage {
 		{
 			$codeid = secureCode();
 			$im = $codeid;
-			$sql_sc = $GLOBALS['AVE_DB']->Query("SELECT Code FROM " . PREFIX . "_antispam WHERE Id = '$codeid'");
+			$sql_sc = $AVE_DB->Query("SELECT Code FROM " . PREFIX . "_antispam WHERE Id = '$codeid'");
 			$row_sc = $sql_sc->FetchRow();
-			$GLOBALS['AVE_Template']->assign("im", $im);
+			$AVE_Template->assign("im", $im);
 			$_SESSION['cpSecurecode'] = $row_sc->Code;
 			$_SESSION['cpSecurecode_id'] = $codeid;
 
-			$GLOBALS['AVE_Template']->assign("anti_spam", 1);
+			$AVE_Template->assign("anti_spam", 1);
 		}
 
-		$GLOBALS['AVE_Template']->assign('theme_folder', $theme_folder);
-		$GLOBALS['AVE_Template']->assign('uid', $uid);
-		$GLOBALS['AVE_Template']->display($tpl_dir . 'guestbook_form.tpl');
+		$AVE_Template->assign('theme_folder', $theme_folder);
+		$AVE_Template->assign('uid', $uid);
+		$AVE_Template->display($tpl_dir . 'guestbook_form.tpl');
 	}
 
 	//=======================================================
@@ -191,15 +190,15 @@ class userpage {
 	//=======================================================
 	function del_guest($tpl_dir,$gid,$uid,$page)
 	{
+		global $AVE_DB, $AVE_Template;
+		
 		if(empty($page)) $page = 1;
 
-		if(UGROUP != 1) $this->msg($GLOBALS['AVE_Template']->get_config_vars('ErrornoPerm'),'index.php?module=userpage&action=show&uid='.$uid.'&page='.$page,$tpl_dir);
+		if(UGROUP != 1) $this->msg($AVE_Template->get_config_vars('ErrornoPerm'),'index.php?module=userpage&action=show&uid='.$uid.'&page='.$page,$tpl_dir);
 
-		$GLOBALS['AVE_DB']->Query("DELETE FROM " . PREFIX . "_modul_userpage_guestbook WHERE id = '$gid' AND uid = '$uid'");
+		$AVE_DB->Query("DELETE FROM " . PREFIX . "_modul_userpage_guestbook WHERE id = '$gid' AND uid = '$uid'");
 
-		$this->msg($GLOBALS['AVE_Template']->get_config_vars('Delok'),'index.php?module=userpage&action=show&uid='.$uid.'&page='.$page,$tpl_dir);
-
-
+		$this->msg($AVE_Template->get_config_vars('Delok'),'index.php?module=userpage&action=show&uid='.$uid.'&page='.$page,$tpl_dir);
 	}
 
 	//=======================================================
@@ -207,10 +206,12 @@ class userpage {
 	//=======================================================
 	function showContact($tpl_dir,$method='',$uid,$theme_folder)
 	{
-		$sql = $GLOBALS['AVE_DB']->Query("SELECT * FROM " . PREFIX . "_modul_forum_userprofile WHERE BenutzerId = '$uid'");
+		global $AVE_DB, $AVE_Template;
+		
+		$sql = $AVE_DB->Query("SELECT * FROM " . PREFIX . "_modul_forum_userprofile WHERE BenutzerId = '$uid'");
 		$row = $sql->FetchRow();
 
-		$sql_ig = $GLOBALS['AVE_DB']->Query("SELECT * FROM " . PREFIX . "_modul_forum_ignorelist WHERE BenutzerId = '$uid' AND IgnoreId = '".$_SESSION['user_id']."'");
+		$sql_ig = $AVE_DB->Query("SELECT * FROM " . PREFIX . "_modul_forum_ignorelist WHERE BenutzerId = '$uid' AND IgnoreId = '".$_SESSION['user_id']."'");
 		$num_ig = $sql_ig->NumRows();
 
 		if ($num_ig == 1) exit();
@@ -218,23 +219,23 @@ class userpage {
 		switch($method)
 		{
 			case 'email':
-				$GLOBALS['AVE_Template']->assign('titel', $GLOBALS['AVE_Template']->get_config_vars('Emailc'));
-				if($row->Emailempfang == '1') $GLOBALS['AVE_Template']->assign('email', 1);
+				$AVE_Template->assign('titel', $AVE_Template->get_config_vars('Emailc'));
+				if($row->Emailempfang == '1') $AVE_Template->assign('email', 1);
 			break;
 
 			case 'icq':
-				$GLOBALS['AVE_Template']->assign('titel', $GLOBALS['AVE_Template']->get_config_vars('Icq'));
-				if($row->Icq != '')  $GLOBALS['AVE_Template']->assign('wert', "<a href=\"http://www.icq.com/people/about_me.php?uin=$row->Icq\" target=\"_blank\">$row->Icq</a>");
+				$AVE_Template->assign('titel', $AVE_Template->get_config_vars('Icq'));
+				if($row->Icq != '')  $AVE_Template->assign('wert', "<a href=\"http://www.icq.com/people/about_me.php?uin=$row->Icq\" target=\"_blank\">$row->Icq</a>");
 			break;
 
 			case 'aim':
-				$GLOBALS['AVE_Template']->assign('titel', $GLOBALS['AVE_Template']->get_config_vars('Aim'));
-				if($row->Aim != '')  $GLOBALS['AVE_Template']->assign('wert', $row->Aim);
+				$AVE_Template->assign('titel', $AVE_Template->get_config_vars('Aim'));
+				if($row->Aim != '')  $AVE_Template->assign('wert', $row->Aim);
 			break;
 
 			case 'skype':
-				$GLOBALS['AVE_Template']->assign('titel', $GLOBALS['AVE_Template']->get_config_vars('Skype'));
-				if($row->Skype != '')  $GLOBALS['AVE_Template']->assign('wert', "<a href=\"skype:$row->Skype?call\">$row->Skype</a>");
+				$AVE_Template->assign('titel', $AVE_Template->get_config_vars('Skype'));
+				if($row->Skype != '')  $AVE_Template->assign('wert', "<a href=\"skype:$row->Skype?call\">$row->Skype</a>");
 			break;
 		}
 
@@ -242,23 +243,23 @@ class userpage {
 		{
 
 			$error = array();
-			$GLOBALS['AVE_Template']->assign('titel', $GLOBALS['AVE_Template']->get_config_vars('Emailc'));
-			if (empty($_POST['title'])) $error[] = $GLOBALS['AVE_Template']->get_config_vars('NoBetreff');
-			if (empty($_POST['Text'])) $error[] = $GLOBALS['AVE_Template']->get_config_vars('NoMessage');
+			$AVE_Template->assign('titel', $AVE_Template->get_config_vars('Emailc'));
+			if (empty($_POST['title'])) $error[] = $AVE_Template->get_config_vars('NoBetreff');
+			if (empty($_POST['Text'])) $error[] = $AVE_Template->get_config_vars('NoMessage');
 
 
 			if (count($error)>0)
 			{
-				$GLOBALS['AVE_Template']->assign('errors', $error);
-				$GLOBALS['AVE_Template']->assign('titel', $_POST['title']);
-				$GLOBALS['AVE_Template']->assign('text', $_POST['Text']);
+				$AVE_Template->assign('errors', $error);
+				$AVE_Template->assign('titel', $_POST['title']);
+				$AVE_Template->assign('text', $_POST['Text']);
 			}
 			else
 			{
 				$Absender = $_SESSION['forum_user_email'];
 				$Empfang = $uid;
 
-				$Prefab = $GLOBALS['AVE_Template']->get_config_vars('EmailBodyUser');
+				$Prefab = $AVE_Template->get_config_vars('EmailBodyUser');
 				$Prefab = str_replace('%%USER%%', $row->BenutzerName, $Prefab);
 				$Prefab = str_replace('%%ABSENDER%%', $_SESSION['forum_user_name'], $Prefab);
 				$Prefab = str_replace('%%BETREFF%%', stripslashes($_POST['title']), $Prefab);
@@ -274,16 +275,14 @@ class userpage {
 					FORUMABSENDER,
 					'text'
 				);
-    		$GLOBALS['AVE_Template']->assign("content", $GLOBALS['AVE_Template']->get_config_vars('MessageAfterEmail'));
-    		$tpl_out = $GLOBALS['AVE_Template']->display($tpl_dir . 'after_send.tpl');
+    		$AVE_Template->assign("content", $AVE_Template->get_config_vars('MessageAfterEmail'));
+    		$tpl_out = $AVE_Template->display($tpl_dir . 'after_send.tpl');
     		exit;
 			}
 		}
 
-
-
-		$GLOBALS['AVE_Template']->assign('theme_folder', $theme_folder);
-		$GLOBALS['AVE_Template']->display($tpl_dir . 'popup.tpl');
+		$AVE_Template->assign('theme_folder', $theme_folder);
+		$AVE_Template->display($tpl_dir . 'popup.tpl');
 	}
 
 	//=======================================================
@@ -291,11 +290,13 @@ class userpage {
 	//=======================================================
 	function changeData($tpl_dir,$lang_file)
 	{
+		global $AVE_DB, $AVE_Template;
+		
 		if(!isset($_SESSION['user_id']))
 		{
-			$this->msg($GLOBALS['AVE_Template']->get_config_vars('ErrornoPerm'),"index.php?module=forums",$tpl_dir);
+			$this->msg($AVE_Template->get_config_vars('ErrornoPerm'),"index.php?module=forums",$tpl_dir);
 		}
-		$sql = $GLOBALS['AVE_DB']->Query("SELECT
+		$sql = $AVE_DB->Query("SELECT
 				u.*,
 				us.status,
 				us.user_group
@@ -312,21 +313,21 @@ class userpage {
 
 		if(!$n)
 		{
-			$this->msg($GLOBALS['mod']['config_vars']['ProfileError']);
+			$this->msg($GLOBALS['config_vars']['ProfileError']);
 		}
 
 		$r = $sql->FetchArray();
 
-		if($r['BenutzerNameChanged'] >= '1' && !$this->fperm('changenick')) $GLOBALS['AVE_Template']->assign('changenick', 'no');
-		if(!$this->fperm('changenick')) $GLOBALS['AVE_Template']->assign('changenick_once', '1');
+		if($r['BenutzerNameChanged'] >= '1' && !$this->fperm('changenick')) $AVE_Template->assign('changenick', 'no');
+		if(!$this->fperm('changenick')) $AVE_Template->assign('changenick_once', '1');
 
 		//felder
 		$felder = array();
 
-		$sql_tpl = $GLOBALS['AVE_DB']->Query("SELECT tpl FROM ".PREFIX."_modul_userpage_template WHERE id='1'");
+		$sql_tpl = $AVE_DB->Query("SELECT tpl FROM ".PREFIX."_modul_userpage_template WHERE id='1'");
 		$row_tpl = $sql_tpl->FetchRow();
 
-		$sql_b = $GLOBALS['AVE_DB']->Query("SELECT * FROM  " . PREFIX . "_modul_userpage_values WHERE uid = '" . addslashes($_SESSION['user_id']) . "'");
+		$sql_b = $AVE_DB->Query("SELECT * FROM  " . PREFIX . "_modul_userpage_values WHERE uid = '" . addslashes($_SESSION['user_id']) . "'");
 		$row_b = $sql_b->FetchRow();
 
 		// falls nicht vorhanden
@@ -339,10 +340,10 @@ class userpage {
 					    '',
 						'".addslashes($_SESSION['user_id'])."'
 					)";
-					$GLOBALS['AVE_DB']->Query($q);
+					$AVE_DB->Query($q);
 		}
 
-		$sql_a = $GLOBALS['AVE_DB']->Query("SELECT * FROM " . PREFIX . "_modul_userpage_items WHERE active = '1'");
+		$sql_a = $AVE_DB->Query("SELECT * FROM " . PREFIX . "_modul_userpage_items WHERE active = '1'");
 		while($row_a = $sql_a->FetchRow())
 		{
 			if(strpos($row_tpl->tpl, "[tag_feld:".$row_a->Id) !== false)
@@ -434,7 +435,7 @@ class userpage {
 		{
 			if(strpos($row_tpl->tpl, "[tag:".$i) !== false)
 			{
-				$GLOBALS['AVE_Template']->assign("show_".$i, 1);
+				$AVE_Template->assign("show_".$i, 1);
 			}
 		}
 
@@ -461,7 +462,7 @@ class userpage {
 
 		if($permown == true)
 		{
-			$GLOBALS['AVE_Template']->assign('avatar_upload', 1);
+			$AVE_Template->assign('avatar_upload', 1);
 		}
 
 		//doupdate
@@ -480,13 +481,13 @@ class userpage {
 			//=======================================================
 			if((isset($_POST['BenutzerName'])) && ($this->checkIfUserName(addslashes($_POST['BenutzerName']),addslashes($_SESSION['forum_user_name']))))
 			{
-					$errors[] = $GLOBALS['AVE_Template']->get_config_vars('PE_UsernameInUse');
+					$errors[] = $AVE_Template->get_config_vars('PE_UsernameInUse');
 					$r['BenutzerName'] = trim(htmlspecialchars($_POST['BenutzerName']));
 			}
 
 			if(( @isset($_POST['BenutzerName']) && @empty($_POST['BenutzerName'])) || preg_match($muster, str_replace($allowed,'',@$_POST['BenutzerName']) ))
 			{
-				$errors[] = $GLOBALS['AVE_Template']->get_config_vars('PE_Username');
+				$errors[] = $AVE_Template->get_config_vars('PE_Username');
 			}
 
 			//=======================================================
@@ -494,12 +495,12 @@ class userpage {
 			//=======================================================
 			if(!empty($_POST['email']) && $this->checkIfUserEmail($_POST['email'], $_SESSION['forum_user_email']))
 			{
-				$errors[] = $GLOBALS['AVE_Template']->get_config_vars('PE_EmailInUse');
+				$errors[] = $AVE_Template->get_config_vars('PE_EmailInUse');
 			}
 
 			if(empty($_POST['email']) || !preg_match($muster_email, $_POST['email']))
 			{
-				$errors[] = $GLOBALS['AVE_Template']->get_config_vars('PE_Email');
+				$errors[] = $AVE_Template->get_config_vars('PE_Email');
 			}
 
 			//=======================================================
@@ -507,7 +508,7 @@ class userpage {
 			//=======================================================
 			if(!empty($_POST['GeburtsTag']) && !preg_match($muster_geb, $_POST['GeburtsTag']))
 			{
-				$errors[] = $GLOBALS['AVE_Template']->get_config_vars('PE_WrongBd');
+				$errors[] = $AVE_Template->get_config_vars('PE_WrongBd');
 			}
 
 			if(!empty($_POST['GeburtsTag']))
@@ -515,7 +516,7 @@ class userpage {
 				$check_year = explode(".", $_POST['GeburtsTag']);
 				if(@$check_year[0] > 31 || @$check_year[1] > 12 || @$check_year[2] < date("Y")-75)
 				{
-					$errors[] = $GLOBALS['AVE_Template']->get_config_vars('PE_WrongBd');
+					$errors[] = $AVE_Template->get_config_vars('PE_WrongBd');
 				}
 			}
 
@@ -550,7 +551,7 @@ class userpage {
 
 						$avatar = ",Avatar  = '$fupload_name'";
 
-						#$sql_old = $GLOBALS['AVE_DB']->Query("SELECT Avatar FROM " . PREFIX . "_modul_forum_userprofile WHERE BenutzerId='" . UID . "'");
+						#$sql_old = $AVE_DB->Query("SELECT Avatar FROM " . PREFIX . "_modul_forum_userprofile WHERE BenutzerId='" . UID . "'");
 						#$row_old = $sql_old->FetchRow();
 						#@unlink($target . $row_old->Avatar);
 						#$avatar .= "Avatar ='$fupload_name',";
@@ -587,16 +588,16 @@ class userpage {
 			if(is_array($errors) && count($errors) > 0)
 			{
 				$ok = false;
-				$GLOBALS['AVE_Template']->assign("errors", $errors);
+				$AVE_Template->assign("errors", $errors);
 			} else {
 				if(!empty($_POST['GeburtsTag']))
 				{
-					$GLOBALS['AVE_DB']->Query("UPDATE " . PREFIX . "_users SET birthday = '" . @$_POST['GeburtsTag'] . "' WHERE Id = '" . $_SESSION['user_id'] . "'");
+					$AVE_DB->Query("UPDATE " . PREFIX . "_users SET birthday = '" . @$_POST['GeburtsTag'] . "' WHERE Id = '" . $_SESSION['user_id'] . "'");
 				}
 
 				if(isset($_POST['DelAvatar']) && $_POST['DelAvatar']==1)
 				{
-					$sql = $GLOBALS['AVE_DB']->Query("SELECT Avatar FROM ".PREFIX."_modul_forum_userprofile  WHERE BenutzerId = '" . $_SESSION['user_id'] . "'");
+					$sql = $AVE_DB->Query("SELECT Avatar FROM ".PREFIX."_modul_forum_userprofile  WHERE BenutzerId = '" . $_SESSION['user_id'] . "'");
 					$row_a = $sql->FetchRow();
 
 					if(strpos($row_a->Avatar, 'various/') === false)
@@ -604,7 +605,7 @@ class userpage {
 						@unlink(BASE_DIR . '/modules/forums/avatars/' . $row_a->Avatar);
 					}
 
-					$GLOBALS['AVE_DB']->Query("
+					$AVE_DB->Query("
 						UPDATE
 							".PREFIX."_modul_forum_userprofile
 						SET
@@ -619,7 +620,7 @@ class userpage {
 				// Prьfen, ob Benutzername mehr als 1 mal geдndert wurde und ob er das
 				// recht hat, diesen zu дndern
 				$BC = '';
-				$sql = $GLOBALS['AVE_DB']->Query("SELECT BenutzerName,BenutzerNameChanged FROM " . PREFIX . "_modul_forum_userprofile WHERE BenutzerId = '" . $_SESSION['user_id'] . "'");
+				$sql = $AVE_DB->Query("SELECT BenutzerName,BenutzerNameChanged FROM " . PREFIX . "_modul_forum_userprofile WHERE BenutzerId = '" . $_SESSION['user_id'] . "'");
 				$row = $sql->FetchRow();
 				if(($row->BenutzerName != $r['BenutzerName']) && ($row->BenutzerNameChanged < '1' || $this->fperm('changenick')) )
 				{
@@ -661,7 +662,7 @@ class userpage {
 					WHERE
 						BenutzerId = '" . $_SESSION['user_id'] . "'";
 
-				$GLOBALS['AVE_DB']->Query($q);
+				$AVE_DB->Query($q);
 
 				// Felder
 				if(isset($_POST['feld']))
@@ -669,7 +670,7 @@ class userpage {
 					foreach($_POST['feld'] as $id => $Feld)
 					{
 
-						$GLOBALS['AVE_DB']->Query("UPDATE " . PREFIX . "_modul_userpage_values
+						$AVE_DB->Query("UPDATE " . PREFIX . "_modul_userpage_values
 							SET
 							f_".$id." = '" . trim(htmlspecialchars($_POST['feld'][$id])) ."'
 							WHERE uid = '" . $_SESSION['user_id'] . "'");
@@ -682,7 +683,7 @@ class userpage {
 				{
 					foreach($_POST['feld_multi'] as $id => $Feld)
 					{
-						$GLOBALS['AVE_DB']->Query("UPDATE " . PREFIX . "_modul_userpage_values
+						$AVE_DB->Query("UPDATE " . PREFIX . "_modul_userpage_values
 							SET
 							f_".$id." = '" . @implode(",",@$_POST['feld_multi'][$id]) ."'
 							WHERE uid = '" . $_SESSION['user_id'] . "'");
@@ -690,31 +691,30 @@ class userpage {
 					}
 				}
 
-				$this->msg($GLOBALS['AVE_Template']->get_config_vars('ProfileOK'),"index.php?module=userpage&action=change",$tpl_dir);
+				$this->msg($AVE_Template->get_config_vars('ProfileOK'),"index.php?module=userpage&action=change",$tpl_dir);
 			}
 
 		}
-		$sql_un = $GLOBALS['AVE_DB']->Query("SELECT pnid FROM " . PREFIX . "_modul_forum_pn WHERE to_uid = '$uid' AND  is_readed != 'yes' AND typ='inbox'" );
-		$GLOBALS['AVE_Template']->assign("PNunreaded", $sql_un->NumRows());
+		$sql_un = $AVE_DB->Query("SELECT pnid FROM " . PREFIX . "_modul_forum_pn WHERE to_uid = '$uid' AND  is_readed != 'yes' AND typ='inbox'" );
+		$AVE_Template->assign("PNunreaded", $sql_un->NumRows());
 
-		$sql_r = $GLOBALS['AVE_DB']->Query("SELECT pnid FROM " . PREFIX . "_modul_forum_pn WHERE to_uid = '$uid' AND  is_readed = 'yes' AND typ='inbox'" );
-		$GLOBALS['AVE_Template']->assign("PNreaded", $sql_r->NumRows());
+		$sql_r = $AVE_DB->Query("SELECT pnid FROM " . PREFIX . "_modul_forum_pn WHERE to_uid = '$uid' AND  is_readed = 'yes' AND typ='inbox'" );
+		$AVE_Template->assign("PNreaded", $sql_r->NumRows());
 
-		$GLOBALS['AVE_Template']->assign('sys_avatars', SYSTEMAVATARS);
-		$GLOBALS['AVE_Template']->assign('prefabAvatars', $this->prefabAvatars(@$r['Avatar']));
-		$GLOBALS['AVE_Template']->assign('avatar_width', MAX_AVATAR_WIDTH);
-		$GLOBALS['AVE_Template']->assign('avatar_height', MAX_AVATAR_HEIGHT);
-		$GLOBALS['AVE_Template']->assign('avatar_size', round(MAX_AVATAR_BYTES/1024));
-		$GLOBALS['AVE_Template']->assign("forum_images", "/templates/". THEME_FOLDER ."/modules/forums/");
-    $search_tpl = $GLOBALS['AVE_Template']->fetch(BASE_DIR . "/modules/forums/templates/search.tpl");
-  	$GLOBALS['AVE_Template']->assign("SearchPop", addslashes($search_tpl));
-		$GLOBALS['AVE_Template']->assign("inc_path", BASE_DIR . "/modules/forums/templates");
-		$GLOBALS['AVE_Template']->assign('r', $r);
-		$GLOBALS['AVE_Template']->assign('felder', $felder);
-		$tpl_out = $GLOBALS['AVE_Template']->fetch($tpl_dir . 'myprofile.tpl');
+		$AVE_Template->assign('sys_avatars', SYSTEMAVATARS);
+		$AVE_Template->assign('prefabAvatars', $this->prefabAvatars(@$r['Avatar']));
+		$AVE_Template->assign('avatar_width', MAX_AVATAR_WIDTH);
+		$AVE_Template->assign('avatar_height', MAX_AVATAR_HEIGHT);
+		$AVE_Template->assign('avatar_size', round(MAX_AVATAR_BYTES/1024));
+		$AVE_Template->assign("forum_images", "/templates/". THEME_FOLDER ."/modules/forums/");
+        $search_tpl = $AVE_Template->fetch(BASE_DIR . "/modules/forums/templates/search.tpl");
+        $AVE_Template->assign("SearchPop", addslashes($search_tpl));
+		$AVE_Template->assign("inc_path", BASE_DIR . "/modules/forums/templates");
+		$AVE_Template->assign('r', $r);
+		$AVE_Template->assign('felder', $felder);
+		$tpl_out = $AVE_Template->fetch($tpl_dir . 'myprofile.tpl');
 		define("MODULE_CONTENT", $tpl_out);
-		define("MODULE_SITE", $GLOBALS['AVE_Template']->get_config_vars('Userdata'));
-
+		define("MODULE_SITE", $AVE_Template->get_config_vars('Userdata'));
 }
 
 //=======================================================================
@@ -726,32 +726,34 @@ class userpage {
 	//=======================================================
 	function showSetting($tpl_dir)
 	{
-		$sql = $GLOBALS['AVE_DB']->Query("SELECT * FROM " . PREFIX . "_modul_userpage WHERE Id = '1'");
+		global $AVE_DB, $AVE_Template;
+	
+		$sql = $AVE_DB->Query("SELECT * FROM " . PREFIX . "_modul_userpage WHERE Id = '1'");
 		$row_e = $sql->FetchRow();
 
 		$items = array();
-		$sql = $GLOBALS['AVE_DB']->Query("SELECT * FROM " . PREFIX . "_modul_userpage_items ORDER BY Id ASC");
+		$sql = $AVE_DB->Query("SELECT * FROM " . PREFIX . "_modul_userpage_items ORDER BY Id ASC");
 		while($row = $sql->FetchRow())
 		{
 			array_push($items,$row);
 		}
 
 		$Groups = array();
-		$sql_g = $GLOBALS['AVE_DB']->Query("SELECT user_group,user_group_name FROM " . PREFIX . "_user_groups");
+		$sql_g = $AVE_DB->Query("SELECT user_group,user_group_name FROM " . PREFIX . "_user_groups");
 		while($row_g = $sql_g->FetchRow())
 		{
 			array_push($Groups, $row_g);
 		}
 
-		$GLOBALS['AVE_Template']->assign("groups", $Groups);
-		$GLOBALS['AVE_Template']->assign("groups_form", explode(",", $row_e->group_id));
-		$GLOBALS['AVE_Template']->assign("row", $row_e);
-		$GLOBALS['AVE_Template']->assign("items", $items);
-		$GLOBALS['AVE_Template']->assign("sess", SESSION);
+		$AVE_Template->assign("groups", $Groups);
+		$AVE_Template->assign("groups_form", explode(",", $row_e->group_id));
+		$AVE_Template->assign("row", $row_e);
+		$AVE_Template->assign("items", $items);
+		$AVE_Template->assign("sess", SESSION);
 
 
-		$GLOBALS['AVE_Template']->assign("formaction", "index.php?do=modules&action=modedit&mod=userpage&moduleaction=save&cp=" . SESSION);
-		$GLOBALS['AVE_Template']->assign("content", $GLOBALS['AVE_Template']->fetch($tpl_dir . "admin_fields.tpl"));
+		$AVE_Template->assign("formaction", "index.php?do=modules&action=modedit&mod=userpage&moduleaction=save&cp=" . SESSION);
+		$AVE_Template->assign("content", $AVE_Template->fetch($tpl_dir . "admin_fields.tpl"));
 	}
 
 	//=======================================================
@@ -759,8 +761,9 @@ class userpage {
 	//=======================================================
 	function saveSetting($tpl_dir)
 	{
+		global $AVE_DB, $AVE_Template;
 
-		$GLOBALS['AVE_DB']->Query("UPDATE " . PREFIX . "_modul_userpage
+		$AVE_DB->Query("UPDATE " . PREFIX . "_modul_userpage
 			SET
 				can_comment = '" . $_REQUEST['can_comment'] . "',
 				group_id = '" . @implode(",", $_REQUEST['user_group']) . "'
@@ -773,9 +776,9 @@ class userpage {
 			foreach($_POST['del'] as $id => $Feld)
 			{
 
-				$GLOBALS['AVE_DB']->Query("ALTER TABLE " . PREFIX . "_modul_userpage_values DROP f_".$id." ");
+				$AVE_DB->Query("ALTER TABLE " . PREFIX . "_modul_userpage_values DROP f_".$id." ");
 
-				$GLOBALS['AVE_DB']->Query("DELETE FROM " . PREFIX . "_modul_userpage_items WHERE id = '$id'");
+				$AVE_DB->Query("DELETE FROM " . PREFIX . "_modul_userpage_items WHERE id = '$id'");
 			}
 		}
 
@@ -785,7 +788,7 @@ class userpage {
 			{
 
 
-				$GLOBALS['AVE_DB']->Query("UPDATE " . PREFIX . "_modul_userpage_items
+				$AVE_DB->Query("UPDATE " . PREFIX . "_modul_userpage_items
 					SET
 					title = '" . $_POST['titel'][$id] ."',
 					type = '" . $_POST['type'][$id] . "',
@@ -803,9 +806,11 @@ class userpage {
 	//=======================================================
 	function saveFieldsNew($tpl_dir)
 	{
+		global $AVE_DB;
+	
 		if(!empty($_POST['titel']))
 		{
-			$GLOBALS['AVE_DB']->Query("INSERT INTO " . PREFIX . "_modul_userpage_items
+			$AVE_DB->Query("INSERT INTO " . PREFIX . "_modul_userpage_items
 			 VALUES (
 				'',
 				'" . $_REQUEST['titel'] . "',
@@ -815,25 +820,25 @@ class userpage {
 			)
 			");
 
-			$sql = $GLOBALS['AVE_DB']->Query("SELECT id FROM " . PREFIX . "_modul_userpage_items WHERE title = '".$_REQUEST['titel']."'");
+			$sql = $AVE_DB->Query("SELECT id FROM " . PREFIX . "_modul_userpage_items WHERE title = '".$_REQUEST['titel']."'");
 			$row = $sql->FetchRow();
 
 			switch($_POST['type'])
 			{
 				case 'text':
-					$GLOBALS['AVE_DB']->Query("ALTER TABLE " . PREFIX . "_modul_userpage_values ADD (f_".$row->id." VARCHAR(250) NOT NULL) ;");
+					$AVE_DB->Query("ALTER TABLE " . PREFIX . "_modul_userpage_values ADD (f_".$row->id." VARCHAR(250) NOT NULL) ;");
 				break;
 
 				case 'textfield':
-					$GLOBALS['AVE_DB']->Query("ALTER TABLE " . PREFIX . "_modul_userpage_values ADD (f_".$row->id." text NOT NULL) ;");
+					$AVE_DB->Query("ALTER TABLE " . PREFIX . "_modul_userpage_values ADD (f_".$row->id." text NOT NULL) ;");
 				break;
 
 				case 'dropdown':
-					$GLOBALS['AVE_DB']->Query("ALTER TABLE " . PREFIX . "_modul_userpage_values ADD (f_".$row->id." VARCHAR(250) NOT NULL) ;");
+					$AVE_DB->Query("ALTER TABLE " . PREFIX . "_modul_userpage_values ADD (f_".$row->id." VARCHAR(250) NOT NULL) ;");
 				break;
 
 				case 'multi':
-					$GLOBALS['AVE_DB']->Query("ALTER TABLE " . PREFIX . "_modul_userpage_values ADD (f_".$row->id." VARCHAR(250) NOT NULL) ;");
+					$AVE_DB->Query("ALTER TABLE " . PREFIX . "_modul_userpage_values ADD (f_".$row->id." VARCHAR(250) NOT NULL) ;");
 				break;
 			}
 		}
@@ -846,33 +851,35 @@ class userpage {
 	//=======================================================
 	function showTemplate($tpl_dir)
 	{
+		global $AVE_DB, $AVE_Template;
+		
 		switch($_REQUEST['sub'])
 		{
 		default:
 
-			$sql = $GLOBALS['AVE_DB']->Query("SELECT * FROM " . PREFIX . "_modul_userpage_template WHERE Id = '1'");
+			$sql = $AVE_DB->Query("SELECT * FROM " . PREFIX . "_modul_userpage_template WHERE Id = '1'");
 			$row = $sql->FetchRow();
 
 			$tags = array();
-			$sql_tags = $GLOBALS['AVE_DB']->Query("SELECT * FROM " . PREFIX . "_modul_userpage_items ORDER BY Id ASC");
+			$sql_tags = $AVE_DB->Query("SELECT * FROM " . PREFIX . "_modul_userpage_items ORDER BY Id ASC");
 			while($row_tags = $sql_tags->FetchRow())
 			{
 				array_push($tags, $row_tags);
 			}
 
 
-			$GLOBALS['AVE_Template']->assign("row", $row);
-			$GLOBALS['AVE_Template']->assign("tags", $tags);
-			$GLOBALS['AVE_Template']->assign("sess", SESSION);
+			$AVE_Template->assign("row", $row);
+			$AVE_Template->assign("tags", $tags);
+			$AVE_Template->assign("sess", SESSION);
 
 
-			$GLOBALS['AVE_Template']->assign("formaction", "index.php?do=modules&action=modedit&mod=userpage&moduleaction=tpl&sub=save&cp=" . SESSION);
-			$GLOBALS['AVE_Template']->assign("content", $GLOBALS['AVE_Template']->fetch($tpl_dir . "admin_tpl.tpl"));
+			$AVE_Template->assign("formaction", "index.php?do=modules&action=modedit&mod=userpage&moduleaction=tpl&sub=save&cp=" . SESSION);
+			$AVE_Template->assign("content", $AVE_Template->fetch($tpl_dir . "admin_tpl.tpl"));
 
 	 	break;
 		case 'save':
 
-			$GLOBALS['AVE_DB']->Query("UPDATE " . PREFIX . "_modul_userpage_template
+			$AVE_DB->Query("UPDATE " . PREFIX . "_modul_userpage_template
 					SET
 					tpl = '" . $_POST['Template'] ."'
 					WHERE id = '1'");
@@ -887,6 +894,8 @@ class userpage {
 	//=======================================================
 	function update($tpl_dir)
 	{
+		global $AVE_DB, $AVE_Template;
+	
 		$files = array(
 		"/class.forums.php",
 		"/internals/last24.php",
@@ -907,55 +916,55 @@ class userpage {
 
 		switch($_REQUEST['sub'])
 		{
-		default:
+			default:
 
-			$error = array();
+				$error = array();
+				foreach($files as $i)
+				{
+					if(!is_writable(BASE_DIR. "/modules/forums".$i)) array_push($error, $i);
+
+				}
+
+				if (count($error)>0)
+				{
+					$AVE_Template->assign("error", $error);
+				}
+				else
+				{
+					$AVE_Template->assign("error", 0);
+					$AVE_Template->assign("files", $files);
+				}
+
+				$AVE_Template->assign("formaction", "index.php?do=modules&action=modedit&mod=userpage&moduleaction=update&sub=start&cp=" . SESSION);
+				$AVE_Template->assign("content", $AVE_Template->fetch($tpl_dir . "admin_update.tpl"));
+
+			break;
+			case 'start':
+
 			foreach($files as $i)
 			{
-				if(!is_writable(BASE_DIR. "/modules/forums".$i)) array_push($error, $i);
+				$content = file_get_contents(BASE_DIR. "/modules/forums".$i);
+
+				$content = str_replace ("index.php?module=forums&amp;show=userprofile&amp;user_id=", "index.php?module=userpage&amp;action=show&amp;uid=", $content);
+            	//  Для отмены обновления форума закоментировать предыдущую строку и раскоментировать следующую строку
+            	//	    $content = str_replace ("index.php?module=userpage&amp;action=show&amp;uid=", "index.php?module=forums&amp;show=userprofile&amp;user_id=", $content);
+
+				if($i == "/templates/userpanel_forums.tpl")
+				{
+					$content = str_replace ("index.php?module=forums&amp;show=publicprofile", "index.php?module=userpage&amp;action=change", $content);
+            	//  Для отмены обновления форума закоментировать предыдущую строку и раскоментировать следующую строку
+	            //	      $content = str_replace ("index.php?module=userpage&amp;action=change", "index.php?module=forums&amp;show=publicprofile", $content);
+				}
+
+				$write = fopen(BASE_DIR ."/modules/forums".$i, "wb");
+				fwrite($write, $content);
+				fclose($write);
+
 
 			}
 
-			if (count($error)>0)
-			{
-				$GLOBALS['AVE_Template']->assign("error", $error);
-			}
-			else
-			{
-				$GLOBALS['AVE_Template']->assign("error", 0);
-				$GLOBALS['AVE_Template']->assign("files", $files);
-			}
-
-			$GLOBALS['AVE_Template']->assign("formaction", "index.php?do=modules&action=modedit&mod=userpage&moduleaction=update&sub=start&cp=" . SESSION);
-			$GLOBALS['AVE_Template']->assign("content", $GLOBALS['AVE_Template']->fetch($tpl_dir . "admin_update.tpl"));
-
-	 	break;
-		case 'start':
-
-		foreach($files as $i)
-		{
-			$content = file_get_contents(BASE_DIR. "/modules/forums".$i);
-
-			$content = str_replace ("index.php?module=forums&amp;show=userprofile&amp;user_id=", "index.php?module=userpage&amp;action=show&amp;uid=", $content);
-//  Для отмены обновления форума закоментировать предыдущую строку и раскоментировать следующую строку
-//	    $content = str_replace ("index.php?module=userpage&amp;action=show&amp;uid=", "index.php?module=forums&amp;show=userprofile&amp;user_id=", $content);
-
-			if($i == "/templates/userpanel_forums.tpl")
-			{
-				$content = str_replace ("index.php?module=forums&amp;show=publicprofile", "index.php?module=userpage&amp;action=change", $content);
-//  Для отмены обновления форума закоментировать предыдущую строку и раскоментировать следующую строку
-//	      $content = str_replace ("index.php?module=userpage&amp;action=change", "index.php?module=forums&amp;show=publicprofile", $content);
-			}
-
-			$write = fopen(BASE_DIR ."/modules/forums".$i, "wb");
-			fwrite($write, $content);
-			fclose($write);
-
-
-		}
-
-			reportLog($_SESSION['user_name'] . " - обновил файлы модуля Форум",'2','2');
-			header("Location:index.php?do=modules&action=modedit&mod=userpage&moduleaction=update&ok=1&cp=" . SESSION);
+				reportLog($_SESSION['user_name'] . " - обновил файлы модуля Форум",'2','2');
+				header("Location:index.php?do=modules&action=modedit&mod=userpage&moduleaction=update&ok=1&cp=" . SESSION);
 		}
 	}
 
@@ -968,8 +977,9 @@ class userpage {
 	//=======================================================
 	function fperm($perm,$group='')
 	{
+		global $AVE_DB;
 		if(empty($group)) $group = UGROUP;
-		$sql = $GLOBALS['AVE_DB']->Query("SELECT permission FROM " . PREFIX . "_modul_forum_grouppermissions WHERE user_group='$group'");
+		$sql = $AVE_DB->Query("SELECT permission FROM " . PREFIX . "_modul_forum_grouppermissions WHERE user_group='$group'");
 		$row = $sql->FetchRow();
 		$perms = @explode("|", $row->permission);
 		if (in_array($perm, $perms) || UGROUP==1 ) // Admin darf alles!
@@ -1019,6 +1029,8 @@ class userpage {
 	//=======================================================
 	function getAvatar($group, $avatar="", $usedefault, $canupload='')
 	{
+		global $AVE_DB;
+	
 		$aprint = false;
 		$own = 1;
 		$permown = -1;
@@ -1057,7 +1069,7 @@ class userpage {
 				}
 			}
 		} else {
-			$sql = $GLOBALS['AVE_DB']->Query("SELECT * FROM " . PREFIX."_modul_forum_groupavatar WHERE user_group = '$group'");
+			$sql = $AVE_DB->Query("SELECT * FROM " . PREFIX."_modul_forum_groupavatar WHERE user_group = '$group'");
 			$row = $sql->FetchRow();
 			if (is_object($row) && ($row->IstStandard == 1) && ($row->StandardAvatar != ""))
 			{
@@ -1086,7 +1098,9 @@ class userpage {
 	// Дnderungen ?!
 	function checkIfUserName($new='',$old='')
 	{
-		$sql = $GLOBALS['AVE_DB']->Query("SELECT
+		global $AVE_DB;
+	
+		$sql = $AVE_DB->Query("SELECT
 			BenutzerName
 		FROM
 			" . PREFIX . "_modul_forum_userprofile
@@ -1104,7 +1118,9 @@ class userpage {
 	// Дnderungen ?!
 	function checkIfUserEmail($new='',$old='')
 	{
-		$sql = $GLOBALS['AVE_DB']->Query("SELECT
+		global $AVE_DB;
+		
+		$sql = $AVE_DB->Query("SELECT
 			email
 		FROM
 			" . PREFIX . "_modul_forum_userprofile
@@ -1121,7 +1137,9 @@ class userpage {
 
 	function getForumUserEmail($id)
 	{
-		$sql = $GLOBALS['AVE_DB']->Query("SELECT email FROM " . PREFIX . "_modul_forum_userprofile WHERE BenutzerId = '$id'");
+		global $AVE_DB;
+		
+		$sql = $AVE_DB->Query("SELECT email FROM " . PREFIX . "_modul_forum_userprofile WHERE BenutzerId = '$id'");
 		$ru = $sql->FetchRow();
 		return $ru->email;
 	}
@@ -1131,13 +1149,15 @@ class userpage {
 	//=======================================================
 	function fetchusername($param)
 	{
+		global $AVE_DB;
+	
 		$where = (@is_array($param)) ? $param[userid] : $param;
-		$sql = $GLOBALS['AVE_DB']->Query("SELECT BenutzerName,BenutzerId FROM " . PREFIX . "_modul_forum_userprofile WHERE BenutzerId='$where'");
+		$sql = $AVE_DB->Query("SELECT BenutzerName,BenutzerId FROM " . PREFIX . "_modul_forum_userprofile WHERE BenutzerId='$where'");
 		$row_un = $sql->FetchRow();
 
 		if(!is_object($row_un))
 		{
-			return $GLOBALS['AVE_Template']->get_config_vars('Guest');
+			return $AVE_Template->get_config_vars('Guest');
 		} else {
 			return $row_un->BenutzerName;
 		}
@@ -1148,22 +1168,24 @@ class userpage {
 	//=======================================================
 	function UserOnlineUpdate()
 	{
+		global $AVE_DB;
+	
 		$expire = time() + (60 * 10);
-		$sql = $GLOBALS['AVE_DB']->Query("DELETE FROM " . PREFIX . "_modul_forum_useronline WHERE expire <= '" . time() . "'");
+		$sql = $AVE_DB->Query("DELETE FROM " . PREFIX . "_modul_forum_useronline WHERE expire <= '" . time() . "'");
 
 		if(isset($_SESSION['user_id']))
 		{
-			$sql = $GLOBALS['AVE_DB']->Query("SELECT Id FROM " . PREFIX . "_modul_forum_userprofile WHERE BenutzerId = '".$_SESSION['user_id']."'");
+			$sql = $AVE_DB->Query("SELECT Id FROM " . PREFIX . "_modul_forum_userprofile WHERE BenutzerId = '".$_SESSION['user_id']."'");
 			$num = $sql->NumRows();
 
 			// Wenn der Benutzet noch nicht im Forum-Profil gespeichert wurde,
 			// wird dies hier getan
 			if(!$num)
 			{
-				$sql = $GLOBALS['AVE_DB']->Query("SELECT * FROM " . PREFIX . "_users WHERE Id  = '".$_SESSION['user_id']."'");
+				$sql = $AVE_DB->Query("SELECT * FROM " . PREFIX . "_users WHERE Id  = '".$_SESSION['user_id']."'");
 				$row = $sql->FetchRow();
 
-				$GLOBALS['AVE_DB']->Query("
+				$AVE_DB->Query("
 					INSERT
 					INTO " . PREFIX . "_modul_forum_userprofile
 					SET
@@ -1192,30 +1214,31 @@ class userpage {
 				header("Location:index.php?module=forums");
 			}
 
-			$sql = $GLOBALS['AVE_DB']->Query("SELECT ip FROM " . PREFIX . "_modul_forum_useronline WHERE ip='" . $_SERVER['REMOTE_ADDR'] . "' limit 1");
+			$sql = $AVE_DB->Query("SELECT ip FROM " . PREFIX . "_modul_forum_useronline WHERE ip='" . $_SERVER['REMOTE_ADDR'] . "' limit 1");
 			$num = $sql->NumRows();
 
 			if ($num < 1)
-				$sql = $GLOBALS['AVE_DB']->Query("INSERT INTO " . PREFIX . "_modul_forum_useronline (ip,expire,uname,invisible) VALUES ('" . $_SERVER['REMOTE_ADDR'] . "','$expire','" . (defined("USERNAME") ? USERNAME : "UNAME") . "','" . (defined("USERNAME") ? $this->getInvisibleStatus($_SESSION['user_id']) : "INVISIBLE") . "')");
+				$sql = $AVE_DB->Query("INSERT INTO " . PREFIX . "_modul_forum_useronline (ip,expire,uname,invisible) VALUES ('" . $_SERVER['REMOTE_ADDR'] . "','$expire','" . (defined("USERNAME") ? USERNAME : "UNAME") . "','" . (defined("USERNAME") ? $this->getInvisibleStatus($_SESSION['user_id']) : "INVISIBLE") . "')");
 			 else
-				$sql = $GLOBALS['AVE_DB']->Query("UPDATE " . PREFIX . "_modul_forum_useronline set uid = '" .  $_SESSION['user_id']. "', uname='" . (defined("USERNAME") ? USERNAME : "UNAME") . "', invisible = '" . (defined("USERNAME") ? $this->getInvisibleStatus($_SESSION['user_id']) : "INVISIBLE") . "'  WHERE ip='" . $_SERVER['REMOTE_ADDR'] . "'");
+				$sql = $AVE_DB->Query("UPDATE " . PREFIX . "_modul_forum_useronline set uid = '" .  $_SESSION['user_id']. "', uname='" . (defined("USERNAME") ? USERNAME : "UNAME") . "', invisible = '" . (defined("USERNAME") ? $this->getInvisibleStatus($_SESSION['user_id']) : "INVISIBLE") . "'  WHERE ip='" . $_SERVER['REMOTE_ADDR'] . "'");
 		} else {
-			$sql = $GLOBALS['AVE_DB']->Query("SELECT ip FROM " . PREFIX . "_modul_forum_useronline WHERE ip='" . $_SERVER['REMOTE_ADDR'] . "' limit 1");
+			$sql = $AVE_DB->Query("SELECT ip FROM " . PREFIX . "_modul_forum_useronline WHERE ip='" . $_SERVER['REMOTE_ADDR'] . "' limit 1");
 			$num = $sql->NumRows();
 			if ($num < 1)
-				$sql = $GLOBALS['AVE_DB']->Query("INSERT INTO " . PREFIX . "_modul_forum_useronline (ip,expire,uname,invisible) VALUES ('" . $_SERVER['REMOTE_ADDR'] . "','$expire','UNAME','0')");
+				$sql = $AVE_DB->Query("INSERT INTO " . PREFIX . "_modul_forum_useronline (ip,expire,uname,invisible) VALUES ('" . $_SERVER['REMOTE_ADDR'] . "','$expire','UNAME','0')");
 		}
 	}
 
 	// Weiterleitung
 	function msg($msg='', $goto='', $tpl='')
 	{
+		global $AVE_Template;
 		$goto = ($goto=='') ? 'index.php?module=forums' : $goto;
 		$msg = str_replace('%%GoTo%%', $goto, $msg);
-		$GLOBALS['AVE_Template']->assign("theme_folder", THEME_FOLDER);
-		$GLOBALS['AVE_Template']->assign("GoTo", $goto);
-		$GLOBALS['AVE_Template']->assign("content", $msg);
-		$tpl_out = $GLOBALS['AVE_Template']->fetch($tpl . 'redirect.tpl');
+		$AVE_Template->assign("theme_folder", THEME_FOLDER);
+		$AVE_Template->assign("GoTo", $goto);
+		$AVE_Template->assign("content", $msg);
+		$tpl_out = $AVE_Template->fetch($tpl . 'redirect.tpl');
 		define("MODULE_CONTENT", $tpl_out);
 		define("MODULE_SITE", "Weiterleitung");
 		echo $tpl_out;

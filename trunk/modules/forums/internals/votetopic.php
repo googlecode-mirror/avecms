@@ -1,13 +1,15 @@
 <?php
-/*::::::::::::::::::::::::::::::::::::::::
- System name: cpengine
- Short Desc: Full Russian Security Power Pack
- Version: 2.0 (Service Pack 2)
- Authors:  Arcanum (php@211.ru) &  Censored!
- Date: March 18, 2008
-::::::::::::::::::::::::::::::::::::::::*/
 
+/**
+ * 
+ *
+ * @package AVE.cms
+ * @subpackage module_Forums
+ * @filesource
+ */
 if(!defined("VOTETOPIC")) exit;
+
+global $AVE_DB;
 
 	$q_forum = "SELECT f.id
 		FROM
@@ -18,7 +20,7 @@ if(!defined("VOTETOPIC")) exit;
 			t.forum_id = f.id
 	";
 
-	$r_forum = $GLOBALS['AVE_DB']->Query($q_forum);
+	$r_forum = $AVE_DB->Query($q_forum);
 	$forum = $r_forum->FetchRow();
 	$permissions = $this->getForumPermissionsByUser($forum->id, UID);
 
@@ -28,7 +30,7 @@ if(!defined("VOTETOPIC")) exit;
 		exit;
 	} else {
 		$q_sel_rating = "SELECT uid, rating, ip FROM " . PREFIX . "_modul_forum_rating WHERE topic_id = " . $_POST['t_id'];
-		$r_sel_rating = $GLOBALS['AVE_DB']->Query($q_sel_rating);
+		$r_sel_rating = $AVE_DB->Query($q_sel_rating);
 
 		$rating = $r_sel_rating->FetchRow();
 		$r_uid = @explode(",", $rating->uid);
@@ -68,7 +70,7 @@ if(!defined("VOTETOPIC")) exit;
 							topic_id = " . $_POST['t_id'];
 				}
 
-				$r_rating = $GLOBALS['AVE_DB']->Query($q_rating);
+				$r_rating = $AVE_DB->Query($q_rating);
 			}
 			// ansonstenn nicht angemeldete benutzer
 		} else {
@@ -97,7 +99,7 @@ if(!defined("VOTETOPIC")) exit;
 						topic_id = " . $_POST['t_id'];
 				}
 
-				$r_rating = $GLOBALS['AVE_DB']->Query($q_rating);
+				$r_rating = $AVE_DB->Query($q_rating);
 			}
 		} // ende wenn gast abstimmen darf
 

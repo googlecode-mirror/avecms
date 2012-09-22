@@ -1,8 +1,15 @@
 <?php
 
+/**
+ * 
+ *
+ * @package AVE.cms
+ * @subpackage module_Forums
+ * @filesource
+ */
 if(!defined("ADDPOST")) exit;
 
-global $AVE_DB, $AVE_Template;
+global $AVE_DB, $AVE_Template, $mod;
 
 $forum = $AVE_DB->Query("
 	SELECT
@@ -20,7 +27,7 @@ $forum = $AVE_DB->Query("
 
 if(!is_object($forum))
 {
-	$this->msg($GLOBALS['mod']['config_vars']['ErrornoPerm']);
+	$this->msg($mod['config_vars']['ErrornoPerm']);
 }
 
 $TopicTitle = stripslashes($forum->title);
@@ -65,7 +72,7 @@ if ($forum->uid == UID)
 {
 	if ($permissions[FORUM_PERMISSION_CAN_REPLY_OWN_TOPIC] == 0)
 	{
-		$this->msg($GLOBALS['mod']['config_vars']['ErrornoPerm']);
+		$this->msg($mod['config_vars']['ErrornoPerm']);
 	}
 }
 else
@@ -73,7 +80,7 @@ else
 	// kann nicht auf andere themen antworten
 	if ($permissions[FORUM_PERMISSION_CAN_REPLY_OTHER_TOPIC] == 0 && UGROUP != 1 && !$is_moderator)
 	{
-		$this->msg($GLOBALS['mod']['config_vars']['ErrornoPerm']);
+		$this->msg($mod['config_vars']['ErrornoPerm']);
 	}
 }
 
@@ -82,7 +89,7 @@ $error_array = array();
 // kein text eingegeben
 if ($_POST["text"] == "")
 {
-	array_push($error_array, $GLOBALS['mod']['config_vars']['CommentMissing']);
+	array_push($error_array, $mod['config_vars']['CommentMissing']);
 }
 
 // wenn fehler oder vorschau
@@ -92,10 +99,10 @@ if (count($error_array) || ($_REQUEST['preview']==1))
 	#$navigation = $this->getNavigation($_POST["toid"], "topic");
 
 	$navigation = $this->getNavigation($_POST["toid"], "topic")
-		. $GLOBALS['mod']['config_vars']['ForumSep']
+		. $mod['config_vars']['ForumSep']
 		. "<a class='forum_links_navi' href='index.php?module=forums&amp;show=showtopic&amp;toid=" . $_POST['toid'] . "&amp;fid=" . $_POST['fid']. "'>" . $TopicTitle . "</a>"
-		. $GLOBALS['mod']['config_vars']['ForumSep']
-		. $GLOBALS['mod']['config_vars']['ReplyToPost'];
+		. $mod['config_vars']['ForumSep']
+		. $mod['config_vars']['ReplyToPost'];
 
 	// vorschau darstellen
 	if ($_REQUEST['preview']==1)
@@ -131,7 +138,7 @@ if (count($error_array) || ($_REQUEST['preview']==1))
 					<input type="hidden" name="attach_hidden[]" id="att_' . $row_a->id . '" value="' . $row_a->id . '" />
 					&bull; ' . $row_a->orig_name . '
 					<a href="javascript:;"
-					onclick="if(confirm(\'' . $GLOBALS['mod']['config_vars']['DelAttach'] . '\'))
+					onclick="if(confirm(\'' . $mod['config_vars']['DelAttach'] . '\'))
 					{
 						document.getElementById(\'att_' . $row_a->id . '\').value=\'\';
 						document.getElementById(\'div_' . $row_a->id . '\').style.display=\'none\';
@@ -167,10 +174,10 @@ if (count($error_array) || ($_REQUEST['preview']==1))
 	$AVE_Template->assign("errors", $error_array);
 	$AVE_Template->assign("forum_id", $_POST['fid']);
 	$_POST['subject'] = htmlspecialchars($_POST['subject']);
-	$AVE_Template->assign("threadform", $AVE_Template->fetch($GLOBALS['mod']['tpl_dir'] . "threadform.tpl"));
-	$tpl_out = $AVE_Template->fetch($GLOBALS['mod']['tpl_dir'] . 'addtopic.tpl');
+	$AVE_Template->assign("threadform", $AVE_Template->fetch($mod['tpl_dir'] . "threadform.tpl"));
+	$tpl_out = $AVE_Template->fetch($mod['tpl_dir'] . 'addtopic.tpl');
 	define("MODULE_CONTENT", $tpl_out);
-	define("MODULE_SITE", $GLOBALS['mod']['config_vars']['NewThread']);
+	define("MODULE_SITE", $mod['config_vars']['NewThread']);
 }
 else
 {
@@ -422,14 +429,14 @@ else
 					. "/index.php?module=forums&show=showtopic&toid=$topic_id&pp=15&page=$page#pid_$last_post_id";
 
 				$username = (UNAME == 'UNAME')
-					? $GLOBALS['mod']['config_vars']['Guest']
+					? $mod['config_vars']['Guest']
 					: $this->getUserName($_SESSION['user_id']);
 				$body_msg = ($opened==2)
-					? $GLOBALS['mod']['config_vars']['BodyNewPostEmailMod']
-					: $GLOBALS['mod']['config_vars']['BodyNewPostEmail'];
+					? $mod['config_vars']['BodyNewPostEmailMod']
+					: $mod['config_vars']['BodyNewPostEmail'];
 				$subject_msg = ($opened==2)
-					? $GLOBALS['mod']['config_vars']['SubjectNewPostEmailMod']
-					: $GLOBALS['mod']['config_vars']['SubjectNewPostEmail'];
+					? $mod['config_vars']['SubjectNewPostEmailMod']
+					: $mod['config_vars']['SubjectNewPostEmail'];
 
 				$body = $body_msg;
 				$body = str_replace("%%DATUM%%", $datum, $body);
@@ -482,10 +489,10 @@ else
 				->FetchRow();
 
 				$Autor = (UNAME == 'UNAME')
-					? $GLOBALS['mod']['config_vars']['Guest']
+					? $mod['config_vars']['Guest']
 					: $this->getUserName($_SESSION['user_id']);
 
-				$n_body = $GLOBALS['mod']['config_vars']['BodyNewPostToUser'];
+				$n_body = $mod['config_vars']['BodyNewPostToUser'];
 				$n_body = str_replace("%%DATUM%%", $datum, $n_body);
 				$n_body = str_replace("%%USER%%", @$row_u->user_name, $n_body);
 				$n_body = str_replace("%%AUTOR%%", $Autor, $n_body);
@@ -496,7 +503,7 @@ else
 				send_mail(
 					$row_u->email,
 					stripslashes($n_body),
-					$GLOBALS['mod']['config_vars']['SubjectNewPostEmail'],
+					$mod['config_vars']['SubjectNewPostEmail'],
 					FORUMEMAIL,
 					FORUMABSENDER,
 					"text"
@@ -540,7 +547,7 @@ else
 	// FEHLER
 	if (!$db_result)
 	{
-		$this->msg($GLOBALS['mod']['config_vars']['ErrornoPerm']);
+		$this->msg($mod['config_vars']['ErrornoPerm']);
 	}
 
     if ($_POST['action'] != 'edit')
@@ -582,13 +589,13 @@ else
 
 	if ($_POST['p_id'] != "")
 	{
-		$this->msg($GLOBALS['mod']['config_vars']['PostSuccess'], $GoTo);
+		$this->msg($mod['config_vars']['PostSuccess'], $GoTo);
 	}
 	else
 	{
 		$Msg = ($opened == 2)
-			? $GLOBALS['mod']['config_vars']['MessageTopicCreatedModerated']
-			: $GLOBALS['mod']['config_vars']['MessageTopicCreated'];
+			? $mod['config_vars']['MessageTopicCreatedModerated']
+			: $mod['config_vars']['MessageTopicCreated'];
 		$this->msg($Msg, $GoTo);
 	}
 }

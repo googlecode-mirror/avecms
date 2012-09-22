@@ -1,13 +1,16 @@
 <?php
-/*::::::::::::::::::::::::::::::::::::::::
- System name: cpengine
- Short Desc: Full Russian Security Power Pack
- Version: 2.0 (Service Pack 2)
- Authors:  Arcanum (php@211.ru) &  Censored!
- Date: March 18, 2008
-::::::::::::::::::::::::::::::::::::::::*/
 
+/**
+ * 
+ *
+ * @package AVE.cms
+ * @subpackage module_Forums
+ * @filesource
+ */
 if(!defined("USERPOP")) exit;
+
+global $AVE_DB, $AVE_Template, $mod;
+
 $limit = 20;
 
 $Phrase = (isset($_REQUEST['Phrase']) && $_REQUEST['Phrase'] != '' && $_REQUEST['Phrase'] > 0 && is_numeric($_REQUEST['Phrase']) && $_REQUEST['Phrase']==1) ? " = " : " LIKE ";
@@ -29,13 +32,13 @@ $query  = "SELECT
 		a.BenutzerName ASC
 ";
 
-$r_poster = $GLOBALS['AVE_DB']->Query($query);
+$r_poster = $AVE_DB->Query($query);
 $num = $r_poster->NumRows();
 
 $seiten = ceil($num / $limit);
 $a = get_current_page() * $limit - $limit;
 
-$r_poster = $GLOBALS['AVE_DB']->Query($query . "LIMIT $a,$limit");
+$r_poster = $AVE_DB->Query($query . "LIMIT $a,$limit");
 
 $poster = array();
 while ($post = $r_poster->FetchRow())
@@ -43,7 +46,7 @@ while ($post = $r_poster->FetchRow())
 	$poster[] = $post;
 }
 
-$GLOBALS['AVE_Template']->assign("poster", $poster);
+$AVE_Template->assign("poster", $poster);
 
 //=======================================================
 // Navigation erzeugen
@@ -51,10 +54,10 @@ $GLOBALS['AVE_Template']->assign("poster", $poster);
 if($num > $limit){
 	$nav = " <a class=\"page_navigation\" href=\"index.php?module=forums&show=userpop&pop=1&theme_folder=" . $_GET['theme_folder'] . "&BenutzerName=" . @$_REQUEST['BenutzerName'] . "&Phrase=" . @$_REQUEST['Phrase'] . "&page={s}\">{t}</a> ";
 	$nav = get_pagination($seiten, 'page', $nav);
-	$GLOBALS['AVE_Template']->assign("nav", $nav) ;
+	$AVE_Template->assign("nav", $nav) ;
 }
 
-$tpl_out = $GLOBALS['AVE_Template']->fetch($GLOBALS['mod']['tpl_dir'] . "users.tpl");
+$tpl_out = $AVE_Template->fetch($mod['tpl_dir'] . "users.tpl");
 define("MODULE_CONTENT", $tpl_out);
-define("MODULE_SITE",  $GLOBALS['mod']['config_vars']['UserpopName']);
+define("MODULE_SITE",  $mod['config_vars']['UserpopName']);
 ?>

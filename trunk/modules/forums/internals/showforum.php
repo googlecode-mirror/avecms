@@ -1,6 +1,15 @@
 <?php
 
+/**
+ * 
+ *
+ * @package AVE.cms
+ * @subpackage module_Forums
+ * @filesource
+ */
 if (!defined("SHOWFORUM")) exit;
+
+global $AVE_DB, $AVE_Template, $mod;
 
 // Angriff verhindern!
 if(!is_numeric($_REQUEST['fid']) || $_REQUEST['fid'] < 1)
@@ -18,7 +27,7 @@ if ($fid == "")
 	exit;
 }
 
-$forum_result = $GLOBALS['AVE_DB']->Query("SELECT  id, status, title, password, category_id FROM " . PREFIX . "_modul_forum_forum WHERE id = '" . $fid . "'");
+$forum_result = $AVE_DB->Query("SELECT  id, status, title, password, category_id FROM " . PREFIX . "_modul_forum_forum WHERE id = '" . $fid . "'");
 
 // link: neue kategorie
 $newcatlink = "index.php?p=newcategory&amp;pid=" . $fid;
@@ -34,10 +43,10 @@ $forum_obj = $forum_result->FetchRow();
 
 // navigation erzeugen
 $navigation = $this->getNavigation($fid, "forum", null);
-$tmp_navi = $navigation . $GLOBALS['mod']['config_vars']['ForumSep'] . $forum_obj->title;
+$tmp_navi = $navigation . $mod['config_vars']['ForumSep'] . $forum_obj->title;
 
-$GLOBALS['AVE_Template']->assign("navigation", $tmp_navi);
-$GLOBALS['AVE_Template']->assign("treeview", @explode($GLOBALS['mod']['config_vars']['ForumSep'], $tmp_navi));
+$AVE_Template->assign("navigation", $tmp_navi);
+$AVE_Template->assign("treeview", @explode($mod['config_vars']['ForumSep'], $tmp_navi));
 
 $pass = false;
 if ($forum_obj->password != "")
@@ -53,10 +62,10 @@ if ($forum_obj->password != "")
 	}
 	else
 	{
-		$GLOBALS['AVE_Template']->assign("fid", $fid);
-		$GLOBALS['AVE_Template']->assign("navigation", $navigation);
+		$AVE_Template->assign("fid", $fid);
+		$AVE_Template->assign("navigation", $navigation);
 
-		$tpl_out = $GLOBALS['AVE_Template']->fetch($GLOBALS['mod']['tpl_dir'] . 'forumlogin.tpl');
+		$tpl_out = $AVE_Template->fetch($mod['tpl_dir'] . 'forumlogin.tpl');
 		define("MODULE_CONTENT", $tpl_out);
 		define("MODULE_SITE",  strip_tags($navigation));
 	}
@@ -78,14 +87,14 @@ if ($pass)
 	// ====================================================================================
 	$group_ids = array();
 	if (!defined("MISCIDSINC")) define("MISCIDSINC", 1);
-	$cat_query = $GLOBALS['AVE_DB']->Query("SELECT group_id FROM " . PREFIX . "_modul_forum_forum WHERE id = '" . $_REQUEST['fid'] . "'");
+	$cat_query = $AVE_DB->Query("SELECT group_id FROM " . PREFIX . "_modul_forum_forum WHERE id = '" . $_REQUEST['fid'] . "'");
 	while ($category = $cat_query->FetchAssocArray())
 	{
 		// miscrechte
 		if (@is_numeric(UID))
 		{
 			$queryfirst = "SELECT GroupIdMisc FROM " . PREFIX . "_modul_forum_userprofile WHERE BenutzerId = '" . UID . "'";
-			$result = $GLOBALS['AVE_DB']->Query($queryfirst);
+			$result = $AVE_DB->Query($queryfirst);
 			$user = $result->FetchRow();
 
 			if (@$user->GroupIdMisc != "")
@@ -218,7 +227,7 @@ if ($pass)
 
 	$q_topic_count .= $only_own_topics;
 	$q_topic_count .= " AND t.opened = '1'";
-	$r_topic_count = $GLOBALS['AVE_DB']->Query($q_topic_count);
+	$r_topic_count = $AVE_DB->Query($q_topic_count);
 	$num = $r_topic_count->NumRows();
 
 	$limit = ( isset($_REQUEST['pp']) && is_numeric($_REQUEST['pp']) && $_REQUEST['pp']>0 ) ? $_REQUEST['pp'] : 15;
@@ -271,7 +280,7 @@ if ($pass)
 	";
 
 	$order = ($order == "DESC") ? "ASC" : "DESC";
-	$topic_result = $GLOBALS['AVE_DB']->Query($topic_query);
+	$topic_result = $AVE_DB->Query($topic_query);
 	$topic_array = array();
 
 	// topic liste durchgehen.
@@ -313,7 +322,7 @@ if ($pass)
 
 		$user_query = "SELECT BenutzerId,BenutzerId,reg_time FROM " . PREFIX . "_modul_forum_userprofile WHERE BenutzerId = '" . $topic['uid'] . "'";
 
-		$user_result = $GLOBALS['AVE_DB']->Query($user_query);
+		$user_result = $AVE_DB->Query($user_query);
 		$user_row = $user_result->FetchRow();
 
 
@@ -342,12 +351,12 @@ if ($pass)
 			LIMIT 1
 		";
 
-		$last_post_result = $GLOBALS['AVE_DB']->Query($last_post_query);
+		$last_post_result = $AVE_DB->Query($last_post_query);
 		$topic_post_count = $last_post_result->NumRows();
 		$last_post_row = $last_post_result->FetchRow();
 
 		$last_post_row->reg_time = $last_post_row->reg_time;
-		$last_post_row->link = ($last_post_row->reg_time < 2) ? $GLOBALS['mod']['config_vars']['Guest'] : "<a class='forum_links_small' href='index.php?module=forums&amp;show=userprofile&amp;user_id=$last_post_row->uid'>$last_post_row->BenutzerName</a>";
+		$last_post_row->link = ($last_post_row->reg_time < 2) ? $mod['config_vars']['Guest'] : "<a class='forum_links_small' href='index.php?module=forums&amp;show=userprofile&amp;user_id=$last_post_row->uid'>$last_post_row->BenutzerName</a>";
 		$topic["lastposter"] = $last_post_row;
 
 		// =================================================
@@ -359,7 +368,7 @@ if ($pass)
 		$limit = 15;
 
 		$q_post = "SELECT COUNT(id) as count FROM " . PREFIX . "_modul_forum_post WHERE topic_id = " . $topic['id'];
-		$r_post = $GLOBALS['AVE_DB']->Query($q_post);
+		$r_post = $AVE_DB->Query($q_post);
 		$post = $r_post->FetchRow();
 
 		$numPages = $this->getPageNum($post->count, $limit);
@@ -371,7 +380,7 @@ if ($pass)
 	}
 
 	$subcat_query = "SELECT id, title, position, comment, parent_id, group_id FROM " . PREFIX . "_modul_forum_category WHERE parent_id = " . $fid . " ORDER BY position";
-	$subcat_result = $GLOBALS['AVE_DB']->Query($subcat_query);
+	$subcat_result = $AVE_DB->Query($subcat_query);
 	$subcat_array = array();
 
 	while ($subcategory = $subcat_result->FetchAssocArray())
@@ -406,7 +415,7 @@ if ($pass)
 				ORDER BY position
 			";
 
-			$subforum_result = $GLOBALS['AVE_DB']->Query($subforum_query);
+			$subforum_result = $AVE_DB->Query($subforum_query);
 			$subforum_array[$subcategory["title"]] = array();
 
 			while ($subforum = $subforum_result->FetchAssocArray())
@@ -415,7 +424,7 @@ if ($pass)
 				{
 					$pcount = 0;
 					$q_tcount = "SELECT id FROM " . PREFIX . "_modul_forum_topic WHERE forum_id = '" . (int)$subforum['id'] . "'";
-					$r_tcount = $GLOBALS['AVE_DB']->Query($q_tcount);
+					$r_tcount = $AVE_DB->Query($q_tcount);
 					$subforum["tcount"] = $r_tcount->NumRows();
 
 					$ids = "";
@@ -440,7 +449,7 @@ if ($pass)
 							WHERE topic_id = " . $ids . "
 						";
 
-						$r_pcount = $GLOBALS['AVE_DB']->Query($q_pcount);
+						$r_pcount = $AVE_DB->Query($q_pcount);
 						$pcount = $r_pcount->NumRows();
 
 						// ====================
@@ -465,18 +474,18 @@ if ($pass)
 						$last_post = $this->getLastForumPost($subforum['id']);
 						if ( ! $last_post)
 						{
-							$r_last_post = $GLOBALS['AVE_DB']->Query($q_last_post);
+							$r_last_post = $AVE_DB->Query($q_last_post);
 							$last_post = $r_last_post->FetchRow();
 						}
 
 						$q_replies = "SELECT COUNT(id) AS replies FROM " . PREFIX . "_modul_forum_post WHERE topic_id = " . $last_post->topic_id;
-						$r_replies = $GLOBALS['AVE_DB']->Query($q_replies);
+						$r_replies = $AVE_DB->Query($q_replies);
 						$replies = $r_replies->FetchRow();
 
 						$last_post->replies = $replies->replies;
 
 						$q_last_user = "SELECT BenutzerId,BenutzerName,reg_time FROM " . PREFIX . "_modul_forum_userprofile WHERE BenutzerId = " . $last_post->uid;
-						$r_last_user = $GLOBALS['AVE_DB']->Query($q_last_user);
+						$r_last_user = $AVE_DB->Query($q_last_user);
 						$last_user = $r_last_user->FetchRow();
 
 						$last_post->LastPoster = $last_user->BenutzerName;
@@ -500,14 +509,14 @@ if ($pass)
 					//  <<-- Unterkategorien und Unterforen -->>
 					// ==============================================================
 					$q_subcat = "SELECT id FROM " . PREFIX . "_modul_forum_category WHERE parent_id = " . $subforum['id'];
-					$r_subcat = $GLOBALS['AVE_DB']->Query($q_subcat);
+					$r_subcat = $AVE_DB->Query($q_subcat);
 
 					$subfors = array();
 
 					while ($subcat = $r_subcat->FetchRow())
 					{
 						$q_subfor = "SELECT id, title FROM " . PREFIX . "_modul_forum_forum WHERE category_id = " . $subcat->id;
-						$r_subfor = $GLOBALS['AVE_DB']->Query($q_subfor);
+						$r_subfor = $AVE_DB->Query($q_subfor);
 
 						while ($subfor = $r_subfor->FetchRow())
 						{
@@ -523,21 +532,21 @@ if ($pass)
 		}
 	}
 
-	$sname = strip_tags($navigation) . $GLOBALS['mod']['config_vars']['ForumSep'] . $forum_obj->title;
+	$sname = strip_tags($navigation) . $mod['config_vars']['ForumSep'] . $forum_obj->title;
 
-	$GLOBALS['AVE_Template']->register_function("get_post_icon", "getPostIcon");
-	$GLOBALS['AVE_Template']->assign("sort_by_theme_link", "index.php?module=forums&amp;show=showforum&amp;fid=" . $fid . "&amp;sortby=title&amp;sort=$order");
-	$GLOBALS['AVE_Template']->assign("sort_by_reply_link", "index.php?module=forums&amp;show=showforum&amp;fid=" . $fid . "&amp;sortby=replies&amp;sort=$order");
-	$GLOBALS['AVE_Template']->assign("sort_by_author_link", "index.php?module=forums&amp;show=showforum&amp;fid=" . $fid . "&amp;sortby=user_name&amp;sort=$order");
-	$GLOBALS['AVE_Template']->assign("sort_by_hits_link", "index.php?module=forums&amp;show=showforum&amp;fid=" . $fid . "&amp;sortby=views&amp;sort=$order");
-	$GLOBALS['AVE_Template']->assign("sort_by_rating_link", "index.php?module=forums&amp;show=showforum&amp;fid=" . $fid . "&amp;sortby=rating&amp;sort=$order");
-	$GLOBALS['AVE_Template']->assign("sort_by_lastpost_link", "index.php?module=forums&amp;show=showforum&amp;fid=" . $fid . "&amp;sortby=last_post_int&amp;sort=$order");
+	$AVE_Template->register_function("get_post_icon", "getPostIcon");
+	$AVE_Template->assign("sort_by_theme_link", "index.php?module=forums&amp;show=showforum&amp;fid=" . $fid . "&amp;sortby=title&amp;sort=$order");
+	$AVE_Template->assign("sort_by_reply_link", "index.php?module=forums&amp;show=showforum&amp;fid=" . $fid . "&amp;sortby=replies&amp;sort=$order");
+	$AVE_Template->assign("sort_by_author_link", "index.php?module=forums&amp;show=showforum&amp;fid=" . $fid . "&amp;sortby=user_name&amp;sort=$order");
+	$AVE_Template->assign("sort_by_hits_link", "index.php?module=forums&amp;show=showforum&amp;fid=" . $fid . "&amp;sortby=views&amp;sort=$order");
+	$AVE_Template->assign("sort_by_rating_link", "index.php?module=forums&amp;show=showforum&amp;fid=" . $fid . "&amp;sortby=rating&amp;sort=$order");
+	$AVE_Template->assign("sort_by_lastpost_link", "index.php?module=forums&amp;show=showforum&amp;fid=" . $fid . "&amp;sortby=last_post_int&amp;sort=$order");
 
 	if ($num > $limit)
 	{
 		$page_nav = " <a class=\"page_navigation\" href=\"index.php?module=forums&amp;show=showforum&amp;fid={$fid}&amp;unit={$unit}&amp;period={$period}&amp;sortby=$order_by&amp;sort=$order_orig&amp;pp={$limit}&amp;page={s}\">{t}</a> ";
 		$page_nav = get_pagination($seiten, 'page', $page_nav);
-		$GLOBALS['AVE_Template']->assign('pages', $page_nav);
+		$AVE_Template->assign('pages', $page_nav);
 	}
 
 	// foren fuer das dropdown feld
@@ -547,17 +556,17 @@ if ($pass)
 	$categories = array();
 	$this->getCategories(0, $categories, "");
 
-	$GLOBALS['AVE_Template']->assign("subnavi", @$subnavi);
-	$GLOBALS['AVE_Template']->assign("rsslink", "index.php?rss=forums&amp;fid=$fid");
-	$GLOBALS['AVE_Template']->assign("categories_dropdown", $categories);
-	$GLOBALS['AVE_Template']->assign("forum", $forum_obj);
-	$GLOBALS['AVE_Template']->assign("f_id", $forum_obj->id);
-	$GLOBALS['AVE_Template']->assign("newcatlink", $newcatlink);
-	$GLOBALS['AVE_Template']->assign("categories", $subcat_array);
-	$GLOBALS['AVE_Template']->assign("forums", @$subforum_array);
-	$GLOBALS['AVE_Template']->assign("topics", $topic_array);
+	$AVE_Template->assign("subnavi", @$subnavi);
+	$AVE_Template->assign("rsslink", "index.php?rss=forums&amp;fid=$fid");
+	$AVE_Template->assign("categories_dropdown", $categories);
+	$AVE_Template->assign("forum", $forum_obj);
+	$AVE_Template->assign("f_id", $forum_obj->id);
+	$AVE_Template->assign("newcatlink", $newcatlink);
+	$AVE_Template->assign("categories", $subcat_array);
+	$AVE_Template->assign("forums", @$subforum_array);
+	$AVE_Template->assign("topics", $topic_array);
 
-	$tpl_out = $GLOBALS['AVE_Template']->fetch($GLOBALS['mod']['tpl_dir'] . $this->_ShowForumTpl);
+	$tpl_out = $AVE_Template->fetch($mod['tpl_dir'] . $this->_ShowForumTpl);
 	define("MODULE_CONTENT", $tpl_out);
 	define("MODULE_SITE", $sname);
 }

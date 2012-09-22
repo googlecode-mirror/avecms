@@ -1,5 +1,3 @@
-<br />
-
 {include file="$inc_path/userpanel_forums.tpl"}
 {include file="$inc_path/header_sthreads.tpl"}
 
@@ -141,19 +139,19 @@
 			{if $sys_avatars==1}
 				<tr>
 					<td class="mod_userpage_first">{#PR_SysAvatar#}</td>
-					<td class="mod_userpage_second">{$prefabAvatars}</td>
+					<td class="mod_userpage_second" colspan="2">{$prefabAvatars}</td>
 				</tr>
 			{/if}
 				<tr>
 					<td class="mod_userpage_first">{#PR_OwnAvatarUse#}</td>
-					<td class="mod_userpage_second">
+					<td class="mod_userpage_second" colspan="2">
 						<input name="AvatarStandard" type="radio" value="0" {if $r.AvatarStandard=='0'}checked="checked"{/if} /> {#Yes#}
 						<input name="AvatarStandard" type="radio" value="1" {if $r.AvatarStandard=='1'}checked="checked"{/if} /> {#No#} 
 					</td>
 				</tr>
 				<tr>
 					<td class="mod_userpage_first">{#PR_avatar#}</td>
-					<td class="mod_userpage_second"><table border="0" cellspacing="1" cellpadding="4">
+					<td class="mod_userpage_second" colspan="2"><table border="0" cellspacing="1" cellpadding="4">
 				<tr>
 			{if $r.OwnAvatar}
 					<td valign="top">{#PR_StdAvatar#}<br />{$r.OwnAvatar} </td>
