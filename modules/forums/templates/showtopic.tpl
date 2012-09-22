@@ -79,7 +79,7 @@
 					{if $post->poster->reg_time > '1' && $post->poster->user_group!=2}
 						{if $smarty.request.print!=1}
 							{assign var=po value=$post->poster->Ignored}
-							<h2><a title="{$po}" href="javascript:void(0);" rel="nofollow"><strong>{$post->poster->BenutzerName}</strong></a></h2><br />
+							<h2><a onclick= "return overlib('{$po}',STICKY,WIDTH,400,TIMEOUT,3000,DELAY,100);" href="javascript:void(0);" rel="nofollow"><strong>{$post->poster->BenutzerName}</strong></a></h2><br />
 						{else}
 							<h2>{$post->poster->BenutzerName}</h2>
 						{/if}

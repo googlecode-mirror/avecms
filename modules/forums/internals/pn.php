@@ -1,5 +1,12 @@
 <?php
 
+/**
+ * 
+ *
+ * @package AVE.cms
+ * @subpackage module_Forums
+ * @filesource
+ */
 if (!defined("PN")) exit;
 
 global $AVE_DB, $AVE_Template, $mod;

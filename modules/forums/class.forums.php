@@ -1,12 +1,12 @@
 <?php
-/*::::::::::::::::::::::::::::::::::::::::
- System name: cpengine
- Short Desc: Full Russian Security Power Pack
- Version: 2.0 (Service Pack 2)
- Authors:  Arcanum (php@211.ru) &  Censored!
- Date: March 18, 2008
-::::::::::::::::::::::::::::::::::::::::*/
 
+/**
+ * Класс работы с Форумом в публичной части.
+ *
+ * @package AVE.cms
+ * @subpackage module_Forums
+ * @filesource
+ */
 class Forum
 {
 	var $_UserProfileTpl = 'userprofile.tpl';
@@ -58,7 +58,9 @@ class Forum
 
 	function getUserName($Id)
 	{
-		$sql = $GLOBALS['AVE_DB']->Query("SELECT BenutzerName FROM " . PREFIX . "_modul_forum_userprofile WHERE BenutzerId = '" . $Id . "'");
+		global $AVE_DB;
+		
+		$sql = $AVE_DB->Query("SELECT BenutzerName FROM " . PREFIX . "_modul_forum_userprofile WHERE BenutzerId = '" . $Id . "'");
 		$row = $sql->FetchRow();
 		return $row->BenutzerName;
 	}
@@ -100,7 +102,6 @@ class Forum
 		define("IGNORELIST",1);
 		include_once(BASE_DIR . "/modules/forums/internals/ignorelist.php");
 	}
-
 
 	function getFile()
 	{
@@ -168,7 +169,6 @@ class Forum
 		include_once(BASE_DIR . "/modules/forums/internals/userpostings.php");
 	}
 
-
 	//=======================================================
 	// Lezte aktive Themen der letzten 24 Stunden
 	//=======================================================
@@ -205,7 +205,6 @@ class Forum
 		include_once(BASE_DIR . "/modules/forums/internals/addtopic.php");
 	}
 
-
 	function newPost()
 	{
 		define("NEWPOST", 1);
@@ -217,7 +216,6 @@ class Forum
 		define("ADDPOST", 1);
 		include_once(BASE_DIR . "/modules/forums/internals/addpost.php");
 	}
-
 
 	//=======================================================
 	// Datei anhдngen
@@ -243,18 +241,19 @@ class Forum
 		include_once(BASE_DIR . "/modules/forums/internals/search.php");
 	}
 
-
 	function searchMask()
 	{
+		global $AVE_Template, $mod;
+		
 		$forums_dropdown = array();
 		$this->getForums(0, $forums_dropdown, "");
 
-		$GLOBALS['AVE_Template']->assign("navigation", "<a class='forum_links_navi' href='index.php?module=forums'>" . $GLOBALS['mod']['config_vars']['PageNameForums'] . "</a>" . $GLOBALS['mod']['config_vars']['ForumSep'] . $GLOBALS['mod']['config_vars']['ForumsSearch']);
-		$GLOBALS['AVE_Template']->assign("forums_dropdown", $forums_dropdown);
+		$AVE_Template->assign("navigation", "<a class='forum_links_navi' href='index.php?module=forums'>" . $mod['config_vars']['PageNameForums'] . "</a>" . $mod['config_vars']['ForumSep'] . $mod['config_vars']['ForumsSearch']);
+		$AVE_Template->assign("forums_dropdown", $forums_dropdown);
 
-		$tpl_out = $GLOBALS['AVE_Template']->fetch($GLOBALS['mod']['tpl_dir'] . 'search_mask.tpl');
+		$tpl_out = $AVE_Template->fetch($mod['tpl_dir'] . 'search_mask.tpl');
 		define("MODULE_CONTENT", $tpl_out);
-		define("MODULE_SITE", $GLOBALS['mod']['config_vars']['ForumsSearch']);
+		define("MODULE_SITE", $mod['config_vars']['ForumsSearch']);
 	}
 
 	function myProfile()
@@ -311,9 +310,11 @@ class Forum
 	//=======================================================
 	function getPosticons($icon = "0")
 	{
+		global $AVE_DB, $mod;
+		
 		$i = 1;
 		$posticons = "";
-		$sql = $GLOBALS['AVE_DB']->Query("SELECT id,path FROM " . PREFIX . "_modul_forum_posticons WHERE active = 1 ORDER BY posi ASC");
+		$sql = $AVE_DB->Query("SELECT id,path FROM " . PREFIX . "_modul_forum_posticons WHERE active = 1 ORDER BY posi ASC");
 		while($rows = $sql->FetchRow())
 		{
 			$br = "&nbsp;";
@@ -326,7 +327,7 @@ class Forum
 			$i++;
 		}
 		$NullChecked = ($icon==0 && empty($_POST['posticon']) ) ? "checked" : "";
-		$posticons .= "<input class=\"noborder\" style=\"background-color:transparent; border:0px\" type=\"radio\" name=\"posticon\" value=\"0\"  " . $NullChecked . " />&nbsp;" . $GLOBALS['mod']['config_vars']['NoPosticon'];
+		$posticons .= "<input class=\"noborder\" style=\"background-color:transparent; border:0px\" type=\"radio\" name=\"posticon\" value=\"0\"  " . $NullChecked . " />&nbsp;" . $mod['config_vars']['NoPosticon'];
 		return $posticons;
 	}
 
@@ -335,16 +336,17 @@ class Forum
 	//=======================================================
 	function listsmilies()
 	{
-//		$sql = $GLOBALS['AVE_DB']->Query("SELECT smiliebr FROM " . PREFIX . "_modul_forum_settings");
+		global $AVE_DB;
+//		$sql = $AVE_DB->Query("SELECT smiliebr FROM " . PREFIX . "_modul_forum_settings");
 //		$row = $sql->FetchRow();
 		$smiliesw = '';
 		$smilie_id = 0;
 		$smiliesw .= '<table border="0"><tr>';
 
-		$sql = $GLOBALS['AVE_DB']->Query("SELECT code, path FROM " . PREFIX . "_modul_forum_smileys WHERE active = 1");
+		$sql = $AVE_DB->Query("SELECT code, path FROM " . PREFIX . "_modul_forum_smileys WHERE active = 1");
 		$num = $sql->NumRows();
 
-		$sql = $GLOBALS['AVE_DB']->Query("SELECT code,path FROM " . PREFIX . "_modul_forum_smileys WHERE active = 1 ORDER BY posi ASC LIMIT 16");
+		$sql = $AVE_DB->Query("SELECT code,path FROM " . PREFIX . "_modul_forum_smileys WHERE active = 1 ORDER BY posi ASC LIMIT 16");
 		while($row_s = $sql->FetchRow())
 		{
 			$val = $row_s->code;
@@ -366,10 +368,10 @@ class Forum
 		$smilie_id = 0;
 		$smiliesw_ext .= "<table border=\'0\' width=\'100%\'><tr>";
 
-		$sql = $GLOBALS['AVE_DB']->Query("SELECT code, path FROM " . PREFIX . "_modul_forum_smileys WHERE active = 1");
+		$sql = $AVE_DB->Query("SELECT code, path FROM " . PREFIX . "_modul_forum_smileys WHERE active = 1");
 		$num = $sql->NumRows();
 
-		$sql = $GLOBALS['AVE_DB']->Query("SELECT code,path FROM " . PREFIX . "_modul_forum_smileys WHERE active = 1 ORDER BY posi ASC");
+		$sql = $AVE_DB->Query("SELECT code,path FROM " . PREFIX . "_modul_forum_smileys WHERE active = 1 ORDER BY posi ASC");
 		while($row_s = $sql->FetchRow())
 		{
 			$val = $row_s->code;
@@ -399,9 +401,10 @@ class Forum
 	// ========================================================
 	function deleteCategory($id)
 	{
+		global $AVE_DB;
 		// foren loeschen
 		$query = "SELECT id FROM " . PREFIX . "_modul_forum_forum WHERE category_id = '" . $id . "'";
-		$result = $GLOBALS['AVE_DB']->Query($query);
+		$result = $AVE_DB->Query($query);
 
 		while ($forum = $result->FetchRow())
 		{
@@ -409,9 +412,8 @@ class Forum
 		}
 		// kategorie loeschen
 		$query = "DELETE FROM " . PREFIX . "_modul_forum_category WHERE id = '" . $id . "'";
-		$result = $GLOBALS['AVE_DB']->Query($query);
+		$result = $AVE_DB->Query($query);
 	}
-
 
 	// ========================================================
 	// FORUM- LOESCHFUNKTION
@@ -422,8 +424,10 @@ class Forum
 	// ========================================================
 	function deleteForum($id)
 	{
+		global $AVE_DB;
+		
 		$query = "SELECT id FROM " . PREFIX . "_modul_forum_topic WHERE forum_id = '" . $id . "'";
-		$result = $GLOBALS['AVE_DB']->Query($query);
+		$result = $AVE_DB->Query($query);
 		// themen loeschen
 		while ($topic = $result->FetchRow())
 		{
@@ -431,10 +435,10 @@ class Forum
 		}
 		// berechtigungen loeschen
 		$query = "DELETE FROM " . PREFIX . "_modul_forum_permissions WHERE forum_id = '" . $id . "'";
-		$result = $GLOBALS['AVE_DB']->Query($query);
+		$result = $AVE_DB->Query($query);
 		// unterkategorien loeschen
 		$query = "SELECT id FROM " . PREFIX . "_modul_forum_category WHERE parent_id = '" . $id . "'";
-		$result = $GLOBALS['AVE_DB']->Query($query);
+		$result = $AVE_DB->Query($query);
 
 		while ($category = $result->FetchRow())
 		{
@@ -442,9 +446,8 @@ class Forum
 		}
 		// forum loeschen
 		$query = "DELETE FROM " . PREFIX . "_modul_forum_forum WHERE id = '" . $id . "'";
-		$result = $GLOBALS['AVE_DB']->Query($query);
+		$result = $AVE_DB->Query($query);
 	}
-
 
 	// ========================================================
 	// THEMEN- LOESCHFUNKTION
@@ -454,8 +457,10 @@ class Forum
 	// ========================================================
 	function deleteTopic($id)
 	{
+		global $AVE_DB;
+		
 		$query = "SELECT id FROM " . PREFIX . "_modul_forum_post WHERE topic_id = '" . $id . "'";
-		$result = $GLOBALS['AVE_DB']->Query($query);
+		$result = $AVE_DB->Query($query);
 		// Beitraege loeschen
 		while ($post = $result->FetchRow())
 		{
@@ -464,10 +469,10 @@ class Forum
 		}
 		// Rating loeschen
 		$query = "DELETE FROM " . PREFIX . "_modul_forum_rating WHERE topic_id = '" . $id . "'";
-		$result = $GLOBALS['AVE_DB']->Query($query);
+		$result = $AVE_DB->Query($query);
 		// Thema loeschen
 		$query = "DELETE FROM " . PREFIX . "_modul_forum_topic WHERE id = '" . $id . "'";
-		$result = $GLOBALS['AVE_DB']->Query($query);
+		$result = $AVE_DB->Query($query);
 	}
 
 	// ========================================================
@@ -479,8 +484,10 @@ class Forum
 	// ========================================================
 	function deletePost($id)
 	{
+		global $AVE_DB;
+		
 		$query = "SELECT uid, attachment, topic_id FROM " . PREFIX . "_modul_forum_post WHERE id = '" . $id . "'";
-		$result = $GLOBALS['AVE_DB']->Query($query);
+		$result = $AVE_DB->Query($query);
 		$post = $result->FetchRow();
 
 		$attachments = @explode(";", $post->attachment);
@@ -491,27 +498,27 @@ class Forum
 			if ($attachment != "")
 			{
 				$query = "SELECT filename FROM " . PREFIX . "_modul_forum_attachment WHERE id = '" . $attachment . "'";
-				$result = $GLOBALS['AVE_DB']->Query($query);
+				$result = $AVE_DB->Query($query);
 				$file = $result->FetchRow();
 				// loesche aus dem dateisystem
 				//  @unlink ("../uploads/attachment" . $file);
 				// loesche aus der datenbank
 				$query = "DELETE FROM " . PREFIX . "_modul_forum_attachment WHERE id = '" . $attachment . "'";
-				$result = $GLOBALS['AVE_DB']->Query($query);
+				$result = $AVE_DB->Query($query);
 			}
 		}
 
 		// reduziere die anzahl der beitraege im thema
 		$query = "UPDATE " . PREFIX . "_modul_forum_topic SET replies = replies -1 WHERE id = " . $post->topic_id;
-		$result = $GLOBALS['AVE_DB']->Query($query);
+		$result = $AVE_DB->Query($query);
 
 		// reduziere die anzahl der beitraege des benutzers
 		$query = "UPDATE " . PREFIX."_modul_forum_userprofile SET Beitraege = Beitraege -1 WHERE BenutzerId = " . $post->uid;
-		$result = $GLOBALS['AVE_DB']->Query($query);
+		$result = $AVE_DB->Query($query);
 
 		// loesche beitrag
 		$query = "DELETE FROM " . PREFIX . "_modul_forum_post WHERE id = '" . $id . "'";
-		$result = $GLOBALS['AVE_DB']->Query($query);
+		$result = $AVE_DB->Query($query);
 	}
 
 	//=======================================================
@@ -524,63 +531,66 @@ class Forum
 
 	function getonlinestatus($user_name)
 	{
-
-		$sql = $GLOBALS['AVE_DB']->Query("SELECT uname, invisible FROM " . PREFIX . "_modul_forum_useronline WHERE uname='" . $user_name . "' LIMIT 1");
+		global $AVE_DB, $mod;
+		
+		$sql = $AVE_DB->Query("SELECT uname, invisible FROM " . PREFIX . "_modul_forum_useronline WHERE uname='" . $user_name . "' LIMIT 1");
 		$num = $sql->NumRows();
 		$row = $sql->FetchRow();
 		if ($num == 1)
 		{
 			if ((UGROUP == 1) && ($row->invisible == "INVISIBLE")) {
 				$img = "user_invisible.gif" ;
-				$alt = $GLOBALS['mod']['config_vars']['UserIsInvisible'];
+				$alt = $mod['config_vars']['UserIsInvisible'];
 			}
 			if ($row->invisible != "INVISIBLE") {
 				$img = "user_online.gif" ;
-				$alt = $GLOBALS['mod']['config_vars']['UserIsOnline'];
+				$alt = $mod['config_vars']['UserIsOnline'];
 			}
 			if ((UGROUP != 1) && ($row->invisible == "INVISIBLE")) {
 				$img = "user_offline.gif" ;
-				$alt = $GLOBALS['mod']['config_vars']['UserIsOffline'];
+				$alt = $mod['config_vars']['UserIsOffline'];
 			}
 		} else {
 			$img = "user_offline.gif" ;
-			$alt = $GLOBALS['mod']['config_vars']['UserIsOffline'];
+			$alt = $mod['config_vars']['UserIsOffline'];
 		}
 
 		$status_img = "<img class=\"absmiddle\" src=\"templates/".THEME_FOLDER."/modules/forums/statusicons/$img\" alt=\"$alt\" /> $alt";
 		return $status_img;
 	}
 
-
 	function getInvisibleStatus($UserId)
 	{
-		$sql = $GLOBALS['AVE_DB']->Query("SELECT Unsichtbar FROM " . PREFIX . "_modul_forum_userprofile WHERE BenutzerId = '" . $UserId . "'");
+		global $AVE_DB;
+		
+		$sql = $AVE_DB->Query("SELECT Unsichtbar FROM " . PREFIX . "_modul_forum_userprofile WHERE BenutzerId = '" . $UserId . "'");
 		$row = $sql->FetchRow();
 		return (@$row->Unsichtbar==1) ? "INVISIBLE" : @$row->Unsichtbar;
 	}
-
 
 	//=======================================================
 	// Online-User aktualisieren
 	//=======================================================
 	function UserOnlineUpdate()
 	{
+		global $AVE_DB;
+		
 		$expire = time() + (60 * 10);
-		$sql = $GLOBALS['AVE_DB']->Query("DELETE FROM " . PREFIX . "_modul_forum_useronline WHERE expire <= '" . time() . "'");
+		$sql = $AVE_DB->Query("DELETE FROM " . PREFIX . "_modul_forum_useronline WHERE expire <= '" . time() . "'");
 
 		if(isset($_SESSION['user_id']))
 		{
-			$sql = $GLOBALS['AVE_DB']->Query("SELECT Id FROM " . PREFIX . "_modul_forum_userprofile WHERE BenutzerId = '" . $_SESSION['user_id'] . "'");
+			$sql = $AVE_DB->Query("SELECT Id FROM " . PREFIX . "_modul_forum_userprofile WHERE BenutzerId = '" . $_SESSION['user_id'] . "'");
 			$num = $sql->NumRows();
 
 			// Wenn der Benutzet noch nicht im Forum-Profil gespeichert wurde,
 			// wird dies hier getan
 			if(!$num)
 			{
-				$sql = $GLOBALS['AVE_DB']->Query("SELECT * FROM " . PREFIX . "_users WHERE Id  = '" . $_SESSION['user_id'] . "'");
+				$sql = $AVE_DB->Query("SELECT * FROM " . PREFIX . "_users WHERE Id  = '" . $_SESSION['user_id'] . "'");
 				$row = $sql->FetchRow();
 
-				$GLOBALS['AVE_DB']->Query("
+				$AVE_DB->Query("
 					INSERT
 					INTO " . PREFIX . "_modul_forum_userprofile
 					SET
@@ -609,11 +619,11 @@ class Forum
 				header("Location:index.php?module=forums");
 			}
 
-			$sql = $GLOBALS['AVE_DB']->Query("SELECT ip FROM " . PREFIX . "_modul_forum_useronline WHERE ip = '" . $_SERVER['REMOTE_ADDR'] . "' LIMIT 1");
+			$sql = $AVE_DB->Query("SELECT ip FROM " . PREFIX . "_modul_forum_useronline WHERE ip = '" . $_SERVER['REMOTE_ADDR'] . "' LIMIT 1");
 			$num = $sql->NumRows();
 
 			if ($num < 1)
-				$sql = $GLOBALS['AVE_DB']->Query("
+				$sql = $AVE_DB->Query("
 					INSERT INTO " . PREFIX . "_modul_forum_useronline
 						(
 							ip,expire,uname,invisible
@@ -625,7 +635,7 @@ class Forum
 						)
 					");
 			 else
-				$sql = $GLOBALS['AVE_DB']->Query("
+				$sql = $AVE_DB->Query("
 					UPDATE " . PREFIX . "_modul_forum_useronline
 					SET
 						uid = '" .  $_SESSION['user_id']. "',
@@ -635,19 +645,20 @@ class Forum
 						ip='" . $_SERVER['REMOTE_ADDR'] . "'
 				");
 		} else {
-			$sql = $GLOBALS['AVE_DB']->Query("SELECT ip FROM " . PREFIX . "_modul_forum_useronline WHERE ip = '" . $_SERVER['REMOTE_ADDR'] . "' LIMIT 1");
+			$sql = $AVE_DB->Query("SELECT ip FROM " . PREFIX . "_modul_forum_useronline WHERE ip = '" . $_SERVER['REMOTE_ADDR'] . "' LIMIT 1");
 			$num = $sql->NumRows();
 			if ($num < 1)
-				$sql = $GLOBALS['AVE_DB']->Query("INSERT INTO " . PREFIX . "_modul_forum_useronline (ip,expire,uname,invisible) VALUES ('" . $_SERVER['REMOTE_ADDR'] . "','" . $expire . "','UNAME','0')");
+				$sql = $AVE_DB->Query("INSERT INTO " . PREFIX . "_modul_forum_useronline (ip,expire,uname,invisible) VALUES ('" . $_SERVER['REMOTE_ADDR'] . "','" . $expire . "','UNAME','0')");
 		}
 	}
-
 
 	//=======================================================
 	// Benutzerprofil anzeigen
 	//=======================================================
 	function showPoster()
 	{
+		global $AVE_DB, $AVE_Template, $mod;
+		
 		if (isset($_GET['tid']) && is_numeric($_GET['tid']) && $_GET['tid'] > 0)
 		{
 			$q_poster = "SELECT
@@ -663,18 +674,18 @@ class Forum
 				GROUP BY u.BenutzerName
 			";
 
-			$r_poster = $GLOBALS['AVE_DB']->Query($q_poster);
+			$r_poster = $AVE_DB->Query($q_poster);
 			$poster = array();
 			while ($post = $r_poster->FetchRow())
 			{
 				$poster[] = $post;
 			}
 
-			$GLOBALS['AVE_Template']->assign("poster", $poster);
+			$AVE_Template->assign("poster", $poster);
 
-			$tpl_out = $GLOBALS['AVE_Template']->fetch($GLOBALS['mod']['tpl_dir'] . "showposter.tpl");
+			$tpl_out = $AVE_Template->fetch($mod['tpl_dir'] . "showposter.tpl");
 			define("MODULE_CONTENT", $tpl_out);
-			define("MODULE_SITE",  $GLOBALS['mod']['config_vars']['PageNameUserProfile']);
+			define("MODULE_SITE",  $mod['config_vars']['PageNameUserProfile']);
 		}
 	}
 
@@ -683,18 +694,21 @@ class Forum
 	// ================================================================
 	function topicExists($t_id)
 	{
+		global $AVE_DB;
+		
 		$query = "SELECT id FROM " . PREFIX . "_modul_forum_topic WHERE id = '" . $t_id . "'";
-		$result = $GLOBALS['AVE_DB']->Query($query);
+		$result = $AVE_DB->Query($query);
 		if ($result->NumRows() > 0) return 1;
 		return 0;
 	}
-
 
 	//=======================================================
 	// Benutzerprofil anzeigen
 	//=======================================================
 	function showUserProfile()
 	{
+		global $AVE_DB, $AVE_Template, $mod;
+		
 		if(isset($_POST['SendMail']) && $_POST['SendMail'] == 1 && UGROUP != 2)
 		{
 			// Prьfen, ob dieser User die E-Mail an den User senden darf
@@ -713,14 +727,14 @@ class Forum
 					a.IgnoreId != " . $_SESSION['user_id'] . " AND
 					b.BenutzerId = " . addslashes($_POST['ToUser']) . "
 			";
-			$sql = $GLOBALS['AVE_DB']->Query($q);
+			$sql = $AVE_DB->Query($q);
 			$num = $sql->NumRows();
 			$row = $sql->FetchRow();
 
 			// E-Mail darf gesendet werden
 			if($num == 1)
 			{
-				$Prefab = $GLOBALS['mod']['config_vars']['EmailBodyUser'];
+				$Prefab = $mod['config_vars']['EmailBodyUser'];
 				$Prefab = str_replace('%%USER%%', $row->BenutzerName, $Prefab);
 				$Prefab = str_replace('%%ABSENDER%%', $_SESSION['forum_user_name'], $Prefab);
 				$Prefab = str_replace('%%BETREFF%%', stripslashes($_POST['Betreff']), $Prefab);
@@ -738,21 +752,21 @@ class Forum
 				);
 
 				// weiter leiten
-				$this->msg($GLOBALS['mod']['config_vars']['MessageAfterEmail'], 'index.php?module=forums&show=userprofile&user_id=' . $_POST['ToUser']);
+				$this->msg($mod['config_vars']['MessageAfterEmail'], 'index.php?module=forums&show=userprofile&user_id=' . $_POST['ToUser']);
 			} else {
 				// keine e-mail
-				$this->msg($GLOBALS['mod']['config_vars']['MessageNoEmail'], 'index.php?module=forums&show=userprofile&user_id=' . $_POST['ToUser']);
+				$this->msg($mod['config_vars']['MessageNoEmail'], 'index.php?module=forums&show=userprofile&user_id=' . $_POST['ToUser']);
 			}
 		}
 
 		// Nicht eingeloggt, aber versucht es trotzdem :)
 		if(isset($_POST['SendMail']) && $_POST['SendMail'] == 1 && UGROUP == 2)
 		{
-			$this->msg($GLOBALS['mod']['config_vars']['ErrornoPerm'], 'index.php?module=forums&show=userprofile&user_id=' . $_POST['ToUser']);
+			$this->msg($mod['config_vars']['ErrornoPerm'], 'index.php?module=forums&show=userprofile&user_id=' . $_POST['ToUser']);
 		}
 
 		$_GET['user_id'] = (isset($_GET['user_id']) and is_numeric($_GET['user_id'])) ? $_GET['user_id'] : 0;
-		$sql_user = $GLOBALS['AVE_DB']->Query("SELECT
+		$sql_user = $AVE_DB->Query("SELECT
 				u.*,
 				ug.user_group,
 				ugn.user_group_name as GruppenName
@@ -781,21 +795,19 @@ class Forum
 			$row_user->OnlineStatus = @$this->getonlinestatus(@$row_user->BenutzerName);
 
 			$query = "SELECT COUNT(id) AS counts FROM " . PREFIX . "_modul_forum_post WHERE uid = '" . addslashes($_GET['user_id']) . "'";
-			$result = $GLOBALS['AVE_DB']->Query($query);
+			$result = $AVE_DB->Query($query);
 			$r_c = $result->FetchRow();
 			$row_user->postings = $this->num_format($r_c->counts);
 
-			$GLOBALS['AVE_Template']->assign("Ignored", (($this->isIgnored(addslashes($_GET['user_id']))) ? 1 : 0) );
-			$GLOBALS['AVE_Template']->assign("public", 1);
-			$GLOBALS['AVE_Template']->assign("user", $row_user);
+			$AVE_Template->assign("Ignored", (($this->isIgnored(addslashes($_GET['user_id']))) ? 1 : 0) );
+			$AVE_Template->assign("public", 1);
+			$AVE_Template->assign("user", $row_user);
 		}
 
-		$tpl_out = $GLOBALS['AVE_Template']->fetch($GLOBALS['mod']['tpl_dir'] . $this->_UserProfileTpl);
+		$tpl_out = $AVE_Template->fetch($mod['tpl_dir'] . $this->_UserProfileTpl);
 		define("MODULE_CONTENT", $tpl_out);
-		define("MODULE_SITE",  $GLOBALS['mod']['config_vars']['PageNameUserProfile']);
+		define("MODULE_SITE",  $mod['config_vars']['PageNameUserProfile']);
 	}
-
-
 
 	//=======================================================
 	// Benutzerliste
@@ -831,15 +843,16 @@ class Forum
 		return $rand_fn;
 	}
 
-
 	//=======================================================
 	// Funktion um Emoticons mit Smilies zu ersetzen
 	//=======================================================
 	function replaceWithSmileys($texts)
 	{
+		global $AVE_DB;
+		
 		if(SMILIES==1)
 		{
-			$sql = $GLOBALS['AVE_DB']->Query("SELECT code,path FROM " . PREFIX . "_modul_forum_smileys WHERE active = 1");
+			$sql = $AVE_DB->Query("SELECT code,path FROM " . PREFIX . "_modul_forum_smileys WHERE active = 1");
 			while($row_s = $sql->FetchRow())
 			{
 				$texts = @str_replace($row_s->code,'<img src="templates/' . THEME_FOLDER . '/modules/forums/smilies/' . $row_s->path . '" border="0" alt="" />', $texts);
@@ -847,7 +860,6 @@ class Forum
 		}
 		return $texts;
 	}
-
 
 	//=======================================================
 	//BB-CODES KOMMENTARE
@@ -884,12 +896,13 @@ class Forum
 		return $text;
 	}
 
-
 	//=======================================================
 	// Rekursive Forum - Navigation erzeugen
 	//=======================================================
 	function getNavigation($id, $type, $result = null)
 	{
+		global $AVE_DB, $mod;
+		
 		if ($type == "category") $parent_id = "parent_id";
 		if ($type == "forum") $parent_id = "category_id";
 		if ($type == "topic") $parent_id = "forum_id";
@@ -897,13 +910,13 @@ class Forum
 
 		// daten des aktuellen bereichs
 		$q_navi = "SELECT id, title, $parent_id AS pid FROM " . PREFIX . "_modul_forum_" . $type . " WHERE id = '" . $id . "'";
-		$r_navi = $GLOBALS['AVE_DB']->Query($q_navi);
+		$r_navi = $AVE_DB->Query($q_navi);
 		$navi = $r_navi->FetchRow();
 
 		// rekursion abgeschlossen
 		if (@$navi->pid == 0)
 		{
-			return  '<a class="forum_links_navi"  href="index.php?module=forums&amp;show=showforums">'.$GLOBALS['mod']['config_vars']['PageNameForums'].'</a>' . $result;
+			return  '<a class="forum_links_navi"  href="index.php?module=forums&amp;show=showforums">'.$mod['config_vars']['PageNameForums'].'</a>' . $result;
 		}
 
 		// typ des darueberliegenden bereiches bestimmen
@@ -914,12 +927,12 @@ class Forum
 
 		// daten des darueberliegenden bereiches
 		$q_parent = "SELECT id, title FROM " . PREFIX . "_modul_forum_$type WHERE id = '" . $navi->pid . "'";
-		$r_parent = $GLOBALS['AVE_DB']->Query($q_parent);
+		$r_parent = $AVE_DB->Query($q_parent);
 		$parent = $r_parent->FetchRow();
 
-		if ($type == "topic") $result = $GLOBALS['mod']['config_vars']['ForumSep'] . "<a class='forum_links_navi' href='index.php?module=forums&show=showtopic&amp;tid=" . $parent->id . "'>" . $parent->title . "</a>" . $result;
-		else if ($type == "forum") $result = $GLOBALS['mod']['config_vars']['ForumSep'] . "<a class='forum_links_navi' href='index.php?module=forums&amp;show=showforum&amp;fid=" . $parent->id . "'>" . $parent->title . "</a>" . $result;
-		else if ($type == "category") $result = $GLOBALS['mod']['config_vars']['ForumSep'] . "<a class='forum_links_navi' href='index.php?module=forums&show=showforums&cid=" . $parent->id . "'>" . $parent->title . "</a>" . $result;
+		if ($type == "topic") $result = $mod['config_vars']['ForumSep'] . "<a class='forum_links_navi' href='index.php?module=forums&show=showtopic&amp;tid=" . $parent->id . "'>" . $parent->title . "</a>" . $result;
+		else if ($type == "forum") $result = $mod['config_vars']['ForumSep'] . "<a class='forum_links_navi' href='index.php?module=forums&amp;show=showforum&amp;fid=" . $parent->id . "'>" . $parent->title . "</a>" . $result;
+		else if ($type == "category") $result = $mod['config_vars']['ForumSep'] . "<a class='forum_links_navi' href='index.php?module=forums&show=showforums&cid=" . $parent->id . "'>" . $parent->title . "</a>" . $result;
 		return $this->getNavigation($navi->pid, $type, $result);
 	}
 
@@ -928,7 +941,6 @@ class Forum
 	//=======================================================
 	function file_size($param)
 	{
-		global $AVE_DB;
 		$size = $param;
 		$size = $size*1024;
 		$sizes = Array(' Байт', 'КБ', 'МБ', 'ГБ', 'ТБ', 'PБ', 'EБ');
@@ -957,42 +969,33 @@ class Forum
 	// ========================================================
 	function getForums($id, &$forums, $prefix, $f_id = "0")
 	{
+		global $AVE_DB;
+		
 		// kategorien holen
 		$q_cat = "SELECT id FROM " . PREFIX . "_modul_forum_category WHERE parent_id = '" . $id . "'";
-		$r_cat = $GLOBALS['AVE_DB']->Query($q_cat);
+		$r_cat = $AVE_DB->Query($q_cat);
 		// berechtigung holen
 		$group_ids_misc = array();
-		// ========================================================
 		// miscrechte
-		// ========================================================
 		if (@is_numeric(UID) && UGROUP != 2)
 		{
 //			$queryfirst = "SELECT GroupIdMisc FROM " . PREFIX."_modul_forum_userprofile WHERE BenutzerId = '" . UID . "'";
-//			$result = $GLOBALS['AVE_DB']->Query($queryfirst);
+//			$result = $AVE_DB->Query($queryfirst);
 //			$user = $result->FetchRow();
 			$GroupIdMisc = $this->GroupIdMiscGet(UID);
-			// ========================================================
 			// wenn misc nicht leer ist...
-			// ========================================================
 			if ($GroupIdMisc) {
 				$group_ids_pre = UGROUP . ";" . $GroupIdMisc;
 				$group_ids_misc = @explode(";", $group_ids_pre);
-				// ========================================================
 				// wennn misc leer ist und user eingeloggt ist
-				// ========================================================
 			} else {
 				$group_ids_misc[] = UGROUP;
 			}
-			// ========================================================
 			// wenn user nicht eingeloggt ist
-			// ========================================================
 		} else {
 			$group_ids_misc[] = 2;
 		}
-
-		// ========================================================
 		// kategorien durchgehen
-		// ========================================================
 		$sub=false;
 		while ($cat = $r_cat->FetchRow())
 		{
@@ -1008,13 +1011,13 @@ class Forum
 					f.category_id = '" . $cat->id . "' AND
 					f.active = 1
 			";
-			$result = $GLOBALS['AVE_DB']->Query($q_forum);
+			$result = $AVE_DB->Query($q_forum);
 
 			// alle foren durchgehen
 			while ($forum = $result->FetchRow())
 			{
 				// forumname
-				$sql_ftitle = $GLOBALS['AVE_DB']->Query("SELECT title FROM " . PREFIX . "_modul_forum_category WHERE id = '" . $forum->category_id . "'");
+				$sql_ftitle = $AVE_DB->Query("SELECT title FROM " . PREFIX . "_modul_forum_category WHERE id = '" . $forum->category_id . "'");
 				$row_ftitle = $sql_ftitle->FetchRow();
 
 				$group_ids = explode(",", $forum->group_id);
@@ -1033,7 +1036,7 @@ class Forum
 								$forum->fname = $row_ftitle->title;
 
 								$q_sub_cat = "SELECT id FROM " . PREFIX . "_modul_forum_category WHERE parent_id = " . $forum->id;
-								$r_sub_cat = $GLOBALS['AVE_DB']->Query($q_sub_cat);
+								$r_sub_cat = $AVE_DB->Query($q_sub_cat);
 								$forums[] = $forum;
 								$sub=true;
 							}
@@ -1052,12 +1055,11 @@ class Forum
 		}
 	}
 
-
 	function getCategories($id, &$categories, $prefix)
 	{
-		//========================================================
+		global $AVE_DB;
+
 		// kategorien holen
-		//========================================================
 		$q_cat = "SELECT
 				id,
 				title,
@@ -1069,19 +1071,15 @@ class Forum
 				parent_id = $id
 			ORDER BY position
 		";
-		$r_cat = $GLOBALS['AVE_DB']->Query($q_cat);
+		$r_cat = $AVE_DB->Query($q_cat);
 
-		//========================================================
 		// berechtigung holen
-		//========================================================
 		$group_ids_misc = array();
 
-		//========================================================
 		// miscrechte
-		//========================================================
 		if (@is_numeric(UID) && UGROUP != 2) {
 //			$queryfirst = "SELECT GroupIdMisc FROM " . PREFIX."_modul_forum_userprofile WHERE BenutzerId = '" . UID . "'";
-//			$result = $GLOBALS['AVE_DB']->Query($queryfirst);
+//			$result = $AVE_DB->Query($queryfirst);
 //			$user = $result->FetchRow();
 			$GroupIdMisc = $this->GroupIdMiscGet(UID);
 
@@ -1133,11 +1131,11 @@ class Forum
 						f.active = 1
 					ORDER BY position
 				";
-				$result = $GLOBALS['AVE_DB']->Query($q_forum);
+				$result = $AVE_DB->Query($q_forum);
 				// alle foren durchgehen
 				while ($forum = $result->FetchRow()) {
 					// forumname
-//					$sql_ftitle = $GLOBALS['AVE_DB']->Query("SELECT title FROM " . PREFIX . "_modul_forum_category WHERE id = '" . $forum->category_id . "'");
+//					$sql_ftitle = $AVE_DB->Query("SELECT title FROM " . PREFIX . "_modul_forum_category WHERE id = '" . $forum->category_id . "'");
 //					$row_ftitle = $sql_ftitle->FetchRow();
 
 					$group_ids = explode(",", $forum->group_id);
@@ -1147,7 +1145,7 @@ class Forum
 //						$forum->fname = $row_ftitle->title;
 
 						$q_sub_cat = "SELECT id FROM " . PREFIX . "_modul_forum_category WHERE parent_id = " . $forum->id;
-						$r_sub_cat = $GLOBALS['AVE_DB']->Query($q_sub_cat);
+						$r_sub_cat = $AVE_DB->Query($q_sub_cat);
 
 						$cat->forums[] = $forum;
 
@@ -1161,7 +1159,6 @@ class Forum
 		}
 	}
 
-
 	//========================================================
 	// FORUM PERMISSIONS
 	// ermittelt die rechte fuer den aktuellen Benutzer
@@ -1169,7 +1166,7 @@ class Forum
 	function getForumPermissions($forumid, $groupid, $ext_uid = 0)
 	{
 		global $AVE_DB;
-		$sql = $GLOBALS['AVE_DB']->Query("SELECT permissions FROM " . PREFIX . "_modul_forum_permissions WHERE forum_id = '" . $forumid . "' AND group_id = '" . $groupid . "'");
+		$sql = $AVE_DB->Query("SELECT permissions FROM " . PREFIX . "_modul_forum_permissions WHERE forum_id = '" . $forumid . "' AND group_id = '" . $groupid . "'");
 		$row = $sql->FetchRow();
 
 		if (UGROUP == 1) {
@@ -1179,16 +1176,17 @@ class Forum
 		}
 	}
 
-
 	//=======================================================
 	// Foren-Rechte nach Benutzer-ID auslesen
 	//=======================================================
 	function getForumPermissionsByUser($forum_id, $user_id)
 	{
+		global $AVE_DB;
+		
 		if (@is_numeric(UID) && UID != 0)
 		{
 //			$queryfirst = "SELECT GroupIdMisc FROM " . PREFIX."_modul_forum_userprofile WHERE BenutzerId = '" . $user_id . "'";
-//			$result = $GLOBALS['AVE_DB']->Query($queryfirst);
+//			$result = $AVE_DB->Query($queryfirst);
 //			$user = $result->FetchRow();
 			$GroupIdMisc = $this->GroupIdMiscGet($user_id);
 
@@ -1208,7 +1206,7 @@ class Forum
 		{
 			$permissions = "";
 			$query = "SELECT permissions FROM " . PREFIX . "_modul_forum_permissions WHERE forum_id = '" . $forum_id . "' AND group_id = '" . $group_id . "'";
-			$result = $GLOBALS['AVE_DB']->Query($query);
+			$result = $AVE_DB->Query($query);
 
 			$r_permissions = $result->FetchRow();
 
@@ -1309,7 +1307,6 @@ class Forum
 		return $all_permissions;
 	}
 
-
 	//=======================================================
 	// Returns an array of subforum ids of forum with id $forumId.
 	// @param int $forumId
@@ -1347,7 +1344,6 @@ class Forum
 
 		return $retval[$forumId];
 	}
-
 
 	//=======================================================
 	// Returns the last forum post including topic_id, title, id, uid,
@@ -1417,7 +1413,6 @@ class Forum
 				LIMIT 1
 			")->FetchRow();
 		}
-
 		return $retval[$forumId];
 	}
 
@@ -1446,14 +1441,16 @@ class Forum
 	//=======================================================
 	function Cpengine_Board_SetTopicRead($Topic, $Usr = null)
 	{
+		global $AVE_DB;
 	   if (is_null($Usr)) $Usr = UID;
 
-		$GLOBALS['AVE_DB']->Query("REPLACE DELAYED INTO " . PREFIX . "_modul_forum_topic_read (Usr,Topic) VALUES (" . (int)$Usr . "," . (int)$Topic . ")");
+		$AVE_DB->Query("REPLACE DELAYED INTO " . PREFIX . "_modul_forum_topic_read (Usr,Topic) VALUES (" . (int)$Usr . "," . (int)$Topic . ")");
 	}
-
 
 	function Cpengine_Board_SetLastPost($Board)
 	{
+		global $AVE_DB;
+		
 		$Board = (int) $Board;
 		$Sql = "SELECT
 			Post.id,
@@ -1469,7 +1466,7 @@ class Forum
 		ORDER
 			BY  Post.datum DESC
 		LIMIT 1";
-		$Res = $GLOBALS['AVE_DB']->Query($Sql);
+		$Res = $AVE_DB->Query($Sql);
 
 		if ($Res !== false)
 		{
@@ -1479,14 +1476,16 @@ class Forum
 					last_post_id    = ".$LastPost->id."
 			   WHERE
 					id = " . $Board . " ";
-			$Res = $GLOBALS['AVE_DB']->Query($Sql);
+			$Res = $AVE_DB->Query($Sql);
 		}
 	}
 
 	function Cpengine_Board_GetTopic_Board($Topic)
 	{
+		global $AVE_DB;
+		
 		$Sql = "SELECT  Topic.forum_id FROM " . PREFIX . "_modul_forum_topic AS Topic WHERE Topic.id = " . (int)$Topic . " LIMIT 1";
-		$Res = $GLOBALS['AVE_DB']->Query($Sql);
+		$Res = $AVE_DB->Query($Sql);
 		$Row = $Res->FetchRow();
 		return (int) $Row->forum_id;
 	}
@@ -1496,6 +1495,8 @@ class Forum
 	//=======================================================
 	function setForumAsRead($Board = '', $Usr = null, $BoardAll = '')
 	{
+		global $AVE_DB;
+		
 		if (is_null($Usr))
 		$Usr = UID;
 
@@ -1513,9 +1514,8 @@ class Forum
 			AND
 				' . $SQL_Post48h . '';
 
-		$dump = $GLOBALS['AVE_DB']->Query($sql);
+		$dump = $AVE_DB->Query($sql);
 	}
-
 
 	//=======================================================
 	// Lezten Beitrag auslesen
@@ -1526,7 +1526,7 @@ class Forum
 		$post = "";
 		if(is_numeric($id))
 		{
-			$result = $GLOBALS['AVE_DB']->Query("SELECT id FROM " . PREFIX . "_modul_forum_post WHERE topic_id = '" . $id . "' ORDER BY id DESC LIMIT 2");
+			$result = $AVE_DB->Query("SELECT id FROM " . PREFIX . "_modul_forum_post WHERE topic_id = '" . $id . "' ORDER BY id DESC LIMIT 2");
 			$post = $result->FetchRow();
 
 			if ($result->NumRows() > 1)
@@ -1542,11 +1542,13 @@ class Forum
 	//=======================================================
 	function getLastPostings($id)
 	{
+		global $AVE_DB;
+		
 		$postings = "";
 		if(is_numeric($id))
 		{
 			$postings = array();
-			$result = $GLOBALS['AVE_DB']->Query("SELECT id FROM " . PREFIX . "_modul_forum_topic WHERE forum_id = '" . $id . "'");
+			$result = $AVE_DB->Query("SELECT id FROM " . PREFIX . "_modul_forum_topic WHERE forum_id = '" . $id . "'");
 			while ($topic = $result->FetchRow()) $postings[] = $this->getLastPost($topic->id);
 		}
 		return $postings;
@@ -1592,7 +1594,7 @@ class Forum
 				AND " . $SQL_Post48h . "
 		";
 
-		$r_topic = $GLOBALS['AVE_DB']->Query($q_topic);
+		$r_topic = $AVE_DB->Query($q_topic);
 
 		$topic = $r_topic->FetchRow();
 		$NewPostCount = $topic->NewPostCount;
@@ -1606,19 +1608,20 @@ class Forum
 		$forum['statusicon'] = $this->getIcon($icon, "forum");
 	}
 
-
 	//=======================================================
 	// setTopicIcon setzt das zutreffende icon fuer jedes thema
 	//=======================================================
 	function setTopicIcon(&$topic, $forum)
 	{
+		global $AVE_DB;
+		
 		$SQL_Post48h    = ' Topic.last_post > \''.date('Y-m-d', strtotime(BOARD_NEWPOSTMAXAGE)).'\' ';
 
 		$HOT_VIEW_COUNT = 250;
 		$HOT_REPLY_COUNT = 20;
 
 		// post holen
-		$r_post = $GLOBALS['AVE_DB']->Query("SELECT id FROM " . PREFIX . "_modul_forum_post WHERE topic_id = " . $topic['id'] . " ORDER BY id DESC");
+		$r_post = $AVE_DB->Query("SELECT id FROM " . PREFIX . "_modul_forum_post WHERE topic_id = " . $topic['id'] . " ORDER BY id DESC");
 		$post = $r_post->FetchRow();
 
 		/* Counting, how often user has posted in this topic */
@@ -1627,7 +1630,7 @@ class Forum
 			WHERE   topic_id = " . $topic['id'] . "
 				AND uid = " . UID . "
 		";
-		$r_uid = $GLOBALS['AVE_DB']->Query($q_uid);
+		$r_uid = $AVE_DB->Query($q_uid);
 		$uid = $r_uid->FetchRow();
 
 		/* New Posts in Topic */
@@ -1644,7 +1647,7 @@ class Forum
 					OR  TRead.ReadOn IS NULL )
 				AND ".$SQL_Post48h."
 		";
-		$res = $GLOBALS['AVE_DB']->Query($sql);
+		$res = $AVE_DB->Query($sql);
 		$NewPost = $res->FetchRow();
 
 		// neu oder nicht
@@ -1678,7 +1681,6 @@ class Forum
 		}
 	}
 
-
 	function getStatusIcon($params)
 	{
 		global $set;
@@ -1689,7 +1691,6 @@ class Forum
 		$imageName = $set["statusiconlist"][$icon] . ".gif";
 		return "<img src=\"templates/".THEME_FOLDER."/modules/forums/statusicons/$imageName\" alt=\"$imageName\" />";
 	}
-
 
 	function getIcon($file, $alt)
 	{
@@ -1702,13 +1703,15 @@ class Forum
 	//=======================================================
 	function switchForumStatus($id, $status)
 	{
-		$r_close = $GLOBALS['AVE_DB']->Query("UPDATE " . PREFIX . "_modul_forum_forum SET status = " . $status . " WHERE id = '" . $id . "'");
+		global $AVE_DB;
+		
+		$r_close = $AVE_DB->Query("UPDATE " . PREFIX . "_modul_forum_forum SET status = " . $status . " WHERE id = '" . $id . "'");
 		$q_child = "SELECT f.id FROM
 			" . PREFIX . "_modul_forum_category AS c,
 			" . PREFIX . "_modul_forum_forum AS f
 			WHERE parent_id = '" . $id . "' AND f.category_id = c.id";
 
-		$r_child = $GLOBALS['AVE_DB']->Query($q_child);
+		$r_child = $AVE_DB->Query($q_child);
 
 		if ($r_child->NumRows() == 0) return;
 
@@ -1720,8 +1723,9 @@ class Forum
 
 	function isreaded($id)
 	{
-
-		$sql = $GLOBALS['AVE_DB']->Query("SELECT * FROM " . PREFIX . "_modul_forum_pn WHERE pnid = '" . $id . "'");
+		global $AVE_DB;
+		
+		$sql = $AVE_DB->Query("SELECT * FROM " . PREFIX . "_modul_forum_pn WHERE pnid = '" . $id . "'");
 		$rows = $sql->FetchRow();
 
 		if ($rows->is_readed == "yes")
@@ -1740,13 +1744,15 @@ class Forum
 	//=======================================================
 	function fperm($perm, $group = '')
 	{
+		global $AVE_DB;
+		
 		static $permissions = null;
 
 		if ($permissions === null)
 		{
 			$permissions = array();
 
-			$sql = $GLOBALS['AVE_DB']->Query("
+			$sql = $AVE_DB->Query("
 				SELECT
 					user_group,
 					permission
@@ -1805,6 +1811,8 @@ class Forum
 	//=======================================================
 	function getAvatar($group, $avatar="", $usedefault, $canupload='')
 	{
+		global $AVE_DB;
+		
 		$aprint = false;
 		$own = 1;
 		$permown = -1;
@@ -1843,7 +1851,7 @@ class Forum
 				}
 			}
 		} else {
-			$sql = $GLOBALS['AVE_DB']->Query("SELECT * FROM " . PREFIX . "_modul_forum_groupavatar WHERE user_group = '" . $group . "'");
+			$sql = $AVE_DB->Query("SELECT * FROM " . PREFIX . "_modul_forum_groupavatar WHERE user_group = '" . $group . "'");
 			$row = $sql->FetchRow();
 			if (is_object($row) && ($row->IstStandard == 1) && ($row->StandardAvatar != ""))
 			{
@@ -1858,7 +1866,9 @@ class Forum
 
 	function checkIfUserName($new='',$old='')
 	{
-		$sql = $GLOBALS['AVE_DB']->Query("SELECT
+		global $AVE_DB;
+		
+		$sql = $AVE_DB->Query("SELECT
 			BenutzerName
 		FROM
 			" . PREFIX . "_modul_forum_userprofile
@@ -1875,7 +1885,9 @@ class Forum
 
 	function checkIfUserEmail($new='',$old='')
 	{
-		$sql = $GLOBALS['AVE_DB']->Query("SELECT
+		global $AVE_DB;
+		
+		$sql = $AVE_DB->Query("SELECT
 			email
 		FROM
 			" . PREFIX . "_modul_forum_userprofile
@@ -1890,10 +1902,11 @@ class Forum
 
 	}
 
-
 	function getForumUserEmail($id)
 	{
-		$sql = $GLOBALS['AVE_DB']->Query("SELECT email FROM " . PREFIX . "_modul_forum_userprofile WHERE BenutzerId = '" . $id . "'");
+		global $AVE_DB;
+		
+		$sql = $AVE_DB->Query("SELECT email FROM " . PREFIX . "_modul_forum_userprofile WHERE BenutzerId = '" . $id . "'");
 		$ru = $sql->FetchRow();
 		return $ru->email;
 	}
@@ -1903,20 +1916,22 @@ class Forum
 	//=======================================================
 	function fetchusername($param)
 	{
+		global $AVE_DB, $mod;
+		
 		static $names = array();
 
 		$user_id = @is_array($param) ? $param[userid] : $param;
 
 		if (!isset($names[$user_id]))
 		{
-			$names[$user_id] = $GLOBALS['AVE_DB']->Query("
+			$names[$user_id] = $AVE_DB->Query("
 				SELECT BenutzerName
 				FROM " . PREFIX . "_modul_forum_userprofile
 				WHERE BenutzerId = '" . $user_id . "'
 			")->GetCell();
 		}
 
-		return ($names[$user_id] ? $names[$user_id] : $GLOBALS['mod']['config_vars']['Guest']);
+		return ($names[$user_id] ? $names[$user_id] : $mod['config_vars']['Guest']);
 	}
 
 	//=======================================================
@@ -1924,10 +1939,12 @@ class Forum
 	//=======================================================
 	function get_mods($fid)
 	{
+		global $AVE_DB;
+		
 		if ($fid)
 		{
 			$mods = array();
-			$sql = $GLOBALS['AVE_DB']->Query("
+			$sql = $AVE_DB->Query("
 				SELECT user_id
 				FROM " . PREFIX . "_modul_forum_mods
 				WHERE forum_id = '" . $fid . "'
@@ -1954,7 +1971,6 @@ class Forum
 		return $text;
 	}
 
-
 	function datumtomytime($datum)
 	{
 		$datum_pre = @explode(' ', $datum);
@@ -1974,7 +1990,7 @@ class Forum
 	{
 		static $maxlines;
 
-//		$sql = $GLOBALS['AVE_DB']->Query("SELECT maxlines FROM " . PREFIX . "_modul_forum_settings");
+//		$sql = $AVE_DB->Query("SELECT maxlines FROM " . PREFIX . "_modul_forum_settings");
 //		$row = $sql->FetchRow();
 
 		if (!isset($maxlines)){
@@ -1991,7 +2007,6 @@ class Forum
 		return ($lines) * 15 + 18;
 	}
 
-
 	// ====================================================================
 	// <<-- BB- CODES VORBEREITEN -->>
 	// ====================================================================
@@ -2001,7 +2016,7 @@ class Forum
 		if(IMGCODE==1) { };
 
 		$divheight = $this->divheight($text);
-//		$sql = $GLOBALS['AVE_DB']->Query("SELECT boxwidthcomm,boxwidthforums,maxlengthword FROM " . PREFIX . "_modul_forum_settings");
+//		$sql = $AVE_DB->Query("SELECT boxwidthcomm,boxwidthforums,maxlengthword FROM " . PREFIX . "_modul_forum_settings");
 //		$row = $sql->FetchRow();
 		$bwidth = ("pagecomments") ? $this->forumSettings('boxwidthcomm') : $this->forumSettings('boxwidthforums');
 
@@ -2117,24 +2132,27 @@ class Forum
 		return $text;
 	}
 
-
 	function msg($msg='', $goto='', $tpl='')
 	{
+		global $AVE_Template, $mod;
+	
 		$goto = ($goto=='') ? 'index.php?module=forums' : $goto;
 		$msg = str_replace('%%GoTo%%', $goto, $msg);
-		$GLOBALS['AVE_Template']->assign("theme_folder", THEME_FOLDER);
-		$GLOBALS['AVE_Template']->assign("GoTo", $goto);
-		$GLOBALS['AVE_Template']->assign("content", $msg);
-		$tpl_out = $GLOBALS['AVE_Template']->fetch($GLOBALS['mod']['tpl_dir'] . 'redirect.tpl');
+		$AVE_Template->assign("theme_folder", THEME_FOLDER);
+		$AVE_Template->assign("GoTo", $goto);
+		$AVE_Template->assign("content", $msg);
+		$tpl_out = $AVE_Template->fetch($mod['tpl_dir'] . 'redirect.tpl');
 		define("MODULE_CONTENT", $tpl_out);
-		define("MODULE_SITE", $GLOBALS['mod']['config_vars']['NewThread']);
+		define("MODULE_SITE", $mod['config_vars']['NewThread']);
 		echo $tpl_out;
 		exit;
 	}
 
 	function fetchuserid($name)
 	{
-		$sql = $GLOBALS['AVE_DB']->Query("SELECT BenutzerId FROM " . PREFIX . "_modul_forum_userprofile WHERE BenutzerName = '" . $name . "'");
+		global $AVE_DB;
+		
+		$sql = $AVE_DB->Query("SELECT BenutzerId FROM " . PREFIX . "_modul_forum_userprofile WHERE BenutzerName = '" . $name . "'");
 		$row = $sql->FetchRow();
 		$uid = $row->BenutzerId;
 		$sql->Close();
@@ -2143,24 +2161,26 @@ class Forum
 
 	function ForumStats()
 	{
-		$num_threads = $GLOBALS['AVE_DB']->Query("
+		global $AVE_DB, $AVE_Template, $mod;
+		
+		$num_threads = $AVE_DB->Query("
 			SELECT COUNT(*)
 			FROM " . PREFIX . "_modul_forum_topic
 		")->GetCell();
 
-		$num_posts = $GLOBALS['AVE_DB']->Query("
+		$num_posts = $AVE_DB->Query("
 			SELECT COUNT(*)
 			FROM " . PREFIX . "_modul_forum_post
 		")->GetCell();
 
-		$num_members = $GLOBALS['AVE_DB']->Query("
+		$num_members = $AVE_DB->Query("
 			SELECT COUNT(*)
 			FROM " . PREFIX . "_users
 			WHERE status = '1'
 			AND user_group != '2'
 		")->GetCell();
 
-		$row_newest_member = $GLOBALS['AVE_DB']->Query("
+		$row_newest_member = $AVE_DB->Query("
 			SELECT
 				u.Id as UserId,
 				m.BenutzerName as user_name
@@ -2175,20 +2195,20 @@ class Forum
 				u.Id DESC LIMIT 1
 		")->FetchRow();
 
-		$row_lastpost = $GLOBALS['AVE_DB']->Query("
+		$row_lastpost = $AVE_DB->Query("
 			SELECT forum_id
 			FROM " . PREFIX . "_modul_forum_topic
 			ORDER BY last_post DESC
 			LIMIT 1
 		")->FetchRow();
 
-		$num_guests = $GLOBALS['AVE_DB']->Query("
+		$num_guests = $AVE_DB->Query("
 			SELECT DISTINCT ip
 			FROM " . PREFIX . "_modul_forum_useronline
 			WHERE uname = 'UNAME'
 		")->NumRows();
 
-		$sql_user = $GLOBALS['AVE_DB']->Query("
+		$sql_user = $AVE_DB->Query("
 			SELECT
 				DISTINCT u.ip,
 				u.uname,
@@ -2212,24 +2232,24 @@ class Forum
 			array_push($loggeduser, $row_user);
 		}
 
-		$num_gosts = $GLOBALS['AVE_DB']->Query("
+		$num_gosts = $AVE_DB->Query("
 			SELECT DISTINCT uname
 			FROM " . PREFIX . "_modul_forum_useronline
 			WHERE invisible = 'INVISIBLE'
 			AND uname != 'UNAME'
 		")->NumRows();
 
-		$GLOBALS['AVE_Template']->assign('loggeduser', $loggeduser);
-		$GLOBALS['AVE_Template']->assign('num_guests', $num_guests);
-		$GLOBALS['AVE_Template']->assign('num_user', $num_user);
-		$GLOBALS['AVE_Template']->assign('num_gosts', $num_gosts);
-		$GLOBALS['AVE_Template']->assign('LastPost', @$this->getLastForumPost($row_lastpost->forum_id));
-		$GLOBALS['AVE_Template']->assign('row_user', $row_newest_member);
-		$GLOBALS['AVE_Template']->assign('num_members', $this->num_format($num_members));
-		$GLOBALS['AVE_Template']->assign('num_posts', $this->num_format($num_posts));
-		$GLOBALS['AVE_Template']->assign('num_threads', $this->num_format($num_threads));
-		$GLOBALS['AVE_Template']->assign('forum_images', 'templates/' . THEME_FOLDER . '/modules/forums/');
-		return  $GLOBALS['AVE_Template']->fetch($GLOBALS['mod']['tpl_dir'] . 'stats_forums.tpl');
+		$AVE_Template->assign('loggeduser', $loggeduser);
+		$AVE_Template->assign('num_guests', $num_guests);
+		$AVE_Template->assign('num_user', $num_user);
+		$AVE_Template->assign('num_gosts', $num_gosts);
+		$AVE_Template->assign('LastPost', @$this->getLastForumPost($row_lastpost->forum_id));
+		$AVE_Template->assign('row_user', $row_newest_member);
+		$AVE_Template->assign('num_members', $this->num_format($num_members));
+		$AVE_Template->assign('num_posts', $this->num_format($num_posts));
+		$AVE_Template->assign('num_threads', $this->num_format($num_threads));
+		$AVE_Template->assign('forum_images', 'templates/' . THEME_FOLDER . '/modules/forums/');
+		return  $AVE_Template->fetch($mod['tpl_dir'] . 'stats_forums.tpl');
 	}
 
 	// ================================================================
@@ -2250,7 +2270,9 @@ class Forum
 
 	function isIgnored($uid)
 	{
-		$sql = $GLOBALS['AVE_DB']->Query("SELECT IgnoreId FROM " . PREFIX . "_modul_forum_ignorelist WHERE IgnoreId = '" . $uid . "' AND BenutzerId = '" . UID . "' LIMIT 1" );
+		global $AVE_DB;
+		
+		$sql = $AVE_DB->Query("SELECT IgnoreId FROM " . PREFIX . "_modul_forum_ignorelist WHERE IgnoreId = '" . $uid . "' AND BenutzerId = '" . UID . "' LIMIT 1" );
 		$num = $sql->NumRows();
 
 		if($num == 1) return true;
@@ -2259,25 +2281,31 @@ class Forum
 
 	function pnUnreaded()
 	{
+		global $AVE_DB;
+		
 		if(isset($_SESSION['user_id']))
 		{
-			$sql = $GLOBALS['AVE_DB']->Query("SELECT pnid FROM " . PREFIX . "_modul_forum_pn WHERE to_uid = '" . $_SESSION['user_id'] . "' AND  is_readed != 'yes' AND typ='inbox'" );
+			$sql = $AVE_DB->Query("SELECT pnid FROM " . PREFIX . "_modul_forum_pn WHERE to_uid = '" . $_SESSION['user_id'] . "' AND  is_readed != 'yes' AND typ='inbox'" );
 			return $sql->NumRows();
 		}
 	}
 
 	function pnReaded()
 	{
+		global $AVE_DB;
+		
 		if(isset($_SESSION['user_id']))
 		{
-			$sql = $GLOBALS['AVE_DB']->Query("SELECT pnid FROM " . PREFIX . "_modul_forum_pn WHERE to_uid = '" . $_SESSION['user_id'] . "' AND  is_readed = 'yes' AND typ='inbox'" );
+			$sql = $AVE_DB->Query("SELECT pnid FROM " . PREFIX . "_modul_forum_pn WHERE to_uid = '" . $_SESSION['user_id'] . "' AND  is_readed = 'yes' AND typ='inbox'" );
 			return $sql->NumRows();
 		}
 	}
 
 	function popSearch()
 	{
-		$tpl_out = $GLOBALS['AVE_Template']->fetch($GLOBALS['mod']['tpl_dir'] . 'search.tpl');
+		global $AVE_Template, $mod;
+		
+		$tpl_out = $AVE_Template->fetch($mod['tpl_dir'] . 'search.tpl');
 		return addslashes($tpl_out);
 	}
 
@@ -2290,14 +2318,15 @@ class Forum
 		include_once(BASE_DIR . "/modules/forums/internals/importfromkoobi.php");
 	}
 
-
-		//=======================================================
+	//=======================================================
 	// Automatisches Update wenn fьr Gruppe keine Rechte bestehen
 	//=======================================================
 	function AutoUpdatePerms()
 	{
+		global $AVE_DB;
+		
 		// Wenn eine Gruppe in Gruppenberechtigung noch nicht angelegt wurde, anlegen!
-		$sql = $GLOBALS['AVE_DB']->Query("
+		$sql = $AVE_DB->Query("
 			SELECT ug.user_group
 			FROM " . PREFIX . "_user_groups AS ug
 			LEFT JOIN " . PREFIX . "_modul_forum_grouppermissions
@@ -2306,7 +2335,7 @@ class Forum
 		");
 		while($row = $sql->FetchRow())
 		{
-			$GLOBALS['AVE_DB']->Query("
+			$AVE_DB->Query("
 				INSERT INTO
 					" . PREFIX . "_modul_forum_grouppermissions
 				SET
@@ -2364,7 +2393,6 @@ class Forum
 }
 
 //=======================================================
-//=======================================================
 // Ende der Klasse
 // Start - Sonstige Funktionen
 //=======================================================
@@ -2401,6 +2429,8 @@ function is_mod($fid)
 
 function getPostIcon($params)
 {
+	global $AVE_DB;
+	
 	static $icons = array();
 
 	extract($params);
@@ -2409,7 +2439,7 @@ function getPostIcon($params)
 
 	if (!isset($icons[$icon]))
 	{
-		$path = $GLOBALS['AVE_DB']->Query("
+		$path = $AVE_DB->Query("
 			SELECT path
 			FROM " . PREFIX . "_modul_forum_posticons
 			WHERE active = '1'

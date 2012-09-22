@@ -1,13 +1,16 @@
 <?php
-/*::::::::::::::::::::::::::::::::::::::::
- System name: cpengine
- Short Desc: Full Russian Security Power Pack
- Version: 2.0 (Service Pack 2)
- Authors:  Arcanum (php@211.ru) &  Censored!
- Date: March 18, 2008
-::::::::::::::::::::::::::::::::::::::::*/
 
+/**
+ * 
+ *
+ * @package AVE.cms
+ * @subpackage module_Forums
+ * @filesource
+ */
 if(!defined("ATTACHFILE")) exit;
+
+global $AVE_DB, $AVE_Template, $mod;
+
 if(isset($_REQUEST['action']) && $_REQUEST['action']=="shopstart")
 {
 	unset($_REQUEST['action']);
@@ -54,7 +57,7 @@ function findFileType($param)
 	return $ft;
 }
 
-$GLOBALS['AVE_Template']->register_function("findFileType", "findFileType");
+$AVE_Template->register_function("findFileType", "findFileType");
 
 	if(isset($_REQUEST['toid']) && is_numeric($_REQUEST['toid']) && $_REQUEST['toid']!="")
 	{
@@ -69,7 +72,7 @@ $GLOBALS['AVE_Template']->register_function("findFileType", "findFileType");
 		WHERE
 		t.id = '" . $_REQUEST["toid"]  . "' AND f.id = t.forum_id";
 
-		$r_closed = $GLOBALS['AVE_DB']->Query($q_closed);
+		$r_closed = $AVE_DB->Query($q_closed);
 		$closed = $r_closed->FetchRow();
 		$permissions = $this->getForumPermissionsByUser($closed->id, UID);
 	} else {
@@ -83,7 +86,7 @@ $GLOBALS['AVE_Template']->register_function("findFileType", "findFileType");
 	if (!isset($_REQUEST['action']))
 	{
 		$query = "SELECT filetype, filesize FROM " . PREFIX . "_modul_forum_allowed_files";
-		$result = $GLOBALS['AVE_DB']->Query($query);
+		$result = $AVE_DB->Query($query);
 
 		$allowed_files = array();
 
@@ -92,12 +95,12 @@ $GLOBALS['AVE_Template']->register_function("findFileType", "findFileType");
 			$allowed_files[] = $allowed_file;
 		}
 
-		$GLOBALS['AVE_Template']->assign("allowed_files", $allowed_files);
-		$GLOBALS['AVE_Template']->assign("pname", $GLOBALS['mod']['config_vars']['AttachF']);
-		$GLOBALS['AVE_Template']->assign('content', $GLOBALS['AVE_Template']->fetch($GLOBALS['mod']['tpl_dir'] . "attachment.tpl"));
-		$tpl_out = $GLOBALS['AVE_Template']->fetch($GLOBALS['mod']['tpl_dir'] . "popup.tpl");
+		$AVE_Template->assign("allowed_files", $allowed_files);
+		$AVE_Template->assign("pname", $mod['config_vars']['AttachF']);
+		$AVE_Template->assign('content', $AVE_Template->fetch($mod['tpl_dir'] . "attachment.tpl"));
+		$tpl_out = $AVE_Template->fetch($mod['tpl_dir'] . "popup.tpl");
 		define("MODULE_CONTENT", $tpl_out);
-		define("MODULE_SITE", $GLOBALS['mod']['config_vars']['AttachF']);
+		define("MODULE_SITE", $mod['config_vars']['AttachF']);
 
 	}
 	else
@@ -121,7 +124,7 @@ $GLOBALS['AVE_Template']->register_function("findFileType", "findFileType");
 			$files = array();
 
 			$q_allowed_files = "SELECT filetype, filesize FROM " . PREFIX . "_modul_forum_allowed_files";
-			$r_allowed_files = $GLOBALS['AVE_DB']->Query($q_allowed_files);
+			$r_allowed_files = $AVE_DB->Query($q_allowed_files);
 
 			$allowed_type = array();
 			$allowed_size = array();
@@ -256,17 +259,17 @@ $GLOBALS['AVE_Template']->register_function("findFileType", "findFileType");
 									)
 								";
 
-								$r_attach = $GLOBALS['AVE_DB']->Query($q_attach);
-								$file['id'] = $GLOBALS['AVE_DB']->InsertId();
+								$r_attach = $AVE_DB->Query($q_attach);
+								$file['id'] = $AVE_DB->InsertId();
 							} // if move_uploaded_file
 						} else {
 							$file['forbidden'] = true;
-							$file['reason'] = $GLOBALS['mod']['config_vars']['AttachToBig'];
+							$file['reason'] = $mod['config_vars']['AttachToBig'];
 						}
 					} else { // if allowed file type
 
 						$file['forbidden'] = true;
-						$file['reason'] = $GLOBALS['mod']['config_vars']['AttachWrong'];
+						$file['reason'] = $mod['config_vars']['AttachWrong'];
 					}
 
 					$file['orig_name'] = $orig_name;
@@ -278,7 +281,7 @@ $GLOBALS['AVE_Template']->register_function("findFileType", "findFileType");
 			} // for uploaded files
 
 			$query = "SELECT filetype, filesize FROM " . PREFIX . "_modul_forum_allowed_files";
-			$result = $GLOBALS['AVE_DB']->Query($query);
+			$result = $AVE_DB->Query($query);
 
 			$allowed_files = array();
 
@@ -287,15 +290,15 @@ $GLOBALS['AVE_Template']->register_function("findFileType", "findFileType");
 				$allowed_files[] = $allowed_file;
 			}
 
-			$GLOBALS['AVE_Template']->assign("allowed_files", $allowed_files);
-			$GLOBALS['AVE_Template']->assign("files", $files);
-			$GLOBALS['AVE_Template']->assign("file", $file);
-			$GLOBALS['AVE_Template']->assign("ecount", @count(@$file['forbidden']));
-			$GLOBALS['AVE_Template']->assign("pname", $GLOBALS['mod']['config_vars']['AttachF']);
-			$GLOBALS['AVE_Template']->assign('content', $GLOBALS['AVE_Template']->fetch($GLOBALS['mod']['tpl_dir'] . "attachment.tpl"));
-			$tpl_out = $GLOBALS['AVE_Template']->fetch($GLOBALS['mod']['tpl_dir'] . "popup.tpl");
+			$AVE_Template->assign("allowed_files", $allowed_files);
+			$AVE_Template->assign("files", $files);
+			$AVE_Template->assign("file", $file);
+			$AVE_Template->assign("ecount", @count(@$file['forbidden']));
+			$AVE_Template->assign("pname", $mod['config_vars']['AttachF']);
+			$AVE_Template->assign('content', $AVE_Template->fetch($mod['tpl_dir'] . "attachment.tpl"));
+			$tpl_out = $AVE_Template->fetch($mod['tpl_dir'] . "popup.tpl");
 			define("MODULE_CONTENT", $tpl_out);
-			define("MODULE_SITE", $GLOBALS['mod']['config_vars']['AttachF']);
+			define("MODULE_SITE", $mod['config_vars']['AttachF']);
 
 		} // if action == upload
 

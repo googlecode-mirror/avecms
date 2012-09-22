@@ -1,6 +1,15 @@
 <?php
 
+/**
+ * 
+ *
+ * @package AVE.cms
+ * @subpackage module_Forums
+ * @filesource
+ */
 if (!defined("SHOWTOPIC")) exit;
+
+global $AVE_DB, $AVE_Template, $mod;
 
 $_REQUEST['page'] = (isset($_REQUEST['page']) && is_numeric($_REQUEST['page']) && $_REQUEST['page'] > 0) ? $_REQUEST['page'] : 1;
 
@@ -14,7 +23,7 @@ if ( isset($_GET['toid']) && $_GET['toid'] != "" )
 	// gibt es den topic und das posting ueberhaupt schon
 	if (!$this->topicExists(addslashes($_GET['toid'])))
 	{
-		$this->msg($GLOBALS['mod']['config_vars']['ErrorTopicWrong']);
+		$this->msg($mod['config_vars']['ErrorTopicWrong']);
 	}
 
 	$navigation = $this->getNavigation((int)$_GET['toid'], "topic");
@@ -32,7 +41,7 @@ if ( isset($_GET['toid']) && $_GET['toid'] != "" )
 			t.id = '" . (int)$_GET['toid'] . "' AND
 			t.forum_id = f.id
 	";
-	$r_pass = $GLOBALS['AVE_DB']->Query($q_pass);
+	$r_pass = $AVE_DB->Query($q_pass);
 	$pass = $r_pass->FetchRow();
 	$ForumId = $pass->id;
 	$pass_b = false;
@@ -47,10 +56,10 @@ if ( isset($_GET['toid']) && $_GET['toid'] != "" )
 		}
 		else
 		{
-			$GLOBALS['AVE_Template']->assign("fid", addslashes(@$_REQUEST['fid']));
-			$GLOBALS['AVE_Template']->assign("navigation", $navigation);
+			$AVE_Template->assign("fid", addslashes(@$_REQUEST['fid']));
+			$AVE_Template->assign("navigation", $navigation);
 
-			$tpl_out = $GLOBALS['AVE_Template']->fetch($GLOBALS['mod']['tpl_dir'] . 'forumlogin.tpl');
+			$tpl_out = $AVE_Template->fetch($mod['tpl_dir'] . 'forumlogin.tpl');
 			define("MODULE_CONTENT", $tpl_out);
 			define("MODULE_SITE",  strip_tags($navigation));
 		}
@@ -74,7 +83,7 @@ if ( isset($_GET['toid']) && $_GET['toid'] != "" )
 		else
 		{
 			$query = "SELECT GroupIdMisc FROM " . PREFIX . "_modul_forum_userprofile WHERE BenutzerId = '" . UID . "'";
-			$result = $GLOBALS['AVE_DB']->Query($query);
+			$result = $AVE_DB->Query($query);
 			$user = $result->FetchRow();
 
 			if ($user->GroupIdMisc != "")
@@ -99,21 +108,21 @@ if ( isset($_GET['toid']) && $_GET['toid'] != "" )
 				f.category_id = c.id
 		";
 
-		$result = $GLOBALS['AVE_DB']->Query($query);
+		$result = $AVE_DB->Query($query);
 
 		$category = $result->FetchRow();
 		$category->group_id = @explode(",", $category->group_id);
 
 		if (!array_intersect($group_id, $category->group_id))
 		{
-			$this->msg($GLOBALS['mod']['config_vars']['ErrornoPerm']);
+			$this->msg($mod['config_vars']['ErrornoPerm']);
 		}
 
 		$permissions = $this->getForumPermissionsByUser($pass->id, UID);
 
 		if ($permissions[FORUM_PERMISSION_CAN_SEE] != 1)
 		{
-			$this->msg($GLOBALS['mod']['config_vars']['ErrornoPerm']);
+			$this->msg($mod['config_vars']['ErrornoPerm']);
 		}
 
 		// ====================================================================================
@@ -131,24 +140,24 @@ if ( isset($_GET['toid']) && $_GET['toid'] != "" )
 				if(isset($_REQUEST['ispost']) && $_REQUEST['ispost'] == 1)
 				{
 					$sql_p = "UPDATE " . PREFIX . "_modul_forum_post SET opened = '1' WHERE id='" . $_REQUEST['post_id'] . "'";
-					$res_p = $GLOBALS['AVE_DB']->Query($sql_p);
+					$res_p = $AVE_DB->Query($sql_p);
 
 					// mail an autor eines beitrages
 					$link = HOST . str_replace("/index.php","",$_SERVER['PHP_SELF']) . "/index.php?module=forums&show=showtopic&toid=" . $_REQUEST['toid'] . "&pp=15";
-					$sql = $GLOBALS['AVE_DB']->Query("SELECT uid FROM ".PREFIX."_modul_forum_post WHERE id = '" . $_REQUEST['post_id'] . "'");
+					$sql = $AVE_DB->Query("SELECT uid FROM ".PREFIX."_modul_forum_post WHERE id = '" . $_REQUEST['post_id'] . "'");
 					$row = $sql->FetchRow();
 
-					$sql_2 = $GLOBALS['AVE_DB']->Query("SELECT BenutzerName,email FROM ".PREFIX."_modul_forum_userprofile WHERE BenutzerId = '$row->uid'");
+					$sql_2 = $AVE_DB->Query("SELECT BenutzerName,email FROM ".PREFIX."_modul_forum_userprofile WHERE BenutzerId = '$row->uid'");
 					$row_2 = $sql_2->FetchRow();
 
-					$body = str_replace("%%USER%%", $row_2->BenutzerName, $GLOBALS['mod']['config_vars']['BodyToUserAfterMod']);
+					$body = str_replace("%%USER%%", $row_2->BenutzerName, $mod['config_vars']['BodyToUserAfterMod']);
 					$body = str_replace("%%LINK%%", $link, $body);
 					$body = str_replace("%%N%%","\n", $body);
 
 					send_mail(
 						$row_2->email,
 						stripslashes($body),
-						$GLOBALS['mod']['config_vars']['SubjectToUserAfterMod'],
+						$mod['config_vars']['SubjectToUserAfterMod'],
 						FORUMEMAIL,
 						FORUMABSENDER,
 						"text"
@@ -158,24 +167,24 @@ if ( isset($_GET['toid']) && $_GET['toid'] != "" )
 				{
 					$sql_t = "UPDATE " . PREFIX . "_modul_forum_topic SET opened = '1' WHERE id='" . $_REQUEST['toid'] . "'";
 					$sql_p = "UPDATE " . PREFIX . "_modul_forum_post SET opened = '1' WHERE topic_id='" . $_REQUEST['toid'] . "'";
-					$res_t = $GLOBALS['AVE_DB']->Query($sql_t);
-					$res_p = $GLOBALS['AVE_DB']->Query($sql_p);
+					$res_t = $AVE_DB->Query($sql_t);
+					$res_p = $AVE_DB->Query($sql_p);
 					// mail an autor eines thema
 					$link = HOST . str_replace("/index.php","",$_SERVER['PHP_SELF']) . "/index.php?module=forums&show=showtopic&toid=" . $_REQUEST['toid'] . "&fid=" . $_REQUEST['fid'] . "";
-					$sql = $GLOBALS['AVE_DB']->Query("SELECT uid FROM ".PREFIX."_modul_forum_topic WHERE id = '" . $_REQUEST['toid'] . "'");
+					$sql = $AVE_DB->Query("SELECT uid FROM ".PREFIX."_modul_forum_topic WHERE id = '" . $_REQUEST['toid'] . "'");
 					$row = $sql->FetchRow();
 
-					$sql_2 = $GLOBALS['AVE_DB']->Query("SELECT BenutzerName,email FROM ".PREFIX."_modul_forum_userprofile WHERE BenutzerId = '$row->uid'");
+					$sql_2 = $AVE_DB->Query("SELECT BenutzerName,email FROM ".PREFIX."_modul_forum_userprofile WHERE BenutzerId = '$row->uid'");
 					$row_2 = $sql_2->FetchRow();
 
-					$body = str_replace("%%USER%%", $row_2->BenutzerName, $GLOBALS['mod']['config_vars']['BodyToUserAfterMod']);
+					$body = str_replace("%%USER%%", $row_2->BenutzerName, $mod['config_vars']['BodyToUserAfterMod']);
 					$body = str_replace("%%LINK%%", $link, $body);
 					$body = str_replace("%%N%%","\n", $body);
 
 					send_mail(
 						$row_2->email,
 						stripslashes($body),
-						$GLOBALS['mod']['config_vars']['SubjectToUserAfterMod'],
+						$mod['config_vars']['SubjectToUserAfterMod'],
 						FORUMEMAIL,
 						FORUMABSENDER,
 						"text"
@@ -197,12 +206,12 @@ if ( isset($_GET['toid']) && $_GET['toid'] != "" )
 			id DESC
 		";
 
-		$post_count_result = $GLOBALS['AVE_DB']->Query($post_count);
+		$post_count_result = $AVE_DB->Query($post_count);
 		$num = $post_count_result->NumRows();
 
 		if($num < 1)
 		{
-			$this->msg($GLOBALS['mod']['config_vars']['ErrornoPerm']);
+			$this->msg($mod['config_vars']['ErrornoPerm']);
 		}
 
 		$this->Cpengine_Board_SetTopicRead(addslashes($_GET['toid']));
@@ -240,14 +249,14 @@ if ( isset($_GET['toid']) && $_GET['toid'] != "" )
 			LIMIT " . $a . "," . $limit . "
 		";
 
-		$post_result = $GLOBALS['AVE_DB']->Query($post_query);
+		$post_result = $AVE_DB->Query($post_query);
 		$post_array = array();
 		$current_user = null;
 
 		if (($_SESSION['user_group'] != 2))
 		{
 			$q_current_user = "SELECT BenutzerId, Emailempfang, Pnempfang FROM " . PREFIX . "_modul_forum_userprofile WHERE BenutzerId = '".UID."'";
-			$r_current_user = $GLOBALS['AVE_DB']->Query($q_current_user);
+			$r_current_user = $AVE_DB->Query($q_current_user);
 			$current_user = $r_current_user->FetchRow();
 		}
 
@@ -287,15 +296,15 @@ if ( isset($_GET['toid']) && $_GET['toid'] != "" )
 				GROUP BY p.uid
 			";
 
-			$r_user = $GLOBALS['AVE_DB']->Query($q_user);
+			$r_user = $AVE_DB->Query($q_user);
 			$poster = $r_user->FetchRow();
 //			$query = "SELECT COUNT(id) AS count FROM " . PREFIX . "_modul_forum_post WHERE uid = '" . @$poster->BenutzerId . "'";
-//			$result = $GLOBALS['AVE_DB']->Query($query);
+//			$result = $AVE_DB->Query($query);
 //			$postings = $result->FetchRow();
 //			$poster->user_posts = $postings->count;
 
 			$query = "SELECT title, count FROM " . PREFIX . "_modul_forum_rank WHERE count < '" . $poster->user_posts . "' ORDER BY count DESC LIMIT 1";
-			$result = $GLOBALS['AVE_DB']->Query($query);
+			$result = $AVE_DB->Query($query);
 			$rank = $result->FetchRow();
 			$poster->avatar = $this->getAvatar( @$poster->user_group, @$poster->Avatar, @$poster->AvatarStandard);
 			$poster->regdate = @$poster->reg_time;
@@ -303,8 +312,8 @@ if ( isset($_GET['toid']) && $_GET['toid'] != "" )
 			$poster->rank = @$rank->title;
 			$poster->OnlineStatus = @$this->getonlinestatus(@$poster->BenutzerName);
 
-			$popUpInsert = addslashes ("<div style='padding:6px; line-height:1.5em'> &raquo; <a class='forum_links_small' href='index.php?module=forums&amp;show=userprofile&amp;user_id=".@$poster->BenutzerId."'>".$GLOBALS['mod']['config_vars']['ShowPosterProfile']."</a><br /> &raquo; <a class='forum_links_small' href='index.php?module=forums&amp;show=ignorelist&amp;insert=".@$poster->BenutzerId."'>".$GLOBALS['mod']['config_vars']['InsertIgnore']."</a><br />&raquo; <a class='forum_links_small' href='index.php?module=forums&amp;show=pn&action=new&amp;to=".base64_encode(@$poster->BenutzerName)."'>".$GLOBALS['mod']['config_vars']['UserSendPn']."</a></div>");
-			$popUpRemove = "<div style='padding:6px; line-height:1.5em'> &raquo; <a class='forum_links_small' href='index.php?module=forums&amp;show=userprofile&amp;user_id=".@$poster->BenutzerId."'>".$GLOBALS['mod']['config_vars']['ShowPosterProfile']."</a><br /> &raquo; <a class='forum_links_small' href='index.php?module=forums&amp;show=ignorelist&amp;remove=".@$poster->BenutzerId."'>".$GLOBALS['mod']['config_vars']['RemoveIgnore']."</a><br />&raquo; <a class='forum_links_small' href='index.php?module=forums&amp;show=pn&action=new&amp;to=".base64_encode(@$poster->BenutzerName)."'>".$GLOBALS['mod']['config_vars']['UserSendPn']."</a></div>";
+			$popUpInsert = addslashes ("<div style='padding:6px; line-height:1.5em'> &raquo; <a class='forum_links_small' href='index.php?module=forums&amp;show=userprofile&amp;user_id=".@$poster->BenutzerId."'>".$mod['config_vars']['ShowPosterProfile']."</a><br /> &raquo; <a class='forum_links_small' href='index.php?module=forums&amp;show=ignorelist&amp;insert=".@$poster->BenutzerId."'>".$mod['config_vars']['InsertIgnore']."</a><br />&raquo; <a class='forum_links_small' href='index.php?module=forums&amp;show=pn&action=new&amp;to=".base64_encode(@$poster->BenutzerName)."'>".$mod['config_vars']['UserSendPn']."</a></div>");
+			$popUpRemove = "<div style='padding:6px; line-height:1.5em'> &raquo; <a class='forum_links_small' href='index.php?module=forums&amp;show=userprofile&amp;user_id=".@$poster->BenutzerId."'>".$mod['config_vars']['ShowPosterProfile']."</a><br /> &raquo; <a class='forum_links_small' href='index.php?module=forums&amp;show=ignorelist&amp;remove=".@$poster->BenutzerId."'>".$mod['config_vars']['RemoveIgnore']."</a><br />&raquo; <a class='forum_links_small' href='index.php?module=forums&amp;show=pn&action=new&amp;to=".base64_encode(@$poster->BenutzerName)."'>".$mod['config_vars']['UserSendPn']."</a></div>";
 
 			$poster->Ignored = (($this->isIgnored(addslashes(@$poster->BenutzerId))) ? $popUpRemove : $popUpInsert);
 
@@ -348,7 +357,7 @@ if ( isset($_GET['toid']) && $_GET['toid'] != "" )
 				WHERE id = " . $sub_query . "
 				";
 
-				$r_file = $GLOBALS['AVE_DB']->Query($q_file);
+				$r_file = $AVE_DB->Query($q_file);
 
 				while ($file = $r_file->FetchRow())
 				{
@@ -364,45 +373,45 @@ if ( isset($_GET['toid']) && $_GET['toid'] != "" )
 		}
 		$all_posts = $post_array;
 
-		$GLOBALS['AVE_Template']->assign('files', $Attach);
+		$AVE_Template->assign('files', $Attach);
 
 		// anzahl der besichtigungen erhцhen
-		$increment_query = $GLOBALS['AVE_DB']->Query("UPDATE " . PREFIX . "_modul_forum_topic SET views = views + 1 WHERE id = '" . addslashes($_REQUEST['toid']). "'");
+		$increment_query = $AVE_DB->Query("UPDATE " . PREFIX . "_modul_forum_topic SET views = views + 1 WHERE id = '" . addslashes($_REQUEST['toid']). "'");
 
 		// daten des aktuellen topics holen
-		$topic_result = $GLOBALS['AVE_DB']->Query("SELECT  notification, id, title, status, forum_id, uid FROM " . PREFIX . "_modul_forum_topic WHERE id = '" . addslashes($_REQUEST['toid']) . "'");
+		$topic_result = $AVE_DB->Query("SELECT  notification, id, title, status, forum_id, uid FROM " . PREFIX . "_modul_forum_topic WHERE id = '" . addslashes($_REQUEST['toid']) . "'");
 		$topic = $topic_result->FetchRow();
 
 		// hat der user das thema abonniert?
 		$user_id = explode(";", $topic->notification);
 		if (@in_array(UID, $user_id))
 		{
-			$GLOBALS['AVE_Template']->assign('canabo', 0);
+			$AVE_Template->assign('canabo', 0);
 		}
 		else
 		{
-			$GLOBALS['AVE_Template']->assign('canabo', 1);
+			$AVE_Template->assign('canabo', 1);
 		}
 
 		// hat der user schon abgestimmt?
-		$sql = $GLOBALS['AVE_DB']->Query("SELECT uid,ip FROM " . PREFIX . "_modul_forum_rating WHERE  topic_id = '".(int)$_GET['toid']."' ");
+		$sql = $AVE_DB->Query("SELECT uid,ip FROM " . PREFIX . "_modul_forum_rating WHERE  topic_id = '".(int)$_GET['toid']."' ");
 		$row_ip = $sql->FetchRow();
 		$v_uid = @explode(",", $row_ip->uid);
 		$ip = @explode(",", $row_ip->ip);
 
 		if ( (!@in_array(UID, $v_uid)) && (!@in_array($_SERVER['REMOTE_ADDR'], $ip)) )
 		{
-			$GLOBALS['AVE_Template']->assign('display_rating', 1);
+			$AVE_Template->assign('display_rating', 1);
 		}
 
 		// nextes thema holen
 		$query = "SELECT id FROM " . PREFIX . "_modul_forum_topic WHERE id < '" . (int)$_GET['toid'] . "' AND forum_id = '" . $pass->id . "' ORDER BY id DESC LIMIT 1";
-		$result = $GLOBALS['AVE_DB']->Query($query);
+		$result = $AVE_DB->Query($query);
 		$next_topic = $result->FetchRow();
 
 		// vorheriges thema holen
 		$query = "SELECT id FROM " . PREFIX . "_modul_forum_topic WHERE id > '" .  (int)$_GET['toid'] . "' AND forum_id = '" . $pass->id . "' ORDER BY id ASC LIMIT 1";
-		$result = $GLOBALS['AVE_DB']->Query($query);
+		$result = $AVE_DB->Query($query);
 		$prev_topic = $result->FetchRow();
 
 		$topic->next_topic = $next_topic;
@@ -412,10 +421,10 @@ if ( isset($_GET['toid']) && $_GET['toid'] != "" )
 
 		// navigation erzeugen
 		$navigation = $this->getNavigation((int)$_GET['toid'], "topic");
-		$tmp_navi = $navigation . $GLOBALS['mod']['config_vars']['ForumSep'] . $topic->title;
+		$tmp_navi = $navigation . $mod['config_vars']['ForumSep'] . $topic->title;
 
-		$GLOBALS['AVE_Template']->assign("navigation", $tmp_navi);
-		$GLOBALS['AVE_Template']->assign("treeview", @explode($GLOBALS['mod']['config_vars']['ForumSep'], $tmp_navi));
+		$AVE_Template->assign("navigation", $tmp_navi);
+		$AVE_Template->assign("treeview", @explode($mod['config_vars']['ForumSep'], $tmp_navi));
 		// ende navigation
 
 		if ($limit < $num)
@@ -423,30 +432,30 @@ if ( isset($_GET['toid']) && $_GET['toid'] != "" )
 			$page_nav = " <a class=\"page_navigation\" href=\"index.php?module=forums&amp;show=showtopic&amp;toid=" . $_GET["toid"]
 				. "&amp;high=" . @$_GET['high'] . "&amp;pp=$limit&amp;page={s}&amp;fid=$ForumId\">{t}</a> ";
 			$page_nav = get_pagination($seiten, 'page', $page_nav);
-			$GLOBALS['AVE_Template']->assign('pages', $page_nav);
+			$AVE_Template->assign('pages', $page_nav);
 		}
 
 		if (UID == 1) array_fill(0, sizeof($permissions), 1);
-		if (is_mod(@$_GET['fid'])) $GLOBALS['AVE_Template']->assign('ismod', 1);
+		if (is_mod(@$_GET['fid'])) $AVE_Template->assign('ismod', 1);
 
 		$categories = array();
 		$this->getCategories(0, $categories, "");
 
 		$this->Cpengine_Board_SetTopicRead(addslashes($_GET['toid']));
 
-		$GLOBALS['AVE_Template']->assign("permissions", $permissions);
-		$GLOBALS['AVE_Template']->assign("categories_dropdown", $categories);
-		$GLOBALS['AVE_Template']->assign("navigation", $navigation);
-		$GLOBALS['AVE_Template']->assign("next_site", $seiten);
-		$GLOBALS['AVE_Template']->assign("currUser", $current_user);
-		$GLOBALS['AVE_Template']->assign("printlink", $printlink);
-		$GLOBALS['AVE_Template']->assign("topic", $topic);
-		$GLOBALS['AVE_Template']->assign("postings", $all_posts);
-		$GLOBALS['AVE_Template']->assign("referer", @$_SERVER['HTTP_REFERER']);
-		$GLOBALS['AVE_Template']->register_function('getonlinestatus', 'getonlinestatus');
+		$AVE_Template->assign("permissions", $permissions);
+		$AVE_Template->assign("categories_dropdown", $categories);
+		$AVE_Template->assign("navigation", $navigation);
+		$AVE_Template->assign("next_site", $seiten);
+		$AVE_Template->assign("currUser", $current_user);
+		$AVE_Template->assign("printlink", $printlink);
+		$AVE_Template->assign("topic", $topic);
+		$AVE_Template->assign("postings", $all_posts);
+		$AVE_Template->assign("referer", @$_SERVER['HTTP_REFERER']);
+		$AVE_Template->register_function('getonlinestatus', 'getonlinestatus');
 
 		$tpl = (isset($_REQUEST['print']) && $_REQUEST['print'] == 1) ? $this->_Print_ShowTopicTpl : $this->_ShowTopicTpl;
-		$tpl_out = $GLOBALS['AVE_Template']->fetch($GLOBALS['mod']['tpl_dir'] . $tpl);
+		$tpl_out = $AVE_Template->fetch($mod['tpl_dir'] . $tpl);
 
 		define("MODULE_CONTENT", $tpl_out);
 		define("MODULE_SITE",  htmlspecialchars(stripslashes(strip_tags($tmp_navi))));

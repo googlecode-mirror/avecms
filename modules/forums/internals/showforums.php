@@ -1,13 +1,15 @@
 <?php
-/*::::::::::::::::::::::::::::::::::::::::
- System name: cpengine
- Short Desc: Full Russian Security Power Pack
- Version: 2.0 (Service Pack 2)
- Authors:  Arcanum (php@211.ru) &  Censored!
- Date: March 18, 2008
-::::::::::::::::::::::::::::::::::::::::*/
 
+/**
+ * 
+ *
+ * @package AVE.cms
+ * @subpackage module_Forums
+ * @filesource
+ */
 if(!defined("SHOWFORUMS")) exit;
+
+	global $AVE_DB, $AVE_Template, $mod;
 		//=======================================================
 		// Aktionen?
 		//=======================================================
@@ -43,7 +45,7 @@ if(!defined("SHOWFORUMS")) exit;
 
 		//=======================================================
 		// Navigation erzeugen
-		// $GLOBALS['mod']['config_vars']['ForumSep']
+		// $mod['config_vars']['ForumSep']
 		//=======================================================
 		if (@$_GET['cid'] == "" )
 		{
@@ -53,7 +55,7 @@ if(!defined("SHOWFORUMS")) exit;
 			$navigation = $this->getNavigation((int)$_GET['cid'], "category", null);
 			$cat_query = "SELECT id, title, position, comment, parent_id, group_id FROM " . PREFIX . "_modul_forum_category WHERE id = '" . (int)$_GET['cid'] . "'";
 		}
-		$categories = $GLOBALS['AVE_DB']->Query($cat_query);
+		$categories = $AVE_DB->Query($cat_query);
 
 		//=======================================================
 		// Enthдlt zur jeder kategorie ein array der dazugehoerigen foren
@@ -81,7 +83,7 @@ if(!defined("SHOWFORUMS")) exit;
 				// wenn eine spezielle kategorie angezeigt wird
 				// soll der navigationspfad um diese erweitert werden
 				//=======================================================
-				if (isset($_GET["cid"]) && $_GET["cid"] != "") $navigation .= $GLOBALS['mod']['config_vars']['ForumSep'] . $category["title"];
+				if (isset($_GET["cid"]) && $_GET["cid"] != "") $navigation .= $mod['config_vars']['ForumSep'] . $category["title"];
 
 				//=======================================================
 				// den status der anzeige aus dem cookie holen
@@ -120,7 +122,7 @@ if(!defined("SHOWFORUMS")) exit;
 				//=======================================================
 				// alle foren der jeweiligen kategorie
 				//=======================================================
-				$foren = $GLOBALS['AVE_DB']->Query($forum_query);
+				$foren = $AVE_DB->Query($forum_query);
 
 				//=======================================================
 				// alle foren zur kategorie holen
@@ -162,7 +164,7 @@ if(!defined("SHOWFORUMS")) exit;
 
 //						$forumIds = $this->getForumIds($forumId);
 
-						$r_tcount = $GLOBALS['AVE_DB']->Query("
+						$r_tcount = $AVE_DB->Query("
 							SELECT id
 							FROM " . PREFIX . "_modul_forum_topic
 							WHERE (forum_id = '" . implode("' OR forum_id = '", $this->getForumIds($forum["id"])) . "')
@@ -192,7 +194,7 @@ if(!defined("SHOWFORUMS")) exit;
 //						if (!empty($ids))
 						if (!empty($Topic_IDs))
 						{
-							$pcount = $GLOBALS['AVE_DB']->Query("
+							$pcount = $AVE_DB->Query("
 								SELECT COUNT(*)
 								FROM " . PREFIX . "_modul_forum_post
 								WHERE topic_id IN(" . implode(',', $Topic_IDs) . ")
@@ -205,7 +207,7 @@ if(!defined("SHOWFORUMS")) exit;
 							$last_post = $this->getLastForumPost($forum["id"]);
 							if (!$last_post)
 							{
-								$last_post = $GLOBALS['AVE_DB']->Query("
+								$last_post = $AVE_DB->Query("
 									SELECT
 										DISTINCT p.id,
 										p.uid,
@@ -232,7 +234,7 @@ if(!defined("SHOWFORUMS")) exit;
 							// Ende
 							$last_post->LastPoster = $this->fetchusername($last_post->uid);
 
-							$replies = $GLOBALS['AVE_DB']->Query("
+							$replies = $AVE_DB->Query("
 								SELECT COUNT(*)
 								FROM " . PREFIX . "_modul_forum_post
 								WHERE topic_id = '" . $last_post->topic_id . "'
@@ -262,7 +264,7 @@ if(!defined("SHOWFORUMS")) exit;
 						//=======================================================
 						// alle unterkategorien
 						//=======================================================
-						$subcategories = $GLOBALS['AVE_DB']->Query("/*1*/
+						$subcategories = $AVE_DB->Query("/*1*/
 							SELECT id
 							FROM " . PREFIX . "_modul_forum_category
 							WHERE parent_id = '" . $forum['id'] . "'
@@ -282,7 +284,7 @@ if(!defined("SHOWFORUMS")) exit;
 							// alle foren zu der unterkategorie
 							// FIND_IN_SET('" . UGROUP . "', group_id) AS group_found,
 							//=======================================================
-							$subforums_result = $GLOBALS['AVE_DB']->Query("/*2*/
+							$subforums_result = $AVE_DB->Query("/*2*/
 								SELECT
 									group_id,
 									id,
@@ -314,13 +316,13 @@ if(!defined("SHOWFORUMS")) exit;
 		}
 
 
-		$GLOBALS['AVE_Template']->register_function("get_status_icon", "getStatusIcon");
-		$GLOBALS['AVE_Template']->assign("uid", UID);
-		$GLOBALS['AVE_Template']->assign("navigation", $navigation);
-		$GLOBALS['AVE_Template']->assign("f_id", 0);
-		$GLOBALS['AVE_Template']->assign("categories", $category_array);
-		$GLOBALS['AVE_Template']->assign("forums", $forums_array);
-		$tpl_out = $GLOBALS['AVE_Template']->fetch($GLOBALS['mod']['tpl_dir'] . $this->_ShowForumsTpl);
+		$AVE_Template->register_function("get_status_icon", "getStatusIcon");
+		$AVE_Template->assign("uid", UID);
+		$AVE_Template->assign("navigation", $navigation);
+		$AVE_Template->assign("f_id", 0);
+		$AVE_Template->assign("categories", $category_array);
+		$AVE_Template->assign("forums", $forums_array);
+		$tpl_out = $AVE_Template->fetch($mod['tpl_dir'] . $this->_ShowForumsTpl);
 
 		define("MODULE_CONTENT", $tpl_out);
 		define("MODULE_SITE",  strip_tags($navigation));

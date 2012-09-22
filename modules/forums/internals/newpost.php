@@ -1,13 +1,15 @@
 <?php
-/*::::::::::::::::::::::::::::::::::::::::
- System name: cpengine
- Short Desc: Full Russian Security Power Pack
- Version: 2.0 (Service Pack 2)
- Authors:  Arcanum (php@211.ru) &  Censored!
- Date: March 18, 2008
-::::::::::::::::::::::::::::::::::::::::*/
 
+/**
+ * 
+ *
+ * @package AVE.cms
+ * @subpackage module_Forums
+ * @filesource
+ */
 if(!defined("NEWPOST")) exit;
+
+global $AVE_DB, $AVE_Template, $mod;
 
 $q_closed = "SELECT
 		f.id,
@@ -21,12 +23,12 @@ $q_closed = "SELECT
 		" . PREFIX . "_modul_forum_topic AS t
 	WHERE
 		t.id = '" . addslashes($_GET["toid"]) . "' AND f.id = t.forum_id";
-$r_closed = $GLOBALS['AVE_DB']->Query($q_closed);
+$r_closed = $AVE_DB->Query($q_closed);
 $closed = $r_closed->FetchRow();
 
 if(!is_object($closed))
 {
-	$this->msg($GLOBALS['mod']['config_vars']['ErrorTopicWrong']);
+	$this->msg($mod['config_vars']['ErrorTopicWrong']);
 }
 
 $TopicTitle = stripslashes($closed->title);
@@ -34,7 +36,7 @@ $TopicFid = $closed->id;
 
 // ist user moderator
 $is_moderator = false;
-$result =  $GLOBALS['AVE_DB']->Query("SELECT user_id FROM " . PREFIX . "_modul_forum_mods WHERE forum_id = '" . $closed->id . "'");
+$result =  $AVE_DB->Query("SELECT user_id FROM " . PREFIX . "_modul_forum_mods WHERE forum_id = '" . $closed->id . "'");
 while ($user = $result->FetchRow())
 {
 	if ($user->user_id == UID) $is_moderator = true;
@@ -46,7 +48,7 @@ while ($user = $result->FetchRow())
 
 if ( ($closed->fstatus == FORUM_STATUS_CLOSED)  && (UGROUP != 1) && !$is_moderator)
 {
-	$this->msg($GLOBALS['mod']['config_vars']['ErrornoPerm']);
+	$this->msg($mod['config_vars']['ErrornoPerm']);
 }
 
 // =========================================================
@@ -54,7 +56,7 @@ if ( ($closed->fstatus == FORUM_STATUS_CLOSED)  && (UGROUP != 1) && !$is_moderat
 // =========================================================
 if ( ($closed->tstatus == FORUM_STATUS_CLOSED) && (UGROUP != 1) && !$is_moderator)
 {
-	$this->msg($GLOBALS['mod']['config_vars']['ErrornoPerm']);
+	$this->msg($mod['config_vars']['ErrornoPerm']);
 }
 
 // =========================================================
@@ -62,15 +64,14 @@ if ( ($closed->tstatus == FORUM_STATUS_CLOSED) && (UGROUP != 1) && !$is_moderato
 // =========================================================
 if (!$this->topicExists($_GET['toid']))
 {
-	$this->msg($GLOBALS['mod']['config_vars']['ErrorTopicWrong']);
+	$this->msg($mod['config_vars']['ErrorTopicWrong']);
 }
-
 
 // =========================================================
 // <<-- zugriffsrechte -->>
 // =========================================================
 $permissions = $this->getForumPermissionsByUser($closed->id, UID);
-$cat_query = $GLOBALS['AVE_DB']->Query("SELECT group_id FROM " . PREFIX . "_modul_forum_forum WHERE id = '" . $closed->id . "'");
+$cat_query = $AVE_DB->Query("SELECT group_id FROM " . PREFIX . "_modul_forum_forum WHERE id = '" . $closed->id . "'");
 while ($category = $cat_query->FetchAssocArray())
 {
 	// miscrechte
@@ -84,11 +85,9 @@ while ($category = $cat_query->FetchAssocArray())
 
 	if (@$permissions[FORUM_PERMISSION_CAN_SEE] == 0)
 	{
-		$this->msg($GLOBALS['mod']['config_vars']['ErrornoPerm']);
+		$this->msg($mod['config_vars']['ErrornoPerm']);
 	}
 }
-
-// =========================================================
 
 // =========================================================
 // <<-- wenn benutzer der verfasser des themas ist -->>
@@ -97,16 +96,15 @@ if ($closed->uid == UID) {
 	// kann auf eigene themen antworten
 	if (@$permissions[FORUM_PERMISSION_CAN_REPLY_OWN_TOPIC] == 0)
 	{
-		$this->msg($GLOBALS['mod']['config_vars']['ErrornoPerm']);
+		$this->msg($mod['config_vars']['ErrornoPerm']);
 	}
 } else {
 	// kann auf andere themen antworten
 	if (@$permissions[FORUM_PERMISSION_CAN_REPLY_OTHER_TOPIC] == 0)
 	{
-		$this->msg($GLOBALS['mod']['config_vars']['ErrornoPerm']);
+		$this->msg($mod['config_vars']['ErrornoPerm']);
 	}
 }
-
 
 // ueberpruefung der rechte und des datums
 if (isset($_GET['action']) && $_GET['action'] == "edit")
@@ -123,7 +121,7 @@ if (isset($_GET['action']) && $_GET['action'] == "edit")
 		u.BenutzerId = p.uid
 	";
 
-	$r_information = $GLOBALS['AVE_DB']->Query($q_information);
+	$r_information = $AVE_DB->Query($q_information);
 	$information = $r_information->FetchRow();
 
 	$curr_unix_stamp = $information->today;
@@ -139,25 +137,25 @@ if (isset($_GET['action']) && $_GET['action'] == "edit")
 		// wenn nicht der beitragverfasser und der benutzer ist kein admin
 		if ($information->BenutzerId == UID && $permissions[FORUM_PERMISSION_CAN_EDIT_OWN_POST] == 0)
 		{
-			$this->msg($GLOBALS['mod']['config_vars']['ErrornoPerm']);
+			$this->msg($mod['config_vars']['ErrornoPerm']);
 		}
 
 		// wenn nicht der beitragverfasser und der benutzer ist kein admin
 		if ($information->BenutzerId != UID && UGROUP != 1 && !$is_moderator)
 		{
-			$this->msg($GLOBALS['mod']['config_vars']['ErrornoPerm']);
+			$this->msg($mod['config_vars']['ErrornoPerm']);
 		}
 
 		// wenn die zeit fuer die editierung abgelaufen ist und
 		// der benutzer ist kein admin
 		if ($time_diff >= MAX_EDIT_PERIOD && UGROUP != 1 && !$is_moderator)
 		{
-			$this->msg($GLOBALS['mod']['config_vars']['ErrorCannotEdit']);
+			$this->msg($mod['config_vars']['ErrorCannotEdit']);
 		}
 	}
 }
 
-if (SMILIES == 1) $GLOBALS['AVE_Template']->assign("smilie", 1);
+if (SMILIES == 1) $AVE_Template->assign("smilie", 1);
 
 if (isset($_GET['pid']) && !empty($_GET['pid'])) {
 
@@ -181,12 +179,12 @@ if (isset($_GET['pid']) && !empty($_GET['pid'])) {
 		p.uid = u.BenutzerId AND
 		t.id = p.topic_id";
 
-	$r_message = $GLOBALS['AVE_DB']->Query($q_message);
+	$r_message = $AVE_DB->Query($q_message);
 	$message = $r_message->FetchRow();
 
 	if (isset($_GET["action"]) && $_GET["action"] == "quote")
 	{
-		$message->message = "[QUOTE][B]" . $GLOBALS['mod']['config_vars']['QuotePrefix'] . " " . $message->BenutzerName . "[/B]\n ". htmlspecialchars($message->message) . "[/QUOTE]\n\n";
+		$message->message = "[QUOTE][B]" . $mod['config_vars']['QuotePrefix'] . " " . $message->BenutzerName . "[/B]\n ". htmlspecialchars($message->message) . "[/QUOTE]\n\n";
 	}
 	elseif (isset($_GET["action"]) && $_GET["action"] == "edit")
 	{
@@ -199,7 +197,7 @@ if (isset($_GET['pid']) && !empty($_GET['pid'])) {
 		{
 			foreach($attach as $attachment)
 			{
-				$sql = $GLOBALS['AVE_DB']->Query("SELECT * FROM " . PREFIX ."_modul_forum_attachment WHERE id='$attachment'");
+				$sql = $AVE_DB->Query("SELECT * FROM " . PREFIX ."_modul_forum_attachment WHERE id='$attachment'");
 				$row_a = $sql->FetchRow();
 
 				$h_attachments_only_show[] = '
@@ -207,7 +205,7 @@ if (isset($_GET['pid']) && !empty($_GET['pid'])) {
 				<input type="hidden" name="attach_hidden[]" id="att_'.$row_a->id.'" value="'.$row_a->id.'" />
 				&bull; '.$row_a->orig_name.'
 				<a href="javascript:;"
-				onclick="if(confirm(\''.$GLOBALS['mod']['config_vars']['ConfirmDelAttach'].'\'))
+				onclick="if(confirm(\''.$mod['config_vars']['ConfirmDelAttach'].'\'))
 				{
 					document.getElementById(\'att_' . $row_a->id . '\').value=\'\';
 					document.getElementById(\'div_' . $row_a->id . '\').style.display=\'none\';
@@ -217,70 +215,70 @@ if (isset($_GET['pid']) && !empty($_GET['pid'])) {
 				</div>';
 			}
 
-			$GLOBALS['AVE_Template']->assign("h_attachments_only_show", $h_attachments_only_show);
-			$GLOBALS['AVE_Template']->assign("attachments_hidden", $message->attachment);// $message = $message->message;
+			$AVE_Template->assign("h_attachments_only_show", $h_attachments_only_show);
+			$AVE_Template->assign("attachments_hidden", $message->attachment);// $message = $message->message;
 		}
 
 	}
 
-	$GLOBALS['AVE_Template']->assign("message", $message);
-	$GLOBALS['AVE_Template']->assign("f_id", $closed->id);
+	$AVE_Template->assign("message", $message);
+	$AVE_Template->assign("f_id", $closed->id);
 }
 
 // hat user thema abonniert?
-$sql = $GLOBALS['AVE_DB']->Query("SELECT notification FROM " . PREFIX . "_modul_forum_topic WHERE id = '" . $_GET['toid'] . "'");
+$sql = $AVE_DB->Query("SELECT notification FROM " . PREFIX . "_modul_forum_topic WHERE id = '" . $_GET['toid'] . "'");
 $row = $sql->FetchRow();
 $notifactions = @explode(";", $row->notification);
 
 if(@in_array(UID, $notifactions))
 {
-	$GLOBALS['AVE_Template']->assign('notification', 1);
+	$AVE_Template->assign('notification', 1);
 }
 
 $navigation = $this->getNavigation($_GET["toid"], "topic")
-	. $GLOBALS['mod']['config_vars']['ForumSep']
+	. $mod['config_vars']['ForumSep']
 	. "<a class='forum_links_navi' href='index.php?module=forums&amp;show=showtopic&amp;toid=" . $_GET['toid'] . "&amp;fid=" . $TopicFid. "'>" . $TopicTitle . "</a>"
-	. $GLOBALS['mod']['config_vars']['ForumSep']
-	. $GLOBALS['mod']['config_vars']['ReplyToPost'];
+	. $mod['config_vars']['ForumSep']
+	. $mod['config_vars']['ReplyToPost'];
 
 if(isset($_REQUEST['preview']) && $_REQUEST['preview']==1)
 {
-	$GLOBALS['AVE_Template']->assign("subject", $_REQUEST['subject']);
-	$GLOBALS['AVE_Template']->assign("text", $_REQUEST['text']);
+	$AVE_Template->assign("subject", $_REQUEST['subject']);
+	$AVE_Template->assign("text", $_REQUEST['text']);
 }
 
 $items = array();
 include (BASE_DIR . "/modules/forums/internals/addpost_last.php");
 
-$GLOBALS['AVE_Template']->assign("aid", $closed->uid);
-$GLOBALS['AVE_Template']->assign("items", $items);
-$GLOBALS['AVE_Template']->assign("permissions", $permissions);
-$GLOBALS['AVE_Template']->assign("maxlength_post", MAXLENGTH_POST);
-$GLOBALS['AVE_Template']->assign("bbcodes", BBCODESITE);
-$GLOBALS['AVE_Template']->assign("navigation", $navigation);
-$GLOBALS['AVE_Template']->assign("max_post_length", MAXLENGTH_POST);
-$GLOBALS['AVE_Template']->assign("listfonts",  $this->fontdropdown());
-$GLOBALS['AVE_Template']->assign("sizedropdown",  $this->sizedropdown());
-$GLOBALS['AVE_Template']->assign("colordropdown",  $this->colordropdown());
-$GLOBALS['AVE_Template']->assign("listemos", $this->listsmilies());
-$GLOBALS['AVE_Template']->assign("topic_id", $_GET["toid"]);
-$GLOBALS['AVE_Template']->assign("forum_id", $TopicFid);
-$GLOBALS['AVE_Template']->assign("action", "index.php?module=forums&amp;show=addpost");
+$AVE_Template->assign("aid", $closed->uid);
+$AVE_Template->assign("items", $items);
+$AVE_Template->assign("permissions", $permissions);
+$AVE_Template->assign("maxlength_post", MAXLENGTH_POST);
+$AVE_Template->assign("bbcodes", BBCODESITE);
+$AVE_Template->assign("navigation", $navigation);
+$AVE_Template->assign("max_post_length", MAXLENGTH_POST);
+$AVE_Template->assign("listfonts",  $this->fontdropdown());
+$AVE_Template->assign("sizedropdown",  $this->sizedropdown());
+$AVE_Template->assign("colordropdown",  $this->colordropdown());
+$AVE_Template->assign("listemos", $this->listsmilies());
+$AVE_Template->assign("topic_id", $_GET["toid"]);
+$AVE_Template->assign("forum_id", $TopicFid);
+$AVE_Template->assign("action", "index.php?module=forums&amp;show=addpost");
 
 $_POST['subject'] = isset($_POST['subject']) ? htmlspecialchars($_POST['subject']) : '';
-$GLOBALS['AVE_Template']->assign("threadform", $GLOBALS['AVE_Template']->fetch($GLOBALS['mod']['tpl_dir'] . "threadform.tpl"));
+$AVE_Template->assign("threadform", $AVE_Template->fetch($mod['tpl_dir'] . "threadform.tpl"));
 
 if (isset($_GET['action']) && $_GET['action'] == "edit")
 {
 	if ($message->uid == UID || UGROUP == 1 || $is_moderator)
 	{
-		$GLOBALS['AVE_Template']->assign("topic", $message->topic);
-		$GLOBALS['AVE_Template']->assign("posticons", $this->getPosticons($message->posticon));
-		$GLOBALS['AVE_Template']->assign("topicform", $GLOBALS['AVE_Template']->fetch($GLOBALS['mod']['tpl_dir'] . "topicform.tpl"));
+		$AVE_Template->assign("topic", $message->topic);
+		$AVE_Template->assign("posticons", $this->getPosticons($message->posticon));
+		$AVE_Template->assign("topicform", $AVE_Template->fetch($mod['tpl_dir'] . "topicform.tpl"));
 	}
 }
 
-$tpl_out = $GLOBALS['AVE_Template']->fetch($GLOBALS['mod']['tpl_dir'] . 'addtopic.tpl');
+$tpl_out = $AVE_Template->fetch($mod['tpl_dir'] . 'addtopic.tpl');
 define("MODULE_CONTENT", $tpl_out);
-define("MODULE_SITE", $GLOBALS['mod']['config_vars']['ReplyToPost']);
+define("MODULE_SITE", $mod['config_vars']['ReplyToPost']);
 ?>

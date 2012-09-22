@@ -1,13 +1,16 @@
 <?php
-/*::::::::::::::::::::::::::::::::::::::::
- System name: cpengine
- Short Desc: Full Russian Security Power Pack
- Version: 2.0 (Service Pack 2)
- Authors:  Arcanum (php@211.ru) &  Censored!
- Date: March 18, 2008
-::::::::::::::::::::::::::::::::::::::::*/
 
+/**
+ * 
+ *
+ * @package AVE.cms
+ * @subpackage module_Forums
+ * @filesource
+ */
 if(!defined("DELTOPIC")) exit;
+
+global $AVE_DB, $mod;
+
 $NOOUT = 0;
 if(!isset($_REQUEST['fid']) || !isset($_REQUEST['toid']) || !is_numeric($_REQUEST['fid']) || !is_numeric($_REQUEST['toid']) )
 {
@@ -16,7 +19,7 @@ if(!isset($_REQUEST['fid']) || !isset($_REQUEST['toid']) || !is_numeric($_REQUES
 }
 $own = -1;
 
-$sql = $GLOBALS['AVE_DB']->Query("SELECT uid FROM ".PREFIX."_modul_forum_topic WHERE id='" . $_REQUEST['toid'] . "'");
+$sql = $AVE_DB->Query("SELECT uid FROM ".PREFIX."_modul_forum_topic WHERE id='" . $_REQUEST['toid'] . "'");
 $row = $sql->FetchRow();
 
 if($row->uid == UID)
@@ -26,11 +29,10 @@ if($row->uid == UID)
 
 $f_id = $_REQUEST['fid'];
 
-
 //=========================================================
 // zugriffsrechte
 //=========================================================
-$cat_query = $GLOBALS['AVE_DB']->Query("SELECT group_id FROM " . PREFIX . "_modul_forum_forum WHERE id = '" . $f_id . "'");
+$cat_query = $AVE_DB->Query("SELECT group_id FROM " . PREFIX . "_modul_forum_forum WHERE id = '" . $f_id . "'");
 while ($category = $cat_query->FetchAssocArray()) {
 
 	//=========================================================
@@ -43,7 +45,6 @@ while ($category = $cat_query->FetchAssocArray()) {
 		$permissions = $this->getForumPermissionsByUser($f_id, UID);
 	}
 }
-
 
 if($own != 1)
 {
@@ -75,7 +76,7 @@ if($NOOUT != 1)
 	//=========================================================
 	if ($_REQUEST["toid"] == "" || $_GET["fid"] == "")
 	{
-		$this->msg($GLOBALS['mod']['config_vars']['ErrornoPerm']);
+		$this->msg($mod['config_vars']['ErrornoPerm']);
 	}
 
     $Board_ID = $this->Cpengine_Board_GetTopic_Board($_GET['toid']);

@@ -1,14 +1,15 @@
 <?php
-/*::::::::::::::::::::::::::::::::::::::::
- System name: cpengine
- Short Desc: Full Russian Security Power Pack
- Version: 2.0 (Service Pack 2)
- Authors:  Arcanum (php@211.ru) &  Censored!
- Date: March 18, 2008
-::::::::::::::::::::::::::::::::::::::::*/
 
+/**
+ * 
+ *
+ * @package AVE.cms
+ * @subpackage module_Forums
+ * @filesource
+ */
 if(!defined("LAST24")) exit;
 
+global $AVE_DB, $AVE_Template, $mod;
 
 	$fid = (isset($_GET['fid']) && $_GET['fid'] != '' && is_numeric($_GET['fid'])) ? addslashes($_GET['fid']) : '';
 	$forum_stat = ($fid != "") ? " AND t.forum_id = $fid" : "";
@@ -74,7 +75,7 @@ if(!defined("LAST24")) exit;
 //			$sort
 //	";
 
-	$r_last_active = $GLOBALS['AVE_DB']->Query($q_last_active);
+	$r_last_active = $AVE_DB->Query($q_last_active);
 	$matches = array();
 
 	// MISC ID FЬR DEN AKTUELLEN BENUTZER
@@ -120,7 +121,7 @@ if(!defined("LAST24")) exit;
 							// =================================================
 							$limit = 15;
 
-							$r_post = $GLOBALS['AVE_DB']->Query("SELECT COUNT(id) as count FROM " . PREFIX . "_modul_forum_post WHERE topic_id = ' " . $topic['id'] . "'");
+							$r_post = $AVE_DB->Query("SELECT COUNT(id) as count FROM " . PREFIX . "_modul_forum_post WHERE topic_id = ' " . $topic['id'] . "'");
 							$post = $r_post->FetchArray();
 
 							$count = (($post['count'] / $limit) > ((int) ($post['count'] / $limit))) ? ((int) ($post['count'] / $limit)) + 1 : ((int) ($post['count'] / $limit));
@@ -128,7 +129,7 @@ if(!defined("LAST24")) exit;
 							$topic['navigation_count'] = ($count == 1) ? 0 : $count;
 
 							// forum zum thema
-							$r_forum = $GLOBALS['AVE_DB']->Query("SELECT id, status FROM " . PREFIX . "_modul_forum_forum WHERE id = '".$topic['forum_id']."'");
+							$r_forum = $AVE_DB->Query("SELECT id, status FROM " . PREFIX . "_modul_forum_forum WHERE id = '".$topic['forum_id']."'");
 							$rx = $r_forum->FetchRow();
 
 							if ($topic['status'] == FORUM_STATUS_MOVED)
@@ -153,18 +154,18 @@ if(!defined("LAST24")) exit;
 			}
 	}
 
-	$GLOBALS['AVE_Template']->assign("matches", $matches);
-	$GLOBALS['AVE_Template']->assign("navigation", "<a class='forum_links_navi' href='index.php?module=forums'>"
-		. $GLOBALS['mod']['config_vars']['PageNameForums'] . "</a>"
-		. $GLOBALS['mod']['config_vars']['ForumSep']
+	$AVE_Template->assign("matches", $matches);
+	$AVE_Template->assign("navigation", "<a class='forum_links_navi' href='index.php?module=forums'>"
+		. $mod['config_vars']['PageNameForums'] . "</a>"
+		. $mod['config_vars']['ForumSep']
 		. "<a class='forum_links_navi' href='index.php?module=forums&amp;show=search_mask'>"
-		. $GLOBALS['mod']['config_vars']['ForumsSearch']
+		. $mod['config_vars']['ForumsSearch']
 		. "</a>"
-		. $GLOBALS['mod']['config_vars']['ForumSep']
-		. $GLOBALS['mod']['config_vars']['ShowLast24']
+		. $mod['config_vars']['ForumSep']
+		. $mod['config_vars']['ShowLast24']
 		 );
 
-	$tpl_out = $GLOBALS['AVE_Template']->fetch($GLOBALS['mod']['tpl_dir'] . 'result.tpl');
+	$tpl_out = $AVE_Template->fetch($mod['tpl_dir'] . 'result.tpl');
 	define("MODULE_CONTENT", $tpl_out);
-	define("MODULE_SITE", $GLOBALS['mod']['config_vars']['ShowLast24']);
+	define("MODULE_SITE", $mod['config_vars']['ShowLast24']);
 ?>

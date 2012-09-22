@@ -1,5 +1,12 @@
 <?php
 
+/**
+ * 
+ *
+ * @package AVE.cms
+ * @subpackage module_Forums
+ * @filesource
+ */
 //   группа Id=1:	(Администратор)
 $default_mask['1'] =
 "1," . // Просматривать форум

@@ -1,15 +1,17 @@
 <?php
-/*::::::::::::::::::::::::::::::::::::::::
- System name: cpengine
- Short Desc: Full Russian Security Power Pack
- Version: 2.0 (Service Pack 2)
- Authors:  Arcanum (php@211.ru) &  Censored!
- Date: March 18, 2008
-::::::::::::::::::::::::::::::::::::::::*/
 
+/**
+ * 
+ *
+ * @package AVE.cms
+ * @subpackage module_Forums
+ * @filesource
+ */
 if(!defined("DELPOST")) exit;
-$NOOUT = -1;
 
+global $AVE_DB, $mod;
+
+$NOOUT = -1;
 
 $q_forum = "SELECT
 	f.id,
@@ -23,7 +25,7 @@ $q_forum = "SELECT
 	t.forum_id = f.id AND
 	p.id = '" . (int)$_GET['pid'] . "'";
 
-$r_forum = $GLOBALS['AVE_DB']->Query($q_forum);
+$r_forum = $AVE_DB->Query($q_forum);
 $forum = $r_forum->FetchRow();
 $permissions = $this->getForumPermissionsByUser($forum->id, UID);
 // $permissions = getForumPermissions($forum->id, UGROUP);
@@ -38,33 +40,33 @@ if( ($permissions[FORUM_PERMISSION_CAN_DELETE_OTHER_POST] == 0) && (UGROUP != 1)
 		if (UGROUP == 2 || $permissions[FORUM_PERMISSION_CAN_DELETE_OWN_POST] == 0)
 		{
 			// user nicht eingeloggt
-			$this->msg($GLOBALS['mod']['config_vars']['ErrornoPerm']);
+			$this->msg($mod['config_vars']['ErrornoPerm']);
 		}
 		// fremder eintrag
 	}
 
 	if ( ($forum->uid != UID) && (UGROUP != 1) )
 	{
-		$this->msg($GLOBALS['mod']['config_vars']['ErrornoPerm']);
+		$this->msg($mod['config_vars']['ErrornoPerm']);
 	}
 
 
 	if ($_GET["pid"] == "")
 	{
-		$this->msg($GLOBALS['mod']['config_vars']['ErrornoPerm']);
+		$this->msg($mod['config_vars']['ErrornoPerm']);
 	}
 }
 
 if($NOOUT != 1)
 {
 	$q_delpost = "DELETE FROM " . PREFIX . "_modul_forum_post WHERE id = '" . (int)$_GET['pid'] . "'";
-	$r_delpost = $GLOBALS['AVE_DB']->Query($q_delpost);
+	$r_delpost = $AVE_DB->Query($q_delpost);
 
 	$q_decrement = "UPDATE " . PREFIX . "_modul_forum_topic SET replies = replies - 1 WHERE id = '" . (int)$_GET['toid'] . "'";
-	$r_decrement = $GLOBALS['AVE_DB']->Query($q_decrement);
+	$r_decrement = $AVE_DB->Query($q_decrement);
 
 	$q_topic = "SELECT replies FROM " . PREFIX . "_modul_forum_topic WHERE id = '" . (int)$_GET['toid'] . "'";
-	$r_topic = $GLOBALS['AVE_DB']->Query($q_topic);
+	$r_topic = $AVE_DB->Query($q_topic);
 	$topic = $r_topic->FetchRow();
 
 	$this->Cpengine_Board_SetLastPost($forum->id);

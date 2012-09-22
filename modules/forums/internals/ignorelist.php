@@ -1,16 +1,19 @@
 <?php
-/*::::::::::::::::::::::::::::::::::::::::
- System name: cpengine
- Short Desc: Full Russian Security Power Pack
- Version: 2.0 (Service Pack 2)
- Authors:  Arcanum (php@211.ru) &  Censored!
- Date: March 18, 2008
-::::::::::::::::::::::::::::::::::::::::*/
 
+/**
+ * 
+ *
+ * @package AVE.cms
+ * @subpackage module_Forums
+ * @filesource
+ */
 if(!defined("IGNORELIST")) exit;
+
+global $AVE_DB, $AVE_Template, $mod;
+
 if(UGROUP==2)
 {
-	$this->msg($GLOBALS['mod']['config_vars']['ErrornoPerm']);
+	$this->msg($mod['config_vars']['ErrornoPerm']);
 }
 
 if(isset($_GET['insert']) && (empty($_GET['insert']) && empty($_GET['BenutzerName'])))
@@ -29,7 +32,7 @@ if((isset($_GET['insert']) && is_numeric($_GET['insert']) && $_GET['insert'] > 0
 		$_GET['insert'] = $this->fetchuserid(addslashes($_GET['BenutzerName']));
 	}
 
-	$GLOBALS['AVE_DB']->Query("INSERT INTO " . PREFIX . "_modul_forum_ignorelist
+	$AVE_DB->Query("INSERT INTO " . PREFIX . "_modul_forum_ignorelist
 	(
 		Id,
 		BenutzerId,
@@ -52,7 +55,7 @@ if((isset($_GET['insert']) && is_numeric($_GET['insert']) && $_GET['insert'] > 0
 //=======================================================
 if(isset($_GET['remove']) && is_numeric($_GET['remove']) && $_GET['remove'] > 0)
 {
-	$GLOBALS['AVE_DB']->Query("DELETE FROM " . PREFIX . "_modul_forum_ignorelist WHERE IgnoreId = '" . $_GET['remove'] . "'");
+	$AVE_DB->Query("DELETE FROM " . PREFIX . "_modul_forum_ignorelist WHERE IgnoreId = '" . $_GET['remove'] . "'");
 	header("Location:" . $_SERVER['HTTP_REFERER']);
 	exit;
 }
@@ -66,17 +69,17 @@ if(isset($_GET['action']) && $_GET['action'] != '')
 	{
 		case 'showlist':
 			$ignored = array();
-			$sql = $GLOBALS['AVE_DB']->Query("SELECT * FROM " . PREFIX . "_modul_forum_ignorelist WHERE BenutzerId = '" . $_SESSION['user_id'] . "' ORDER BY Datum DESC");
+			$sql = $AVE_DB->Query("SELECT * FROM " . PREFIX . "_modul_forum_ignorelist WHERE BenutzerId = '" . $_SESSION['user_id'] . "' ORDER BY Datum DESC");
 			while($row = $sql->FetchArray())
 			{
 				$row['Name'] = $this->getUserName($row['IgnoreId']);
 				array_push($ignored, $row);
 			}
 
-			$GLOBALS['AVE_Template']->assign('ignored', $ignored);
-			$tpl_out = $GLOBALS['AVE_Template']->fetch($GLOBALS['mod']['tpl_dir'] . 'ignorelist.tpl');
+			$AVE_Template->assign('ignored', $ignored);
+			$tpl_out = $AVE_Template->fetch($mod['tpl_dir'] . 'ignorelist.tpl');
 			define("MODULE_CONTENT", $tpl_out);
-			define("MODULE_SITE", $GLOBALS['mod']['config_vars']['IgnoreList']);
+			define("MODULE_SITE", $mod['config_vars']['IgnoreList']);
 		break;
 	}
 }

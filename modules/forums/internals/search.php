@@ -1,18 +1,20 @@
 <?php
-/*::::::::::::::::::::::::::::::::::::::::
- System name: cpengine
- Short Desc: Full Russian Security Power Pack
- Version: 2.0 (Service Pack 2)
- Authors:  Arcanum (php@211.ru) &  Censored!
- Date: March 18, 2008
-::::::::::::::::::::::::::::::::::::::::*/
 
+/**
+ * 
+ *
+ * @package AVE.cms
+ * @subpackage module_Forums
+ * @filesource
+ */
 if(!defined("SEARCH")) exit;
+
+global $AVE_DB, $AVE_Template, $mod;
 
 // Kein Suchbegriff... Weiterleiten
 if (@$_GET['pattern'] == "" && @$_GET['user_name'] == "")
 {
-	$this->msg($GLOBALS['mod']['config_vars']['SearchNoKey'], 'index.php?module=forums&show=search_mask');
+	$this->msg($mod['config_vars']['SearchNoKey'], 'index.php?module=forums&show=search_mask');
 }
 
 // typ des topics
@@ -153,7 +155,7 @@ if ($_GET['search_in_forums'] != "")
 	if (in_array(0, $_GET['search_in_forums']))
 	{
 		$q_all_forums = "SELECT id FROM " . PREFIX . "_modul_forum_forum";
-		$r_all_forums = $GLOBALS['AVE_DB']->Query($q_all_forums);
+		$r_all_forums = $AVE_DB->Query($q_all_forums);
 
 		while ($one_forum = $r_all_forums->FetchRow())
 		{
@@ -228,7 +230,7 @@ $query = "SELECT DISTINCT
 		t.type DESC,
 		" . $order_by . " " . $order;
 
-$result = $GLOBALS['AVE_DB']->Query($query);
+$result = $AVE_DB->Query($query);
 $matches = array();
 
 while ($hit = $result->FetchAssocArray())
@@ -237,7 +239,7 @@ while ($hit = $result->FetchAssocArray())
 	if(is_mod($hit['forum_id']) || ($hit['opened'] == 1) ) {
 
 		$q_forum = "SELECT id, status FROM " . PREFIX . "_modul_forum_forum WHERE id = '" . $hit['forum_id'] . "'";
-		$r_forum = $GLOBALS['AVE_DB']->Query($q_forum);
+		$r_forum = $AVE_DB->Query($q_forum);
 		$forum = $r_forum->FetchRow();
 
 		$rating_array = @explode(",", $hit['rating']);
@@ -266,7 +268,7 @@ while ($hit = $result->FetchAssocArray())
 // wenn keinen ergebnisse gefunden wurden...
 if(!$matches)
 {
-	$this->msg($GLOBALS['mod']['config_vars']['SearchNotFound'], 'index.php?module=forums&show=search_mask');
+	$this->msg($mod['config_vars']['SearchNotFound'], 'index.php?module=forums&show=search_mask');
 }
 
 // seitennavigation
@@ -297,20 +299,20 @@ if ($num > $limit) {
 		. ((isset($_GET['ascdesc']) && $_GET['ascdesc'] != '') ? "&amp;ascdesc=" . $_GET['ascdesc'] : '' )
 		. "&amp;pp=" . $limit . "&amp;page={s}\">{t}</a> ";
 	$page_nav = get_pagination($seiten, 'page', $page_nav);
-	$GLOBALS['AVE_Template']->assign('pages', $page_nav);
+	$AVE_Template->assign('pages', $page_nav);
 }
 
-$GLOBALS['AVE_Template']->assign("matches", array_slice($matches, $a, $limit));
-$GLOBALS['AVE_Template']->assign("navigation", "<a class='forum_links_navi' href='index.php?module=forums'>"
-		. $GLOBALS['mod']['config_vars']['PageNameForums'] . "</a>"
-		. $GLOBALS['mod']['config_vars']['ForumSep']
+$AVE_Template->assign("matches", array_slice($matches, $a, $limit));
+$AVE_Template->assign("navigation", "<a class='forum_links_navi' href='index.php?module=forums'>"
+		. $mod['config_vars']['PageNameForums'] . "</a>"
+		. $mod['config_vars']['ForumSep']
 		. "<a class='forum_links_navi' href='index.php?module=forums&amp;show=search_mask'>"
-		. $GLOBALS['mod']['config_vars']['ForumsSearch']
+		. $mod['config_vars']['ForumsSearch']
 		. "</a>" );
-$GLOBALS['AVE_Template']->assign("matches_count", $result->NumRows());
-#$GLOBALS['AVE_Template']->assign("content", parsetrue("container/".container("forum"), $stitle, $GLOBALS['AVE_Template']->fetch("forums/result.tpl")));
+$AVE_Template->assign("matches_count", $result->NumRows());
+#$AVE_Template->assign("content", parsetrue("container/".container("forum"), $stitle, $AVE_Template->fetch("forums/result.tpl")));
 
-$tpl_out = $GLOBALS['AVE_Template']->fetch($GLOBALS['mod']['tpl_dir'] . 'result.tpl');
+$tpl_out = $AVE_Template->fetch($mod['tpl_dir'] . 'result.tpl');
 define("MODULE_CONTENT", $tpl_out);
-define("MODULE_SITE", $GLOBALS['mod']['config_vars']['ForumsSearch']);
+define("MODULE_SITE", $mod['config_vars']['ForumsSearch']);
 ?>
