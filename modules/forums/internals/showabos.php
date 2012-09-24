@@ -33,7 +33,7 @@ if (defined("UGROUP") && is_numeric(UGROUP) && UGROUP != 2)
 			t.notification,
 			t.replies,
 			t.status,
-			u.BenutzerName
+			u.uname
 		FROM
 			" . PREFIX . "_modul_forum_topic AS t,
 			" . PREFIX . "_modul_forum_forum AS f,
@@ -43,7 +43,7 @@ if (defined("UGROUP") && is_numeric(UGROUP) && UGROUP != 2)
 			f.id = $forum_id AND
 			t.forum_id = f.id AND
 			r.topic_id = t.id AND
-			u.BenutzerId = t.uid";
+			u.uid = t.uid";
 
 	$result = $AVE_DB->Query($query);
 	$matches = array();
@@ -73,7 +73,7 @@ if (defined("UGROUP") && is_numeric(UGROUP) && UGROUP != 2)
 			$topic['autorlink'] = "index.php?module=forums&amp;show=userprofile&amp;user_id=" . $topic['uid'];
 			$topic['link'] = "index.php?module=forums&amp;show=showtopic&toid=".$topic['id']."&amp;fid=" . $topic['forum_id'];
 			$topic['forumslink'] = "index.php?module=forums&amp;show=showforum&amp;fid=" . $topic['forum_id'];
-			$topic['autor'] = $topic['BenutzerName'];
+			$topic['autor'] = $topic['uname'];
 			$rating = explode(",", $topic['rating']);
 			$topic['rating'] = (int) (array_sum($rating) / count($rating));
 

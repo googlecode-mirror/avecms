@@ -25,9 +25,9 @@
     <td width="200" class="forum_post_first">{#PR_UserName#}</td>
     <td colspan="2" class="forum_post_second">
 	{if $changenick=='no'}
-	{$r.BenutzerName|stripslashes}
+	{$r.uname|stripslashes}
 	{else}
-	<input name="BenutzerName" type="text" id="BenutzerName" value="{$r.BenutzerName|stripslashes}" size="40">
+	<input name="uname" type="text" id="uname" value="{$r.uname|stripslashes}" size="40">
 	{if $changenick_once==1}Kann nur 1 x geдndert werden!{/if}
 	{/if}
 
@@ -36,75 +36,75 @@
   <tr>
     <td width="200" class="forum_post_first">{#PR_Profile#} {#ShowPublic#}</td>
     <td colspan="2" class="forum_post_second"><label>
-      <input name="ZeigeProfil" type="checkbox" id="ZeigeProfil" value="1" {if $r.ZeigeProfil==1}checked="checked"{/if}>
+      <input name="show_profile" type="checkbox" id="show_profile" value="1" {if $r.show_profile==1}checked="checked"{/if}>
     </label></td>
     </tr>
   <tr>
     <td class="forum_post_first">{#PR_Invisble#}</td>
-    <td colspan="2" class="forum_post_second"><input name="Unsichtbar" type="checkbox" id="Unsichtbar" value="1" {if $r.Unsichtbar==1}checked="checked"{/if}></td>
+    <td colspan="2" class="forum_post_second"><input name="invisible" type="checkbox" id="invisible" value="1" {if $r.invisible==1}checked="checked"{/if}></td>
     </tr>
   <tr>
     <td class="forum_post_first">{#PR_RMails#}</td>
-    <td colspan="2" class="forum_post_second"><input name="Emailempfang" type="checkbox" id="Emailempfang" value="1" {if $r.Emailempfang==1}checked="checked"{/if}></td>
+    <td colspan="2" class="forum_post_second"><input name="email_receipt" type="checkbox" id="email_receipt" value="1" {if $r.email_receipt==1}checked="checked"{/if}></td>
     </tr>
 	 <tr>
     <td class="forum_post_first">{#PR_RecievePn#}</td>
-    <td colspan="2" class="forum_post_second"><input name="Pnempfang" type="checkbox" id="Pnempfang" value="1" {if $r.Pnempfang==1}checked="checked"{/if}></td>
+    <td colspan="2" class="forum_post_second"><input name="pn_receipt" type="checkbox" id="pn_receipt" value="1" {if $r.pn_receipt==1}checked="checked"{/if}></td>
     </tr>
 
   <tr>
     <td width="200" class="forum_post_first"> {#PR_RMail#}</td>
     <td width="200" class="forum_post_second"><input name="email" type="text" id="email" value="{$r.email|stripslashes}" size="40"></td>
     <td class="forum_post_second">
-      <input name="Email_show" type="checkbox" id="Email_show" value="1" {if $r.Email_show==1}checked="checked"{/if}>
+      <input name="email_show" type="checkbox" id="email_show" value="1" {if $r.email_show==1}checked="checked"{/if}>
     {#ShowPublic#} {#Attention#}	</td>
   </tr>
   <tr>
     <td width="200" class="forum_post_first">{#PR_icq#}</td>
-    <td width="200" class="forum_post_second"><input name="Icq" type="text" id="Icq" value="{$r.Icq|stripslashes}" size="40"></td>
-    <td class="forum_post_second"><input name="Icq_show" type="checkbox" id="Icq_show" value="1" {if $r.Icq_show==1}checked="checked"{/if}>
+    <td width="200" class="forum_post_second"><input name="icq" type="text" id="icq" value="{$r.icq|stripslashes}" size="40"></td>
+    <td class="forum_post_second"><input name="icq_show" type="checkbox" id="icq_show" value="1" {if $r.icq_show==1}checked="checked"{/if}>
 {#ShowPublic#}</td>
   </tr>
   <tr>
     <td width="200" class="forum_post_first">{#PR_aim#}</td>
-    <td width="200" class="forum_post_second"><input name="Aim" type="text" id="Aim" value="{$r.Aim|stripslashes}" size="40"></td>
-    <td class="forum_post_second"><input name="Aim_show" type="checkbox" id="Aim_show" value="1" {if $r.Aim_show==1}checked="checked"{/if}>
+    <td width="200" class="forum_post_second"><input name="aim" type="text" id="aim" value="{$r.aim|stripslashes}" size="40"></td>
+    <td class="forum_post_second"><input name="aim_show" type="checkbox" id="aim_show" value="1" {if $r.aim_show==1}checked="checked"{/if}>
 {#ShowPublic#}</td>
   </tr>
   <tr>
     <td class="forum_post_first">{#PR_skype#}</td>
-    <td class="forum_post_second"><input name="Skype" type="text" id="Skype" value="{$r.Skype|stripslashes}" size="40"></td>
-    <td class="forum_post_second"><input name="Skype_show" type="checkbox" id="Skype_show" value="1" {if $r.Skype_show==1}checked="checked"{/if}>
+    <td class="forum_post_second"><input name="skype" type="text" id="skype" value="{$r.skype|stripslashes}" size="40"></td>
+    <td class="forum_post_second"><input name="skype_show" type="checkbox" id="skype_show" value="1" {if $r.skype_show==1}checked="checked"{/if}>
 {#ShowPublic#}</td>
   </tr>
   <tr>
     <td class="forum_post_first">{#PR_birth#}</td>
-    <td class="forum_post_second"><input name="GeburtsTag" type="text" id="GeburtsTag" value="{$r.GeburtsTag}" size="10" maxlength="10"></td>
-    <td class="forum_post_second"><input name="GeburtsTag_show" type="checkbox" id="GeburtsTag_show" value="1" {if $r.GeburtsTag_show==1}checked="checked"{/if}>
+    <td class="forum_post_second"><input name="birthday" type="text" id="birthday" value="{$r.birthday}" size="10" maxlength="10"></td>
+    <td class="forum_post_second"><input name="birthday_show" type="checkbox" id="birthday_show" value="1" {if $r.birthday_show==1}checked="checked"{/if}>
 {#ShowPublic#}</td>
   </tr>
   <tr>
     <td class="forum_post_first">{#PR_web#}</td>
-    <td class="forum_post_second"><input name="Webseite" type="text" id="Webseite" value="{$r.Webseite|stripslashes}" size="40"></td>
-    <td class="forum_post_second"><input name="Webseite_show" type="checkbox" id="Webseite_show" value="1" {if $r.Webseite_show==1}checked="checked"{/if}>
+    <td class="forum_post_second"><input name="web_site" type="text" id="web_site" value="{$r.web_site|stripslashes}" size="40"></td>
+    <td class="forum_post_second"><input name="web_site_show" type="checkbox" id="web_site_show" value="1" {if $r.web_site_show==1}checked="checked"{/if}>
 {#ShowPublic#}</td>
   </tr>
   <tr>
     <td class="forum_post_first">{#PR_int#}</td>
     <td class="forum_post_second">
-      <textarea name="Interessen" cols="38" rows="5" id="Interessen">{$r.Interessen|stripslashes}</textarea> </td>
-    <td class="forum_post_second"><label><input name="Interessen_show" type="checkbox" id="Interessen_show" value="1" {if $r.Interessen_show==1}checked="checked"{/if}>{#ShowPublic#}</label></td>
+      <textarea name="interests" cols="38" rows="5" id="interests">{$r.interests|stripslashes}</textarea> </td>
+    <td class="forum_post_second"><label><input name="interests_show" type="checkbox" id="interests_show" value="1" {if $r.interests_show==1}checked="checked"{/if}>{#ShowPublic#}</label></td>
   </tr>
   <tr>
     <td class="forum_post_first">{#PR_sig#}</td>
-    <td class="forum_post_second"><textarea name="Signatur" cols="38" rows="5" id="Signatur">{$r.Signatur|stripslashes}</textarea></td>
-    <td class="forum_post_second"><label><input name="Signatur_show" type="checkbox" id="Signatur_show" value="1" {if $r.Signatur_show==1}checked="checked"{/if}>{#ShowPublic#}</label></td>
+    <td class="forum_post_second"><textarea name="signature" cols="38" rows="5" id="signature">{$r.signature|stripslashes}</textarea></td>
+    <td class="forum_post_second"><label><input name="signature_show" type="checkbox" id="signature_show" value="1" {if $r.signature_show==1}checked="checked"{/if}>{#ShowPublic#}</label></td>
   </tr>
   <tr>
     <td class="forum_post_first">{#PR_gender#}</td>
     <td colspan="2" class="forum_post_second">
-    <label><input type="radio" name="Geschlecht" value="male" {if $r.Geschlecht=='male'}checked{/if}>{#Male#}</label>
-    <label><input type="radio" name="Geschlecht" value="female" {if $r.Geschlecht=='female'}checked{/if}>{#Female#}</label></td>
+    <label><input type="radio" name="gender" value="male" {if $r.gender=='male'}checked{/if}>{#Male#}</label>
+    <label><input type="radio" name="gender" value="female" {if $r.gender=='female'}checked{/if}>{#Female#}</label></td>
     </tr>
 {if $sys_avatars==1}
   <tr>
@@ -115,9 +115,9 @@
   <tr>
     <td class="forum_post_first">{#PR_OwnAvatarUse#}</td>
     <td colspan="2" class="forum_post_second">
-	<input name="AvatarStandard" type="radio" value="0" {if $r.AvatarStandard=='0'}checked="checked"{/if} />
+	<input name="avatar_standard_group" type="radio" value="0" {if $r.avatar_standard_group=='0'}checked="checked"{/if} />
 	{#Yes#}
-    <input name="AvatarStandard" type="radio" value="1" {if $r.AvatarStandard=='1'}checked="checked"{/if} />
+    <input name="avatar_standard_group" type="radio" value="1" {if $r.avatar_standard_group=='1'}checked="checked"{/if} />
     {#No#} </td>
     </tr>
   <tr>
@@ -125,15 +125,15 @@
     <td class="forum_post_second" colspan="2"><table border="0" cellspacing="1" cellpadding="4">
       <tr>
         {if $r.OwnAvatar}<td valign="top">{#PR_StdAvatar#}<br />{$r.OwnAvatar} </td>{/if}
-        {if $r.Avatar}<td valign="top">{#PR_OwnAvatar#}<br /><img src="modules/forums/avatars/{$r.Avatar}" alt="" /></td>{/if}      </tr>
+        {if $r.avatar}<td valign="top">{#PR_OwnAvatar#}<br /><img src="modules/forums/avatars/{$r.avatar}" alt="" /></td>{/if}      </tr>
 
     </table>
 	<input name="doupdate" type="hidden" id="doupdate" value="1">      </td>
   </tr>
-  {if $r.Avatar}
+  {if $r.avatar}
   <tr>
-  <td class="forum_post_first">{#PR_DelAvatar#}</td>
-  <td class="forum_post_second" colspan="2"><input name="DelAvatar" type="checkbox" id="DelAvatar" value="1" /></td>
+    <td class="forum_post_first">{#PR_DelAvatar#}</td>
+	<td class="forum_post_second" colspan="2"><input name="DelAvatar" type="checkbox" id="DelAvatar" value="1" /></td>
   </tr>
   {/if}
   {if $avatar_upload==1}

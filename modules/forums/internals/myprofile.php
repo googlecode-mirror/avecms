@@ -23,9 +23,9 @@ FROM
 	".PREFIX."_modul_forum_userprofile as u,
 	".PREFIX."_users as us
 WHERE
-	BenutzerId = '" . addslashes($_SESSION['user_id']) . "' AND
+	uid = '" . addslashes($_SESSION['user_id']) . "' AND
 	us.status = '1' AND
-	us.Id = u.BenutzerId
+	us.Id = u.uid
 
 ");
 $n = $sql->NumRows();
@@ -38,14 +38,14 @@ if(!$n)
 
 $r = $sql->FetchAssocArray();
 
-if($r['BenutzerNameChanged'] >= '1' && !$this->fperm('changenick')) $AVE_Template->assign('changenick', 'no');
+if($r['uname_changed'] >= '1' && !$this->fperm('changenick')) $AVE_Template->assign('changenick', 'no');
 if(!$this->fperm('changenick')) $AVE_Template->assign('changenick_once', '1');
 
 
 
 
-$r['OwnAvatar'] = $this->getAvatar($r['user_group'],$r['Avatar'],$r['AvatarStandard']);
-if(@!is_file(BASE_DIR . '/modules/forums/avatars/' . $r['Avatar'])) $r['Avatar'] = '';
+$r['OwnAvatar'] = $this->getAvatar($r['user_group'],$r['avatar'],$r['avatar_standard_group']);
+if(@!is_file(BASE_DIR . '/modules/forums/avatars/' . $r['avatar'])) $r['avatar'] = '';
 
 // avatar
 $avatar = '';
@@ -83,13 +83,13 @@ if(isset($_POST['doupdate']) && $_POST['doupdate'] == 1)
 	//=======================================================
 	// Benutzername prьfen
 	//=======================================================
-	if((isset($_POST['BenutzerName'])) && ($this->checkIfUserName(addslashes($_POST['BenutzerName']),addslashes($_SESSION['forum_user_name']))))
+	if((isset($_POST['uname'])) && ($this->checkIfUserName(addslashes($_POST['uname']),addslashes($_SESSION['forum_user_name']))))
   {
 		$errors[] = $mod['config_vars']['PE_UsernameInUse'];
-		$r['BenutzerName'] = trim(htmlspecialchars($_POST['BenutzerName']));
+		$r['uname'] = trim(htmlspecialchars($_POST['uname']));
 	}
 
-	if(( @isset($_POST['BenutzerName']) && @empty($_POST['BenutzerName'])) || preg_match($muster, str_replace($allowed,'',@$_POST['BenutzerName']) ))
+	if(( @isset($_POST['uname']) && @empty($_POST['uname'])) || preg_match($muster, str_replace($allowed,'',@$_POST['uname']) ))
 	{
 		$errors[] = $mod['config_vars']['PE_Username'];
 	}
@@ -110,14 +110,14 @@ if(isset($_POST['doupdate']) && $_POST['doupdate'] == 1)
 	//=======================================================
 	// WENN GEBURTSTAG IM FALSCHEN FORMAT
 	//=======================================================
-	if(!empty($_POST['GeburtsTag']) && !preg_match($muster_geb, $_POST['GeburtsTag']))
+	if(!empty($_POST['birthday']) && !preg_match($muster_geb, $_POST['birthday']))
 	{
 		$errors[] = $mod['config_vars']['PE_WrongBd'];
 	}
 
-	if(!empty($_POST['GeburtsTag']))
+	if(!empty($_POST['birthday']))
 	{
-		$check_year = explode(".", $_POST['GeburtsTag']);
+		$check_year = explode(".", $_POST['birthday']);
 		if(@$check_year[0] > 31 || @$check_year[1] > 12 || @$check_year[2] < date("Y")-75)
 		{
 			$errors[] = $mod['config_vars']['PE_WrongBd'];
@@ -152,7 +152,7 @@ if(isset($_POST['doupdate']) && $_POST['doupdate'] == 1)
 
 				$avatar = ",Avatar  = '$fupload_name'";
 
-				#$sql_old = $AVE_DB->Query("SELECT Avatar FROM " . PREFIX . "_modul_forum_userprofile WHERE BenutzerId='" . UID . "'");
+				#$sql_old = $AVE_DB->Query("SELECT Avatar FROM " . PREFIX . "_modul_forum_userprofile WHERE uid='" . UID . "'");
 				#$row_old = $sql_old->FetchRow();
 				#@unlink($target . $row_old->Avatar);
 				#$avatar .= "Avatar ='$fupload_name',";
@@ -161,29 +161,6 @@ if(isset($_POST['doupdate']) && $_POST['doupdate'] == 1)
 		}
 	}
 
-//	@$r['BenutzerName'] = trim(htmlspecialchars($_POST['BenutzerName']));
-//	$r['ZeigeProfil'] = @$_POST['ZeigeProfil'];
-//	$r['Unsichtbar'] = @$_POST['Unsichtbar'];
-//	$r['Emailempfang'] = @$_POST['Emailempfang'];
-//	$r['ZeigeProfil'] = @$_POST['ZeigeProfil'];
-//	$r['email'] = trim(@$_POST['email']);
-//	$r['Icq'] = trim(htmlspecialchars(@$_POST['Icq']));
-//	$r['Aim'] = trim(htmlspecialchars(@$_POST['Aim']));
-//	$r['Skype'] = trim(htmlspecialchars(@$_POST['Skype']));
-//	$r['Email_show'] = @$_POST['Email_show'];
-//	$r['Icq_show'] = @$_POST['Icq_show'];
-//	$r['Aim_show'] = @$_POST['Aim_show'];
-//	$r['Skype_show'] = @$_POST['Skype_show'];
-//	$r['GeburtsTag_show'] = @$_POST['GeburtsTag_show'];
-//	$r['Webseite_show'] = @$_POST['Webseite_show'];
-//	$r['Interessen_show'] = @$_POST['Interessen_show'];
-//	$r['Signatur_show'] = @$_POST['Signatur_show'];
-//	$r['Webseite'] = trim(htmlspecialchars(@$_POST['Webseite']));
-//	$r['Interessen'] = trim(htmlspecialchars(@$_POST['Interessen']));
-//	$r['Signatur'] = trim(htmlspecialchars(@$_POST['Signatur']));
-//	$r['Geschlecht'] = @$_POST['Geschlecht'];
-//	$r['GeburtsTag'] = @$_POST['GeburtsTag'];
-//	$r['Pnempfang'] = @$_POST['Pnempfang'];
   foreach ($_POST as $key => $value) {
   	$r[$key] = trim(htmlspecialchars($_POST[$key]));
   }
@@ -194,75 +171,74 @@ if(isset($_POST['doupdate']) && $_POST['doupdate'] == 1)
 		$ok = false;
 		$AVE_Template->assign("errors", $errors);
 	} else {
-		if(!empty($r['GeburtsTag']))
+		if(!empty($r['birthday']))
 		{
-			$AVE_DB->Query("UPDATE ".PREFIX."_users SET birthday = '" . @$r['GeburtsTag'] . "' WHERE Id = '" . $_SESSION['user_id'] . "'");
+			$AVE_DB->Query("UPDATE ".PREFIX."_users SET birthday = '" . @$r['birthday'] . "' WHERE Id = '" . $_SESSION['user_id'] . "'");
 		}
 
 		if(isset($r['DelAvatar']) && $r['DelAvatar']==1)
 		{
-			$sql = $AVE_DB->Query("SELECT Avatar FROM ".PREFIX."_modul_forum_userprofile  WHERE BenutzerId = '" . $_SESSION['user_id'] . "'");
+			$sql = $AVE_DB->Query("SELECT uid, avatar FROM ".PREFIX."_modul_forum_userprofile  WHERE uid = '" . $_SESSION['user_id'] . "'");
 			$row_a = $sql->FetchRow();
 
-			if(strpos($row_a->Avatar, 'various/') === false)
+			if(strpos($row_a->avatar, 'various/') === false)
 			{
-				@unlink(BASE_DIR . '/modules/forums/avatars/' . $row_a->Avatar);
+				@unlink(BASE_DIR . '/modules/forums/avatars/' . $row_a->avatar);
 			}
 
 			$AVE_DB->Query("
 				UPDATE
 					".PREFIX."_modul_forum_userprofile
 				SET
-					Avatar = '',
-					AvatarStandard = '1'
+					avatar                = '',
+					avatar_standard_group = '1'
 				WHERE
-					BenutzerId = '" . $_SESSION['user_id'] . "'");
+					uid = '" . $_SESSION['user_id'] . "'");
 			$avatar = '';
 		}
 
 		// Prьfen, ob Benutzername mehr als 1 mal geдndert wurde und ob er das
 		// recht hat, diesen zu дndern
 		$BC = '';
-		$sql = $AVE_DB->Query("SELECT BenutzerName,BenutzerNameChanged FROM " . PREFIX . "_modul_forum_userprofile WHERE BenutzerId = '" . $_SESSION['user_id'] . "'");
+		$sql = $AVE_DB->Query("SELECT uid, uname, uname_changed FROM " . PREFIX . "_modul_forum_userprofile WHERE uid = '" . $_SESSION['user_id'] . "'");
 		$row = $sql->FetchRow();
-		if(($row->BenutzerName != $r['BenutzerName']) && ($row->BenutzerNameChanged < '1' || $this->fperm('changenick')) )
+		if(($row->uname != $r['uname']) && ($row->uname_changed < '1' || $this->fperm('changenick')) )
 		{
 			$BC = "
-				,BenutzerNameChanged = BenutzerNameChanged+1
-				,BenutzerName = '" . $r['BenutzerName'] . "'
+				,uname_changed = uname_changed+1
+				,uname = '" . $r['uname'] . "'
 				";
 		}
 
     $q = "UPDATE ".PREFIX."_modul_forum_userprofile
 			SET
-				ZeigeProfil = '" . @$r['ZeigeProfil'] . "',
-				Unsichtbar = '" . @$r['Unsichtbar'] . "',
-				Emailempfang = '" . @$r['Emailempfang'] . "',
-				ZeigeProfil = '" . @$r['ZeigeProfil'] . "',
-				email = '" . @$r['email'] . "',
-				Icq = '" . @$r['Icq'] . "',
-				Aim = '" . @$r['Aim'] . "',
-				Skype = '" . @$r['Skype'] . "',
-				Email_show = '" . @$r['Email_show'] . "',
-				Icq_show = '" . @$r['Icq_show'] . "',
-				Aim_show = '" . @$r['Aim_show'] . "',
-				Skype_show = '" . @$r['Skype_show'] . "',
-				GeburtsTag_show = '" . @$r['GeburtsTag_show'] . "',
-				Webseite_show = '" . @$r['Webseite_show'] . "',
-				Interessen_show = '" . @$r['Interessen_show'] . "',
-				Signatur_show = '" . @$r['Signatur_show'] . "',
-				Webseite = '" . @$r['Webseite'] . "',
-				Interessen = '" . @$r['Interessen'] . "',
-				Signatur = '" . @$r['Signatur'] . "',
-				Geschlecht = '" . @$r['Geschlecht'] . "',
-				GeburtsTag = '" . @$r['GeburtsTag'] . "',
-				AvatarStandard = '" . @$r['AvatarStandard'] . "',
-				Pnempfang = '" . @$r['Pnempfang'] . "'
+				show_profile          = '" . @$r['show_profile'] . "',
+				invisible             = '" . @$r['invisible'] . "',
+				email_receipt         = '" . @$r['email_receipt'] . "',
+				pn_receipt            = '" . @$r['pn_receipt'] . "',
+				email                 = '" . @$r['email'] . "',
+				icq                   = '" . @$r['icq'] . "',
+				aim                   = '" . @$r['aim'] . "',
+				skype                 = '" . @$r['skype'] . "',
+				email_show            = '" . @$r['email_show'] . "',
+				icq_show              = '" . @$r['icq_show'] . "',
+				aim_show              = '" . @$r['aim_show'] . "',
+				skype_show            = '" . @$r['skype_show'] . "',
+				birthday_show         = '" . @$r['birthday_show'] . "',
+				web_site_show         = '" . @$r['web_site_show'] . "',
+				interests_show        = '" . @$r['interests_show'] . "',
+				signature_show        = '" . @$r['signature_show'] . "',
+				web_site              = '" . @$r['web_site'] . "',
+				interests             = '" . @$r['interests'] . "',
+				signature             = '" . @$r['signature'] . "',
+				gender                = '" . @$r['gender'] . "',
+				birthday              = '" . @$r['birthday'] . "',
+				avatar_standard_group = '" . @$r['avatar_standard_group'] . "'
  				$avatar
 				$BC
 
 			WHERE
-				BenutzerId = '" . $_SESSION['user_id'] . "'";
+				uid = '" . $_SESSION['user_id'] . "'";
 
 		$AVE_DB->Query($q);
 		$this->msg($mod['config_vars']['ProfileOK'], 'index.php?module=forums&show=publicprofile');
@@ -270,7 +246,7 @@ if(isset($_POST['doupdate']) && $_POST['doupdate'] == 1)
 
 }
 
-$AVE_Template->assign('prefabAvatars', $this->prefabAvatars(@$r['Avatar']));
+$AVE_Template->assign('prefabAvatars', $this->prefabAvatars(@$r['avatar']));
 $AVE_Template->assign('avatar_width', MAX_AVATAR_WIDTH);
 $AVE_Template->assign('avatar_height', MAX_AVATAR_HEIGHT);
 $AVE_Template->assign('avatar_size', round(MAX_AVATAR_BYTES/1024));

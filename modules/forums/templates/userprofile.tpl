@@ -3,10 +3,10 @@
 {include file="$inc_path/header_sthreads.tpl"}
 {if $public==1}
 
-<form method="post" action="index.php?module=userpage&amp;action=show&amp;uid={$smarty.get.user_id}">
+<form method="post" action="index.php?module=forums&show=userprofile&user_id=1{$smarty.get.user_id}">
 <table width="100%" border="0" cellpadding="5" cellspacing="1" class="forum_tableborder">
   <tr>
-    <td colspan="2" class="forum_header"><strong>{#PR_userprofile_from#} &#8222;{$user->BenutzerName}&#8220;</strong></td>
+    <td colspan="2" class="forum_header"><strong>{#PR_userprofile_from#} &#8222;{$user->uname}&#8220;</strong></td>
   </tr>
   <tr>
     <td width="200" class="forum_post_first">{#PR_onlinestatus#}</td>
@@ -26,7 +26,7 @@
    {if $user->Pnempfang==1}
    <tr>
     <td width="200" class="forum_post_first">{#PN_SendPn#}</td>
-    <td class="forum_post_second"><a href="index.php?module=forums&show=pn&action=new&to={cpencode val=$user->BenutzerName}"><strong>{#UserSendPn#}</strong></a></td>
+    <td class="forum_post_second"><a href="index.php?module=forums&show=pn&action=new&to={cpencode val=$user->uname}"><strong>{#UserSendPn#}</strong></a></td>
   </tr>
   {/if}
   <tr>
@@ -47,29 +47,29 @@
   <tr>
     <td width="200" class="forum_post_first">{#ThreadViewPosts#}</td>
     <td class="forum_post_second">
-	{$user->postings} - <a href="index.php?module=forums&amp;show=userpostings&amp;user_id={$user->BenutzerId}"><strong>{#ShowAllPostings#}</strong></a></td>
+	{$user->postings} - <a href="index.php?module=forums&amp;show=userpostings&amp;user_id={$user->uid}"><strong>{#ShowAllPostings#}</strong></a></td>
   </tr>
   {/if}
-  {if $user->Interessen_show==1 && $user->Interessen}
+  {if $user->interests_show==1 && $user->interests}
   <tr>
     <td width="200" class="forum_post_first">{#PR_int#}</td>
-    <td class="forum_post_second">{$user->Interessen}</td>
+    <td class="forum_post_second">{$user->interests}</td>
   </tr>
   {/if}
-   {if $user->Signatur_show==1 && $user->Signatur}
+   {if $user->signature_show==1 && $user->signature}
   <tr>
     <td width="200" class="forum_post_first">{#PR_sig#}</td>
-    <td class="forum_post_second">{$user->Signatur}</td>
+    <td class="forum_post_second">{$user->signature}</td>
   </tr>
   {/if}
-  {if $user->Webseite_show==1 && $user->Webseite}
+  {if $user->web_site_show==1 && $user->web_site}
   <tr>
     <td width="200" class="forum_post_first">{#PR_webO#}</td>
-    <td class="forum_post_second"><a href="{$user->Webseite|escape:html|stripslashes}" target="_blank"><strong>{$user->Webseite|escape:html|stripslashes}</strong></a></td>
+    <td class="forum_post_second"><a href="{$user->web_site|escape:html|stripslashes}" target="_blank"><strong>{$user->web_site|escape:html|stripslashes}</strong></a></td>
   </tr>
   {/if}
 
-   {if $user->Email_show==1}
+   {if $user->email_show==1}
   <tr>
     <td width="200" class="forum_post_first">{#PR_RMailO#}</td>
     <td class="forum_post_second">{$user->email|escape:html|stripslashes}</td>
@@ -83,22 +83,22 @@
   </tr>
   {/if}
 
-  {if $user->Icq_show==1 && $user->Icq}
+  {if $user->icq_show==1 && $user->icq}
   <tr>
     <td width="200" class="forum_post_first">{#PR_icq#}</td>
     <td class="forum_post_second">{$user->Icq|escape:html|stripslashes}</td>
   </tr>
   {/if}
-  {if $user->Skype_show==1 && $user->Skype}
+  {if $user->skype_show==1 && $user->skype}
   <tr>
     <td class="forum_post_first">{#PR_skype#}</td>
     <td class="forum_post_second">{$user->Skype|escape:html|stripslashes}</td>
   </tr>
   {/if}
-  {if $user->Aim_show==1 && $user->Aim}
+  {if $user->aim_show==1 && $user->aim}
   <tr>
     <td class="forum_post_first">{#PR_aim#}</td>
-    <td class="forum_post_second">{$user->Aim|escape:html|stripslashes}</td>
+    <td class="forum_post_second">{$user->aim|escape:html|stripslashes}</td>
   </tr>
   {/if}
   {if $user->Emailempfang==1 && $smarty.session.user_id}

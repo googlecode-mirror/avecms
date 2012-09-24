@@ -21,11 +21,11 @@
 
 	{foreach from=$ignored item=i}
 		<tr class="{cycle name='il' values='forum_post_second,forum_post_first'}">
-			<td><a href="index.php?module=userpage&amp;action=show&amp;uid={$i.IgnoreId}"><strong>{$i.user_group_name|escape}</strong></a></td>
-			<td align="center">{$i.IgnoreId}</td>
-			<td align="center">{$i.Datum|date_format:$smarty.config.DateFormatMemberSince}</td>
-			<td>{$i.Grund|escape:html|stripslashes}</td>
-			<td align="center"><strong><a href="index.php?module=forums&amp;show=ignorelist&amp;remove={$i.IgnoreId}">{#IgnoreLink#}</a></strong></td>
+			<td><a href="index.php?module=forums&show=userprofile&user_id={$i.ignore_id}"><strong>{$i.user_group_name|escape}</strong></a></td>
+			<td align="center">{$i.ignore_id}</td>
+			<td align="center">{$i.ignore_date|date_format:$smarty.config.DateFormatMemberSince}</td>
+			<td>{$i.ignore_reason|escape:html|stripslashes}</td>
+			<td align="center"><strong><a href="index.php?module=forums&amp;show=ignorelist&amp;remove={$i.ignore_id}">{#IgnoreLink#}</a></strong></td>
 		</tr>
 	{/foreach}
 </table><br />
@@ -44,11 +44,11 @@
 		</tr>
 		<tr>
 			<td width="150" class="forum_post_first">{#IgnoreOrName#}</td>
-			<td class="forum_post_second"><input name="BenutzerName" type="text" id="BenutzerName" /></td>
+			<td class="forum_post_second"><input name="uname" type="text" id="uname" /></td>
 		</tr>
 		<tr>
 			<td width="150" class="forum_post_first">{#IgnoreReason#}</td>
-			<td class="forum_post_second"><input name="Grund" type="text" id="Grund" /></td>
+			<td class="forum_post_second"><input name="reason" type="text" id="reason" /></td>
 		</tr>
 		<tr>
 			<td width="150" class="forum_post_first">&nbsp;</td>

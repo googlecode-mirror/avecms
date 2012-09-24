@@ -110,7 +110,7 @@ if ($closed->uid == UID) {
 if (isset($_GET['action']) && $_GET['action'] == "edit")
 {
 	$q_information = "SELECT
-		u.BenutzerId,
+		u.uid,
 		UNIX_TIMESTAMP(p.datum) AS datum,
 		UNIX_TIMESTAMP(NOW()) AS today
 	FROM
@@ -118,7 +118,7 @@ if (isset($_GET['action']) && $_GET['action'] == "edit")
 		" . PREFIX . "_modul_forum_userprofile AS u
 	WHERE
 		p.id = '" . $_GET["pid"] . "' AND
-		u.BenutzerId = p.uid
+		u.uid = p.uid
 	";
 
 	$r_information = $AVE_DB->Query($q_information);
@@ -135,13 +135,13 @@ if (isset($_GET['action']) && $_GET['action'] == "edit")
 	if( ($permissions[FORUM_PERMISSION_CAN_EDIT_OTHER_POST] == 0) && (UGROUP != 1) )
 	{
 		// wenn nicht der beitragverfasser und der benutzer ist kein admin
-		if ($information->BenutzerId == UID && $permissions[FORUM_PERMISSION_CAN_EDIT_OWN_POST] == 0)
+		if ($information->uid == UID && $permissions[FORUM_PERMISSION_CAN_EDIT_OWN_POST] == 0)
 		{
 			$this->msg($mod['config_vars']['ErrornoPerm']);
 		}
 
 		// wenn nicht der beitragverfasser und der benutzer ist kein admin
-		if ($information->BenutzerId != UID && UGROUP != 1 && !$is_moderator)
+		if ($information->uid != UID && UGROUP != 1 && !$is_moderator)
 		{
 			$this->msg($mod['config_vars']['ErrornoPerm']);
 		}
@@ -163,7 +163,7 @@ if (isset($_GET['pid']) && !empty($_GET['pid'])) {
 	$attachment = (isset($_REQUEST['action']) && $_REQUEST['action']=="quote") ? '' : "p.attachment,";
 
 	$q_message = "SELECT
-		u.BenutzerName,
+		u.uname,
 		p.message,
 		p.title,
 		$attachment
@@ -176,7 +176,7 @@ if (isset($_GET['pid']) && !empty($_GET['pid'])) {
 		" . PREFIX . "_modul_forum_topic AS t
 	WHERE
 		p.id = '" . $_GET["pid"] . "' AND
-		p.uid = u.BenutzerId AND
+		p.uid = u.uid AND
 		t.id = p.topic_id";
 
 	$r_message = $AVE_DB->Query($q_message);
@@ -184,7 +184,7 @@ if (isset($_GET['pid']) && !empty($_GET['pid'])) {
 
 	if (isset($_GET["action"]) && $_GET["action"] == "quote")
 	{
-		$message->message = "[QUOTE][B]" . $mod['config_vars']['QuotePrefix'] . " " . $message->BenutzerName . "[/B]\n ". htmlspecialchars($message->message) . "[/QUOTE]\n\n";
+		$message->message = "[QUOTE][B]" . $mod['config_vars']['QuotePrefix'] . " " . $message->uname . "[/B]\n ". htmlspecialchars($message->message) . "[/QUOTE]\n\n";
 	}
 	elseif (isset($_GET["action"]) && $_GET["action"] == "edit")
 	{

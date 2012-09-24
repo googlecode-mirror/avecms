@@ -21,26 +21,26 @@ function userImport()
 			INSERT
 			INTO " . PREFIX . "_modul_forum_userprofile
 			SET
-				Id             = '',
-				BenutzerId     = '" . $row->uid . "',
-				BenutzerName   = '" . $row->uname . "',
-				GroupIdMisc    = '" . $row->group_id_misc . "',
-				Beitraege      = '" . $row->user_posts . "',
-				ZeigeProfil    = '" . $row->show_public . "',
-				Signatur       = '" . $row->user_sig . "',
-				Icq            = '" . $row->user_icq . "',
-				Aim            = '" . $row->user_aim . "',
-				Skype          = '" . $row->user_skype . "',
-				Emailempfang   = '" . (($row->user_viewemail=='yes' || $row->user_viewemail=='') ? 1 : 0) . "',
-				Pnempfang      = '" . (($row->user_canpn=='yes') ? 1 : 0) . "',
-				Avatar         = '" . $row->user_avatar . "',
-				AvatarStandard = '" . $row->usedefault_avatar . "',
-				Webseite       = '" . $row->url . "',
-				Unsichtbar     = '" . (($row->invisible=='yes') ? 1 : 0) . "',
-				Interessen     = '" . $row->user_interests . "',
-				email          = '" . $row->email . "',
-				reg_time       = '" . $row->user_regdate . "',
-				GeburtsTag     = '" . $row->user_birthday . "'
+				id                    = '',
+				uid                   = '" . $row->uid . "',
+				uname                 = '" . $row->uname . "',
+				group_id_misc         = '" . $row->group_id_misc . "',
+				messages              = '" . $row->user_posts . "',
+				show_profile          = '" . $row->show_public . "',
+				signature             = '" . $row->user_sig . "',
+				icq                   = '" . $row->user_icq . "',
+				aim                   = '" . $row->user_aim . "',
+				skype                 = '" . $row->user_skype . "',
+				email_receipt         = '" . (($row->user_viewemail=='yes' || $row->user_viewemail=='') ? 1 : 0) . "',
+				pn_receipt            = '" . (($row->user_canpn=='yes') ? 1 : 0) . "',
+				avatar                = '" . $row->user_avatar . "',
+				avatar_standard_group = '" . $row->usedefault_avatar . "',
+				web_site              = '" . $row->url . "',
+				invisible             = '" . (($row->invisible=='yes') ? 1 : 0) . "',
+				interests             = '" . $row->user_interests . "',
+				email                 = '" . $row->email . "',
+				reg_time              = '" . $row->user_regdate . "',
+				birthday              = '" . $row->user_birthday . "'
 		");
 
 		if($row->uid != 1)

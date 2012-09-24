@@ -560,7 +560,7 @@ class AVE_User
 					$row = $AVE_DB->Query("
 						SELECT *
 						FROM " . PREFIX . "_modul_forum_userprofile
-						WHERE BenutzerId = '" . $user_id . "'
+						WHERE uid = '" . $user_id . "'
 					")->FetchRow();
 
 					if (is_object($row))
@@ -637,12 +637,12 @@ class AVE_User
 						$AVE_DB->Query("
 							UPDATE " . PREFIX . "_modul_forum_userprofile
 							SET
-								GroupIdMisc  = '" . @implode(';', $_REQUEST['user_group_extra']) . "',
-								BenutzerName = '" . @$_REQUEST['BenutzerName_fp']. "',
-								Signatur     = '" . @$_REQUEST['Signatur_fp'] . "' ,
-								Avatar       = '" . @$_REQUEST['Avatar_fp'] . "'
+								group_id_misc  = '" . @implode(';', $_REQUEST['user_group_extra']) . "',
+								uname          = '" . @$_REQUEST['BenutzerName_fp']. "',
+								signature      = '" . @$_REQUEST['Signatur_fp'] . "' ,
+								avatar         = '" . @$_REQUEST['Avatar_fp'] . "'
 							WHERE
-								BenutzerId = '" . $user_id . "'
+								uid = '" . $user_id . "'
 						");
 					}
 
@@ -736,7 +736,7 @@ class AVE_User
 				$AVE_DB->Query("
 					DELETE
 					FROM " . PREFIX . "_modul_forum_userprofile
-					WHERE BenutzerId = '" . $user_id . "'
+					WHERE uid = '" . $user_id . "'
 				");
 			}
 

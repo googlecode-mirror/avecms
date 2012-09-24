@@ -13,13 +13,13 @@ if(defined("MISCIDSINC"))
 
 	if (@is_numeric(UID))
 	{
-		$queryfirst = "SELECT GroupIdMisc FROM " . PREFIX . "_modul_forum_userprofile WHERE BenutzerId = '" . UID . "'";
+		$queryfirst = "SELECT uid, group_id_misc FROM " . PREFIX . "_modul_forum_userprofile WHERE uid = '" . UID . "'";
 		$result = $AVE_DB->Query($queryfirst);
 		$user = $result->FetchRow();
 
-		if(is_object($user)&& $user->GroupIdMisc != "")
+		if(is_object($user)&& $user->group_id_misc != "")
 		{
-			$group_ids_pre = UGROUP . ";" . $user->GroupIdMisc;
+			$group_ids_pre = UGROUP . ";" . $user->group_id_misc;
 			$group_ids     = @explode(";", $group_ids_pre);
 		} else {
 			$group_ids[] = UGROUP;

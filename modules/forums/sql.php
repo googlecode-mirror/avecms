@@ -144,12 +144,12 @@ $modul_sql_install[] = "INSERT INTO CPPREFIX_modul_forum_grouppermissions VALUES
 
 
 $modul_sql_install[] = "CREATE TABLE CPPREFIX_modul_forum_ignorelist (
-  Id int(14) unsigned NOT NULL auto_increment,
-  BenutzerId int(14) unsigned NOT NULL default '0',
-  IgnoreId int(10) unsigned NOT NULL default '0',
-  Grund varchar(255) default NULL,
-  Datum int(14) unsigned NOT NULL default '0',
-  PRIMARY KEY  (Id)
+  id int(14) unsigned NOT NULL auto_increment,
+  uid int(14) unsigned NOT NULL default '0',
+  ignore_id int(10) unsigned NOT NULL default '0',
+  ignore_reason varchar(255) default NULL,
+  ignore_date int(14) unsigned NOT NULL default '0',
+  PRIMARY KEY  (id)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 
 $modul_sql_install[] = "CREATE TABLE CPPREFIX_modul_forum_mods (
@@ -342,38 +342,38 @@ $modul_sql_install[] = "CREATE TABLE CPPREFIX_modul_forum_useronline (
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 
 $modul_sql_install[] = "CREATE TABLE CPPREFIX_modul_forum_userprofile (
-  Id int(14) unsigned NOT NULL auto_increment,
-  BenutzerId int(14) unsigned NOT NULL default '0',
-  BenutzerName varchar(200) default NULL,
-  BenutzerNameChanged mediumint(3) unsigned default '0',
-  GroupIdMisc text,
-  Beitraege int(10) unsigned NOT NULL default '0',
-  ZeigeProfil tinyint(1) unsigned NOT NULL default '1',
-  Signatur tinytext,
-  Icq varchar(150) default NULL,
-  Aim varchar(150) default NULL,
-  Skype varchar(150) default NULL,
-  Emailempfang tinyint(1) unsigned NOT NULL default '1',
-  Pnempfang tinyint(1) unsigned NOT NULL default '1',
-  Avatar varchar(255) default NULL,
-  AvatarStandard tinyint(1) NOT NULL default '1',
-  Webseite varchar(255) default NULL,
-  Unsichtbar tinyint(1) unsigned NOT NULL default '1',
-  Interessen text,
+  id int(14) unsigned NOT NULL auto_increment,
+  uid int(14) unsigned NOT NULL default '0',
+  uname varchar(200) default NULL,
+  uname_changed mediumint(3) unsigned default '0',
+  group_id_misc text,
+  messages int(10) unsigned NOT NULL default '0',
+  show_profile tinyint(1) unsigned NOT NULL default '1',
+  signature tinytext,
+  icq varchar(150) default NULL,
+  aim varchar(150) default NULL,
+  skype varchar(150) default NULL,
+  email_receipt tinyint(1) unsigned NOT NULL default '1',
+  pn_receipt tinyint(1) unsigned NOT NULL default '1',
+  avatar varchar(255) default NULL,
+  avatar_standard_group tinyint(1) NOT NULL default '1',
+  web_site varchar(255) default NULL,
+  invisible tinyint(1) unsigned NOT NULL default '1',
+  interests text,
   email varchar(200) default NULL,
   reg_time int(14) unsigned NOT NULL default '0',
-  GeburtsTag varchar(10) default NULL,
-  Email_show tinyint(1) unsigned NOT NULL default '0',
-  Icq_show tinyint(1) unsigned NOT NULL default '1',
-  Aim_show tinyint(1) unsigned NOT NULL default '1',
-  Skype_show tinyint(1) unsigned NOT NULL default '1',
-  Interessen_show tinyint(1) unsigned NOT NULL default '1',
-  Signatur_show tinyint(1) unsigned NOT NULL default '1',
-  GeburtsTag_show tinyint(1) unsigned NOT NULL default '1',
-  Webseite_show tinyint(1) unsigned NOT NULL default '1',
-  Geschlecht enum('male','female') NOT NULL default 'male',
-  PRIMARY KEY  (Id),
-  UNIQUE KEY BenutzerId (BenutzerId)
+  birthday varchar(10) default NULL,
+  email_show tinyint(1) unsigned NOT NULL default '0',
+  icq_show tinyint(1) unsigned NOT NULL default '1',
+  aim_show tinyint(1) unsigned NOT NULL default '1',
+  skype_show tinyint(1) unsigned NOT NULL default '1',
+  interests_show tinyint(1) unsigned NOT NULL default '1',
+  signature_show tinyint(1) unsigned NOT NULL default '1',
+  birthday_show tinyint(1) unsigned NOT NULL default '1',
+  web_site_show tinyint(1) unsigned NOT NULL default '1',
+  gender enum('male','female') NOT NULL default 'male',
+  PRIMARY KEY  (id),
+  UNIQUE KEY uid (uid)
 ) ENGINE=MyISAM PACK_KEYS=0 AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;";
 
 

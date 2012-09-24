@@ -23,7 +23,7 @@ window.moveTo(1,1);
 					</tr>
 					{foreach from=$poster item=post}
 						<tr>
-							<td><a target="_blank" href="index.php?module=userpage&amp;action=show&amp;uid={$post->BenutzerId}">{$post->BenutzerName}</a></td>
+							<td><a target="_blank" href="index.php?module=userpage&amp;action=show&amp;uid={$post->uid}">{$post->uname}</a></td>
 							<td>{$post->ucount}</td>
 						</tr>
 					{/foreach}
