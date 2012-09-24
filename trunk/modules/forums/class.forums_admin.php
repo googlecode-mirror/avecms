@@ -575,10 +575,10 @@ class Forum
 		if(!empty($_REQUEST['user_name']))
 		{
 			$user_id = $AVE_DB->Query("
-				SELECT BenutzerId
+				SELECT uid, uname
 				FROM " . PREFIX . "_modul_forum_userprofile
-				WHERE BenutzerName = '" . $_POST['user_name'] . "'
-				OR BenutzerId = '" . $_POST['user_name'] . "'
+				WHERE uname = '" . $_POST['user_name'] . "'
+				OR uid = '" . $_POST['user_name'] . "'
 			")->GetCell();
 			if ($user_id)
 			{
@@ -609,13 +609,13 @@ class Forum
 
 		$result = $AVE_DB->Query("
 			SELECT
-				u.BenutzerId,
-				u.BenutzerName
+				u.uid,
+				u.uname
 			FROM
 				" . PREFIX . "_modul_forum_userprofile AS u,
 				" . PREFIX . "_modul_forum_mods AS m
 			WHERE
-				u.BenutzerId = m.user_id AND
+				u.uid = m.user_id AND
 				m.forum_id = $f_id
 		");
 		$mods = array();
@@ -1449,7 +1449,7 @@ class Forum
 
 			if ($Truncate==1)
 			{
-				$AVE_DB->Query("DELETE FROM " . PREFIX . "_modul_forum_userprofile WHERE BenutzerId != 1 AND BenutzerId != '" . $_SESSION['user_id'] . "'");
+				$AVE_DB->Query("DELETE FROM " . PREFIX . "_modul_forum_userprofile WHERE uid != 1 AND uid != '" . $_SESSION['user_id'] . "'");
 				$AVE_DB->Query("DELETE FROM " . PREFIX . "_users WHERE Id != 1 AND Id != '" . $_SESSION['user_id'] . "'");
 				$AVE_DB->Query("ALTER TABLE " . PREFIX . "_modul_forum_userprofile PACK_KEYS =0 CHECKSUM =0 DELAY_KEY_WRITE =0 AUTO_INCREMENT =1");
 				$AVE_DB->Query("ALTER TABLE " . PREFIX . "_users PACK_KEYS =0 CHECKSUM =0 DELAY_KEY_WRITE =0 AUTO_INCREMENT =1");
@@ -1461,26 +1461,26 @@ class Forum
 					INSERT
 					INTO " . PREFIX . "_modul_forum_userprofile
 					SET
-						Id             = '',
-						BenutzerId     = '" . $row->uid . "',
-						BenutzerName   = '" . $row->uname . "',
-						GroupIdMisc    = '" . $row->group_id_misc . "',
-						Beitraege      = '" . $row->user_posts . "',
-						ZeigeProfil    = '" . $row->show_public . "',
-						Signatur       = '" . $row->user_sig . "',
-						Icq            = '" . $row->user_icq . "',
-						Aim            = '" . $row->user_aim . "',
-						Skype          = '" . $row->user_skype . "',
-						Emailempfang   = '" . (($row->user_viewemail=='yes' || $row->user_viewemail=='') ? 1 : 0) . "',
-						Pnempfang      = '" . (($row->user_canpn=='yes') ? 1 : 0) . "',
-						Avatar         = '" . $row->user_avatar . "',
-						AvatarStandard = '" . $row->usedefault_avatar . "',
-						Webseite       = '" . $row->url . "',
-						Unsichtbar     = '" . (($row->invisible=='yes') ? 1 : 0) . "',
-						Interessen     = '" . $row->user_interests . "',
-						email          = '" . $row->email . "',
-						reg_time       = '" . $row->user_regdate . "',
-						GeburtsTag     = '" . $row->user_birthday . "'
+						id                    = '',
+						uid                   = '" . $row->uid . "',
+						uname                 = '" . $row->uname . "',
+						group_id_misc         = '" . $row->group_id_misc . "',
+						messages              = '" . $row->user_posts . "',
+						show_profile          = '" . $row->show_public . "',
+						signature             = '" . $row->user_sig . "',
+						icq                   = '" . $row->user_icq . "',
+						aim                   = '" . $row->user_aim . "',
+						skype                 = '" . $row->user_skype . "',
+						email_receipt         = '" . (($row->user_viewemail=='yes' || $row->user_viewemail=='') ? 1 : 0) . "',
+						pn_receipt            = '" . (($row->user_canpn=='yes') ? 1 : 0) . "',
+						avatar                = '" . $row->user_avatar . "',
+						avatar_standard_group = '" . $row->usedefault_avatar . "',
+						web_site              = '" . $row->url . "',
+						invisible             = '" . (($row->invisible=='yes') ? 1 : 0) . "',
+						interests             = '" . $row->user_interests . "',
+						email                 = '" . $row->email . "',
+						reg_time              = '" . $row->user_regdate . "',
+						birthday              = '" . $row->user_birthday . "'
 					");
 
 				if ($row->uid != 2)

@@ -21,7 +21,7 @@
 						<tr>
 							<td width="180" nowrap="nowrap"><img src="{$forum_images}forum/arrow.gif" alt="" border="0" class="absmiddle" /><a onclick="return confirm(\'{#LogoutC#}\');" href="index.php?module=login&amp;action=logout">{#Logout#}</a></td>
 							<td width="180" nowrap="nowrap"><img src="{$forum_images}forum/arrow.gif" alt="" border="0" class="absmiddle" /><a href="index.php?module=forums&amp;show=pn">{#PN_Name#}</a></td>
-							<td nowrap="nowrap"><img src="{$forum_images}forum/arrow.gif" alt="" border="0" class="absmiddle" /><a href="index.php?module=userpage&amp;action=change">{#MyProfilePublic#}</a></td>
+							<td nowrap="nowrap"><img src="{$forum_images}forum/arrow.gif" alt="" border="0" class="absmiddle" /><a href="index.php?module=forums&amp;show=publicprofile">{#MyProfilePublic#}</a></td>
 						</tr>
 						<tr>
 							<td width="180" nowrap="nowrap"><img src="{$forum_images}forum/arrow.gif" alt="" border="0" class="absmiddle" /><a href="index.php?module=login&amp;action=profile">{#MyProfile#}</a></td>

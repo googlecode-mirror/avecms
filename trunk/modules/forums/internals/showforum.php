@@ -93,13 +93,13 @@ if ($pass)
 		// miscrechte
 		if (@is_numeric(UID))
 		{
-			$queryfirst = "SELECT GroupIdMisc FROM " . PREFIX . "_modul_forum_userprofile WHERE BenutzerId = '" . UID . "'";
+			$queryfirst = "SELECT uid, group_id_misc FROM " . PREFIX . "_modul_forum_userprofile WHERE uid = '" . UID . "'";
 			$result = $AVE_DB->Query($queryfirst);
 			$user = $result->FetchRow();
 
-			if (@$user->GroupIdMisc != "")
+			if (@$user->group_id_misc != "")
 			{
-				$group_ids_pre = UGROUP . ";" . $user->GroupIdMisc;
+				$group_ids_pre = UGROUP . ";" . $user->group_id_misc;
 				$group_ids     = @explode(";", $group_ids_pre);
 			}
 			else
@@ -186,7 +186,7 @@ if ($pass)
 		? addslashes($_GET["sortby"])
 		: "last_post_int";
 
-	$order_by = ($order_by == 'user_name') ? 'BenutzerName' : $order_by;
+	$order_by = ($order_by == 'user_name') ? 'uname' : $order_by;
 	$order = ($order != "") ? $order : "DESC";
 
 	// wenn user nicht mod dieses forum ist und kein admin ist, nicht freigeschaltete themen verbergen
@@ -204,7 +204,8 @@ if ($pass)
 			t.views,
 			t.posticon,
 			t.uid,
-			u.BenutzerName,
+			u.uid,
+			u.uname,
 			t.replies,
 			t.last_post
 		FROM
@@ -212,7 +213,7 @@ if ($pass)
 			" . PREFIX . "_modul_forum_userprofile AS u,
 			" . PREFIX . "_modul_forum_post AS p
 		WHERE
-			(t.forum_id = '" . $fid . "' AND u.BenutzerId = t.uid)
+			(t.forum_id = '" . $fid . "' AND u.uid = t.uid)
 		AND
 			p.topic_id = t.id
 		" . $q_topic_count_extra . "
@@ -257,7 +258,8 @@ if ($pass)
 			t.views,
 			t.posticon,
 			t.uid,
-			u.BenutzerName,
+			u.uid,
+			u.uname,
 			u.reg_time,
 			t.last_post,
 			t.opened,
@@ -268,7 +270,7 @@ if ($pass)
 			" . PREFIX . "_modul_forum_rating AS r,
 			" . PREFIX . "_modul_forum_post AS p
 		WHERE
-			(t.forum_id = '" . $fid . "' AND u.BenutzerId = t.uid  AND r.topic_id = t.id)
+			(t.forum_id = '" . $fid . "' AND u.uid = t.uid  AND r.topic_id = t.id)
 		AND
 			p.topic_id = t.id
 		" . $topic_query_extra . "
@@ -320,34 +322,35 @@ if ($pass)
 			}
 		}
 
-		$user_query = "SELECT BenutzerId,BenutzerId,reg_time FROM " . PREFIX . "_modul_forum_userprofile WHERE BenutzerId = '" . $topic['uid'] . "'";
+		$user_query = "SELECT uid, reg_time FROM " . PREFIX . "_modul_forum_userprofile WHERE uid = '" . $topic['uid'] . "'";
 
 		$user_result = $AVE_DB->Query($user_query);
 		$user_row = $user_result->FetchRow();
 
 
 		$topic["autorlink"] = "index.php?module=forums&amp;show=userprofile&amp;user_id=$topic[uid]";
-		$topic["autor"] = $topic["BenutzerName"];
+		$topic["autor"] = $topic["uname"];
 
 		// letzten beitrag ermitteln
 		$last_post_query = "
 			SELECT
 				p.id,
-				datum,
+				p.datum,
 				p.topic_id,
 				p.uid,
-				u.BenutzerName,
+				u.uid,
+				u.uname,
 				u.reg_time
 			FROM
 				" . PREFIX . "_modul_forum_post AS p,
 				" . PREFIX . "_modul_forum_userprofile AS u
 			WHERE
 				p.topic_id = " . $topic['id'] . " AND
-				u.BenutzerId = p.uid
+				u.uid = p.uid
 			GROUP BY
 				p.id
 			ORDER BY
-				datum DESC
+				p.datum DESC
 			LIMIT 1
 		";
 
@@ -356,7 +359,7 @@ if ($pass)
 		$last_post_row = $last_post_result->FetchRow();
 
 		$last_post_row->reg_time = $last_post_row->reg_time;
-		$last_post_row->link = ($last_post_row->reg_time < 2) ? $mod['config_vars']['Guest'] : "<a class='forum_links_small' href='index.php?module=forums&amp;show=userprofile&amp;user_id=$last_post_row->uid'>$last_post_row->BenutzerName</a>";
+		$last_post_row->link = ($last_post_row->reg_time < 2) ? $mod['config_vars']['Guest'] : "<a class='forum_links_small' href='index.php?module=forums&amp;show=userprofile&amp;user_id=$last_post_row->uid'>$last_post_row->uname</a>";
 		$topic["lastposter"] = $last_post_row;
 
 		// =================================================
@@ -484,11 +487,11 @@ if ($pass)
 
 						$last_post->replies = $replies->replies;
 
-						$q_last_user = "SELECT BenutzerId,BenutzerName,reg_time FROM " . PREFIX . "_modul_forum_userprofile WHERE BenutzerId = " . $last_post->uid;
+						$q_last_user = "SELECT uid, uname, reg_time FROM " . PREFIX . "_modul_forum_userprofile WHERE uid = " . $last_post->uid;
 						$r_last_user = $AVE_DB->Query($q_last_user);
 						$last_user = $r_last_user->FetchRow();
 
-						$last_post->LastPoster = $last_user->BenutzerName;
+						$last_post->LastPoster = $last_user->uname;
 
 						$last_post->page = $this->getPageNum($last_post->replies, 15);
 						$subforum['last_post'] = $last_post;

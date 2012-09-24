@@ -11,10 +11,10 @@
 
 	{foreach from=$mods item=mod}
 		<form action="index.php?do=modules&action=modedit&mod=forums&moduleaction=mods&cp={$sess}&pop=1&del=1" method="post">
-			<input type="hidden" name="user_id" value="{$mod->BenutzerId}" />
+			<input type="hidden" name="user_id" value="{$mod->uid}" />
 			<input type="hidden" name="id" value="{$smarty.get.id|escape}" />
 			<tr>
-				<td width="20%" class="first"><strong>{$mod->BenutzerName|escape}</strong></td>
+				<td width="20%" class="first"><strong>{$mod->uname|escape}</strong></td>
 				<td class="second"><input class="button" type="submit" value="{#Renove#}" /></td>
 			</tr>
 		</form>

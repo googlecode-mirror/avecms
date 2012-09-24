@@ -29,12 +29,13 @@ global $AVE_DB, $AVE_Template, $mod;
 			t.posticon,
 			t.uid,
 			t.replies,
-			u.BenutzerName,
+			u.uid,
+			u.uname,
 			r.rating,
 			f.group_id,
 			f.title AS f_title
 		FROM " . PREFIX . "_modul_forum_topic AS t
-		JOIN " . PREFIX . "_modul_forum_userprofile AS u ON u.BenutzerId = t.uid
+		JOIN " . PREFIX . "_modul_forum_userprofile AS u ON u.uid = t.uid
 		JOIN " . PREFIX . "_modul_forum_rating AS r ON r.topic_id = t.id
 		JOIN " . PREFIX . "_modul_forum_post AS p ON p.topic_id = t.id
 		JOIN " . PREFIX . "_modul_forum_forum AS f ON  f.id = t.forum_id
@@ -53,7 +54,7 @@ global $AVE_DB, $AVE_Template, $mod;
 //			t.posticon,
 //			t.uid,
 //			t.replies,
-//			u.BenutzerName,
+//			u.uname,
 //			r.rating,
 //			f.group_id,
 //			f.title AS f_title
@@ -65,7 +66,7 @@ global $AVE_DB, $AVE_Template, $mod;
 //			" . PREFIX . "_modul_forum_forum AS f
 //		WHERE
 //			$where_time_stat AND
-//			u.BenutzerId = t.uid AND
+//			u.uid = t.uid AND
 //			r.topic_id = t.id AND
 //			p.topic_id = t.id AND
 //			f.id = t.forum_id
@@ -107,7 +108,7 @@ global $AVE_DB, $AVE_Template, $mod;
 							// AUCH DIE RECHTE BESITZT
 							// =================================================
 							$topic['autorlink'] = "index.php?module=forums&amp;show=userprofile&amp;user_id=" . $topic['uid'];
-							$topic['autor'] = $topic['BenutzerName'];
+							$topic['autor'] = $topic['uname'];
 							$topic['link'] = "index.php?module=forums&amp;show=showtopic&toid=".$topic['id']."&amp;fid=$forum_id";
 							$topic['forumslink'] = "index.php?module=forums&amp;show=showforum&amp;fid=$forum_id";
 

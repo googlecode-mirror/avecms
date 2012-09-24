@@ -16,7 +16,7 @@ if(UGROUP==2)
 	$this->msg($mod['config_vars']['ErrornoPerm']);
 }
 
-if(isset($_GET['insert']) && (empty($_GET['insert']) && empty($_GET['BenutzerName'])))
+if(isset($_GET['insert']) && (empty($_GET['insert']) && empty($_GET['uname'])))
 {
 	header("Location:" . $_SERVER['HTTP_REFERER']);
 	exit;
@@ -25,25 +25,25 @@ if(isset($_GET['insert']) && (empty($_GET['insert']) && empty($_GET['BenutzerNam
 //=======================================================
 // Eintragen
 //=======================================================
-if((isset($_GET['insert']) && is_numeric($_GET['insert']) && $_GET['insert'] > 0) || (isset($_GET['BenutzerName']) && $_GET['BenutzerName'] != ''))
+if((isset($_GET['insert']) && is_numeric($_GET['insert']) && $_GET['insert'] > 0) || (isset($_GET['uname']) && $_GET['uname'] != ''))
 {
-	if(isset($_GET['BenutzerName']) && $_GET['BenutzerName'] != '')
+	if(isset($_GET['uname']) && $_GET['uname'] != '')
 	{
-		$_GET['insert'] = $this->fetchuserid(addslashes($_GET['BenutzerName']));
+		$_GET['insert'] = $this->fetchuserid(addslashes($_GET['uname']));
 	}
 
 	$AVE_DB->Query("INSERT INTO " . PREFIX . "_modul_forum_ignorelist
 	(
-		Id,
-		BenutzerId,
-		IgnoreId,
-		Grund,
-		Datum
+		id,
+		uid,
+		ignore_id,
+		ignore_reason,
+		ignore_date
 	) VALUES (
 		'',
 		'" . $_SESSION['user_id'] . "',
 		'" . @addslashes($_GET['insert']) . "',
-		'" . @addslashes($_GET['Grund']) . "',
+		'" . @addslashes($_GET['reason']) . "',
 		'" . time() . "'
 	)");
 	header("Location:" . $_SERVER['HTTP_REFERER']);
@@ -55,7 +55,7 @@ if((isset($_GET['insert']) && is_numeric($_GET['insert']) && $_GET['insert'] > 0
 //=======================================================
 if(isset($_GET['remove']) && is_numeric($_GET['remove']) && $_GET['remove'] > 0)
 {
-	$AVE_DB->Query("DELETE FROM " . PREFIX . "_modul_forum_ignorelist WHERE IgnoreId = '" . $_GET['remove'] . "'");
+	$AVE_DB->Query("DELETE FROM " . PREFIX . "_modul_forum_ignorelist WHERE ignore_id = '" . $_GET['remove'] . "'");
 	header("Location:" . $_SERVER['HTTP_REFERER']);
 	exit;
 }
@@ -69,10 +69,10 @@ if(isset($_GET['action']) && $_GET['action'] != '')
 	{
 		case 'showlist':
 			$ignored = array();
-			$sql = $AVE_DB->Query("SELECT * FROM " . PREFIX . "_modul_forum_ignorelist WHERE BenutzerId = '" . $_SESSION['user_id'] . "' ORDER BY Datum DESC");
+			$sql = $AVE_DB->Query("SELECT * FROM " . PREFIX . "_modul_forum_ignorelist WHERE uid = '" . $_SESSION['user_id'] . "' ORDER BY ignore_date DESC");
 			while($row = $sql->FetchArray())
 			{
-				$row['Name'] = $this->getUserName($row['IgnoreId']);
+				$row['Name'] = $this->getUserName($row['ignore_id']);
 				array_push($ignored, $row);
 			}
 

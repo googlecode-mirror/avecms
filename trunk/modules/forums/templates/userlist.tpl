@@ -33,7 +33,7 @@
     <td align="center">{$u->reg_time|date_format:'%d.%m.%Y'}</td>
     <td align="center">
 	{if $u->Posts >= 1}
-	<a href="index.php?module=forums&amp;show=userpostings&amp;user_id={$u->BenutzerId}">{#UsersPosts#}</a>
+	<a href="index.php?module=forums&amp;show=userpostings&amp;user_id={$u->uid}">{#UsersPosts#}</a>
 	{else}
 	&nbsp;
 	{/if}

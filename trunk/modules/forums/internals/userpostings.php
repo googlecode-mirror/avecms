@@ -13,16 +13,16 @@ if (isset($_GET['user_id']) && is_numeric($_GET['user_id']) && $_GET['user_id'] 
 	// der beitragverfasser
 	$poster = $AVE_DB->Query("
 		SELECT
-			u.Avatar,
+			u.avatar,
 			us.user_group,
-			u.AvatarStandard,
-			u.BenutzerName,
+			u.avatar_standard_group,
+			u.uname,
 			u.email,
-			u.Webseite,
+			u.web_site,
 			u.reg_time,
-			u.Signatur,
-			u.Unsichtbar,
-			u.BenutzerId,
+			u.signature,
+			u.invisible,
+			u.uid,
 			us.firstname,
 			us.user_group,
 			us.lastname,
@@ -31,12 +31,12 @@ if (isset($_GET['user_id']) && is_numeric($_GET['user_id']) && $_GET['user_id'] 
 			" . PREFIX . "_modul_forum_userprofile AS u
 		JOIN
 			" . PREFIX . "_users AS us
-				ON us.Id = u.BenutzerId
+				ON us.Id = u.uid
 		JOIN
 			" . PREFIX . "_user_groups AS ug
 				ON ug.user_group = us.user_group
 		WHERE
-			u.BenutzerId = '" . intval($_GET['user_id']) . "'
+			u.uid = '" . intval($_GET['user_id']) . "'
 	")->FetchRow();
 
 	$poster->Poster = $this->fetchusername($_GET['user_id']);
@@ -44,7 +44,7 @@ if (isset($_GET['user_id']) && is_numeric($_GET['user_id']) && $_GET['user_id'] 
 	$poster->user_posts = $AVE_DB->Query("
 		SELECT COUNT(*)
 		FROM " . PREFIX . "_modul_forum_post
-		WHERE uid = '" . $poster->BenutzerId . "'
+		WHERE uid = '" . $poster->uid . "'
 	")->GetCell();
 
 	$poster->rank = $AVE_DB->Query("
@@ -55,11 +55,11 @@ if (isset($_GET['user_id']) && is_numeric($_GET['user_id']) && $_GET['user_id'] 
 		LIMIT 1
 	")->GetCell();
 
-	$poster->avatar = $this->getAvatar($poster->user_group,$poster->Avatar,$poster->AvatarStandard);
+	$poster->avatar = $this->getAvatar($poster->user_group,$poster->avatar,$poster->avatar_standard_group);
 	$poster->regdate = $poster->reg_time;
-	$poster->user_sig = $this->kcodes($poster->Signatur);
+	$poster->user_sig = $this->kcodes($poster->signature);
 
-	if (SMILIES==1) $poster->user_sig = $this->replaceWithSmileys($poster->Signatur);
+	if (SMILIES==1) $poster->user_sig = $this->replaceWithSmileys($poster->signature);
 
 	$AVE_Template->assign("poster", $poster);
 
@@ -82,7 +82,8 @@ if (isset($_GET['user_id']) && is_numeric($_GET['user_id']) && $_GET['user_id'] 
 			t.views AS topic_views,
 			t.replies AS topic_replies,
 			t.forum_id AS AUA,
-			u.BenutzerName,
+			u.uid,
+			u.uname,
 			c.group_id AS GRUPPEN_IDS
 		FROM
 			" . PREFIX . "_modul_forum_post AS p
@@ -91,7 +92,7 @@ if (isset($_GET['user_id']) && is_numeric($_GET['user_id']) && $_GET['user_id'] 
 		JOIN
 			" . PREFIX . "_modul_forum_forum AS f ON f.id = t.forum_id
 		JOIN
-			" . PREFIX . "_modul_forum_userprofile AS u ON u.BenutzerId = p.uid
+			" . PREFIX . "_modul_forum_userprofile AS u ON u.uid = p.uid
 		JOIN
 			" . PREFIX . "_modul_forum_category AS c ON c.id = f.category_id
 		WHERE
@@ -113,15 +114,15 @@ if (isset($_GET['user_id']) && is_numeric($_GET['user_id']) && $_GET['user_id'] 
 	}
 	else
 	{
-		$GroupIdMisc = $AVE_DB->Query("
-			SELECT GroupIdMisc
+		$group_id_misc = $AVE_DB->Query("
+			SELECT group_id_misc
 			FROM " . PREFIX . "_modul_forum_userprofile
-			WHERE BenutzerId = '" . UID . "'
+			WHERE uid = '" . UID . "'
 		")->GetCell();
 
-		if ($GroupIdMisc != "")
+		if ($group_id_misc != "")
 		{
-			$my_group_id = @explode(";", UGROUP . ";" . $GroupIdMisc);
+			$my_group_id = @explode(";", UGROUP . ";" . $group_id_misc);
 		}
 		else
 		{

@@ -18,7 +18,7 @@ global $AVE_DB, $AVE_Template, $mod;
 //	$sql = $AVE_DB->Query("SELECT COUNT(id) AS counts FROM " . PREFIX . "_modul_forum_post WHERE uid = {$row_first->Id}");
 //	while ($row = $sql->FetchRow())
 //	{
-//		$AVE_DB->Query("UPDATE " . PREFIX . "_modul_forum_userprofile SET Beitraege={$row->counts} WHERE BenutzerId={$row_first->Id}");
+//		$AVE_DB->Query("UPDATE " . PREFIX . "_modul_forum_userprofile SET Beitraege={$row->counts} WHERE uid={$row_first->Id}");
 //	}
 //}
 
@@ -31,14 +31,14 @@ if (!empty($_REQUEST['orderby']))
 	switch ($_REQUEST['orderby'])
 	{
 		case 'posts_asc':
-			$orderby = ' ORDER BY Beitraege ASC';
+			$orderby = ' ORDER BY messages ASC';
 			$nav_link = '&amp;orderby=posts_asc';
 			$img_post = '<img hspace="5" border="0" src="templates/'. THEME_FOLDER.'/modules/forums/sortasc.gif" alt="" />';
 			$AVE_Template->assign("img_post", $img_post);
 			break;
 
 		case 'posts_desc':
-			$orderby = ' ORDER BY Beitraege DESC';
+			$orderby = ' ORDER BY messages DESC';
 			$nav_link = '&amp;orderby=posts_desc';
 			$img_post = '<img hspace="5" border="0" src="templates/'. THEME_FOLDER.'/modules/forums/sortdesc.gif" alt="" />';
 			$AVE_Template->assign("img_post", $img_post);
@@ -59,14 +59,14 @@ if (!empty($_REQUEST['orderby']))
 			break;
 
 		case 'name_asc':
-			$orderby = ' ORDER BY BenutzerName ASC';
+			$orderby = ' ORDER BY uname ASC';
 			$nav_link = '&amp;orderby=name_asc';
 			$img_name = '<img hspace="5" border="0" src="templates/'. THEME_FOLDER.'/modules/forums/sortasc.gif" alt="" />';
 			$AVE_Template->assign("img_name", $img_name);
 			break;
 
 		case 'name_desc':
-			$orderby = ' ORDER BY BenutzerName DESC';
+			$orderby = ' ORDER BY uname DESC';
 			$nav_link = '&amp;orderby=name_desc';
 			$img_name = '<img hspace="5" border="0" src="templates/'. THEME_FOLDER.'/modules/forums/sortdesc.gif" alt="" />';
 			$AVE_Template->assign("img_name", $img_name);
@@ -75,7 +75,7 @@ if (!empty($_REQUEST['orderby']))
 }
 else
 {
-	$orderby = ' ORDER BY Beitraege DESC';
+	$orderby = ' ORDER BY messages DESC';
 }
 
 // Aktuelle Seite fьr Links
@@ -108,16 +108,16 @@ $sql = $AVE_DB->Query("
 ");
 while ($row = $sql->FetchRow())
 {
-	$row->UserWeb = ($row->Webseite != '' && $row->Webseite_show==1)
-		? 'http://' . str_replace('http://', '', $row->Webseite)
+	$row->UserWeb = ($row->web_site != '' && $row->web_site_show==1)
+		? 'http://' . str_replace('http://', '', $row->web_site)
 		: '';
-	$row->UserPN = ($row->Pnempfang==1)
-		? 'index.php?module=forums&show=pn&amp;action=new&amp;to=' . base64_encode($row->BenutzerName)
+	$row->UserPN = ($row->pn_receipt==1)
+		? 'index.php?module=forums&show=pn&amp;action=new&amp;to=' . base64_encode($row->uname)
 		: '';
-	$row->UserLink = ($row->ZeigeProfil==1)
-		? "<a class=\"forum_links\" href=\"index.php?module=forums&amp;show=userprofile&amp;user_id={$row->BenutzerId}\">{$row->BenutzerName}</a>"
-		: "$row->BenutzerName";
-	$row->Posts = $this->num_format($row->Beitraege);
+	$row->UserLink = ($row->show_profile==1)
+		? "<a class=\"forum_links\" href=\"index.php?module=forums&amp;show=userprofile&amp;user_id={$row->uid}\">{$row->uname}</a>"
+		: "$row->uname";
+	$row->Posts = $this->num_format($row->messages);
 	if ($row->reg_time != '') array_push($user, $row);
 }
 

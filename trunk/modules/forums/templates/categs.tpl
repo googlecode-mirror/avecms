@@ -42,9 +42,9 @@
 {#ThreadViewLastPost#}</a></strong>
 &nbsp;{#FromUser#}&nbsp;
 {if $forum.last_post->user_regdate < 2}
-{#Guest#}
+	{#Guest#}
 {else}
-<a href="index.php?module=userpage&amp;action=show&amp;uid={$forum.last_post->uid}" class="forum_links_small">{$forum.last_post->LastPoster}</a>
+	<a href="index.php?module=forums&show=userprofile&user_id={$forum.last_post->uid}" class="forum_links_small">{$forum.last_post->LastPoster}</a>
 {/if}
 <br />
 <strong>{#InForum#} </strong>
@@ -53,9 +53,9 @@
 <br />
 <strong>{#AtTime#} </strong>
 {if $forum.last_post->datum|date_format:'%d.%m.%Y' == $smarty.now|date_format:'%d.%m.%Y'}
-{#Today#},&nbsp;{$forum.last_post->datum|date_format:'%H:%M'}
+	{#Today#},&nbsp;{$forum.last_post->datum|date_format:'%H:%M'}
 {else}
-{$forum.last_post->datum|date_format:'%d.%m.%Y %H:%M'}
+	{$forum.last_post->datum|date_format:'%d.%m.%Y %H:%M'}
 {/if}</span>
 {else}
 &nbsp;

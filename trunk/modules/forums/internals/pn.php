@@ -162,12 +162,12 @@ else
 			while ($row = $sql->FetchRow())
 			{
 				$sql2 = $AVE_DB->Query("SELECT
-					u.BenutzerName as uname,
-					u.BenutzerId as uid
+					u.uname as uname,
+					u.uid as uid
 				FROM
 					".PREFIX."_modul_forum_userprofile as u
 				WHERE
-					u.BenutzerId='".$row->from_uid."'
+					u.uid='".$row->from_uid."'
 					");
 				$row2 = $sql2->FetchRow();
 				$sql2->Close();
@@ -181,12 +181,12 @@ else
 				{
 					$sql_emp = $AVE_DB->Query("
 						SELECT
-							u.BenutzerName as uname,
-							u.BenutzerId as uid
+							u.uname as uname,
+							u.uid as uid
 						FROM
 							".PREFIX."_modul_forum_userprofile as u
 						WHERE
-							u.BenutzerId='".$row->to_uid."'
+							u.uid='".$row->to_uid."'
 					");
 					$row_emp = $sql_emp->FetchRow();
 					$theuserid = $row->to_uid;
@@ -321,10 +321,10 @@ else
 			{
 				$sql2 = $AVE_DB->Query("
 					SELECT
-						BenutzerName as uname,
-						BenutzerId as uid
+						uname as uname,
+						uid as uid
 					FROM ".PREFIX."_modul_forum_userprofile
-					WHERE BenutzerId='".$row->from_uid."'
+					WHERE uid='".$row->from_uid."'
 				");
 
 				$row2 = $sql2->FetchRow();
@@ -339,10 +339,10 @@ else
 				{
 					$sql_emp = $AVE_DB->Query("
 						SELECT
-							BenutzerName as uname,
-							BenutzerId as uid
+							uname as uname,
+							uid as uid
 						FROM ".PREFIX."_modul_forum_userprofile
-						WHERE BenutzerId='".$row->to_uid."'
+						WHERE uid='".$row->to_uid."'
 					");
 					$row_emp = $sql_emp->FetchRow();
 					$theuserid = $row->to_uid;
@@ -600,14 +600,14 @@ else
 
 			$sql = $AVE_DB->Query("
 				SELECT
-					BenutzerId as uid,
-					BenutzerName as uname,
+					uid as uid,
+					uname as uname,
 					reg_time as user_regdate,
-					Beitraege as user_posts
+					messages as user_posts
 				FROM
 					".PREFIX."_modul_forum_userprofile
 				WHERE
-					BenutzerId='".$sqlid."'
+					uid='".$sqlid."'
 			");
 			$row_u = $sql->FetchRow();
 			$sql->Close();
@@ -694,16 +694,16 @@ else
 			// CHECK OB USER EXISTIERT
 			$sql = $AVE_DB->Query("
 				SELECT
-					u.BenutzerName,
-					u.BenutzerId,
+					u.uname,
+					u.uid,
 					u.Pnempfang,
 					u.email
 				FROM
 					".PREFIX."_modul_forum_userprofile  as u
 				WHERE
-					u.BenutzerName = '" . addslashes($_POST['tofromname']) . "'
+					u.uname = '" . addslashes($_POST['tofromname']) . "'
 				OR
-					u.BenutzerId = '" . addslashes($_POST['tofromname']) . "'
+					u.uid = '" . addslashes($_POST['tofromname']) . "'
 			");
 			$num = $sql->NumRows();
 			$row = $sql->FetchRow();
@@ -718,11 +718,11 @@ else
 				$sql_ignore = $AVE_DB->Query("
 					SELECT
 						IgnoreId,
-						BenutzerId
+						uid
 					FROM
 						".PREFIX."_modul_forum_ignorelist
 					WHERE
-						BenutzerId='" . addslashes($row->BenutzerId) . "' AND
+						uid='" . addslashes($row->uid) . "' AND
 						IgnoreId='".UID."'
 				");
 
@@ -735,7 +735,7 @@ else
 			{
 				$usermaxpn = MAXPN;
 
-				$sql3 = $AVE_DB->Query("SELECT * FROM ".PREFIX."_modul_forum_pn WHERE to_uid='".$row->BenutzerId."' AND typ='inbox'");
+				$sql3 = $AVE_DB->Query("SELECT * FROM ".PREFIX."_modul_forum_pn WHERE to_uid='".$row->uid."' AND typ='inbox'");
 				$numuserpn = $sql3->NumRows();
 
 				if ($numuserpn >= $usermaxpn) $pnerror[] = $mod['config_vars']['PN_BoxFull'];
@@ -752,15 +752,15 @@ else
 
 			if (empty($pnerror))
 			{
-				$sql = $AVE_DB->Query("INSERT INTO ".PREFIX."_modul_forum_pn (smilies,pnid,to_uid,from_uid,topic,message,is_readed,pntime,typ) VALUES ('".$_POST['use_smilies']."','','".$row->BenutzerId."','".UID."','".$_POST['title']."','".$text."','no','".time()."','inbox')");
+				$sql = $AVE_DB->Query("INSERT INTO ".PREFIX."_modul_forum_pn (smilies,pnid,to_uid,from_uid,topic,message,is_readed,pntime,typ) VALUES ('".$_POST['use_smilies']."','','".$row->uid."','".UID."','".$_POST['title']."','".$text."','no','".time()."','inbox')");
 				if (isset($_REQUEST['savecopy']) && $_REQUEST['savecopy']=="yes")
 				{
-					$sql = $AVE_DB->Query("INSERT INTO ".PREFIX."_modul_forum_pn (smilies,pnid,to_uid,from_uid,topic,message,is_readed,pntime,typ) VALUES ('".$_POST['use_smilies']."','','".$row->BenutzerId."','".UID."','".$_POST['title']."','".$text."','no','".time()."','outbox')");
+					$sql = $AVE_DB->Query("INSERT INTO ".PREFIX."_modul_forum_pn (smilies,pnid,to_uid,from_uid,topic,message,is_readed,pntime,typ) VALUES ('".$_POST['use_smilies']."','','".$row->uid."','".UID."','".$_POST['title']."','".$text."','no','".time()."','outbox')");
 				}
 
 				// MAILBENACHRICHTIGUNG
 				$body = $mod['config_vars']['PN_Body'];
-				$body = str_replace("__USER__", $row->BenutzerName, $body);
+				$body = str_replace("__USER__", $row->uname, $body);
 				$body = str_replace("__AUTOR__", $_SESSION['forum_user_name'], $body);
 				$body = str_replace("__LINK__", HOST . str_replace("/index.php","",$_SERVER['PHP_SELF']) . "/index.php?module=forums&show=pn&goto=inbox", $body);
 				$body = str_replace("%%N%%","\n", $body);

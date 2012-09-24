@@ -369,7 +369,7 @@ if ( count($error_array) || (isset($_REQUEST['preview']) && $_REQUEST['preview']
 	} else {
 		if(UGROUP!= 2)
 		{
-    		$q_post_increment = "UPDATE " . PREFIX . "_modul_forum_userprofile SET Beitraege = Beitraege + 1 WHERE BenutzerId = '".UID."'";
+    		$q_post_increment = "UPDATE " . PREFIX . "_modul_forum_userprofile SET messages = messages + 1 WHERE uid = '".UID."'";
     		$r_post_increment = $AVE_DB->Query($q_post_increment);
 		}
 

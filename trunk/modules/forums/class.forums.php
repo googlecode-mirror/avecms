@@ -56,13 +56,13 @@ class Forum
 		return $Page;
 	}
 
-	function getUserName($Id)
+	function getUserName($id)
 	{
 		global $AVE_DB;
 		
-		$sql = $AVE_DB->Query("SELECT BenutzerName FROM " . PREFIX . "_modul_forum_userprofile WHERE BenutzerId = '" . $Id . "'");
+		$sql = $AVE_DB->Query("SELECT uid, uname FROM " . PREFIX . "_modul_forum_userprofile WHERE uid = '" . $id . "'");
 		$row = $sql->FetchRow();
-		return $row->BenutzerName;
+		return $row->uname;
 	}
 	//=======================================================
 	// FORUM-ЬBERSICHT
@@ -513,7 +513,7 @@ class Forum
 		$result = $AVE_DB->Query($query);
 
 		// reduziere die anzahl der beitraege des benutzers
-		$query = "UPDATE " . PREFIX."_modul_forum_userprofile SET Beitraege = Beitraege -1 WHERE BenutzerId = " . $post->uid;
+		$query = "UPDATE " . PREFIX."_modul_forum_userprofile SET messages = messages -1 WHERE uid = " . $post->uid;
 		$result = $AVE_DB->Query($query);
 
 		// loesche beitrag
@@ -563,9 +563,9 @@ class Forum
 	{
 		global $AVE_DB;
 		
-		$sql = $AVE_DB->Query("SELECT Unsichtbar FROM " . PREFIX . "_modul_forum_userprofile WHERE BenutzerId = '" . $UserId . "'");
+		$sql = $AVE_DB->Query("SELECT uid, invisible FROM " . PREFIX . "_modul_forum_userprofile WHERE uid = '" . $UserId . "'");
 		$row = $sql->FetchRow();
-		return (@$row->Unsichtbar==1) ? "INVISIBLE" : @$row->Unsichtbar;
+		return (@$row->invisible==1) ? "INVISIBLE" : @$row->invisible;
 	}
 
 	//=======================================================
@@ -580,7 +580,7 @@ class Forum
 
 		if(isset($_SESSION['user_id']))
 		{
-			$sql = $AVE_DB->Query("SELECT Id FROM " . PREFIX . "_modul_forum_userprofile WHERE BenutzerId = '" . $_SESSION['user_id'] . "'");
+			$sql = $AVE_DB->Query("SELECT id, uid FROM " . PREFIX . "_modul_forum_userprofile WHERE uid = '" . $_SESSION['user_id'] . "'");
 			$num = $sql->NumRows();
 
 			// Wenn der Benutzet noch nicht im Forum-Profil gespeichert wurde,
@@ -594,26 +594,26 @@ class Forum
 					INSERT
 					INTO " . PREFIX . "_modul_forum_userprofile
 					SET
-						Id = '',
-						BenutzerId = '" . $row->Id . "',
-						BenutzerName = '". (($row->user_name!='') ? $row->user_name : mb_substr($row->firstname,0,1) . '. ' . $row->lastname) . "',
-						GroupIdMisc = '',
-						Beitraege = '',
-						ZeigeProfil = '1',
-						Signatur = '',
-						Icq = '',
-						Aim = '',
-						Skype = '',
-						Emailempfang = '1',
-						Pnempfang = '1',
-						Avatar = '',
-						AvatarStandard = '',
-						Webseite = '',
-						Unsichtbar = '0',
-						Interessen = '',
-						email = '" . $row->email . "',
-						reg_time = '" . $row->reg_time . "',
-						GeburtsTag = '" . $row->birthday . "'
+						id                    = '',
+						uid                   = '" . $row->Id . "',
+						uname                 = '". (($row->user_name!='') ? $row->user_name : mb_substr($row->firstname,0,1) . '. ' . $row->lastname) . "',
+						group_id_misc         = '',
+						messages              = '',
+						show_profile          = '1',
+						signature             = '',
+						icq                   = '',
+						aim                   = '',
+						skype                 = '',
+						email_receipt         = '1',
+						pn_receipt            = '1',
+						avatar                = '',
+						avatar_standard_group = '',
+						web_site              = '',
+						invisible             = '0',
+						interests             = '',
+						email                 = '" . $row->email . "',
+						reg_time              = '" . $row->reg_time . "',
+						birthday              = '" . $row->birthday . "'
 				");
 
 				header("Location:index.php?module=forums");
@@ -662,16 +662,16 @@ class Forum
 		if (isset($_GET['tid']) && is_numeric($_GET['tid']) && $_GET['tid'] > 0)
 		{
 			$q_poster = "SELECT
-					COUNT(u.BenutzerName) AS ucount,
-					u.BenutzerId,
-					u.BenutzerName
+					COUNT(u.uname) AS ucount,
+					u.uid,
+					u.uname
 				FROM
 					" . PREFIX . "_modul_forum_userprofile AS u,
 					" . PREFIX . "_modul_forum_post AS p
 				WHERE
 					p.topic_id = '" . addslashes($_GET['tid']) . "' AND
-					p.uid = u.BenutzerId
-				GROUP BY u.BenutzerName
+					p.uid = u.uid
+				GROUP BY u.uname
 			";
 
 			$r_poster = $AVE_DB->Query($q_poster);
@@ -716,16 +716,18 @@ class Forum
 			$Empfang = $_POST['ToUser'];
 
 			$q = "SELECT
-					a.IgnoreId,
+					a.uid,
+					a.ignore_id,
+					b.uid,
 					b.email,
-					b.BenutzerName
+					b.uname
 				FROM
 					" . PREFIX . "_modul_forum_ignorelist as a,
 					" . PREFIX . "_modul_forum_userprofile as b
 				WHERE
-					a.BenutzerId = " . addslashes($_POST['ToUser']) . " AND
-					a.IgnoreId != " . $_SESSION['user_id'] . " AND
-					b.BenutzerId = " . addslashes($_POST['ToUser']) . "
+					a.uid = " . addslashes($_POST['ToUser']) . " AND
+					a.ignore_id != " . $_SESSION['user_id'] . " AND
+					b.uid = " . addslashes($_POST['ToUser']) . "
 			";
 			$sql = $AVE_DB->Query($q);
 			$num = $sql->NumRows();
@@ -735,7 +737,7 @@ class Forum
 			if($num == 1)
 			{
 				$Prefab = $mod['config_vars']['EmailBodyUser'];
-				$Prefab = str_replace('%%USER%%', $row->BenutzerName, $Prefab);
+				$Prefab = str_replace('%%USER%%', $row->uname, $Prefab);
 				$Prefab = str_replace('%%ABSENDER%%', $_SESSION['forum_user_name'], $Prefab);
 				$Prefab = str_replace('%%BETREFF%%', stripslashes($_POST['Betreff']), $Prefab);
 				$Prefab = str_replace('%%NACHRICHT%%', stripslashes($_POST['Nachricht']), $Prefab);
@@ -775,24 +777,24 @@ class Forum
 				" . PREFIX . "_users as ug,
 				" . PREFIX . "_user_groups as ugn
 			WHERE
-				u.BenutzerId = '".addslashes($_GET['user_id'])."'
+				u.uid = '".addslashes($_GET['user_id'])."'
 			AND
-				ug.Id = u.BenutzerId
+				ug.Id = u.uid
 			AND
 				ugn.user_group = ug.user_group
 		");
 		$row_user = $sql_user->FetchRow();
 
-		if($row_user->ZeigeProfil==1)
+		if($row_user->show_profile==1)
 		{
-			$row_user->Signatur = $this->kcodes_comments($row_user->Signatur);
-			$row_user->Signatur = (SMILIES==1) ? $this->replaceWithSmileys($row_user->Signatur) : $row_user->Signatur;
+			$row_user->signature = $this->kcodes_comments($row_user->signature);
+			$row_user->signature = (SMILIES==1) ? $this->replaceWithSmileys($row_user->signature) : $row_user->signature;
 
-			$row_user->Interessen = $this->kcodes_comments($row_user->Interessen);
-			$row_user->Interessen = (SMILIES==1) ? $this->replaceWithSmileys($row_user->Interessen) : $row_user->Interessen;
+			$row_user->interests = $this->kcodes_comments($row_user->interests);
+			$row_user->interests = (SMILIES==1) ? $this->replaceWithSmileys($row_user->interests) : $row_user->interests;
 
-			$row_user->avatar = $this->getAvatar($row_user->user_group,$row_user->Avatar,$row_user->AvatarStandard);
-			$row_user->OnlineStatus = @$this->getonlinestatus(@$row_user->BenutzerName);
+			$row_user->avatar = $this->getAvatar($row_user->user_group,$row_user->avatar,$row_user->avatar_standard_group);
+			$row_user->OnlineStatus = @$this->getonlinestatus(@$row_user->uname);
 
 			$query = "SELECT COUNT(id) AS counts FROM " . PREFIX . "_modul_forum_post WHERE uid = '" . addslashes($_GET['user_id']) . "'";
 			$result = $AVE_DB->Query($query);
@@ -979,13 +981,13 @@ class Forum
 		// miscrechte
 		if (@is_numeric(UID) && UGROUP != 2)
 		{
-//			$queryfirst = "SELECT GroupIdMisc FROM " . PREFIX."_modul_forum_userprofile WHERE BenutzerId = '" . UID . "'";
+//			$queryfirst = "SELECT group_id_misc FROM " . PREFIX."_modul_forum_userprofile WHERE uid = '" . UID . "'";
 //			$result = $AVE_DB->Query($queryfirst);
 //			$user = $result->FetchRow();
-			$GroupIdMisc = $this->GroupIdMiscGet(UID);
+			$group_id_misc = $this->GroupIdMiscGet(UID);
 			// wenn misc nicht leer ist...
-			if ($GroupIdMisc) {
-				$group_ids_pre = UGROUP . ";" . $GroupIdMisc;
+			if ($group_id_misc) {
+				$group_ids_pre = UGROUP . ";" . $group_id_misc;
 				$group_ids_misc = @explode(";", $group_ids_pre);
 				// wennn misc leer ist und user eingeloggt ist
 			} else {
@@ -1078,17 +1080,17 @@ class Forum
 
 		// miscrechte
 		if (@is_numeric(UID) && UGROUP != 2) {
-//			$queryfirst = "SELECT GroupIdMisc FROM " . PREFIX."_modul_forum_userprofile WHERE BenutzerId = '" . UID . "'";
+//			$queryfirst = "SELECT group_id_misc FROM " . PREFIX."_modul_forum_userprofile WHERE uid = '" . UID . "'";
 //			$result = $AVE_DB->Query($queryfirst);
 //			$user = $result->FetchRow();
-			$GroupIdMisc = $this->GroupIdMiscGet(UID);
+			$group_id_misc = $this->GroupIdMiscGet(UID);
 
 			//========================================================
 			// wenn misc nicht leer ist...
 			//========================================================
-			if ($GroupIdMisc)
+			if ($group_id_misc)
 			{
-				$group_ids_pre = UGROUP . ";" . $GroupIdMisc;
+				$group_ids_pre = UGROUP . ";" . $group_id_misc;
 				$group_ids_misc = @explode(";", $group_ids_pre);
 
 			//========================================================
@@ -1185,14 +1187,14 @@ class Forum
 		
 		if (@is_numeric(UID) && UID != 0)
 		{
-//			$queryfirst = "SELECT GroupIdMisc FROM " . PREFIX."_modul_forum_userprofile WHERE BenutzerId = '" . $user_id . "'";
+//			$queryfirst = "SELECT group_id_misc FROM " . PREFIX."_modul_forum_userprofile WHERE uid = '" . $user_id . "'";
 //			$result = $AVE_DB->Query($queryfirst);
 //			$user = $result->FetchRow();
-			$GroupIdMisc = $this->GroupIdMiscGet($user_id);
+			$group_id_misc = $this->GroupIdMiscGet($user_id);
 
-			if ($GroupIdMisc)
+			if ($group_id_misc)
 			{
-				$group_ids = @explode(";", UGROUP . ";" . $GroupIdMisc);
+				$group_ids = @explode(";", UGROUP . ";" . $group_id_misc);
 			} else {
 				$group_ids[] = UGROUP;
 			}
@@ -1328,9 +1330,12 @@ class Forum
 			}
 
 			$sql = $AVE_DB->Query("
-				SELECT c.id
-				FROM cp_modul_forum_category AS c
-				LEFT JOIN cp_modul_forum_forum AS f ON f.category_id = c.id
+				SELECT 
+					c.id,
+					c.parent_id,
+					f.category_id
+				FROM " . PREFIX . "_modul_forum_category AS c
+				LEFT JOIN " . PREFIX . "_modul_forum_forum AS f ON f.category_id = c.id
 				WHERE c.parent_id = '". $forumId ."'
 			");
 			while ($row = $sql->FetchRow())
@@ -1391,7 +1396,8 @@ class Forum
 					p.uid,
 					p.datum,
 					u.reg_time AS user_regdate,
-					us.BenutzerName
+					us.uid,
+					us.uname
 				FROM
 					" . PREFIX . "_modul_forum_topic AS t
 				JOIN
@@ -1402,7 +1408,7 @@ class Forum
 						ON u.Id = p.uid
 				JOIN
 					" . PREFIX . "_modul_forum_userprofile AS us
-						ON us.BenutzerId = p.uid
+						ON us.uid = p.uid
 				WHERE
 					(" . $oc . "t.forum_id = '"
 						. implode("') OR (" . $oc . "t.forum_id = '", $forumIds)
@@ -1869,12 +1875,12 @@ class Forum
 		global $AVE_DB;
 		
 		$sql = $AVE_DB->Query("SELECT
-			BenutzerName
+			uname
 		FROM
 			" . PREFIX . "_modul_forum_userprofile
 		WHERE
-			BenutzerName = '" . $new . "' AND
-			BenutzerName != '" . $old . "'
+			uname  = '" . $new . "' AND
+			uname != '" . $old . "'
 			");
 
 		$rc = $sql->NumRows();
@@ -1906,7 +1912,7 @@ class Forum
 	{
 		global $AVE_DB;
 		
-		$sql = $AVE_DB->Query("SELECT email FROM " . PREFIX . "_modul_forum_userprofile WHERE BenutzerId = '" . $id . "'");
+		$sql = $AVE_DB->Query("SELECT uid, email FROM " . PREFIX . "_modul_forum_userprofile WHERE uid = '" . $id . "'");
 		$ru = $sql->FetchRow();
 		return $ru->email;
 	}
@@ -1917,7 +1923,7 @@ class Forum
 	function fetchusername($param)
 	{
 		global $AVE_DB, $mod;
-		
+	
 		static $names = array();
 
 		$user_id = @is_array($param) ? $param[userid] : $param;
@@ -1925,9 +1931,9 @@ class Forum
 		if (!isset($names[$user_id]))
 		{
 			$names[$user_id] = $AVE_DB->Query("
-				SELECT BenutzerName
+				SELECT uname
 				FROM " . PREFIX . "_modul_forum_userprofile
-				WHERE BenutzerId = '" . $user_id . "'
+				WHERE uid = '" . $user_id . "'
 			")->GetCell();
 		}
 
@@ -2152,9 +2158,9 @@ class Forum
 	{
 		global $AVE_DB;
 		
-		$sql = $AVE_DB->Query("SELECT BenutzerId FROM " . PREFIX . "_modul_forum_userprofile WHERE BenutzerName = '" . $name . "'");
+		$sql = $AVE_DB->Query("SELECT uid, uname FROM " . PREFIX . "_modul_forum_userprofile WHERE uname = '" . $name . "'");
 		$row = $sql->FetchRow();
-		$uid = $row->BenutzerId;
+		$uid = $row->uid;
 		$sql->Close();
 		return $uid;
 	}
@@ -2183,14 +2189,14 @@ class Forum
 		$row_newest_member = $AVE_DB->Query("
 			SELECT
 				u.Id as UserId,
-				m.BenutzerName as user_name
+				m.uname as user_name
 			FROM
 				" . PREFIX . "_users as u,
 				" . PREFIX . "_modul_forum_userprofile as m
 			WHERE
 				u.status = '1' AND
 				u.user_group != '2' AND
-				m.BenutzerId = u.Id
+				m.uid = u.Id
 			ORDER BY
 				u.Id DESC LIMIT 1
 		")->FetchRow();
@@ -2214,7 +2220,8 @@ class Forum
 				u.uname,
 				u.uid,
 				ug.user_group,
-				up.ZeigeProfil
+				up.uid,
+				up.show_profile
 			FROM
 				" . PREFIX . "_modul_forum_useronline as u,
 				" . PREFIX . "_users as ug,
@@ -2222,8 +2229,8 @@ class Forum
 			WHERE
 				u.uname != 'UNAME' AND
 				u.invisible != 'INVISIBLE' AND
-				ug.Id = u.uid AND
-				up.BenutzerId = u.uid
+				ug.id = u.uid AND
+				up.uid = u.uid
 		");
 		$num_user = $sql_user->NumRows();
 		$loggeduser = array();
@@ -2272,7 +2279,7 @@ class Forum
 	{
 		global $AVE_DB;
 		
-		$sql = $AVE_DB->Query("SELECT IgnoreId FROM " . PREFIX . "_modul_forum_ignorelist WHERE IgnoreId = '" . $uid . "' AND BenutzerId = '" . UID . "' LIMIT 1" );
+		$sql = $AVE_DB->Query("SELECT uid, ignore_id FROM " . PREFIX . "_modul_forum_ignorelist WHERE ignore_id = '" . $uid . "' AND uid = '" . UID . "' LIMIT 1" );
 		$num = $sql->NumRows();
 
 		if($num == 1) return true;
@@ -2376,19 +2383,19 @@ class Forum
 	{
 		global $AVE_DB;
 
-		static $GroupIdMiscs = array();
+		static $group_id_miscs = array();
 
 //		$user_id = (is_numeric($user_id) && $user_id > 0) ? $user_id : UID;
-		if (!isset($GroupIdMiscs[$user_id]))
+		if (!isset($group_id_miscs[$user_id]))
 		{
-			$GroupIdMiscs[$user_id] = $AVE_DB->Query("
-				SELECT GroupIdMisc
+			$group_id_miscs[$user_id] = $AVE_DB->Query("
+				SELECT uid, group_id_misc
 				FROM " . PREFIX."_modul_forum_userprofile
-				WHERE BenutzerId = '" . $user_id . "'
+				WHERE uid = '" . $user_id . "'
 			")->GetCell();
 		}
 
-		return $GroupIdMiscs[$user_id];
+		return $group_id_miscs[$user_id];
 	}
 }
 

@@ -214,6 +214,7 @@ if(!defined("SHOWFORUMS")) exit;
 										p.topic_id,
 										p.datum,
 										t.title,
+										u.uid,
 										u.reg_time
 
 									FROM
@@ -227,7 +228,7 @@ if(!defined("SHOWFORUMS")) exit;
 											ON  p.topic_id = t.id
 									INNER JOIN
 										" . PREFIX . "_modul_forum_userprofile AS u
-											ON  u.BenutzerId = p.uid
+											ON  u.uid = p.uid
 									LIMIT 1
 								")->FetchRow();
 							}

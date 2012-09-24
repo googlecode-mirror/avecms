@@ -481,10 +481,11 @@ else
 			{
 				$row_u = $AVE_DB->Query ("
 					SELECT
-						BenutzerName,
+						uid,
+						uname,
 						email
 					FROM " . PREFIX . "_modul_forum_userprofile
-					WHERE BenutzerId = '" . $mail_to . "'
+					WHERE uid = '" . $mail_to . "'
 				")
 				->FetchRow();
 
@@ -555,8 +556,8 @@ else
     	// POST erfolgreich eingetragen
 		$AVE_DB->Query("
     		UPDATE " . PREFIX . "_modul_forum_userprofile
-    		SET Beitraege = Beitraege + 1
-    		WHERE BenutzerId = '" . UID . "'
+    		SET messages = messages + 1
+    		WHERE uid = '" . UID . "'
     	");
 		$AVE_DB->Query("
     		UPDATE " . PREFIX . "_modul_forum_topic

@@ -119,9 +119,9 @@ if (isset($_GET['user_name']) && !empty($_GET['user_name']))
 	// exakte suche
 	if ($_GET['user_opt'] == 1)
 	{
-		$search_by_user = "(u.BenutzerName LIKE '" . addslashes($_GET['user_name']) . "')";
+		$search_by_user = "(u.uname LIKE '" . addslashes($_GET['user_name']) . "')";
 	} elseif ($_GET['user_opt'] == 0) {
-		$search_by_user = "(u.BenutzerName LIKE '%" . addslashes($_GET['user_name']) . "%')";
+		$search_by_user = "(u.uname LIKE '%" . addslashes($_GET['user_name']) . "%')";
 	}
 }
 
@@ -208,7 +208,7 @@ $query = "SELECT DISTINCT
 		r.rating,
 		f.status AS f_status,
 		f.title AS f_title,
-		u.BenutzerName AS autor,
+		u.uname AS autor,
 		f.title AS forum,
 		t.opened,
 		p.opened
@@ -221,7 +221,7 @@ $query = "SELECT DISTINCT
 	WHERE
 		(" . $pattern . ") AND
 		(" . $type . ") AND
-		(t.id = p.topic_id AND t.forum_id = f.id AND u.BenutzerId = t.uid AND r.topic_id = t.id) AND
+		(t.id = p.topic_id AND t.forum_id = f.id AND u.uid = t.uid AND r.topic_id = t.id) AND
 		f.active = 1 AND
 		$search_by_user AND
 		$search_in_forums AND

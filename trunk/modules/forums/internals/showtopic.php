@@ -82,13 +82,13 @@ if ( isset($_GET['toid']) && $_GET['toid'] != "" )
 		}
 		else
 		{
-			$query = "SELECT GroupIdMisc FROM " . PREFIX . "_modul_forum_userprofile WHERE BenutzerId = '" . UID . "'";
+			$query = "SELECT uid, group_id_misc FROM " . PREFIX . "_modul_forum_userprofile WHERE uid = '" . UID . "'";
 			$result = $AVE_DB->Query($query);
 			$user = $result->FetchRow();
 
-			if ($user->GroupIdMisc != "")
+			if ($user->group_id_misc != "")
 			{
-				$group_id_ = UGROUP . ";" . $user->GroupIdMisc;
+				$group_id_ = UGROUP . ";" . $user->group_id_misc;
 				$group_id = @explode(";", $group_id_);
 
 			}
@@ -147,10 +147,10 @@ if ( isset($_GET['toid']) && $_GET['toid'] != "" )
 					$sql = $AVE_DB->Query("SELECT uid FROM ".PREFIX."_modul_forum_post WHERE id = '" . $_REQUEST['post_id'] . "'");
 					$row = $sql->FetchRow();
 
-					$sql_2 = $AVE_DB->Query("SELECT BenutzerName,email FROM ".PREFIX."_modul_forum_userprofile WHERE BenutzerId = '$row->uid'");
+					$sql_2 = $AVE_DB->Query("SELECT uid, uname, email FROM ".PREFIX."_modul_forum_userprofile WHERE uid = '$row->uid'");
 					$row_2 = $sql_2->FetchRow();
 
-					$body = str_replace("%%USER%%", $row_2->BenutzerName, $mod['config_vars']['BodyToUserAfterMod']);
+					$body = str_replace("%%USER%%", $row_2->uname, $mod['config_vars']['BodyToUserAfterMod']);
 					$body = str_replace("%%LINK%%", $link, $body);
 					$body = str_replace("%%N%%","\n", $body);
 
@@ -174,10 +174,10 @@ if ( isset($_GET['toid']) && $_GET['toid'] != "" )
 					$sql = $AVE_DB->Query("SELECT uid FROM ".PREFIX."_modul_forum_topic WHERE id = '" . $_REQUEST['toid'] . "'");
 					$row = $sql->FetchRow();
 
-					$sql_2 = $AVE_DB->Query("SELECT BenutzerName,email FROM ".PREFIX."_modul_forum_userprofile WHERE BenutzerId = '$row->uid'");
+					$sql_2 = $AVE_DB->Query("SELECT uid, uname, email FROM ".PREFIX."_modul_forum_userprofile WHERE uid = '$row->uid'");
 					$row_2 = $sql_2->FetchRow();
 
-					$body = str_replace("%%USER%%", $row_2->BenutzerName, $mod['config_vars']['BodyToUserAfterMod']);
+					$body = str_replace("%%USER%%", $row_2->uname, $mod['config_vars']['BodyToUserAfterMod']);
 					$body = str_replace("%%LINK%%", $link, $body);
 					$body = str_replace("%%N%%","\n", $body);
 
@@ -245,7 +245,7 @@ if ( isset($_GET['toid']) && $_GET['toid'] != "" )
 			WHERE topic_id = '" . addslashes($_GET['toid']) . "'
 			" . $post_query_extra . "
 			ORDER BY
-				datum ASC
+				p.datum ASC
 			LIMIT " . $a . "," . $limit . "
 		";
 
@@ -255,7 +255,7 @@ if ( isset($_GET['toid']) && $_GET['toid'] != "" )
 
 		if (($_SESSION['user_group'] != 2))
 		{
-			$q_current_user = "SELECT BenutzerId, Emailempfang, Pnempfang FROM " . PREFIX . "_modul_forum_userprofile WHERE BenutzerId = '".UID."'";
+			$q_current_user = "SELECT uid, email_receipt, pn_receipt FROM " . PREFIX . "_modul_forum_userprofile WHERE uid = '".UID."'";
 			$r_current_user = $AVE_DB->Query($q_current_user);
 			$current_user = $r_current_user->FetchRow();
 		}
@@ -265,15 +265,15 @@ if ( isset($_GET['toid']) && $_GET['toid'] != "" )
 			$Attach = array();
 			// der beitragverfasser
 			$q_user = "SELECT
-					u.Avatar,
-					u.AvatarStandard,
-					u.BenutzerName,
+					u.avatar,
+					u.avatar_standard_group,
+					u.uname,
 					u.email,
-					u.Webseite,
+					u.web_site,
 					u.reg_time,
-					u.Signatur,
-					u.Unsichtbar,
-					u.BenutzerId,
+					u.signature,
+					u.invisible,
+					u.uid,
 					us.firstname,
 					us.user_group,
 					us.lastname,
@@ -283,22 +283,22 @@ if ( isset($_GET['toid']) && $_GET['toid'] != "" )
 					" . PREFIX . "_modul_forum_userprofile AS u
 				JOIN
 					" . PREFIX . "_users AS us
-						ON us.Id = u.BenutzerId
+						ON us.Id = u.uid
 				JOIN
 					" . PREFIX . "_user_groups AS ug
 						ON ug.user_group = us.user_group
 				JOIN
 				    " . PREFIX . "_modul_forum_post AS p
-				    	ON p.uid = u.BenutzerId
+				    	ON p.uid = u.uid
 				WHERE
-					u.BenutzerId = " . intval($post->uid) . " AND
+					u.uid = " . intval($post->uid) . " AND
 					us.status = '1'
 				GROUP BY p.uid
 			";
 
 			$r_user = $AVE_DB->Query($q_user);
 			$poster = $r_user->FetchRow();
-//			$query = "SELECT COUNT(id) AS count FROM " . PREFIX . "_modul_forum_post WHERE uid = '" . @$poster->BenutzerId . "'";
+//			$query = "SELECT COUNT(id) AS count FROM " . PREFIX . "_modul_forum_post WHERE uid = '" . @$poster->uid . "'";
 //			$result = $AVE_DB->Query($query);
 //			$postings = $result->FetchRow();
 //			$poster->user_posts = $postings->count;
@@ -306,16 +306,16 @@ if ( isset($_GET['toid']) && $_GET['toid'] != "" )
 			$query = "SELECT title, count FROM " . PREFIX . "_modul_forum_rank WHERE count < '" . $poster->user_posts . "' ORDER BY count DESC LIMIT 1";
 			$result = $AVE_DB->Query($query);
 			$rank = $result->FetchRow();
-			$poster->avatar = $this->getAvatar( @$poster->user_group, @$poster->Avatar, @$poster->AvatarStandard);
+			$poster->avatar = $this->getAvatar( @$poster->user_group, @$poster->avatar, @$poster->avatar_standard_group);
 			$poster->regdate = @$poster->reg_time;
-			$poster->user_sig = $this->kcodes(@$poster->Signatur);
+			$poster->user_sig = $this->kcodes(@$poster->signature);
 			$poster->rank = @$rank->title;
-			$poster->OnlineStatus = @$this->getonlinestatus(@$poster->BenutzerName);
+			$poster->OnlineStatus = @$this->getonlinestatus(@$poster->uname);
 
-			$popUpInsert = addslashes ("<div style='padding:6px; line-height:1.5em'> &raquo; <a class='forum_links_small' href='index.php?module=forums&amp;show=userprofile&amp;user_id=".@$poster->BenutzerId."'>".$mod['config_vars']['ShowPosterProfile']."</a><br /> &raquo; <a class='forum_links_small' href='index.php?module=forums&amp;show=ignorelist&amp;insert=".@$poster->BenutzerId."'>".$mod['config_vars']['InsertIgnore']."</a><br />&raquo; <a class='forum_links_small' href='index.php?module=forums&amp;show=pn&action=new&amp;to=".base64_encode(@$poster->BenutzerName)."'>".$mod['config_vars']['UserSendPn']."</a></div>");
-			$popUpRemove = "<div style='padding:6px; line-height:1.5em'> &raquo; <a class='forum_links_small' href='index.php?module=forums&amp;show=userprofile&amp;user_id=".@$poster->BenutzerId."'>".$mod['config_vars']['ShowPosterProfile']."</a><br /> &raquo; <a class='forum_links_small' href='index.php?module=forums&amp;show=ignorelist&amp;remove=".@$poster->BenutzerId."'>".$mod['config_vars']['RemoveIgnore']."</a><br />&raquo; <a class='forum_links_small' href='index.php?module=forums&amp;show=pn&action=new&amp;to=".base64_encode(@$poster->BenutzerName)."'>".$mod['config_vars']['UserSendPn']."</a></div>";
+			$popUpInsert = addslashes ("<div style='padding:6px; line-height:1.5em'> &raquo; <a class='forum_links_small' href='index.php?module=forums&amp;show=userprofile&amp;user_id=".@$poster->uid."'>".$mod['config_vars']['ShowPosterProfile']."</a><br /> &raquo; <a class='forum_links_small' href='index.php?module=forums&amp;show=ignorelist&amp;insert=".@$poster->uid."'>".$mod['config_vars']['InsertIgnore']."</a><br />&raquo; <a class='forum_links_small' href='index.php?module=forums&amp;show=pn&action=new&amp;to=".base64_encode(@$poster->uname)."'>".$mod['config_vars']['UserSendPn']."</a></div>");
+			$popUpRemove = "<div style='padding:6px; line-height:1.5em'> &raquo; <a class='forum_links_small' href='index.php?module=forums&amp;show=userprofile&amp;user_id=".@$poster->uid."'>".$mod['config_vars']['ShowPosterProfile']."</a><br /> &raquo; <a class='forum_links_small' href='index.php?module=forums&amp;show=ignorelist&amp;remove=".@$poster->uid."'>".$mod['config_vars']['RemoveIgnore']."</a><br />&raquo; <a class='forum_links_small' href='index.php?module=forums&amp;show=pn&action=new&amp;to=".base64_encode(@$poster->uname)."'>".$mod['config_vars']['UserSendPn']."</a></div>";
 
-			$poster->Ignored = (($this->isIgnored(addslashes(@$poster->BenutzerId))) ? $popUpRemove : $popUpInsert);
+			$poster->Ignored = (($this->isIgnored(addslashes(@$poster->uid))) ? $popUpRemove : $popUpInsert);
 
 			if (defined("SMILIES") && SMILIES==1) $poster->user_sig = $this->replaceWithSmileys($poster->user_sig);
 
@@ -368,7 +368,7 @@ if ( isset($_GET['toid']) && $_GET['toid'] != "" )
 			//$post->UserStatus = $this->getonlinestatus();
 
 			$post->Attachments = $Attach;
-			//if(!empty($poster->BenutzerId))
+			//if(!empty($poster->uid))
 			array_push($post_array, $post);
 		}
 		$all_posts = $post_array;
