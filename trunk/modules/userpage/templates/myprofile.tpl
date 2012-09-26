@@ -31,9 +31,9 @@
 					<td width="200" class="mod_userpage_first">{#PR_UserName#}</td>
 					<td colspan="2" class="mod_userpage_second">
 						{if $changenick=='no'}
-							{$r.BenutzerName|stripslashes}
+							{$r.uname|stripslashes}
 						{else}
-						<input name="BenutzerName" type="text" id="BenutzerName" value="{$r.BenutzerName|stripslashes}" size="40">
+						<input name="uname" type="text" id="uname" value="{$r.uname|stripslashes}" size="40">
 						{if $changenick_once==1}Kann nur 1 x geдndert werden!{/if}
 						{/if}
 					</td>

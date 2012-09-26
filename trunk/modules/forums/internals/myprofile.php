@@ -30,7 +30,6 @@ WHERE
 ");
 $n = $sql->NumRows();
 
-
 if(!$n)
 {
 	$this->msg($mod['config_vars']['ProfileError']);
@@ -40,9 +39,6 @@ $r = $sql->FetchAssocArray();
 
 if($r['uname_changed'] >= '1' && !$this->fperm('changenick')) $AVE_Template->assign('changenick', 'no');
 if(!$this->fperm('changenick')) $AVE_Template->assign('changenick_once', '1');
-
-
-
 
 $r['OwnAvatar'] = $this->getAvatar($r['user_group'],$r['avatar'],$r['avatar_standard_group']);
 if(@!is_file(BASE_DIR . '/modules/forums/avatars/' . $r['avatar'])) $r['avatar'] = '';
@@ -56,7 +52,9 @@ $permown = false;
 if ($this->fperm('alles') || $this->fperm('own_avatar') || UGROUP == 1)
 {
 	$permown = true;
-} else {
+} 
+else 
+{
 	// wenn seine gruppe die rechte besitzt, eigene avatar zu nutzen
 	if ($this->fperm('own_avatar'))
 	{
@@ -84,7 +82,7 @@ if(isset($_POST['doupdate']) && $_POST['doupdate'] == 1)
 	// Benutzername prьfen
 	//=======================================================
 	if((isset($_POST['uname'])) && ($this->checkIfUserName(addslashes($_POST['uname']),addslashes($_SESSION['forum_user_name']))))
-  {
+	{
 		$errors[] = $mod['config_vars']['PE_UsernameInUse'];
 		$r['uname'] = trim(htmlspecialchars($_POST['uname']));
 	}
@@ -124,12 +122,13 @@ if(isset($_POST['doupdate']) && $_POST['doupdate'] == 1)
 		}
 	}
 
-	//=======================================================
-	// Avatar
-	//=======================================================
-	if(isset($_POST['SystemAvatar']) && $_POST['SystemAvatar']!='')
+	/**
+	* Аватар
+	*
+	*/
+	if(isset($_POST['sys_avatar']) && $_POST['sys_avatar']!='')
 	{
-		$avatar = ",Avatar  = 'various/" . $_POST['SystemAvatar'] . "'";
+		$avatar = ",avatar  = 'system/" . $_POST['sys_avatar'] . "'";
 	}
 
 	if($this->fperm('own_avatar'))
@@ -150,38 +149,40 @@ if(isset($_POST['doupdate']) && $_POST['doupdate'] == 1)
 				@move_uploaded_file($_FILES['file']['tmp_name'], $target . $fupload_name);
 				@chmod($target . $fupload_name,0777);
 
-				$avatar = ",Avatar  = '$fupload_name'";
+				$avatar = ",avatar  = '$fupload_name'";
 
 				#$sql_old = $AVE_DB->Query("SELECT Avatar FROM " . PREFIX . "_modul_forum_userprofile WHERE uid='" . UID . "'");
 				#$row_old = $sql_old->FetchRow();
 				#@unlink($target . $row_old->Avatar);
 				#$avatar .= "Avatar ='$fupload_name',";
-
 			}
 		}
 	}
 
-  foreach ($_POST as $key => $value) {
-  	$r[$key] = trim(htmlspecialchars($_POST[$key]));
-  }
+	foreach ($_POST as $key => $value) 
+	{
+		$r[$key] = trim(htmlspecialchars($_POST[$key]));
+	}
 
 	//=======================================================
 	if(is_array($errors) && count($errors) > 0)
 	{
 		$ok = false;
 		$AVE_Template->assign("errors", $errors);
-	} else {
+	} 
+	else 
+	{
 		if(!empty($r['birthday']))
 		{
 			$AVE_DB->Query("UPDATE ".PREFIX."_users SET birthday = '" . @$r['birthday'] . "' WHERE Id = '" . $_SESSION['user_id'] . "'");
 		}
 
-		if(isset($r['DelAvatar']) && $r['DelAvatar']==1)
+		if(isset($r['del_avatar']) && $r['del_avatar']==1)
 		{
 			$sql = $AVE_DB->Query("SELECT uid, avatar FROM ".PREFIX."_modul_forum_userprofile  WHERE uid = '" . $_SESSION['user_id'] . "'");
 			$row_a = $sql->FetchRow();
 
-			if(strpos($row_a->avatar, 'various/') === false)
+			if(strpos($row_a->avatar, 'system/') === false)
 			{
 				@unlink(BASE_DIR . '/modules/forums/avatars/' . $row_a->avatar);
 			}
@@ -210,7 +211,7 @@ if(isset($_POST['doupdate']) && $_POST['doupdate'] == 1)
 				";
 		}
 
-    $q = "UPDATE ".PREFIX."_modul_forum_userprofile
+		$q = "UPDATE ".PREFIX."_modul_forum_userprofile
 			SET
 				show_profile          = '" . @$r['show_profile'] . "',
 				invisible             = '" . @$r['invisible'] . "',
@@ -243,7 +244,6 @@ if(isset($_POST['doupdate']) && $_POST['doupdate'] == 1)
 		$AVE_DB->Query($q);
 		$this->msg($mod['config_vars']['ProfileOK'], 'index.php?module=forums&show=publicprofile');
 	}
-
 }
 
 $AVE_Template->assign('prefabAvatars', $this->prefabAvatars(@$r['avatar']));

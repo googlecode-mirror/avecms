@@ -18,8 +18,8 @@ $modul_sql_deinstall[] = "DROP TABLE IF EXISTS CPPREFIX_modul_forum_pn;";
 $modul_sql_deinstall[] = "DROP TABLE IF EXISTS CPPREFIX_modul_forum_permissions;";
 $modul_sql_deinstall[] = "DROP TABLE IF EXISTS CPPREFIX_modul_forum_mods;";
 $modul_sql_deinstall[] = "DROP TABLE IF EXISTS CPPREFIX_modul_forum_ignorelist;";
-$modul_sql_deinstall[] = "DROP TABLE IF EXISTS CPPREFIX_modul_forum_grouppermissions;";
-$modul_sql_deinstall[] = "DROP TABLE IF EXISTS CPPREFIX_modul_forum_groupavatar;";
+$modul_sql_deinstall[] = "DROP TABLE IF EXISTS CPPREFIX_modul_forum_group_permissions;";
+$modul_sql_deinstall[] = "DROP TABLE IF EXISTS CPPREFIX_modul_forum_group_avatar;";
 $modul_sql_deinstall[] = "DROP TABLE IF EXISTS CPPREFIX_modul_forum_forum;";
 $modul_sql_deinstall[] = "DROP TABLE IF EXISTS CPPREFIX_modul_forum_category;";
 $modul_sql_deinstall[] = "DROP TABLE IF EXISTS CPPREFIX_modul_forum_attachment;";
@@ -107,40 +107,40 @@ $modul_sql_install[] = "CREATE TABLE CPPREFIX_modul_forum_forum (
   FULLTEXT KEY title_2 (title)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 
-$modul_sql_install[] = "CREATE TABLE CPPREFIX_modul_forum_groupavatar (
-  Id int(10) unsigned NOT NULL auto_increment,
+$modul_sql_install[] = "CREATE TABLE CPPREFIX_modul_forum_group_avatar (
+  id int(10) unsigned NOT NULL auto_increment,
   user_group int(10) unsigned NOT NULL default '0',
-  IstStandard tinyint(1) unsigned NOT NULL default '1',
-  StandardAvatar varchar(255) NOT NULL default '',
-  PRIMARY KEY  (Id)
+  set_default_avatar tinyint(1) unsigned NOT NULL default '1',
+  default_avatar varchar(255) NOT NULL default '',
+  PRIMARY KEY  (id)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 
-$modul_sql_install[] = "INSERT INTO CPPREFIX_modul_forum_groupavatar VALUES (1, 1, 1, '');";
-$modul_sql_install[] = "INSERT INTO CPPREFIX_modul_forum_groupavatar VALUES (2, 2, 1, '');";
-$modul_sql_install[] = "INSERT INTO CPPREFIX_modul_forum_groupavatar VALUES (3, 3, 1, '');";
-$modul_sql_install[] = "INSERT INTO CPPREFIX_modul_forum_groupavatar VALUES (4, 4, 1, '');";
+$modul_sql_install[] = "INSERT INTO CPPREFIX_modul_forum_group_avatar VALUES (1, 1, 1, 'default.gif');";
+$modul_sql_install[] = "INSERT INTO CPPREFIX_modul_forum_group_avatar VALUES (2, 2, 1, 'default.gif');";
+$modul_sql_install[] = "INSERT INTO CPPREFIX_modul_forum_group_avatar VALUES (3, 3, 1, 'default.gif');";
+$modul_sql_install[] = "INSERT INTO CPPREFIX_modul_forum_group_avatar VALUES (4, 4, 1, 'default.gif');";
 
-$modul_sql_install[] = "CREATE TABLE CPPREFIX_modul_forum_grouppermissions (
-  Id int(10) unsigned NOT NULL auto_increment,
+$modul_sql_install[] = "CREATE TABLE CPPREFIX_modul_forum_group_permissions (
+  id int(10) unsigned NOT NULL auto_increment,
   user_group int(10) unsigned NOT NULL default '0',
   permission text,
-  MAX_AVATAR_BYTES int(8) unsigned NOT NULL default '10240',
-  MAX_AVATAR_HEIGHT mediumint(3) unsigned NOT NULL default '90',
-  MAX_AVATAR_WIDTH mediumint(3) unsigned NOT NULL default '90',
-  UPLOADAVATAR tinyint(1) unsigned NOT NULL default '1',
-  MAXPN mediumint(3) unsigned NOT NULL default '50',
-  MAXPNLENTH int(8) unsigned NOT NULL default '5000',
-  MAXLENGTH_POST int(8) unsigned NOT NULL default '10000',
-  MAXATTACHMENTS smallint(2) unsigned NOT NULL default '5',
-  MAX_EDIT_PERIOD smallint(4) unsigned NOT NULL default '672',
-  PRIMARY KEY  (Id),
+  max_avatar_bytes int(8) unsigned NOT NULL default '10240',
+  max_avatar_height mediumint(3) unsigned NOT NULL default '90',
+  max_avatar_width mediumint(3) unsigned NOT NULL default '90',
+  upload_avatar tinyint(1) unsigned NOT NULL default '1',
+  max_pn mediumint(3) unsigned NOT NULL default '50',
+  max_lenght_pn int(8) unsigned NOT NULL default '5000',
+  max_lenght_post int(8) unsigned NOT NULL default '10000',
+  max_attachments smallint(2) unsigned NOT NULL default '5',
+  max_edit_period smallint(4) unsigned NOT NULL default '672',
+  PRIMARY KEY  (id),
   UNIQUE KEY user_group (user_group)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 
-$modul_sql_install[] = "INSERT INTO CPPREFIX_modul_forum_grouppermissions VALUES (1, 1, 'own_avatar|canpn|accessforums|cansearch|last24|userprofile|changenick', 45056, 120, 120, 1, 100, 50000, 10000, 10, 1440);";
-$modul_sql_install[] = "INSERT INTO CPPREFIX_modul_forum_grouppermissions VALUES (2, 2, 'accessforums|cansearch|last24|userprofile', 0, 0, 0, 1, 0, 0, 5000, 3, 0);";
-$modul_sql_install[] = "INSERT INTO CPPREFIX_modul_forum_grouppermissions VALUES (3, 3, 'own_avatar|canpn|accessforums|cansearch|last24|userprofile', 10240, 90, 90, 1, 50, 5000, 10000, 5, 672);";
-$modul_sql_install[] = "INSERT INTO CPPREFIX_modul_forum_grouppermissions VALUES (4, 4, 'own_avatar|canpn|accessforums|cansearch|last24|userprofile', 10240, 90, 90, 1, 50, 5000, 10000, 5, 672);";
+$modul_sql_install[] = "INSERT INTO CPPREFIX_modul_forum_group_permissions VALUES (1, 1, 'own_avatar|canpn|accessforums|cansearch|last24|userprofile|changenick', 45056, 120, 120, 1, 100, 50000, 10000, 10, 1440);";
+$modul_sql_install[] = "INSERT INTO CPPREFIX_modul_forum_group_permissions VALUES (2, 2, 'accessforums|cansearch|last24|userprofile', 0, 0, 0, 1, 0, 0, 5000, 3, 0);";
+$modul_sql_install[] = "INSERT INTO CPPREFIX_modul_forum_group_permissions VALUES (3, 3, 'own_avatar|canpn|accessforums|cansearch|last24|userprofile', 10240, 90, 90, 1, 50, 5000, 10000, 5, 672);";
+$modul_sql_install[] = "INSERT INTO CPPREFIX_modul_forum_group_permissions VALUES (4, 4, 'own_avatar|canpn|accessforums|cansearch|last24|userprofile', 10240, 90, 90, 1, 50, 5000, 10000, 5, 672);";
 
 
 $modul_sql_install[] = "CREATE TABLE CPPREFIX_modul_forum_ignorelist (
@@ -252,26 +252,26 @@ $modul_sql_install[] = "CREATE TABLE CPPREFIX_modul_forum_rating (
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 
 $modul_sql_install[] = "CREATE TABLE CPPREFIX_modul_forum_settings (
-  boxwidthcomm int(10) unsigned NOT NULL default '300',
-  boxwidthforums int(10) unsigned NOT NULL default '300',
-  maxlengthword int(10) unsigned NOT NULL default '50',
-  maxlines int(10) unsigned NOT NULL default '15',
-  badwords text,
-  badwords_replace varchar(255) NOT NULL default '',
-  pageheader text NOT NULL,
-  AbsenderMail varchar(200) default NULL,
-  AbsenderName varchar(200) default NULL,
-  SystemAvatars tinyint(1) unsigned NOT NULL default '1',
-  BBCode tinyint(1) unsigned NOT NULL default '1',
-  Smilies tinyint(1) unsigned NOT NULL default '1',
-  Posticons tinyint(1) unsigned NOT NULL default '1',
-  UNIQUE KEY boxwidthcomm (boxwidthcomm),
-  UNIQUE KEY boxwidthforums (boxwidthforums),
-  UNIQUE KEY maxlengthword (maxlengthword),
-  UNIQUE KEY maxlines (maxlines)
+  box_width_comm int(10) unsigned NOT NULL default '300',
+  box_width_forums int(10) unsigned NOT NULL default '300',
+  max_length_word int(10) unsigned NOT NULL default '50',
+  max_lines int(10) unsigned NOT NULL default '15',
+  bad_words text,
+  bad_words_replace varchar(255) NOT NULL default '',
+  page_header text NOT NULL,
+  sender_mail varchar(200) default NULL,
+  sender_name varchar(200) default NULL,
+  sys_avatars tinyint(1) unsigned NOT NULL default '1',
+  bbcode tinyint(1) unsigned NOT NULL default '1',
+  smilies tinyint(1) unsigned NOT NULL default '1',
+  posticons tinyint(1) unsigned NOT NULL default '1',
+  UNIQUE KEY box_width_comm (box_width_comm),
+  UNIQUE KEY box_width_forums (box_width_forums),
+  UNIQUE KEY max_length_word (max_length_word),
+  UNIQUE KEY max_lines (max_lines)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 
-$modul_sql_install[] = "INSERT INTO CPPREFIX_modul_forum_settings VALUES (300, 300, 50, 150, 'Arschloch,Ficken,Drecksau', '***', '<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">\r\n<html xmlns=\"http://www.w3.org/1999/xhtml\">\r\n<head>\r\n<meta http-equiv=\"Content-Type\" content=\"text/html; charset=windows-1251\" />', '" . $_SESSION['user_email'] . "', '" . $_SESSION['user_name'] . "', 1, 1, 1, 1);";
+$modul_sql_install[] = "INSERT INTO CPPREFIX_modul_forum_settings VALUES (300, 300, 50, 150, '', '***', '<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">\r\n<html xmlns=\"http://www.w3.org/1999/xhtml\">\r\n<head>\r\n<meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\" />', '" . $_SESSION['user_email'] . "', '" . $_SESSION['user_name'] . "', 1, 1, 1, 1);";
 
 $modul_sql_install[] = "CREATE TABLE CPPREFIX_modul_forum_smileys (
   id int(11) NOT NULL auto_increment,

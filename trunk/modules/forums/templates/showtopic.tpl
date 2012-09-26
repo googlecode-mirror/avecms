@@ -68,7 +68,7 @@
 				{if $post->datum|date_format:'%d.%m.%Y' == $smarty.now|date_format:'%d.%m.%Y'}
 					<strong>{#Today#},&nbsp;{$post->datum|date_format:'%H:%M'}</strong>
 				{else}
-					<strong>{$post->datum|date_format:$smarty.config.DateFormatTimeThread}</strong>
+					<strong>{$post->datum|date_format:$smarty.config.DateFormatTimeThread|pretty_date}</strong>
 				{/if}
 			</td>
 		</tr>

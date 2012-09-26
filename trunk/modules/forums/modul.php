@@ -68,29 +68,29 @@ if( (isset($_REQUEST['module']) && $_REQUEST['module'] == 'forums') || (isset($_
 
 		$row_gs = $AVE_DB->Query("
 			SELECT *
-			FROM " . PREFIX . "_modul_forum_grouppermissions
+			FROM " . PREFIX . "_modul_forum_group_permissions
 			WHERE user_group = '" . UGROUP . "'
 			LIMIT 1
 		")->FetchRow();
 
 		define ('BOARD_NEWPOSTMAXAGE', '-4 weeks');
-		define ('MAX_AVATAR_WIDTH', $row_gs->MAX_AVATAR_WIDTH);
-		define ('MAX_AVATAR_HEIGHT', $row_gs->MAX_AVATAR_WIDTH);
-		define ('MAX_AVATAR_BYTES', $row_gs->MAX_AVATAR_BYTES);
-		define ('SYSTEMAVATARS', $row_set['SystemAvatars']);
-		define ('UPLOADAVATAR', $row_gs->UPLOADAVATAR);
-		define ('MAXPN', $row_gs->MAXPN);
-		define ('MAXPNLENTH', $row_gs->MAXPNLENTH);
+		define ('MAX_AVATAR_WIDTH', $row_gs->max_avatar_width);
+		define ('MAX_AVATAR_HEIGHT', $row_gs->max_avatar_height);
+		define ('MAX_AVATAR_BYTES', $row_gs->max_avatar_bytes);
+		define ('SYSTEMAVATARS', $row_set['sys_avatars']);
+		define ('UPLOADAVATAR', $row_gs->upload_avatar);
+		define ('MAXPN', $row_gs->max_pn);
+		define ('MAXPNLENTH', $row_gs->max_lenght_pn);
 		define ('MISCIDSINC', 1);
-		define ('FORUMEMAIL', $row_set['AbsenderMail']);
-		define ('FORUMABSENDER', $row_set['AbsenderName']);
-		define ('BBCODESITE', $row_set['BBCode']);
-		define ('IMGCODE', $row_set['BBCode']);
-		define ('SMILIES', $row_set['Smilies']);
-		define ('USEPOSTICONS', $row_set['Posticons']);
-		define ('COMMENTSBBCODE', $row_set['BBCode']);
-		define ('MAXLENGTH_POST', $row_gs->MAXLENGTH_POST);
-		define ('MAXATTACHMENTS', $row_gs->MAXATTACHMENTS);
+		define ('FORUMEMAIL', $row_set['sender_mail']);
+		define ('FORUMABSENDER', $row_set['sender_name']);
+		define ('BBCODESITE', $row_set['bbcode']);
+		define ('IMGCODE', $row_set['bbcode']);
+		define ('SMILIES', $row_set['smilies']);
+		define ('USEPOSTICONS', $row_set['sosticons']);
+		define ('COMMENTSBBCODE', $row_set['bbcode']);
+		define ('MAXLENGTH_POST', $row_gs->max_lenght_post);
+		define ('MAXATTACHMENTS', $row_gs->max_attachments);
 		define ('forum_images', 'templates/'. THEME_FOLDER.'/modules/forums/');
 		define ('TOPIC_TYPE_NONE', 0);
 		define ('TOPIC_TYPE_STICKY', 1);
@@ -100,7 +100,7 @@ if( (isset($_REQUEST['module']) && $_REQUEST['module'] == 'forums') || (isset($_
 		define ('EXPIRE_DAY',    time() + 60*60*24);
 		define ('EXPIRE_MONTH',  time() + 60*60*24*30);
 		define ('EXPIRE_YEAR',   time() + 60*60*24*30*365);
-		define ('MAX_EDIT_PERIOD', $row_gs->MAX_EDIT_PERIOD); // Zeit in Stunden, in der der ein Beitrag editiert werden kann 720 = 1 Monat
+		define ('MAX_EDIT_PERIOD', $row_gs->max_edit_period); // Zeit in Stunden, in der der ein Beitrag editiert werden kann 720 = 1 Monat
 
 		require_once(BASE_DIR . '/functions/func.modulglobals.php');
 		set_modul_globals('forums');

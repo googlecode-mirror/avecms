@@ -739,15 +739,15 @@ class Forum
 				$Prefab = $mod['config_vars']['EmailBodyUser'];
 				$Prefab = str_replace('%%USER%%', $row->uname, $Prefab);
 				$Prefab = str_replace('%%ABSENDER%%', $_SESSION['forum_user_name'], $Prefab);
-				$Prefab = str_replace('%%BETREFF%%', stripslashes($_POST['Betreff']), $Prefab);
-				$Prefab = str_replace('%%NACHRICHT%%', stripslashes($_POST['Nachricht']), $Prefab);
+				$Prefab = str_replace('%%BETREFF%%', stripslashes($_POST['subject']), $Prefab);
+				$Prefab = str_replace('%%NACHRICHT%%', stripslashes($_POST['message']), $Prefab);
 				$Prefab = str_replace('%%ID%%', $_SESSION['user_id'], $Prefab);
 				$Prefab = str_replace('%%N%%', "\n",$Prefab);
 				$Prefab = str_replace('','',$Prefab);
 				send_mail(
 					$row->email,
 					$Prefab,
-					stripslashes($_POST['Betreff']),
+					stripslashes($_POST['subject']),
 					FORUMEMAIL,
 					FORUMABSENDER,
 					"text"
@@ -771,7 +771,7 @@ class Forum
 		$sql_user = $AVE_DB->Query("SELECT
 				u.*,
 				ug.user_group,
-				ugn.user_group_name as GruppenName
+				ugn.user_group_name as group_name
 			FROM
 				" . PREFIX . "_modul_forum_userprofile as u,
 				" . PREFIX . "_users as ug,
@@ -811,9 +811,10 @@ class Forum
 		define("MODULE_SITE",  $mod['config_vars']['PageNameUserProfile']);
 	}
 
-	//=======================================================
-	// Benutzerliste
-	//=======================================================
+	/**
+	*  Список пользователя
+	*
+	*/
 	function getUserlist()
 	{
 		define("USERLIST", 1);
@@ -882,13 +883,13 @@ class Forum
 	//=======================================================
 	function badwordreplace($text)
 	{
-		$badwords = $this->forumSettings('badwords');
+		$badwords = $this->forumSettings('bad_words');
 		$badwords = str_replace(array("\r\n", "\n"), '', $badwords);
 		$badwords = trim($badwords);
 
 		if ($badwords)
 		{
-			$bwrp = trim($this->forumSettings('badwords_replace'));
+			$bwrp = trim($this->forumSettings('bad_words_replace'));
 			if (empty($bwrp)) $bwrp = "!#*$&?";
 
 			$badwords = implode('|', explode(',', preg_quote($badwords)));
@@ -1762,7 +1763,7 @@ class Forum
 				SELECT
 					user_group,
 					permission
-				FROM " . PREFIX . "_modul_forum_grouppermissions
+				FROM " . PREFIX . "_modul_forum_group_permissions
 			");
 			while ($row = $sql->FetchRow())
 			{
@@ -1783,7 +1784,7 @@ class Forum
 	//=======================================================
 	function prefabAvatars($selected='')
 	{
-		$verzname = BASE_DIR . "/modules/forums/avatars/various";
+		$verzname = BASE_DIR . "/modules/forums/avatars/system";
 		$dht = opendir( $verzname );
 		$sel_theme = "";
 		$i = 0;
@@ -1793,10 +1794,10 @@ class Forum
 			{
 				if ($theme != "." && $theme != ".." && $theme != 'index.php')
 				{
-					$pres = ($selected=="various/$theme") ? "checked" : "";
+					$pres = ($selected=="system/$theme") ? "checked" : "";
 					$sel_theme .= "
-					<div style='float:left; text-align:center; padding:1px'><img src=\"modules/forums/avatars/various/$theme\" alt=\"\" /><br />
-					<input name=\"SystemAvatar\" type=\"radio\" value=\"$theme\" $pres></div>";
+					<div style='float:left; text-align:center; padding:1px'><img src=\"modules/forums/avatars/system/$theme\" alt=\"\" /><br />
+					<input name=\"sys_avatar\" type=\"radio\" value=\"$theme\" $pres></div>";
 					$theme = "";
 					$i++;
 					if($i == 6)
@@ -1832,7 +1833,9 @@ class Forum
 		if ($this->fperm('alles') || $this->fperm('own_avatar') || $group == 1)
 		{
 			$permown = 1;
-		} else {
+		} 
+		else 
+		{
 			// wenn seine gruppe die rechte besitzt, eigene avatar zu nutzen
 			if ($this->fperm('own_avatar'))
 			{
@@ -1856,14 +1859,15 @@ class Forum
 					$aprint = true;
 				}
 			}
-		} else {
-			$sql = $AVE_DB->Query("SELECT * FROM " . PREFIX . "_modul_forum_groupavatar WHERE user_group = '" . $group . "'");
+		} 
+		else 
+		{
+			$sql = $AVE_DB->Query("SELECT * FROM " . PREFIX . "_modul_forum_group_avatar WHERE user_group = '" . $group . "'");
 			$row = $sql->FetchRow();
-			if (is_object($row) && ($row->IstStandard == 1) && ($row->StandardAvatar != ""))
+			if (is_object($row) && ($row->set_default_avatar == 1) && ($row->default_avatar != ""))
 			{
-				$avatar = "<img src=\"modules/forums/avatars_default/" . $row->StandardAvatar . "\" alt=\"\" border=\"\" />";
+				$avatar = "<img src=\"modules/forums/avatars/default/" . $row->default_avatar . "\" alt=\"\" border=\"\" />";
 				$aprint = true;
-
 			}
 		}
 		if ($avatar == '') $avatar = '';
@@ -2000,7 +2004,7 @@ class Forum
 //		$row = $sql->FetchRow();
 
 		if (!isset($maxlines)){
-			$maxlines = $this->forumSettings('maxlines');
+			$maxlines = $this->forumSettings('max_lines');
 		}
 
 		$lines = max(mb_substr_count($text, "\n"), mb_substr_count($text, "<br />"));
@@ -2024,7 +2028,7 @@ class Forum
 		$divheight = $this->divheight($text);
 //		$sql = $AVE_DB->Query("SELECT boxwidthcomm,boxwidthforums,maxlengthword FROM " . PREFIX . "_modul_forum_settings");
 //		$row = $sql->FetchRow();
-		$bwidth = ("pagecomments") ? $this->forumSettings('boxwidthcomm') : $this->forumSettings('boxwidthforums');
+		$bwidth = ("pagecomments") ? $this->forumSettings('box_width_comm') : $this->forumSettings('box_width_forums');
 
 		$head = '<div style="MARGIN: 5px 0px 0px">%%boxtitle%%</div><div class="divcode" style="margin:0px; padding:5px; border:1px inset; width:'.$bwidth.'px; height:'.$divheight.'px; overflow:auto"><code style="white-space:nowrap">';
 		$foot = '</code></div>';
@@ -2040,7 +2044,7 @@ class Forum
 
 		$text = htmlspecialchars($text);
 		$lines = explode("\n", $text);
-		$c_mlength = $this->forumSettings('maxlengthword');
+		$c_mlength = $this->forumSettings('max_length_word');
 		for($n=0;$n<count($lines);$n++) {
 			$words = explode(" ",$lines[$n]);
 			$pstringount_w = count($words)-1;
@@ -2336,28 +2340,28 @@ class Forum
 		$sql = $AVE_DB->Query("
 			SELECT ug.user_group
 			FROM " . PREFIX . "_user_groups AS ug
-			LEFT JOIN " . PREFIX . "_modul_forum_grouppermissions
+			LEFT JOIN " . PREFIX . "_modul_forum_group_permissions
 				USING(user_group)
-			WHERE Id IS NULL
+			WHERE id IS NULL
 		");
 		while($row = $sql->FetchRow())
 		{
 			$AVE_DB->Query("
 				INSERT INTO
-					" . PREFIX . "_modul_forum_grouppermissions
+					" . PREFIX . "_modul_forum_group_permissions
 				SET
-					Id = '',
-					user_group = '" . $row->user_group . "',
-					permission = '" . $this->_default_permission . "',
-					MAX_AVATAR_BYTES = '10240',
-					MAX_AVATAR_HEIGHT = '90',
-					MAX_AVATAR_WIDTH = '90',
-					UPLOADAVATAR = '1',
-					MAXPN = '50',
-					MAXPNLENTH = '5000',
-					MAXLENGTH_POST = '10000',
-					MAXATTACHMENTS = '5',
-					MAX_EDIT_PERIOD = '672'
+					id = '',
+					user_group        = '" . $row->user_group . "',
+					permission        = '" . $this->_default_permission . "',
+					max_avatar_bytes  = '10240',
+					max_avatar_height = '90',
+					max_avatar_width  = '90',
+					upload_avatar     = '1',
+					max_pn            = '50',
+					max_lenght_pn     = '5000',
+					max_lenght_post   = '10000',
+					max_attachments   = '5',
+					max_edit_period   = '672'
 			");
 		}
 	}

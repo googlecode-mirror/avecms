@@ -14,27 +14,27 @@ class Forum
 		
 		if(isset($_REQUEST['save']) && $_REQUEST['save']==1)
 		{
-			$_POST['boxwidthcomm'] = (!empty($_POST['boxwidthcomm'])) ? $_POST['boxwidthcomm'] : 300;
-			$_POST['maxlengthword'] = (!empty($_POST['maxlengthword'])) ? $_POST['maxlengthword'] : 50;
-			$_POST['maxlines'] = (!empty($_POST['maxlines'])) ? $_POST['maxlines'] : 15;
+			$_POST['box_width_comm'] = (!empty($_POST['box_width_comm'])) ? $_POST['box_width_comm'] : 300;
+			$_POST['max_length_word'] = (!empty($_POST['max_length_word'])) ? $_POST['max_length_word'] : 50;
+			$_POST['max_lines'] = (!empty($_POST['max_lines'])) ? $_POST['max_lines'] : 15;
 
 			$q = "
 			UPDATE
 				" . PREFIX . "_modul_forum_settings
 			SET
-				boxwidthcomm = '" . $_POST['boxwidthcomm'] . "',
-				boxwidthforums = '" . $_POST['boxwidthcomm'] . "',
-				maxlengthword = '" . $_POST['maxlengthword'] . "',
-				maxlines = '" . $_POST['maxlines'] . "',
-				badwords = '" . @trim($_POST['badwords']) . "',
-				badwords_replace = '" . @$_POST['badwords_replace'] . "',
-				pageheader = '" . @$_POST['pageheader'] . "',
-				AbsenderMail = '" . @$_POST['AbsenderMail'] . "',
-				AbsenderName = '" . @$_POST['AbsenderName'] . "',
-				SystemAvatars = '" . @$_POST['SystemAvatars'] . "',
-				BBCode = '" . @$_POST['BBCode'] . "',
-				Smilies = '" . @$_POST['Smilies'] . "',
-				Posticons = '" . @$_POST['Posticons'] . "'
+				box_width_comm    = '" . $_POST['box_width_comm'] . "',
+				box_width_forums  = '" . $_POST['box_width_comm'] . "',
+				max_length_word   = '" . $_POST['max_length_word'] . "',
+				max_lines         = '" . $_POST['max_lines'] . "',
+				bad_words         = '" . @trim($_POST['bad_words']) . "',
+				bad_words_replace = '" . @$_POST['bad_words_replace'] . "',
+				page_header       = '" . @$_POST['page_header'] . "',
+				sender_mail       = '" . @$_POST['sender_mail'] . "',
+				sender_name       = '" . @$_POST['sender_name'] . "',
+				sys_avatars       = '" . @$_POST['sys_avatars'] . "',
+				bbcode            = '" . @$_POST['bbcode'] . "',
+				smilies           = '" . @$_POST['smilies'] . "',
+				posticons         = '" . @$_POST['posticons'] . "'
 			";
 			$AVE_DB->Query($q);
 			header("Location:index.php?do=modules&action=modedit&mod=forums&moduleaction=settings&cp=" . SESSION);
@@ -777,7 +777,7 @@ class Forum
 		$sql = $AVE_DB->Query("
 			SELECT ug.user_group
 			FROM " . PREFIX . "_user_groups AS ug
-			LEFT JOIN " . PREFIX . "_modul_forum_grouppermissions
+			LEFT JOIN " . PREFIX . "_modul_forum_group_permissions
 				USING(user_group)
 			WHERE Id IS NULL
 		");
@@ -785,20 +785,20 @@ class Forum
 		{
 			$AVE_DB->Query("
 				INSERT INTO
-					" . PREFIX . "_modul_forum_grouppermissions
+					" . PREFIX . "_modul_forum_group_permissions
 				SET
-					Id = '',
-					user_group = '" . $row->user_group . "',
-					permission = '" . $this->_default_permission . "',
-					MAX_AVATAR_BYTES = '10240',
-					MAX_AVATAR_HEIGHT = '90',
-					MAX_AVATAR_WIDTH = '90',
-					UPLOADAVATAR = '1',
-					MAXPN = '50',
-					MAXPNLENTH = '5000',
-					MAXLENGTH_POST = '10000',
-					MAXATTACHMENTS = '5',
-					MAX_EDIT_PERIOD = '672'
+					id                = '',
+					user_group        = '" . $row->user_group . "',
+					permission        = '" . $this->_default_permission . "',
+					max_avatar_bytes  = '10240',
+					max_avatar_height = '90',
+					max_avatar_width  = '90',
+					upload_avatar     = '1',
+					max_pn            = '50',
+					max_lenght_pn     = '5000',
+					max_lenght_post   = '10000',
+					max_attachments   = '5',
+					max_edit_period   = '672'
 			");
 		}
 	}
@@ -818,18 +818,18 @@ class Forum
 			{
 				$AVE_DB->Query("
 				UPDATE
-					" . PREFIX  . "_modul_forum_grouppermissions
+					" . PREFIX  . "_modul_forum_group_permissions
 				SET
-					permission = '" . @implode("|", $_POST['perm']) . "',
-					MAX_AVATAR_BYTES = '" . (@$_POST['MAX_AVATAR_BYTES']*1024) . "',
-					MAX_AVATAR_HEIGHT = '" . @$_POST['MAX_AVATAR_HEIGHT'] . "',
-					MAX_AVATAR_WIDTH = '" . @$_POST['MAX_AVATAR_WIDTH'] . "',
-					UPLOADAVATAR = '" . @$_POST['UPLOADAVATAR'] . "',
-					MAXPN = '" . @$_POST['MAXPN'] . "',
-					MAXPNLENTH = '" . @$_POST['MAXPNLENTH'] . "',
-					MAXLENGTH_POST = '" . @$_POST['MAXLENGTH_POST'] . "',
-					MAXATTACHMENTS = '" . @$_POST['MAXATTACHMENTS'] . "',
-					MAX_EDIT_PERIOD = '" . (@$_POST['MAX_EDIT_PERIOD']*24) . "'
+					permission        = '" . @implode("|", $_POST['perm']) . "',
+					max_avatar_bytes  = '" . (@$_POST['max_avatar_bytes']*1024) . "',
+					max_avatar_height = '" . @$_POST['max_avatar_height'] . "',
+					max_avatar_width  = '" . @$_POST['max_avatar_width'] . "',
+					upload_avatar     = '" . @$_POST['upload_avatar'] . "',
+					max_pn            = '" . @$_POST['max_pn'] . "',
+					max_lenght_pn     = '" . @$_POST['max_lenght_pn'] . "',
+					max_lenght_post   = '" . @$_POST['max_lenght_post'] . "',
+					max_attachments   = '" . @$_POST['max_attachments'] . "',
+					max_edit_period   = '" . (@$_POST['max_edit_period']*24) . "'
 				WHERE
 					user_group = '"  . @$_REQUEST['group'] . "'
 				");
@@ -839,13 +839,13 @@ class Forum
 			$sql = $AVE_DB->Query("SELECT
 				*
 			FROM
-				" . PREFIX . "_modul_forum_grouppermissions
+				" . PREFIX . "_modul_forum_group_permissions
 			WHERE
 				user_group = '" .  $_REQUEST['group'] . "'
 				");
 			$row = $sql->FetchRow();
-			$row->MAX_AVATAR_BYTES = $row->MAX_AVATAR_BYTES/1024;
-			$row->MAX_EDIT_PERIOD = $row->MAX_EDIT_PERIOD/24;
+			$row->max_avatar_bytes = $row->max_avatar_bytes/1024;
+			$row->max_edit_period = $row->max_edit_period/24;
 
 			$AVE_Template->assign('Perms', explode("|", $row->permission));
 			$AVE_Template->assign('row', $row);
