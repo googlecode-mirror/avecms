@@ -461,12 +461,12 @@ INSERT INTO `%%PRFX%%_modul_forum_category` VALUES (1, 'Демонстрацио
 INSERT INTO `%%PRFX%%_modul_forum_forum` VALUES (1, 'Общий форум', 1, NULL, 'Здесь можно говорить обо всем', 0, '2010-03-26 04:16:56', 11, '1,2,3,4', 1, '', '', NULL, 1, 0, 0, '', ''),
 (2, 'Мир вокруг нас', 1, NULL, 'Форум о событиях на планете земля.', 0, '2009-01-09 12:08:28', 4, '1,2,3,4,5,6,7,8,9', 1, '', '', NULL, 2, 0, 0, '', '');#inst#
 
-INSERT INTO `%%PRFX%%_modul_forum_groupavatar` VALUES (1, 1, 1, ''),
-(2, 2, 1, ''),
-(3, 3, 1, ''),
-(4, 4, 1, '');#inst#
+INSERT INTO `%%PRFX%%_modul_forum_group_avatar` VALUES (1, 1, 1, 'default.gif'),
+(2, 2, 1, 'default.gif'),
+(3, 3, 1, 'default.gif'),
+(4, 4, 1, 'default.gif');#inst#
 
-INSERT INTO `%%PRFX%%_modul_forum_grouppermissions` VALUES (1, 1, 'own_avatar|canpn|accessforums|cansearch|last24|userprofile|changenick', 45056, 120, 120, 1, 100, 50000, 10000, 10, 1440),
+INSERT INTO `%%PRFX%%_modul_forum_group_permissions` VALUES (1, 1, 'own_avatar|canpn|accessforums|cansearch|last24|userprofile|changenick', 45056, 120, 120, 1, 100, 50000, 10000, 10, 1440),
 (2, 2, 'accessforums|cansearch|last24|userprofile', 0, 0, 0, 1, 0, 0, 5000, 3, 0),
 (3, 3, 'own_avatar|canpn|accessforums|cansearch|last24|userprofile', 10240, 90, 90, 1, 50, 5000, 10000, 5, 672),
 (4, 4, 'own_avatar|canpn|accessforums|cansearch|last24|userprofile', 10240, 90, 90, 1, 50, 5000, 10000, 5, 672);#inst#
@@ -519,7 +519,7 @@ INSERT INTO `%%PRFX%%_modul_forum_rating` VALUES (1, '', '', ''),
 (2, '', '', ''),
 (3, '', '', '');#inst#
 
-INSERT INTO `%%PRFX%%_modul_forum_settings` VALUES (300, 300, 50, 150, 'Arschloch,Ficken,Drecksau', '***', '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">\r\n<html xmlns="http://www.w3.org/1999/xhtml">\r\n<head>\r\n<meta http-equiv="content-type" content="text/html; charset=UTF-8" />', 'formsg@mail.ru', 'Admin', 1, 1, 1, 1);#inst#
+INSERT INTO `%%PRFX%%_modul_forum_settings` VALUES (300, 300, 50, 150, '', '***', '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">\r\n<html xmlns="http://www.w3.org/1999/xhtml">\r\n<head>\r\n<meta http-equiv="content-type" content="text/html; charset=UTF-8" />', 'formsg@mail.ru', 'Admin', 1, 1, 1, 1);#inst#
 
 INSERT INTO `%%PRFX%%_modul_forum_smileys` VALUES (1, 14, '1', ';)', 'wink.gif'),
 (2, 13, '1', ':eek:', 'eek.gif'),

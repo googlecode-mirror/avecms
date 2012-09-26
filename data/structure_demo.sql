@@ -370,29 +370,29 @@ CREATE TABLE `%%PRFX%%_modul_forum_forum` (
   KEY `category_id` (`category_id`)
 ) ENGINE=MyISAM AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;#inst#
 
-CREATE TABLE `%%PRFX%%_modul_forum_groupavatar` (
-  `Id` int(10) unsigned NOT NULL auto_increment,
+CREATE TABLE `%%PRFX%%_modul_forum_group_avatar` (
+  `id` int(10) unsigned NOT NULL auto_increment,
   `user_group` int(10) unsigned NOT NULL default '0',
-  `IstStandard` tinyint(1) unsigned NOT NULL default '1',
-  `StandardAvatar` char(255) NOT NULL,
-  PRIMARY KEY  (`Id`)
+  `set_default_avatar` tinyint(1) unsigned NOT NULL default '1',
+  `default_avatar` char(255) NOT NULL,
+  PRIMARY KEY  (`id`)
 ) ENGINE=MyISAM AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;#inst#
 
-CREATE TABLE `%%PRFX%%_modul_forum_grouppermissions` (
-  `Id` int(10) unsigned NOT NULL auto_increment,
+CREATE TABLE `%%PRFX%%_modul_forum_group_permissions` (
+  `id` int(10) unsigned NOT NULL auto_increment,
   `user_group` int(10) unsigned NOT NULL default '0',
   `permission` text NOT NULL,
-  `MAX_AVATAR_BYTES` int(8) unsigned NOT NULL default '10240',
-  `MAX_AVATAR_HEIGHT` mediumint(3) unsigned NOT NULL default '90',
-  `MAX_AVATAR_WIDTH` mediumint(3) unsigned NOT NULL default '90',
-  `UPLOADAVATAR` tinyint(1) unsigned NOT NULL default '1',
-  `MAXPN` mediumint(3) unsigned NOT NULL default '50',
-  `MAXPNLENTH` int(8) unsigned NOT NULL default '5000',
-  `MAXLENGTH_POST` int(8) unsigned NOT NULL default '10000',
-  `MAXATTACHMENTS` smallint(2) unsigned NOT NULL default '5',
-  `MAX_EDIT_PERIOD` smallint(4) unsigned NOT NULL default '672',
-  PRIMARY KEY  (`Id`),
-  UNIQUE KEY `Benutzergruppe` (`user_group`)
+  `max_avatar_bytes` int(8) unsigned NOT NULL default '10240',
+  `max_avatar_height` mediumint(3) unsigned NOT NULL default '90',
+  `max_avatar_width` mediumint(3) unsigned NOT NULL default '90',
+  `upload_avatar` tinyint(1) unsigned NOT NULL default '1',
+  `max_pn` mediumint(3) unsigned NOT NULL default '50',
+  `max_lenght_pn` int(8) unsigned NOT NULL default '5000',
+  `max_lenght_post` int(8) unsigned NOT NULL default '10000',
+  `max_attachments` smallint(2) unsigned NOT NULL default '5',
+  `max_edit_period` smallint(4) unsigned NOT NULL default '672',
+  PRIMARY KEY  (`id`),
+  UNIQUE KEY `user_group` (`user_group`)
 ) ENGINE=MyISAM AUTO_INCREMENT=5 DEFAULT CHARSET=utf8 PACK_KEYS=0;#inst#
 
 CREATE TABLE `%%PRFX%%_modul_forum_ignorelist` (
@@ -475,23 +475,23 @@ CREATE TABLE `%%PRFX%%_modul_forum_rating` (
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;#inst#
 
 CREATE TABLE `%%PRFX%%_modul_forum_settings` (
-  `boxwidthcomm` int(10) unsigned NOT NULL default '300',
-  `boxwidthforums` int(10) unsigned NOT NULL default '300',
-  `maxlengthword` int(10) unsigned NOT NULL default '50',
-  `maxlines` int(10) unsigned NOT NULL default '15',
-  `badwords` text,
-  `badwords_replace` varchar(255) NOT NULL default '',
-  `pageheader` text NOT NULL,
-  `AbsenderMail` varchar(200) default NULL,
-  `AbsenderName` varchar(200) default NULL,
-  `SystemAvatars` tinyint(1) unsigned NOT NULL default '1',
-  `BBCode` tinyint(1) unsigned NOT NULL default '1',
-  `Smilies` tinyint(1) unsigned NOT NULL default '1',
-  `Posticons` tinyint(1) unsigned NOT NULL default '1',
-  UNIQUE KEY `boxwidthcomm` (`boxwidthcomm`),
-  UNIQUE KEY `boxwidthforums` (`boxwidthforums`),
-  UNIQUE KEY `maxlengthword` (`maxlengthword`),
-  UNIQUE KEY `maxlines` (`maxlines`)
+  `box_width_comm` int(10) unsigned NOT NULL default '300',
+  `box_width_forums` int(10) unsigned NOT NULL default '300',
+  `max_length_word` int(10) unsigned NOT NULL default '50',
+  `max_lines` int(10) unsigned NOT NULL default '15',
+  `bad_words` text,
+  `bad_words_replace` varchar(255) NOT NULL default '',
+  `page_header` text NOT NULL,
+  `sender_mail` varchar(200) default NULL,
+  `sender_name` varchar(200) default NULL,
+  `sys_avatars` tinyint(1) unsigned NOT NULL default '1',
+  `bbcode` tinyint(1) unsigned NOT NULL default '1',
+  `smilies` tinyint(1) unsigned NOT NULL default '1',
+  `posticons` tinyint(1) unsigned NOT NULL default '1',
+  UNIQUE KEY `box_width_comm` (`box_width_comm`),
+  UNIQUE KEY `box_width_forums` (`box_width_forums`),
+  UNIQUE KEY `max_length_word` (`max_length_word`),
+  UNIQUE KEY `max_lines` (`max_lines`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;#inst#
 
 CREATE TABLE `%%PRFX%%_modul_forum_smileys` (
