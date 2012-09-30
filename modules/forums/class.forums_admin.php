@@ -109,7 +109,7 @@ class Forum
 
 			if (empty($_POST['f_id']))
 			{
-				// passwort erstellen
+				// Создание пароля
 				$password = (empty($_POST['password'])) ? '' : md5(md5($_POST['password']));
 				$password_raw = $_POST['password'];
 
@@ -180,9 +180,9 @@ class Forum
 						'" . $defmask . "')";
 					$result = $AVE_DB->Query($query);
 				}
-
-			} else {
-
+			} 
+			else 
+			{
 					// forum aktualisieren
 					$password = ($_POST['password'] == "") ? '' : md5(md5($_POST['password']));
 					$query = "
@@ -202,7 +202,7 @@ class Forum
 					WHERE
 						id = '" . $_POST['f_id'] . "'";
 					$result = $AVE_DB->Query($query);
-				}
+			}
 
 			$f_id = ($_POST['f_id'] == "") ? $AVE_DB->InsertId() : $_POST['f_id'];
 
@@ -421,7 +421,9 @@ class Forum
 					'" . $parent_id . "',
 					'" . @implode(",", $_POST['group_id']) . "'
 				)";
-			} else {
+			} 
+			else 
+			{
 				$query = "
 				UPDATE
 					" . PREFIX . "_modul_forum_category
@@ -719,7 +721,9 @@ class Forum
 					$AVE_Template->assign('preview', 1);
 
 
-				} else {
+				} 
+				else 
+				{
 					while ($topic = $result->FetchRow())
 					{
 						$this->deleteTopic($topic->id);
@@ -727,8 +731,6 @@ class Forum
 					header("Location:index.php?do=modules&action=modedit&mod=forums&moduleaction=delete_topics&cp=" . SESSION);
 				}
 			}
-
-			//header("Location:index.php?do=modules&action=modedit&mod=forums&moduleaction=delete_topics&cp=" . SESSION);
 		}
 		$AVE_Template->assign('forums', $this->listForums());
 		$AVE_Template->assign('content', $AVE_Template->fetch($tpl_dir . 'delete_topic.tpl'));
@@ -813,7 +815,6 @@ class Forum
 		
 		if(isset($_REQUEST['group']) && $_REQUEST['group'] != '')
 		{
-
 			if(isset($_REQUEST['save']) && $_REQUEST['save']==1)
 			{
 				$AVE_DB->Query("
@@ -850,7 +851,9 @@ class Forum
 			$AVE_Template->assign('Perms', explode("|", $row->permission));
 			$AVE_Template->assign('row', $row);
 			$AVE_Template->assign('content', $AVE_Template->fetch($tpl_dir . 'group_perms_pop.tpl'));
-		} else {
+		} 
+		else 
+		{
 			$groups = array();
 			$sql = $AVE_DB->Query("SELECT * FROM " . PREFIX . "_user_groups ORDER BY user_group_name ASC");
 			while($row = $sql->FetchRow())
@@ -933,7 +936,7 @@ class Forum
 	function listSmilies($tpl_dir)
 	{
 		global $AVE_DB, $AVE_Template;
-		// Speichern
+		// сохранять
 		if(isset($_REQUEST['save']) && $_REQUEST['save']==1)
 		{
 			foreach ($_POST['code'] as $id => $code)
@@ -962,8 +965,7 @@ class Forum
 			header("Location:index.php?do=modules&action=modedit&mod=forums&moduleaction=list_smilies&cp=" . SESSION);
 			exit;
 		}
-
-		// Neu
+		// новый
 		if(isset($_REQUEST['new']) && $_REQUEST['new']==1)
 		{
 			$smileys = array();
@@ -989,13 +991,14 @@ class Forum
 		$AVE_Template->assign('content', $AVE_Template->fetch($tpl_dir . 'show_smileys.tpl'));
 	}
 
-	//=======================================================
-	// Icons
-	//=======================================================
+	/**
+	* Иконки
+	*
+	*/
 	function listIcons($tpl_dir)
 	{
 		global $AVE_DB, $AVE_Template;
-		// Speichern
+		// сохранять
 		if(isset($_REQUEST['save']) && $_REQUEST['save']==1)
 		{
 			foreach ($_POST['path'] as $id => $path)
@@ -1023,8 +1026,7 @@ class Forum
 			header("Location:index.php?do=modules&action=modedit&mod=forums&moduleaction=list_icons&cp=" . SESSION);
 			exit;
 		}
-
-		// Neu
+		// новый
 		if(isset($_REQUEST['new']) && $_REQUEST['new']==1)
 		{
 			$icons = array();
@@ -1347,6 +1349,7 @@ class Forum
 
 		return round($size, 1) . $ext;
 	}
+	
 	function getActPage()
 	{
 		return (isset($_REQUEST['page']) && is_numeric($_REQUEST['page']) ? $_REQUEST['page'] : 1);
@@ -1474,7 +1477,7 @@ class Forum
 						email_receipt         = '" . (($row->user_viewemail=='yes' || $row->user_viewemail=='') ? 1 : 0) . "',
 						pn_receipt            = '" . (($row->user_canpn=='yes') ? 1 : 0) . "',
 						avatar                = '" . $row->user_avatar . "',
-						avatar_standard_group = '" . $row->usedefault_avatar . "',
+						avatar_default        = '" . $row->usedefault_avatar . "',
 						web_site              = '" . $row->url . "',
 						invisible             = '" . (($row->invisible=='yes') ? 1 : 0) . "',
 						interests             = '" . $row->user_interests . "',

@@ -373,7 +373,7 @@ CREATE TABLE `%%PRFX%%_modul_forum_forum` (
 CREATE TABLE `%%PRFX%%_modul_forum_group_avatar` (
   `id` int(10) unsigned NOT NULL auto_increment,
   `user_group` int(10) unsigned NOT NULL default '0',
-  `set_default_avatar` tinyint(1) unsigned NOT NULL default '1',
+  `set_default_avatar` tinyint(1) unsigned NOT NULL default '0',
   `default_avatar` char(255) NOT NULL,
   PRIMARY KEY  (`id`)
 ) ENGINE=MyISAM AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;#inst#
@@ -560,7 +560,7 @@ CREATE TABLE `%%PRFX%%_modul_forum_userprofile` (
   `email_receipt` tinyint(1) unsigned NOT NULL default '1',
   `pn_receipt` tinyint(1) unsigned NOT NULL default '1',
   `avatar` varchar(255) default NULL,
-  `avatar_standard_group` tinyint(1) NOT NULL default '1',
+  `avatar_default` tinyint(1) NOT NULL default '1',
   `web_site` varchar(255) default NULL,
   `invisible` tinyint(1) unsigned NOT NULL default '1',
   `interests` text,

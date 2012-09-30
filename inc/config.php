@@ -23,7 +23,8 @@ $themes=array();
 foreach (glob(dirname(dirname(__FILE__))."/admin/templates/*") as $filename) {
 	if(is_dir($filename))$themes[]=basename($filename);
 }
-$GLOBALS['CMS_CONFIG']['DEFAULT_ADMIN_THEME_FOLDER']=Array('DESCR' =>'Тема панели администратора','default'=>'apanel','TYPE'=>'dropdown','VARIANT'=>$themes); 
+$GLOBALS['CMS_CONFIG']['DEFAULT_ADMIN_THEME_FOLDER']=Array('DESCR' =>'Тема панели администратора','default'=>'apanel','TYPE'=>'dropdown','VARIANT'=>$themes);
+$GLOBALS['CMS_CONFIG']['UPLOAD_AVATAR_DIR'] = array('DESCR' =>'Директория для хранения аватаров','default'=>'uploads/avatars','TYPE'=>'string','VARIANT'=>'');
 $GLOBALS['CMS_CONFIG']['DEFAULT_LANGUAGE']=Array('DESCR' =>'Язык по умолчанию','default'=>'ru','TYPE'=>'dropdown','VARIANT'=>array('ru','en','ua')); 
 $GLOBALS['CMS_CONFIG']['SESSION_SAVE_HANDLER']=Array('DESCR' =>'Хранить сессии в БД','default'=>false,'TYPE'=>'bool','VARIANT'=>''); 
 $GLOBALS['CMS_CONFIG']['SESSION_LIFETIME']=Array('DESCR' =>'Время жизни сессии (Значение по умолчанию 24 минуты)','default'=>60*24,'TYPE'=>'integer','VARIANT'=>''); 

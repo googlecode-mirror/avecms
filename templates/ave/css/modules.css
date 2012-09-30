@@ -99,7 +99,7 @@
 .forum_attachment_box							{border:1px inset #dedede; margin:10px; padding:3px;}
 .forum_small									{font-size:11px;}
 .toggletr										{background:#dedede;}
-.lastthreads_first								{background:#f1f1f1;}
+.lastthreads_first								{background:#f1f1f1; padding:5px;}
 .lastthreads_second								{background:#f0f0f0;}
 a.forum_links:link,
 a.forum_links:visited							{color:#555; font-weight:bold; text-decoration:underline; padding:5px;}
@@ -134,7 +134,7 @@ a.forum_topicheader:hover						{color:#fff; font-weight:bold; text-decoration:no
 .forum_frame									{background:#fff; margin-bottom:1px;}
 .forum_navi										{padding:3px;}
 .forum_header_bolder							{background:#cdcdcd; color:#3c3a3a; padding:5px;}
-.forum_tableborder								{background:#cdcdcd; border:0 solid #878373; padding:0;}
+.forum_tableborder								{background:#cdcdcd; border:0 solid #878373; padding:0; margin:0;}
 .forum_stats_box								{background:#f3f3f3; color:#777; font-weight:bold;}
 .user_sig										{padding-top:4px;}
 .user_sig_bar									{color:#ccc; padding-top:4px;}

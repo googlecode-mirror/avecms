@@ -41,30 +41,30 @@
 	</tr>
 	<tr>
 	    <td width="280" class="first">{#R_Mas#}</td>
-	    <td class="second"><input name="max_avatar_bytes" type="text" id="max_avatar_bytes" value="{$row->max_avatar_bytes}" size="5" maxlength="3"></td>
+	    <td class="second"><input name="max_avatar_bytes" type="text" id="max_avatar_bytes" value="{$row->max_avatar_bytes}" size="5" maxlength="3" {if $smarty.request.group=='2'}disabled{/if}></td>
 	</tr>
 	<tr>
 	    <td width="280" class="first">{#R_Amh#}</td>
-	    <td class="second"><input name="max_avatar_height" type="text" id="max_avatar_height" value="{$row->max_avatar_height}" size="5" maxlength="3"></td>
+	    <td class="second"><input name="max_avatar_height" type="text" id="max_avatar_height" value="{$row->max_avatar_height}" size="5" maxlength="3" {if $smarty.request.group=='2'}disabled{/if}></td>
 	</tr>
 	<tr>
 	    <td width="280" class="first">{#R_Amw#}</td>
-	    <td class="second"><input name="max_avatar_width" type="text" id="max_avatar_width" value="{$row->max_avatar_width}" size="5" maxlength="3"></td>
+	    <td class="second"><input name="max_avatar_width" type="text" id="max_avatar_width" value="{$row->max_avatar_width}" size="5" maxlength="3" {if $smarty.request.group=='2'}disabled{/if}></td>
 	</tr>
 	<tr>
 	    <td width="280" class="first">{#R_UploadAvatar#} </td>
 	    <td class="second"><label>
-	    <input name="upload_avatar" type="radio" value="1" {if $row->upload_avatar==1}checked{/if}>{#Yes#}
-	    <input name="upload_avatar" type="radio" value="0" {if $row->upload_avatar==0}checked{/if}>{#No#} 
+	    <input name="upload_avatar" type="radio" value="1" {if $row->upload_avatar==1}checked{/if} {if $smarty.request.group=='2'}disabled{/if}>{#Yes#}
+	    <input name="upload_avatar" type="radio" value="0" {if $row->upload_avatar==0}checked{/if} {if $smarty.request.group=='2'}disabled{/if}>{#No#} 
 		</label></td>
 	</tr>
 	<tr>
 	    <td width="280" class="first">{#R_MaxPn#}</td>
-	    <td class="second"><input name="max_pn" type="text" id="max_pn" value="{$row->max_pn}" size="5" maxlength="3"></td>
+	    <td class="second"><input name="max_pn" type="text" id="max_pn" value="{$row->max_pn}" size="5" maxlength="3" {if $smarty.request.group=='2'}disabled{/if}></td>
 	</tr>
 	<tr>
 	    <td width="280" class="first">{#R_MaxPnLength#}</td>
-	    <td class="second"><input name="max_lenght_pn" type="text" id="max_lenght_pn" value="{$row->max_lenght_pn}" size="5" maxlength="5"></td>
+	    <td class="second"><input name="max_lenght_pn" type="text" id="max_lenght_pn" value="{$row->max_lenght_pn}" size="5" maxlength="5" {if $smarty.request.group=='2'}disabled{/if}></td>
 	</tr>
 	<tr>
 	    <td width="280" class="first">{#R_MaxLengthPosts#}</td>
@@ -76,7 +76,7 @@
 	</tr>
 	<tr>
 	    <td width="280" class="first">{#R_MaxEditTime#}</td>
-	    <td class="second"><input name="max_edit_period" type="text" id="max_edit_period" value="{$row->max_edit_period}" size="5" maxlength="4">{#R_Days#}</td>
+	    <td class="second"><input name="max_edit_period" type="text" id="max_edit_period" value="{$row->max_edit_period}" size="5" maxlength="4" {if $smarty.request.group=='2'}disabled{/if}>{#R_Days#}</td>
 	</tr>
 	<tr>
 	    <td class="second" colspan="2"><input type="submit" class="button" value="{#Save#}"></td>

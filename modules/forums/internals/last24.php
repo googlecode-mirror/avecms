@@ -166,7 +166,7 @@ global $AVE_DB, $AVE_Template, $mod;
 		. $mod['config_vars']['ShowLast24']
 		 );
 
-	$tpl_out = $AVE_Template->fetch($mod['tpl_dir'] . 'result.tpl');
+	$tpl_out = $AVE_Template->fetch($mod['tpl_dir'] . 'last24.tpl');
 	define("MODULE_CONTENT", $tpl_out);
 	define("MODULE_SITE", $mod['config_vars']['ShowLast24']);
 ?>

@@ -4,8 +4,10 @@
 {if $smarty.session.user_group != 2}
 	<p align="center"> <a href="index.php?module=forums&amp;show=myabos">{#ShowAbos#} </a>&nbsp;|&nbsp; <a href="index.php?module=forums&amp;show=myabos&amp;forum_id={$forum->id}">{#ShowAbosHere#}</a>
 	{if count($topics)}
-		&nbsp;|&nbsp; <a href="index.php?module=forums&show=markread&amp;what=forum&amp;forum_id={$forum->id}">{#MarkThreadsRead#} </a> {/if} </p>
-	{/if}
+		&nbsp;|&nbsp; <a href="index.php?module=forums&show=markread&amp;what=forum&amp;forum_id={$forum->id}">{#MarkThreadsRead#} </a> 
+	{/if} 
+	</p>
+{/if}
 
 	{include file="$inc_path/tree.tpl"}
 
@@ -76,14 +78,14 @@
 		<tr>
 			<td width="10%" class="forum_info_icon">
 	{if $topic.opened != 1}
-			<img src="{$forum_images}statusicons/must_moderate.gif" alt="{$lang.f_munlock}" border="0" />
+			<img src="{$forum_images}statusicons/must_moderate.gif" alt="" border="0" />
 	{else}
 			{$topic.statusicon}
 	{/if}	
 			</td>
 			<td width="10%" align="center" class="forum_info_icon">&nbsp; {get_post_icon icon=$topic.posticon theme=$theme_folder}&nbsp; </td>
 			<td width="50%" class="forum_info_meta">
-			<a class="forum_links" href="index.php?module=forums&amp;show=showtopic&amp;toid={$topic.id}&amp;fid={$forum->id}">{$topic.title|truncate:65:'...'}</a>&nbsp;
+				<a class="forum_links" href="index.php?module=forums&amp;show=showtopic&amp;toid={$topic.id}&amp;fid={$forum->id}">{$topic.title|truncate:65:'...'}</a>&nbsp;
 			{section name=topic_navigation loop=$topic.navigation_page+1 start=1 max=10}
 	{if $smarty.section.topic_navigation.first}
 			<br />
@@ -96,9 +98,9 @@
 			{/section}
 
 	{if $topic.navigation_page > 10}
-			  ... <a class="forum_links_smaller" href="index.php?module=forums&amp;show=showtopic&amp;toid={$topic.id}&amp;pp=15&amp;page={$topic.navigation_page}"> {$lang.forum_links_last_page} </a>&nbsp;)
-			  {elseif $topic.navigation_page > 0}
-			  &nbsp;
+	    	... <a class="forum_links_smaller" href="index.php?module=forums&amp;show=showtopic&amp;toid={$topic.id}&amp;pp=15&amp;page={$topic.navigation_page}"> {$lang.forum_links_last_page} </a>&nbsp;
+	{elseif $topic.navigation_page > 0}
+			&nbsp;
 	{/if}
 			</td>
 			<td align="center" class="forum_info_meta" style="cursor:pointer" onclick="window.open('index.php?module=forums&amp;show=showposter&amp;tid={$topic.id}&amp;pop=1&amp;theme_folder={$theme_folder}', 'Poster', 'toolbar=no,scrollbars=yes,resizable=yes,width=400,height=400')">	
@@ -118,21 +120,22 @@
 			<td align="center" class="forum_info_meta"> {$topic.views} </td>
 			<td align="center" class="forum_info_main"> 
 	{if $topic.rating}
-			<img src="{$forum_images}forum/{$topic.rating}.gif" alt="{$lang.f_prating}" />
+			<img src="{$forum_images}forum/{$topic.rating}.gif" alt="" />
 	{else}
 		&nbsp;
 	{/if} 
 			</td>
 			<td class="forum_info_meta">
-			<div align="right" style="white-space:nowrap">
+				<div align="right" style="white-space:nowrap">
 	{if $topic.lastposter->datum|date_format:'%d.%m.%Y' == $smarty.now|date_format:'%d.%m.%Y'}
 		{#Today#},&nbsp;{$topic.lastposter->datum|date_format:'%H:%M'}
 	{else}
 			{$topic.lastposter->datum|date_format:$smarty.config.DateFormatLastPost|pretty_date}
 	{/if}
-			<br />
+				<br />
 	{$topic.lastposter->link}
-			<a class="forum_links_small" href="index.php?module=forums&amp;show=showtopic&amp;toid={$topic.id}&amp;pp=15&amp;page={$topic.next_page}#pid_{$topic.lastposter->id}"><img class="absmiddle" src="{$forum_images}forum/post_latest.gif" border="0" alt="{$lang.f_latest_post}"></a> </div></td>
+				<a class="forum_links_small" href="index.php?module=forums&amp;show=showtopic&amp;toid={$topic.id}&amp;pp=15&amp;page={$topic.next_page}#pid_{$topic.lastposter->id}"><img class="absmiddle" src="{$forum_images}forum/post_latest.gif" border="0" alt=""></a> </div>
+			</td>
 		</tr>
 		{/foreach}
 		<tr>
@@ -172,41 +175,49 @@
 	{if $smarty.session.user_group != 2}
 		<p align="center"> <a href="index.php?module=forums&amp;show=myabos">{#ShowAbos#} </a>&nbsp;|&nbsp; <a href="index.php?module=forums&amp;show=myabos&amp;forum_id={$forum->id}">{#ShowAbosHere#}</a>
 		{if count($topics)}
-		&nbsp;|&nbsp; <a href="index.php?module=forums&amp;show=markread&amp;what=forum&amp;forum_id={$forum->id}">{#MarkThreadsRead#} </a> {/if} </p>
-		{/if}
-
-		<p> {$pages} </p>
-		<p></p>
-		<table width="100%"  border="0" cellpadding="4" cellspacing="1">
-			<tr valign="top">
-				<td>
-					<table width="350" border="0" cellpadding="4" cellspacing="0" class="forum_tableborder">
-						<tr>
-							<td class="forum_header_bolder">{#ModsIn#}</td>
-						</tr>
-						<tr>
-							<td class="forum_info_meta">{if $get_mods}{$get_mods}{else}{#NoMods#}{/if}</td>
-						</tr>
+			&nbsp;|&nbsp; <a href="index.php?module=forums&amp;show=markread&amp;what=forum&amp;forum_id={$forum->id}">{#MarkThreadsRead#} </a> 
+		{/if} 
+		</p>
+	{/if}
+	<p>{$pages}</p>
+<p>
+	<table width="100%"  border="0" cellpadding="4" cellspacing="1">
+		<tr valign="top">
+			<td>
+				<table width="350" border="0" cellpadding="4" cellspacing="0" class="forum_tableborder">
+					<tr>
+						<td class="forum_header_bolder">{#ModsIn#}</td>
+					</tr>
+					<tr>
+						<td class="forum_info_meta">
+							{if $get_mods}
+								{$get_mods}
+							{else}
+								{#NoMods#}
+							{/if}
+						</td>
+					</tr>
+				</table>
+				<br />
+				{include file="$inc_path/statusicons.tpl"}
+			</td>
+			<td>
+				<div align="right">
+					<table width="320" border="0" cellpadding="4" cellspacing="0" class="forum_tableborder">
+					  <tr>
+						<td class="forum_header_bolder">{#GoTo#}</td>
+					  </tr>
+					  <tr>
+						<td nowrap="nowrap" class="forum_info_meta">
+							{include file="$inc_path/selector.tpl"}			
+						</td>
+					  </tr>
 					</table>
 					<br />
-					{include file="$inc_path/statusicons.tpl"}
-				</td>
-				<td>
-					<div align="right">
-						<table width="320" border="0" cellpadding="4" cellspacing="0" class="forum_tableborder">
-						  <tr>
-							<td class="forum_header_bolder">{#GoTo#}</td>
-						  </tr>
-						  <tr>
-							<td nowrap="nowrap" class="forum_info_meta">
-							{include file="$inc_path/selector.tpl"}			</td>
-						  </tr>
-						</table>
-						<br />
-						<table width="320" border="0" cellpadding="2" cellspacing="0">
-							<tr>
-								<td>
-									<div align="right" class="forum_info_meta"> 
+					<table width="320" border="0" cellpadding="2" cellspacing="0">
+						<tr>
+							<td>
+								<div align="right" class="forum_info_meta"> 
 									{if $forum->permissions.4 == 1}
 										{#Perm_DowloadAttachments#} <br />
 									{else}
@@ -224,13 +235,13 @@
 									{if $forum->permissions.10 == 1}
 										{#Perm_EditThreads#} <br />
 									{/if} 
-									</div>
-								</td>
-							</tr>
-						</table>
-						<br />
-					</div>
-				</td>
-			</tr>
-		</table>
-		</p>
+								</div>
+							</td>
+						</tr>
+					</table>
+					<br />
+				</div>
+			</td>
+		</tr>
+	</table>
+</p>

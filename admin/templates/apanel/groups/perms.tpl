@@ -30,6 +30,33 @@
 			<td class="first"><input name="user_group_name" type="text" value="{$g_name|escape}" size="40" maxlength="40" /></td>
 		</tr>
 	</table><br />
+	
+	<table width="100%" border="0" cellspacing="1" cellpadding="8" class="tableborder">
+		<col width="250" class="first">
+		<col class="second">
+		
+		<tr>
+			<td class="tableheader" colspan="2">{#UGROUP_AVATAR_GROUPS#}</td>
+		</tr>
+
+		<tr>
+			<td>{#UGROUP_USE_AVATAR_GROUPS#}</td>
+			<td>
+				<input type="radio" name="set_default_avatar" value="1"{if $g_set_default_avatar==1} checked{/if} />{*#UGROUP_YES#*}Да&nbsp;
+				<input type="radio" name="set_default_avatar" value="0"{if $g_set_default_avatar==0} checked{/if} />{*#UGROUP_NO#*}Нет
+			</td>
+		</tr>
+		
+		<tr>
+			<td>{#UGROUP_AVATAR_GROUPS#}<br /><small>Аватары находятся в каталоге "/{$smarty.const.UPLOAD_AVATAR_DIR}/default/"</small></td>
+			<td>
+				{if $g_default_avatar}
+				<img src="../{$smarty.const.UPLOAD_AVATAR_DIR}/default/{$g_default_avatar|escape}" /><br />
+				{/if}
+				<input name="default_avatar" type="text" value="{$g_default_avatar|escape}" size="40" maxlength="40" />
+			</td>
+		</tr>		
+	</table><br />	
 
 	<table width="100%" border="0" cellspacing="1" cellpadding="8" class="tableborder">
 		<tr>
