@@ -10,10 +10,6 @@
 					<strong>{#WelcomeStart#} {$smarty.session.forum_user_name},</strong><br />
 					{#WelcomeMessage#}
 				{/if}
-{*
-				<br /><br />
-				{include file="$inc_path/search.tpl"}
-*}
 			</td>
 			<td valign="top" nowrap="nowrap" class="forum_frame" style="padding: 8px;">
 				{if $smarty.session.user_group != 2}
@@ -59,5 +55,6 @@
 				{/if}
 			</td>
 		</tr>
-	</table><br />
+	</table>
+	<br />
 {/if}

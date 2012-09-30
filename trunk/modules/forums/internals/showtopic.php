@@ -266,7 +266,7 @@ if ( isset($_GET['toid']) && $_GET['toid'] != "" )
 			// der beitragverfasser
 			$q_user = "SELECT
 					u.avatar,
-					u.avatar_standard_group,
+					u.avatar_default,
 					u.uname,
 					u.email,
 					u.web_site,
@@ -306,7 +306,7 @@ if ( isset($_GET['toid']) && $_GET['toid'] != "" )
 			$query = "SELECT title, count FROM " . PREFIX . "_modul_forum_rank WHERE count < '" . $poster->user_posts . "' ORDER BY count DESC LIMIT 1";
 			$result = $AVE_DB->Query($query);
 			$rank = $result->FetchRow();
-			$poster->avatar = $this->getAvatar( @$poster->user_group, @$poster->avatar, @$poster->avatar_standard_group);
+			$poster->avatar = $this->getAvatar( @$poster->user_group, @$poster->avatar, @$poster->avatar_default);
 			$poster->regdate = @$poster->reg_time;
 			$poster->user_sig = $this->kcodes(@$poster->signature);
 			$poster->rank = @$rank->title;

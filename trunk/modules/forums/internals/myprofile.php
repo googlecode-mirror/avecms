@@ -23,7 +23,7 @@ FROM
 	".PREFIX."_modul_forum_userprofile as u,
 	".PREFIX."_users as us
 WHERE
-	uid = '" . addslashes($_SESSION['user_id']) . "' AND
+	u.uid = '" . addslashes($_SESSION['user_id']) . "' AND
 	us.status = '1' AND
 	us.Id = u.uid
 
@@ -40,8 +40,8 @@ $r = $sql->FetchAssocArray();
 if($r['uname_changed'] >= '1' && !$this->fperm('changenick')) $AVE_Template->assign('changenick', 'no');
 if(!$this->fperm('changenick')) $AVE_Template->assign('changenick_once', '1');
 
-$r['OwnAvatar'] = $this->getAvatar($r['user_group'],$r['avatar'],$r['avatar_standard_group']);
-if(@!is_file(BASE_DIR . '/modules/forums/avatars/' . $r['avatar'])) $r['avatar'] = '';
+$r['OwnAvatar'] = $this->getAvatar($r['user_group'],$r['avatar'],$r['avatar_default']);
+if(@!is_file(BASE_DIR . '/'. UPLOAD_AVATAR_DIR . '/' . $r['avatar'])) $r['avatar'] = '';
 
 // avatar
 $avatar = '';
@@ -133,7 +133,7 @@ if(isset($_POST['doupdate']) && $_POST['doupdate'] == 1)
 
 	if($this->fperm('own_avatar'))
 	{
-		$target = BASE_DIR . '/modules/forums/avatars/';
+		$target = BASE_DIR . '/' . UPLOAD_AVATAR_DIR . '/';
 		if(in_array($_FILES['file']['type'], $this->_allowed_imagetypes))
 		{
 			$filesize = @filesize($_FILES['file']['tmp_name']);
@@ -184,7 +184,7 @@ if(isset($_POST['doupdate']) && $_POST['doupdate'] == 1)
 
 			if(strpos($row_a->avatar, 'system/') === false)
 			{
-				@unlink(BASE_DIR . '/modules/forums/avatars/' . $row_a->avatar);
+				@unlink(BASE_DIR . '/' . UPLOAD_AVATAR_DIR . '/' . $row_a->avatar);
 			}
 
 			$AVE_DB->Query("
@@ -192,7 +192,7 @@ if(isset($_POST['doupdate']) && $_POST['doupdate'] == 1)
 					".PREFIX."_modul_forum_userprofile
 				SET
 					avatar                = '',
-					avatar_standard_group = '1'
+					avatar_default = '1'
 				WHERE
 					uid = '" . $_SESSION['user_id'] . "'");
 			$avatar = '';
@@ -234,7 +234,7 @@ if(isset($_POST['doupdate']) && $_POST['doupdate'] == 1)
 				signature             = '" . @$r['signature'] . "',
 				gender                = '" . @$r['gender'] . "',
 				birthday              = '" . @$r['birthday'] . "',
-				avatar_standard_group = '" . @$r['avatar_standard_group'] . "'
+				avatar_default        = '" . @$r['avatar_default'] . "'
  				$avatar
 				$BC
 

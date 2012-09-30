@@ -110,13 +110,13 @@ $modul_sql_install[] = "CREATE TABLE CPPREFIX_modul_forum_forum (
 $modul_sql_install[] = "CREATE TABLE CPPREFIX_modul_forum_group_avatar (
   id int(10) unsigned NOT NULL auto_increment,
   user_group int(10) unsigned NOT NULL default '0',
-  set_default_avatar tinyint(1) unsigned NOT NULL default '1',
+  set_default_avatar tinyint(1) unsigned NOT NULL default '0',
   default_avatar varchar(255) NOT NULL default '',
   PRIMARY KEY  (id)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 
 $modul_sql_install[] = "INSERT INTO CPPREFIX_modul_forum_group_avatar VALUES (1, 1, 1, 'default.gif');";
-$modul_sql_install[] = "INSERT INTO CPPREFIX_modul_forum_group_avatar VALUES (2, 2, 1, 'default.gif');";
+$modul_sql_install[] = "INSERT INTO CPPREFIX_modul_forum_group_avatar VALUES (2, 2, 0, '');";
 $modul_sql_install[] = "INSERT INTO CPPREFIX_modul_forum_group_avatar VALUES (3, 3, 1, 'default.gif');";
 $modul_sql_install[] = "INSERT INTO CPPREFIX_modul_forum_group_avatar VALUES (4, 4, 1, 'default.gif');";
 
@@ -138,7 +138,7 @@ $modul_sql_install[] = "CREATE TABLE CPPREFIX_modul_forum_group_permissions (
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 
 $modul_sql_install[] = "INSERT INTO CPPREFIX_modul_forum_group_permissions VALUES (1, 1, 'own_avatar|canpn|accessforums|cansearch|last24|userprofile|changenick', 45056, 120, 120, 1, 100, 50000, 10000, 10, 1440);";
-$modul_sql_install[] = "INSERT INTO CPPREFIX_modul_forum_group_permissions VALUES (2, 2, 'accessforums|cansearch|last24|userprofile', 0, 0, 0, 1, 0, 0, 5000, 3, 0);";
+$modul_sql_install[] = "INSERT INTO CPPREFIX_modul_forum_group_permissions VALUES (2, 2, 'accessforums|cansearch|last24|userprofile', 0, 0, 0, 0, 0, 0, 5000, 3, 0);";
 $modul_sql_install[] = "INSERT INTO CPPREFIX_modul_forum_group_permissions VALUES (3, 3, 'own_avatar|canpn|accessforums|cansearch|last24|userprofile', 10240, 90, 90, 1, 50, 5000, 10000, 5, 672);";
 $modul_sql_install[] = "INSERT INTO CPPREFIX_modul_forum_group_permissions VALUES (4, 4, 'own_avatar|canpn|accessforums|cansearch|last24|userprofile', 10240, 90, 90, 1, 50, 5000, 10000, 5, 672);";
 
@@ -356,7 +356,7 @@ $modul_sql_install[] = "CREATE TABLE CPPREFIX_modul_forum_userprofile (
   email_receipt tinyint(1) unsigned NOT NULL default '1',
   pn_receipt tinyint(1) unsigned NOT NULL default '1',
   avatar varchar(255) default NULL,
-  avatar_standard_group tinyint(1) NOT NULL default '1',
+  avatar_default tinyint(1) NOT NULL default '1',
   web_site varchar(255) default NULL,
   invisible tinyint(1) unsigned NOT NULL default '1',
   interests text,

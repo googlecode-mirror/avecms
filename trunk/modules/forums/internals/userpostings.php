@@ -15,7 +15,7 @@ if (isset($_GET['user_id']) && is_numeric($_GET['user_id']) && $_GET['user_id'] 
 		SELECT
 			u.avatar,
 			us.user_group,
-			u.avatar_standard_group,
+			u.avatar_default,
 			u.uname,
 			u.email,
 			u.web_site,
@@ -55,7 +55,7 @@ if (isset($_GET['user_id']) && is_numeric($_GET['user_id']) && $_GET['user_id'] 
 		LIMIT 1
 	")->GetCell();
 
-	$poster->avatar = $this->getAvatar($poster->user_group,$poster->avatar,$poster->avatar_standard_group);
+	$poster->avatar = $this->getAvatar($poster->user_group,$poster->avatar,$poster->avatar_default);
 	$poster->regdate = $poster->reg_time;
 	$poster->user_sig = $this->kcodes($poster->signature);
 

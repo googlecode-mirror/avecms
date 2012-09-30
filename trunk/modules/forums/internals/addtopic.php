@@ -359,7 +359,7 @@ if ( count($error_array) || (isset($_REQUEST['preview']) && $_REQUEST['preview']
 		}
 	}
 
-	// FEHLER
+	// ОШИБКА
 	if (!$db_result)
 	{
 		$this->msg($mod['config_vars']['ErrornoPerm']);

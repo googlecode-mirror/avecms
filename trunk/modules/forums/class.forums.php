@@ -607,7 +607,7 @@ class Forum
 						email_receipt         = '1',
 						pn_receipt            = '1',
 						avatar                = '',
-						avatar_standard_group = '',
+						avatar_default        = '',
 						web_site              = '',
 						invisible             = '0',
 						interests             = '',
@@ -793,7 +793,7 @@ class Forum
 			$row_user->interests = $this->kcodes_comments($row_user->interests);
 			$row_user->interests = (SMILIES==1) ? $this->replaceWithSmileys($row_user->interests) : $row_user->interests;
 
-			$row_user->avatar = $this->getAvatar($row_user->user_group,$row_user->avatar,$row_user->avatar_standard_group);
+			$row_user->avatar = $this->getAvatar($row_user->user_group,$row_user->avatar,$row_user->avatar_default);
 			$row_user->OnlineStatus = @$this->getonlinestatus(@$row_user->uname);
 
 			$query = "SELECT COUNT(id) AS counts FROM " . PREFIX . "_modul_forum_post WHERE uid = '" . addslashes($_GET['user_id']) . "'";
@@ -1701,7 +1701,7 @@ class Forum
 
 	function getIcon($file, $alt)
 	{
-		return "<img src=\"templates/".THEME_FOLDER."/modules/forums/statusicons/$file\" alt=\"$alt\" title=\"$alt\"/>";
+		return "<img src=\"templates/".THEME_FOLDER."/modules/forums/statusicons/$file\" alt=\"$alt\" />";
 	}
 
 	//=======================================================
@@ -1784,7 +1784,7 @@ class Forum
 	//=======================================================
 	function prefabAvatars($selected='')
 	{
-		$verzname = BASE_DIR . "/modules/forums/avatars/system";
+		$verzname = BASE_DIR . '/' . UPLOAD_AVATAR_DIR . '/system';
 		$dht = opendir( $verzname );
 		$sel_theme = "";
 		$i = 0;
@@ -1796,7 +1796,7 @@ class Forum
 				{
 					$pres = ($selected=="system/$theme") ? "checked" : "";
 					$sel_theme .= "
-					<div style='float:left; text-align:center; padding:1px'><img src=\"modules/forums/avatars/system/$theme\" alt=\"\" /><br />
+					<div style='float:left; text-align:center; padding:1px'><img src=\"" . UPLOAD_AVATAR_DIR . "/system/" . $theme . "\" alt=\"\" /><br />
 					<input name=\"sys_avatar\" type=\"radio\" value=\"$theme\" $pres></div>";
 					$theme = "";
 					$i++;
@@ -1845,17 +1845,17 @@ class Forum
 		if ($permown != 1)
 		{
 			$own = 0;
-		}
+		}//print_r("GROUP - " . $group . "<br />AVATAR - " . $avatar . "<br />USEDEF - " . $usedefault . "<br />OWN - " . $own . "<br />PERMOWN - " . $permown);	
 		// wenn eigenes avatar beutzt werden darf und es existiert
 		if ($own == 1 && $usedefault != 1)
 		{
-			$avatar_file = BASE_DIR . "/modules/forums/avatars/$avatar";
+			$avatar_file = BASE_DIR . '/' . UPLOAD_AVATAR_DIR . '/' . $avatar;
 			if (@is_file($avatar_file))
 			{
 				$fz = @getimagesize($avatar_file);
 				if($fz[0] <= MAX_AVATAR_WIDTH && $fz[1] <= MAX_AVATAR_HEIGHT || $group==1)
 				{
-					$avatar = "<img src=\"modules/forums/avatars/$avatar\" alt=\"\" border=\"\" />";
+					$avatar = "<img src=\"" . UPLOAD_AVATAR_DIR . "/" . $avatar . "\" alt=\"\" border=\"\" />";
 					$aprint = true;
 				}
 			}
@@ -1866,7 +1866,7 @@ class Forum
 			$row = $sql->FetchRow();
 			if (is_object($row) && ($row->set_default_avatar == 1) && ($row->default_avatar != ""))
 			{
-				$avatar = "<img src=\"modules/forums/avatars/default/" . $row->default_avatar . "\" alt=\"\" border=\"\" />";
+				$avatar = "<img src=\""  . UPLOAD_AVATAR_DIR . "/default/" . $row->default_avatar . "\" alt=\"\" border=\"\" />";
 				$aprint = true;
 			}
 		}
@@ -1890,7 +1890,6 @@ class Forum
 		$rc = $sql->NumRows();
 		if($rc==1) return true;
 		return false;
-
 	}
 
 	function checkIfUserEmail($new='',$old='')
@@ -1909,7 +1908,6 @@ class Forum
 		$rc = $sql->NumRows();
 		if($rc==1) return true;
 		return false;
-
 	}
 
 	function getForumUserEmail($id)

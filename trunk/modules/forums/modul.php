@@ -87,7 +87,7 @@ if( (isset($_REQUEST['module']) && $_REQUEST['module'] == 'forums') || (isset($_
 		define ('BBCODESITE', $row_set['bbcode']);
 		define ('IMGCODE', $row_set['bbcode']);
 		define ('SMILIES', $row_set['smilies']);
-		define ('USEPOSTICONS', $row_set['sosticons']);
+		define ('USEPOSTICONS', $row_set['posticons']);
 		define ('COMMENTSBBCODE', $row_set['bbcode']);
 		define ('MAXLENGTH_POST', $row_gs->max_lenght_post);
 		define ('MAXATTACHMENTS', $row_gs->max_attachments);
@@ -307,8 +307,6 @@ if( (isset($_REQUEST['module']) && $_REQUEST['module'] == 'forums') || (isset($_
 		$lang_file = BASE_DIR . '/modules/forums/lang/' . $_SESSION['admin_language'] . '.txt';
 
 		$AVE_Template->config_load($lang_file, 'admin');
-//		$config_vars = $AVE_Template->get_config_vars();
-//		$AVE_Template->assign('config_vars', $config_vars);
 		$AVE_Template->assign('source', $tpl_dir_source);
 
 		$forums->AutoUpdatePerms();
@@ -331,7 +329,7 @@ if( (isset($_REQUEST['module']) && $_REQUEST['module'] == 'forums') || (isset($_
 			case 'mods':
 				$forums->addMods($tpl_dir, $_REQUEST['id']);
 				break;
-
+				// Удаление форума
 			case 'delete_forum':
 				$forums->deleteForum($_GET['id']);
 				header('Location:index.php?do=modules&action=modedit&mod=forums&moduleaction=1&cp=' . SESSION);
@@ -348,11 +346,11 @@ if( (isset($_REQUEST['module']) && $_REQUEST['module'] == 'forums') || (isset($_
 			case 'openforum':
 				$forums->forumOpenClose($tpl_dir, $_GET['id'],'open');
 				break;
-
+				// Права
 			case 'permissions':
 				$forums->editPermissions($tpl_dir);
 				break;
-
+				// Удаление категории
 			case 'delcategory':
 				$forums->deleteCat($tpl_dir, $_GET['id']);
 				break;
@@ -380,15 +378,15 @@ if( (isset($_REQUEST['module']) && $_REQUEST['module'] == 'forums') || (isset($_
 			case 'list_smilies':
 				$forums->listSmilies($tpl_dir);
 				break;
-
+				// Иконки
 			case 'list_icons':
 				$forums->listIcons($tpl_dir);
 				break;
-
+				// Права гпупп
 			case 'group_perms':
 				$forums->groupPerms($tpl_dir);
 				break;
-
+				// Импорт
 			case 'import':
 				$forums->import($tpl_dir);
 				break;

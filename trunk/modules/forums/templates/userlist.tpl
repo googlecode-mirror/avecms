@@ -1,9 +1,7 @@
 {include file="$inc_path/userpanel_forums.tpl"}
 {include file="$inc_path/header_sthreads.tpl"}
 
-<h1>{#Users#}<br />
-  <br />
-</h1>
+<h1>{#Users#}</h1>
 <table width="100%" border="0" cellpadding="4" cellspacing="1" class="forum_tableborder">
 
   <tr>

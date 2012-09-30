@@ -41,9 +41,8 @@
 			<p>
 				<label>{#LOGIN_YOUR_COUNTRY#}</label>
 				<select name="country">
-					{assign var=uc value=$row->country|default:$smarty.session.user_language|lower}
 					{foreach from=$available_countries item=land}
-						<option value="{$land->country_code}"{if $land->country_code == $smarty.request.country|default:$row.country|default:$smarty.session.user_language|lower} selected{/if}>{$land->country_name}</option>
+						<option value="{$land->country_code}"{if $land->country_code == $smarty.request.country|default:$row.country} selected{/if}>{$land->country_name}</option>
 					{/foreach}
 				</select>
 			</p>

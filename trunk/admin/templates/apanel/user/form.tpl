@@ -79,21 +79,21 @@ function mark_mailpass() {ldelim}
 		{if $is_forum==1 && $smarty.request.action=='edit'}
 			<tr>
 				<td>{#USER_NICK#}</td>
-				<td><input name="BenutzerName_fp" type="text" size="40" style="width:250px;" value="{$row_fp->BenutzerName|escape}" /></td>
+				<td><input name="uname_fp" type="text" size="40" style="width:250px;" value="{$row_fp->uname|escape}" /></td>
 			</tr>
 
 			<tr>
 				<td>{#USER_SIGNATURE#}</td>
-				<td><textarea name="Signatur_fp" style="width:400px; height:100px">{$row_fp->Signatur|escape}</textarea></td>
+				<td><textarea name="signature_fp" style="width:400px; height:100px">{$row_fp->signature|escape}</textarea></td>
 			</tr>
 
 			<tr>
 				<td>{#USER_AVATAR#}</td>
 				<td>
-					{if $row_fp->Avatar != ''}
-						<img src="../modules/forums/avatars/{$row_fp->Avatar|escape}" alt="" /><br />
+					{if $row_fp->avatar != ''}
+						<img src="../{$smarty.const.UPLOAD_AVATAR_DIR}/{$row_fp->avatar|escape}" alt="" /><br />
 					{/if}
-					<input type="text" name="Avatar_fp" size="40" style="width:250px;" value="{$row_fp->Avatar|escape}" />
+					<input type="text" name="avatar_fp" size="40" style="width:250px;" value="{$row_fp->avatar|escape}" />
 				</td>
 			</tr>
 		{/if}

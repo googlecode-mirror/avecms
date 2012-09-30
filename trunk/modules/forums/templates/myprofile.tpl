@@ -105,10 +105,10 @@
   <tr>
     <td class="forum_post_first">{#PR_OwnAvatarUse#}</td>
     <td colspan="2" class="forum_post_second">
-		<input name="avatar_standard_group" type="radio" value="0" {if $r.avatar_standard_group=='0'}checked="checked"{/if} />{#Yes#}
-		<input name="avatar_standard_group" type="radio" value="1" {if $r.avatar_standard_group=='1'}checked="checked"{/if} />{#No#} 
+		<input name="avatar_default" type="radio" value="1" {if $r.avatar_default=='1'}checked="checked"{/if} />{#Yes#}
+		<input name="avatar_default" type="radio" value="0" {if $r.avatar_default=='0'}checked="checked"{/if} />{#No#} 
 	</td>
-    </tr>
+  </tr>
   <tr>
     <td class="forum_post_first">{#PR_avatar#}</td>
     <td class="forum_post_second" colspan="2">
@@ -118,7 +118,7 @@
 				<td valign="top">{#PR_StdAvatar#}<br />{$r.OwnAvatar} </td>
 			{/if}
 			{if $r.avatar}
-				<td valign="top">{#PR_OwnAvatar#}<br /><img src="modules/forums/avatars/{$r.avatar}" alt="" /></td>
+				<td valign="top">{#PR_OwnAvatar#}<br /><img src="{$smarty.const.UPLOAD_AVATAR_DIR}/{$r.avatar}" alt="" /></td>
 			{/if}      
 			</tr>
 		</table>

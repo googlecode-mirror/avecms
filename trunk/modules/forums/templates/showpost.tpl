@@ -55,9 +55,9 @@
 			<td class="lastthreads_first">
 				<div align="right">
 					{if $post->datum|date_format:'%d.%m.%Y' == $smarty.now|date_format:'%d.%m.%Y'}
-						{#Today#},&nbsp;{$post->datum|date_format:$smarty.config.DateFormatTimeThread}
+						{#Today#},&nbsp;{$post->datum|date_format:$smarty.config.DateFormatTimeThread|pretty_date}
 					{else}
-						{$post->datum|date_format:$smarty.config.DateFormatTimeThread}
+						{$post->datum|date_format:$smarty.config.DateFormatTimeThread|pretty_date}
 					{/if}
 					{if $post->flink=='no'}
 					{else}

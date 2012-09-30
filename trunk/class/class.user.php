@@ -302,6 +302,8 @@ class AVE_User
 				$row = $AVE_DB->Query("
 					SELECT
 						user_group_name,
+						set_default_avatar,
+						default_avatar,
 						user_group_permission
 					FROM " . PREFIX . "_user_groups
 					WHERE user_group = '" . $user_group_id . "'
@@ -317,6 +319,8 @@ class AVE_User
 				$AVE_Template->assign('g_all_permissions', $this->_allowed_admin_permission);
 				$AVE_Template->assign('g_group_permissions', explode('|', $row->user_group_permission));
 				$AVE_Template->assign('g_name', $row->user_group_name);
+				$AVE_Template->assign('g_set_default_avatar', $row->set_default_avatar);
+				$AVE_Template->assign('g_default_avatar', $row->default_avatar);				
 				$AVE_Template->assign('modules', $AVE_Module->moduleListGet(1));
 			}
 		}
@@ -341,10 +345,25 @@ class AVE_User
 
 			$AVE_DB->Query("
 				UPDATE " . PREFIX . "_user_groups
-				SET user_group_permission = '" . $perms . "'
+				SET 
+					user_group_permission = '" . $perms . "',
+					set_default_avatar    = '" . (empty($_POST['set_default_avatar']) ? '0'   : (int)$_POST['set_default_avatar']) . "',
+					default_avatar        = '" . (empty($_POST['default_avatar']) 	  ? ''    : $_POST['default_avatar']) . "'
 				" . (!empty($_POST['user_group_name']) ? ", user_group_name = '" . $_POST['user_group_name'] . "'" : '') . "
 				WHERE user_group = '" . $user_group_id . "'
 			");
+			
+			if ($AVE_DB->Query("SHOW TABLES LIKE '" . PREFIX . "_modul_forum_group_avatar'")->GetCell())
+			{
+				$AVE_DB->Query("
+					UPDATE " . PREFIX . "_modul_forum_group_avatar
+					SET
+						set_default_avatar    = '" . (empty($_POST['set_default_avatar']) ? '0'   : (int)$_POST['set_default_avatar']) . "',
+						default_avatar        = '" . (empty($_POST['default_avatar']) 	  ? ''    : $_POST['default_avatar']) . "'
+					WHERE
+						user_group = '" . $user_group_id . "'
+				");
+			}
 
 			reportLog($_SESSION['user_name'] . ' - Изменил права доступа для группы (' . $user_group_id . ')', 2, 2);
 		}
@@ -638,9 +657,9 @@ class AVE_User
 							UPDATE " . PREFIX . "_modul_forum_userprofile
 							SET
 								group_id_misc  = '" . @implode(';', $_REQUEST['user_group_extra']) . "',
-								uname          = '" . @$_REQUEST['BenutzerName_fp']. "',
-								signature      = '" . @$_REQUEST['Signatur_fp'] . "' ,
-								avatar         = '" . @$_REQUEST['Avatar_fp'] . "'
+								uname          = '" . @$_REQUEST['uname_fp']. "',
+								signature      = '" . @$_REQUEST['signature_fp'] . "' ,
+								avatar         = '" . @$_REQUEST['avatar_fp'] . "'
 							WHERE
 								uid = '" . $user_id . "'
 						");
