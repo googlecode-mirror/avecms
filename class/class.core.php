@@ -918,7 +918,7 @@ class AVE_Core
 			$_GET['doc'] = $_REQUEST['doc'] = $this->curentdoc->document_alias;
 
 			// перенаправление на адреса с суффиксом
-			if ($test_url !== $get_url.URL_SUFF && !$pages && $test_url && !$_REQUEST['ajax']) {
+			if ($test_url !== $get_url.URL_SUFF && !$pages && $test_url && !$_REQUEST['ajax'] && !$_REQUEST['print']) {
 				header('HTTP/1.1 301 Moved Permanently');
 				header('Location:' . ABS_PATH.$get_url.URL_SUFF);
 			}
