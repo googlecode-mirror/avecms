@@ -400,9 +400,10 @@ function get_breadcrumb()
  */
 function get_print_link()
 {
-	$link = get_redirect_link('print');
-	$link .= (strpos($link, '?')===false ? '?print=1' : '&amp;print=1');
+	/*$link = get_redirect_link('print');
+	$link .= (strpos($link, '?')===false ? '?print=1' : '&amp;print=1');*/
 
+	$link = ABS_PATH."index.php?id=".get_current_document_id()."&print=1";
 	return $link;
 }
 
