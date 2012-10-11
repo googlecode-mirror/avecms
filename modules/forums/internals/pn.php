@@ -696,7 +696,7 @@ else
 				SELECT
 					u.uname,
 					u.uid,
-					u.Pnempfang,
+					u.pn_receipt,
 					u.email
 				FROM
 					".PREFIX."_modul_forum_userprofile  as u
@@ -708,7 +708,7 @@ else
 			$num = $sql->NumRows();
 			$row = $sql->FetchRow();
 
-			if ($row->Pnempfang != 1)      $pnerror[] = $mod['config_vars']['PN_NotWant'];
+			if ($row->pn_receipt != 1)      $pnerror[] = $mod['config_vars']['PN_NotWant'];
 			if (empty($pnerror) && $num<1) $pnerror[] = $mod['config_vars']['PN_UserError'];
 
 			// CHECK OB ABSENDER IN IGNORIERLISTE DES EMPFДNGERS STEHT
@@ -744,7 +744,7 @@ else
 			// CHECK OB USER PN'S EMPFANGEN MЦCHTE
 			if (empty($pnerror))
 			{
-				if ($row->Pnempfang=="no") $pnerror[] = $mod['config_vars']['PN_NotWant'];
+				if ($row->pn_receipt=="no") $pnerror[] = $mod['config_vars']['PN_NotWant'];
 			}
 
 			$text = substr($_POST['text'],0, MAXPNLENTH);

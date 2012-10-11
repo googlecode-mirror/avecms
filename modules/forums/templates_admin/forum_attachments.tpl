@@ -1,6 +1,6 @@
 <div class="pageHeaderTitle" style="padding-top: 7px;">
 <div class="h_module"></div>
-    <div class="HeaderTitle"><h2>{#ModName#}</h2></div>
+    <div class="HeaderTitle"><h2>{#FORUMS_MODULE_NAME#}</h2></div>
     <div class="HeaderText">&nbsp;</div>
 </div><br />
 {include file="$source/forum_topnav.tpl"}
@@ -13,8 +13,7 @@ var ie  = document.all  ? 1 : 0;
    	for (var i=0;i<fmobj.elements.length;i++) {
    		var e = fmobj.elements[i];
    		if ((e.name != 'allbox') && (e.type=='checkbox') && (!e.disabled)) {
-   			e.checked = fmobj.allbox.checked;
-   			
+   			e.checked = fmobj.allbox.checked;   			
    		}
    	}
    }
@@ -40,8 +39,7 @@ var ie  = document.all  ? 1 : 0;
    		var e = fmobj.elements[i];
    		if ((e.type=='hidden') && (e.value == 1) && (! isNaN(e.name) ))
    		{
-   			eval("fmobj.msgid_" + e.name + ".checked=true;");
-   			
+   			eval("fmobj.msgid_" + e.name + ".checked=true;");   			
    		}
    	}
    }
@@ -50,14 +48,13 @@ var ie  = document.all  ? 1 : 0;
    	for (var i=0;i<fmobj.elements.length;i++) {
    		var e = fmobj.elements[i];
    		if (e.type=='checkbox') {
-   			e.checked=false;
-   			
+   			e.checked=false;   			
    		}
    	}
    }
    </script>
  {/literal}
- <h4>{#A_Search#}</h4>
+ <h4>{#FORUMS_SEARCH_FILES#}</h4>
 <form name="attsearch" id="attseacrh" method="post" action="index.php?do=modules&action=modedit&mod=forums&moduleaction=show_attachments&cp={$sess}">
   <table width="100%"  border="0" cellpadding="8" cellspacing="1" class="tableborder">
     <tr>
@@ -83,19 +80,19 @@ var ie  = document.all  ? 1 : 0;
         </select>
         <select name="pp" id="pp">
 {section name=pp loop=95 step=5}
-          <option value="{$smarty.section.pp.index+10}" {if $smarty.request.pp == $smarty.section.pp.index+10}selected{/if}>{$smarty.section.pp.index+10}  {#EachPage#}</option>
+          <option value="{$smarty.section.pp.index+10}" {if $smarty.request.pp == $smarty.section.pp.index+10}selected{/if}>{$smarty.section.pp.index+10}  {#FORUMS_EACH_PAGE_FILES#}</option>
 {/section}
         </select>
-        <input type="submit" class="button" value="{#A_Search#}" /></td>
+        <input type="submit" class="button" value="{#FORUMS_SEARCH_FILES#}" /></td>
     </tr>
   </table>
 </form>
-<h4>{#ShowAttachments#}</h4>
+<h4>{#FORUMS_SHOW_ATTACHMENTS#}</h4>
 <form action="index.php?do=modules&action=modedit&mod=forums&moduleaction=show_attachments&cp={$sess}&save=1" method="post" enctype="multipart/form-data" name="kform" id="kform">
   <table width="100%"  border="0" cellpadding="8" cellspacing="1" class="tableborder">
     <tr class="tableheader">
-      <td><a class="header" href="index.php?do=modules&action=modedit&mod=forums&moduleaction=show_attachments&cp={$sess}&amp;ext={$smarty.request.ext}&amp;pp={$smarty.request.pp|default:10}&sort=name">{#A_Name#}</a></td>
-      <td width="5%" align="center"><a class="header" href="index.php?do=modules&action=modedit&mod=forums&moduleaction=show_attachments&cp={$sess}&amp;ext={$smarty.request.ext}&amp;pp={$smarty.request.pp|default:10}&sort=hits">{#A_Hits#}</a></td>
+      <td><a class="header" href="index.php?do=modules&action=modedit&mod=forums&moduleaction=show_attachments&cp={$sess}&amp;ext={$smarty.request.ext}&amp;pp={$smarty.request.pp|default:10}&sort=name">{#FORUMS_HEADER_NAME_FILES#}</a></td>
+      <td width="5%" align="center"><a class="header" href="index.php?do=modules&action=modedit&mod=forums&moduleaction=show_attachments&cp={$sess}&amp;ext={$smarty.request.ext}&amp;pp={$smarty.request.pp|default:10}&sort=hits">{#FORUMS_HEADER_HITS_FILES#}</a></td>
       <td width="10%">&nbsp;</td>
       <td><input name="allbox" type="checkbox" id="d" onclick="selall();" value="" /></td>
     </tr>
@@ -104,11 +101,11 @@ var ie  = document.all  ? 1 : 0;
       <td width="20%" nowrap="nowrap"><a  href="index.php?do=modules&action=modedit&mod=forums&moduleaction=show_attachments&cp={$sess}&dl=1&amp;id={$sm->id}"><strong>{$sm->orig_name}</strong></a> </td>
       <td align="center" nowrap="nowrap"> {$sm->hits} </td>
       <td align="right">{$sm->sizes}</td>
-      <td><input name="del[{$sm->filename}]" type="checkbox" id="d" value="1" /> {#Del#}</td>
+      <td><input name="del[{$sm->filename}]" type="checkbox" id="d" value="1" /> {#FORUMS_DEL#}</td>
     </tr>
     {/foreach}
     <tr >
-      <td colspan="4" class="second"><input type="submit" class="button" value="{#Save#}" /></td>
+      <td colspan="4" class="second"><input type="submit" class="button" value="{#FORUMS_BUTTON_SAVE#}" /></td>
 	</tr>
   </table>
 </form>

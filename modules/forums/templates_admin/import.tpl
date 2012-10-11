@@ -1,6 +1,6 @@
 <div class="pageHeaderTitle" style="padding-top: 7px;">
 <div class="h_module"></div>
-    <div class="HeaderTitle"><h2>{#ModName#}</h2></div>
+    <div class="HeaderTitle"><h2>{#FORUMS_MODULE_NAME#}</h2></div>
     <div class="HeaderText"><strong>{#ImportWelcome#}</strong><br>{#ImportWelcomeInfo#}</div>
 </div><br />
 {include file="$source/forum_topnav.tpl"}

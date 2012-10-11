@@ -1,5 +1,12 @@
 <?php
 
+/**
+ * Класс работы с форумом в административной части.
+ *
+ * @package AVE.cms
+ * @subpackage module_Forums
+ * @filesource
+ */
 class Forum
 {
 	var $x = '';
@@ -61,24 +68,24 @@ class Forum
 			switch($_REQUEST['what'])
 			{
 				case 'position':
-					// position der kategorien speichern
+					// Сохранить позиции из категорий
 					foreach ($_POST['c_id'] as $c_id)
 					{
 						$position = $_POST['c_position'][$c_id];
 						if (is_numeric($position))
 						{
-							$query = "UPDATE " . PREFIX . "_modul_forum_category SET position = $position WHERE id = '" . $c_id . "'";
+							$query = "UPDATE " . PREFIX . "_modul_forum_category SET position = '" . $position . "' WHERE id = '" . $c_id . "'";
 							$result = $AVE_DB->Query($query);
 						}
 					}
 
-					// position der foren speichern
+					// Сохранить позицию на форумах
 					foreach ($_POST['f_id'] as $f_id)
 					{
 						$position = $_POST['f_position'][$f_id];
 						if (is_numeric($position))
 						{
-							$query = "UPDATE " . PREFIX . "_modul_forum_forum SET position = $position WHERE id = '" . $f_id . "'";
+							$query = "UPDATE " . PREFIX . "_modul_forum_forum SET position = '" . $position . "' WHERE id = '" . $f_id . "'";
 							$result = $AVE_DB->Query($query);
 						}
 					}
@@ -105,7 +112,7 @@ class Forum
 
 		if(isset($_REQUEST['save']) && $_REQUEST['save']==1)
 		{
-			$_POST['title'] = (empty($_POST['title'])) ? 'Kein Titel' : $_POST['title'];
+			$_POST['title'] = (empty($_POST['title'])) ? $AVE_Template->get_config_vars('FORUMS_NO_TITLE') : $_POST['title'];
 
 			if (empty($_POST['f_id']))
 			{
@@ -263,7 +270,7 @@ class Forum
 
 		$forum->group_id = @explode(",", $forum->group_id);
 
-		// gruppen
+		// группы
 		$query = "SELECT
 			user_group as ugroup,
 			user_group_name as groupname
@@ -367,12 +374,11 @@ class Forum
 		$forum_id = $_GET['f_id'];
 		$group_id = $_GET['g_id'];
 
-		$query = "SELECT permissions FROM " . PREFIX . "_modul_forum_permissions WHERE forum_id = $forum_id AND group_id = $group_id";
+		$query = "SELECT permissions FROM " . PREFIX . "_modul_forum_permissions WHERE forum_id = '" . $forum_id . "' AND group_id = '" . $group_id . "'";
 		$result = $AVE_DB->Query($query);
 		$forum = $result->FetchRow();
-
+	
 		$permissions = @explode(",", $forum->permissions);
-
 		$AVE_Template->assign("permissions", $permissions);
 		$AVE_Template->assign('content', $AVE_Template->fetch($tpl_dir . 'edit_permissions.tpl'));
 	}
@@ -394,7 +400,7 @@ class Forum
 		if(isset($_REQUEST['save']) && $_REQUEST['save']==1)
 		{
 
-			$_POST['title'] = (empty($_POST['title'])) ? 'Kein Titel' : $_POST['title'];
+			$_POST['title'] = (empty($_POST['title'])) ? $AVE_Template->get_config_vars('FORUMS_NO_TITLE') : $_POST['title'];
 			$_POST['position'] = (empty($_POST['position']) || !is_numeric($_POST['position']) || $_POST['position']<1) ? 1 : $_POST['position'];
 
 			if (empty($_POST['c_id']))
@@ -768,9 +774,10 @@ class Forum
 		return $groups;
 	}
 
-	//=======================================================
-	// Automatisches Update wenn fьr Gruppe keine Rechte bestehen
-	//=======================================================
+	/*
+	* Автоматическое обновление, если нет прав в отношении группы
+	*
+	*/
 	function AutoUpdatePerms()
 	{
 		global $AVE_DB;
@@ -842,14 +849,22 @@ class Forum
 			FROM
 				" . PREFIX . "_modul_forum_group_permissions
 			WHERE
-				user_group = '" .  $_REQUEST['group'] . "'
+				user_group = '" .  (int)$_REQUEST['group'] . "'
 				");
 			$row = $sql->FetchRow();
 			$row->max_avatar_bytes = $row->max_avatar_bytes/1024;
 			$row->max_edit_period = $row->max_edit_period/24;
+			
+			$row_group = $AVE_DB->Query("
+				SELECT user_group, user_group_name
+				FROM " . PREFIX . "_user_groups
+				WHERE user_group = '" . (int)$_REQUEST['group'] . "'
+				LIMIT 1
+			")->FetchRow();
 
 			$AVE_Template->assign('Perms', explode("|", $row->permission));
 			$AVE_Template->assign('row', $row);
+			$AVE_Template->assign('row_group', $row_group);			
 			$AVE_Template->assign('content', $AVE_Template->fetch($tpl_dir . 'group_perms_pop.tpl'));
 		} 
 		else 
@@ -866,9 +881,10 @@ class Forum
 		}
 	}
 
-	//=======================================================
-	// Benutzerrдnge
-	//=======================================================
+	/*
+	* Звания пользователей
+	*
+	*/
 	function userRanks($tpl_dir)
 	{
 		global $AVE_DB, $AVE_Template;
@@ -883,7 +899,7 @@ class Forum
 		// Neuer position
 		if(isset($_REQUEST['add_rank']) && $_REQUEST['add_rank']==1)
 		{
-			$_POST['title'] = (empty($_POST['title'])) ? 'Unbekannt' : $_POST['title'];
+			$_POST['title'] = (empty($_POST['title'])) ? $AVE_Template->get_config_vars('FORUMS_UNKNOWN') : $_POST['title'];
 			$_POST['count'] = (empty($_POST['count'])) ? '1000' : $_POST['count'];
 
 			if (is_numeric($_POST['count']) && $_POST['count']>0)
@@ -1107,7 +1123,6 @@ class Forum
 			case "":
 			$ord = "ORDER BY hits DESC";
 			break;
-
 		}
 
 		$extra_ext = '';
@@ -1118,7 +1133,7 @@ class Forum
 		$result = $AVE_DB->Query($query);
 		$num = $result->NumRows();
 
-		$seiten = ceil($num / $limit);
+		$num_pages = ceil($num / $limit);
 		$a = get_current_page() * $limit - $limit;
 
 		$query = "SELECT * FROM " . PREFIX . "_modul_forum_attachment $extra $ord limit $a,$limit";
@@ -1132,9 +1147,8 @@ class Forum
 
 		if($num > $limit)
 		{
-			$page_nav = " <a class=\"pnav\" href=\"index.php?do=modules&action=modedit&mod=forums&moduleaction=show_attachments&cp=".SESSION
-				. "&q=" . @$_REQUEST['q'] . "&sort=" . @$_REQUEST['sort'] . "&page={s}\">{t}</a> ";
-			$page_nav = get_pagination($seiten, 'page', $page_nav);
+			$page_nav = " <a class=\"pnav\" href=\"index.php?do=modules&action=modedit&mod=forums&moduleaction=show_attachments&cp=" . SESSION . "&q=" . @$_REQUEST['q'] . "&sort=" . @$_REQUEST['sort'] . "&page={s}\">{t}</a> ";
+			$page_nav = get_pagination($num_pages, 'page', $page_nav);
 			$AVE_Template->assign('nav', $page_nav);
 		}
 		$AVE_Template->assign('attachments', $attachments);
@@ -1215,7 +1229,7 @@ class Forum
 	{
 		global $AVE_DB;
 		
-		$q_close = "UPDATE " . PREFIX . "_modul_forum_forum SET status = $status WHERE id = $id";
+		$q_close = "UPDATE " . PREFIX . "_modul_forum_forum SET status = $status WHERE id =" . $id;
 		$r_close = $AVE_DB->Query($q_close);
 		$q_child = "SELECT f.id FROM
 			" . PREFIX . "_modul_forum_category AS c,
@@ -1243,7 +1257,7 @@ class Forum
 	{
 		global $AVE_DB;
 		// foren loeschen
-		$query = "SELECT id FROM " . PREFIX . "_modul_forum_forum WHERE category_id = $id";
+		$query = "SELECT id FROM " . PREFIX . "_modul_forum_forum WHERE category_id =" . $id;
 		$result = $AVE_DB->Query($query);
 
 		while ($forum = $result->FetchRow())
@@ -1251,7 +1265,7 @@ class Forum
 			$this->deleteForum($forum->id);
 		}
 		// kategorie loeschen
-		$query = "DELETE FROM " . PREFIX . "_modul_forum_category WHERE id = $id";
+		$query = "DELETE FROM " . PREFIX . "_modul_forum_category WHERE id =" . $id;
 		$result = $AVE_DB->Query($query);
 	}
 
@@ -1259,24 +1273,24 @@ class Forum
 	{
 		global $AVE_DB;
 		
-		$query = "SELECT id FROM " . PREFIX . "_modul_forum_topic WHERE forum_id = $id";
+		$query = "SELECT id FROM " . PREFIX . "_modul_forum_topic WHERE forum_id =" . $id;
 		$result = $AVE_DB->Query($query);
 		// themen loeschen
 		while ($topic = $result->FetchRow()) {
 			$this->deleteTopic($topic->id);
 		}
 		// berechtigungen loeschen
-		$query = "DELETE FROM " . PREFIX . "_modul_forum_permissions WHERE forum_id = $id";
+		$query = "DELETE FROM " . PREFIX . "_modul_forum_permissions WHERE forum_id =" . $id;
 		$result = $AVE_DB->Query($query);
 		// unterkategorien loeschen
-		$query = "SELECT id FROM " . PREFIX . "_modul_forum_category WHERE parent_id = $id";
+		$query = "SELECT id FROM " . PREFIX . "_modul_forum_category WHERE parent_id =" . $id;
 		$result = $AVE_DB->Query($query);
 
 		while ($category = $result->FetchRow()) {
 			$this->deleteCategory($category->id);
 		}
 		// forum loeschen
-		$query = "DELETE FROM " . PREFIX . "_modul_forum_forum WHERE id = $id";
+		$query = "DELETE FROM " . PREFIX . "_modul_forum_forum WHERE id =" . $id;
 		$result = $AVE_DB->Query($query);
 	}
 
@@ -1284,7 +1298,7 @@ class Forum
 	{
 		global $AVE_DB;
 		
-		$query = "SELECT id FROM " . PREFIX . "_modul_forum_post WHERE topic_id = $id";
+		$query = "SELECT id FROM " . PREFIX . "_modul_forum_post WHERE topic_id =" . $id;
 		$result = $AVE_DB->Query($query);
 		// Beitraege loeschen
 		while ($post = $result->FetchRow())
@@ -1292,10 +1306,10 @@ class Forum
 			$this->deletePost($post->id);
 		}
 		// Rating loeschen
-		$query = "DELETE FROM " . PREFIX . "_modul_forum_rating WHERE topic_id = $id";
+		$query = "DELETE FROM " . PREFIX . "_modul_forum_rating WHERE topic_id =" . $id;
 		$result = $AVE_DB->Query($query);
 		// Thema loeschen
-		$query = "DELETE FROM " . PREFIX . "_modul_forum_topic WHERE id = $id";
+		$query = "DELETE FROM " . PREFIX . "_modul_forum_topic WHERE id =" . $id;
 		$result = $AVE_DB->Query($query);
 	}
 
@@ -1303,7 +1317,7 @@ class Forum
 	{
 		global $AVE_DB;
 		
-		$query = "SELECT attachment, topic_id FROM " . PREFIX . "_modul_forum_post WHERE id = $id";
+		$query = "SELECT attachment, topic_id FROM " . PREFIX . "_modul_forum_post WHERE id =" . $id;
 		$result = $AVE_DB->Query($query);
 		$post = $result->FetchRow();
 
@@ -1313,13 +1327,13 @@ class Forum
 		{
 			if ($attachment != "")
 			{
-				$query = "SELECT filename FROM " . PREFIX . "_modul_forum_attachment WHERE id = $attachment";
+				$query = "SELECT filename FROM " . PREFIX . "_modul_forum_attachment WHERE id =" . $attachment;
 				$result = $AVE_DB->Query($query);
 				$file = $result->FetchRow();
 				// loesche aus dem dateisystem
 				//  @unlink ("../uploads/attachment" . $file);
 				// loesche aus der datenbank
-				$query = "DELETE FROM " . PREFIX . "_modul_forum_attachment WHERE id = $attachment";
+				$query = "DELETE FROM " . PREFIX . "_modul_forum_attachment WHERE id =" . $attachment;
 				$result = $AVE_DB->Query($query);
 			}
 		}
@@ -1328,7 +1342,7 @@ class Forum
 		$result = $AVE_DB->Query($query);
 
 		// loesche beitrag
-		$query = "DELETE FROM " . PREFIX . "_modul_forum_post WHERE id = $id";
+		$query = "DELETE FROM " . PREFIX . "_modul_forum_post WHERE id =" . $id;
 		$result = $AVE_DB->Query($query);
 	}
 
