@@ -1,90 +1,239 @@
-/* _______________________ Модуль "Форум" _______________________ */
-#forums_pop                 {margin:5px; text-align:left}
-.forum_attachment_box       {border:1px inset #dedede; margin:10px; padding:3px}
-.forum_small                {font-size:11px}
-.toggletr                   {background:#dedede}
+
+body		                  {font-family:Arial, Verdana, Helvetica, sans-serif;font-size:12px}
+#bodystyle	{background: #fff url(../images/fon_body.png) repeat-x left 5px; border-top: 5px solid #000; color: #333; font-size: 12px; padding: 0 0 40px; }
+
+/* ---------- anchors ---------- */
+a { color: #809F11; text-decoration: underline; }
+a:hover { color:#000; }
+
+/* ----------- headings ---------- */
+h1, h2, h3, h4, h5, h6          {font-weight:400;font-family:Tahoma, Geneva, Arial, Helvetica, sans-serif;margin:0 0 0.4em}
+h2                              {border-bottom:1px solid #ccc;}
+h3                              {display:block;font-size:1.6em; margin:0 0 5px; border-bottom:1px solid #ccc;}
+h3 a:link,
+h3 a:visited,
+h3 a:hover                      {margin-bottom:3px}
+h4                              {font-size:16px;font-weight:700}
+h5, .h5,
+h5 a:link,
+h5 a:visited                    {font-size:14px;font-weight:700;margin-bottom:3px}
+h6                              {display:block;font-size:14px;font-weight:700;color:#789E3A;border-bottom:1px solid #CCC;padding-bottom:3px; text-transform:uppercase;}
+
+/* ---------- branding --------- */
+h1#branding  a { background: url(../images/logo.png) no-repeat; text-indent: -5000px; display: block; height: 120px; width: 273px; }
+div#fon_header	{ height: 120px; position: absolute; top: 0px; right: 0px; width: 667px; }
+div#fon_header	p { margin: 30px 0px 0px 360px; line-height: 18px; }
+div#fon_header	p strong			{ color:#6D9720; font-size:16px }
+
+/* ----------- boxes ---------- */
+.box_border_01 { padding: 3px; border: 1px solid #CDCDCD; background: #F9F9F9; }
+.logobox { height: 120px; position: relative; }
+.box { padding:10px 10px 0px 10px; margin: 10px 0 10px 0; background-color: #FFF; border: 1px solid #CCC; }
+.box h2 { font-size:1em; font-weight:bold; text-transform:uppercase; color:#333; background-color: #E6E6E6; margin: -10px -10px 0; padding: 8px 12px;border-bottom: 1px solid #ccc;}
+.box h2 a,
+.box h2 a.visible { color:#333; background:#E6E6E6 url(../images/switch_m.gif) no-repeat 97% 50%; display:block; padding:8px 12px; margin:-8px -12px -10px -12px;  border-bottom: 1px solid #E6E6E6; text-decoration: none;}
+.grid_4 .box h2 a { background-position: 95% 50%; }
+.grid_5 .box h2 a { background-position: 96% 50%; }
+.grid_12 .box h2 a { background-position: 98% 50%; }
+.box h2 a.hidden,
+.box h2 a.hidden:hover { background: url(../images/switch_p.gif) no-repeat 97% 50%; border-bottom: 0px;}
+.box h2 a:hover { background: #E6E6E6; }
+.box small { display: block; }
+.block { padding-top:10px; }
+div.menu { padding:0; }
+div.menu h2 { margin:0; }
+div.menu .block { padding-top:0; }
+
+/* ----------- paragraphs, quotes and lists ------------ */
+p { margin-bottom:0.7em; }
+blockquote { font-family: Georgia, 'Times New Roman', serif; padding-left:1em; border-left:4px solid #ccc; }
+blockquote cite { font-size:.9em; }
+ul,
+ol { padding-top:0; list-style-type:none; margin:0 0 10px 0}
+ul li				{background:url(../images/li.gif) no-repeat left 7px;margin-left:10px;padding-left:10px;zoom:1}
+
+/* ------------ forms ------------ */
+form { overflow:hidden; }
+fieldset { border:1px solid #bbb; padding: 5px 10px 10px 10px; position:relative; margin-bottom:10px; }
+legend { font-size:1.1em; padding: 0 .8em; background:#fff; border:0px; }
+fieldset.login p { margin-bottom:1em; margin-top:0pt; }
+fieldset p label { width:98%; }
+fieldset p input { width:98%; }
+fieldset p select { width:99%; }
+fieldset.login p label { float:left; line-height:2em; margin-right:3%; text-align:right; width:32%; }
+fieldset.login p input { width:60%; }
+fieldset.login p select { width:61%; }
+fieldset.login input.button { margin-left:35%; }
+form p.notice { font-weight:normal; }
+#search { position: absolute; top: 8px; right: 10px; width: 210px; z-index: auto; }
+input.search.text { width:210px; height: 20px; border: 1px solid #676767; line-height: 20px; font-size: 14px; padding: 0px 5px; vertical-align: middle; margin: 0px 8px 0px 0px; background: #F3F3F3; }
+input.search.button { width: 22px; height: 22px; background: url(../images/button_s.gif) no-repeat center center; vertical-align: middle; border-style: none; cursor: pointer; position: absolute; top: 1px; right: 0px; text-indent: -1000px; overflow: hidden; }
+.login input.inputbox { width:190px; margin: 0 0 5px 0; }
+.login input.pass { width:135px; margin: 0 5px 5px 0; vertical-align: middle;}
+.login input.button { vertical-align: middle; /*width: 47px;*/ margin: 0 0 5px 0;}
+
+/* ---------- page navigation ------------ */
+.page_navigation 				{ padding:3px; margin: 10px 0; background-color: #FFF; border: 1px solid #CCC; position: relative; }
+.page-next						{}
+.page-back						{}
+.page							{ padding:3px; margin: 10px 0; background-color: #FFF; border: 1px solid #999; position: relative; }
+/* ------------ textareas -------------- */
+textarea,
+select,
+input.query,
+input[type="text"],
+input[type="password"],
+input[type="select"],
+.input				{ margin:0; padding:1px 2px 2px; border:1px solid #999; /*background:#fff url(../images/gr_inp.gif) repeat-x top*/ }
+input[type="checkbox"]		{border:none;vertical-align:middle;margin:0px;padding:0px;background:#fff}
+/*input:focus,
+textarea:focus,
+select:focus			{background:#E7F2BF}*/
+.noborder			{background-image: none; ;border-width:0px}
+option				{border:none}
+big,
+.big				{font-size:125%}
+.micro,
+small				{ color:#999; font-size:9px }
+.upper				{text-transform:uppercase}
+.button,
+.saveButton,
+.cancelButton       { color:#333; border:1px solid #999;  font-size:11px; height:21px; background: #CCC; background-image: none; line-height: 21px; text-align: center; }
+@-moz-document url-prefix() {
+.button { padding-bottom: 2px;}
+}
+hr				{height:1px;background-color:#D7D7D7;margin:8px 0;padding:0;border-width:0;line-height:1px;color:#D7D7D7}
+.absmiddle			{vertical-align:middle;background-image: none; border-width:0px}
+.highlight			{font-weight:700}
+.glossar			{margin-right:10px;margin-top:2px;background-color:#f5f5f5;border:1px solid #ddd;padding:4px}
+.formleft			{float:left;width:180px;padding:2px}
+.formright			{float:left;width:270px;padding:1px}
+.formright small		{color:#eec00a;font-size:10px}
+.regerror			{color:#eec00a}
+
+/* ---------- site information ---------- */
+#site_info .box { color:#ccc; background:#666; margin-bottom:10px; }
+#site_info a { color:#fff; }
+#site_info a:hover { color:#000; }
+
+/* -----------------------------
+ =прочее
+----------------------------- */
+.clear                                 {clear:both;height:1px;overflow:hidden}
+
+/* -----------------------------
+ =Модуль Поиск
+----------------------------- */
+.mod_search_text                       {color:#000;padding:8px}
+.mod_search_footernavi             {border-bottom:0 solid #ccc;margin-bottom:5px;padding:2px}
+.mod_search_highlight               {color:#000;font-weight:700;background-color:#eee;padding:1px}
+.mod_search_pages                      {border:1px solid #ccc;margin-top:10px;padding:4px}
+.mod_search_pages a:link,
+.mod_search_pages a:visited     {padding-left:2px;padding-right:2px}
+
+/* -----------------------------
+ =OVERLIB-Контейнер (Всплывающая подсказка)
+----------------------------- */
+.overlib_body                   {font-size:11px;background-color:#eee;color:#789e3a;text-align:left;padding:8px 8px 0px 8px;border:1px solid #999}
+.overlib_body input             {margin-bottom:5px}
+.item_title                     {font-weight:normal;background-color:#ddd;color:#666}
+.overlib_border                 {background-color:#eee}
+.glossar                        {margin-right:10px;margin-top:2px;padding:4px;background-color:#f5f5f5;border:1px solid #ddd}
+.formleft                       {float:left;width:180px;padding:2px}
+.formright                      {float:left;width:270px;padding:1px}
+.formright  small               {color:#789e3a;font-size:10px}
+.regerror                       {color:#789e3a}
+.absmiddle                      {vertical-align:middle;/*margin-left:5px;margin-right:5px*/}
+
+#info_message                   {padding:10px;border:4px double #789e3a;background-color:#ffd;}
+
+/* -----------------------------
+ =Модуль "Форум"
+----------------------------- */
+#forums_content                      {margin-top:2em; padding:0;}
+#forums_content table             {border-collapse:separate; border-spacing:1px; margin:0;}
+#forums_pop                            {margin:5px; text-align:left}
+
+.forum_attachment_box           {border:1px inset #dedede; margin:10px; padding:3px}
+.forum_small                           {font-size:11px}
+.toggletr                                {background:#dedede}
 
 /* ---------- Neue Forenthemen ----------*/
-.lastthreads_first          {background-color:#f1f1f1}
-.lastthreads_second         {background-color:#f0f0f0}
+.lastthreads_first               {background-color:#f1f1f1; padding:5px}
+.lastthreads_second              {background-color:#f0f0f0; padding:5px}
 
 /* ---------- Links ---------- */
 a.forum_links:link,
-a.forum_links:visited       {color:#555; font-weight:bold; text-decoration:underline}
-a.forum_links:hover         {color:#555; font-weight:bold; text-decoration:none}
+a.forum_links:visited           {color:#555; font-weight:bold; text-decoration:underline}
+a.forum_links:hover               {color:#555; font-weight:bold; text-decoration:none}
 
 a.forum_head:link,
-a.forum_head:visited        {color:#000; text-decoration:underline}
-a.forum_head:hover          {text-decoration:none}
+a.forum_head:visited             {color:#000; text-decoration:underline}
+a.forum_head:hover                {text-decoration:none}
 
-a.forum_links_small:link    {color:#000; font-weight:normal; text-decoration:underline}
-a.forum_links_small:visited {color:#000; font-weight:normal; text-decoration:underline}
-a.forum_links_small:hover   {color:#777; font-weight:normal; text-decoration:none}
+a.forum_links_small:link       {color:#000; font-weight:normal; text-decoration:underline}
+a.forum_links_small:visited  {color:#000; font-weight:normal; text-decoration:underline}
+a.forum_links_small:hover      {color:#777; font-weight:normal; text-decoration:none}
 
 a.forum_links_navi:link,
-a.forum_links_navi:visited  {color:#777; font-weight:bold; text-decoration:none}
-a.forum_links_navi:hover    {color:#000; font-weight:bold; text-decoration:none}
+a.forum_links_navi:visited    {color:#777; font-weight:bold; text-decoration:none}
+a.forum_links_navi:hover        {color:#000; font-weight:bold; text-decoration:none}
 
 a.forum_links_cat:link,
-a.forum_links_cat:visited   {font-size:12px; color:#3c3a3a; font-weight:bold}
-a.forum_links_cat:hover     {font-size:12px; color:#3c3a3a; font-weight:bold}
+a.forum_links_cat:visited      {font-size:12px; color:#3c3a3a; font-weight:bold}
+a.forum_links_cat:hover          {font-size:12px; color:#3c3a3a; font-weight:bold}
 
-
-.forum_topicheader          {color:#fff}
+.forum_topicheader                   {color:#fff; }
 a.forum_topicheader:link,
-a.forum_topicheader:visited {color:#fff; font-weight:bold; text-decoration:underline}
-a.forum_topicheader:hover   {color:#fff; font-weight:bold; text-decoration:none}
-
+a.forum_topicheader:visited   {color:#fff; font-weight:bold; text-decoration:underline}
+a.forum_topicheader:hover       {color:#fff; font-weight:bold; text-decoration:none}
 
 /* ---------- Forumbeschreibung ---------- */
-.f_info_comment             {font-size:11px}
+.f_info_comment                        {font-size:11px}
 
 /* ---------- Linke und Rechte Zeilenfarbe Beitrдge ---------- */
-.forum_post_first {background:#f1f1f1; padding:8px;}
-.forum_post_second {background:#fafafa; padding:8px;}
-.forum_topic_topheader      {background-color:#fafafa}
+.forum_post_first                     {background:#f1f1f1; padding:8px; margin:5px}
+.forum_post_second                   {background:#fafafa; padding:8px;}
+.forum_topic_topheader            {background-color:#fafafa; padding:3px 5px;}
 
 /* ---------- FuЯbereich Beitrдge  ---------- */
-.forum_post_footer          {background-color:#e9e9e9}
+.forum_post_footer                   {background-color:#e9e9e9}
 
 /* ---------- Kopfbereich Forumtabellen  ---------- */
-.forum_header               {background:#dedede; padding:5px}
+.forum_header                            {background:#dedede; padding:5px}
 
 /* ---------- Tabellenspalte der Icons ---------- */
-.forum_info_icon            {width:30px; background-color:#f1f1f1; padding:2px; text-align:center}
+.forum_info_icon                       {width:30px; background-color:#f1f1f1; padding:2px; text-align:center}
 
 /* ---------- Tabellenspalte Forumbeschreibung ---------- */
-.forum_info_main            {background-color:#f1f1f1; padding:8px}
-.forum_info_main:hover      {background-color:#fafafa; padding:8px}
+.forum_info_main                       {background-color:#f1f1f1; padding:8px}
+.forum_info_main:hover            {background-color:#fafafa; padding:8px}
 
 /* ---------- Tabellenspalte Themenbeschreibung, letzter Beitrag ---------- */
-.forum_info_meta            {background-color:#fafafa; padding:8px}
+.forum_info_meta                      {background-color:#fafafa; padding:8px}
 
 /* ---------- Tabellenspalte Forum anzeigen/schliessen (+ / -) ---------- */
-.forum_toggle               {width:20px; background-color:#dedede}
+.forum_toggle                           {width:20px; background-color:#dedede}
 
 /* ---------- Formatierung Tabellen Forenьbersicht & Box "Profil, Passwort дndern..."  ---------- */
-.forum_frame                {background-color:#fff; margin-bottom:1px}
+.forum_frame                             {background-color:#fff; margin-bottom:1px}
 
 /* ---------- Navigationsbaum  ---------- */
-.forum_navi                 {padding:3px}
+.forum_navi                              {padding:3px}
 
 /* ---------- Tabellenkopf Forum ---------- */
-.forum_header_bolder        {color:#3c3a3a; background:#cdcdcd /*url(../modules/forums/forum/header_bg.gif)*/; padding:5px}
+.forum_header_bolder              {color:#3c3a3a; background:#cdcdcd /*url(../modules/forums/forum/header_bg.gif)*/; padding:5px; }
 
 /* ---------- Tabellenrahmen Forum ---------- */
-.forum_tableborder          {background-color:#cdcdcd; padding:0px; border:0px solid #878373}
+.forum_tableborder                 {background-color:#cdcdcd; padding:0px; border:0px solid #878373; margin:0;}
 
 /* ---------- Box Forenstatistiken ---------- */
-.forum_stats_box            {font-weight:bold; color:#777; background-color:#f3f3f3}
+.forum_stats_box                    {font-weight:bold; color:#777; background-color:#f3f3f3}
 
 /* ---------- Benutzer-Signatur ---------- */
-.user_sig                   {padding-top:4px}
+.user_sig                                {padding-top:4px}
 
 /* ---------- Linie Ьber Benutzer-Signatur ---------- */
-.user_sig_bar               {color:#ccc; padding-top:4px}
+.user_sig_bar                         {color:#ccc; padding-top:4px}
 
-.forum_pn_unread            {color:#f00; font-weight:bold; text-decoration:blink}
-
-#forums_content             {margin-top:2em;}
-#forums_content table       {border-collapse:separate; border-spacing:1px;}
+.forum_pn_unread                    {color:#f00; font-weight:bold; text-decoration:blink}

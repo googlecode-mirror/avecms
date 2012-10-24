@@ -1,7 +1,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=windows-1251" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title>{$topic->title|escape:'html'|stripslashes}</title>
 <meta http-equiv="pragma" content="no-cache" />
 <meta name="Keywords" content="" />
@@ -22,7 +22,7 @@ window.print();
 	{include file="$inc_path/showtopic.tpl"}
 
 <p align="center">
-<input type="button" class="button" value="{#Close#}" onclick="window.close()" />
+<input type="button" class="button" value="{#FORUMS_BUTTON_CLOSE#}" onclick="window.close()" />
 </p>
 </body>
 </html>

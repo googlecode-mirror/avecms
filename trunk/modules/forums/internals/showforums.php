@@ -38,8 +38,6 @@ if(!defined("SHOWFORUMS")) exit;
 						}
 					}
 				break;
-
-
 			}
 		}
 
@@ -83,7 +81,7 @@ if(!defined("SHOWFORUMS")) exit;
 				// wenn eine spezielle kategorie angezeigt wird
 				// soll der navigationspfad um diese erweitert werden
 				//=======================================================
-				if (isset($_GET["cid"]) && $_GET["cid"] != "") $navigation .= $mod['config_vars']['ForumSep'] . $category["title"];
+				if (isset($_GET["cid"]) && $_GET["cid"] != "") $navigation .= $mod['config_vars']['FORUMS_FORUM_SEP'] . $category["title"];
 
 				//=======================================================
 				// den status der anzeige aus dem cookie holen
@@ -315,7 +313,6 @@ if(!defined("SHOWFORUMS")) exit;
 				}
 			}
 		}
-
 
 		$AVE_Template->register_function("get_status_icon", "getStatusIcon");
 		$AVE_Template->assign("uid", UID);

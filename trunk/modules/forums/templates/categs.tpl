@@ -35,29 +35,29 @@
 							<div class="f_info_comment">{$forum.comment|strip_tags}</div>
 						</td>
 						<td width="120" nowrap="nowrap" class="forum_info_main">
-							<div align="center">{#ThreadViewTopics#} {if $forum.tcount == 0}0{else}{$forum.tcount}{/if}</div>
-							<div align="center">{#ThreadViewPosts#} {if $forum.pcount == 0}0{else}{$forum.pcount}{/if}</div>			  
+							<div align="center">{#FORUMS_THREAD_VIEW_TOPICS#} {if $forum.tcount == 0}0{else}{$forum.tcount}{/if}</div>
+							<div align="center">{#FORUMS_THREAD_VIEW_POSTS#} {if $forum.pcount == 0}0{else}{$forum.pcount}{/if}</div>			  
 						</td>
 						<td width="220" align="right" nowrap="nowrap" class="forum_info_meta">
 							{if $forum.last_post->topic_id != ""}
 								<span class="forum_small">
 									<strong>
-										<a class="forum_links" href="index.php?module=forums&amp;show=showtopic&amp;toid={$forum.last_post->topic_id}&amp;pp=15&amp;page={$forum.last_post->page}#pid_{$forum.last_post->id}">{#ThreadViewLastPost#}</a>
+										<a class="forum_links" href="index.php?module=forums&amp;show=showtopic&amp;toid={$forum.last_post->topic_id}&amp;pp=15&amp;page={$forum.last_post->page}#pid_{$forum.last_post->id}">{#FORUMS_THREAD_VIEW_LAST_POST#}</a>
 									</strong>
-										&nbsp;{#FromUser#}&nbsp;
+										&nbsp;{#FORUMS_FROM_USER#}&nbsp;
 								{if $forum.last_post->user_regdate < 2}
-									{#Guest#}
+									{#FORUMS_GUEST#}
 								{else}
 									<a href="index.php?module=forums&show=userprofile&user_id={$forum.last_post->uid}" class="forum_links_small">{$forum.last_post->LastPoster}</a>
 								{/if}
 									<br />
-									<strong>{#InForum#} </strong>
+									<strong>{#FORUMS_IN_FORUM#} </strong>
 									&nbsp;
 									<a class="forum_links_small" href="index.php?module=forums&amp;show=showtopic&amp;toid={$forum.last_post->topic_id}"{if $forum.last_post->title|count_characters:true > 20} title="{$forum.last_post->title|stripslashes}"{/if}>{$forum.last_post->title|truncate:20:" ...":true|stripslashes}</a>
 									<br />
-									<strong>{#AtTime#} </strong>
+									<strong>{#FORUMS_AT_TIME#} </strong>
 								{if $forum.last_post->datum|date_format:'%d.%m.%Y' == $smarty.now|date_format:'%d.%m.%Y'}
-									{#Today#},&nbsp;{$forum.last_post->datum|date_format:'%H:%M'}
+									{#FORUMS_TODAY#},&nbsp;{$forum.last_post->datum|date_format:'%H:%M'}
 								{else}
 									{$forum.last_post->datum|date_format:'%d.%m.%Y %H:%M'}
 								{/if}
@@ -71,7 +71,7 @@
 				{if count($forum.subforums)}
 					<tr>
 						<td colspan="4" class="forum_info_main">
-							<strong>{#SubBoards#}</strong>&nbsp;
+							<strong>{#FORUMS_SUBFORUMS#}</strong>&nbsp;
 								{foreach from=$forum.subforums item=subforum name="sf"}
 									<a class="forum_links_small" href="{$subforum.link}">{$subforum.title|strip_tags}</a>
 									{if !$smarty.foreach.sf.last},&nbsp;{/if}

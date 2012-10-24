@@ -1,14 +1,19 @@
 <?php
 
+/**
+ * Сообщения пользователей (Мои сообщения)
+ *
+ * @package AVE.cms
+ * @subpackage module_Forums
+ * @filesource
+ */
 if (!defined("USERPOSTINGS")) exit;
 
 global $AVE_DB, $AVE_Template, $mod;
 
 if (isset($_GET['user_id']) && is_numeric($_GET['user_id']) && $_GET['user_id'] >= 1)
 {
-	$limit = (!empty($_REQUEST['pp']) && is_numeric($_REQUEST['pp']) && $_REQUEST['pp'] >= 1)
-		? $_REQUEST['pp']
-		: 15;
+	$limit = (!empty($_REQUEST['pp']) && is_numeric($_REQUEST['pp']) && $_REQUEST['pp'] >= 1) ? $_REQUEST['pp'] : 15;
 
 	// der beitragverfasser
 	$poster = $AVE_DB->Query("
@@ -134,9 +139,6 @@ if (isset($_GET['user_id']) && is_numeric($_GET['user_id']) && $_GET['user_id'] 
 	while ($post = $result->FetchRow())
 	{
 		$post->datum = $this->datumtomytime($post->datum);
-
-		// $permissions = $this->getForumPermissionsByUser($post->forum_id, UID);
-		// $Reader_User[] = UGROUP;
 		$post->group_ids = @explode(",", $post->GRUPPEN_IDS);
 
 		if (array_intersect($post->group_ids,$my_group_id))
@@ -153,7 +155,7 @@ if (isset($_GET['user_id']) && is_numeric($_GET['user_id']) && $_GET['user_id'] 
 		}
 		else
 		{
-			$post->message = $mod['config_vars']['DeniedText'];
+			$post->message = $mod['config_vars']['FORUMS_DENIED_TEXT'];
 			$post->flink = 'no';
 		}
 
@@ -176,7 +178,7 @@ if (isset($_GET['user_id']) && is_numeric($_GET['user_id']) && $_GET['user_id'] 
 	$AVE_Template->assign("post_count", $num);
 
 	define("MODULE_CONTENT", $AVE_Template->fetch($mod['tpl_dir'] . 'showpost.tpl'));
-	define("MODULE_SITE", $mod['config_vars']['UserPostings']);
+	define("MODULE_SITE", $mod['config_vars']['FORUMS_USER_POSTINGS']);
 }
 else
 {

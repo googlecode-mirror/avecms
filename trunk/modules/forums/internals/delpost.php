@@ -30,7 +30,6 @@ $forum = $r_forum->FetchRow();
 $permissions = $this->getForumPermissionsByUser($forum->id, UID);
 // $permissions = getForumPermissions($forum->id, UGROUP);
 
-
 // wenn user andere beitraege nicht loeschen kann und kein admin ist ...
 if( ($permissions[FORUM_PERMISSION_CAN_DELETE_OTHER_POST] == 0) && (UGROUP != 1) )
 {
@@ -40,20 +39,20 @@ if( ($permissions[FORUM_PERMISSION_CAN_DELETE_OTHER_POST] == 0) && (UGROUP != 1)
 		if (UGROUP == 2 || $permissions[FORUM_PERMISSION_CAN_DELETE_OWN_POST] == 0)
 		{
 			// user nicht eingeloggt
-			$this->msg($mod['config_vars']['ErrornoPerm']);
+			$this->msg($mod['config_vars']['FORUMS_ERROR_NO_PERM']);
 		}
 		// fremder eintrag
 	}
 
 	if ( ($forum->uid != UID) && (UGROUP != 1) )
 	{
-		$this->msg($mod['config_vars']['ErrornoPerm']);
+		$this->msg($mod['config_vars']['FORUMS_ERROR_NO_PERM']);
 	}
 
 
 	if ($_GET["pid"] == "")
 	{
-		$this->msg($mod['config_vars']['ErrornoPerm']);
+		$this->msg($mod['config_vars']['FORUMS_ERROR_NO_PERM']);
 	}
 }
 
@@ -77,7 +76,9 @@ if($NOOUT != 1)
 		$this->deleteTopic($_GET['toid']);
 		header("Location:index.php?module=forums&show=showforum&fid=$forum->id");
 		exit;
-	} else {
+	}
+	else
+	{
 		header("Location:index.php?module=forums&show=showtopic&toid=" . (int)$_GET['toid'] . "&fid=" . $_REQUEST['fid'] . "");
 		exit;
 	}

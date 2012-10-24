@@ -13,7 +13,7 @@ global $AVE_DB, $AVE_Template, $mod;
 
 if(!isset($_SESSION['user_id']))
 {
-	$this->msg($mod['config_vars']['ErrornoPerm']);
+	$this->msg($mod['config_vars']['FORUMS_ERROR_NO_PERM']);
 }
 $sql = $AVE_DB->Query("SELECT
 	u.*,
@@ -32,7 +32,7 @@ $n = $sql->NumRows();
 
 if(!$n)
 {
-	$this->msg($mod['config_vars']['ProfileError']);
+	$this->msg($mod['config_vars']['FORUMS_PROFILE_ERROR']);
 }
 
 $r = $sql->FetchAssocArray();
@@ -83,13 +83,13 @@ if(isset($_POST['doupdate']) && $_POST['doupdate'] == 1)
 	//=======================================================
 	if((isset($_POST['uname'])) && ($this->checkIfUserName(addslashes($_POST['uname']),addslashes($_SESSION['forum_user_name']))))
 	{
-		$errors[] = $mod['config_vars']['PE_UsernameInUse'];
+		$errors[] = $mod['config_vars']['FORUMS_PE_USERNAME_IN_USE'];
 		$r['uname'] = trim(htmlspecialchars($_POST['uname']));
 	}
 
 	if(( @isset($_POST['uname']) && @empty($_POST['uname'])) || preg_match($muster, str_replace($allowed,'',@$_POST['uname']) ))
 	{
-		$errors[] = $mod['config_vars']['PE_Username'];
+		$errors[] = $mod['config_vars']['FORUMS_PE_USERNAME'];
 	}
 
 	//=======================================================
@@ -97,12 +97,12 @@ if(isset($_POST['doupdate']) && $_POST['doupdate'] == 1)
 	//=======================================================
 	if(!empty($_POST['email']) && $this->checkIfUserEmail($_POST['email'], $_SESSION['forum_user_email']))
 	{
-		$errors[] = $mod['config_vars']['PE_EmailInUse'];
+		$errors[] = $mod['config_vars']['FORUMS_PE_EMAIL_IN_USE'];
 	}
 
 	if(empty($_POST['email']) || !preg_match($muster_email, $_POST['email']))
 	{
-		$errors[] = $mod['config_vars']['PE_Email'];
+		$errors[] = $mod['config_vars']['FORUMS_PE_EMAIL'];
 	}
 
 	//=======================================================
@@ -110,7 +110,7 @@ if(isset($_POST['doupdate']) && $_POST['doupdate'] == 1)
 	//=======================================================
 	if(!empty($_POST['birthday']) && !preg_match($muster_geb, $_POST['birthday']))
 	{
-		$errors[] = $mod['config_vars']['PE_WrongBd'];
+		$errors[] = $mod['config_vars']['FORUMS_PE_WRONG_BD'];
 	}
 
 	if(!empty($_POST['birthday']))
@@ -118,7 +118,7 @@ if(isset($_POST['doupdate']) && $_POST['doupdate'] == 1)
 		$check_year = explode(".", $_POST['birthday']);
 		if(@$check_year[0] > 31 || @$check_year[1] > 12 || @$check_year[2] < date("Y")-75)
 		{
-			$errors[] = $mod['config_vars']['PE_WrongBd'];
+			$errors[] = $mod['config_vars']['FORUMS_PE_WRONG_BD'];
 		}
 	}
 
@@ -242,7 +242,7 @@ if(isset($_POST['doupdate']) && $_POST['doupdate'] == 1)
 				uid = '" . $_SESSION['user_id'] . "'";
 
 		$AVE_DB->Query($q);
-		$this->msg($mod['config_vars']['ProfileOK'], 'index.php?module=forums&show=publicprofile');
+		$this->msg($mod['config_vars']['FORUMS_PROFILE_OK'], 'index.php?module=forums&show=publicprofile');
 	}
 }
 
@@ -253,5 +253,5 @@ $AVE_Template->assign('avatar_size', round(MAX_AVATAR_BYTES/1024));
 $AVE_Template->assign('r', $r);
 $tpl_out = $AVE_Template->fetch($mod['tpl_dir'] . 'myprofile.tpl');
 define("MODULE_CONTENT", $tpl_out);
-define("MODULE_SITE", $mod['config_vars']['MyProfilePublic']);
+define("MODULE_SITE", $mod['config_vars']['FORUMS_MY_PROFILE_PUBLIC']);
 ?>

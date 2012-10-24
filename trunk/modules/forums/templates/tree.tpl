@@ -12,7 +12,7 @@
 			{/section}&nbsp;{$leaf|stripslashes}
 		{else}
 			{if $smarty.foreach.treeview.iteration != 1}
-				{#ForumSep#}
+				{#FORUMS_FORUN_SEP#}
 				{$leaf}
 			{else}
 				{$leaf}

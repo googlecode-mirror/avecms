@@ -1,7 +1,7 @@
 <?php
 
 /**
- * 
+ * Мои подписки
  *
  * @package AVE.cms
  * @subpackage module_Forums
@@ -13,11 +13,10 @@ global $AVE_DB, $AVE_Template, $mod;
 
 if(UGROUP==2)
 {
-	$this->msg($mod['config_vars']['ErrornoPerm']);
+	$this->msg($mod['config_vars']['FORUMS_ERROR_NO_PERM']);
 }
 if (defined("UGROUP") && is_numeric(UGROUP) && UGROUP != 2)
 {
-
 	$forum_id = (isset($_GET['forum_id']) && $_GET['forum_id'] != '' && is_numeric($_GET['forum_id'])) ? addslashes($_GET['forum_id']) : 't.forum_id';
 
 	$query = "SELECT
@@ -65,7 +64,9 @@ if (defined("UGROUP") && is_numeric(UGROUP) && UGROUP != 2)
 				{
 					// nicht eingeloggt oder forum geschlossen
 					$topic['statusicon'] = $this->getIcon("thread_lock.gif", "lock");
-				} else {
+				}
+				else 
+				{
 					$this->setTopicIcon($topic, $rx);
 				}
 			}
@@ -77,25 +78,24 @@ if (defined("UGROUP") && is_numeric(UGROUP) && UGROUP != 2)
 			$rating = explode(",", $topic['rating']);
 			$topic['rating'] = (int) (array_sum($rating) / count($rating));
 
-
 			$matches[] = $topic;
 		}
 	}
 
 	$AVE_Template->assign("navigation", "<a class='forum_links_navi' href='index.php?module=forums'>"
-		. $mod['config_vars']['PageNameForums'] . "</a>"
-		. $mod['config_vars']['ForumSep']
+		. $mod['config_vars']['FORUMS_PAGE_NAME_FORUMS'] . "</a>"
+		. $mod['config_vars']['FORUMS_FORUM_SEP']
 		. "<a class='forum_links_navi' href='index.php?module=forums&amp;show=search_mask'>"
-		. $mod['config_vars']['ForumsSearch']
+		. $mod['config_vars']['FORUMS_FORUMS_SEARCH']
 		. "</a>"
-		. $mod['config_vars']['ForumSep']
-		. $mod['config_vars']['ShowAbos']
+		. $mod['config_vars']['FORUMS_FORUM_SEP']
+		. $mod['config_vars']['FORUMS_SHOW_ABOS']
 		 );
 
 	$AVE_Template->assign("matches", $matches);
 
 	$tpl_out = $AVE_Template->fetch($mod['tpl_dir'] . 'result.tpl');
 	define("MODULE_CONTENT", $tpl_out);
-	define("MODULE_SITE", $mod['config_vars']['ShowLast24']);
+	define("MODULE_SITE", $mod['config_vars']['FORUMS_SHOW_LAST_24']);
 }
 ?>

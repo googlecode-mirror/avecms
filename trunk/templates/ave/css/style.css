@@ -329,41 +329,6 @@ a.page_navigation:hover         {background-color:#A8D060}
 
 
 /* -----------------------------
- =модуль Форумы
------------------------------ */
-#forums_pop                     {text-align:left;margin:5px}
-.forum_attachment_box           {border:1px inset #dedede;margin:10px;padding:3px}
-.toggletr                       {background:#dedede}
-.lastthreads_second             {background-color:#f0f0f0}
-a.forum_links:link,
-a.forum_links:visited           {color:#555;font-weight:700;text-decoration:underline}
-a.forum_links:hover             {color:#555;font-weight:700;text-decoration:none}
-a.forum_head:link,
-a.forum_head:visited            {color:#000;text-decoration:underline}
-a.forum_links_small:hover       {color:#777;font-weight:400;text-decoration:none}
-a.forum_links_navi:link,
-a.forum_links_navi:visited      {color:#777;font-weight:700;text-decoration:none}
-a.forum_links_navi:hover        {color:#000;font-weight:700;text-decoration:none}
-a.forum_topicheader:link,
-a.forum_topicheader:visited     {color:#fff;font-weight:700;text-decoration:underline}
-a.forum_topicheader:hover       {color:#fff;font-weight:700;text-decoration:none}
-.forum_post_footer              {background-color:#e9e9e9}
-.forum_header                   {background:#dedede;padding:5px}
-.forum_info_icon                {width:30px;background-color:#f1f1f1;text-align:center;padding:2px}
-.forum_info_main                {background-color:#f1f1f1;padding:8px}
-.forum_toggle                   {width:20px;background-color:#dedede}
-.forum_frame                    {background-color:#fff;margin-bottom:1px}
-.forum_navi                     {padding:3px}
-.forum_header_bolder            {color:#3c3a3a;background:#cdcdcd;padding:5px}
-.forum_tableborder              {background-color:#cdcdcd;border:0 solid #878373;padding:0}
-.forum_stats_box                {font-weight:700;color:#777;background-color:#f3f3f3}
-.user_sig                       {padding-top:4px}
-.user_sig_bar                   {color:#ccc;padding-top:4px}
-.forum_small,
-.f_info_comment                 {font-size:11px}
-
-
-/* -----------------------------
  =модуль Контакты
 ----------------------------- */
 #mod_contact_box                {position:relative;padding:15px}

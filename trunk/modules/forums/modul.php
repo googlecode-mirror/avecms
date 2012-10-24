@@ -1,5 +1,12 @@
 <?php
 
+/**
+ * Форумы
+ *
+ * @package AVE.cms
+ * @subpackage module_Forums
+ * @filesource
+ */
 if(!defined('BASE_DIR')) exit;
 
 if (defined('ACP'))
@@ -108,7 +115,7 @@ if( (isset($_REQUEST['module']) && $_REQUEST['module'] == 'forums') || (isset($_
 		if(defined('THEME_FOLDER')) $AVE_Template->assign('theme_folder', THEME_FOLDER);
 
 		define ('USERNAME', (isset($_SESSION['user_id']) && is_numeric($_SESSION['user_id'])) ? $forums->fetchusername($_SESSION['user_id']) : UNAME);
-		$_SESSION['forum_user_name'] = (isset($_SESSION['user_id'])) ? $forums->fetchusername($_SESSION['user_id']) : $GLOBALS['mod']['config_vars']['Guest'];
+		$_SESSION['forum_user_name'] = (isset($_SESSION['user_id'])) ? $forums->fetchusername($_SESSION['user_id']) : $GLOBALS['mod']['config_vars']['FORUMS_GUEST'];
 		$_SESSION['forum_user_email'] = (isset($_SESSION['user_id'])) ? $forums->getForumUserEmail($_SESSION['user_id']) : '';
 
 		$forums->UserOnlineUpdate();
@@ -137,7 +144,7 @@ if( (isset($_REQUEST['module']) && $_REQUEST['module'] == 'forums') || (isset($_
 		// Wenn Benutzergruppe keinen Zugriff hat
 		if((!$forums->fperm('accessforums')))
 		{
-			$forums->msg($GLOBALS['mod']['config_vars']['ForumNoAccess'], 'index.php?module=login&action=register');
+			$forums->msg($GLOBALS['mod']['config_vars']['FORUMS_FORUM_NO_ACCESS'], 'index.php?module=login&action=register');
 		}
 
 		switch($_REQUEST['show']) {
@@ -224,7 +231,7 @@ if( (isset($_REQUEST['module']) && $_REQUEST['module'] == 'forums') || (isset($_
 			case 'last24':
 				if (!$forums->fperm('last24'))
 				{
-					$forums->msg($GLOBALS['mod']['config_vars']['ErrornoPerm']);
+					$forums->msg($GLOBALS['mod']['config_vars']['FORUMS_ERROR_NO_PERM']);
 				}
 				$forums->last24();
 				break;
@@ -240,7 +247,7 @@ if( (isset($_REQUEST['module']) && $_REQUEST['module'] == 'forums') || (isset($_
 			case 'userprofile':
 				if (!$forums->fperm('userprofile'))
 				{
-					$forums->msg($GLOBALS['mod']['config_vars']['ErrornoPerm']);
+					$forums->msg($GLOBALS['mod']['config_vars']['FORUMS_ERROR_NO_PERM']);
 				}
 				$forums->showUserProfile();
 				break;
@@ -260,7 +267,7 @@ if( (isset($_REQUEST['module']) && $_REQUEST['module'] == 'forums') || (isset($_
 			case 'search_mask':
 				if (!$forums->fperm('cansearch'))
 				{
-					$forums->msg($GLOBALS['mod']['config_vars']['ErrornoPerm']);
+					$forums->msg($GLOBALS['mod']['config_vars']['FORUMS_ERROR_NO_PERM']);
 				}
 				$forums->searchMask();
 				break;
@@ -268,7 +275,7 @@ if( (isset($_REQUEST['module']) && $_REQUEST['module'] == 'forums') || (isset($_
 			case 'search':
 				if (!$forums->fperm('cansearch'))
 				{
-					$forums->msg($GLOBALS['mod']['config_vars']['ErrornoPerm']);
+					$forums->msg($GLOBALS['mod']['config_vars']['FORUMS_ERROR_NO_PERM']);
 				}
 				$forums->doSearch();
 				break;
@@ -283,11 +290,11 @@ if( (isset($_REQUEST['module']) && $_REQUEST['module'] == 'forums') || (isset($_
 
 			case 'userlist':
 				$forums->getUserlist();
-
+/*
 			case 'import':
 				$forums->importfromkoobi();
 				break;
-		}
+*/		}
 	}
 
 	/**

@@ -13,20 +13,20 @@
 						<img src="{$forum_images}forum/closed.gif" alt="{$lang.f_isclosed}" border="0" class="absmiddle" />
 					{else}
 						{if ($permissions.6 == 1) || ($permissions.7 == 1) }
-							<a class="forum_links" href="index.php?module=forums&amp;show=newpost&amp;toid={$smarty.get.toid}"><img src="{$forum_images}forum/answer.gif" alt="{#ReplyToPost#}" border="0" class="absmiddle" /></a>
+							<a class="forum_links" href="index.php?module=forums&amp;show=newpost&amp;toid={$smarty.get.toid}"><img src="{$forum_images}forum/answer.gif" alt="{#FORUMS_REPLY_TO_POST#}" border="0" class="absmiddle" /></a>
 						{/if}
 					{/if}
 				</div>
 			</td>
 		</tr>
-		{if $pages}
-			<tr>
-				<td>
-					<p>{$pages}</p>
-				</td>
-				<td>&nbsp;</td>
-			</tr>
-		{/if}
+	{if $pages}
+		<tr>
+			<td>
+				<p>{$pages}</p>
+			</td>
+			<td>&nbsp;</td>
+		</tr>
+	{/if}
 	</table>
 {/if}
 
@@ -45,13 +45,13 @@
 							<div align="right">
 								{if $ugroup!=2}
 									{if $canabo==1}
-										<a href="index.php?module=forums&amp;show=addsubscription&amp;t_id={$topic->id}">{#AboNow#}</a>
+										<a href="index.php?module=forums&amp;show=addsubscription&amp;t_id={$topic->id}">{#FORUMS_ABO_NOW#}</a>
 									{else}
-										<a href="index.php?module=forums&amp;show=unsubscription&amp;t_id={$topic->id}">{#AboNowCancel#}</a>
+										<a href="index.php?module=forums&amp;show=unsubscription&amp;t_id={$topic->id}">{#FORUMS_ABO_NOW_CANCEL#}</a>
 									{/if}
 									&nbsp;|&nbsp;
 								{/if}
-								<a href="{$printlink}&amp;pop=1&amp;theme_folder={$theme_folder}" target="_blank">{#PrintTopic#}</a>
+								<a href="{$printlink}&amp;pop=1&amp;theme_folder={$theme_folder}" target="_blank">{#FORUMS_PRINT_TOPIC#}</a>
 							</div>
 						</td>
 					</tr>
@@ -66,20 +66,19 @@
 		<tr>
 			<td colspan="2" class="forum_header_bolder">
 				{if $post->datum|date_format:'%d.%m.%Y' == $smarty.now|date_format:'%d.%m.%Y'}
-					<strong>{#Today#},&nbsp;{$post->datum|date_format:'%H:%M'}</strong>
+					<strong>{#FORUMS_TODAY#},&nbsp;{$post->datum|date_format:'%H:%M'}</strong>
 				{else}
-					<strong>{$post->datum|date_format:$smarty.config.DateFormatTimeThread|pretty_date}</strong>
+					<strong>{$post->datum|date_format:$smarty.config.FORUMS_DATE_FORMAT_TIME_THREAD|pretty_date}</strong>
 				{/if}
 			</td>
 		</tr>
 		<tr>
-			<td valign="top" class="forum_post_first">
-			
+			<td valign="top" class="forum_post_first">			
 				{if $post->poster->uname != ''}
 					{if $post->poster->reg_time > '1' && $post->poster->user_group!=2}
 						{if $smarty.request.print!=1}
 							{assign var=po value=$post->poster->Ignored}
-							<h2><a onclick= "return overlib('{$po}',STICKY,WIDTH,400,TIMEOUT,3000,DELAY,100);" href="javascript:void(0);" rel="nofollow"><strong>{$post->poster->uname}</strong></a></h2><br />
+							<h2><a onclick= "return overlib('{$po}',STICKY,WIDTH,250,TIMEOUT,3000,DELAY,100);" href="javascript:void(0);" rel="nofollow"><strong>{$post->poster->uname}</strong></a></h2><br />
 						{else}
 							<h2>{$post->poster->uname}</h2>
 						{/if}
@@ -97,23 +96,24 @@
 							<br />
 							{$post->poster->avatar}<br />
 						{/if}
-						<p>{if $post->poster->uid == $topic->uid && !$smarty.foreach.postings.first}Автор темы<br />{/if}</p>
-						Сообщений: {$post->poster->user_posts}
+						<p>{if $post->poster->uid == $topic->uid && !$smarty.foreach.postings.first}{#FORUMS_BY_TOPIC#}<br />{/if}</p>
+						{#FORUMS_POSTS#} {$post->poster->user_posts}
 						<br />
-						Дата регистрации: {$post->poster->regdate|date_format:$smarty.config.DateFormatMemberSince}
+						{#FORUMS_REG_DATE#} {$post->poster->regdate|date_format:$smarty.config.FORUMS_DATE_FORMAT_MEMBER_SINCE}
 					{/if}
-				 	</small>
 				{else}
-					<h1>{#Guest#}</h1>
+					<h1>{#FORUMS_GUEST#}</h1>
 				{/if}
 			</td>
 			<td width="75%" valign="top" class="forum_post_second">
-				{if $post->title != ""}<strong>{$post->title}</strong><br />{/if}
+				{if $post->title != ""}
+					<strong>{$post->title}</strong><br />
+				{/if}
 				{$post->message|stripslashes}
 				{if count($post->Attachments) && $smarty.request.print!=1}
 					<br />
 					<div class="forum_attachment_box">
-						{$post->poster->user_name} {#Attachments#}
+						{$post->poster->user_name} {#FORUMS_ATTACHMENTS#}
 						<table border="0" cellpadding="1" cellspacing="0">
 							{foreach from=$post->Attachments item=file name="post"}
 								<tr>
@@ -121,7 +121,7 @@
 										<img hspace="2" vspace="4" src="{$forum_images}forum/attach.gif" alt="" class="absmiddle" />
 										<a href="index.php?module=forums&amp;show=getfile&amp;file_id={$file->id}&amp;f_id={$topic->forum_id}&amp;t_id={$topic->id}">{$file->orig_name}</a>
 									</td>
-									<td><small>&nbsp;&nbsp;({$file->hits} {#Hits#}&nbsp;|&nbsp;{$file->FileSize})</small></td>
+									<td><small>&nbsp;&nbsp;({$file->hits} {#FORUMS_HITS#}&nbsp;|&nbsp;{$file->FileSize})</small></td>
 								</tr>
 							{/foreach}
 						</table>
@@ -149,10 +149,10 @@
 						&nbsp;
 						{if ($post->opened=="2") && ($ismod == 1)}
 					        {if !$smarty.foreach.postings.first}{assign var="ispost" value=1}{/if}
-							<a href="index.php?module=forums&amp;show=showtopic&amp;toid={$smarty.request.toid}&amp;fid={$smarty.request.fid}&amp;open=1&amp;post_id={$post->id}&amp;ispost={$ispost}"><img src="{$forum_images}forum/moderate_on.gif" border="0" alt="{$lang.f_unlock}" /> </a>
+							<a href="index.php?module=forums&amp;show=showtopic&amp;toid={$smarty.request.toid}&amp;fid={$smarty.request.fid}&amp;open=1&amp;post_id={$post->id}&amp;ispost={$ispost}"><img src="{$forum_images}forum/moderate_on.gif" border="0" alt="{$lang.f_unlock}" /></a>
 						{/if}
 						{if ($permissions.15 == 1) || ($permissions.11 == 1) }
-						    <a onclick="return confirm('{#DeletePostC#}')" href="index.php?module=forums&amp;show=delpost&amp;pid={$post->id}&amp;toid={$smarty.get.toid}&amp;fid={$smarty.request.fid}"><img src="{$forum_images}forum/delete_small.gif" alt="{$lang.forum_deleteb_alt}" border="0" /></a>
+						    <a onclick="return confirm('{#FORUMS_DELETE_POST_CONFIRM#}')" href="index.php?module=forums&amp;show=delpost&amp;pid={$post->id}&amp;toid={$smarty.get.toid}&amp;fid={$smarty.request.fid}"><img src="{$forum_images}forum/delete_small.gif" alt="{$lang.forum_deleteb_alt}" border="0" /></a>
 						{/if}
 						{if $permissions.10 == 1}
 						    <a href="index.php?module=forums&amp;show=newpost&amp;action=edit&amp;pid={$post->id}&amp;toid={$smarty.get.toid}"><img src="{$forum_images}forum/edit_small.gif" alt="{$lang.f_edit}" border="0" /></a>
@@ -179,21 +179,21 @@
 						<td>
 							{if $ugroup!=2}
 								{if $canabo==1}
-									<a href="index.php?module=forums&amp;show=addsubscription&amp;t_id={$topic->id}">{#AboNow#}</a>
+									<a href="index.php?module=forums&amp;show=addsubscription&amp;t_id={$topic->id}">{#FORUMS_ABO_NOW#}</a>
 								{else}
-									<a href="index.php?module=forums&amp;show=unsubscription&amp;t_id={$topic->id}">{#AboNowCancel#}</a>
+									<a href="index.php?module=forums&amp;show=unsubscription&amp;t_id={$topic->id}">{#FORUMS_ABO_NOW_CANCEL#}</a>
 								{/if}
 								&nbsp;|&nbsp;
 							{/if}
 
-							<a href="{$printlink}&amp;pop=1&amp;theme_folder={$theme_folder}" target="_blank">{#PrintTopic#}</a>
+							<a href="{$printlink}&amp;pop=1&amp;theme_folder={$theme_folder}" target="_blank">{#FORUMS_PRINT_TOPIC#}</a>
 
 							{if $topic->prev_topic->id != ""}
-								&nbsp;|&nbsp;&nbsp;<a class="forumlinks" href="index.php?module=forums&amp;show=showtopic&amp;toid={$topic->prev_topic->id}&amp;fid={$smarty.get.fid}">{#PrevTopic#}</a>
+								&nbsp;|&nbsp;&nbsp;<a class="forumlinks" href="index.php?module=forums&amp;show=showtopic&amp;toid={$topic->prev_topic->id}&amp;fid={$smarty.get.fid}">{#FORUMS_PREV_TOPIC#}</a>
 							{/if}
 
 							{if $topic->next_topic->id != ""}
-								&nbsp;|&nbsp;&nbsp;<a class="forumlinks" href="index.php?module=forums&amp;show=showtopic&amp;toid={$topic->next_topic->id}&amp;fid={$smarty.get.fid}">{#NextTopic#}</a>
+								&nbsp;|&nbsp;&nbsp;<a class="forumlinks" href="index.php?module=forums&amp;show=showtopic&amp;toid={$topic->next_topic->id}&amp;fid={$smarty.get.fid}">{#FORUMS_NEXT_TOPIC#}</a>
 							{/if}
 						</td>
 						<td>
@@ -202,7 +202,7 @@
 									<img src="{$forum_images}forum/closed.gif" alt="{$lang.f_isclosed}" border="0" class="absmiddle" />
 								{else}
 									{if ($permissions.6 == 1) || ($permissions.7 == 1) }
-										<a class="forum_links" href="index.php?module=forums&amp;show=newpost&amp;toid={$smarty.get.toid}"><img src="{$forum_images}forum/answer.gif" alt="{#ReplyToPost#}" border="0" class="absmiddle" /></a>
+										<a class="forum_links" href="index.php?module=forums&amp;show=newpost&amp;toid={$smarty.get.toid}"><img src="{$forum_images}forum/answer.gif" alt="{#FORUMS_REPLY_TO_POST#}" border="0" class="absmiddle" /></a>
 									{/if}
 								{/if}
 							</div>
@@ -219,7 +219,7 @@
 				<div align="right">
 					<table border="0" cellspacing="0" cellpadding="1">
 						<tr>
-							<td>{#GoTo#}</td>
+							<td>{#FORUMS_GO_TO#}</td>
 							<td>
 								{include file="$inc_path/selector.tpl"}
 							</td>
@@ -233,38 +233,38 @@
 			<td nowrap="nowrap">
 				{if ($permissions.17 == 1) || ($permissions.18 == 1) || ($permissions.14 == 1) || ($permissions.21 == 1) || ($permissions.12 == 1) || ($permissions.20 == 1) || ($permissions.19 == 1) }
 					<div align="right">
-						{#AdminActions#}
+						{#FORUMS_ADMIN_ACTIONS#}
 						<select id="move_sel" name="select" onchange="eval(this.options[this.selectedIndex].value);selectedIndex=0;">
 							{if $topic->status eq 1}
 								{if ($permissions.13 == 1) || ($permissions.18 == 1)}
 									<option value="location.href='index.php?module=forums&amp;show=opentopic&amp;fid={$topic->forum_id}&amp;toid={$smarty.get.toid}';">
-										{#OpenTopic#}
+										{#FORUMS_OPEN_TOPIC#}
 									</option>
 								{/if}
 							{else}
 								{if ($permissions.13 == 1) || ($permissions.18 == 1)}
 									<option value="location.href='index.php?module=forums&amp;show=closetopic&amp;fid={$topic->forum_id}&amp;toid={$smarty.get.toid}';">
-										{#CloseTopic#}
+										{#FORUMS_CLOSE_TOPIC#}
 									</option>
 								{/if}
 							{/if}
 							{if ($permissions.14 == 1) || ($permissions.21 == 1)}
-								<option value="if(confirm('{#DeleteTopicC#}')) location.href='index.php?module=forums&amp;show=deltopic&amp;fid={$topic->forum_id}&amp;toid={$smarty.get.toid}';">
-									{#DeleteTopic#}
+								<option value="if(confirm('{#FORUMS_DELETE_TOPIC_CONFIRM#}')) location.href='index.php?module=forums&amp;show=deltopic&amp;fid={$topic->forum_id}&amp;toid={$smarty.get.toid}';">
+									{#FORUMS_DELETE_TOPIC#}
 								</option>
 							{/if}
 							{if ($permissions.20 == 1) || ($permissions.12 == 1)}
 								<option value="location.href='index.php?module=forums&amp;show=move&amp;item=t&amp;toid={$smarty.get.toid}&amp;fid={$topic->forum_id}';">
-									{#MoveTopic#}
+									{#FORUMS_MOVE_TOPIC#}
 								</option>
 							{/if}
 							{if $permissions.19 == 1}
 								<option value="location.href='index.php?module=forums&amp;show=change_type&amp;toid={$smarty.get.toid}&amp;fid={$topic->forum_id}&amp;t={cpencode val=$topic->title|escape:'html'|stripslashes}';">
-									{#ChangeTopicType#}
+									{#FORUMS_CHANGE_TOPIC_TYPE#}
 								</option>
 							{/if}
 						</select>
-						<input onclick="eval(document.getElementById('move_sel').value);" type="button" class="button" value="{#ButtonGo#}">
+						<input onclick="eval(document.getElementById('move_sel').value);" type="button" class="button" value="{#FORUMS_BUTTON_GO#}">
 					</div>
 				{else}
 					&nbsp;

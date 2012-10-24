@@ -11,7 +11,7 @@ if(!defined("FLOGIN")) exit;
 
 global $AVE_DB;
 
-$r_pass = $GLOBALS['AVE_DB']->Query("SELECT password, title FROM " . PREFIX . "_modul_forum_forum WHERE id = '" . addslashes($_REQUEST['fid']) . "'");
+$r_pass = $AVE_DB->Query("SELECT password, title FROM " . PREFIX . "_modul_forum_forum WHERE id = '" . addslashes($_REQUEST['fid']) . "'");
 $pass = $r_pass->FetchRow();
 
 if (is_object($pass) && isset($_POST['pass']) && md5(md5($_POST['pass'])) == $pass->password)

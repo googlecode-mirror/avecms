@@ -20,7 +20,7 @@ $limit = (isset($_REQUEST['pp']) && is_numeric($_REQUEST['pp']) && $_REQUEST['pp
 
 if ((!$this->fperm("canpn")) || (UGROUP==2))
 {
-	$this->msg($mod['config_vars']['ErrornoPerm']);
+	$this->msg($mod['config_vars']['FORUMS_ERROR_NO_PERM']);
 }
 else
 {
@@ -48,8 +48,8 @@ else
 		$goto = (isset($_REQUEST['goto']) && $_REQUEST['goto']=="outbox") ? "outbox" : "inbox";
 		$tofrom = $goto=="inbox" ? "to_uid" : "from_uid";
 
-		$send_recieve_text = $goto=="inbox" ? $mod['config_vars']['PN_r'] : $mod['config_vars']['PN_s'];
-		$text_fromto = $goto=="inbox" ? $mod['config_vars']['PN_sender'] : $mod['config_vars']['PN_reciever'];
+		$send_recieve_text = $goto=="inbox" ? $mod['config_vars']['FORUMS_PN_IS_RECEIVED'] : $mod['config_vars']['FORUMS_PN_IS_SEND'];
+		$text_fromto = $goto=="inbox" ? $mod['config_vars']['FORUMS_PN_SENDER'] : $mod['config_vars']['FORUMS_PN_RECIEVER'];
 
 		//=======================================================
 		// Aufsteigende & Absteigende Sortierung
@@ -106,11 +106,11 @@ else
 		//=======================================================
 		// Sortierungsoptionen dem Template zuweisen...
 		//=======================================================
-		$sel_topic_read_unread	 = '<option value="pntime" ' . @$pntime_sel . '>'.$mod['config_vars']['PN_byDate'].'</option>';
-		$sel_topic_read_unread	.= '<option value="topic" ' . @$topic_sel . '>'.$mod['config_vars']['PN_byTopic'].'</option>';
-		$sel_topic_read_unread	.= '<option value="uid" ' . @$outbox_uid . @$inbox_uid . '>'.$mod['config_vars']['PN_byAuthor'].'</option>';
-		$sel_topic_read_unread	.= '<option value="readed" ' . @$readed_sel . ' >'.$mod['config_vars']['PN_byReaded'].'</option>';
-		$sel_topic_read_unread	.= '<option value="notreaded" ' . @$notreaded_sel . '>'.$mod['config_vars']['PN_byUnReaded'].'</option>';
+		$sel_topic_read_unread	 = '<option value="pntime" ' . @$pntime_sel . '>'.$mod['config_vars']['FORUMS_PN_BY_DATE'].'</option>';
+		$sel_topic_read_unread	.= '<option value="topic" ' . @$topic_sel . '>'.$mod['config_vars']['FORUMS_PN_BY_TOPIC'].'</option>';
+		$sel_topic_read_unread	.= '<option value="uid" ' . @$outbox_uid . @$inbox_uid . '>'.$mod['config_vars']['FORUMS_PN_BY_AUTHOR'].'</option>';
+		$sel_topic_read_unread	.= '<option value="readed" ' . @$readed_sel . ' >'.$mod['config_vars']['FORUMS_PN_BY_READED'].'</option>';
+		$sel_topic_read_unread	.= '<option value="notreaded" ' . @$notreaded_sel . '>'.$mod['config_vars']['FORUMS_PN_BY_UN_READED'].'</option>';
 
 		$AVE_Template->assign('sel_topic_read_unread', $sel_topic_read_unread) ;
 
@@ -196,16 +196,16 @@ else
 				$entry_array[] = array(
 					'timestamp' => $row->pntime,
 					'data'      => array(
-						'title'   => stripslashes($row->topic),
-						'message' => htmlspecialchars($row->message),
-						'pntime'  => $row->pntime,
-						'pnday'   => $row->pntime,
-						'von'     => $theusername,
-						'goto'    => $goto,
-						'pnid'    => $row->pnid,
-						'icon'    => $this->isreaded($row->pnid),
-						'toid'    => "index.php?module=forums&amp;show=userprofile&amp;user_id=".$theuserid,
-						'mlink'	  => "index.php?module=forums&amp;show=pn&amp;action=message&amp;pn_id=".$row->pnid."&amp;goto=".$goto
+					'title'   => stripslashes($row->topic),
+					'message' => htmlspecialchars($row->message),
+					'pntime'  => $row->pntime,
+					'pnday'   => $row->pntime,
+					'von'     => $theusername,
+					'goto'    => $goto,
+					'pnid'    => $row->pnid,
+					'icon'    => $this->isreaded($row->pnid),
+					'toid'    => "index.php?module=forums&amp;show=userprofile&amp;user_id=".$theuserid,
+					'mlink'	  => "index.php?module=forums&amp;show=pn&amp;action=message&amp;pn_id=".$row->pnid."&amp;goto=".$goto
 					)
 				);
 			}
@@ -246,22 +246,22 @@ else
 				'ende'   => $last
 			);
 
-			$wochentage = explode(",",$mod['config_vars']['PN_DayNames']);
+			$wochentage = explode(",",$mod['config_vars']['FORUMS_PN_DAY_NAMES']);
 			while (list($key,$val)=each($ts))
 			{
 				if ($key==0)
 				{
-					$t = $mod['config_vars']['Today'];
+					$t = $mod['config_vars']['FORUMS_TODAY'];
 					$d = ", " . date("d.m.Y", $val['anfang']);
 				}
 				elseif ($key==-1)
 				{
-					$t = $mod['config_vars']['PN_Later'];
+					$t = $mod['config_vars']['FORUMS_PN_LATER'];
 					$d = "";
 				}
 				elseif ($key==-2)
 				{
-					$t = $mod['config_vars']['PN_LastWeek'];
+					$t = $mod['config_vars']['FORUMS_PN_LAST_WEEK'];
 					$d = "";
 				}
 				else
@@ -394,7 +394,7 @@ else
 			unset($thisselect);
 			$thisselect = "";
 			if (isset($_REQUEST['pp']) && $_REQUEST['pp']==$i) $thisselect = "selected";
-			$pp_l .= '<option value="'.$i.'" '.$thisselect.'>'.$i.' '.$mod['config_vars']['PN_EachPage'].'</option>';
+			$pp_l .= '<option value="'.$i.'" '.$thisselect.'>'.$i.' '.$mod['config_vars']['FORUMS_PN_EACH_PAGE'].'</option>';
 		}
 		$AVE_Template->assign('pp_l', $pp_l) ;
 
@@ -428,7 +428,7 @@ else
 		$allpn = $onepn * $pnin;
 		$inoutwidth = round($allpn/1.005, 3);
 		$inoutpercent = round($allpn, 0);
-		if ($pnin==$MAXPN) $warningpnfull = $mod['config_vars']['PN_BoxMyFull'];
+		if ($pnin==$MAXPN) $warningpnfull = $mod['config_vars']['FORUMS_PN_BOX_MY_FULL'];
 
 		if ($goto=="inbox")
 		{
@@ -454,7 +454,7 @@ else
 		$AVE_Template->assign('inoutwidth', $inoutwidth);
 		$AVE_Template->assign('inoutpercent', $inoutpercent);
 		$AVE_Template->assign('pnioutnall', $pnin);
-		$AVE_Template->assign('pnmax', str_replace("__MAXPN__", $MAXPN, $mod['config_vars']['PN_TextFilled']));
+		$AVE_Template->assign('pnmax', str_replace("__MAXPN__", $MAXPN, $mod['config_vars']['FORUMS_PN_TEXT_FILLED']));
 		$AVE_Template->assign('warningpnfull', $warningpnfull);
 		$AVE_Template->assign('sortdesc', $desclink);
 		$AVE_Template->assign('sortasc', $asclink);
@@ -467,9 +467,10 @@ else
 		$AVE_Template->assign('outin', 1);
 		$AVE_Template->assign('neu', 0);
 
-		//=======================================================
-		// Wenn keine PN...
-		//=======================================================
+		/**
+		* Если нет PN...
+		*
+		*/
 		if ($pnin)
 		{
 			$AVE_Template->assign('table_data', $table_data);
@@ -494,13 +495,13 @@ else
 
 				if ($goto=="inbox")
 				{
-					$pninout = $mod['config_vars']['PN_In'];
+					$pninout = $mod['config_vars']['FORUMS_PN_IN'];
 					$fname = $theusername;
 					$tname = $_SESSION['forum_user_name'];
 				}
 				else
 				{
-					$pninout = $mod['config_vars']['PN_Out'];
+					$pninout = $mod['config_vars']['FORUMS_PN_OUT'];
 					$fname = $_SESSION['forum_user_name'];
 					$tname = $theusername;
 				}
@@ -508,10 +509,10 @@ else
 				if ($_REQUEST['type']=="text")
 				{
 					$dlmessage .= "===============================================================================\r\n";
-					$dlmessage .= $mod['config_vars']['PN_sender'].":\t" . $fname ."\r\n";
-					$dlmessage .= $mod['config_vars']['PN_reciever'].":\t" . $tname . "\r\n";
-					$dlmessage .= $mod['config_vars']['PN_Date'].":\t" . date('d-m-Y H:i', $row->pntime) . "\r\n";
-					$dlmessage .= $mod['config_vars']['PN_TheSubject'].":\t" . $row->topic . "\r\n";
+					$dlmessage .= $mod['config_vars']['FORUMS_PN_SENDER'].":\t" . $fname ."\r\n";
+					$dlmessage .= $mod['config_vars']['FORUMS_PN_RECIEVER'].":\t" . $tname . "\r\n";
+					$dlmessage .= $mod['config_vars']['FORUMS_PN_DATE'].":\t" . date('d-m-Y H:i', $row->pntime) . "\r\n";
+					$dlmessage .= $mod['config_vars']['FORUMS_PN_THE_SUBJECT'].":\t" . $row->topic . "\r\n";
 					$dlmessage .= "-------------------------------------------------------------------------------\r\n";
 					$dlmessage .=  wordwrap( $message, 90, "\r\n", 1) . "\r\n\r\n";
 					$end = ".txt";
@@ -521,10 +522,10 @@ else
 				{
 					$dlmessage .= '<style><!-- td,div,th{FONT-SIZE: 11px;FONT-FAMILY:   Verdana, Arial, Helvetica, sans-serif;} --></style>';
 					$dlmessage .= '<table width="100%"  border="1" cellpadding="3" cellspacing="0" bordercolor="#333333"><tr><td bgcolor="#F4F4F4">';
-					$dlmessage .= "<B>".$mod['config_vars']['PN_sender']."</B>:\t" . $fname ."\r<br>";
-					$dlmessage .= "<B>".$mod['config_vars']['PN_reciever']."</B>:\t" . $tname . "\r<br>";
-					$dlmessage .= "<B>".$mod['config_vars']['PN_Date']."</B>:\t" . date('d-m-Y H:i', $row->pntime) . "\r<br>";
-					$dlmessage .= "<B>".$mod['config_vars']['PN_TheSubject']."</B>:\t" . $row->topic . "\r<br>";
+					$dlmessage .= "<B>".$mod['config_vars']['FORUMS_PN_SENDER']."</B>:\t" . $fname ."\r<br>";
+					$dlmessage .= "<B>".$mod['config_vars']['FORUMS_PN_RECIEVER']."</B>:\t" . $tname . "\r<br>";
+					$dlmessage .= "<B>".$mod['config_vars']['FORUMS_PN_DATE']."</B>:\t" . date('d-m-Y H:i', $row->pntime) . "\r<br>";
+					$dlmessage .= "<B>".$mod['config_vars']['FORUMS_PN_THE_SUBJECT']."</B>:\t" . $row->topic . "\r<br>";
 					$dlmessage .= '</td></tr><tr><td>';
 					$dlmessage .=  nl2br(stripslashes(wordwrap(htmlspecialchars($message), 90, "\r\n", 1))) ."";
 					$dlmessage .= '</td></tr></table><br>';
@@ -549,7 +550,7 @@ else
 		$sql->Close();
 
 		// WENN UNGЬLTIGE ID ODER PN NICHT == USER-ID
-		if (!$num) $this->msg($mod['config_vars']['PN_WrongId'], 'index.php?module=forums&show=pn');
+		if (!$num) $this->msg($mod['config_vars']['FORUMS_PN_WRONG_ID'], 'index.php?module=forums&show=pn');
 
 		if ($ok==1)
 		{
@@ -650,7 +651,7 @@ else
 
 		if ($num == $MAXPN || $num >= $MAXPN)
 		{
-			$this->msg($mod['config_vars']['PN_BoxMyFull'], 'index.php?module=forums&show=pn&goto=inbox');
+			$this->msg($mod['config_vars']['FORUMS_PN_BOX_MY_FULL'], 'index.php?module=forums&show=pn&goto=inbox');
 		}
 
 		// Vorschau
@@ -682,10 +683,10 @@ else
 		if (isset($_POST['send']) && $_POST['send']=="2")
 		{
 			$error = "";
-			if (empty($_POST['tofromname']))         $pnerror[] = $mod['config_vars']['PN_NoR'];
-			if (empty($_POST['title']))              $pnerror[] = $mod['config_vars']['PN_NoS'];
-			if (empty($_POST['text']))               $pnerror[] = $mod['config_vars']['PN_NoT'];
-			if (strlen($_POST['text']) > MAXPNLENTH) $pnerror[] = $mod['config_vars']['PN_TextToLong'];
+			if (empty($_POST['tofromname']))         $pnerror[] = $mod['config_vars']['FORUMS_PN_PLS_ENTER_ID_USER'];
+			if (empty($_POST['title']))              $pnerror[] = $mod['config_vars']['FORUMS_PN_PLS_ENTER_HEADING'];
+			if (empty($_POST['text']))               $pnerror[] = $mod['config_vars']['FORUMS_PN_PLS_ENTER_MESSAGE'];
+			if (strlen($_POST['text']) > MAXPNLENTH) $pnerror[] = $mod['config_vars']['FORUMS_PN_TEXT_TO_LONG'];
 
 			$AVE_Template->assign('tofromname', $_POST['tofromname']);
 			$AVE_Template->assign('title', $_POST['title']);
@@ -708,8 +709,8 @@ else
 			$num = $sql->NumRows();
 			$row = $sql->FetchRow();
 
-			if ($row->pn_receipt != 1)      $pnerror[] = $mod['config_vars']['PN_NotWant'];
-			if (empty($pnerror) && $num<1) $pnerror[] = $mod['config_vars']['PN_UserError'];
+			if ($row->pn_receipt != 1)      $pnerror[] = $mod['config_vars']['FORUMS_PN_NOT_WANT'];
+			if (empty($pnerror) && $num<1) $pnerror[] = $mod['config_vars']['FORUMS_PN_USER_ERROR'];
 
 			// CHECK OB ABSENDER IN IGNORIERLISTE DES EMPFДNGERS STEHT
 			$num_ignore = 0;
@@ -728,7 +729,7 @@ else
 
 				$num_ignore = $sql_ignore->NumRows();
 			}
-			if (empty($pnerror) && $num_ignore>0) $pnerror[] = $mod['config_vars']['PN_IgnoredByUser'];
+			if (empty($pnerror) && $num_ignore>0) $pnerror[] = $mod['config_vars']['FORUMS_PN_IGNORED_BY_USER'];
 
 			// CHECK OB NACHRICHTENBOX VOLL IST
 			if (empty($pnerror))
@@ -738,13 +739,13 @@ else
 				$sql3 = $AVE_DB->Query("SELECT * FROM ".PREFIX."_modul_forum_pn WHERE to_uid='".$row->uid."' AND typ='inbox'");
 				$numuserpn = $sql3->NumRows();
 
-				if ($numuserpn >= $usermaxpn) $pnerror[] = $mod['config_vars']['PN_BoxFull'];
+				if ($numuserpn >= $usermaxpn) $pnerror[] = $mod['config_vars']['FORUMS_PN_BOX_FULL'];
 			}
 
 			// CHECK OB USER PN'S EMPFANGEN MЦCHTE
 			if (empty($pnerror))
 			{
-				if ($row->pn_receipt=="no") $pnerror[] = $mod['config_vars']['PN_NotWant'];
+				if ($row->pn_receipt=="no") $pnerror[] = $mod['config_vars']['FORUMS_PN_NOT_WANT'];
 			}
 
 			$text = substr($_POST['text'],0, MAXPNLENTH);
@@ -759,7 +760,7 @@ else
 				}
 
 				// MAILBENACHRICHTIGUNG
-				$body = $mod['config_vars']['PN_Body'];
+				$body = $mod['config_vars']['FORUMS_PN_BODY'];
 				$body = str_replace("__USER__", $row->uname, $body);
 				$body = str_replace("__AUTOR__", $_SESSION['forum_user_name'], $body);
 				$body = str_replace("__LINK__", HOST . str_replace("/index.php","",$_SERVER['PHP_SELF']) . "/index.php?module=forums&show=pn&goto=inbox", $body);
@@ -768,14 +769,14 @@ else
 				send_mail(
 					$row->email,
 					stripslashes($body),
-					$mod['config_vars']['PN_Subject'],
+					$mod['config_vars']['FORUMS_PN_SUBJECT'],
 					FORUMEMAIL,
 					FORUMABSENDER,
 					"text"
 				);
 
 				// Vielen Dank, Ihre Nachricht wurde erfolgreich versendet.
-				$this->msg($mod['config_vars']['PN_ThankYou'], 'index.php?module=forums&show=pn&goto=outbox');
+				$this->msg($mod['config_vars']['FORUMS_PN_THANK_YOU'], 'index.php?module=forums&show=pn&goto=outbox');
 			}
 		}
 
@@ -790,7 +791,7 @@ else
 		$AVE_Template->assign('colordropdown',  $this->colordropdown());
 		$AVE_Template->assign('max_post_length', MAXPNLENTH);
 		$AVE_Template->assign('listemos', $this->listsmilies());
-		$AVE_Template->assign('newpn_t', str_replace("__ZEICHEN__", MAXPNLENTH , $mod['config_vars']['PN_TextNewMsg']));
+		$AVE_Template->assign('newpn_t', str_replace("__ZEICHEN__", MAXPNLENTH , $mod['config_vars']['FORUMS_PN_TEXT_NEW_MSG']));
 		$AVE_Template->assign('newpn_error', @$pnerror);
 
 		if (isset($_REQUEST['to']) && $_REQUEST['to']!="")
@@ -811,7 +812,7 @@ else
 			$qtext = str_replace("\r\n", "\r\n", $qtext);
 			$qtext = htmlspecialchars($qtext);
 
-			$qtext = "\r\n\r\n" . "===================\n" . $mod['config_vars']['PN_originalmessage'] . "\n===================\r\n" . $mod['config_vars']['PN_sender'].": ".base64_decode($_REQUEST['aut'])."\n". $mod['config_vars']['PN_TheSubject'] .": ".base64_decode($_REQUEST['subject'])."\n". $mod['config_vars']['PN_Date'] .": " . date("d.m.Y, H:i:s", base64_decode($_REQUEST['date'])) . "\r\n\n". $qtext . "";
+			$qtext = "\r\n\r\n" . "===================\n" . $mod['config_vars']['FORUMS_PN_ORIGINAL_MESSAGE'] . "\n===================\r\n" . $mod['config_vars']['FORUMS_PN_SENDER'].": ".base64_decode($_REQUEST['aut'])."\n". $mod['config_vars']['FORUMS_PN_THE_SUBJECT'] .": ".base64_decode($_REQUEST['subject'])."\n". $mod['config_vars']['FORUMS_PN_DATE'] .": " . date("d.m.Y, H:i:s", base64_decode($_REQUEST['date'])) . "\r\n\n". $qtext . "";
 
 			$AVE_Template->assign('tofromname', base64_decode($_REQUEST['aut']));
 			$AVE_Template->assign('title', $fwre.base64_decode($_REQUEST['subject']));
@@ -828,7 +829,7 @@ else
 	{
 		$tpl_out = $AVE_Template->fetch($mod['tpl_dir'] . 'pn.tpl');
 		define("MODULE_CONTENT", $tpl_out);
-		define("MODULE_SITE", $mod['config_vars']['PN_Name']);
+		define("MODULE_SITE", $mod['config_vars']['FORUMS_PN_NAME']);
 	}
 }
 

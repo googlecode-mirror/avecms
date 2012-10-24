@@ -91,56 +91,6 @@
 .mod_shop_orders_failed							{background:#f00; border:1px solid #fff; height:1em; width:1em;}
 
 /* -----------------------------
- =модуль Форумы
------------------------------ */
-#forums_content									{margin-top:2em;}
-#forums_content table							{border-collapse:separate; border-spacing:1px;}
-#forums_pop										{margin:5px; text-align:left;}
-.forum_attachment_box							{border:1px inset #dedede; margin:10px; padding:3px;}
-.forum_small									{font-size:11px;}
-.toggletr										{background:#dedede;}
-.lastthreads_first								{background:#f1f1f1; padding:5px;}
-.lastthreads_second								{background:#f0f0f0;}
-a.forum_links:link,
-a.forum_links:visited							{color:#555; font-weight:bold; text-decoration:underline; padding:5px;}
-a.forum_links:hover								{color:#555; font-weight:bold; text-decoration:none; padding:5px;}
-a.forum_head:link,
-a.forum_head:visited							{color:#000; text-decoration:underline;}
-a.forum_head:hover								{text-decoration:none;}
-a.forum_links_small:link						{color:#000; font-weight:normal; text-decoration:underline;}
-a.forum_links_small:visited						{color:#000; font-weight:normal; text-decoration:underline;}
-a.forum_links_small:hover						{color:#777; font-weight:normal; text-decoration:none;}
-a.forum_links_navi:link,
-a.forum_links_navi:visited						{color:#777; font-weight:bold; text-decoration:none;}
-a.forum_links_navi:hover						{color:#000; font-weight:bold; text-decoration:none;}
-a.forum_links_cat:link,
-a.forum_links_cat:visited						{color:#3c3a3a; font-size:12px; font-weight:bold;}
-a.forum_links_cat:hover							{color:#3c3a3a; font-size:12px; font-weight:bold;}
-.forum_topicheader								{color:#fff;}
-a.forum_topicheader:link,
-a.forum_topicheader:visited						{color:#fff; font-weight:bold; text-decoration:underline;}
-a.forum_topicheader:hover						{color:#fff; font-weight:bold; text-decoration:none;}
-.f_info_comment									{font-size:11px;}
-.forum_post_first								{background:#f1f1f1; padding:5px;}
-.forum_post_second								{background:#fafafa; padding:5px;}
-.forum_topic_topheader							{background:#fafafa; padding:12px 5px 0 5px;}
-.forum_post_footer								{background:#e9e9e9;}
-.forum_header									{background:#dedede; padding:5px;}
-.forum_info_icon								{background:#f1f1f1; padding:2px; text-align:center; width:30px;}
-.forum_info_main								{background:#f1f1f1; padding:8px;}
-.forum_info_main:hover							{background:#fafafa; padding:8px;}
-.forum_info_meta								{background:#fafafa; padding:8px;}
-.forum_toggle									{background:#dedede; width:20px;}
-.forum_frame									{background:#fff; margin-bottom:1px;}
-.forum_navi										{padding:3px;}
-.forum_header_bolder							{background:#cdcdcd; color:#3c3a3a; padding:5px;}
-.forum_tableborder								{background:#cdcdcd; border:0 solid #878373; padding:0; margin:0;}
-.forum_stats_box								{background:#f3f3f3; color:#777; font-weight:bold;}
-.user_sig										{padding-top:4px;}
-.user_sig_bar									{color:#ccc; padding-top:4px;}
-.forum_pn_unread								{color:#f00; font-weight:bold; text-decoration:blink;}
-
-/* -----------------------------
  =модуль Профиль
 ----------------------------- */
 .mod_userpage_border_myprofile 					{text-align:center;}

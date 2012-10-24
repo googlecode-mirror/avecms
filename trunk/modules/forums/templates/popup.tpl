@@ -16,7 +16,7 @@
   </tr>
 </table>
 <p align="center">
-<input type="button" class="button" value="{#Close#}" onclick="window.close()" />
+<input type="button" class="button" value="{#FORUMS_BUTTON_CLOSE#}" onclick="window.close()" />
 </p>
 </body>
 </html>

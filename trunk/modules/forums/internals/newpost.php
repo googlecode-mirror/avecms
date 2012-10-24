@@ -28,7 +28,7 @@ $closed = $r_closed->FetchRow();
 
 if(!is_object($closed))
 {
-	$this->msg($mod['config_vars']['ErrorTopicWrong']);
+	$this->msg($mod['config_vars']['FORUMS_ERROR_TOPIC_WRONG']);
 }
 
 $TopicTitle = stripslashes($closed->title);
@@ -48,7 +48,7 @@ while ($user = $result->FetchRow())
 
 if ( ($closed->fstatus == FORUM_STATUS_CLOSED)  && (UGROUP != 1) && !$is_moderator)
 {
-	$this->msg($mod['config_vars']['ErrornoPerm']);
+	$this->msg($mod['config_vars']['FORUMS_ERROR_NO_PERM']);
 }
 
 // =========================================================
@@ -56,7 +56,7 @@ if ( ($closed->fstatus == FORUM_STATUS_CLOSED)  && (UGROUP != 1) && !$is_moderat
 // =========================================================
 if ( ($closed->tstatus == FORUM_STATUS_CLOSED) && (UGROUP != 1) && !$is_moderator)
 {
-	$this->msg($mod['config_vars']['ErrornoPerm']);
+	$this->msg($mod['config_vars']['FORUMS_ERROR_NO_PERM']);
 }
 
 // =========================================================
@@ -64,7 +64,7 @@ if ( ($closed->tstatus == FORUM_STATUS_CLOSED) && (UGROUP != 1) && !$is_moderato
 // =========================================================
 if (!$this->topicExists($_GET['toid']))
 {
-	$this->msg($mod['config_vars']['ErrorTopicWrong']);
+	$this->msg($mod['config_vars']['FORUMS_ERROR_TOPIC_WRONG']);
 }
 
 // =========================================================
@@ -85,7 +85,7 @@ while ($category = $cat_query->FetchAssocArray())
 
 	if (@$permissions[FORUM_PERMISSION_CAN_SEE] == 0)
 	{
-		$this->msg($mod['config_vars']['ErrornoPerm']);
+		$this->msg($mod['config_vars']['FORUMS_ERROR_NO_PERM']);
 	}
 }
 
@@ -96,13 +96,15 @@ if ($closed->uid == UID) {
 	// kann auf eigene themen antworten
 	if (@$permissions[FORUM_PERMISSION_CAN_REPLY_OWN_TOPIC] == 0)
 	{
-		$this->msg($mod['config_vars']['ErrornoPerm']);
+		$this->msg($mod['config_vars']['FORUMS_ERROR_NO_PERM']);
 	}
-} else {
+}
+else 
+{
 	// kann auf andere themen antworten
 	if (@$permissions[FORUM_PERMISSION_CAN_REPLY_OTHER_TOPIC] == 0)
 	{
-		$this->msg($mod['config_vars']['ErrornoPerm']);
+		$this->msg($mod['config_vars']['FORUMS_ERROR_NO_PERM']);
 	}
 }
 
@@ -137,20 +139,20 @@ if (isset($_GET['action']) && $_GET['action'] == "edit")
 		// wenn nicht der beitragverfasser und der benutzer ist kein admin
 		if ($information->uid == UID && $permissions[FORUM_PERMISSION_CAN_EDIT_OWN_POST] == 0)
 		{
-			$this->msg($mod['config_vars']['ErrornoPerm']);
+			$this->msg($mod['config_vars']['FORUMS_ERROR_NO_PERM']);
 		}
 
 		// wenn nicht der beitragverfasser und der benutzer ist kein admin
 		if ($information->uid != UID && UGROUP != 1 && !$is_moderator)
 		{
-			$this->msg($mod['config_vars']['ErrornoPerm']);
+			$this->msg($mod['config_vars']['FORUMS_ERROR_NO_PERM']);
 		}
 
 		// wenn die zeit fuer die editierung abgelaufen ist und
 		// der benutzer ist kein admin
 		if ($time_diff >= MAX_EDIT_PERIOD && UGROUP != 1 && !$is_moderator)
 		{
-			$this->msg($mod['config_vars']['ErrorCannotEdit']);
+			$this->msg($mod['config_vars']['FORUMS_ERROR_CANNOT_EDIT']);
 		}
 	}
 }
@@ -184,7 +186,7 @@ if (isset($_GET['pid']) && !empty($_GET['pid'])) {
 
 	if (isset($_GET["action"]) && $_GET["action"] == "quote")
 	{
-		$message->message = "[QUOTE][B]" . $mod['config_vars']['QuotePrefix'] . " " . $message->uname . "[/B]\n ". htmlspecialchars($message->message) . "[/QUOTE]\n\n";
+		$message->message = "[QUOTE][B]" . $mod['config_vars']['FORUMS_QUOTE_PREFIX'] . " " . $message->uname . "[/B]\n ". htmlspecialchars($message->message) . "[/QUOTE]\n\n";
 	}
 	elseif (isset($_GET["action"]) && $_GET["action"] == "edit")
 	{
@@ -205,7 +207,7 @@ if (isset($_GET['pid']) && !empty($_GET['pid'])) {
 				<input type="hidden" name="attach_hidden[]" id="att_'.$row_a->id.'" value="'.$row_a->id.'" />
 				&bull; '.$row_a->orig_name.'
 				<a href="javascript:;"
-				onclick="if(confirm(\''.$mod['config_vars']['ConfirmDelAttach'].'\'))
+				onclick="if(confirm(\''.$mod['config_vars']['FORUMS_CONFIRM_DEL_ATTACH'].'\'))
 				{
 					document.getElementById(\'att_' . $row_a->id . '\').value=\'\';
 					document.getElementById(\'div_' . $row_a->id . '\').style.display=\'none\';
@@ -218,7 +220,6 @@ if (isset($_GET['pid']) && !empty($_GET['pid'])) {
 			$AVE_Template->assign("h_attachments_only_show", $h_attachments_only_show);
 			$AVE_Template->assign("attachments_hidden", $message->attachment);// $message = $message->message;
 		}
-
 	}
 
 	$AVE_Template->assign("message", $message);
@@ -236,10 +237,10 @@ if(@in_array(UID, $notifactions))
 }
 
 $navigation = $this->getNavigation($_GET["toid"], "topic")
-	. $mod['config_vars']['ForumSep']
+	. $mod['config_vars']['FORUMS_FORUM_SEP']
 	. "<a class='forum_links_navi' href='index.php?module=forums&amp;show=showtopic&amp;toid=" . $_GET['toid'] . "&amp;fid=" . $TopicFid. "'>" . $TopicTitle . "</a>"
-	. $mod['config_vars']['ForumSep']
-	. $mod['config_vars']['ReplyToPost'];
+	. $mod['config_vars']['FORUMS_FORUM_SEP']
+	. $mod['config_vars']['FORUMS_REPLY_TO_POST'];
 
 if(isset($_REQUEST['preview']) && $_REQUEST['preview']==1)
 {
@@ -280,5 +281,5 @@ if (isset($_GET['action']) && $_GET['action'] == "edit")
 
 $tpl_out = $AVE_Template->fetch($mod['tpl_dir'] . 'addtopic.tpl');
 define("MODULE_CONTENT", $tpl_out);
-define("MODULE_SITE", $mod['config_vars']['ReplyToPost']);
+define("MODULE_SITE", $mod['config_vars']['FORUMS_REPLY_TO_POST']);
 ?>

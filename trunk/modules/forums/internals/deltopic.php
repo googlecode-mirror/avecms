@@ -76,7 +76,7 @@ if($NOOUT != 1)
 	//=========================================================
 	if ($_REQUEST["toid"] == "" || $_GET["fid"] == "")
 	{
-		$this->msg($mod['config_vars']['ErrornoPerm']);
+		$this->msg($mod['config_vars']['FORUMS_ERROR_NO_PERM']);
 	}
 
     $Board_ID = $this->Cpengine_Board_GetTopic_Board($_GET['toid']);

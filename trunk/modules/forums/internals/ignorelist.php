@@ -13,7 +13,7 @@ global $AVE_DB, $AVE_Template, $mod;
 
 if(UGROUP==2)
 {
-	$this->msg($mod['config_vars']['ErrornoPerm']);
+	$this->msg($mod['config_vars']['FORUMS_ERROR_NO_PERM']);
 }
 
 if(isset($_GET['insert']) && (empty($_GET['insert']) && empty($_GET['uname'])))
@@ -79,7 +79,7 @@ if(isset($_GET['action']) && $_GET['action'] != '')
 			$AVE_Template->assign('ignored', $ignored);
 			$tpl_out = $AVE_Template->fetch($mod['tpl_dir'] . 'ignorelist.tpl');
 			define("MODULE_CONTENT", $tpl_out);
-			define("MODULE_SITE", $mod['config_vars']['IgnoreList']);
+			define("MODULE_SITE", $mod['config_vars']['FORUMS_IGNORE_LIST']);
 		break;
 	}
 }

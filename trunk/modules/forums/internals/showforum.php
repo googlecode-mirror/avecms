@@ -43,10 +43,10 @@ $forum_obj = $forum_result->FetchRow();
 
 // navigation erzeugen
 $navigation = $this->getNavigation($fid, "forum", null);
-$tmp_navi = $navigation . $mod['config_vars']['ForumSep'] . $forum_obj->title;
+$tmp_navi = $navigation . $mod['config_vars']['FORUMS_FORUM_SEP'] . $forum_obj->title;
 
 $AVE_Template->assign("navigation", $tmp_navi);
-$AVE_Template->assign("treeview", @explode($mod['config_vars']['ForumSep'], $tmp_navi));
+$AVE_Template->assign("treeview", @explode($mod['config_vars']['FORUMS_FORUM_SEP'], $tmp_navi));
 
 $pass = false;
 if ($forum_obj->password != "")
@@ -144,27 +144,19 @@ if ($pass)
 
 	switch ($unit)
 	{
-		// Stunden
+		// Час
 		case 'h':
-		// sekunden * 60 * 60 = stunde
-//		$divisor = 60 * 60;
-//		$where_time_stat = " AND ((UNIX_TIMESTAMP(NOW()) / $divisor) - (UNIX_TIMESTAMP(p.datum) / $divisor)) <= $period";
-		$where_time_stat = " AND NOW() - INTERVAL $period HOUR <= p.datum";
+		$where_time_stat = " AND NOW() - INTERVAL " . $period . " HOUR <= p.datum";
 		break;
 
-		// Tage
+		// Дни
 		case 'd':
-		// sekunden * 60 * 60 * 24 = tag
-//		$divisor = 60 * 60 * 24;
-//		$where_time_stat = " AND ((UNIX_TIMESTAMP(NOW()) / $divisor) - (UNIX_TIMESTAMP(p.datum) / $divisor)) <= $period";
-		$where_time_stat = " AND NOW() - INTERVAL $period DAY <= p.datum";
+		$where_time_stat = " AND NOW() - INTERVAL " . $period . " DAY <= p.datum";
 		break;
 
-		// Monat
+		// Месяц
 		case 'm':
-//		$divisor = 60 * 60 * 24 * 30;
-//		$where_time_stat = " AND ((UNIX_TIMESTAMP(NOW()) / $divisor) - (UNIX_TIMESTAMP(p.datum) / $divisor)) <= $period";
-		$where_time_stat = " AND NOW() - INTERVAL $period MONTH <= p.datum";
+		$where_time_stat = " AND NOW() - INTERVAL " . $period . " MONTH <= p.datum";
 		break;
 
 		case 'all':
@@ -238,7 +230,7 @@ if ($pass)
 		$page = 1;
 	}
 
-	$seiten = ceil($num / $limit);
+	$num_pages = ceil($num / $limit);
 	$a = get_current_page() * $limit - $limit;
 
 	if(!is_mod($fid))
@@ -328,7 +320,7 @@ if ($pass)
 		$user_row = $user_result->FetchRow();
 
 
-		$topic["autorlink"] = "index.php?module=forums&amp;show=userprofile&amp;user_id=$topic[uid]";
+		$topic["autorlink"] = "index.php?module=forums&amp;show=userprofile&amp;user_id=" . $topic[uid];
 		$topic["autor"] = $topic["uname"];
 
 		// letzten beitrag ermitteln
@@ -359,7 +351,7 @@ if ($pass)
 		$last_post_row = $last_post_result->FetchRow();
 
 		$last_post_row->reg_time = $last_post_row->reg_time;
-		$last_post_row->link = ($last_post_row->reg_time < 2) ? $mod['config_vars']['Guest'] : "<a class='forum_links_small' href='index.php?module=forums&amp;show=userprofile&amp;user_id=$last_post_row->uid'>$last_post_row->uname</a>";
+		$last_post_row->link = ($last_post_row->reg_time < 2) ? $mod['config_vars']['FORUMS_GUEST'] : "<a class='forum_links_small' href='index.php?module=forums&amp;show=userprofile&amp;user_id=" . $last_post_row->uid . "'>" . $last_post_row->uname . "</a>";
 		$topic["lastposter"] = $last_post_row;
 
 		// =================================================
@@ -455,7 +447,6 @@ if ($pass)
 						$r_pcount = $AVE_DB->Query($q_pcount);
 						$pcount = $r_pcount->NumRows();
 
-						// ====================
 						// letzter beitrag
 						$q_last_post = "
 							SELECT
@@ -527,7 +518,7 @@ if ($pass)
 						}
 					}
 
-					$subforum["link"] = "index.php?module=forums&amp;show=showforum&amp;fid=$subforum[id]";
+					$subforum["link"] = "index.php?module=forums&amp;show=showforum&amp;fid=" . $subforum[id];
 					$subforum['subforums'] = $subfors;
 					array_push($subforum_array[$subcategory["title"]], $subforum);
 				}
@@ -535,20 +526,20 @@ if ($pass)
 		}
 	}
 
-	$sname = strip_tags($navigation) . $mod['config_vars']['ForumSep'] . $forum_obj->title;
+	$sname = strip_tags($navigation) . $mod['config_vars']['FORUMS_FORUM_SEP'] . $forum_obj->title;
 
 	$AVE_Template->register_function("get_post_icon", "getPostIcon");
-	$AVE_Template->assign("sort_by_theme_link", "index.php?module=forums&amp;show=showforum&amp;fid=" . $fid . "&amp;sortby=title&amp;sort=$order");
-	$AVE_Template->assign("sort_by_reply_link", "index.php?module=forums&amp;show=showforum&amp;fid=" . $fid . "&amp;sortby=replies&amp;sort=$order");
-	$AVE_Template->assign("sort_by_author_link", "index.php?module=forums&amp;show=showforum&amp;fid=" . $fid . "&amp;sortby=user_name&amp;sort=$order");
-	$AVE_Template->assign("sort_by_hits_link", "index.php?module=forums&amp;show=showforum&amp;fid=" . $fid . "&amp;sortby=views&amp;sort=$order");
-	$AVE_Template->assign("sort_by_rating_link", "index.php?module=forums&amp;show=showforum&amp;fid=" . $fid . "&amp;sortby=rating&amp;sort=$order");
-	$AVE_Template->assign("sort_by_lastpost_link", "index.php?module=forums&amp;show=showforum&amp;fid=" . $fid . "&amp;sortby=last_post_int&amp;sort=$order");
+	$AVE_Template->assign("sort_by_theme_link", "index.php?module=forums&amp;show=showforum&amp;fid=" . $fid . "&amp;sortby=title&amp;sort=" . $order);
+	$AVE_Template->assign("sort_by_reply_link", "index.php?module=forums&amp;show=showforum&amp;fid=" . $fid . "&amp;sortby=replies&amp;sort=" . $order);
+	$AVE_Template->assign("sort_by_author_link", "index.php?module=forums&amp;show=showforum&amp;fid=" . $fid . "&amp;sortby=user_name&amp;sort=" . $order);
+	$AVE_Template->assign("sort_by_hits_link", "index.php?module=forums&amp;show=showforum&amp;fid=" . $fid . "&amp;sortby=views&amp;sort=" . $order);
+	$AVE_Template->assign("sort_by_rating_link", "index.php?module=forums&amp;show=showforum&amp;fid=" . $fid . "&amp;sortby=rating&amp;sort=" . $order);
+	$AVE_Template->assign("sort_by_lastpost_link", "index.php?module=forums&amp;show=showforum&amp;fid=" . $fid . "&amp;sortby=last_post_int&amp;sort=" . $order);
 
 	if ($num > $limit)
 	{
-		$page_nav = " <a class=\"page_navigation\" href=\"index.php?module=forums&amp;show=showforum&amp;fid={$fid}&amp;unit={$unit}&amp;period={$period}&amp;sortby=$order_by&amp;sort=$order_orig&amp;pp={$limit}&amp;page={s}\">{t}</a> ";
-		$page_nav = get_pagination($seiten, 'page', $page_nav);
+		$page_nav = " <a class=\"page_navigation\" href=\"index.php?module=forums&amp;show=showforum&amp;fid=" . $fid . "&amp;unit=" . $unit . "&amp;period=" . $period. "&amp;sortby=" . $order_by . "&amp;sort=" . $order_orig . "&amp;pp=" . $limit . "&amp;page={s}\">{t}</a> ";
+		$page_nav = get_pagination($num_pages, 'page', $page_nav);
 		$AVE_Template->assign('pages', $page_nav);
 	}
 
@@ -560,7 +551,7 @@ if ($pass)
 	$this->getCategories(0, $categories, "");
 
 	$AVE_Template->assign("subnavi", @$subnavi);
-	$AVE_Template->assign("rsslink", "index.php?rss=forums&amp;fid=$fid");
+	$AVE_Template->assign("rsslink", "index.php?rss=forums&amp;fid=" . $fid);
 	$AVE_Template->assign("categories_dropdown", $categories);
 	$AVE_Template->assign("forum", $forum_obj);
 	$AVE_Template->assign("f_id", $forum_obj->id);

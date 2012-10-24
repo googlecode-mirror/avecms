@@ -16,7 +16,6 @@ global $AVE_DB, $AVE_Template, $mod;
 	$sort = (isset($_POST['sort']) && $_POST['sort'] != "") ? addslashes($_POST['sort']) : "DESC";
 
 	$divisor = 60*60;
-//	$where_time_stat = "((UNIX_TIMESTAMP(NOW()) / $divisor) - (UNIX_TIMESTAMP(p.datum) / $divisor)) <= 24";
 
 	$q_last_active = "SELECT DISTINCT
 			t.id,
@@ -43,38 +42,6 @@ global $AVE_DB, $AVE_Template, $mod;
 		$forum_stat
 		ORDER BY t.last_post $sort
 	";
-//	$q_last_active = "SELECT DISTINCT
-//			t.id,
-//			t.forum_id,
-//			t.title,
-//			t.status,
-//			t.type,
-//			t.datum,
-//			t.views,
-//			t.posticon,
-//			t.uid,
-//			t.replies,
-//			u.uname,
-//			r.rating,
-//			f.group_id,
-//			f.title AS f_title
-//		FROM
-//			" . PREFIX . "_modul_forum_topic AS t,
-//			" . PREFIX . "_modul_forum_userprofile AS u,
-//			" . PREFIX . "_modul_forum_rating AS r,
-//			" . PREFIX . "_modul_forum_post AS p,
-//			" . PREFIX . "_modul_forum_forum AS f
-//		WHERE
-//			$where_time_stat AND
-//			u.uid = t.uid AND
-//			r.topic_id = t.id AND
-//			p.topic_id = t.id AND
-//			f.id = t.forum_id
-//			$forum_stat
-//		ORDER BY
-//			t.last_post
-//			$sort
-//	";
 
 	$r_last_active = $AVE_DB->Query($q_last_active);
 	$matches = array();
@@ -85,7 +52,6 @@ global $AVE_DB, $AVE_Template, $mod;
 
 	while ($topic = $r_last_active->FetchAssocArray())
 	{
-
 		// GRUPPEN ARRAY
 		$group_ids = explode(",", $topic['group_id']);
 
@@ -157,16 +123,16 @@ global $AVE_DB, $AVE_Template, $mod;
 
 	$AVE_Template->assign("matches", $matches);
 	$AVE_Template->assign("navigation", "<a class='forum_links_navi' href='index.php?module=forums'>"
-		. $mod['config_vars']['PageNameForums'] . "</a>"
-		. $mod['config_vars']['ForumSep']
+		. $mod['config_vars']['FORUMS_PAGE_NAME_FORUMS'] . "</a>"
+		. $mod['config_vars']['FORUMS_FORUM_SEP']
 		. "<a class='forum_links_navi' href='index.php?module=forums&amp;show=search_mask'>"
-		. $mod['config_vars']['ForumsSearch']
+		. $mod['config_vars']['FORUMS_FORUMS_SEARCH']
 		. "</a>"
-		. $mod['config_vars']['ForumSep']
-		. $mod['config_vars']['ShowLast24']
+		. $mod['config_vars']['FORUMS_FORUM_SEP']
+		. $mod['config_vars']['FORUMS_SHOW_LAST_24']
 		 );
 
 	$tpl_out = $AVE_Template->fetch($mod['tpl_dir'] . 'last24.tpl');
 	define("MODULE_CONTENT", $tpl_out);
-	define("MODULE_SITE", $mod['config_vars']['ShowLast24']);
+	define("MODULE_SITE", $mod['config_vars']['FORUMS_SHOW_LAST_24']);
 ?>
