@@ -1,5 +1,5 @@
 {$header}
-<title>{#TitlePostings#}</title>
+<title>{#FORUMS_TITLE_POSTINGS#}</title>
 <meta http-equiv="pragma" content="no-cache" />
 <meta name="robots" content="index,follow" />
 <link href="templates/{$smarty.request.theme_folder|escape}/css/print.css" rel="stylesheet" type="text/css" media="print" />
@@ -18,8 +18,8 @@ window.moveTo(1,1);
 			<td class="forum_info_meta">
 				<table width="100%" border="0" cellpadding="4" cellspacing="1">
 					<tr>
-						<td class="forum_header"><strong>{#Author#}</strong></td>
-						<td class="forum_header"><strong>{#Postings#}</strong></td>
+						<td class="forum_header"><strong>{#FORUMS_AUTHOR#}</strong></td>
+						<td class="forum_header"><strong>{#FORUMS_POSTINGS#}</strong></td>
 					</tr>
 					{foreach from=$poster item=post}
 						<tr>
@@ -32,6 +32,6 @@ window.moveTo(1,1);
 		</tr>
 	</table>
 
-	<p align="center"><input type="button" class="button" value="{#Close#}" onClick="window.close()" /></p>
+	<p align="center"><input type="button" class="button" value="{#FORUMS_BUTTON_CLOSE#}" onClick="window.close()" /></p>
 </body>
 </html>

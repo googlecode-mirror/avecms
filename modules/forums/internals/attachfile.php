@@ -96,11 +96,11 @@ $AVE_Template->register_function("findFileType", "findFileType");
 		}
 
 		$AVE_Template->assign("allowed_files", $allowed_files);
-		$AVE_Template->assign("pname", $mod['config_vars']['AttachF']);
+		$AVE_Template->assign("pname", $mod['config_vars']['FORUMS_ATTACH_FILES']);
 		$AVE_Template->assign('content', $AVE_Template->fetch($mod['tpl_dir'] . "attachment.tpl"));
 		$tpl_out = $AVE_Template->fetch($mod['tpl_dir'] . "popup.tpl");
 		define("MODULE_CONTENT", $tpl_out);
-		define("MODULE_SITE", $mod['config_vars']['AttachF']);
+		define("MODULE_SITE", $mod['config_vars']['FORUMS_ATTACH_FILES']);
 
 	}
 	else
@@ -242,7 +242,8 @@ $AVE_Template->register_function("findFileType", "findFileType");
 						if ( ($file_sizes[$i] / 1024) <= $allowed_size[$file_types[$i]])
 						{
 							$file_names[$i] = $this->createFilename(BASE_DIR . "/modules/forums/attachments/");
-							if (move_uploaded_file($tmp_file_names[$i], $upload_dir . "/" . $file_names[$i])) {
+							if (move_uploaded_file($tmp_file_names[$i], $upload_dir . "/" . $file_names[$i])) 
+							{
 								@chmod($upload_dir . "/" . $file_names[$i],0777);
 
 								$q_attach = "
@@ -262,14 +263,17 @@ $AVE_Template->register_function("findFileType", "findFileType");
 								$r_attach = $AVE_DB->Query($q_attach);
 								$file['id'] = $AVE_DB->InsertId();
 							} // if move_uploaded_file
-						} else {
-							$file['forbidden'] = true;
-							$file['reason'] = $mod['config_vars']['AttachToBig'];
 						}
-					} else { // if allowed file type
-
+						else
+						{
+							$file['forbidden'] = true;
+							$file['reason'] = $mod['config_vars']['FORUMS_ATTACH_TO_BIG'];
+						}
+					}
+					else
+					{ // if allowed file type
 						$file['forbidden'] = true;
-						$file['reason'] = $mod['config_vars']['AttachWrong'];
+						$file['reason'] = $mod['config_vars']['FORUMS_ATTACH_WRONG'];
 					}
 
 					$file['orig_name'] = $orig_name;
@@ -294,13 +298,11 @@ $AVE_Template->register_function("findFileType", "findFileType");
 			$AVE_Template->assign("files", $files);
 			$AVE_Template->assign("file", $file);
 			$AVE_Template->assign("ecount", @count(@$file['forbidden']));
-			$AVE_Template->assign("pname", $mod['config_vars']['AttachF']);
+			$AVE_Template->assign("pname", $mod['config_vars']['FORUMS_ATTACH_FILES']);
 			$AVE_Template->assign('content', $AVE_Template->fetch($mod['tpl_dir'] . "attachment.tpl"));
 			$tpl_out = $AVE_Template->fetch($mod['tpl_dir'] . "popup.tpl");
 			define("MODULE_CONTENT", $tpl_out);
-			define("MODULE_SITE", $mod['config_vars']['AttachF']);
-
+			define("MODULE_SITE", $mod['config_vars']['FORUMS_ATTACH_FILES']);
 		} // if action == upload
-
 	}
 ?>

@@ -47,7 +47,6 @@ class Forum
 
 	);
 
-//	var $_default_permission = 'own_avatar|canpn|accessforums|cansearch|last24|userprofile|changenick';
 	var $_default_permission = 'own_avatar|canpn|accessforums|cansearch|last24|userprofile';
 
 	function getActPage()
@@ -232,9 +231,10 @@ class Forum
 		include_once(BASE_DIR . "/modules/forums/internals/pn.php");
 	}
 
-	//=======================================================
-	// Suche
-	//=======================================================
+	/**
+	* Поиск
+	*
+	*/
 	function doSearch()
 	{
 		define("SEARCH", 1);
@@ -248,12 +248,12 @@ class Forum
 		$forums_dropdown = array();
 		$this->getForums(0, $forums_dropdown, "");
 
-		$AVE_Template->assign("navigation", "<a class='forum_links_navi' href='index.php?module=forums'>" . $mod['config_vars']['PageNameForums'] . "</a>" . $mod['config_vars']['ForumSep'] . $mod['config_vars']['ForumsSearch']);
+		$AVE_Template->assign("navigation", "<a class='forum_links_navi' href='index.php?module=forums'>" . $mod['config_vars']['FORUMS_PAGE_NAME_FORUMS'] . "</a>" . $mod['config_vars']['FORUMS_FORUM_SEP'] . $mod['config_vars']['FORUMS_FORUMS_SEARCH']);
 		$AVE_Template->assign("forums_dropdown", $forums_dropdown);
 
 		$tpl_out = $AVE_Template->fetch($mod['tpl_dir'] . 'search_mask.tpl');
 		define("MODULE_CONTENT", $tpl_out);
-		define("MODULE_SITE", $mod['config_vars']['ForumsSearch']);
+		define("MODULE_SITE", $mod['config_vars']['FORUMS_FORUMS_SEARCH']);
 	}
 
 	function myProfile()
@@ -327,7 +327,7 @@ class Forum
 			$i++;
 		}
 		$NullChecked = ($icon==0 && empty($_POST['posticon']) ) ? "checked" : "";
-		$posticons .= "<input class=\"noborder\" style=\"background-color:transparent; border:0px\" type=\"radio\" name=\"posticon\" value=\"0\"  " . $NullChecked . " />&nbsp;" . $mod['config_vars']['NoPosticon'];
+		$posticons .= "<input class=\"noborder\" style=\"background-color:transparent; border:0px\" type=\"radio\" name=\"posticon\" value=\"0\"  " . $NullChecked . " />&nbsp;" . $mod['config_vars']['FORUMS_NO_POSTICON'];
 		return $posticons;
 	}
 
@@ -359,10 +359,8 @@ class Forum
 			{
 				$smiliesw .= "</tr><tr>"; $smilie_id=0;
 			}
-
 		}
 		$smiliesw .= '</tr></table>';
-
 
 		$smiliesw_ext = '';
 		$smilie_id = 0;
@@ -384,7 +382,6 @@ class Forum
 			{
 				$smiliesw_ext .= "</tr><tr>"; $smilie_id=0;
 			}
-
 		}
 		$smiliesw_ext .= '</tr></table>';
 
@@ -540,19 +537,19 @@ class Forum
 		{
 			if ((UGROUP == 1) && ($row->invisible == "INVISIBLE")) {
 				$img = "user_invisible.gif" ;
-				$alt = $mod['config_vars']['UserIsInvisible'];
+				$alt = $mod['config_vars']['FORUMS_USER_IS_INVISIBLE'];
 			}
 			if ($row->invisible != "INVISIBLE") {
 				$img = "user_online.gif" ;
-				$alt = $mod['config_vars']['UserIsOnline'];
+				$alt = $mod['config_vars']['FORUMS_USER_IS_ONLINE'];
 			}
 			if ((UGROUP != 1) && ($row->invisible == "INVISIBLE")) {
 				$img = "user_offline.gif" ;
-				$alt = $mod['config_vars']['UserIsOffline'];
+				$alt = $mod['config_vars']['FORUMS_USER_IS_OFFLINE'];
 			}
 		} else {
 			$img = "user_offline.gif" ;
-			$alt = $mod['config_vars']['UserIsOffline'];
+			$alt = $mod['config_vars']['FORUMS_USER_IS_OFFLINE'];
 		}
 
 		$status_img = "<img class=\"absmiddle\" src=\"templates/".THEME_FOLDER."/modules/forums/statusicons/$img\" alt=\"$alt\" /> $alt";
@@ -685,7 +682,7 @@ class Forum
 
 			$tpl_out = $AVE_Template->fetch($mod['tpl_dir'] . "showposter.tpl");
 			define("MODULE_CONTENT", $tpl_out);
-			define("MODULE_SITE",  $mod['config_vars']['PageNameUserProfile']);
+			define("MODULE_SITE",  $mod['config_vars']['FORUMS_PAGE_NAME_USER_PROFILE']);
 		}
 	}
 
@@ -701,10 +698,11 @@ class Forum
 		if ($result->NumRows() > 0) return 1;
 		return 0;
 	}
-
-	//=======================================================
-	// Benutzerprofil anzeigen
-	//=======================================================
+	
+	/**
+	* Показывать профиль пользователя
+	*
+	*/
 	function showUserProfile()
 	{
 		global $AVE_DB, $AVE_Template, $mod;
@@ -736,7 +734,7 @@ class Forum
 			// E-Mail darf gesendet werden
 			if($num == 1)
 			{
-				$Prefab = $mod['config_vars']['EmailBodyUser'];
+				$Prefab = $mod['config_vars']['FORUMS_EMAIL_BODY_USER'];
 				$Prefab = str_replace('%%USER%%', $row->uname, $Prefab);
 				$Prefab = str_replace('%%ABSENDER%%', $_SESSION['forum_user_name'], $Prefab);
 				$Prefab = str_replace('%%BETREFF%%', stripslashes($_POST['subject']), $Prefab);
@@ -754,17 +752,19 @@ class Forum
 				);
 
 				// weiter leiten
-				$this->msg($mod['config_vars']['MessageAfterEmail'], 'index.php?module=forums&show=userprofile&user_id=' . $_POST['ToUser']);
-			} else {
+				$this->msg($mod['config_vars']['FORUMS_MESSAGE_AFTER_EMAIL'], 'index.php?module=forums&show=userprofile&user_id=' . $_POST['ToUser']);
+			}
+			else 
+			{
 				// keine e-mail
-				$this->msg($mod['config_vars']['MessageNoEmail'], 'index.php?module=forums&show=userprofile&user_id=' . $_POST['ToUser']);
+				$this->msg($mod['config_vars']['FORUMS_MESSAGE_NO_EMAIL'], 'index.php?module=forums&show=userprofile&user_id=' . $_POST['ToUser']);
 			}
 		}
 
 		// Nicht eingeloggt, aber versucht es trotzdem :)
 		if(isset($_POST['SendMail']) && $_POST['SendMail'] == 1 && UGROUP == 2)
 		{
-			$this->msg($mod['config_vars']['ErrornoPerm'], 'index.php?module=forums&show=userprofile&user_id=' . $_POST['ToUser']);
+			$this->msg($mod['config_vars']['FORUMS_ERROR_NO_PERM'], 'index.php?module=forums&show=userprofile&user_id=' . $_POST['ToUser']);
 		}
 
 		$_GET['user_id'] = (isset($_GET['user_id']) and is_numeric($_GET['user_id'])) ? $_GET['user_id'] : 0;
@@ -808,7 +808,7 @@ class Forum
 
 		$tpl_out = $AVE_Template->fetch($mod['tpl_dir'] . $this->_UserProfileTpl);
 		define("MODULE_CONTENT", $tpl_out);
-		define("MODULE_SITE",  $mod['config_vars']['PageNameUserProfile']);
+		define("MODULE_SITE",  $mod['config_vars']['FORUMS_PAGE_NAME_USER_PROFILE']);
 	}
 
 	/**
@@ -919,7 +919,7 @@ class Forum
 		// rekursion abgeschlossen
 		if (@$navi->pid == 0)
 		{
-			return  '<a class="forum_links_navi"  href="index.php?module=forums&amp;show=showforums">'.$mod['config_vars']['PageNameForums'].'</a>' . $result;
+			return  '<a class="forum_links_navi"  href="index.php?module=forums&amp;show=showforums">'.$mod['config_vars']['FORUMS_PAGE_NAME_FORUMS'].'</a>' . $result;
 		}
 
 		// typ des darueberliegenden bereiches bestimmen
@@ -933,9 +933,9 @@ class Forum
 		$r_parent = $AVE_DB->Query($q_parent);
 		$parent = $r_parent->FetchRow();
 
-		if ($type == "topic") $result = $mod['config_vars']['ForumSep'] . "<a class='forum_links_navi' href='index.php?module=forums&show=showtopic&amp;tid=" . $parent->id . "'>" . $parent->title . "</a>" . $result;
-		else if ($type == "forum") $result = $mod['config_vars']['ForumSep'] . "<a class='forum_links_navi' href='index.php?module=forums&amp;show=showforum&amp;fid=" . $parent->id . "'>" . $parent->title . "</a>" . $result;
-		else if ($type == "category") $result = $mod['config_vars']['ForumSep'] . "<a class='forum_links_navi' href='index.php?module=forums&show=showforums&cid=" . $parent->id . "'>" . $parent->title . "</a>" . $result;
+		if ($type == "topic") $result = $mod['config_vars']['FORUMS_FORUM_SEP'] . "<a class='forum_links_navi' href='index.php?module=forums&show=showtopic&amp;tid=" . $parent->id . "'>" . $parent->title . "</a>" . $result;
+		else if ($type == "forum") $result = $mod['config_vars']['FORUMS_FORUM_SEP'] . "<a class='forum_links_navi' href='index.php?module=forums&amp;show=showforum&amp;fid=" . $parent->id . "'>" . $parent->title . "</a>" . $result;
+		else if ($type == "category") $result = $mod['config_vars']['FORUMS_FORUM_SEP'] . "<a class='forum_links_navi' href='index.php?module=forums&show=showforums&cid=" . $parent->id . "'>" . $parent->title . "</a>" . $result;
 		return $this->getNavigation($navi->pid, $type, $result);
 	}
 
@@ -1805,7 +1805,6 @@ class Forum
 						$sel_theme .=  "<div style='clear:both'></div>";
 						$i = 0;
 					}
-
 				}
 			}
 		}
@@ -1939,7 +1938,7 @@ class Forum
 			")->GetCell();
 		}
 
-		return ($names[$user_id] ? $names[$user_id] : $mod['config_vars']['Guest']);
+		return ($names[$user_id] ? $names[$user_id] : $mod['config_vars']['FORUMS_GUEST']);
 	}
 
 	//=======================================================
@@ -1959,7 +1958,7 @@ class Forum
 			");
 			while ($row = $sql->FetchRow())
 			{
-				$mods[] = "<a class=\"forum_links_small\" href=\"index.php?module=userpage&amp;action=show&amp;uid=" . $row->user_id . "\">" . $this->fetchusername($row->user_id) . "</a>";
+				$mods[] = "<a class=\"forum_links_small\" href=\"index.php?module=forums&amp;show=userprofile&amp;user_id=" . $row->user_id . "\">" . $this->fetchusername($row->user_id) . "</a>";
 			}
 			return @implode(", ", $mods);
 		}
@@ -2151,7 +2150,7 @@ class Forum
 		$AVE_Template->assign("content", $msg);
 		$tpl_out = $AVE_Template->fetch($mod['tpl_dir'] . 'redirect.tpl');
 		define("MODULE_CONTENT", $tpl_out);
-		define("MODULE_SITE", $mod['config_vars']['NewThread']);
+		define("MODULE_SITE", $mod['config_vars']['FORUMS_NEW_THREAD']);
 		echo $tpl_out;
 		exit;
 	}
@@ -2234,6 +2233,7 @@ class Forum
 				ug.id = u.uid AND
 				up.uid = u.uid
 		");
+		
 		$num_user = $sql_user->NumRows();
 		$loggeduser = array();
 		while ($row_user = $sql_user->FetchRow())
@@ -2321,12 +2321,12 @@ class Forum
 	//=======================================================
 	// Daten aus Koobi ьbertragen
 	//=======================================================
-	function importfromkoobi()
+/*	function importfromkoobi()
 	{
 		define("IMPORT", 1);
 		include_once(BASE_DIR . "/modules/forums/internals/importfromkoobi.php");
 	}
-
+*/
 	//=======================================================
 	// Automatisches Update wenn fьr Gruppe keine Rechte bestehen
 	//=======================================================

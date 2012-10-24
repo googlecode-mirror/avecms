@@ -22,7 +22,7 @@ $permissions = $this->getForumPermissionsByUser($f_id, UID);
 
 if ( (UGROUP == 2) || ($permissions[FORUM_PERMISSIONS_CAN_OPEN_TOPIC] == 0) )
 {
-	$this->msg($mod['config_vars']['ErrornoPerm']);
+	$this->msg($mod['config_vars']['FORUMS_ERROR_NO_PERM']);
 }
 
 switch($openclose)

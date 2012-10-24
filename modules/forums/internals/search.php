@@ -14,7 +14,7 @@ global $AVE_DB, $AVE_Template, $mod;
 // Kein Suchbegriff... Weiterleiten
 if (@$_GET['pattern'] == "" && @$_GET['user_name'] == "")
 {
-	$this->msg($mod['config_vars']['SearchNoKey'], 'index.php?module=forums&show=search_mask');
+	$this->msg($mod['config_vars']['FORUMS_SEARCH_NO_KEY'], 'index.php?module=forums&show=search_mask');
 }
 
 // typ des topics
@@ -131,7 +131,6 @@ $nav_sinf = "";
 // Dummy-Array
 if (@$_GET['search_in_forums'] == '' || @$_GET['search_in_forums'] == 'Array') @$_GET['search_in_forums'] = array('0','');
 
-
 if ($_GET['search_in_forums'] != "")
 {
 	if(isset($_GET['unserialize']) && $_GET['unserialize'] == 1)
@@ -181,8 +180,6 @@ if ($_GET['search_in_forums'] != "")
 	}
 
 	$search_in_forums = "(f.id = " . @implode(' OR f.id = ', $allowed_forums) . ")";
-
-
 }
 
 // suche nach dem datum
@@ -192,7 +189,6 @@ $date_comparator = (@$_GET['b4after'] == 0) ? ' <= ' : ' >= ';
 $divisor = 60 * 60 * 24;
 //$search_by_date = (@$_GET['date'] == 0) ? "(1)" : "((UNIX_TIMESTAMP(NOW()) / $divisor - (UNIX_TIMESTAMP(t.datum) / $divisor)) $date_comparator " . $_GET['date'] . ")";
 $search_by_date = (@$_GET['date'] == 0) ? "(1)" : "(NOW() - INTERVAL " . $_GET['date'] . " DAY $date_comparator t.datum)";
-
 
 $query = "SELECT DISTINCT
 		t.id,
@@ -268,7 +264,7 @@ while ($hit = $result->FetchAssocArray())
 // wenn keinen ergebnisse gefunden wurden...
 if(!$matches)
 {
-	$this->msg($mod['config_vars']['SearchNotFound'], 'index.php?module=forums&show=search_mask');
+	$this->msg($mod['config_vars']['FORUMS_SEARCH_NOT_FOUND'], 'index.php?module=forums&show=search_mask');
 }
 
 // seitennavigation
@@ -284,7 +280,6 @@ if(!isset($page)){
 
 $seiten = ceil($num / $limit);
 $a = get_current_page() * $limit - $limit;
-
 
 if ($num > $limit) {
 	$page_nav = " <a class=\"page_navigation\" href=\"index.php?module=forums&amp;show=search" . "&amp;type=" . $_GET['type']
@@ -304,15 +299,14 @@ if ($num > $limit) {
 
 $AVE_Template->assign("matches", array_slice($matches, $a, $limit));
 $AVE_Template->assign("navigation", "<a class='forum_links_navi' href='index.php?module=forums'>"
-		. $mod['config_vars']['PageNameForums'] . "</a>"
-		. $mod['config_vars']['ForumSep']
+		. $mod['config_vars']['FORUMS_PAGE_NAME_FORUMS'] . "</a>"
+		. $mod['config_vars']['FORUMS_FORUM_SEP']
 		. "<a class='forum_links_navi' href='index.php?module=forums&amp;show=search_mask'>"
-		. $mod['config_vars']['ForumsSearch']
+		. $mod['config_vars']['FORUMS_FORUMS_SEARCH']
 		. "</a>" );
 $AVE_Template->assign("matches_count", $result->NumRows());
-#$AVE_Template->assign("content", parsetrue("container/".container("forum"), $stitle, $AVE_Template->fetch("forums/result.tpl")));
 
 $tpl_out = $AVE_Template->fetch($mod['tpl_dir'] . 'result.tpl');
 define("MODULE_CONTENT", $tpl_out);
-define("MODULE_SITE", $mod['config_vars']['ForumsSearch']);
+define("MODULE_SITE", $mod['config_vars']['FORUMS_FORUMS_SEARCH']);
 ?>

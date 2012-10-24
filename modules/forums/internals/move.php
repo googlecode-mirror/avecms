@@ -54,7 +54,7 @@ if($own != 1)
 	//=======================================================
 	if ($permissions[FORUM_PERMISSIONS_CAN_MOVE_TOPIC] == 0)
 	{
-		$this->msg($mod['config_vars']['ErrornoPerm']);
+		$this->msg($mod['config_vars']['FORUMS_ERROR_NO_PERM']);
 	}
 }
 else
@@ -64,7 +64,7 @@ else
 	//=======================================================
 	if ($permissions[FORUM_PERMISSION_CAN_MOVE_OWN_TOPIC] == 0)
 	{
-		$this->msg($mod['config_vars']['ErrornoPerm']);
+		$this->msg($mod['config_vars']['FORUMS_ERROR_NO_PERM']);
 	}
 }
 
@@ -86,9 +86,9 @@ if($NOOUT != 1)
 		//=======================================================
 		header("Location:index.php?module=forums&show=showtopic&toid=" . $_REQUEST['toid'] . "&fid=" . $_REQUEST['dest'] . "");
 		exit;
-
-	} else {
-
+	}
+	else
+	{
 		$r_item = $AVE_DB->Query("SELECT id, title FROM " . PREFIX . "_modul_forum_topic WHERE id = '".addslashes($_REQUEST['toid'])."'");
 		$item = $r_item->FetchRow();
 
@@ -117,7 +117,7 @@ if($NOOUT != 1)
 		$tpl_out = $AVE_Template->fetch($mod['tpl_dir'] . $this->_MoveTpl);
 
 		define("MODULE_CONTENT", $tpl_out);
-		define("MODULE_SITE", $mod['config_vars']['MoveTopic']);
+		define("MODULE_SITE", $mod['config_vars']['FORUMS_MOVE_TOPIC']);
 	}
 }
 ?>

@@ -24,7 +24,7 @@ global $AVE_DB, $AVE_Template, $mod;
 
 	if ( ($forum->status == FORUM_STATUS_CLOSED) )
 	{
-		$this->msg($mod['config_vars']['ErrorClosed'], 'index.php?module=forums&show=showforum&fid=' . $_GET['fid']);
+		$this->msg($mod['config_vars']['FORUMS_ERROR_CLOSED'], 'index.php?module=forums&show=showforum&fid=' . $_GET['fid']);
 	}
 
 	// ====================================================================================
@@ -64,7 +64,7 @@ global $AVE_DB, $AVE_Template, $mod;
 	$AVE_Template->assign("permissions", $permissions);
 	$AVE_Template->assign("bbcodes", BBCODESITE);
 	$AVE_Template->assign("new_topic", 1);
-	$AVE_Template->assign("navigation", $navigation . $mod['config_vars']['ForumSep'] . "<a class='forum_links_navi' href='index.php?module=forums&amp;show=showforum&amp;fid=" . addslashes($_REQUEST['fid']). "'>" . $forum->title . "</a>");
+	$AVE_Template->assign("navigation", $navigation . $mod['config_vars']['FORUM_FORUM_SEP'] . "<a class='forum_links_navi' href='index.php?module=forums&amp;show=showforum&amp;fid=" . addslashes($_REQUEST['fid']). "'>" . $forum->title . "</a>");
 	$AVE_Template->assign("maxlength_post", MAXLENGTH_POST);
 	$AVE_Template->assign("listfonts", $this->fontDropdown());
 	$AVE_Template->assign("sizedropdown", $this->sizeDropdown());
@@ -79,9 +79,10 @@ global $AVE_DB, $AVE_Template, $mod;
 
 	$tpl_out = $AVE_Template->fetch($mod['tpl_dir'] . 'addtopic.tpl');
 	define("MODULE_CONTENT", $tpl_out);
-	define("MODULE_SITE", $mod['config_vars']['NewThread']);
-
-} else {
+	define("MODULE_SITE", $mod['config_vars']['FORUMS_NEW_THREAD']);
+} 
+else 
+{
 	header("Location:index.php?module=forums");
 	exit;
 }

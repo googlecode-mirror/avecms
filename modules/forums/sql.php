@@ -115,10 +115,10 @@ $modul_sql_install[] = "CREATE TABLE CPPREFIX_modul_forum_group_avatar (
   PRIMARY KEY  (id)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 
-$modul_sql_install[] = "INSERT INTO CPPREFIX_modul_forum_group_avatar VALUES (1, 1, 1, 'default.gif');";
+$modul_sql_install[] = "INSERT INTO CPPREFIX_modul_forum_group_avatar VALUES (1, 1, 0, '');";
 $modul_sql_install[] = "INSERT INTO CPPREFIX_modul_forum_group_avatar VALUES (2, 2, 0, '');";
-$modul_sql_install[] = "INSERT INTO CPPREFIX_modul_forum_group_avatar VALUES (3, 3, 1, 'default.gif');";
-$modul_sql_install[] = "INSERT INTO CPPREFIX_modul_forum_group_avatar VALUES (4, 4, 1, 'default.gif');";
+$modul_sql_install[] = "INSERT INTO CPPREFIX_modul_forum_group_avatar VALUES (3, 3, 0, '');";
+$modul_sql_install[] = "INSERT INTO CPPREFIX_modul_forum_group_avatar VALUES (4, 4, 0, '');";
 
 $modul_sql_install[] = "CREATE TABLE CPPREFIX_modul_forum_group_permissions (
   id int(10) unsigned NOT NULL auto_increment,

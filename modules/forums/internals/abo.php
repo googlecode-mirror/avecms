@@ -29,7 +29,7 @@ switch($onoff)
 		$row = $sql->FetchRow();
 
 		$new_insert = str_replace(";" . UID, "", $row->notification);
-		$AVE_DB->Query("UPDATE " . PREFIX . "_modul_forum_topic set notification='$new_insert' WHERE id = '" . addslashes($_GET['t_id']) . "'");
+		$AVE_DB->Query("UPDATE " . PREFIX . "_modul_forum_topic set notification='" . $new_insert . "' WHERE id = '" . addslashes($_GET['t_id']) . "'");
 	break;
 }
 

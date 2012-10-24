@@ -9,11 +9,11 @@
 	<tr>
 		<td class="forum_header" width="30px">&nbsp;</td>
 		<td class="forum_header" width="30px">&nbsp;</td>
-		<td class="forum_header">{#Topic#}</td>
-		<td class="forum_header" align="center" width="40px">{#Replies#}</td>
-		<td class="forum_header" align="center">{#Author#}</td>
-		<td class="forum_header" align="center" width="40px">{#Hits#}</td>
-		<td class="forum_header" align="center" width="40px">{#Voting#}</td>
+		<td class="forum_header">{#FORUMS_TOPIC#}</td>
+		<td class="forum_header" align="center" width="40px">{#FORUMS_REPLIES#}</td>
+		<td class="forum_header" align="center">{#FORUMS_AUTHOR#}</td>
+		<td class="forum_header" align="center" width="40px">{#FORUMS_HITS#}</td>
+		<td class="forum_header" align="center" width="40px">{#FORUMS_VOTING#}</td>
 	</tr>
 {foreach from=$matches item=topic}
 	<tr>
@@ -21,7 +21,7 @@
 		<td class="forum_info_icon">{get_post_icon icon=$topic.posticon theme=$theme_folder}&nbsp;</td>
 		<td class="forum_info_meta">
 			<a class="forum_links" href="{$topic.link}&amp;high={$smarty.get.pattern}">{$topic.title|stripslashes}</a><br />
-			{#PageNameForums#}: <a href="{$topic.forumslink}">{$topic.f_title}</a>
+			{#FORUMS_PAGE_NAME_FORUMS#}: <a href="{$topic.forumslink}">{$topic.f_title}</a>
 		</td>
 		<td class="forum_info_meta" align="center">
 			{if $topic.replies-1 == 0}
@@ -48,7 +48,7 @@
 	</tr>
 {/foreach}
 </table>
-
+<br />
 {if $pages}<p>{$pages}</p>{/if}
 
 <p>{include file="$inc_path/statusicons.tpl"}</p>

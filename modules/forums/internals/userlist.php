@@ -1,7 +1,7 @@
 <?php
 
 /**
- * 
+ * Список аользователей
  *
  * @package AVE.cms
  * @subpackage module_Forums
@@ -78,12 +78,12 @@ else
 	$orderby = ' ORDER BY messages DESC';
 }
 
-// Aktuelle Seite fьr Links
+// Страница закрыта для ссылок
 $f_page = (!empty($_REQUEST['page']) && is_numeric($_REQUEST['page']) && $_REQUEST['page']>0)
 	? "&amp;page=". $_REQUEST['page']
 	: "";
 
-// Sortierungs-Links
+// Сортировать ссылки
 $Link_PostSort = (isset($_REQUEST['orderby']) && $_REQUEST['orderby'] == 'posts_asc')
 	? "index.php?module=forums&amp;show=userlist&amp;orderby=posts_desc{$f_page}"
 	: "index.php?module=forums&amp;show=userlist&amp;orderby=posts_asc{$f_page}";
@@ -115,7 +115,7 @@ while ($row = $sql->FetchRow())
 		? 'index.php?module=forums&show=pn&amp;action=new&amp;to=' . base64_encode($row->uname)
 		: '';
 	$row->UserLink = ($row->show_profile==1)
-		? "<a class=\"forum_links\" href=\"index.php?module=forums&amp;show=userprofile&amp;user_id={$row->uid}\">{$row->uname}</a>"
+		? "<a class=\"forum_links\" href=\"index.php?module=forums&amp;show=userprofile&amp;user_id=" . $row->uid . "\">" . $row->uname . "</a>"
 		: "$row->uname";
 	$row->Posts = $this->num_format($row->messages);
 	if ($row->reg_time != '') array_push($user, $row);
@@ -123,14 +123,14 @@ while ($row = $sql->FetchRow())
 
 $num = $AVE_DB->Query("SELECT FOUND_ROWS()")->GetCell();
 //if (!isset($page)) $page = 1;
-$seiten = $this->getPageNum($num, $limit);
+$num_pages = $this->getPageNum($num, $limit);
 
-// Navigation
+// навигация
 if ($num > $limit)
 {
 	$nav_link = (empty($nav_link)) ? '' : $nav_link;
-	$page_nav = " <a class=\"page_navigation\" href=\"index.php?module=forums&amp;show=userlist{$nav_link}&amp;pp={$limit}&amp;page={s}\">{t}</a> ";
-	$page_nav = get_pagination($seiten, 'page', $page_nav);
+	$page_nav = " <a class=\"page_navigation\" href=\"index.php?module=forums&amp;show=userlist" . $nav_link . "&amp;pp=" . $limit . "&amp;page={s}\">{t}</a> ";
+	$page_nav = get_pagination($num_pages, 'page', $page_nav);
 	$AVE_Template->assign('pages', $page_nav);
 }
 
@@ -140,6 +140,6 @@ $AVE_Template->assign("Link_RegSort", $Link_RegSort);
 $AVE_Template->assign("Link_NameSort", $Link_NameSort);
 
 define("MODULE_CONTENT", $AVE_Template->fetch($mod['tpl_dir'] . 'userlist.tpl'));
-define("MODULE_SITE", $mod['config_vars']['PageNameUserProfile']);
+define("MODULE_SITE", $mod['config_vars']['FORUMS_PAGE_NAME_USER_PROFILE']);
 
 ?>

@@ -37,7 +37,7 @@ $query  = "SELECT
 $r_poster = $AVE_DB->Query($query);
 $num = $r_poster->NumRows();
 
-$seiten = ceil($num / $limit);
+$num_pages = ceil($num / $limit);
 $a = get_current_page() * $limit - $limit;
 
 $r_poster = $AVE_DB->Query($query . "LIMIT $a,$limit");
@@ -55,11 +55,11 @@ $AVE_Template->assign("poster", $poster);
 //=======================================================
 if($num > $limit){
 	$nav = " <a class=\"page_navigation\" href=\"index.php?module=forums&show=userpop&pop=1&theme_folder=" . $_GET['theme_folder'] . "&uname=" . @$_REQUEST['uname'] . "&Phrase=" . @$_REQUEST['Phrase'] . "&page={s}\">{t}</a> ";
-	$nav = get_pagination($seiten, 'page', $nav);
+	$nav = get_pagination($num_pages, 'page', $nav);
 	$AVE_Template->assign("nav", $nav) ;
 }
 
 $tpl_out = $AVE_Template->fetch($mod['tpl_dir'] . "users.tpl");
 define("MODULE_CONTENT", $tpl_out);
-define("MODULE_SITE",  $mod['config_vars']['UserpopName']);
+define("MODULE_SITE",  $mod['config_vars']['FORUMS_USERPOP_NAME']);
 ?>

@@ -23,7 +23,7 @@ if ( isset($_GET['toid']) && $_GET['toid'] != "" )
 	// gibt es den topic und das posting ueberhaupt schon
 	if (!$this->topicExists(addslashes($_GET['toid'])))
 	{
-		$this->msg($mod['config_vars']['ErrorTopicWrong']);
+		$this->msg($mod['config_vars']['FORUMS_ERROR_TOPIC_WRONG']);
 	}
 
 	$navigation = $this->getNavigation((int)$_GET['toid'], "topic");
@@ -90,7 +90,6 @@ if ( isset($_GET['toid']) && $_GET['toid'] != "" )
 			{
 				$group_id_ = UGROUP . ";" . $user->group_id_misc;
 				$group_id = @explode(";", $group_id_);
-
 			}
 			else
 			{
@@ -115,14 +114,14 @@ if ( isset($_GET['toid']) && $_GET['toid'] != "" )
 
 		if (!array_intersect($group_id, $category->group_id))
 		{
-			$this->msg($mod['config_vars']['ErrornoPerm']);
+			$this->msg($mod['config_vars']['FORUMS_ERROR_NO_PERM']);
 		}
 
 		$permissions = $this->getForumPermissionsByUser($pass->id, UID);
 
 		if ($permissions[FORUM_PERMISSION_CAN_SEE] != 1)
 		{
-			$this->msg($mod['config_vars']['ErrornoPerm']);
+			$this->msg($mod['config_vars']['FORUMS_ERROR_NO_PERM']);
 		}
 
 		// ====================================================================================
@@ -147,17 +146,17 @@ if ( isset($_GET['toid']) && $_GET['toid'] != "" )
 					$sql = $AVE_DB->Query("SELECT uid FROM ".PREFIX."_modul_forum_post WHERE id = '" . $_REQUEST['post_id'] . "'");
 					$row = $sql->FetchRow();
 
-					$sql_2 = $AVE_DB->Query("SELECT uid, uname, email FROM ".PREFIX."_modul_forum_userprofile WHERE uid = '$row->uid'");
+					$sql_2 = $AVE_DB->Query("SELECT uid, uname, email FROM ".PREFIX."_modul_forum_userprofile WHERE uid = '" . $row->uid . "'");
 					$row_2 = $sql_2->FetchRow();
 
-					$body = str_replace("%%USER%%", $row_2->uname, $mod['config_vars']['BodyToUserAfterMod']);
+					$body = str_replace("%%USER%%", $row_2->uname, $mod['config_vars']['FORUMS_BODY_TO_USER_AFTER_MOD']);
 					$body = str_replace("%%LINK%%", $link, $body);
 					$body = str_replace("%%N%%","\n", $body);
 
 					send_mail(
 						$row_2->email,
 						stripslashes($body),
-						$mod['config_vars']['SubjectToUserAfterMod'],
+						$mod['config_vars']['FORUMS_SUBJECT_TO_USER_AFTER_MOD'],
 						FORUMEMAIL,
 						FORUMABSENDER,
 						"text"
@@ -174,17 +173,17 @@ if ( isset($_GET['toid']) && $_GET['toid'] != "" )
 					$sql = $AVE_DB->Query("SELECT uid FROM ".PREFIX."_modul_forum_topic WHERE id = '" . $_REQUEST['toid'] . "'");
 					$row = $sql->FetchRow();
 
-					$sql_2 = $AVE_DB->Query("SELECT uid, uname, email FROM ".PREFIX."_modul_forum_userprofile WHERE uid = '$row->uid'");
+					$sql_2 = $AVE_DB->Query("SELECT uid, uname, email FROM ".PREFIX."_modul_forum_userprofile WHERE uid = '" . $row->uid . "'");
 					$row_2 = $sql_2->FetchRow();
 
-					$body = str_replace("%%USER%%", $row_2->uname, $mod['config_vars']['BodyToUserAfterMod']);
+					$body = str_replace("%%USER%%", $row_2->uname, $mod['config_vars']['FORUMS_BODY_TO_USER_AFTER_MOD']);
 					$body = str_replace("%%LINK%%", $link, $body);
 					$body = str_replace("%%N%%","\n", $body);
 
 					send_mail(
 						$row_2->email,
 						stripslashes($body),
-						$mod['config_vars']['SubjectToUserAfterMod'],
+						$mod['config_vars']['FORUMS_SUBJECT_TO_USER_AFTER_MOD'],
 						FORUMEMAIL,
 						FORUMABSENDER,
 						"text"
@@ -192,8 +191,6 @@ if ( isset($_GET['toid']) && $_GET['toid'] != "" )
 				}
 			}
 		}
-
-		// ======================================================
 		// alle beitrдge holen
 		$post_count = "SELECT
 			id
@@ -211,7 +208,7 @@ if ( isset($_GET['toid']) && $_GET['toid'] != "" )
 
 		if($num < 1)
 		{
-			$this->msg($mod['config_vars']['ErrornoPerm']);
+			$this->msg($mod['config_vars']['FORUMS_ERROR_NO_PERM']);
 		}
 
 		$this->Cpengine_Board_SetTopicRead(addslashes($_GET['toid']));
@@ -221,7 +218,7 @@ if ( isset($_GET['toid']) && $_GET['toid'] != "" )
 		$limit = (isset($_REQUEST['print']) && $_REQUEST['print']==1) ? 10000 : $limit;
 
 		if (!isset($page)) $page = 1;
-		$seiten = $this->getPageNum($num, $limit);
+		$num_pages = $this->getPageNum($num, $limit);
 		$a = get_current_page() * $limit - $limit;
 		$a = (isset($_REQUEST['print']) && $_REQUEST['print']==1) ? 0 : $a;
 
@@ -298,10 +295,6 @@ if ( isset($_GET['toid']) && $_GET['toid'] != "" )
 
 			$r_user = $AVE_DB->Query($q_user);
 			$poster = $r_user->FetchRow();
-//			$query = "SELECT COUNT(id) AS count FROM " . PREFIX . "_modul_forum_post WHERE uid = '" . @$poster->uid . "'";
-//			$result = $AVE_DB->Query($query);
-//			$postings = $result->FetchRow();
-//			$poster->user_posts = $postings->count;
 
 			$query = "SELECT title, count FROM " . PREFIX . "_modul_forum_rank WHERE count < '" . $poster->user_posts . "' ORDER BY count DESC LIMIT 1";
 			$result = $AVE_DB->Query($query);
@@ -312,8 +305,8 @@ if ( isset($_GET['toid']) && $_GET['toid'] != "" )
 			$poster->rank = @$rank->title;
 			$poster->OnlineStatus = @$this->getonlinestatus(@$poster->uname);
 
-			$popUpInsert = addslashes ("<div style='padding:6px; line-height:1.5em'> &raquo; <a class='forum_links_small' href='index.php?module=forums&amp;show=userprofile&amp;user_id=".@$poster->uid."'>".$mod['config_vars']['ShowPosterProfile']."</a><br /> &raquo; <a class='forum_links_small' href='index.php?module=forums&amp;show=ignorelist&amp;insert=".@$poster->uid."'>".$mod['config_vars']['InsertIgnore']."</a><br />&raquo; <a class='forum_links_small' href='index.php?module=forums&amp;show=pn&action=new&amp;to=".base64_encode(@$poster->uname)."'>".$mod['config_vars']['UserSendPn']."</a></div>");
-			$popUpRemove = "<div style='padding:6px; line-height:1.5em'> &raquo; <a class='forum_links_small' href='index.php?module=forums&amp;show=userprofile&amp;user_id=".@$poster->uid."'>".$mod['config_vars']['ShowPosterProfile']."</a><br /> &raquo; <a class='forum_links_small' href='index.php?module=forums&amp;show=ignorelist&amp;remove=".@$poster->uid."'>".$mod['config_vars']['RemoveIgnore']."</a><br />&raquo; <a class='forum_links_small' href='index.php?module=forums&amp;show=pn&action=new&amp;to=".base64_encode(@$poster->uname)."'>".$mod['config_vars']['UserSendPn']."</a></div>";
+			$popUpInsert = addslashes ("<div style='padding:6px; line-height:1.5em'> &raquo; <a class='forum_links_small' href='index.php?module=forums&amp;show=userprofile&amp;user_id=".@$poster->uid."'>".$mod['config_vars']['FORUMS_SHOW_POSTER_PROFILE']."</a><br /> &raquo; <a class='forum_links_small' href='index.php?module=forums&amp;show=ignorelist&amp;insert=".@$poster->uid."'>".$mod['config_vars']['FORUMS_INSERT_IGNORE']."</a><br />&raquo; <a class='forum_links_small' href='index.php?module=forums&amp;show=pn&action=new&amp;to=".base64_encode(@$poster->uname)."'>".$mod['config_vars']['FORUMS_USER_SEND_PN']."</a></div>");
+			$popUpRemove = "<div style='padding:6px; line-height:1.5em'> &raquo; <a class='forum_links_small' href='index.php?module=forums&amp;show=userprofile&amp;user_id=".@$poster->uid."'>".$mod['config_vars']['FORUMS_SHOW_POSTER_PROFILE']."</a><br /> &raquo; <a class='forum_links_small' href='index.php?module=forums&amp;show=ignorelist&amp;remove=".@$poster->uid."'>".$mod['config_vars']['FORUMS_REMOVE_IGNORE']."</a><br />&raquo; <a class='forum_links_small' href='index.php?module=forums&amp;show=pn&action=new&amp;to=".base64_encode(@$poster->uname)."'>".$mod['config_vars']['FORUMS_USER_SEND_PN']."</a></div>";
 
 			$poster->Ignored = (($this->isIgnored(addslashes(@$poster->uid))) ? $popUpRemove : $popUpInsert);
 
@@ -365,10 +358,9 @@ if ( isset($_GET['toid']) && $_GET['toid'] != "" )
 					array_push($Attach, $file);
 				}
 			}
-			//$post->UserStatus = $this->getonlinestatus();
 
 			$post->Attachments = $Attach;
-			//if(!empty($poster->uid))
+
 			array_push($post_array, $post);
 		}
 		$all_posts = $post_array;
@@ -421,17 +413,17 @@ if ( isset($_GET['toid']) && $_GET['toid'] != "" )
 
 		// navigation erzeugen
 		$navigation = $this->getNavigation((int)$_GET['toid'], "topic");
-		$tmp_navi = $navigation . $mod['config_vars']['ForumSep'] . $topic->title;
+		$tmp_navi = $navigation . $mod['config_vars']['FORUMS_FORUM_SEP'] . $topic->title;
 
 		$AVE_Template->assign("navigation", $tmp_navi);
-		$AVE_Template->assign("treeview", @explode($mod['config_vars']['ForumSep'], $tmp_navi));
+		$AVE_Template->assign("treeview", @explode($mod['config_vars']['FORUMS_FORUM_SEP'], $tmp_navi));
 		// ende navigation
 
 		if ($limit < $num)
 		{
 			$page_nav = " <a class=\"page_navigation\" href=\"index.php?module=forums&amp;show=showtopic&amp;toid=" . $_GET["toid"]
-				. "&amp;high=" . @$_GET['high'] . "&amp;pp=$limit&amp;page={s}&amp;fid=$ForumId\">{t}</a> ";
-			$page_nav = get_pagination($seiten, 'page', $page_nav);
+				. "&amp;high=" . @$_GET['high'] . "&amp;pp=" . $limit . "&amp;page={s}&amp;fid=" . $ForumId . "\">{t}</a> ";
+			$page_nav = get_pagination($num_pages, 'page', $page_nav);
 			$AVE_Template->assign('pages', $page_nav);
 		}
 
@@ -446,7 +438,7 @@ if ( isset($_GET['toid']) && $_GET['toid'] != "" )
 		$AVE_Template->assign("permissions", $permissions);
 		$AVE_Template->assign("categories_dropdown", $categories);
 		$AVE_Template->assign("navigation", $navigation);
-		$AVE_Template->assign("next_site", $seiten);
+		$AVE_Template->assign("next_site", $num_pages);
 		$AVE_Template->assign("currUser", $current_user);
 		$AVE_Template->assign("printlink", $printlink);
 		$AVE_Template->assign("topic", $topic);
